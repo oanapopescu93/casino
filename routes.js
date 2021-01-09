@@ -11,7 +11,7 @@ var transport = nodemailer.createTransport({
 	  user: constants.AUTH_USER,
 	  pass: constants.AUTH_PASS
 	}
-  });
+  }); 
 
   var mailOptions = {
 	from: constants.AUTH_FROM,
