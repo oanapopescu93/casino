@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5ab1723b.chunk.css",
+    "main.js": "/static/js/main.0c8d049c.chunk.js",
+    "main.js.map": "/static/js/main.0c8d049c.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.83c3e0c4.js",
+    "runtime-main.js.map": "/static/js/runtime-main.83c3e0c4.js.map",
+    "static/js/2.15c2f7a6.chunk.js": "/static/js/2.15c2f7a6.chunk.js",
+    "static/js/2.15c2f7a6.chunk.js.map": "/static/js/2.15c2f7a6.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.36c9b0f33c9649b115905146c129c34c.js": "/precache-manifest.36c9b0f33c9649b115905146c129c34c.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.5ab1723b.chunk.css.map": "/static/css/main.5ab1723b.chunk.css.map",
+    "static/js/2.15c2f7a6.chunk.js.LICENSE.txt": "/static/js/2.15c2f7a6.chunk.js.LICENSE.txt",
+    "static/media/style.css": "/static/media/bg00a.572bbe97.jpg",
+    "static/media/carrot_icon.png": "/static/media/carrot_icon.269bad3c.png",
+    "static/media/inventory_icon.png": "/static/media/inventory_icon.5c7b84a7.png",
+    "static/media/rabbit_run.gif": "/static/media/rabbit_run.c1ab81a7.gif",
+    "static/media/under_construction_icon.png": "/static/media/under_construction_icon.a0844a3a.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.83c3e0c4.js",
+    "static/js/2.15c2f7a6.chunk.js",
+    "static/css/main.5ab1723b.chunk.css",
+    "static/js/main.0c8d049c.chunk.js"
+  ]
+}
