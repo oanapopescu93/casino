@@ -18,7 +18,7 @@ var my_console = function(){
     me.disable = function disable(){
 		oldConsole = console.log;
 		window['console']['log'] = function() {};
-		window['console']['warn'] = function() {};
+		// window['console']['warn'] = function() {};
 		window['console']['error'] = function() {};
 	};
 
@@ -26,7 +26,7 @@ var my_console = function(){
 }();
 
 function App() {
-	// my_console.disable();	
+	my_console.disable();	
 	return (
 		<div className="App"> 
 			<div id="loader_container" className="loader_container">
