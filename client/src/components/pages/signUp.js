@@ -58,10 +58,10 @@ function SignIn(props) {
 	return (
 		<div>
 		   <Form id="user_form" method="post" action="/members/submit">
-				<Form.Control id="signup_email" className="input_yellow" type="text" name="email" placeholder="Email" />
-				<Form.Control id="signup_user" className="input_yellow" type="text" name="user" placeholder="Username" />
-				<Form.Control id="signup_pass" className="input_yellow" type="password" name="pass" placeholder="Password" />
-				<Button className="button_yellow" onClick={submit}>Sign Up</Button>
+				<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />
+				<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />
+				<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
+				<Button className="button_yellow shadow_convex" onClick={submit}>Sign Up</Button>
 			</Form>
 	
 			<div id="minor_container" className="minor_container">

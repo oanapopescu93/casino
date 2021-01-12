@@ -2,7 +2,7 @@ import React from 'react';
 import $ from 'jquery'; 
 
 import {calculate_money, get_history} from '../../actions/actions'
-import {useDispatch, useSelector, connect} from 'react-redux'
+import {connect} from 'react-redux'
 
 import carrot_img from '../../img/icons/carrot_icon.png';
 
@@ -278,7 +278,6 @@ function roulette_game(props){
 				ctx.rotate(angle + arc / 2 + Math.PI / 2);
 				var text = numbers[i];
 				ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
-
 				roulette_pos.push({x: roulette_radius_x + Math.cos(angle + arc / 2) * (textRadius-25), y: roulette_radius_y + Math.sin(angle + arc / 2) * (textRadius-25), nr: text, color: colors[i]}); 
 			}
 		  
@@ -497,6 +496,8 @@ function roulette_game(props){
 					rotateWheel(arc-0.04);
 					circle.angle += ball.speed-0.04;	
 					break;
+				default:
+					break;
 			}
 
 			if(typeof monkey !== "undefined" || monkey !== []){					
@@ -614,7 +615,7 @@ function roulette_game(props){
 				box_nr.y = box_nr.y + 2 * box_nr.width;
 				a = 1;
 			} else {
-				box_nr.x = box_nr.x;	
+				// box_nr.x = box_nr.x;	
 				box_nr.y = box_nr.y - box_nr.width;
 			}				
 			
@@ -850,6 +851,8 @@ function roulette_game(props){
 								money_history = money_history - 1;	
 							}							
 						}
+						break;
+					default:
 						break;
 				}	
 				elem01[i].money_history = money_history;

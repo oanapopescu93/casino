@@ -3,7 +3,7 @@ import $ from 'jquery';
 
 import img_cards from '../../img/img_cards.png';
 
-import {useDispatch, useSelector, connect} from 'react-redux'
+import {connect} from 'react-redux'
 
 var canvas;
 var ctx;
@@ -12,7 +12,7 @@ var blackjack_game;
 var canvas_width = 900;
 var canvas_height = 800;
 
-var blackjack_hand = new Array();
+var blackjack_hand = [];
 var button_start = {x: 50, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'START', text_x: 32, text_y: 53}
 var button_hit = {x: 140, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 122, text_y: 53}
 var button_stay = {x: 230, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'STAY', text_x: 215, text_y: 53}
@@ -78,6 +78,8 @@ function blackjack_wheel(props){
 					case 'hit':
 						break;
 					case 'stay':
+						break;
+					default:
 						break;
 				}
 			}	

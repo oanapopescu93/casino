@@ -39,6 +39,17 @@ body{
 	width:100%;
 }
 
+textarea.shadow_concav, input.shadow_concav, .button_yellow.shadow_concav, .shadow_concav{
+	-moz-box-shadow:    inset 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+   	-webkit-box-shadow: inset 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+   	box-shadow:         inset 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+}
+textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .shadow_convex{
+	-moz-box-shadow:    4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+   	-webkit-box-shadow: 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+   	box-shadow:         4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+}
+
 #logo_icon{
 	width:50px;
 }
@@ -669,7 +680,7 @@ table {
     border-radius: 0px 20px 20px 0px;
 }
 .item_container{
-	height: 360px;
+	height: 400px;
 	overflow-y:auto;
 }
 .profile_container{

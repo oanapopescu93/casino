@@ -37,19 +37,21 @@ class Salon extends Component {
 						switch (res.server_tables[i].table_name) {
 							case "roulette":
 								casino_games.roulette_tables.push(res.server_tables[i]);
-							  break;
+							  	break;
 							case "blackjack":
 								casino_games.blackjack_tables.push(res.server_tables[i]);
-							  break;
+							  	break;
 							case "slots":
 								casino_games.slots_tables.push(res.server_tables[i]);
-							  break;							
+								break;	
+							default:
+								break;						
 						  }
 					}
 					
 					var empty = 0;
-					for(var i in casino_games_title){
-						if(casino_games[casino_games_title[i]].length === 0){
+					for(var j in casino_games_title){
+						if(casino_games[casino_games_title[j]].length === 0){
 							empty++;
 						}
 					}
@@ -137,7 +139,7 @@ class Salon extends Component {
 												return(
 													<div key={i}>
 														<div key={i} className="casino_games_title_container">
-															<div className="capitalize casino_games_title" onClick={()=>self.handleDropdown(t)}>{title}</div>
+															<div className="capitalize casino_games_title shadow_convex" onClick={()=>self.handleDropdown(t)}>{title}</div>
 														</div>
 														<div box={t} className={box}>
 															<div className="casino_games_table">
@@ -156,7 +158,7 @@ class Salon extends Component {
 																							case "roulette":
 																								return (
 																									<div key={j} className="table_inside">
-																										<div className="table_box">
+																										<div className="table_box shadow_concav">
 																											<p>Table: {item.table_name} {item.table_id}</p>
 																											<p>Type: {item.table_type}</p>
 																											<Button id={button_id} className="button_table" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, item.table_type, self.state.user)}>Play</Button>
@@ -167,12 +169,14 @@ class Salon extends Component {
 																							case "slots":
 																								return (
 																									<div key={j} className="table_inside">
-																										<div className="table_box">
+																										<div className="table_box shadow_concav">
 																											<p>Table: {item.table_name} {item.table_id}</p>
 																											<Button id={button_id} className="button_table" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, '', self.state.user)}>Play</Button>
 																										</div>
 																									</div>
-																								)						
+																								)
+																							default:
+																								break;						
 																						}
 																					})
 																				}

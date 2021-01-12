@@ -56,7 +56,7 @@ function ChatForm(props) {
 						<Form.Control type="text" name="chattext" id="chattext" placeholder="type here" />
 					</Col>
 					<Col sm={4}>
-						<Button className="button_green" id="chatsend" onClick={e => (e.preventDefault(), my_click())}>Send</Button>
+						<Button className="button_green" id="chatsend" onClick={(e)=>{e.preventDefault(); my_click()}}>Send</Button>
 					</Col>
 				</Row>
 			</Form>

@@ -8,16 +8,35 @@ import inventory_img from '../img/icons/inventory_icon.png';
 import AccountProfile from './account_profile';
 import AccountMarket from './account_market';
 
+var socket;
 var account_info = {};
+var self;
 
 class UserAccount extends Component {
 	constructor(props) {
 		super(props);	
 		account_info = props;
+		socket = props.socket;
+
+		self = this;
+
+		self.state = {
+			visible: true,
+			market: []
+		}
 	}	
-	
-	state = {
-		visible: true,
+
+	componentDidMount() {
+		var payload = {
+			'id': account_info.user_id, 
+			'user': account_info.user, 
+			'type': account_info.type, 
+			'user_table': account_info.user_table
+		}
+		socket.emit('market_send', payload);	
+		socket.on('market_read', function(data){
+			self.setState({ market: data});
+		});	
 	}
 	
 	account_choose_tab = function(link){	
@@ -41,7 +60,7 @@ class UserAccount extends Component {
 				</div>
 				
 				{ this.state.visible ? <AccountProfile info={account_info}></AccountProfile> : null }
-				{ !this.state.visible ? <AccountMarket info={account_info}></AccountMarket> : null }
+				{ !this.state.visible ? <AccountMarket info={account_info} market={self.state.market}></AccountMarket> : null }
 			</div>
 		);
 		

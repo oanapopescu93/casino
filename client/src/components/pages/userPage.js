@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch, BrowserRouter} from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
@@ -14,7 +14,6 @@ import UserAccount from './userAccount';
 
 const socket = socketIOClient("/");
 var self;
-var visible = false;
 
 class Child extends Component {
 	constructor(props) {
@@ -93,7 +92,7 @@ class Child extends Component {
 										{ !this.state.visible ? 
 											<Game user_id={this.state.user_id} game={this.state.game} user={this.state.user} money={this.state.money} user_table={this.state.user_table} type={this.state.type} socket={socket}></Game>									
 											: 
-											<UserAccount user={this.state.user} money={this.state.money} user_table={this.state.user_table} type={this.state.type}></UserAccount> 
+											<UserAccount user_id={this.state.user_id} game={this.state.game} user={this.state.user} money={this.state.money} user_table={this.state.user_table} type={this.state.type} socket={socket}></UserAccount> 
 										}						
 							</Col>
 						</Row>	

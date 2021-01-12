@@ -78,11 +78,11 @@ function SignIn(props) {
 	return (
 		<div>
 			<Form id="user_form" method="post" action="/registration">
-				<Form.Control id="signin_user" className="input_yellow" type="text" name="user" placeholder="Username" defaultValue=""/>
+				<Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>
 				<h6 id="signin_user_red" className="text_red">You didn't write the username</h6>
-				<Form.Control id="signin_pass" className="input_yellow" type="password" name="pass" placeholder="Password" defaultValue=""/>
+				<Form.Control id="signin_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>
 				<h6 id="signin_pass_red" className="text_red">You didn't write the password</h6>
-				<Button className="button_yellow" onClick={submit}>Sign In</Button>
+				<Button className="button_yellow shadow_convex" onClick={submit}>Sign In</Button>
 				<div className="login_link_container">
 					<div onClick={handleShow} id="link_forget"><h6>Forgot Username/Password?</h6></div>	
 				</div>
@@ -96,7 +96,7 @@ function SignIn(props) {
 					<p>If you forgot your username or password you can reset it here</p>
 					<Form id="recovery_form" method="post" action="/recovery">						
 						<Form.Control id="signin_email" className="input_yellow" type="text" name="email" placeholder="Email" />
-						<h6 id="signin_email_red" className="text_red"></h6>
+						<h6 id="signin_email_red" className="text_red"> </h6>
 						<Button className="minor_check" onClick={submit_recovery}>Recover</Button>							
 					</Form>
 				</Modal.Body>				

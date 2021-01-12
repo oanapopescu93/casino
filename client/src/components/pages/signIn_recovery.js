@@ -48,7 +48,7 @@ function SignIn(props) {
             <Col sm={12} className="HomePage color_yellow">
                 <Row>
                     <Col sm={12}>
-                        <img id="logo_icon" alt="logo image" src={logo_icon} />
+                        <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                         <h1>BunnyBet</h1>
 						<h2>Recovery</h2>
                     </Col>
@@ -59,11 +59,11 @@ function SignIn(props) {
                         <Row>
                             <Col sm={12}>
                                 <Form id="user_form" method="post" action="/registration">
-                                    <Form.Control id="signin_user" className="input_yellow" type="text" name="user" placeholder="Username" defaultValue=""/>
+                                    <Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>
                                     <h6 id="signin_user_red" className="text_red">You didn't write the username</h6>
-                                    <Form.Control id="signin_pass" className="input_yellow" type="password" name="pass" placeholder="Password" defaultValue=""/>
+                                    <Form.Control id="signin_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>
                                     <h6 id="signin_pass_red" className="text_red">You didn't write the password</h6>
-                                    <Button className="button_yellow" onClick={submit}>Sign In</Button>
+                                    <Button className="button_yellow shadow_convex" onClick={submit}>Sign In</Button>
                                 </Form>
                             </Col>
                         </Row>

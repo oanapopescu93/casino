@@ -5,9 +5,12 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 function Account_market(props) {
-	function my_click(a){
-		console.log('buy', a);
-	}
+	var market = props.market;
+	var socket = props.info.socket;
+	
+	function my_click(id){
+		console.log('buy', id);
+	}	
 	
 	return (
 		<div className="account_box_container">
@@ -16,83 +19,22 @@ function Account_market(props) {
 			</Row>
 			<Row className="item_container">
 				<Col sm={12} style={{textAlign:"center"}}>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
-					<div className="table_inside">
-						<div className="table_box">
-							<h3>Item name</h3>
-							<p>Item description</p>
-							<Button className="button_table" id="item01" type="button" onClick={() => my_click("item01")}>Buy</Button>
-						</div>
-					</div>
+					{					
+						market.map(function(item, i){							
+							var id = item.id;
+							console.log(i, item, id)
+							return(
+								<div key={i} className="table_inside shadow_concav">
+									<div className="table_box">
+										<h3>{item.name}</h3>
+										<p>{item.description}</p>
+										<p>Price: <b>{item.price}</b></p>
+										<Button className="button_table" id="item01" type="button" onClick={() => my_click(id)}>Buy</Button>
+									</div>
+								</div>												
+							)
+						})
+					}
 				</Col>
 			</Row>
 		</div>
