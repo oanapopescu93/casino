@@ -29,7 +29,7 @@ function Account_market(props) {
 										<h3>{item.name}</h3>
 										<p>{item.description}</p>
 										<p>Price: <b>{item.price}</b></p>
-										<Button className="button_table" id="item01" type="button" onClick={() => my_click(id)}>Buy</Button>
+										<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => my_click(id)}>Buy</Button>
 									</div>
 								</div>												
 							)

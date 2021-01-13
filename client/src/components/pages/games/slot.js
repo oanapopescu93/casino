@@ -89,7 +89,7 @@ function Slot(props) {
 		<div className="slot_container">
             <p>Sorry, </p>
             <p>no slots available yet</p>
-            <Button className="button_table" type="button" onClick={handleBack}>Back</Button>
+            <Button className="button_table shadow_convex" type="button" onClick={handleBack}>Back</Button>
 			<canvas id="slot_canvas"></canvas>
 		</div>
 	);

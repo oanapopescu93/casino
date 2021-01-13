@@ -116,13 +116,13 @@ class Salon extends Component {
 							<div className="table_container color_yellow">
 								<h3>No access</h3>
 								<h4>Please go back and login in / sign in</h4>
-								<Button className="button_table" type="button" onClick={()=>self.handleBack()}>Back</Button>
+								<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
 							</div>
 						) : (
 							<Col sm={12} className="salon_page color_yellow">
 								<Row>
 									<Col sm={12}>
-										<img id="logo_icon" alt="logo_icon" src={logo_icon} />
+										<a href="/"><img id="logo_icon" alt="logo_icon" src={logo_icon} /></a>
 										<h1>Salon</h1>									
 									</Col>
 								</Row>
@@ -161,7 +161,7 @@ class Salon extends Component {
 																										<div className="table_box shadow_concav">
 																											<p>Table: {item.table_name} {item.table_id}</p>
 																											<p>Type: {item.table_type}</p>
-																											<Button id={button_id} className="button_table" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, item.table_type, self.state.user)}>Play</Button>
+																											<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, item.table_type, self.state.user)}>Play</Button>
 																										</div>
 																									</div>
 																								)
@@ -171,7 +171,7 @@ class Salon extends Component {
 																									<div key={j} className="table_inside">
 																										<div className="table_box shadow_concav">
 																											<p>Table: {item.table_name} {item.table_id}</p>
-																											<Button id={button_id} className="button_table" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, '', self.state.user)}>Play</Button>
+																											<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, '', self.state.user)}>Play</Button>
 																										</div>
 																									</div>
 																								)

@@ -41,7 +41,7 @@ class HomePage extends React.Component {
 						<Col sm={12}>					
 							<Row>
 								<Col sm={12}>
-									<div className="login_link_container">
+									<div className="login_link_container shadow_convex">
 										<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}><h4>Sign In</h4></div>	
 										<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}><h4>Sign Up</h4></div>	
 									</div>

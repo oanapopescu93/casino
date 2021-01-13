@@ -24,6 +24,9 @@ start_button_coordonates = {x:20, y:20, width:60, height:60};
 hit_button_coordonates = {x:110, y:20, width:60, height:60};
 stay_button_coordonates = {x:200, y:20, width:60, height:60};
 
+var card_base = {x: 20, y:500, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white'}
+var card = {width: 80, height: 120}
+
 var font_bold_10 = 'bold 10px sans-serif';
 var font_bold_12 = 'bold 12px sans-serif';
 var font_bold_14 = 'bold 14px sans-serif';
@@ -73,7 +76,7 @@ function blackjack_wheel(props){
 				switch(data[0]){
 					case 'start':						
 						blackjack_hand = data;
-						console.log('blackjack_read--> ', blackjack_hand)
+						self.draw_table();						
 						break;
 					case 'hit':
 						break;
@@ -85,31 +88,52 @@ function blackjack_wheel(props){
 			}	
 		});	
 
+		self.draw_table();	
+
+		self.blackjack_table_click();
+	}
+
+	this.draw_table = function(){
 		ctx.clearRect(0,0, canvas_width, canvas_height);
 
 		ctx.font = font_bold_12; 
 		ctx.shadowColor = "black";
 		ctx.shadowOffsetX = 0;
-		ctx.shadowOffsetY = 0;
+		ctx.shadowOffsetY = 0;		
 		
 		self.drawButton(button_start.x, button_start.y, button_start.r, button_start.sAngle, button_start.eAngle, button_start.counterclockwise, button_start.fillStyle, button_start.lineWidth, button_start.strokeStyle, button_start.text, button_start.text_x, button_start.text_y);
 		self.drawButton(button_hit.x, button_hit.y, button_hit.r, button_hit.sAngle, button_hit.eAngle, button_hit.counterclockwise, button_hit.fillStyle, button_hit.lineWidth, button_hit.strokeStyle, button_hit.text, button_hit.text_x, button_hit.text_y);
 		self.drawButton(button_stay.x, button_stay.y, button_stay.r, button_stay.sAngle, button_stay.eAngle, button_stay.counterclockwise, button_stay.fillStyle, button_stay.lineWidth, button_stay.strokeStyle, button_stay.text, button_stay.text_x, button_stay.text_y);
+		
 		ctx.font = font_bold_14; 
-
-		self.blackjack_table_click();
+		
+		self.draw_table_spots();
+		
+		if(blackjack_hand.length !== 0){
+			self.draw_table_players();
+			self.draw_table_dealer();
+		}
 	}
-	
-	// this.createHand = function(){
-	// 	console.log('blackjack_id --> ', props)
-	// 	var blackjack_payload_server = {
-	// 		user_id: props.user_id, 
-	// 		user: props.user, 
-	// 		user_table: props.user_table, 
-	// 	}
-	// 	socket.emit('blackjack_send', blackjack_payload_server);	
-	// }
-	
+
+	this.draw_table_spots = function(){
+		var space = (canvas_width - (card_base.width*7 + card_base.x*6))/2;
+		for(var i=0; i<7; i++){
+			draw_rect(space + i * (card_base.width + card_base.x), card_base.y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
+		}
+	}	
+
+	this.draw_table_players = function(){
+		var space = (canvas_width - (card_base.width*7 + card_base.x*6))/2;
+		console.log('blackjack_read2--> ', blackjack_hand)
+		for(var i in blackjack_hand[1]){
+			draw_card(space + i * (card_base.width + card_base.x), card_base.y, card.width, card.height, blackjack_hand[1][i].hand)
+		}
+	}
+
+	this.draw_table_dealer = function(){
+		//console.log('blackjack_read--> ', blackjack_hand)
+	}
+
 	this.drawButton = function(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle, text, text_x, text_y){
 		ctx.shadowBlur = 10;		
 		draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle);
@@ -192,7 +216,30 @@ function draw_rect(x, y, width, height, fillStyle, lineWidth, strokeStyle){
 		ctx.stroke();
 	}		
 	ctx.fill();
-	ctx.closePath();
+}
+
+function draw_card(x, y, w, h, hand){
+	var img = document.getElementById("img_cards");
+	var img_x = 0;
+	var img_y = 0;
+	for(var i in hand){
+		switch (hand[i].Suit) {
+			case "Spades":
+				img_y = 0;							
+				break;
+			case "Hearts":
+				img_y = 120;		
+				break;
+			case "Diamonds":
+				img_y = 240;		
+				break;
+			case "Clubs":
+				img_y = 360;		
+				break;
+		  }	
+		console.log(img_x, img_y, hand[i])
+		ctx.drawImage(img, img_x, img_y, w, h, x + i*10, y + i*10, w, h);
+	}	
 }
 
 function handleBack(){
@@ -221,7 +268,7 @@ function Blackjack(props) {
 		<div className="blackjack_container">
             {/* <p>Sorry, </p>
             <p>no blackjack table available yet</p>
-            <Button className="button_table" type="button" onClick={handleBack}>Back</Button> */}
+            <Button className="button_table shadow_convex" type="button" onClick={handleBack}>Back</Button> */}
 			<canvas id="blackjack_canvas"></canvas>
 			<img style={{'display': 'none'}} id="img_cards" alt="img_cards" src={img_cards} />
 		</div>

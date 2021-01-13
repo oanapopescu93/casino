@@ -68,14 +68,14 @@ class Game extends Component {
 												<div>
 													<p>Sorry, </p>
 													<p>no slots machine available yet</p>
-													<Button className="button_table" type="button" onClick={()=>self.handleBack()}>Back</Button>
+													<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
 												</div>
 											)
 										default:
 											return(
 												<div>
 													<p>Somethis went wrong</p>
-													<Button className="button_table" type="button" onClick={()=>self.handleBack()}>Back</Button>
+													<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
 												</div>
 											)						
 									}
