@@ -4,9 +4,6 @@ import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import Modal from 'react-bootstrap/Modal'
 
-// import floorplanData from "./floor_plan/floorplan-data";
-// import Floorplan from "./floor_plan/Floorplan";
-
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data) {
@@ -101,10 +98,6 @@ function SignIn(props) {
 					</Form>
 				</Modal.Body>				
 			</Modal>
-
-		{/* <svg viewBox="-1000 -1000 14000 11000" shape-rendering="geometricPrecision">
-        	<Floorplan data={floorplanData}></Floorplan>
-		</svg> */}
 		</div>		
 	);
 }

@@ -18,6 +18,7 @@ body{
 	min-height: 100% !important;
     height: 100%;
 	position: relative;
+	overflow-x: hidden;
 }
 .grad {
 	background-color:green;
@@ -77,8 +78,33 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
     text-transform: uppercase;
 }
 
+#myProgress {
+	width: 100%;
+	border-radius:50px;
+	background-color: transparent;
+	border:solid 1px yellow;
+	margin-top:20px;
+	height: 10px;
+	overflow: hidden;
+  }
+  
+  #myBar {
+	width: 0%;
+	height: 8px;
+	background-color: yellow;
+	line-height: 8px;
+	border-radius:50px;
+  }
+  #myBar_text{
+	text-align: right;
+  }
+  #myBar_text_container{
+	width: 20px;
+  } 
+
 .fa-user-circle{
 	width:25px;
+	display:inline;
 }
 
 .minor_container{

@@ -30,7 +30,7 @@ function Home(props) {
 									<SignInRecovery></SignInRecovery>
 								</Route>
 								<Route path="/">
-									<HomePage response={props}></HomePage>
+									<HomePage></HomePage>
 								</Route>
 							</Switch>			
 						</BrowserRouter>
