@@ -8,7 +8,7 @@ import logo_splash from '../img/logo.png';
 
 function Splash(props) {
 	return (
-		<div id="home" className="full-height">
+		<div id="splash_screen" className="full-height">
 			<div className="full-height-content">
 				<Container>	
                     <Row>
