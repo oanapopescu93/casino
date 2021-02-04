@@ -3,7 +3,7 @@ var router = express.Router();
 var nodemailer = require('nodemailer');
 var constants = require('./var/constants');
 
-var my_server = "http://localhost:3000"
+var my_server = constants.SERVER;
 var transport = nodemailer.createTransport({
 	host: "smtp.mailtrap.io",
 	port: 2525,
@@ -33,20 +33,7 @@ var pass = "";
 var users = [];
 var recovery_email = "";
 
-var server_tables = [
-	{table_id: '001', table_name: "roulette", table_type: "european"},
-	{table_id: '002', table_name: "roulette", table_type: "american"},
-	{table_id: '003', table_name: "roulette", table_type: "european"},
-	{table_id: '004', table_name: "roulette", table_type: "american"},
-	{table_id: '001', table_name: "blackjack"},
-	{table_id: '002', table_name: "blackjack"},
-	{table_id: '003', table_name: "blackjack"},
-	{table_id: '001', table_name: "slots"},
-	{table_id: '002', table_name: "slots"},
-	{table_id: '003', table_name: "slots"},
-	{table_id: '004', table_name: "slots"},
-	{table_id: '005', table_name: "slots"},
-];
+var server_tables = constants.SERVER_TABLES;
 	
 router.get('/salon', function(req, res, next){
 	server_tables.push(user);

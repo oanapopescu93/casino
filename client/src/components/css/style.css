@@ -80,6 +80,17 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
     text-align: left;
     text-transform: uppercase;
 }
+.rabbit_not_found{
+	width:150px;
+	display: inline-block;
+	vertical-align: middle;
+}
+#rabbit_stand_right{
+	float:right;
+}
+#rabbit_stand_left{
+	float:left;
+}
 
 #myProgress {
 	width: 100%;
@@ -287,6 +298,9 @@ h6 {
 a, a:hover, a:focus, a:active{
 	color:var(--yellow);
 	text-decoration: none;
+}
+.link_hover_underline, .link_hover_underline:hover, .link_hover_underline:focus, .link_hover_underline:active{
+	text-decoration: underline;
 }
 
 .color_yellow{
@@ -804,13 +818,13 @@ table {
 	}
 
 	h2 {
-		font-size: 20px;
-		line-height: 20px;
+		font-size: 18px;
+		line-height: 18px;
 	}
 
 	h3 {
-		font-size: 20px;
-		line-height: 20px;
+		font-size: 16px;
+		line-height: 16px;
 	}
 
 	h4 {
@@ -886,7 +900,12 @@ table {
 		padding-left:15px;
 	}
 
-	
+	.rabbit_not_found{
+		width:50px;
+	}
+	#rabbit_stand_right, #rabbit_stand_left{
+		float:none;
+	}
 }
 @media (max-width: 480px) {  
 	.table_inside {

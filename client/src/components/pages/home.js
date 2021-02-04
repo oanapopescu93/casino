@@ -7,6 +7,7 @@ import '../css/style.css';
 import HomePage from './homePage';
 import Salon from './salon';
 import SignInRecovery from './signIn_recovery';
+import Not_found from './not_found';
 import UserPage from './userPage';
 import Footer from './footer';
 
@@ -20,17 +21,20 @@ function Home(props) {
 				<Container>				
 						<BrowserRouter>					
 							<Switch>			
-								<Route path="/table">
+								<Route exact path="/table/:name">
 									<UserPage socket={socket}></UserPage>
 								</Route>
-								<Route path="/salon">
+								<Route exact path="/salon">
 									<Salon socket={socket}></Salon>
 								</Route>
-								<Route path="/recovery">
+								<Route exact path="/recovery">
 									<SignInRecovery></SignInRecovery>
-								</Route>
-								<Route path="/">
+								</Route>								
+								<Route exact path="/">
 									<HomePage></HomePage>
+								</Route>
+								<Route path="*">
+									<Not_found></Not_found>
 								</Route>
 							</Switch>			
 						</BrowserRouter>
