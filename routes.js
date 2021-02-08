@@ -21,6 +21,9 @@ var transport = nodemailer.createTransport({
 	html: '<h1>Recovery username and password</h1><p>Username: xxx</p><p>Password: xxx</p><p>Go to <a target="_blank" href="'+my_server+'/recovery">Link</a> to recover them.</p>'
   };
 
+
+  router.use(express.static(path.join(__dirname, '/client/build')));
+
 // router.get('/', (req, res) => {
 // 	console.log("Hello friend");
 // 	// res.render('index', {layout: 'layout.hbs', template: 'home-template'});
