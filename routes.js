@@ -26,6 +26,11 @@ router.get('/', (req, res) => {
 	res.redirect(my_server);  
 });
 
+// app.get('/*', (req, res) => {
+// 	console.log("Hello friend");
+// 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//   });
+
 var user_money = 100;
 
 var user = "";

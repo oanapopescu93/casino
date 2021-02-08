@@ -11,13 +11,15 @@ var io = require('socket.io')(http);
 const port = process.env.PORT || 5000;
 app.set("port", port);
 
-app.set("views", path.join(__dirname, "react_build/views"));
-app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/react_build/views/include/', partialsDir: __dirname + '/react_build/views/include/partials/'}));
-app.set("view engine", "hbs");
+app.use(express.static(path.join(__dirname, 'build')));
+
+// app.set("views", path.join(__dirname, "react_build/views"));
+// app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/react_build/views/include/', partialsDir: __dirname + '/react_build/views/include/partials/'}));
+// app.set("view engine", "hbs");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/react_build/assets', express.static('assets'));
+// app.use('/react_build/assets', express.static('assets'));
 
 var constants = require('./var/constants');
 

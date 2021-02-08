@@ -5,7 +5,8 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "nodemon server.js",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "start": "npm run server\" \"npm run client\"",
+    "build": "react-scripts build"
   },
   "author": "oana popescu",
   "license": "ISC",
@@ -13,6 +14,7 @@
     "body-parser": "^1.19.0",
     "concurrently": "^5.3.0",
     "express": "^4.17.1",
+    "express-generator": "^4.16.1",
     "express-handlebars": "^4.0.6",
     "fs": "0.0.1-security",
     "mysql": "^2.18.1",
