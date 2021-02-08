@@ -22,18 +22,28 @@ var transport = nodemailer.createTransport({
   };
 
 
-  router.use(express.static(path.join(__dirname, '/client/build')));
-
-// router.get('/', (req, res) => {
-// 	console.log("Hello friend");
-// 	// res.render('index', {layout: 'layout.hbs', template: 'home-template'});
-// 	res.redirect(my_server);  
-// });
+//   router.use(express.static(path.join(__dirname, '/client/build')));
 
 router.get('/', (req, res) => {
-	console.log("Hello friend", __dirname);
-	res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
-  });
+	console.log("Hello friend", my_server);
+	// res.render('index', {layout: 'layout.hbs', template: 'home-template'});
+	res.redirect(my_server);  
+});
+
+// router.get('/', (req, res) => {
+// 	console.log("Hello friend", __dirname);
+// 	res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+//   });
+
+
+if (process.env.NODE_ENV === 'production') {
+	// Serve any static files
+	router.use(express.static(path.join(__dirname, '/client/build')));
+  	// Handle React routing, return all requests to React app
+  	router.get('*', function(req, res) {
+		res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+	});
+}
 
 
 var user_money = 100;
@@ -45,12 +55,25 @@ var recovery_email = "";
 
 var server_tables = constants.SERVER_TABLES;
 	
+// router.get('/salon', function(req, res, next){
+// 	server_tables.push(user);
+//   //console.log('salon---> ', server_tables);
+// //   res.send({server_tables: server_tables, server_user: user });
+// var options = {
+//     headers: {
+//         'x-timestamp': Date.now(),
+//         'x-sent': true,
+//         'name': 'MattDionis',
+//         'origin':'stackoverflow' 
+//     }
+//   };
+//   res.sendFile(path.join(__dirname, '/client/build', 'index.html'), server_tables);
+  
+// });
+
 router.get('/salon', function(req, res, next){
 	server_tables.push(user);
-  //console.log('salon---> ', server_tables);
-//   res.send({server_tables: server_tables, server_user: user });
-  res.sendFile(path.join(__dirname, '/client/build', 'index.html'), server_tables);
-  
+	res.send({server_tables: server_tables, server_user: user });	  
 });
 
 router.post('/registration', function(req, res, next) {

@@ -32,7 +32,8 @@ class Salon extends Component {
   
 	componentDidMount() {	
 		self.callApi()
-			.then(res => {				
+			.then(res => {
+				console.log('salon--> ', res)				
 					for(var i in res.server_tables){
 						switch (res.server_tables[i].table_name) {
 							case "roulette":
@@ -70,6 +71,7 @@ class Salon extends Component {
 	callApi = async () => {
 		const response = await fetch('/salon');
 		const body = await response.json();
+		console.log('salon--> ', body)
 		if (response.status !== 200) throw Error(body.message);
 		return body;
 	};
