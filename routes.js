@@ -25,7 +25,7 @@ var transport = nodemailer.createTransport({
 router.get('/', (req, res) => {
 	console.log("Hello friend", my_server);
 	// res.render('index', {layout: 'layout.hbs', template: 'home-template'});
-	// res.redirect(my_server);  
+	res.redirect(my_server);  
 });
 
 if (process.env.NODE_ENV === 'production') {
