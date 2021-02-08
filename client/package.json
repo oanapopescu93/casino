@@ -29,7 +29,8 @@
     "start": "react-scripts start && npm install",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build": "react-build-dist --bundle-name index.js"
+    "build-dist": "react-build-dist --bundle-name index.js",
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

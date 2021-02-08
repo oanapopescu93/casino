@@ -5,8 +5,8 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "nodemon server.js",
-    "start": "npm run server\" \"npm run client\"",
-    "build": "react-scripts build"
+    "start": "nodemon server.js",
+    "concurrently": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "author": "oana popescu",
   "license": "ISC",

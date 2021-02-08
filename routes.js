@@ -1,4 +1,5 @@
 var express = require("express");
+var path = require("path");
 var router = express.Router();
 var nodemailer = require('nodemailer');
 var constants = require('./var/constants');
@@ -20,16 +21,16 @@ var transport = nodemailer.createTransport({
 	html: '<h1>Recovery username and password</h1><p>Username: xxx</p><p>Password: xxx</p><p>Go to <a target="_blank" href="'+my_server+'/recovery">Link</a> to recover them.</p>'
   };
 
-router.get('/', (req, res) => {
-	console.log("Hello friend");
-	// res.render('index', {layout: 'layout.hbs', template: 'home-template'});
-	res.redirect(my_server);  
-});
-
-// app.get('/*', (req, res) => {
+// router.get('/', (req, res) => {
 // 	console.log("Hello friend");
-// 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
-//   });
+// 	// res.render('index', {layout: 'layout.hbs', template: 'home-template'});
+// 	res.redirect(my_server);  
+// });
+
+router.get('/', (req, res) => {
+	console.log("Hello friend", __dirname);
+	res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+  });
 
 var user_money = 100;
 
