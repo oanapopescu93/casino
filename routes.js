@@ -35,6 +35,7 @@ router.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
   });
 
+
 var user_money = 100;
 
 var user = "";
@@ -47,7 +48,9 @@ var server_tables = constants.SERVER_TABLES;
 router.get('/salon', function(req, res, next){
 	server_tables.push(user);
   //console.log('salon---> ', server_tables);
-  res.send({server_tables: server_tables, server_user: user });
+//   res.send({server_tables: server_tables, server_user: user });
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'), server_tables);
+  
 });
 
 router.post('/registration', function(req, res, next) {

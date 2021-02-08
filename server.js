@@ -11,8 +11,6 @@ var io = require('socket.io')(http);
 const port = process.env.PORT || 5000;
 app.set("port", port);
 
-app.use(express.static(path.join(__dirname, 'build')));
-
 // app.set("views", path.join(__dirname, "react_build/views"));
 // app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/react_build/views/include/', partialsDir: __dirname + '/react_build/views/include/partials/'}));
 // app.set("view engine", "hbs");
