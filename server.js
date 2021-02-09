@@ -24,12 +24,15 @@ var constants = require('./var/constants');
 var user_join = [];
 var user_id = -1;
 
+var email = "";
+var user = "";
+var pass = "";
+var user_money = constants.MONEY;
+
 var text01 = 'The user is offline or does not exist';
 var text02 = 'Please type a user ( /w username message )';
 var text03 = "Game has begun. Please wait for the next round."
 var users = [];
-var user = "";
-var pass = "";
 var clients = [];
 var monkey = [];
 
@@ -186,16 +189,36 @@ io.on('connection', function(client) {
 		  }		
 	});
 
-	client.on('registration_send', function(data) {
-		console.log('registration02-a', data)	
+	client.on('signin_send', function(data) {
 		user = data.user;
 		pass = data.pass;
-		io.emit('registration_read', data);
+		io.emit('signin_read', data);
+	});
+
+	client.on('signup_send', function(data) {		
+		email = data.email;
+		user = data.user;
+		pass = data.pass;
+		io.emit('signup_read', data);
 	});
 
 	client.on('salon_send', function(data) {
-		console.log('salon02-a', data, user, pass)
 		io.emit('salon_read', {server_tables: server_tables, server_user: user });
+	});
+
+	client.on('choose_table_send', function(data) {
+		var my_table = data.table_name + '_' +data.table_id;
+		if(data.table_type !== "" && typeof data.table_type !== "undefined" && data.table_type !== null){
+			my_table = my_table + '_' + data.table_type;
+		} 
+		io.emit('choose_table_read', my_table);
+	});
+
+	client.on('user_page_send', function(data) {
+		var my_table = data;
+		var game = my_table.split('_')[0]
+		var server_user = {user: user, money: user_money, user_table: my_table, game: game}
+		io.emit('user_page_read', server_user);
 	});
 
 	client.on('market_send', function(data) {
@@ -207,8 +230,6 @@ io.on('connection', function(client) {
 				clients[i].emit('market_read', market);
 			} 
 		}
-
-		// io.emit('market_read', 'zzz02');
 	});
 });
 

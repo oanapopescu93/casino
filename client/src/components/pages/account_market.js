@@ -6,10 +6,11 @@ import Button from 'react-bootstrap/Button'
 
 function Account_market(props) {
 	var market = props.market;
-	var socket = props.info.socket;
+	//var socket = props.info.socket;
 	
 	function my_click(id){
-		console.log('buy', id);
+		//console.log('buy', id);
+		alert('No payment methods yet')
 	}	
 	
 	return (
@@ -22,10 +23,9 @@ function Account_market(props) {
 					{					
 						market.map(function(item, i){							
 							var id = item.id;
-							console.log(i, item, id)
 							return(
-								<div key={i} className="table_inside shadow_concav">
-									<div className="table_box">
+								<div key={i} className="table_inside">
+									<div className="table_box shadow_concav">
 										<h3>{item.name}</h3>
 										<p>{item.description}</p>
 										<p>Price: <b>{item.price}</b></p>

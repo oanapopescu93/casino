@@ -72,9 +72,8 @@ class Salon extends Component {
 	
 	salonData(){
 		return new Promise(function(resolve, reject){
-			socket.emit('salon_send', 'salon01-a');	
+			socket.emit('salon_send', 'salon');	
 			socket.on('salon_read', function(data){
-				console.log('salon01-b', data)
 				resolve(data);	
 			});	
 		});
@@ -82,17 +81,10 @@ class Salon extends Component {
 	
 	handleClick(table_name, table_id, table_type="", user) {
 		var payload = {table_name, table_id, table_type, user}
-		$.ajax({
-			type: 'POST',
-			url: '/choose_table',
-			data: payload,
-			success: function (data) {
-				window.location.href = '/table/' + data.server_user.user_table;
-			},
-			error: function (data) {
-				//console.log('error', data);
-			}
-		});
+		socket.emit('choose_table_send', payload);	
+		socket.on('choose_table_read', function(data){
+			window.location.href = '/table/' + data;
+		});	
 	}
 
 	handleDropdown(t) {

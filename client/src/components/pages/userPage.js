@@ -114,9 +114,9 @@ class UserPage extends Component {
 	}; 	
   
 	componentDidMount() {
-		self.callApi()
-			.then(res => {				
-					self.setState({ user: res.server_user });
+		self.userPageData()
+			.then(res => {	
+					self.setState({ user: res});
 					var table = self.state.user.user_table;
 					var table_split = table.split('_');
 					var table_user = table_split[0] + ' ' + table_split[1];
@@ -127,21 +127,20 @@ class UserPage extends Component {
 						$('#chatmessages').append(data);
 					});
 					socket.on('user_id', function(data) {
-						self.setState({ user_id: data })
+					 	self.setState({ user_id: data })
 					});
 				})
 			.catch(err => console.log(err));  
-		
-		
-		
 	}
-  
-	callApi = async () => {
-		var table = window.location.href.split('table/')
-		const response = await fetch('/table/'+table[1]);
-		const body = await response.json();
-		if (response.status !== 200) throw Error(body.message);
-		return body;
+
+	userPageData(){
+		return new Promise(function(resolve, reject){
+			var table = window.location.href.split('table/')
+			socket.emit('user_page_send', table[1]);	
+			socket.on('user_page_read', function(data){
+				resolve(data);	
+			});	
+		});
 	};
   
   
