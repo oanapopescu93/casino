@@ -11,6 +11,7 @@ import Splash from './splash_screen';
 import logo_icon from '../img/logo.png';
 
 var self;
+var socket;
 
 function randomIntFromInterval(min, max) { // min and max included 
 	return Math.floor(Math.random() * (max - min + 1) + min);
@@ -20,6 +21,7 @@ class HomePage extends React.Component {
 	constructor(props) {
 		super(props);
 		self = this;
+		socket = props.socket;	
 		self.state = {
 			  visible: true,
 			  splash: true
@@ -29,7 +31,6 @@ class HomePage extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log('aaa01');
 		self.splash_screen();	
 	}
 	
@@ -101,8 +102,8 @@ class HomePage extends React.Component {
 								</Row>
 								<Row>
 									<Col sm={12} className="user_form_container">
-										{ this.state.visible ? <SignIn></SignIn> : null }
-										{ !this.state.visible ? <SignUp></SignUp> : null }
+										{ this.state.visible ? <SignIn socket={socket}></SignIn> : null }
+										{ !this.state.visible ? <SignUp socket={socket}></SignUp> : null }
 									</Col>
 								</Row>
 							</Col>

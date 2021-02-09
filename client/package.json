@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start-client": "react-scripts start",
-    "start": "react-scripts start && npm install",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-dist": "react-build-dist --bundle-name index.js",

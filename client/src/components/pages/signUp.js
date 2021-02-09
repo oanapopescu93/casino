@@ -39,7 +39,7 @@ function check_submit(){
 function submit_form(){
 	return new Promise(function(resolve, reject){
 		setTimeout(function(){
-			$("#user_form").submit();
+			//$("#user_form").submit();
 			resolve(true);
 		}, 5000);
 	});

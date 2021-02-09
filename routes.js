@@ -21,19 +21,24 @@ var transport = nodemailer.createTransport({
 	html: '<h1>Recovery username and password</h1><p>Username: xxx</p><p>Password: xxx</p><p>Go to <a target="_blank" href="'+my_server+'/recovery">Link</a> to recover them.</p>'
   };
 
+router.use(express.static(path.join(__dirname, '/client/build')));
+router.get('*', function(req, res) {
+	res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
 
 router.get('/', (req, res) => {
 	console.log("Hello friend", my_server);
 	// res.render('index', {layout: 'layout.hbs', template: 'home-template'});
-	res.redirect(my_server);  
+	// res.redirect(my_server);  
+	// res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
-if (process.env.NODE_ENV === 'production') {
-	router.use(express.static(path.join(__dirname, '/client/build')));
-  	router.get('*', function(req, res) {
-		res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
-	});
-}
+// if (process.env.NODE_ENV === 'production') {
+// 	router.use(express.static(path.join(__dirname, '/client/build')));
+//   	router.get('*', function(req, res) {
+// 		res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+// 	});
+// }
 
 var user_money = 100;
 
@@ -45,15 +50,10 @@ var recovery_email = "";
 var server_tables = constants.SERVER_TABLES;
 	
 router.get('/salon', function(req, res, next){
-	server_tables.push(user);
-	res.send({server_tables: server_tables, server_user: user });	  
+	  
 });
 
 router.post('/registration', function(req, res, next) {
-	user = req.body.user; 
-	pass = req.body.pass;
-	users.push({user: user, pass: pass});
-	//console.warn('registration---> ', req.body, user, pass, users);
 	res.redirect('/salon');
 });
 

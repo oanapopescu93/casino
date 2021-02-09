@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "react project",
   "scripts": {
-    "client": "cd client && npm start",
+    "client": "cd client && npm build && npm start",
     "server": "nodemon server.js",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"

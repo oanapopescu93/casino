@@ -8,6 +8,7 @@ import logo_icon from '../img/logo.png';
 import under_construction_icon from '../img/icons/under_construction_icon.png'
 
 var self;
+var socket;
 var casino_games = {
 	roulette_tables: [], 
 	blackjack_tables: [],
@@ -19,9 +20,11 @@ class Salon extends Component {
 	constructor(props) {
 		super(props);
 		self = this;
+		socket = props.socket;	
+
 		self.handleClick = self.handleClick.bind(self);
 		self.handleDropdown = self.handleDropdown.bind(self);	
-		self.handleBack = self.handleBack.bind(self);		
+		self.handleBack = self.handleBack.bind(self);	
 	}	
   
 	state = {
@@ -30,10 +33,9 @@ class Salon extends Component {
 		user: '',
 	}; 
   
-	componentDidMount() {	
-		self.callApi()
-			.then(res => {
-				console.log('salon--> ', res)				
+	componentDidMount() {
+		self.salonData()
+			.then(res => {	
 					for(var i in res.server_tables){
 						switch (res.server_tables[i].table_name) {
 							case "roulette":
@@ -68,12 +70,14 @@ class Salon extends Component {
 		
 	}
 	
-	callApi = async () => {
-		const response = await fetch('/salon');
-		const body = await response.json();
-		console.log('salon--> ', body)
-		if (response.status !== 200) throw Error(body.message);
-		return body;
+	salonData(){
+		return new Promise(function(resolve, reject){
+			socket.emit('salon_send', 'salon01-a');	
+			socket.on('salon_read', function(data){
+				console.log('salon01-b', data)
+				resolve(data);	
+			});	
+		});
 	};
 	
 	handleClick(table_name, table_id, table_type="", user) {

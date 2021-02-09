@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import Modal from 'react-bootstrap/Modal'
 
+var socket;
+
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data) {
@@ -43,7 +45,10 @@ function loader(){
 	return new Promise(function(resolve, reject){
 		$('#loader_container').show(); 
 		$('#home').hide();
-		resolve(true);	
+		socket.emit('registration_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()});	
+		socket.on('registration_read', function(data){
+			resolve(data);
+		});
 	});
 }
 
@@ -72,12 +77,14 @@ function SignIn(props) {
 	const handleClose = () => setShow(false);
   	const handleShow = () => setShow(true);
 
+	  socket = props.socket;
+
 	return (
 		<div>
 			<Form id="user_form" method="post" action="/registration">
 				<Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>
 				<h6 id="signin_user_red" className="text_red">You didn't write the username</h6>
-				<Form.Control id="signin_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>
+				<Form.Control id="signin_pass" autoComplete="off" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>
 				<h6 id="signin_pass_red" className="text_red">You didn't write the password</h6>
 				<Button className="button_yellow shadow_convex" onClick={submit}>Sign In</Button>
 				<div className="login_link_container">

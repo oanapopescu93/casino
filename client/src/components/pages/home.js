@@ -28,10 +28,10 @@ function Home(props) {
 									<Salon socket={socket}></Salon>
 								</Route>
 								<Route exact path="/recovery">
-									<SignInRecovery></SignInRecovery>
+									<SignInRecovery socket={socket}></SignInRecovery>
 								</Route>								
 								<Route exact path="/">
-									<HomePage></HomePage>
+									<HomePage socket={socket}></HomePage>
 								</Route>
 								<Route path="*">
 									<Not_found></Not_found>

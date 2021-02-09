@@ -4,7 +4,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 
-import socketIOClient from "socket.io-client/dist/socket.io";
 import $ from 'jquery'; 
 import logo_icon from '../img/logo.png';
 import carrot_img from '../img/icons/carrot_icon.png';
@@ -12,7 +11,7 @@ import carrot_img from '../img/icons/carrot_icon.png';
 import Game from './game';
 import UserAccount from './userAccount';
 
-const socket = socketIOClient("/");
+var socket;
 var self;
 
 class Child extends Component {
@@ -34,7 +33,7 @@ class Child extends Component {
 		}; 
 	}
 	
-	componentDidMount() {
+	componentDidMount() {		
 		$(window).click(function(e) {		
 			if(e.target.id !== "user_icon_path" && e.target.id !== "user_icon" && e.target.id !== "user_details"){
 				$('.user_details_container').removeClass('open')
@@ -106,12 +105,13 @@ class UserPage extends Component {
 	constructor(props) {
 		super(props);
 		self = this;
+		socket = props.socket;	
 	}
 	
 	state = {
 		user: '',
 		user_id: -1,
-	}; 
+	}; 	
   
 	componentDidMount() {
 		self.callApi()

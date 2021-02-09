@@ -28,6 +28,8 @@ var text01 = 'The user is offline or does not exist';
 var text02 = 'Please type a user ( /w username message )';
 var text03 = "Game has begun. Please wait for the next round."
 var users = [];
+var user = "";
+var pass = "";
 var clients = [];
 var monkey = [];
 
@@ -37,6 +39,7 @@ var blackjack_players = [];
 var blackjack_dealer = {};
 var game_start = false;
 
+var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
 
 // var mysql = require('mysql');
@@ -181,6 +184,18 @@ io.on('connection', function(client) {
 			case 'stay':
 				break;
 		  }		
+	});
+
+	client.on('registration_send', function(data) {
+		console.log('registration02-a', data)	
+		user = data.user;
+		pass = data.pass;
+		io.emit('registration_read', data);
+	});
+
+	client.on('salon_send', function(data) {
+		console.log('salon02-a', data, user, pass)
+		io.emit('salon_read', {server_tables: server_tables, server_user: user });
 	});
 
 	client.on('market_send', function(data) {
