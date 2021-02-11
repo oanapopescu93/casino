@@ -45,6 +45,8 @@ function loader(){
 	return new Promise(function(resolve, reject){
 		$('#loader_container').show(); 
 		$('#home').hide();
+		setCookie("casino_user", $('#signin_user').val(), 1);
+		setCookie("casino_pass", $('#signin_pass').val(), 1);
 		socket.emit('signin_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()});	
 		socket.on('signin_read', function(data){
 			resolve(data);
@@ -69,6 +71,13 @@ function check_submit(){
 	
 	//console.log('pass_result', email, regex_pass, pass_result);
 	return pass_result;
+}
+
+function setCookie(cname,cvalue,exdays) {
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires=" + d.toGMTString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 function SignIn(props) {

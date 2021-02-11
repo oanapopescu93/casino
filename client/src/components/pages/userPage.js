@@ -20,6 +20,7 @@ class Child extends Component {
 		self = this;
 
 		this.handleClick = this.handleClick.bind(self);
+		this.setCookie = this.setCookie.bind(self);
 
 		this.state = {
 			visible: false,
@@ -51,11 +52,26 @@ class Child extends Component {
 				break;
 			case "user_icon":
 				$('.user_details_container').toggleClass('open');
+					break;
+			case "logout":
+				console.log('logout')
+				self.setCookie("casino_user", '', 1);
+				self.setCookie("casino_pass", '', 1);
+				self.setCookie("casino_email", '', 1);
+				var url_back = window.location.href.split('/table/');
+				window.location.href = url_back[0];
 			 	break;
 			default:
 				var url_back = window.location.href.split('/table/');
 				window.location.href = url_back[0];
 		  }
+	}
+
+	setCookie = function(cname,cvalue,exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires=" + d.toGMTString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 
 	render() {

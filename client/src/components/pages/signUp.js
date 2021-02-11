@@ -20,7 +20,10 @@ function loader(){
 	return new Promise(function(resolve, reject){
 		$('#loader_container').show();
 		$('#home').hide();
-		socket.emit('signup_send', {email: $('#signup_user').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
+		setCookie("casino_email", $('#signin_email').val(), 1);
+		setCookie("casino_user", $('#signin_user').val(), 1);
+		setCookie("casino_pass", $('#signin_pass').val(), 1);
+		socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
 		socket.on('signup_read', function(data){
 			resolve(data);
 		});	
@@ -61,6 +64,13 @@ function minor_check(check){
 	} else {
 		$('#minor_container').remove();
 	}
+}
+
+function setCookie(cname,cvalue,exdays) {
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires=" + d.toGMTString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 function SignUp(props) {

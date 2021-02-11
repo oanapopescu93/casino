@@ -12,14 +12,14 @@ var transport = nodemailer.createTransport({
 	  user: constants.AUTH_USER,
 	  pass: constants.AUTH_PASS
 	}
-  }); 
+}); 
 
-  var mailOptions = {
+var mailOptions = {
 	from: constants.AUTH_FROM,
 	to: '',
 	subject: 'Casino recovery',
 	html: '<h1>Recovery username and password</h1><p>Username: xxx</p><p>Password: xxx</p><p>Go to <a target="_blank" href="'+my_server+'/recovery">Link</a> to recover them.</p>'
-  };
+};
 
 router.use(express.static(path.join(__dirname, '/client/build')));
 router.get('*', function(req, res) {

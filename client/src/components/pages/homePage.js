@@ -28,10 +28,38 @@ class HomePage extends React.Component {
 		};
 		self.splash_screen = self.splash_screen.bind(self);
 		self.progress_move = self.progress_move.bind(self);
+		self.casino_log = self.casino_log.bind(self);
+		self.checkCookie = self.checkCookie.bind(self);
+		self.getCookie = self.getCookie.bind(self);
 	}
 
 	componentDidMount() {
-		self.splash_screen();	
+		self.checkCookie();			
+	}
+
+	checkCookie = function(){
+		var user = self.getCookie("casino_user");
+		if(user == ""){
+			self.splash_screen();
+		} else {
+			window.location.href = '/salon';
+		}
+	}
+
+	getCookie = function (cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i < ca.length; i++) {
+		  	var c = ca[i];
+		  	while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+		  	}
+		  	if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+		  	}
+		}
+		return "";
 	}
 	
 	casino_log = function(link){	
