@@ -7,6 +7,7 @@ import $ from 'jquery';
 import SignIn from './signIn';
 import SignUp from './signUp';
 import Splash from './splash_screen';
+import Cookies from './cookies_modal'
 
 import logo_icon from '../img/logo.png';
 
@@ -24,13 +25,16 @@ class HomePage extends React.Component {
 		socket = props.socket;	
 		self.state = {
 			  visible: true,
-			  splash: true
+			  splash: true,
+			  cookies:false
 		};
 		self.splash_screen = self.splash_screen.bind(self);
 		self.progress_move = self.progress_move.bind(self);
 		self.casino_log = self.casino_log.bind(self);
+		self.casino_cookies = self.casino_cookies.bind(self);
 		self.checkCookie = self.checkCookie.bind(self);
 		self.getCookie = self.getCookie.bind(self);
+		self.setCookie = self.setCookie.bind(self);
 	}
 
 	componentDidMount() {
@@ -38,8 +42,14 @@ class HomePage extends React.Component {
 	}
 
 	checkCookie = function(){
+		var cookies = self.getCookie("casino_cookies");
+		
+		if(cookies !== ''){
+			self.setState({ cookies: true });
+		} 
+
 		var user = self.getCookie("casino_user");
-		if(user == ""){
+		if(user === ""){
 			self.splash_screen();
 		} else {
 			window.location.href = '/salon';
@@ -61,6 +71,13 @@ class HomePage extends React.Component {
 		}
 		return "";
 	}
+
+	setCookie = function(cname,cvalue,exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires=" + d.toGMTString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
 	
 	casino_log = function(link){	
 		if(link === "sign_in"){			
@@ -73,6 +90,11 @@ class HomePage extends React.Component {
 			$('#link_sign').addClass('active');
 		}
 	}	
+
+	casino_cookies = function(){
+		self.setCookie("casino_cookies", true, 30);
+		self.setState({ cookies: true });
+	}
 
 	splash_screen = function(){	
 		setTimeout(function(){
@@ -137,7 +159,24 @@ class HomePage extends React.Component {
 							</Col>
 						</Row>					
 					</Col>
-					<Col sm={4} md={4} lg={4}></Col>
+					<Col sm={4} md={4} lg={4}></Col>					
+					{
+						!this.state.cookies ? 
+						<div className="cookies_msg_container" id ="cookies_msg">
+							<div className="cookies_msg">
+								<div className="cookies_text">
+									<h4>Cookies Notification</h4>
+									<h6>
+										In order to offer you the most relevant information and for optimal system performance,
+										we use cookies that collect statistical information from your fleet's activity.
+									</h6>
+								</div>
+								<div className="confirm_cookies">
+									<button type="button" id="cookies_btn_ok" onClick={()=>this.casino_cookies()}>OK</button>
+								</div>
+							</div>
+						</div>  : null
+					}
 				</Row> 
 			}			
 			</>
