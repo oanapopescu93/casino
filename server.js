@@ -233,10 +233,6 @@ io.on('connection', function(client) {
 	});
 });
 
-app.use(routes);
-
-http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));
-
 function chatMessage(from, text){
 	if(text === text01 || text === text02){
 		return {from, text};
@@ -326,3 +322,9 @@ function check(){
 function stay(){
 	
 }
+
+
+
+app.use(routes);
+
+http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));
