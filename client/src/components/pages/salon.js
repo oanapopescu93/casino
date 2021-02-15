@@ -67,7 +67,7 @@ class Salon extends Component {
 					
 					self.setState({ casino_games: casino_games }); 
 
-					if(res.server_user == "" || res.server_user == null || typeof res.server_user == "undefined"){
+					if(res.server_user === "" || res.server_user === null || typeof res.server_user === "undefined"){
 						var server_user = self.getCookie("casino_user");
 						self.setState({ user: server_user });	
 					} else {
@@ -84,10 +84,10 @@ class Salon extends Component {
 		var ca = decodedCookie.split(';');
 		for(var i = 0; i < ca.length; i++) {
 		  	var c = ca[i];
-		  	while (c.charAt(0) == ' ') {
+		  	while (c.charAt(0) === ' ') {
 				c = c.substring(1);
 		  	}
-		  	if (c.indexOf(name) == 0) {
+		  	if (c.indexOf(name) === 0) {
 				return c.substring(name.length, c.length);
 		  	}
 		}

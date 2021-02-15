@@ -25,7 +25,8 @@ var textRadius = outsideRadius-20;
 var insideRadius = outsideRadius-30; 
 
 var spin_time = 0;
-var spin_click = -1;
+var spin_click = 0;
+var my_click = -1;
 
 var roulette_pos = [];
 var roulette_type = "";
@@ -48,7 +49,12 @@ var button_spin  = {x: roulette_radius_x - 270, y: roulette_radius_y+200, r: 25,
 var button_clear = {x: roulette_radius_x - 210, y: roulette_radius_y+200, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: roulette_radius_x - 232, text_y: roulette_radius_y+205};
 var spin_button_coordonates = {};
 var clear_button_coordonates = {};
-var spin_clear = [0, 0]
+var spin_clear = [0, 0];
+
+var radiantLine01 = [];
+var radiantLine02 = [];
+var radiantLine03 = [];
+var text_offset = 0;
 
 var font_bold_10 = 'bold 10px sans-serif';
 var font_bold_12 = 'bold 12px sans-serif';
@@ -75,6 +81,7 @@ function roulette_game(props){
 		self.choose_roulette_type();
 
 		socket.on('roulette_spin_read', function(data){	
+			//console.log('roulette_spin_read', spin_click, data.monkey)
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				spin_time = data.spin_time;
 				ball.speed = data.ball_speed;
@@ -98,13 +105,13 @@ function roulette_game(props){
 			roulette_radius_x = 130;
 			roulette_radius_y = 130;
 			outsideRadius = 100;
-			textRadius = outsideRadius-20;
-			insideRadius = outsideRadius-30;
+			textRadius = outsideRadius-15;
+			insideRadius = outsideRadius-20;
 			
-			circle = {radius: textRadius*0.6, angle:0}
+			circle = {radius: textRadius-15, angle:0}
 			ball = {x:70, y:roulette_radius_x, speed:0.05, width:6};
 			
-			bet_x = 280;
+			bet_x = 285;
 			bet_y = 130;
 			bet_square = 25;
 			
@@ -118,7 +125,12 @@ function roulette_game(props){
 			
 			spin_button_coordonates = {x:roulette_radius_x + 130, y:roulette_radius_y + 75, width:45, height:45};
 			clear_button_coordonates = {x:roulette_radius_x + 180, y:roulette_radius_y + 75, width:45, height:45};
-			spin_clear = [240, canvas.height]
+			spin_clear = [[0,0, 255, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
+
+			radiantLine01 = [-65, 15];
+			radiantLine02 = [-65, -32];
+			radiantLine03 = [-105, -80];
+			text_offset = 15;
 
 			//hide if not landscape
 			if(window.innerHeight > window.innerWidth){
@@ -137,7 +149,7 @@ function roulette_game(props){
 			textRadius = outsideRadius-20;
 			insideRadius = outsideRadius-30;
 			
-			circle = {radius: textRadius*0.88, angle:0}	
+			circle = {radius: textRadius-22, angle:0}	
 			ball = {x:70, y:roulette_radius_x, speed:0.05, width:10};
 			
 			bet_x = canvas.width/2 - 270;
@@ -154,7 +166,12 @@ function roulette_game(props){
 			
 			spin_button_coordonates = {x:roulette_radius_x - 300, y:roulette_radius_y+170, width:50, height:50};
 			clear_button_coordonates = {x:roulette_radius_x - 240, y:roulette_radius_y+170, width:50, height:50};
-			spin_clear = [canvas.width, 490]
+			spin_clear = [[0, 0, canvas.width, 490]];
+
+			radiantLine01 = [-60, 20];
+			radiantLine02 = [-60, -160];
+			radiantLine03 = [-160, -200];
+			text_offset = 25;
 		}
 		
 		canvas_width = canvas.width;
@@ -212,13 +229,13 @@ function roulette_game(props){
 		ctx.font = font_bold_14; 
 		draw_roulette_holes(insideRadius-1, insideRadius*0.7, numbers.length, "dark", false, startAngle)
 		
-		radiantLine(numbers.length, 1, "yellow", [-60, 20], startAngle);		
+		radiantLine(numbers.length, 1, "yellow", radiantLine01, startAngle);		
 		
 		draw_roulette_holes(insideRadius*0.7-1, 0, 12, "grey", false, startAngle01)
-		radiantLine(12, 1, "#4d4d4d", [-60, -160], startAngle01);	
+		radiantLine(12, 1, "#4d4d4d", radiantLine02, startAngle01);	
 
 		draw_roulette_holes(20, 0, 8, "yellow", false, startAngle01)	
-		radiantLine(8, 1, "#b99813", [-160, -200], startAngle01);	
+		radiantLine(8, 1, "#b99813", radiantLine03, startAngle01);
 	}
 	
 	function draw_roulette_holes(outsideRadius, insideRadius, how_many, colors, text, startAngle){			
@@ -278,7 +295,7 @@ function roulette_game(props){
 				ctx.rotate(angle + arc / 2 + Math.PI / 2);
 				var text = numbers[i];
 				ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
-				roulette_pos.push({x: roulette_radius_x + Math.cos(angle + arc / 2) * (textRadius-25), y: roulette_radius_y + Math.sin(angle + arc / 2) * (textRadius-25), nr: text, color: colors[i]}); 
+				roulette_pos.push({x: roulette_radius_x + Math.cos(angle + arc / 2) * (textRadius-text_offset), y: roulette_radius_y + Math.sin(angle + arc / 2) * (textRadius-text_offset), nr: text, color: colors[i]}); 
 			}
 		  
 			ctx.restore();
@@ -385,8 +402,10 @@ function roulette_game(props){
 				alert("Please place your bet before betting.");
 			} else {
 				spin_click++;
+				my_click++;
 				var roulette_payload_server = {
 					spin_click: spin_click,
+					my_click: my_click,
 					user: props.user, 
 					user_table: props.user_table, 
 					user_type: props.type
@@ -404,10 +423,14 @@ function roulette_game(props){
 				obj03.bet_value = bet_value;
 				
 				if (isInside(mousePos,obj03)) {
-					//console.log('BETS');
-					your_bets.push(obj03);					
-					your_last_bet = obj03;
-					self.draw_tokens(your_bets[your_bets.length-1]);
+					//console.log('BETS', spin_click);
+					if(spin_click !== 0){
+
+					} else {
+						your_bets.push(obj03);					
+						your_last_bet = obj03;
+						self.draw_tokens(your_bets[your_bets.length-1]);
+					}
 					break;
 				} 
 			}	
@@ -419,8 +442,7 @@ function roulette_game(props){
 		//var spin_time = 10;
 		var monkey_wait = 200;	
 		
-		dispatch_nr++;
-		
+		dispatch_nr++;		
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
@@ -429,11 +451,13 @@ function roulette_game(props){
 			function( callback ){
 			  window.setTimeout(callback, 1000 / 60);
 			};
-	  })();
-	  
+	  })();	  
 	  
 	  function spin_roulette() {		
-		ctx.clearRect(0, 0, spin_clear[0], spin_clear[1]);
+		for(var i in spin_clear){
+			ctx.clearRect(spin_clear[i][0], spin_clear[i][1], spin_clear[i][2], spin_clear[i][3]);
+		}
+		
 		var stop = false;
 		if (spin_nr > spin_time) {
 			if(spin_nr > spin_time + 500){								
@@ -455,6 +479,7 @@ function roulette_game(props){
 					alert("The win number is " + win_nr.nr);
 					your_last_bet = {}
 					your_bets = [];
+					spin_click = 0;
 					self.start();	
 				}, 500);
 				
@@ -500,10 +525,14 @@ function roulette_game(props){
 					break;
 			}
 
-			if(typeof monkey !== "undefined" || monkey !== []){					
+			if(typeof monkey !== "undefined" || monkey !== []){							
 				roulette_index = parseInt(self.closest_nr(ball, roulette_pos, "nr"));
 				win_nr = roulette_pos[roulette_index];
 				
+				if(typeof monkey === "number"){
+					monkey = monkey.toString();
+				}	
+
 				if(monkey === win_nr.nr && spin_nr > spin_time -  monkey_wait){
 					self.rotateBall(win_nr.x, win_nr.y);
 					spin_nr = spin_time + 1;

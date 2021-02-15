@@ -135,20 +135,22 @@ io.on('connection', function(client) {
 		
 	});
 	
-	client.on('roulette_spin_send', function(data) {	
-		//console.log('spin_send --> ', data)		
-		var spin_time = Math.floor(Math.random() * (1000 - 500)) + 500;
-		var ball_speed = 0.06;
-		
-		var user_table = data.user_table.split(' ').join('_');
-		var user_type = data.user_type;
-		var room_name = user_table + '_' + user_type;
-		
-		var k = data.spin_click;
-		var payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}
-		
-		io.to(room_name).emit('roulette_spin_read', payload);
-		//io.emit('spin_read', payload);
+	client.on('roulette_spin_send', function(data) {
+		//console.log('roulette_spin_send', data)
+		if(data.spin_click === 1){
+			var spin_time = Math.floor(Math.random() * (1000 - 500)) + 500;
+			var ball_speed = 0.06;
+			
+			var user_table = data.user_table.split(' ').join('_');
+			var user_type = data.user_type;
+			var room_name = user_table + '_' + user_type;
+			
+			var k = data.my_click;
+			var payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}
+			
+			io.to(room_name).emit('roulette_spin_read', payload);
+			//io.emit('spin_read', payload);
+		}
 	});
 
 	client.on('blackjack_send', function(data) {

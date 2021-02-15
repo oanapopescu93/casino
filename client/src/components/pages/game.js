@@ -51,7 +51,7 @@ class Game extends Component {
 						{user ? (
 							<div className="casino_container color_yellow">				
 								<Row>
-									<Col sm={12}><h1 className="text-uppercase">{this.state.user_table}</h1></Col>
+									<Col sm={12}><h1 id="game_title" className="text-uppercase">{this.state.user_table}</h1></Col>
 								</Row>
 								{(() => {
 									switch (this.state.game) {

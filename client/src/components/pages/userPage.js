@@ -58,12 +58,12 @@ class Child extends Component {
 				self.setCookie("casino_user", '', 1);
 				self.setCookie("casino_pass", '', 1);
 				self.setCookie("casino_email", '', 1);
-				var url_back = window.location.href.split('/table/');
-				window.location.href = url_back[0];
+				var url_back01 = window.location.href.split('/table/');
+				window.location.href = url_back01[0];
 			 	break;
 			default:
-				var url_back = window.location.href.split('/table/');
-				window.location.href = url_back[0];
+				var url_back02 = window.location.href.split('/table/');
+				window.location.href = url_back02[0];
 		  }
 	}
 
@@ -131,12 +131,12 @@ class UserPage extends Component {
   
 	componentDidMount() {
 		self.userPageData()
-			.then(res => {	
+			.then(res => {						
 					self.setState({ user: res});
 					var table = self.state.user.user_table;
 					var table_split = table.split('_');
 					var table_user = table_split[0] + ' ' + table_split[1];
-					var table_type = table_split[2];
+					var table_type = table_split[2];	
 					var payload = {user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime()}
 					socket.emit('username', payload);
 					socket.on('is_online', function(data) {
@@ -145,6 +145,7 @@ class UserPage extends Component {
 					socket.on('user_id', function(data) {
 					 	self.setState({ user_id: data })
 					});
+					
 				})
 			.catch(err => console.log(err));  
 	}
@@ -154,11 +155,29 @@ class UserPage extends Component {
 			var table = window.location.href.split('table/')
 			socket.emit('user_page_send', table[1]);	
 			socket.on('user_page_read', function(data){
+				if(data.user === "" || data.user !== "indefined"){
+					data.user = self.getCookie("casino_user")
+				}
 				resolve(data);	
 			});	
 		});
 	};
-  
+
+	getCookie = function (cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i < ca.length; i++) {
+		  	var c = ca[i];
+		  	while (c.charAt(0) === ' ') {
+				c = c.substring(1);
+		  	}
+		  	if (c.indexOf(name) === 0) {
+				return c.substring(name.length, c.length);
+		  	}
+		}
+		return "";
+	}  
   
 	render() {
 		var user_id = this.state.user_id		

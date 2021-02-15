@@ -31,7 +31,7 @@ class App extends Component {
 
 	
 	render() {
-		my_console.disable();	
+		//my_console.disable();	
 		return (
 			<div className="App">				
 				<div id="loader_container" className="loader_container">

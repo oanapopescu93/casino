@@ -974,6 +974,19 @@ table {
 	#rabbit_stand_right, #rabbit_stand_left{
 		float:none;
 	}
+	.userPage{
+		padding: 35px 0px 0px 0px;
+	}
+
+	
+}
+@media (max-width: 767px) and (orientation:landscape){
+	#game_title{
+		position:absolute;
+		z-index:9999;
+		top: 20px;
+    	left: 275px;
+	}
 }
 @media (max-width: 480px) {  
 	.table_inside {

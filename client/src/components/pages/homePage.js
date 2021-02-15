@@ -7,7 +7,6 @@ import $ from 'jquery';
 import SignIn from './signIn';
 import SignUp from './signUp';
 import Splash from './splash_screen';
-import Cookies from './cookies_modal'
 
 import logo_icon from '../img/logo.png';
 
@@ -62,10 +61,10 @@ class HomePage extends React.Component {
 		var ca = decodedCookie.split(';');
 		for(var i = 0; i < ca.length; i++) {
 		  	var c = ca[i];
-		  	while (c.charAt(0) == ' ') {
+		  	while (c.charAt(0) === ' ') {
 				c = c.substring(1);
 		  	}
-		  	if (c.indexOf(name) == 0) {
+		  	if (c.indexOf(name) === 0) {
 				return c.substring(name.length, c.length);
 		  	}
 		}
