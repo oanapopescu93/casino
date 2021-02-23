@@ -46,6 +46,26 @@ var game_start = false;
 
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
+var my_session;
+
+//SESSION
+const SESS_LIFETIME = 1000 * 60 * 60 * constants.SESS_HOURS;
+const SESS_PROD = constants.NODE_ENV === "production";
+const SESS_NAME = "sid"
+const SESS_SECRET = "secret001"
+app.use(session({
+	name: SESS_NAME,
+	resave: false,
+	saveUninitialized: false,
+	secret: SESS_SECRET,
+	cookie:{
+		maxAge: SESS_LIFETIME,
+		sameSite: true,
+		secure: SESS_PROD,
+	}
+}));
+
+app.use(routes);
 
 io.on('connection', function(client) {		
 	client.on('signin_send', function(data) {	
@@ -331,8 +351,6 @@ function check(){
 function stay(){
 	
 }
-
-app.use(routes);
 
 http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));
 

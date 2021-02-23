@@ -25,7 +25,7 @@ body{
 	/* background-image: radial-gradient(green, black); */
 	background-image: url('./../img/bg00a.jpg');
 	background-repeat: repeat;
-	background-size: 500px 500px;
+	background-size: 400px auto;
 	text-align:center;
 }
 .grad:before{
@@ -38,6 +38,32 @@ body{
 	left:0px;
 	right:0px;
 	width:100%;
+}
+
+.deco {
+	--c:yellow;   /* color */
+	--b:1px;   /* thickness of lines */
+	--o1:15px; /* offest of lines*/
+	--o2:10px; /* offset of rectangle */
+	
+	border:var(--o1) solid transparent; 
+	outline:var(--b) solid var(--c); 
+	outline-offset:calc(-1*var(--o2));
+	background:
+	  linear-gradient(var(--c) 0 0) top,
+	  linear-gradient(var(--c) 0 0) left,
+	  linear-gradient(var(--c) 0 0) bottom,
+	  linear-gradient(var(--c) 0 0) right;
+	background-size:200% var(--b),var(--b) 200%; 
+	background-origin:padding-box;
+	background-repeat:no-repeat;
+}
+.HomePage{
+	background-color: rgba(0,0,0,0.5);
+	padding: 10px;
+}
+.HomePage_box{
+	padding: 10px;
 }
 
 textarea.shadow_concav, input.shadow_concav, .button_yellow.shadow_concav, .shadow_concav{

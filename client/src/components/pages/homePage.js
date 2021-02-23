@@ -133,30 +133,34 @@ class HomePage extends React.Component {
 				<Row>
 					<Col sm={4} md={4} lg={4}></Col>
 					<Col sm={4} md={4} lg={4} className="HomePage color_yellow">
-						<Row>
-							<Col sm={12}>
-								<img id="logo_icon" alt="logo_icon" src={logo_icon} />
-								<h1>BunnyBet</h1>
-							</Col>
-						</Row>					
-						<Row>
-							<Col sm={12}>					
+						<div className="deco">
+							<div className="HomePage_box">
 								<Row>
 									<Col sm={12}>
-										<div className="login_link_container shadow_convex">
-											<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}><h4>Sign In</h4></div>	
-											<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}><h4>Sign Up</h4></div>	
-										</div>
+										<img id="logo_icon" alt="logo_icon" src={logo_icon} />
+										<h1>BunnyBet</h1>
 									</Col>
-								</Row>
+								</Row>					
 								<Row>
-									<Col sm={12} className="user_form_container">
-										{ this.state.visible ? <SignIn socket={socket}></SignIn> : null }
-										{ !this.state.visible ? <SignUp socket={socket}></SignUp> : null }
+									<Col sm={12}>					
+										<Row>
+											<Col sm={12}>
+												<div className="login_link_container shadow_convex">
+													<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}><h4>Sign In</h4></div>	
+													<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}><h4>Sign Up</h4></div>	
+												</div>
+											</Col>
+										</Row>
+										<Row>
+											<Col sm={12} className="user_form_container">
+												{ this.state.visible ? <SignIn socket={socket}></SignIn> : null }
+												{ !this.state.visible ? <SignUp socket={socket}></SignUp> : null }
+											</Col>
+										</Row>
 									</Col>
 								</Row>
-							</Col>
-						</Row>					
+							</div>
+						</div>
 					</Col>
 					<Col sm={4} md={4} lg={4}></Col>					
 					{

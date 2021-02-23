@@ -14,13 +14,17 @@ function Splash(props) {
                     <Row>
 				        <Col sm={4} md={4} lg={4}></Col>
 				        <Col sm={4} md={4} lg={4} className="HomePage color_yellow">
-                            <img id="logo_splash" alt="logo_splash" src={logo_splash} />
-                            <h1>BunnyBet</h1>
-                            <div id="myProgress" className="shadow_convex">
-                                <div id="myBar"></div>                                
-                            </div>
-                            <div id="myBar_text_container">
-                                <div id="myBar_text">0%</div>
+                            <div className="deco">
+                                <div className="HomePage_box">
+                                    <img id="logo_splash" alt="logo_splash" src={logo_splash} />
+                                    <h1>BunnyBet</h1>
+                                    <div id="myProgress" className="shadow_convex">
+                                        <div id="myBar"></div>                                
+                                    </div>
+                                    <div id="myBar_text_container">
+                                        <div id="myBar_text">0%</div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                         <Col sm={4} md={4} lg={4}></Col>
