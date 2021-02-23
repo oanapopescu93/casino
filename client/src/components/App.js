@@ -16,9 +16,9 @@ var my_console = function(){
 
     me.disable = function disable(){
 		oldConsole = console.log;
-		// window['console']['log'] = function() {};
+		window['console']['log'] = function() {};
 		window['console']['warn'] = function() {};
-		// window['console']['error'] = function() {};
+		window['console']['error'] = function() {};
 	};
 
     return me;

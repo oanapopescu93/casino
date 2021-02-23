@@ -9,7 +9,15 @@ function submit(){
 	if(check_submit()){
 		$('#signup_pass_red').empty();
 		loader().then(function(data) {
-			submit_form();
+			if(data){
+				$('#loader_container').hide(); 
+				$('#home').show();
+				alert('You are already registered.')
+			} else {
+				setCookie("casino_email", $('#signin_email').val(), 1);
+				setCookie("casino_user", $('#signin_user').val(), 1);
+				submit_form();
+			}
 		});
 	} else {
 		$('#signup_pass_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
@@ -19,10 +27,7 @@ function submit(){
 function loader(){
 	return new Promise(function(resolve, reject){
 		$('#loader_container').show();
-		$('#home').hide();
-		setCookie("casino_email", $('#signin_email').val(), 1);
-		setCookie("casino_user", $('#signin_user').val(), 1);
-		setCookie("casino_pass", $('#signin_pass').val(), 1);
+		$('#home').hide();		
 		socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
 		socket.on('signup_read', function(data){
 			resolve(data);

@@ -35,5 +35,10 @@ module.exports = Object.freeze({
         {id: "item15", name: "Item 15", description: "item 15 description", price: 15},
         {id: "item16", name: "Item 16", description: "item 16 description", price: 16},
     ],
-    MONEY: 100
+    MONEY: 100,
+    SESS_USERS: [
+        {id: 0, user: "aaa", email: "aaaaaa@gmail.com", pass: "aaa"},
+        {id: 1, user: "bbb", email: "bbbbbb@gmail.com", pass: "bbb"},
+        {id: 3, user: "ccc", email: "cccccc@gmail.com", pass: "ccc"},
+    ],
 })

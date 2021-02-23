@@ -9,7 +9,14 @@ var socket;
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data) {
-			submit_form();
+			if(data){
+				setCookie("casino_user", $('#signin_user').val(), 1);
+				submit_form();
+			} else {
+				$('#loader_container').hide(); 
+				$('#home').show();
+				alert('You are not registered.')
+			}
 		});
 	} else {
 		if($('#signin_user').val() === ""){
@@ -44,11 +51,9 @@ function submit_recovery(){
 function loader(){
 	return new Promise(function(resolve, reject){
 		$('#loader_container').show(); 
-		$('#home').hide();
-		setCookie("casino_user", $('#signin_user').val(), 1);
-		setCookie("casino_pass", $('#signin_pass').val(), 1);
+		$('#home').hide();		
 		socket.emit('signin_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()});	
-		socket.on('signin_read', function(data){
+		socket.on('signin_read', function(data){			
 			resolve(data);
 		});
 	});

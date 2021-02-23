@@ -56,7 +56,6 @@ class Child extends Component {
 			case "logout":
 				console.log('logout')
 				self.setCookie("casino_user", '', 1);
-				self.setCookie("casino_pass", '', 1);
 				self.setCookie("casino_email", '', 1);
 				var url_back01 = window.location.href.split('/table/');
 				window.location.href = url_back01[0];
@@ -155,6 +154,7 @@ class UserPage extends Component {
 			var table = window.location.href.split('table/')
 			socket.emit('user_page_send', table[1]);	
 			socket.on('user_page_read', function(data){
+				console.log('user_page_read--> ', data)
 				if(data.user === "" || data.user !== "indefined"){
 					data.user = self.getCookie("casino_user")
 				}

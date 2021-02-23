@@ -312,6 +312,13 @@ textarea, input{
 	box-shadow:none!important;	
 }
 
+input:-internal-autofill-selected {
+    appearance: none;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: yellow !important;
+}
+
 .input_yellow, .input_yellow:focus{
 	background:black;
 	border:solid 1px var(--yellow);

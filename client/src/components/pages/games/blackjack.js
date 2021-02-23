@@ -68,8 +68,15 @@ function blackjack_wheel(props){
 	}
 
 	this.start = function(){
-		// self.createHand();		
+		var blackjack_payload_server = {
+			user_id: props.user_id, 
+			user: props.user, 
+			user_table: props.user_table, 
+		}
+		socket.emit('blackjack_send', ['pause', blackjack_payload_server]);	
+
 		socket.on('blackjack_read', function(data){	
+			console.log('blackjack_read01', data)
 			if(typeof data === "string"){
 				alert(data)
 			} else {
@@ -78,18 +85,18 @@ function blackjack_wheel(props){
 						blackjack_hand = data;
 						self.draw_table();						
 						break;
+					case 'pause':						
+						blackjack_hand = data;
+						self.draw_table();						
+						break;
 					case 'hit':
 						break;
 					case 'stay':
 						break;
-					default:
-						break;
 				}
 			}	
 		});	
-
 		self.draw_table();	
-
 		self.blackjack_table_click();
 	}
 
@@ -120,18 +127,31 @@ function blackjack_wheel(props){
 		for(var i=0; i<7; i++){
 			draw_rect(space + i * (card_base.width + card_base.x), card_base.y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
 		}
+		draw_rect(space + 3 * (card_base.width + card_base.x), 100, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
 	}	
 
 	this.draw_table_players = function(){
+		console.log('draw_table_players', blackjack_hand)
 		var space = (canvas_width - (card_base.width*7 + card_base.x*6))/2;
-		console.log('blackjack_read2--> ', blackjack_hand)
+		var a = 0;
+		var b = 0;
 		for(var i in blackjack_hand[1]){
-			draw_card(space + i * (card_base.width + card_base.x), card_base.y, card.width, card.height, blackjack_hand[1][i].hand)
+			if(i === 0){
+				a = 3;
+			} else {
+				if(i%2 !== 0){
+					b++;	
+				} 
+				a = 3 + b;
+			}
+			
+			draw_card(space + a * (card_base.width + card_base.x), card_base.y, card.width, card.height, blackjack_hand[1][i].hand)
 		}
 	}
 
 	this.draw_table_dealer = function(){
-		//console.log('blackjack_read--> ', blackjack_hand)
+		var space = (canvas_width - (card_base.width*7 + card_base.x*6))/2;
+		draw_card(space + 3 * (card_base.width + card_base.x), 100, card.width, card.height, blackjack_hand[2].hand)
 	}
 
 	this.drawButton = function(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle, text, text_x, text_y){
@@ -166,18 +186,42 @@ function blackjack_wheel(props){
 		// ctx.stroke();	
 		// ctx.strokeStyle = "blue";
 		// ctx.rect(stay_button_coordonates.x, stay_button_coordonates.y, stay_button_coordonates.width, stay_button_coordonates.height);
-		// ctx.stroke();		
+		// ctx.stroke();
 		
-		if (isInside(mousePos, start_button_coordonates)) {
-			console.log('START');			
-			socket.emit('blackjack_send', ['start', blackjack_payload_server]);							
-		} else if (isInside(mousePos, hit_button_coordonates)) {
-			console.log('HIT');	
-			socket.emit('blackjack_send', ['hit', blackjack_payload_server]);							
-		} else if (isInside(mousePos, stay_button_coordonates)) {
-			console.log('STAY');
-			socket.emit('blackjack_send', ['stay', blackjack_payload_server]);								
-		} 
+		if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
+			if (isInside(mousePos, start_button_coordonates)) {
+				console.log('START');			
+				socket.emit('blackjack_send', ['start', blackjack_payload_server]);							
+			} else if (isInside(mousePos, hit_button_coordonates)) {
+				console.log('HIT');	
+				socket.emit('blackjack_send', ['hit', blackjack_payload_server]);							
+			} else if (isInside(mousePos, stay_button_coordonates)) {
+				console.log('STAY');
+				socket.emit('blackjack_send', ['stay', blackjack_payload_server]);								
+			} 
+	
+			socket.on('blackjack_read', function(data){	
+				console.log('blackjack_read02', data)
+				if(typeof data === "string"){
+					alert(data)
+				} else {
+					switch(data[0]){
+						case 'start':						
+							blackjack_hand = data;
+							self.draw_table();						
+							break;
+						case 'pause':						
+							blackjack_hand = data;
+							self.draw_table();						
+							break;
+						case 'hit':
+							break;
+						case 'stay':
+							break;
+					}
+				}	
+			});	
+		}		
 	}
 }
 
@@ -222,23 +266,70 @@ function draw_card(x, y, w, h, hand){
 	var img = document.getElementById("img_cards");
 	var img_x = 0;
 	var img_y = 0;
+	var a = 75;
+	var b = 120;
 	for(var i in hand){
+		//var i = 0;
+		//hand[i] = {Value: "A", Suit: "Spades", Weight: 10};         //["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 		switch (hand[i].Suit) {
 			case "Spades":
-				img_y = 0;							
+				img_y = 0 * (b + 4);							
 				break;
 			case "Hearts":
-				img_y = 120;		
+				img_y = 1 * (b + 4);			
 				break;
 			case "Diamonds":
-				img_y = 240;		
+				img_y = 2 * (b + 4);		
 				break;
 			case "Clubs":
-				img_y = 360;		
+				img_y = 3 * (b + 4);		
 				break;
-		  }	
-		console.log(img_x, img_y, hand[i])
-		ctx.drawImage(img, img_x, img_y, w, h, x + i*10, y + i*10, w, h);
+		}
+		  
+		switch (hand[i].Value) {          //var card_base = {x: 20, y:500, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white'}
+			case "A":
+				img_x = 0 * (a + 4);						
+				break;
+			case "2":
+				img_x = 1 * (a + 4);						
+				break;
+			case "3":
+				img_x = 2 * (a + 4);							
+				break;
+			case "4":
+				img_x = 3 * (a + 4);						
+				break;
+			case "5":
+				img_x = 4 * (a + 4);						
+				break;
+			case "6":
+				img_x = 5 * (a + 4);						
+				break;
+			case "7":
+				img_x = 6 * (a + 4);					
+				break;
+			case "8":
+				img_x = 7 * (a + 4);							
+				break;
+			case "9":
+				img_x = 8 * (a + 4);					
+				break;
+			case "10":
+				img_x = 9 * (a + 4);						
+				break;
+			case "J":
+				img_x = 10 * (a + 4);						
+				break;
+			case "Q":
+				img_x = 11 * (a + 4);				
+				break;
+			case "K":
+				img_x = 12 * (a + 4);						
+				break;			
+		}
+		console.log(img_x, img_y, hand[i].Suit, img)		
+		ctx.drawImage(img, img_x, img_y, w, h, x + i*12, y + i*12, w, h);
+		//ctx.drawImage(img, img_x, img_y, w, h, x, y, w, h);
 	}	
 }
 
