@@ -31,6 +31,9 @@ var recovery_email = "";
 router.post('/registration', function(req, res, next) {
 	res.redirect('/salon');
 });
+// router.get('/salon', function(req, res, next) {
+// 	console.log('bbb1')
+// });
 
 router.post('/recovery', function(req, res, next) {
 	recovery_email = req.body.email; 

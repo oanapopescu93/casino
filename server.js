@@ -49,21 +49,21 @@ var market = constants.SERVER_MARKET;
 var my_session;
 
 //SESSION
-const SESS_LIFETIME = 1000 * 60 * 60 * constants.SESS_HOURS;
-const SESS_PROD = constants.NODE_ENV === "production";
-const SESS_NAME = "sid"
-const SESS_SECRET = "secret001"
-app.use(session({
-	name: SESS_NAME,
-	resave: false,
-	saveUninitialized: false,
-	secret: SESS_SECRET,
-	cookie:{
-		maxAge: SESS_LIFETIME,
-		sameSite: true,
-		secure: SESS_PROD,
-	}
-}));
+// const SESS_LIFETIME = 1000 * 60 * 60 * constants.SESS_HOURS;
+// const SESS_PROD = constants.NODE_ENV === "production";
+// const SESS_NAME = "sid"
+// const SESS_SECRET = "secret001"
+// app.use(session({
+// 	name: SESS_NAME,
+// 	resave: false,
+// 	saveUninitialized: false,
+// 	secret: SESS_SECRET,
+// 	cookie:{
+// 		maxAge: SESS_LIFETIME,
+// 		sameSite: true,
+// 		secure: SESS_PROD,
+// 	}
+// }));
 
 app.use(routes);
 
@@ -75,10 +75,9 @@ io.on('connection', function(client) {
 				exists = true;
 				user = data.user;
 				pass = data.pass;
-				console.log('eee2', data.user == sess_users[i].user, data.pass == sess_users[i].pass)
 			}
 		}		
-		io.emit('signin_read', exists);		
+		io.to(client.id).emit('signin_read', exists);		
 	});
 
 	client.on('signup_send', function(data) {		
@@ -91,7 +90,7 @@ io.on('connection', function(client) {
 				pass = data.pass;
 			}
 		}	
-		io.emit('signup_read', exists);
+		io.to(client.id).emit('signup_read', exists);
 	});
 
 	client.on('username', function(payload) { 		

@@ -21,13 +21,13 @@ function Home(props) {
 				<Container>				
 						<BrowserRouter>					
 							<Switch>			
-								<Route exact path="/table/:name">
+								<Route path="/table/:name">
 									<UserPage socket={socket}></UserPage>
 								</Route>
-								<Route exact path="/salon">
+								<Route path="/salon">
 									<Salon socket={socket}></Salon>
 								</Route>
-								<Route exact path="/recovery">
+								<Route path="/recovery">
 									<SignInRecovery socket={socket}></SignInRecovery>
 								</Route>								
 								<Route exact path="/">
