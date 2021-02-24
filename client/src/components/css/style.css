@@ -60,10 +60,17 @@ body{
 }
 .HomePage{
 	background-color: rgba(0,0,0,0.5);
-	padding: 10px;
+	padding: 10px;	
+}
+.HomePage .deco{
+	display: table;
+    width: 100%;
+    min-height: 235px;
 }
 .HomePage_box{
 	padding: 10px;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 textarea.shadow_concav, input.shadow_concav, .button_yellow.shadow_concav, .shadow_concav{
@@ -140,6 +147,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
   }
   #myBar_text_container{
 	width: 20px;
+	margin-bottom:-20px;
   } 
 
 .fa-user-circle{
@@ -269,6 +277,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p, address {
 h1 {
 	font-size: 30px;
 	line-height: 30px;
+	font-family: monospace;
 }
 
 h2 {
@@ -300,6 +309,12 @@ h6 {
 
 .text_red{
 	color:red;
+}
+.text_stroke{
+	color: yellow;
+	-webkit-text-fill-color: transparent; 
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: yellow;
 }
 
 #signin_user_red, #signin_pass_red{

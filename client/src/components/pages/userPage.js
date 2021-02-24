@@ -81,7 +81,7 @@ class Child extends Component {
 							<div className="logo_title">
 								<Navbar.Brand href="/">
 									<img alt="logo_icon" className="logo_title_img" src={logo_icon} />
-									<div className="logo_title_text">BunnyBet</div>
+									<div className="logo_title_text text_stroke">BunnyBet</div>
 								</Navbar.Brand>							
 							</div>
 						</Navbar>

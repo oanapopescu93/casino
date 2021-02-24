@@ -138,7 +138,7 @@ class HomePage extends React.Component {
 								<Row>
 									<Col sm={12}>
 										<img id="logo_icon" alt="logo_icon" src={logo_icon} />
-										<h1>BunnyBet</h1>
+										<h1 className="text_stroke">BunnyBet</h1>
 									</Col>
 								</Row>					
 								<Row>

@@ -17,7 +17,7 @@ function Splash(props) {
                             <div className="deco">
                                 <div className="HomePage_box">
                                     <img id="logo_splash" alt="logo_splash" src={logo_splash} />
-                                    <h1>BunnyBet</h1>
+                                    <h1 className="text_stroke">BunnyBet</h1>
                                     <div id="myProgress" className="shadow_convex">
                                         <div id="myBar"></div>                                
                                     </div>

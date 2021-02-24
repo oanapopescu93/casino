@@ -13,8 +13,11 @@ import Footer from './footer';
 
 import socketIOClient from "socket.io-client/dist/socket.io";
 const socket = socketIOClient("/");
+var t = 0;
 
 function Home(props) {
+	t++;
+	console.log('ttt', t)
 	return (	
 		<div id="home" className="full-height">
 			<div className="full-height-content">

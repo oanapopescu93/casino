@@ -145,7 +145,8 @@ class Salon extends Component {
 								<Row>
 									<Col sm={12}>
 										<a href="/"><img id="logo_icon" alt="logo_icon" src={logo_icon} /></a>
-										<h1>Salon</h1>									
+										<h1 className="text_stroke">BunnyBet</h1>	
+										<h6>Welcome to the salon</h6>								
 									</Col>
 								</Row>
 								<Row>

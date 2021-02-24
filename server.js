@@ -115,39 +115,17 @@ io.on('connection', function(client) {
 		clients.push(client);
 		users[client.username] = client;
 
-		console.log('AAA00 ', user) 
-		console.log('AAA00 ', username) 
-		console.log('AAA00 ', user_join) 
-		console.log('AAA00 ', payload) 	
+		console.log('AAA001 ', user) 
+		console.log('AAA002 ', username) 
+		console.log('AAA003 ', user_join) 
+		console.log('AAA004 ', payload) 	
 		
 		if(typeof username !== "undefined" && username !== ""){
 			io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
 			io.to(room_name).emit('user_id', user_id);
 			io.to(room_name).emit('chatlist', user_join);
 		}		
-    });	
-	
-	client.on('disconnect', function(username) {		
-		var k = clients.indexOf(client); 
-		
-		if(k !== -1){
-			if(typeof user_join[k].user !== "undefined"){
-				var user_table = user_join[k].user_table.split(' ').join('_');				
-				var room_name = user_table + '_' + user_type;
-				if(typeof user_join[k].user_type !== "undefined"){
-					var user_type = user_join[k].user_type;	
-					room_name = room_name + '_' + user_type;
-				}				
-				//console.log('username2--- ', k, username, room_name, user_join[k]);
-				
-				io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
-				//io.emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
-				
-				clients.splice(k, 1);			
-				user_join.splice(user_join.indexOf(k), 1);	
-			}			
-		}
-    });
+    });		
 	
 	client.on('chat_message_send', function(data) {
 		//console.log('chat_message_send', data, user_join);
@@ -259,6 +237,27 @@ io.on('connection', function(client) {
 				break;
 		  }		
 	});
+
+	client.on('disconnect', function(username) {		
+		var k = clients.indexOf(client); 		
+		if(k !== -1){
+			if(typeof user_join[k].user !== "undefined"){
+				var user_table = user_join[k].user_table.split(' ').join('_');				
+				var room_name = user_table + '_' + user_type;
+				if(typeof user_join[k].user_type !== "undefined"){
+					var user_type = user_join[k].user_type;	
+					room_name = room_name + '_' + user_type;
+				}				
+				//console.log('username2--- ', k, username, room_name, user_join[k]);
+				
+				io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
+				//io.emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
+				
+				clients.splice(k, 1);			
+				user_join.splice(user_join.indexOf(k), 1);	
+			}			
+		}
+    });
 });
 
 function chatMessage(from, text){
