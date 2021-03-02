@@ -1,5 +1,4 @@
 var express = require("express");
-var session = require('express-session');
 var path = require("path");
 var hbs = require('express-handlebars');
 var bodyParser = require('body-parser');
@@ -34,7 +33,7 @@ var text01 = 'The user is offline or does not exist';
 var text02 = 'Please type a user ( /w username message )';
 var text03 = "Game has begun. Please wait for the next round."
 var users = [];
-var clients = [];
+var sockets = [];
 var monkey = [];
 
 var blackjack_deck = new Array();
@@ -46,29 +45,11 @@ var game_start = false;
 
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
-var my_session;
-
-//SESSION
-// const SESS_LIFETIME = 1000 * 60 * 60 * constants.SESS_HOURS;
-// const SESS_PROD = constants.NODE_ENV === "production";
-// const SESS_NAME = "sid"
-// const SESS_SECRET = "secret001"
-// app.use(session({
-// 	name: SESS_NAME,
-// 	resave: false,
-// 	saveUninitialized: false,
-// 	secret: SESS_SECRET,
-// 	cookie:{
-// 		maxAge: SESS_LIFETIME,
-// 		sameSite: true,
-// 		secure: SESS_PROD,
-// 	}
-// }));
 
 app.use(routes);
 
-io.on('connection', function(client) {		
-	client.on('signin_send', function(data) {	
+io.on('connection', function(socket) {	
+	socket.on('signin_send', function(data) {	
 		var exists = false;	
 		for(var i in sess_users){
 			if(data.user === sess_users[i].user && data.pass === sess_users[i].pass){
@@ -76,11 +57,11 @@ io.on('connection', function(client) {
 				user = data.user;
 				pass = data.pass;
 			}
-		}		
-		io.to(client.id).emit('signin_read', exists);		
+		}
+		io.to(socket.id).emit('signin_read', exists);		
 	});
 
-	client.on('signup_send', function(data) {		
+	socket.on('signup_send', function(data) {		
 		var exists = false;	
 		for(var i in sess_users){	
 			if(data.user === sess_users[i].user && data.email === sess_users[i].email && data.pass === sess_users[i].pass){
@@ -90,35 +71,42 @@ io.on('connection', function(client) {
 				pass = data.pass;
 			}
 		}	
-		io.to(client.id).emit('signup_read', exists);
+		io.to(socket.id).emit('signup_read', exists);
 	});
 
-	client.on('username', function(payload) { 		
+	socket.on('salon_send', function(data) {
+		io.emit('salon_read', {server_tables: server_tables, server_user: user });
+	});
+
+	socket.on('logout_send', function(data) {	
+		if (socket.handshake.session.userdata) {
+            delete socket.handshake.session.userdata;
+            socket.handshake.session.save();
+        }
+		io.to(socket.id).emit('logout_read', data);
+	});
+
+	socket.on('username', function(payload) { 	
 		user_id++	
 		payload.id = user_id;
 		var username = payload.user;
 		var user_table = payload.user_table.split(' ').join('_');
 		
-		client.user_id = user_id;
-		client.username = username;
-		client.user_table = user_table;
+		socket.user_id = user_id;
+		socket.username = username;
+		socket.user_table = user_table;
 
 		var room_name = user_table;
 		if(typeof payload.user_type !== "undefined"){
 			var user_type = payload.user_type;	
-			client.user_type = user_type;
+			socket.user_type = user_type;
 			room_name = room_name + '_' + user_type;
 		}
-		client.join(room_name);
+		socket.join(room_name);
 		
 		user_join.push(payload);		
-		clients.push(client);
-		users[client.username] = client;
-
-		console.log('AAA001 ', user) 
-		console.log('AAA002 ', username) 
-		console.log('AAA003 ', user_join) 
-		console.log('AAA004 ', payload) 	
+		sockets.push(socket);
+		users[socket.username] = socket;
 		
 		if(typeof username !== "undefined" && username !== ""){
 			io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
@@ -127,8 +115,7 @@ io.on('connection', function(client) {
 		}		
     });		
 	
-	client.on('chat_message_send', function(data) {
-		//console.log('chat_message_send', data, user_join);
+	socket.on('chat_message_send', function(data) {
 		var user_table = data.user_table.split(' ').join('_');
 		var room_name = user_table;
 		if(typeof data.user_type !== "undefined"){
@@ -136,16 +123,10 @@ io.on('connection', function(client) {
 			room_name = room_name + '_' + user_type;
 		}
 
-		io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));
-		//io.emit('chat_message_read', chatMessage(data.user, data.message))	
-		
-	});		
+		io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));		
+	});	
 
-	client.on('salon_send', function(data) {
-		io.emit('salon_read', {server_tables: server_tables, server_user: user });
-	});
-
-	client.on('choose_table_send', function(data) {
+	socket.on('choose_table_send', function(data) {
 		var my_table = data.table_name + '_' +data.table_id;
 		if(data.table_type !== "" && typeof data.table_type !== "undefined" && data.table_type !== null){
 			my_table = my_table + '_' + data.table_type;
@@ -153,26 +134,25 @@ io.on('connection', function(client) {
 		io.emit('choose_table_read', my_table);
 	});
 
-	client.on('user_page_send', function(data) {
+	socket.on('user_page_send', function(data) {
 		var my_table = data;
 		var game = my_table.split('_')[0]
 		var server_user = {user: user, money: user_money, user_table: my_table, game: game}
-		console.log('AAA01 ', user, user_join)
-		io.to(client.id).emit('user_page_read', server_user);
+		io.to(socket.id).emit('user_page_read', server_user);
 	});
 
-	client.on('market_send', function(data) {
+	socket.on('market_send', function(data) {
 		//console.log('market_send1', data)		
 		var this_user = data.id;
-		for(var i in clients){
-			if(clients[i].user_id === this_user){
-				//console.log('market_send2', clients[i].user_id, this_user)
-				clients[i].emit('market_read', market);
+		for(var i in sockets){
+			if(sockets[i].user_id === this_user){
+				//console.log('market_send2', sockets[i].user_id, this_user)
+				sockets[i].emit('market_read', market);
 			} 
 		}
 	});
 
-	client.on('roulette_spin_send', function(data) {
+	socket.on('roulette_spin_send', function(data) {
 		//console.log('roulette_spin_send', data)
 		if(data.spin_click === 1){
 			var spin_time = Math.floor(Math.random() * (1000 - 500)) + 500;
@@ -190,7 +170,7 @@ io.on('connection', function(client) {
 		}
 	});
 
-	client.on('blackjack_send', function(data) {
+	socket.on('blackjack_send', function(data) {
 		console.log('blackjack_send', data)	
 		var user_table = data[1].user_table.split(' ').join('_');
 		var room_name = user_table;
@@ -238,8 +218,8 @@ io.on('connection', function(client) {
 		  }		
 	});
 
-	client.on('disconnect', function(username) {		
-		var k = clients.indexOf(client); 		
+	socket.on('disconnect', function(username) {		
+		var k = sockets.indexOf(socket); 		
 		if(k !== -1){
 			if(typeof user_join[k].user !== "undefined"){
 				var user_table = user_join[k].user_table.split(' ').join('_');				
@@ -253,7 +233,7 @@ io.on('connection', function(client) {
 				io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
 				//io.emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
 				
-				clients.splice(k, 1);			
+				sockets.splice(k, 1);			
 				user_join.splice(user_join.indexOf(k), 1);	
 			}			
 		}

@@ -332,9 +332,6 @@ h6 {
 	vertical-align: middle;
 	padding: 10px 0px;
 }
-.userPage{
-	padding: 60px 0px 0px 0px;
-}
 
 a, a:hover, a:focus, a:active{
 	color:var(--yellow);
@@ -459,64 +456,6 @@ input:-internal-autofill-selected {
 	border-right:solid 0px transparent;
 }
 
-.user_money{
-	position: fixed;
-    top: 16px;
-    right: 50px;
-    display: inline-block;
-    z-index: 9998;
-    color: var(--yellow);
-}
-.user_details{
-	position: fixed;
-    top: 12px;
-    right: 15px;
-    display: inline-block;
-    z-index: 9998;
-    color: var(--yellow);
-}
-.user_details_container{
-	display:none;
-	position: absolute;
-    z-index: 1;
-    top: 35px;
-    left: -77px;
-    width: 100px;
-}
-.user_details_container.open{
-	display:block;
-}
-.user_details_box{
-	position:relative;
-	z-index:1;
-}
-.user_details_box:before{
-	content: "";
-    width: 0px;
-    height: 0px;
-    border: 10px solid;
-    border-color: transparent transparent var(--yellow) transparent;
-    position: absolute;
-    top: -20px;
-    left: 80px;
-}
-.nav_user{
-	display:block;
-	padding:5px 10px;
-	background:black;
-	color:var(--yellow);
-	border-bottom:solid 1px var(--yellow);
-	cursor: pointer;
-}
-.nav_user:first-child{
-	border-bottom:solid 1px black;
-	background:var(--yellow);
-	color:black;
-}
-
-.nav_user:last-child{
-	border-bottom:solid 1px black;
-}
 
 table {
   border-collapse: collapse;
@@ -618,7 +557,7 @@ table {
 	width:100%;
 }
 
-.chat_container{
+.panel_container{
 	top:0px;
 	bottom:0px;
 	right:-250px;
@@ -629,90 +568,70 @@ table {
     -webkit-transition:0.7s;
     -moz-transition:0.7s;
 }
-.chat_container.open{	
+.panel_container.open{	
 	right:0px;
 }
-.chat_form_container{
+.panel_box{
+	display:none;
 	background-color: black;
-	/* background-image: linear-gradient(to right, #a87b51, black); */
 	border-left:solid 1px #a87b51;
-	padding: 70px 10px;	
+	padding: 20px 10px;	
 	position:absolute;
 	height:100%;
 	right:0px;
 	width:90%;
 	max-width:250px;
 	text-align: left;
+	color:#a87b51;
 }
-.chat_button_container{
+#user_panel_box{
+	padding:0px;
+}
+.button_container{
 	position: absolute;
-	z-index:1;
-    top: 60px;
     left: 1px;
     width: 50px;
 }
-.chat_button_container div{
+#user_button{
+	z-index:2;
+    top: 40px;
+}
+#chat_button{
+	z-index:1;
+    top: 150px;
+}
+.button_container > div{
 	background-color: black;
-	/* background-image: linear-gradient(to left, #a87b51, black); */
 	border:solid 1px #a87b51;
 	border-right:solid 0px black;
-	border-radius:50px 0px 0px 50px;
+	border-radius:10px 0px 0px 10px;
 	color:#a87b51;
-	height:50px;
-	line-height:50px;
+	height:100px;
 	text-align:center;
 	cursor:pointer;
-	padding-left: 5px;
+	padding: 30px 5px;
 }
-
-.navbar{
-	position:fixed;
-	top:0px;
-	width:100%;
-	left:0px;
-	right:0px;
-	padding:10px 15px;
-	z-index:9998;
-	border-radius:0px;
+.button_container div svg{
+	display:inline-block;
+	padding:2px;
+	font-size:28px;
 }
-.navbar-toggler{
-	background:transparent;
-	border:solid 1px var(--yellow)!important;
-	outline: none!important;
-    box-shadow: none!important;
-	border-radius:5px;
-	right:15px;
-	position:absolute;
-	display:none;
+.button_container div h4{
+	font-size: 12px;
 }
-.bar1, .bar2, .bar3 {
-  width: 30px;
-  height: 3px;
-  background-color: var(--yellow);
-  margin: 6px 0;
-  transition: 0.4s;
+.user_list{
+	margin:0px;
+	padding:0px;
 }
-.bar1 {
-  -webkit-transform: rotate(-45deg) translate(-7px, 6px);
-  transform: rotate(-45deg) translate(-7px, 6px);
+.user_list li{
+	list-style-type: none;
+	border-bottom: solid 1px #a87b51;
+	padding:10px 0px;
+	text-align: center;
 }
-.bar2 {opacity: 0;}
-.bar3 {
-  -webkit-transform: rotate(45deg) translate(-6px, -6px);
-  transform: rotate(45deg) translate(-6px, -6px);
-}
-
-.collapsed .bar1, .collapsed .bar3 {
-  -webkit-transform: rotate(0deg) translate(0px, 0px);
-  transform: rotate(0deg) translate(0px, 0px);
-}
-.collapsed .bar2 {opacity: 1;}
-
-.navbar-nav{
-	padding: 15px 10px;
-}
-.navbar-nav a{
-	padding:0px 5px;
+#user_list_user{
+	background: #a87b51;
+	color:black;
 }
 
 .casino_games_title{
@@ -988,12 +907,6 @@ table {
 		margin-top:50px;
 		background-color: black;
 	}
-	.user_details_container{
-		left: -40px;
-	}
-	.user_details_box:before{		
-		left: 40px;
-	}
 	.casino_games_title{
 		padding: 5px 10px;
 	}
@@ -1021,12 +934,7 @@ table {
 	}
 	#rabbit_stand_right, #rabbit_stand_left{
 		float:none;
-	}
-	.userPage{
-		padding: 35px 0px 0px 0px;
-	}
-
-	
+	}	
 }
 @media (max-width: 767px) and (orientation:landscape){
 	#game_title{
@@ -1053,9 +961,6 @@ table {
 	}
 	.full-height-content{
 		padding: 20px 0px;
-	}
-	.chat_button_container{
-		top: 10%;
 	}
 }
 

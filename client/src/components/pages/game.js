@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
+
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
-import ChatForm from './chatForm'
 import Roulette from './games/roulette'
 import Blackjack from './games/blackjack'
 
@@ -11,14 +11,20 @@ var finish = false;
 var self;
 
 class Game extends Component {	
-	state = {
-		user_id: '',
-		user: '',
-		type: '',
-		money: '',
-		user_table: '',
-		game: '',
-	}; 
+	constructor(props) {
+		super(props);
+		self = this;		
+		this.handleBack = this.handleBack.bind(self);
+
+		this.state = {
+			user_id: '',
+			user: '',
+			type: '',
+			money: '',
+			user_table: '',
+			game: '',
+		}; 		
+	}
 	
 	componentDidMount() {
 		self = this;
@@ -28,7 +34,7 @@ class Game extends Component {
 		this.setState({ type: this.props.type });
 		this.setState({ money: this.props.money });
 		this.setState({ user_table: this.props.user_table });
-		finish = true;
+		finish = true;		
 	}
 
 	handleBack() {
@@ -80,15 +86,8 @@ class Game extends Component {
 											)						
 									}
 								})()}
+
 								
-								<div className="chat_container">
-									<div className="chat_button_container">
-										<div>Chat</div>
-									</div>
-									<div className="chat_form_container">
-										<ChatForm user={this.state.user} type={this.state.type} user_table={this.state.user_table} socket={this.props.socket}></ChatForm>
-									</div>
-								</div>
 							</div>
 						) : (
 							<div>No user</div>
@@ -102,6 +101,5 @@ class Game extends Component {
 		
 	}
 }
-
 
 export default Game;

@@ -10,3 +10,10 @@ export const get_history = function(history) {
 		history: history
 	}
 }
+
+export const game_visible = function(data) {
+	return {
+		type: "game_visible",
+		visibility: data
+	}
+}

@@ -342,14 +342,10 @@ function handleBack(){
 function Blackjack(props) {	
 	setTimeout(function(){ 	
 		blackjack_game = new blackjack_wheel(props);
-		blackjack_game.ready();		
+		blackjack_game.ready();
 		
-		function open_chat(){
-			$('.chat_container').toggleClass('open');
-		}
-		
-		$('.chat_button_container').click(function(){
-			open_chat();
+		$(window).resize(function(){
+			blackjack_game.ready();	
 		});
 	}, 0);
 	
@@ -357,9 +353,6 @@ function Blackjack(props) {
 	
 	return (
 		<div className="blackjack_container">
-            {/* <p>Sorry, </p>
-            <p>no blackjack table available yet</p>
-            <Button className="button_table shadow_convex" type="button" onClick={handleBack}>Back</Button> */}
 			<canvas id="blackjack_canvas"></canvas>
 			<img style={{'display': 'none'}} id="img_cards" alt="img_cards" src={img_cards} />
 		</div>

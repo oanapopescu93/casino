@@ -72,14 +72,10 @@ function handleBack(){
 function Slot(props) {	
 	setTimeout(function(){ 	
 		my_slot = new slot_game(props);
-		my_slot.ready();		
+		my_slot.ready();
 		
-		function open_chat(){
-			$('.chat_container').toggleClass('open');
-		}
-		
-		$('.chat_button_container').click(function(){
-			open_chat();
+		$(window).resize(function(){
+			my_slot.ready();	
 		});
 	}, 0);
 	

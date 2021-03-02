@@ -11,7 +11,7 @@ var ctx;
 var socket;
 var my_roulette;
 var canvas_width = 900;
-var canvas_height = 800;
+var canvas_height = 750;
 var roulette_radius_x = canvas_width/2;
 var roulette_radius_y = 250;
 
@@ -74,6 +74,7 @@ function roulette_game(props){
 		user_info = props.roulette[0];			
 	}
 	
+	//console.log('history000b--> ', props, user_info.money)	
 	$('#nav_money span').text(user_info.money);	
 	
 	this.ready = function(){
@@ -141,7 +142,7 @@ function roulette_game(props){
 			}
 		} else {
 			canvas.width = 900;	
-			canvas.height = 800;
+			canvas.height = 750;
 			
 			roulette_radius_x = canvas_width/2;	
 			roulette_radius_y = 250;
@@ -892,21 +893,20 @@ function roulette_game(props){
 	}
 	
 	this.win_lose = function(arr){
+		//console.log('win', arr, user_info)
 		if(Object.keys(user_info).length !== 0 || !isNaN(user_info.money)){			
 			for(var i in arr){			
-				if(arr[i].win){						
-					//user_info = dispatch(calculate_money(user_info.money + arr[i].bet_value))	
-					user_info = user_info.money + arr[i].bet_value;	
-				} else {						
-					//user_info = dispatch(calculate_money(user_info.money - arr[i].bet_value))
-					user_info = user_info.money - arr[i].bet_value;	
+				if(arr[i].win){		
+					user_info.money = user_info.money + arr[i].bet_value;	
+				} else {
+					user_info.money = user_info.money - arr[i].bet_value;	
 				}
 			}
-			dispatch(calculate_money(user_info))
+			dispatch(calculate_money(user_info.money))
 			dispatch(get_history(your_bets))
 		}
-		//console.log('history000a--> ', user_info)	
-		$('#nav_money span').text(user_info);
+		//console.log('history000a--> ', user_info.money)	
+		$('#nav_money span').text(user_info.money);
 	}	
 }
 
@@ -929,14 +929,6 @@ function Roulette(props) {
 		
 		$(window).resize(function(){
 			my_roulette.ready();
-		});
-		
-		function open_chat(){
-			$('.chat_container').toggleClass('open');
-		}
-		
-		$('.chat_button_container').click(function(){
-			open_chat();
 		});
 	}, 0);
 	

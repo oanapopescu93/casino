@@ -41,4 +41,6 @@ module.exports = Object.freeze({
         {id: 1, user: "bbb", email: "bbbbbb@gmail.com", pass: "bbb"},
         {id: 3, user: "ccc", email: "cccccc@gmail.com", pass: "ccc"},
     ],
+    NODE_ENV: "development",
+    SESS_HOURS: 2,
 })
