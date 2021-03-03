@@ -8,11 +8,13 @@ import ChatForm from './chatForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
+import carrot_img from '../img/icons/carrot_icon.png';
 
 function Panel(props){
     var user = props.user;
     var type = props.type;
     var user_table = props.user_table;
+    var money = props.money;
     var socket = props.socket;
     var dispatch = props.dispatch;
 
@@ -26,13 +28,15 @@ function Panel(props){
 		$('.button_container').click(function(){
             var next_click = $(this).attr('panel');     
 
-            if(prev_click === next_click || prev_click == ""){
-                prev_click = next_click;
+            if(prev_click === next_click || prev_click === ""){           
                 open_panel();
-            } 
+            } else if(!$('.panel_container').hasClass('open')){
+                $('.panel_container').addClass('open');
+            }
             
             $('.panel_box').hide();
-            $('#'+next_click).show();	
+            $('#'+next_click).show();
+            prev_click = next_click;	
 		});
 	}, 0);
 
@@ -79,7 +83,10 @@ function Panel(props){
             </div>
             <div id="user_panel_box" className="panel_box">
                 <ul className="user_list">
-                    <li id="user_list_user" className="user_list_item" onClick={() => handleClick('casino')}>{user}</li>
+                    <li id="user_list_user" className="user_list_item" onClick={() => handleClick('casino')}>
+                        <div id="user_name">{user}</div>
+                        <div id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></div>
+                    </li>
                     <li id="user_list_account" className="user_list_item" onClick={() => handleClick('account')}>My account</li>
                     <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}>Logout</li>
                 </ul>

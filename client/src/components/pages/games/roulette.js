@@ -75,7 +75,7 @@ function roulette_game(props){
 	}
 	
 	//console.log('history000b--> ', props, user_info.money)	
-	$('#nav_money span').text(user_info.money);	
+	$('#user_money span').text(user_info.money);	
 	
 	this.ready = function(){
 		self.createCanvas(canvas_width, canvas_height);
@@ -906,7 +906,7 @@ function roulette_game(props){
 			dispatch(get_history(your_bets))
 		}
 		//console.log('history000a--> ', user_info.money)	
-		$('#nav_money span').text(user_info.money);
+		$('#user_money span').text(user_info.money);
 	}	
 }
 

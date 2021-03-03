@@ -1,12 +1,10 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { useSelector} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import $ from 'jquery'; 
-import logo_icon from '../img/logo.png';
-import carrot_img from '../img/icons/carrot_icon.png';
 
 import Game from './game';
 import UserAccount from './userAccount';
@@ -20,7 +18,6 @@ function Child(props) {
 	var visible = useSelector(state => state.visibility);
 	var user_id = props.user_id;
 	var user = props.user;
-	var url = props.url;
 	var money = props.money;
 	var type = props.type;
 	var user_table = props.user_table;

@@ -323,14 +323,20 @@ h6 {
 
 .full-height {
     position: relative;
-    display: table;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
     height: 100%;
     width: 100%;
 }
 .full-height-content{
-	display: table-cell;
-	vertical-align: middle;
 	padding: 10px 0px;
+	position: absolute;
+	z-index: 1;
+	position: relative;
+    top: 50%;
+    transform: translate(0px, -50%);
 }
 
 a, a:hover, a:focus, a:active{
@@ -478,9 +484,10 @@ table {
 /* chatroom */
 #chatform button{
 	width:100%;
-	color: #a87b51;
+	/* color: #a87b51; */
+	color: yellow;
     background: rgba(0, 0, 0, 0.2);
-    border: solid 1px #a87b51;
+    border: solid 1px yellow;
     outline: none!important;
     box-shadow: none!important;
 	padding: 6px 4px;
@@ -492,8 +499,8 @@ table {
 }
 #user_list table tr td{
 	vertical-align:top;
-	border-bottom: solid 1px #a87b51;
-	color:#a87b51;
+	border-bottom: solid 1px yellow;
+	color:yellow;
 }
 #user_list table tr td:first-child{
 	width:65%;
@@ -506,7 +513,7 @@ table {
 #user_list::-webkit-scrollbar{
 	width: 10px;
 	border-radius: 10px;
-	background-color: #a87b51;
+	background-color: yellow;
 	border-style:solid;
 	border-color: black;
 	border-width: 1px 4px;
@@ -514,10 +521,10 @@ table {
 
 #user_list::-webkit-scrollbar-thumb{
 	border-radius: 10px;
-	background-color: #a87b51;
+	background-color: yellow;
 	background-image: none;
 	border-style:solid;
-	border-color: #a87b51;
+	border-color: yellow;
 	border-width: 1px 0px;	
 }
 
@@ -529,8 +536,8 @@ table {
 	text-align:left;
 	height:180px;
 	background:black;
-	color:#a87b51;
-	border:solid 1px #a87b51;
+	color:yellow;
+	border:solid 1px yellow;
 	border-radius:5px;
 	padding:5px 10px;
 	outline: none;
@@ -540,8 +547,8 @@ table {
 	width:100%;
 	margin-bottom:10px;
 	background:black;
-	color:#a87b51;
-	border:solid 1px #a87b51;
+	color:yellow;
+	border:solid 1px yellow;
 	border-radius:5px;
 	padding:5px 10px;
 	outline: none;
@@ -574,7 +581,7 @@ table {
 .panel_box{
 	display:none;
 	background-color: black;
-	border-left:solid 1px #a87b51;
+	border-left:solid 1px yellow;
 	padding: 20px 10px;	
 	position:absolute;
 	height:100%;
@@ -582,10 +589,7 @@ table {
 	width:90%;
 	max-width:250px;
 	text-align: left;
-	color:#a87b51;
-}
-#user_panel_box{
-	padding:0px;
+	color:yellow;
 }
 .button_container{
 	position: absolute;
@@ -602,10 +606,10 @@ table {
 }
 .button_container > div{
 	background-color: black;
-	border:solid 1px #a87b51;
+	border:solid 1px yellow;
 	border-right:solid 0px black;
 	border-radius:10px 0px 0px 10px;
-	color:#a87b51;
+	color:yellow;
 	height:100px;
 	text-align:center;
 	cursor:pointer;
@@ -625,13 +629,22 @@ table {
 }
 .user_list li{
 	list-style-type: none;
-	border-bottom: solid 1px #a87b51;
-	padding:10px 0px;
-	text-align: center;
+	border-bottom: solid 1px yellow;
+	padding:10px 5px;
+}
+.user_list li:first-child{	
+	padding:0px 5px 10px 5px;
 }
 #user_list_user{
-	background: #a87b51;
-	color:black;
+	color:yellow;
+}
+#user_name, #user_money{
+	display:inline-block;
+	vertical-align: middle;
+	width:50%;
+}
+#user_money{
+	text-align:right;
 }
 
 .casino_games_title{
@@ -656,9 +669,9 @@ table {
 }
 .casino_games_table_container.open {
 	height: 200px;
-  }
+}
 .casino_games_table{
-	height:187px;
+	height:200px;
     padding: 10px;
     margin-top: 10px;
     overflow-y: auto;
@@ -668,12 +681,18 @@ table {
 	display:inline-block;
 	padding:10px;
 	width:100%;
-	max-width:200px;
 }
 .table_box{	
 	padding:20px 10px;
 	border:solid 1px var(--yellow);
 	border-radius:10px;
+	height:150px;
+	width: 100%;
+	display:table;
+}
+.table_box > div{
+	display:table-cell;
+	vertical-align: middle;
 }
 
 /* account */
@@ -756,7 +775,7 @@ table {
 /* footer */
 .footer_container{
 	position:absolute;
-	z-index:9999;
+	z-index:9990;
 	bottom:20px;
 	color:var(--yellow);
 	width:100%;
@@ -910,8 +929,11 @@ table {
 	.casino_games_title{
 		padding: 5px 10px;
 	}
+	.casino_games_table_container.open{
+		height:180px;
+	}
 	.casino_games_table {
-		height: 147px;
+		height: 170px;
 		padding: 5px;
 		margin-top: 5px;
 	}
@@ -934,6 +956,22 @@ table {
 	}
 	#rabbit_stand_right, #rabbit_stand_left{
 		float:none;
+	}
+	.button_container > div{
+		height: 50px;
+		padding: 12px 5px;
+	}
+	.button_container div svg{
+		font-size: 24px;
+	}
+	.button_container div h4{
+		display:none;
+	}
+	#chat_button{
+		top: 100px;
+	}
+	.footer_container{
+		bottom:10px;
 	}	
 }
 @media (max-width: 767px) and (orientation:landscape){
@@ -963,4 +1001,259 @@ table {
 		padding: 20px 0px;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Merriweather;
+}
+
+.owl-carousel:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 8%;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: 0;
+  pointer-events: none;
+  background: url() no-repeat center 50%;
+  background-size: 100% auto;
+}
+.owl-item {
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate(0) scale(1.0, 1.0);
+}
+.item {
+  opacity: 0.4;
+  transition: .4s ease all;
+  transform: scale(.6);
+}
+.item img{
+  display: block;
+  min-width: 100%;
+  width: auto;
+  height: auto;
+}
+.active .item {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  transform: scale(1);
+  max-height: 680px !important;
+}
+
+/* content and cta */
+.inner {
+  position: absolute;
+  bottom: 20%;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+/* END CTA Button*/
+
+/* Title Animation */
+.reveal-text,
+.reveal-text:after {
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+  -webkit-animation-duration: 600ms;
+          animation-duration: 600ms;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+          animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+.reveal-text {
+  position: relative;
+  -webkit-user-select: none;
+          user-select: none;
+  color:#ffe221;
+  text-shadow: 1px 1px #000000;
+  white-space: nowrap;
+}
+.reveal-text:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #8ce2ea;
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
+  -webkit-transform-origin: 0 50%;
+          transform-origin: 0 50%;
+  pointer-events: none;
+}
+.active .reveal-text{
+    -webkit-animation-name: reveal-text;
+          animation-name: reveal-text;
+}
+.active .reveal-text:after {
+    -webkit-animation-name: revealer-text;
+          animation-name: revealer-text;
+}
+/* Before animation */
+@-webkit-keyframes reveal-text {
+  from {
+    -webkit-clip-path: inset(0 100% 0 0);
+            clip-path: inset(0 100% 0 0);
+  }
+  to {
+    -webkit-clip-path: inset(0 0 0 0);
+            clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes reveal-text {
+  from {
+    -webkit-clip-path: inset(0 100% 0 0);
+            clip-path: inset(0 100% 0 0);
+  }
+  to {
+    -webkit-clip-path: inset(0 0 0 0);
+            clip-path: inset(0 0 0 0);
+  }
+}
+
+/* After animation */
+@-webkit-keyframes revealer-text {
+  0%, 50% {
+    -webkit-transform-origin: 0 50%;
+            transform-origin: 0 50%;
+  }
+  60%, 100% {
+    -webkit-transform-origin: 100% 50%;
+            transform-origin: 100% 50%;
+  }
+  50% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+  }
+  60% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+  }
+  100% {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+  }
+}
+@keyframes revealer-text {
+  0%, 50% {
+    -webkit-transform-origin: 0 50%;
+            transform-origin: 0 50%;
+  }
+  60%, 100% {
+    -webkit-transform-origin: 100% 50%;
+            transform-origin: 100% 50%;
+  }
+  50% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+  }
+  60% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+  }
+  100% {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+  }
+}
+/* Title Animation END */
+
+/* OWL-Carousel Navigation*/
+.owl-nav div {
+  position: absolute;
+  top: 45%;
+  color: #cdcbcd;
+}
+.owl-nav i {
+  font-size: 52px;
+}
+.owl-nav .owl-prev {
+  left: 5% !important;
+}
+.owl-nav .owl-next {
+  right: 5% !important;;
+}
+.owl-prev:hover, .owl-next:hover{
+  text-shadow: 2px 2px #000000;
+  transform: translateX(10%);
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+.owl-prev:hover{
+  text-shadow: -2px 2px #000000;
+  transform: translateX(-10%);
+}
+.owl-theme .owl-dots .owl-dot span{
+  width: 0;
+}
+.owl-dots {
+  text-align: center;
+  position: fixed;
+  margin-top: 10px;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.owl-dot {
+  border-radius: 50px;
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  background: rgba(127,127,127, 0.5);
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.owl-dot.active {
+  background: rgba(127,127,127, 1);
+}
+/* END OWL-Carousel Navigation*/
+
+@media only screen and (max-width:768px) {
+  #full-width{
+    padding: 0;
+  }
+  .item{
+    transform: scale(0);
+  }
+  .item img{
+    height: 400px !important;
+  }
+  .active .item img{
+    max-height: 400px;
+  }
+}
+@media only screen and (max-width:420px) {
+  .item img{
+    height: 200px !important;
+  }
+  .active .item img{
+    max-height: 200px;
+  }
+}
+
+
+
+
 

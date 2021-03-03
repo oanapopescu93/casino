@@ -7,6 +7,8 @@ import $ from 'jquery';
 import logo_icon from '../img/logo.png';
 import under_construction_icon from '../img/icons/under_construction_icon.png'
 
+import Carousel from './carousel'
+
 var self;
 var socket;
 var casino_games = {
@@ -21,8 +23,7 @@ class Salon extends Component {
 		super(props);
 		self = this;
 		socket = props.socket;	
-
-		self.handleClick = self.handleClick.bind(self);
+		
 		self.handleDropdown = self.handleDropdown.bind(self);	
 		self.handleBack = self.handleBack.bind(self);
 		self.salonData = self.salonData.bind(self);
@@ -102,14 +103,6 @@ class Salon extends Component {
 			});	
 		});
 	};
-	
-	handleClick(table_name, table_id, table_type="", user) {
-		var payload = {table_name, table_id, table_type, user}
-		socket.emit('choose_table_send', payload);	
-		socket.on('choose_table_read', function(data){
-			window.location.href = '/table/' + data;
-		});	
-	}
 
 	handleDropdown(t) {
 		$('.casino_games_table_container').removeClass('open')
@@ -126,7 +119,8 @@ class Salon extends Component {
 		window.location.href = url[0];
 	}
   
-	render() {			
+	render() {	
+				
 		return (
 			<div>
 				{self.state.empty ? (
@@ -148,9 +142,10 @@ class Salon extends Component {
 										<h1 className="text_stroke">BunnyBet</h1>	
 										<h6>Welcome to the salon</h6>								
 									</Col>
-								</Row>
+								</Row>	
 								<Row>
-									<Col sm={12} style={{marginBottom: "40px"}}>
+									<Col sm={2}></Col>
+									<Col sm={8}>
 										{
 											casino_games_title.map(function(t, i){
 												var title = t.split('_').join(' ')
@@ -173,37 +168,7 @@ class Salon extends Component {
 																		)
 																	} else {
 																		return (
-																			<>
-																				{
-																					casino_games[t].map(function(item, j){
-																						var button_id = "button_"+j;
-																						switch (item.table_name) {
-																							case "roulette":
-																								return (
-																									<div key={j} className="table_inside">
-																										<div className="table_box shadow_concav">
-																											<p>Table: {item.table_name} {item.table_id}</p>
-																											<p>Type: {item.table_type}</p>
-																											<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, item.table_type, self.state.user)}>Play</Button>
-																										</div>
-																									</div>
-																								)
-																							case "blackjack":
-																							case "slots":
-																								return (
-																									<div key={j} className="table_inside">
-																										<div className="table_box shadow_concav">
-																											<p>Table: {item.table_name} {item.table_id}</p>
-																											<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, '', self.state.user)}>Play</Button>
-																										</div>
-																									</div>
-																								)
-																							default:
-																								break;						
-																						}
-																					})
-																				}
-																			</>
+																			<Carousel template="salon" socket={socket} user={self.state.user} item_list={casino_games[t]}></Carousel>
 																		)
 																	}
 																})()}
@@ -212,8 +177,9 @@ class Salon extends Component {
 													</div>													
 												)
 											})
-										}							
+										}
 									</Col>
+									<Col sm={2}></Col>
 								</Row>																
 							</Col>																
 						)}			

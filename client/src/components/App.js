@@ -24,12 +24,7 @@ var my_console = function(){
     return me;
 }();
 
-class App extends Component {
-	constructor(props) {
-		super(props);
-	}
-
-	
+class App extends Component {	
 	render() {
 		my_console.disable();	
 		return (
@@ -43,7 +38,7 @@ class App extends Component {
 				<Home></Home>         			
 		  	</div>
 		);
-	  }
+	}
 }
 
 export default App;
