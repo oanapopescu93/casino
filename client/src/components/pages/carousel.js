@@ -13,6 +13,11 @@ function Carousel(props){
 	var template = props.template;
 	var user = props.user;
 
+	function my_click(id){
+		console.log('buy', id);
+		alert('No payment methods yet')
+	}	
+
 	if(template === "salon"){
 		const options = {
 			items: 4,
@@ -27,6 +32,9 @@ function Carousel(props){
 					items:1
 				},
 				768:{
+					items:3
+				},
+				1200:{
 					items:4
 				},
 			}
@@ -79,9 +87,43 @@ function Carousel(props){
 			</div>
 		);
 	} else {
+		const options = {
+			items: 4,
+			nav: false,
+			rewind: true,
+			autoplay: false,
+			slideBy: 1,
+			dots: false,
+			loop:true,
+			responsive:{
+				0:{
+					items:1
+				},
+				768:{
+					items:3
+				},
+			}
+		  };
+
 		return(
 			<div className="Owl_container">
-				<OwlCarousel></OwlCarousel>
+				<OwlCarousel {...options}>
+					{
+						item_list.map(function(item, i){
+							var id = item.id;
+							return(
+								<div key={i} className="table_inside">
+									<div className="table_box shadow_concav">
+										<h3>{item.name}</h3>
+										<p>Value: {item.value}</p>
+										<p>Price: <b>{item.price}</b></p>
+										<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => my_click(id)}>Buy</Button>
+									</div>
+								</div>												
+							)
+						})
+					}
+				</OwlCarousel>
 			</div>
 		);
 	}

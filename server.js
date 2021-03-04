@@ -156,6 +156,7 @@ io.on('connection', function(socket) {
 		//console.log('roulette_spin_send', data)
 		if(data.spin_click === 1){
 			var spin_time = Math.floor(Math.random() * (1000 - 500)) + 500;
+			//var spin_time = 100;
 			var ball_speed = 0.06;
 			
 			var user_table = data.user_table.split(' ').join('_');

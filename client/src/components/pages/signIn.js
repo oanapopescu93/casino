@@ -93,6 +93,8 @@ function SignIn(props) {
 
 	socket = props.socket;
 
+	$('.full-height').attr('id', 'home');
+
 	return (
 		<div>
 			<Form id="user_form" method="post" action="/registration">

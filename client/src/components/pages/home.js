@@ -17,7 +17,7 @@ const socket = socketIOClient("/");
 function Home(props) {
 	return (
 		<>	
-		<div id="home" className="full-height">
+		<div className="full-height">
 			<div className="full-height-content">
 				<Container>				
 						<BrowserRouter>					

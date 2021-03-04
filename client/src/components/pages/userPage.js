@@ -79,7 +79,7 @@ class UserPage extends Component {
 			var table = window.location.href.split('table/')
 			socket.emit('user_page_send', table[1]);	
 			socket.on('user_page_read', function(data){
-				console.log('user_page_read--> ', data)
+				//console.log('user_page_read--> ', data)
 				if(data.user === "" || data.user !== "indefined"){
 					data.user = self.getCookie("casino_user")
 				}

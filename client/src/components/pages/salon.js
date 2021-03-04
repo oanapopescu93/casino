@@ -120,7 +120,7 @@ class Salon extends Component {
 	}
   
 	render() {	
-				
+		$('.full-height').attr('id', 'salon')		
 		return (
 			<div>
 				{self.state.empty ? (

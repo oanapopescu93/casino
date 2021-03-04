@@ -11,7 +11,7 @@ var ctx;
 var socket;
 var my_roulette;
 var canvas_width = 900;
-var canvas_height = 750;
+var canvas_height = 800;
 var roulette_radius_x = canvas_width/2;
 var roulette_radius_y = 250;
 
@@ -82,13 +82,17 @@ function roulette_game(props){
 		self.choose_roulette_type();
 
 		socket.on('roulette_spin_read', function(data){	
-			//console.log('roulette_spin_read', spin_click, data.monkey)
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				spin_time = data.spin_time;
-				ball.speed = data.ball_speed;
-				// console.log('spin_read', ball.speed);
+				ball.speed = data.ball_speed;				
 				if (window.innerWidth < 900){
-					ball.speed = ball.speed/2
+					if(window.innerHeight < window.innerWidth){
+						//landscape
+						ball.speed = 0.0173
+					} else {
+						//portrait
+						ball.speed = 0.018
+					}					
 				} 
 				self.spin(data.arc, spin_time, data.monkey);
 			}				
@@ -99,50 +103,63 @@ function roulette_game(props){
 		canvas = document.getElementById("wheelcanvas");		
 		ctx = canvas.getContext("2d");	
 		
+		
 		if (window.innerWidth < 900){
-			canvas.width = window.innerWidth - 30;
-			canvas.height = 300;
-			
-			roulette_radius_x = 130;
-			roulette_radius_y = 130;
-			outsideRadius = 100;
-			textRadius = outsideRadius-15;
-			insideRadius = outsideRadius-20;
-			
+			if(window.innerHeight < window.innerWidth){
+				//landscape				
+				canvas.width = 900;
+				canvas.height = 300;
+
+				roulette_radius_x = 130;
+				roulette_radius_y = 130;
+				outsideRadius = 100;
+				textRadius = outsideRadius-15;
+				insideRadius = outsideRadius-20;
+
+				radiantLine01 = [-65, 15];
+				radiantLine02 = [-65, -32];
+				radiantLine03 = [-105, -80];
+				
+				bet_x = 330;
+				bet_y = 130;
+				bet_square = 30;
+			} else {
+				//portrait
+				canvas.width = 900;
+				canvas.height = 300;
+				roulette_radius_x = 150;
+				roulette_radius_y = 150;
+				outsideRadius = 120;
+				textRadius = outsideRadius-15;
+				insideRadius = outsideRadius-20;
+
+				radiantLine01 = [-65, 15];
+				radiantLine02 = [-105, -35];
+				radiantLine03 = [-105, -85];
+				
+				bet_x = 330;
+				bet_y = 130;
+				bet_square = 30;
+			}
+
 			circle = {radius: textRadius-15, angle:0}
 			ball = {x:70, y:roulette_radius_x, speed:0.05, width:6};
-			
-			bet_x = 285;
-			bet_y = 130;
-			bet_square = 25;
-			
+
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';
 			font_bold_16 = 'bold 12px sans-serif';
+			text_offset = 15;
 			
 			button_spin  = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: bet_x-11, text_y: roulette_radius_y+105};
 			button_clear = {x: bet_x+55, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x+39, text_y: roulette_radius_y+105};
 			
-			spin_button_coordonates = {x:roulette_radius_x + 130, y:roulette_radius_y + 75, width:45, height:45};
-			clear_button_coordonates = {x:roulette_radius_x + 180, y:roulette_radius_y + 75, width:45, height:45};
+			spin_button_coordonates = {x:roulette_radius_x + 160, y:roulette_radius_y + 75, width:45, height:45};
+			clear_button_coordonates = {x:roulette_radius_x + 220, y:roulette_radius_y + 75, width:45, height:45};
 			spin_clear = [[0,0, 255, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
-
-			radiantLine01 = [-65, 15];
-			radiantLine02 = [-65, -32];
-			radiantLine03 = [-105, -80];
-			text_offset = 15;
-
-			//hide if not landscape
-			if(window.innerHeight > window.innerWidth){
-				$('#wheelcanvas').hide()
-				alert("Please use Landscape!");
-			} else {
-				$('#wheelcanvas').show()
-			}
 		} else {
-			canvas.width = 900;	
-			canvas.height = 750;
+			canvas.width = 900;
+			canvas.height = 800;
 			
 			roulette_radius_x = canvas_width/2;	
 			roulette_radius_y = 250;
@@ -923,7 +940,8 @@ function isInside(mousePos, obj){
 }
 
 function Roulette(props) {	
-	setTimeout(function(){ 	
+	setTimeout(function(){ 
+		$('.full-height').attr('id', 'roulette')		
 		my_roulette = new roulette_game(props);
 		my_roulette.ready();
 		

@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.7ede25cf.chunk.css",
-    "main.js": "/static/js/main.44c6b828.chunk.js",
-    "main.js.map": "/static/js/main.44c6b828.chunk.js.map",
+    "main.css": "/static/css/main.10aac39c.chunk.css",
+    "main.js": "/static/js/main.8ccab6ac.chunk.js",
+    "main.js.map": "/static/js/main.8ccab6ac.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.83c3e0c4.js",
     "runtime-main.js.map": "/static/js/runtime-main.83c3e0c4.js.map",
     "static/css/2.c3594674.chunk.css": "/static/css/2.c3594674.chunk.css",
-    "static/js/2.40fb4162.chunk.js": "/static/js/2.40fb4162.chunk.js",
-    "static/js/2.40fb4162.chunk.js.map": "/static/js/2.40fb4162.chunk.js.map",
+    "static/js/2.fe86627a.chunk.js": "/static/js/2.fe86627a.chunk.js",
+    "static/js/2.fe86627a.chunk.js.map": "/static/js/2.fe86627a.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.0f50a95b03e3e17ed2d0201f223251ec.js": "/precache-manifest.0f50a95b03e3e17ed2d0201f223251ec.js",
+    "precache-manifest.5a7e84e70171086b6e505e0a9526279e.js": "/precache-manifest.5a7e84e70171086b6e505e0a9526279e.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.c3594674.chunk.css.map": "/static/css/2.c3594674.chunk.css.map",
-    "static/css/main.7ede25cf.chunk.css.map": "/static/css/main.7ede25cf.chunk.css.map",
-    "static/js/2.40fb4162.chunk.js.LICENSE.txt": "/static/js/2.40fb4162.chunk.js.LICENSE.txt",
+    "static/css/main.10aac39c.chunk.css.map": "/static/css/main.10aac39c.chunk.css.map",
+    "static/js/2.fe86627a.chunk.js.LICENSE.txt": "/static/js/2.fe86627a.chunk.js.LICENSE.txt",
     "static/media/style.css": "/static/media/bg00a.572bbe97.jpg",
     "static/media/carrot_icon.png": "/static/media/carrot_icon.269bad3c.png",
     "static/media/img_cards.png": "/static/media/img_cards.51cacaf2.png",
@@ -21,13 +21,14 @@
     "static/media/rabbit_run.gif": "/static/media/rabbit_run.c1ab81a7.gif",
     "static/media/rabbit_stand_left.png": "/static/media/rabbit_stand_left.aad7218e.png",
     "static/media/rabbit_stand_right.png": "/static/media/rabbit_stand_right.dd8ca881.png",
-    "static/media/under_construction_icon.png": "/static/media/under_construction_icon.a0844a3a.png"
+    "static/media/under_construction_icon.png": "/static/media/under_construction_icon.a0844a3a.png",
+    "static/media/vegetables_black.png": "/static/media/vegetables_black.25ce58da.png"
   },
   "entrypoints": [
     "static/js/runtime-main.83c3e0c4.js",
     "static/css/2.c3594674.chunk.css",
-    "static/js/2.40fb4162.chunk.js",
-    "static/css/main.7ede25cf.chunk.css",
-    "static/js/main.44c6b828.chunk.js"
+    "static/js/2.fe86627a.chunk.js",
+    "static/css/main.10aac39c.chunk.css",
+    "static/js/main.8ccab6ac.chunk.js"
   ]
 }

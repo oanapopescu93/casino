@@ -41,9 +41,11 @@ function ChatForm(props) {
 	}
 	
 	function my_click(e){
-		// console.log('chatform', user, $('#chattext').val());
-		socket.emit('chat_message_send', {user: user, user_table: props.user_table, user_type: props.type, message: $('#chattext').val()});
-		$('#chattext').val('');
+		if($('#chattext').val() !== ""){
+			// console.log('chatform', user, $('#chattext').val());
+			socket.emit('chat_message_send', {user: user, user_table: props.user_table, user_type: props.type, message: $('#chattext').val()});
+			$('#chattext').val('');
+		}
 		socket_click = 0;
 	}
 	

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 
 import Roulette from './games/roulette'
 import Blackjack from './games/blackjack'
+import Slot from './games/slot'
 
 var finish = false;
 var self;
@@ -56,9 +57,9 @@ class Game extends Component {
 					<div>
 						{user ? (
 							<div className="casino_container color_yellow">				
-								<Row>
+								{/* <Row>
 									<Col sm={12}><h1 id="game_title" className="text-uppercase">{this.state.user_table}</h1></Col>
-								</Row>
+								</Row> */}
 								{(() => {
 									switch (this.state.game) {
 										case "roulette":
@@ -71,11 +72,7 @@ class Game extends Component {
 											)	
 										case "slots":
 											return (
-												<div>
-													<p>Sorry, </p>
-													<p>no slots machine available yet</p>
-													<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
-												</div>
+												<Slot user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} socket={this.props.socket} money={this.state.money}></Slot>
 											)
 										default:
 											return(
