@@ -442,9 +442,7 @@ function roulette_game(props){
 				
 				if (isInside(mousePos,obj03)) {
 					//console.log('BETS', spin_click);
-					if(spin_click !== 0){
-
-					} else {
+					if(spin_click === 0){
 						your_bets.push(obj03);					
 						your_last_bet = obj03;
 						self.draw_tokens(your_bets[your_bets.length-1]);

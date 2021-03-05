@@ -172,7 +172,7 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('blackjack_send', function(data) {
-		console.log('blackjack_send', data)	
+		//console.log('blackjack_send', data)	
 		var user_table = data[1].user_table.split(' ').join('_');
 		var room_name = user_table;
 		if(typeof data[1].user_type !== "undefined"){
@@ -182,7 +182,7 @@ io.on('connection', function(socket) {
 
 		switch (data[0]) {
 			case 'start':
-				if(!game_start){
+				//if(!game_start){
 					var suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
 					var values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
@@ -190,17 +190,15 @@ io.on('connection', function(socket) {
 
 					blackjack_players = user_join
 					dealHands();
-					updatePoints();
-
 					
 					hidden_dealer.id = blackjack_dealer.id;
 					hidden_dealer.hand = [];
 					hidden_dealer.hand.push(blackjack_dealer.hand[0])
-					io.to(room_name).emit('blackjack_read', ['start', blackjack_players, hidden_dealer]);
+					io.to(room_name).emit('blackjack_read', ['start', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
 					game_start = true;
-				} else {
-					io.to(room_name).emit('blackjack_read', text03);
-				}				
+				// } else {
+				// 	io.to(room_name).emit('blackjack_read', text03);
+				// }				
 				break;
 			case 'pause':
 				if(!game_start){
@@ -213,10 +211,124 @@ io.on('connection', function(socket) {
 				}
 				break;
 			case 'hit':
+				hitMe();
+				io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
 				break;
 			case 'stay':
+				stay();
+				io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
 				break;
-		  }		
+		  }	
+		  
+		function createDeck(suits, values, turns){
+			blackjack_deck = new Array();
+			for (var i = 0 ; i < values.length; i++){
+				for(var j = 0; j < suits.length; j++){
+					var weight = parseInt(values[i]);
+					if (values[i] == "J" || values[i] == "Q" || values[i] == "K")
+						weight = 10;
+					if (values[i] == "A")
+						weight = 11;
+					var card = { Value: values[i], Suit: suits[j], Weight: weight };
+					blackjack_deck.push(card);
+				}
+			}		
+			return shuffle(turns);
+		}
+		
+		function shuffle(turns){        
+			for (var i = 0; i < turns; i++){
+				var a = Math.floor((Math.random() * blackjack_deck.length));
+				var b = Math.floor((Math.random() * blackjack_deck.length));
+				var tmp = blackjack_deck[a];
+		
+				blackjack_deck[a] = blackjack_deck[b];
+				blackjack_deck[b] = tmp;
+			}
+		
+			return blackjack_deck;
+		}
+		
+		function dealHands(){
+			blackjack_dealer = {id: "dealer", hand: []}
+			for(var i = 0; i < 2; i++){	
+				var card = blackjack_deck.pop();	
+				blackjack_dealer.hand.push(card);		
+				for (var j = 0; j < blackjack_players.length; j++){
+					var card = blackjack_deck.pop();
+					if(i === 0){
+						blackjack_players[j].hand = [];
+					}	
+					blackjack_players[j].hand.push(card);			
+				}
+			}
+			points();
+			check('blackjack');
+		}
+		
+		function hitMe(){
+			var card = blackjack_deck.pop();
+			blackjack_players[blackjack_current_player].hand.push(card);
+			points();
+			check('busted');
+		}
+		
+		function points(){
+			for(var i in blackjack_players){
+				var points = 0;
+				for(var j in blackjack_players[i].hand){
+					points = points + blackjack_players[i].hand[j].Weight;
+				}
+				blackjack_players[i].points = points;
+				blackjack_players[i].lose = false;
+				blackjack_players[i].win = false;
+			}
+		}
+		
+		function check(reason){
+			switch (reason) {
+				case 'busted':
+					if(blackjack_players[blackjack_current_player].points > 21){				
+						blackjack_players[blackjack_current_player].lose = true;
+					} 				
+					break;
+				case 'blackjack':
+					for(var i in blackjack_players){
+						if(blackjack_players[i].points === 21){
+							blackjack_players[blackjack_current_player].win = true;
+						} 
+					}	
+					break;				
+			  }		
+		}
+		
+		function stay(){
+			if(blackjack_current_player != blackjack_players.length-1){
+				blackjack_current_player++;
+			} else {
+				blackjack_win_lose();
+			}
+		}
+		
+		function blackjack_win_lose(){
+			dealer_hand();
+
+			var winner = -1;
+			var score = 0;
+			for(var i in blackjack_players){
+				if(blackjack_players[i].lose){
+					if(blackjack_players[i].points > score){
+						winner = i;
+						score = blackjack_players[i].points;
+					}
+				}
+			}
+			blackjack_players[winner].win = true;
+		}
+
+		function dealer_hand(){
+
+		}
 	});
 
 	socket.on('disconnect', function(username) {		
@@ -248,88 +360,6 @@ function chatMessage(from, text){
 		return {from: from, text:text, time: new Date().getTime()};
 	}    
 };
-
-function createDeck(suits, values, turns){
-	blackjack_deck = new Array();
-	for (var i = 0 ; i < values.length; i++){
-		for(var j = 0; j < suits.length; j++){
-			var weight = parseInt(values[i]);
-			if (values[i] == "J" || values[i] == "Q" || values[i] == "K")
-				weight = 10;
-			if (values[i] == "A")
-				weight = 11;
-			var card = { Value: values[i], Suit: suits[j], Weight: weight };
-			blackjack_deck.push(card);
-		}
-	}
-
-	return shuffle(turns);
-}
-
-function shuffle(turns){        
-	for (var i = 0; i < turns; i++){
-		var a = Math.floor((Math.random() * blackjack_deck.length));
-		var b = Math.floor((Math.random() * blackjack_deck.length));
-		var tmp = blackjack_deck[a];
-
-		blackjack_deck[a] = blackjack_deck[b];
-		blackjack_deck[b] = tmp;
-	}
-
-	return blackjack_deck;
-}
-
-function dealHands(){
-	// alternate handing cards to each player
-	// 2 cards each
-	blackjack_dealer = {id: "dealer", hand: []}
-	for(var i = 0; i < 2; i++){	
-		var card = blackjack_deck.pop();	
-		blackjack_dealer.hand.push(card);		
-		for (var j = 0; j < blackjack_players.length; j++){
-			var card = blackjack_deck.pop();
-			if(i === 0){
-				blackjack_players[j].hand = [];
-			}	
-			blackjack_players[j].hand.push(card);			
-		}
-	}
-}
-
-function hitMe(){
-	// pop a card from the deck to the current player
-	// check if current player new points are over 21
-	var card = deck.pop();
-	user_join[blackjack_current_player].hand.push(card);
-	updatePoints();
-	check();
-}
-
-function stay(){
-	// move on to next player if any
-}
-
-function updatePoints(){
-	for (var i = 0; i < user_join.length; i++){
-		getPoints(i);
-	}
-}
-
-function getPoints(x){
-	var points = 0;
-	for(var i = 0; i < user_join[x].hand.length; i++){
-		points += user_join[x].hand[i].Weight;
-	}
-	user_join[x].points = points;
-}
-
-function check(){
-	
-}
-
-function stay(){
-	
-}
 
 http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));
 
