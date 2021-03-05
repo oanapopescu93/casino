@@ -398,6 +398,22 @@ function roulette_game(props){
 		$('#wheelcanvas').off('click').on('click', function(event) {
 			self.canvas_click(canvas, event);
 		});
+		
+		$('#wheelcanvas').off('mousemove').on('mousemove', function(event) {
+			var mousePos = getMousePos(canvas, event);
+			$('#wheelcanvas').css('cursor', "default")
+			if (isInside(mousePos, spin_button_coordonates) || isInside(mousePos, clear_button_coordonates)) {
+				$('#wheelcanvas').css('cursor', "pointer")				
+			} else {			
+				for(var i in list_bets){
+					var obj03 = list_bets[i];
+					obj03.bet_value = bet_value;					
+					if (isInside(mousePos,obj03)) {
+						$('#wheelcanvas').css('cursor', "pointer")
+					} 
+				}	
+			}
+		});
 	}
 	
 	this.canvas_click = function(canvas, event){		

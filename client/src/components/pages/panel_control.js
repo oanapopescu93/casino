@@ -34,6 +34,12 @@ function Panel(props){
     setTimeout(function(){ 	
         var prev_click = "";
 
+        $('body').off('click').on('click', function(event) {
+            if($(event.target).closest(".panel_container").length === 0){
+                $('.panel_container').removeClass('open');
+            }
+        });
+
 		function open_panel(){
 			$('.panel_container').toggleClass('open');
 		}
