@@ -364,6 +364,7 @@ function draw_rect(x, y, width, height, fillStyle, lineWidth, strokeStyle){
 
 function Blackjack(props) {	
 	setTimeout(function(){ 	
+		$('.full-height').attr('id', 'blackjack')	
 		blackjack_game = new blackjack_wheel(props);
 		blackjack_game.ready();
 		

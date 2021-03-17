@@ -100,13 +100,12 @@ function roulette_game(props){
 	}
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
-		canvas = document.getElementById("wheelcanvas");		
-		ctx = canvas.getContext("2d");	
-		
+		canvas = document.getElementById("roulette_canvas");		
+		ctx = canvas.getContext("2d");
 		
 		if (window.innerWidth < 900){
 			if(window.innerHeight < window.innerWidth){
-				//landscape				
+				//small landscape				
 				canvas.width = 900;
 				canvas.height = 300;
 
@@ -123,10 +122,18 @@ function roulette_game(props){
 				bet_x = 330;
 				bet_y = 130;
 				bet_square = 30;
+				
+				button_spin  = {x: 120, y: roulette_radius_y+135, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 108, text_y: roulette_radius_y+138};
+				button_clear = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x-16, text_y: roulette_radius_y+104}
+
+				spin_button_coordonates = {x:100, y:roulette_radius_y+110, width:45, height:45};
+				clear_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
+
+				spin_clear = [[0,0, 260, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
 			} else {
-				//portrait
+				//small portrait
 				canvas.width = 900;
-				canvas.height = 300;
+				canvas.height = 400;
 				roulette_radius_x = 150;
 				roulette_radius_y = 150;
 				outsideRadius = 120;
@@ -140,6 +147,14 @@ function roulette_game(props){
 				bet_x = 330;
 				bet_y = 130;
 				bet_square = 30;
+
+				button_spin  = {x: 140, y: roulette_radius_y+180, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 127, text_y: roulette_radius_y+184};
+				button_clear = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x-16, text_y: roulette_radius_y+104}
+
+				spin_button_coordonates = {x:120, y:roulette_radius_y+155, width:45, height:45};
+				clear_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
+
+				spin_clear = [[0,0, 298, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
 			}
 
 			circle = {radius: textRadius-15, angle:0}
@@ -149,15 +164,10 @@ function roulette_game(props){
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';
 			font_bold_16 = 'bold 12px sans-serif';
-			text_offset = 15;
+			text_offset = 15;			
 			
-			button_spin  = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: bet_x-11, text_y: roulette_radius_y+105};
-			button_clear = {x: bet_x+55, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x+39, text_y: roulette_radius_y+105};
-			
-			spin_button_coordonates = {x:roulette_radius_x + 160, y:roulette_radius_y + 75, width:45, height:45};
-			clear_button_coordonates = {x:roulette_radius_x + 220, y:roulette_radius_y + 75, width:45, height:45};
-			spin_clear = [[0,0, 255, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
 		} else {
+			//big
 			canvas.width = 900;
 			canvas.height = 800;
 			
@@ -203,11 +213,11 @@ function roulette_game(props){
 		self.roulette_table_click();
 	}
 	
-	this.nr_colors = function(){		
+	this.nr_colors = function(){
 		if(roulette_type === 'european'){
 			colors = ["green", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red"];
 			numbers = ["0", "32", "15", "19", "4", "21", "2", "25", "17", "34", "6", "27", "13", "36", "11", "30", "8", "23", "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18", "29", "7", "28", "12", "35", "3", "26"]; //37
-			arc = Math.PI / (numbers.length/2);
+			arc = Math.PI / (numbers.length/2);			
 		} else {
 			colors = ["green", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "green", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red"];
 			numbers = ["0", "28", "9", "26", "30", "11", "7", "20", "32", "17", "5", "22", "34", "15", "3", "24", "36", "13", "1", "00", "27", "10", "25", "29", "12", "8", "19", "31", "18", "6", "21", "33", "16", "4", "23", "35", "14", "2"]; //38
@@ -223,7 +233,7 @@ function roulette_game(props){
 		ctx.shadowOffsetX = 0;
 		ctx.shadowOffsetY = 0;
 
-		self.drawRoulette();
+		self.drawRoulette();	
 		
 		ctx.font = font_bold_12; 
 		
@@ -395,21 +405,21 @@ function roulette_game(props){
 	}	
 		
 	this.roulette_table_click = function(){			
-		$('#wheelcanvas').off('click').on('click', function(event) {
+		$('#roulette_canvas').off('click').on('click', function(event) {
 			self.canvas_click(canvas, event);
 		});
 		
-		$('#wheelcanvas').off('mousemove').on('mousemove', function(event) {
+		$('#roulette_canvas').off('mousemove').on('mousemove', function(event) {
 			var mousePos = getMousePos(canvas, event);
-			$('#wheelcanvas').css('cursor', "default")
+			$('#roulette_canvas').css('cursor', "default")
 			if (isInside(mousePos, spin_button_coordonates) || isInside(mousePos, clear_button_coordonates)) {
-				$('#wheelcanvas').css('cursor', "pointer")				
+				$('#roulette_canvas').css('cursor', "pointer")				
 			} else {			
 				for(var i in list_bets){
 					var obj03 = list_bets[i];
 					obj03.bet_value = bet_value;					
 					if (isInside(mousePos,obj03)) {
-						$('#wheelcanvas').css('cursor', "pointer")
+						$('#roulette_canvas').css('cursor', "pointer")
 					} 
 				}	
 			}
@@ -434,6 +444,10 @@ function roulette_game(props){
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
 				alert("Please place your bet before betting.");
+				var width = $('.roulette_container').width();
+				$('.roulette_container').animate({
+					scrollLeft: width
+				}, 500);
 			} else {
 				spin_click++;
 				my_click++;
@@ -636,7 +650,7 @@ function roulette_game(props){
 		var distance_y = entity01.y - entity02.y;
 		return Math.sqrt(distance_x * distance_x + distance_y * distance_y);
 	}
-	
+
 	this.create_roulette_bets = function(){	
 		ctx.font = font_bold_12; 
 		var box_nr = {x:bet_x, y:bet_y, width:bet_square, height:bet_square};
@@ -953,14 +967,16 @@ function isInside(mousePos, obj){
 	return mousePos.x > obj.x && mousePos.x < obj.x + obj.width && mousePos.y < obj.y + obj.height && mousePos.y > obj.y
 }
 
-function Roulette(props) {	
+function Roulette(props) {
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'roulette')		
 		my_roulette = new roulette_game(props);
 		my_roulette.ready();
 		
 		$(window).resize(function(){
-			my_roulette.ready();
+			if(document.getElementById("roulette_canvas") !== null){
+				my_roulette.ready();
+			}
 		});
 	}, 0);
 	
@@ -968,7 +984,7 @@ function Roulette(props) {
 	
 	return (
 		<div className="roulette_container">
-			<canvas id="wheelcanvas"></canvas>
+			<canvas id="roulette_canvas"></canvas>				
 		</div>
 	);
 }

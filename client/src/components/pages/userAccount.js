@@ -51,7 +51,8 @@ class UserAccount extends Component {
 		}
 	}	
   
-	render() {	
+	render() {
+		$('.full-height').attr('id', 'user_account')		
 		return (
 			<div className="color_yellow">	
 				<div className="account_tabs_container">

@@ -70,7 +70,8 @@ function handleBack(){
 }
 
 function Slot(props) {	
-	setTimeout(function(){ 	
+	setTimeout(function(){ 
+		$('.full-height').attr('id', 'slots')		
 		my_slot = new slot_game(props);
 		my_slot.ready();
 		
@@ -86,7 +87,9 @@ function Slot(props) {
             <p>Sorry, </p>
             <p>no slots available yet</p>
             <Button className="button_table shadow_convex" type="button" onClick={handleBack}>Back</Button>
-			<canvas id="slot_canvas"></canvas>
+			<div style={{'display': 'none'}}>
+				<canvas id="slot_canvas"></canvas>
+			</div>
 		</div>
 	);
 }

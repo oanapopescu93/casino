@@ -60,7 +60,6 @@ function Panel(props){
 	}, 0);
 
     function handleClick(link) {
-        console.log('logout', link)
 		switch (link) {
 			case "account":
                 dispatch(game_visible(false))
