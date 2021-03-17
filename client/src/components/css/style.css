@@ -651,8 +651,15 @@ table {
 	padding:10px 5px;
 	cursor: pointer;
 }
-.user_list li:first-child > span{
-	padding:0px 5px 10px 5px;
+.user_list li:first-child{
+	margin-top:5px;
+}
+.user_list li:hover, .user_list li:focus{
+	background: rgba(255, 255, 0, 0.2);
+
+}
+#user_subtitle{
+	padding-left:5px;
 }
 #user_list_user{
 	color:yellow;

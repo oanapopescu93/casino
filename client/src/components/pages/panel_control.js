@@ -116,11 +116,12 @@ function Panel(props){
                 </div>
                 <div id="user_panel_box" className="panel_box">
                     <h4 id="user_title">{game_title}</h4>
+                    <p id="user_subtitle">
+                        <span id="user_name">{user}</span>
+                        <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
+                    </p>
                     <ul className="user_list">
-                        <li id="user_list_user" className="user_list_item" onClick={() => handleClick('casino')}>
-                            <span id="user_name">{user}</span>
-                            <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
-                        </li>
+                        <li id="user_list_user" className="user_list_item" onClick={() => handleClick('casino')}><span>Game</span></li>
                         <li id="user_list_account" className="user_list_item" onClick={() => handleClick('account')}><span>My account</span></li>
                         <li id="user_list_salon" className="user_list_item" onClick={() => handleClick('salon')}><span>Salon</span></li>
                         <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}><span>Settings</span></li>
