@@ -11,14 +11,12 @@ body{
 	color:black;
 	font-family: 'Roboto Condensed';
 	min-height: 100% !important;
-    height: 100%;
     position: relative;
 }
 #casino_root, .App{
-	min-height: 100% !important;
-    height: 100%;
 	position: relative;
 	overflow-x: hidden;
+	height: 100vh;
 }
 .grad {
 	background-color:green;
@@ -843,7 +841,7 @@ table {
 .footer_container{
 	position:absolute;
 	z-index:9990;
-	bottom:20px;
+	/* bottom:20px; */
 	color:var(--yellow);
 	width:100%;
 }
@@ -927,23 +925,27 @@ table {
 	}
 }
 
-::-webkit-scrollbar{
-	width: 10px;
-	height:5px;
-	border-radius: 10px;
-	background-color: black;
-	border: 1px solid var(--yellow);
-}
-
-::-webkit-scrollbar-thumb{
-	border-radius: 10px;
-	background-color: var(--yellow);
-	border: 1px solid transparent;
-	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, from(black), to(black), color-stop(.5,var(--yellow)));	
-    background-clip: content-box;
-}
-
 @media (max-width: 767px) {
+	#salon .full-height-content{
+		top: 0;
+    	transform: translate(0px, 0px);
+	}
+	#sapou a{
+		display:inline-block;
+		vertical-align: middle;
+	}
+	#sapou img{
+		display:inline-block;
+		vertical-align: middle;
+	}
+	#sapou h1{
+		display:inline-block;
+		vertical-align: middle;
+		margin: 25px 0px 0px 5px;
+	}
+	#sapou h6{
+		margin-top: 5px;
+	}
 	h1 {
 		font-size: 20px;
 		line-height: 20px;
@@ -995,7 +997,7 @@ table {
 		font-size:16px;
 	}
 	#logo_icon{
-		width:30px;
+		width:20px;
 	}
 	.navbar-text{
 		float:none;
@@ -1011,7 +1013,7 @@ table {
 		height:180px;
 	}
 	.casino_games_table {
-		height: 170px;
+		height: 180px;
 		padding: 5px;
 		margin-top: 5px;
 	}
@@ -1083,6 +1085,21 @@ table {
 	.full-height-content{
 		padding: 20px 0px;
 	}
+	::-webkit-scrollbar{
+		width: 10px;
+		height:5px;
+		border-radius: 10px;
+		background-color: black;
+		border: 1px solid var(--yellow);
+	}
+	
+	::-webkit-scrollbar-thumb{
+		border-radius: 10px;
+		background-color: var(--yellow);
+		border: 1px solid transparent;
+		background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, from(black), to(black), color-stop(.5,var(--yellow)));	
+		background-clip: content-box;
+	}
 }
 
 
@@ -1092,5 +1109,14 @@ table {
 	}
 	#game_title{
 		display:none;
+	}
+	#casino_root, .App {
+		height: auto;
+	}
+	.footer_container {
+		bottom: -25px;
+	}
+	footer{
+		padding:10px;
 	}
 }

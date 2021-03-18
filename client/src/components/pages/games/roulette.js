@@ -45,8 +45,10 @@ var your_bets = [];
 var your_last_bet = {};
 var bet_value = 1;
 
-var button_spin  = {x: roulette_radius_x - 270, y: roulette_radius_y+200, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: roulette_radius_x - 284, text_y: roulette_radius_y+205};
-var button_clear = {x: roulette_radius_x - 210, y: roulette_radius_y+200, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: roulette_radius_x - 232, text_y: roulette_radius_y+205};
+var button_bet  = {x: 0, y: 0, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'BET', text_x: roulette_radius_x - 284, text_y: roulette_radius_y+205};
+var button_spin  = {x: 0, y: 0, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: roulette_radius_x - 284, text_y: roulette_radius_y+205};
+var button_clear = {x: 0, y: 0, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: roulette_radius_x - 232, text_y: roulette_radius_y+205};
+var bet_button_coordonates = {};
 var spin_button_coordonates = {};
 var clear_button_coordonates = {};
 var spin_clear = [0, 0];
@@ -123,11 +125,13 @@ function roulette_game(props){
 				bet_y = 130;
 				bet_square = 30;
 				
-				button_spin  = {x: 120, y: roulette_radius_y+135, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 108, text_y: roulette_radius_y+138};
-				button_clear = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x-16, text_y: roulette_radius_y+104}
+				button_bet  = {x: 125, y: roulette_radius_y+140, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'BET', text_x: 115, text_y: roulette_radius_y+144};
+				button_spin  = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: bet_x-12, text_y: roulette_radius_y+104};
+				button_clear = {x: bet_x+55, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x+39, text_y: roulette_radius_y+104}
 
-				spin_button_coordonates = {x:100, y:roulette_radius_y+110, width:45, height:45};
-				clear_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
+				bet_button_coordonates = {x:102, y:roulette_radius_y+117, width:45, height:45};
+				spin_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
+				clear_button_coordonates = {x:bet_x+35, y:roulette_radius_y+75, width:45, height:45};
 
 				spin_clear = [[0,0, 260, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
 			} else {
@@ -148,11 +152,13 @@ function roulette_game(props){
 				bet_y = 130;
 				bet_square = 30;
 
-				button_spin  = {x: 140, y: roulette_radius_y+180, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 127, text_y: roulette_radius_y+184};
-				button_clear = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x-16, text_y: roulette_radius_y+104}
+				button_bet  = {x: 145, y: roulette_radius_y+180, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'BET', text_x: 135, text_y: roulette_radius_y+184};
+				button_spin  = {x: bet_x, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: bet_x-12, text_y: roulette_radius_y+104};
+				button_clear = {x: bet_x+55, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: bet_x+39, text_y: roulette_radius_y+104}
 
-				spin_button_coordonates = {x:120, y:roulette_radius_y+155, width:45, height:45};
-				clear_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
+				bet_button_coordonates = {x:122, y:roulette_radius_y+155, width:45, height:45};
+				spin_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
+				clear_button_coordonates = {x:bet_x+35, y:roulette_radius_y+75, width:45, height:45};
 
 				spin_clear = [[0,0, 298, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
 			}
@@ -189,9 +195,11 @@ function roulette_game(props){
 			font_bold_14 = 'bold 14px sans-serif';
 			font_bold_16 = 'bold 16px sans-serif';
 			
+			button_bet  = {x: 0, y: 0, r: 0, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: '', text_x: 0, text_y: 0};
 			button_spin  = {x: bet_x, y: roulette_radius_y+200, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: roulette_radius_x - 284, text_y: roulette_radius_y+205};
 			button_clear = {x: bet_x+60, y: roulette_radius_y+200, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: roulette_radius_x - 232, text_y: roulette_radius_y+205};
 			
+			bet_button_coordonates = {x:0, y:0, width:0, height:0};
 			spin_button_coordonates = {x:roulette_radius_x - 300, y:roulette_radius_y+170, width:50, height:50};
 			clear_button_coordonates = {x:roulette_radius_x - 240, y:roulette_radius_y+170, width:50, height:50};
 			spin_clear = [[0, 0, canvas.width, 490]];
@@ -237,6 +245,7 @@ function roulette_game(props){
 		
 		ctx.font = font_bold_12; 
 		
+		self.drawButton(button_bet.x, button_bet.y, button_bet.r, button_bet.sAngle, button_bet.eAngle, button_bet.counterclockwise, button_bet.fillStyle, button_bet.lineWidth, button_bet.strokeStyle, button_bet.text, button_bet.text_x, button_bet.text_y);
 		self.drawButton(button_spin.x, button_spin.y, button_spin.r, button_spin.sAngle, button_spin.eAngle, button_spin.counterclockwise, button_spin.fillStyle, button_spin.lineWidth, button_spin.strokeStyle, button_spin.text, button_spin.text_x, button_spin.text_y);
 		self.drawButton(button_clear.x, button_clear.y, button_clear.r, button_clear.sAngle, button_clear.eAngle, button_clear.counterclockwise, button_clear.fillStyle, button_clear.lineWidth, button_clear.strokeStyle, button_clear.text, button_clear.text_x, button_clear.text_y);
 		ctx.font = font_bold_14; 
@@ -412,7 +421,7 @@ function roulette_game(props){
 		$('#roulette_canvas').off('mousemove').on('mousemove', function(event) {
 			var mousePos = getMousePos(canvas, event);
 			$('#roulette_canvas').css('cursor', "default")
-			if (isInside(mousePos, spin_button_coordonates) || isInside(mousePos, clear_button_coordonates)) {
+			if (isInside(mousePos, clear_button_coordonates) || isInside(mousePos, spin_button_coordonates) || isInside(mousePos, clear_button_coordonates)) {
 				$('#roulette_canvas').css('cursor', "pointer")				
 			} else {			
 				for(var i in list_bets){
@@ -431,6 +440,10 @@ function roulette_game(props){
 
 		// ctx.beginPath();
 		// ctx.lineWidth = "1";
+		// ctx.strokeStyle = "green";
+		// ctx.rect(bet_button_coordonates.x, bet_button_coordonates.y, bet_button_coordonates.width, bet_button_coordonates.height);
+		// ctx.stroke();
+		// ctx.lineWidth = "1";
 		// ctx.strokeStyle = "red";
 		// ctx.rect(spin_button_coordonates.x, spin_button_coordonates.y, spin_button_coordonates.width, spin_button_coordonates.height);
 		// ctx.stroke();
@@ -439,15 +452,17 @@ function roulette_game(props){
 		// ctx.rect(clear_button_coordonates.x, clear_button_coordonates.y, clear_button_coordonates.width, clear_button_coordonates.height);
 		// ctx.stroke();
 		
-		if (isInside(mousePos, spin_button_coordonates)) {
-			//console.log('SPIN');
+		if (isInside(mousePos, bet_button_coordonates)) {
+			//console.log('BET');			
+			var width = $('.roulette_container').width();
+			$('.roulette_container').animate({
+				scrollLeft: width
+			}, 500);	
+		} else if (isInside(mousePos, spin_button_coordonates)) {
+			console.log('SPIN');
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
-				alert("Please place your bet before betting.");
-				var width = $('.roulette_container').width();
-				$('.roulette_container').animate({
-					scrollLeft: width
-				}, 500);
+				alert("Please place your bet before betting.");				
 			} else {
 				spin_click++;
 				my_click++;
@@ -459,6 +474,9 @@ function roulette_game(props){
 					user_type: props.type
 				}
 				socket.emit('roulette_spin_send', roulette_payload_server);
+				$('.roulette_container').animate({
+					scrollLeft: 0
+				}, 500);
 			}				
 		} else if (isInside(mousePos, clear_button_coordonates)) {
 			//console.log('CLEAR');
@@ -471,7 +489,7 @@ function roulette_game(props){
 				obj03.bet_value = bet_value;
 				
 				if (isInside(mousePos,obj03)) {
-					//console.log('BETS', spin_click);
+					//console.log('CARROTS', spin_click);
 					if(spin_click === 0){
 						your_bets.push(obj03);					
 						your_last_bet = obj03;
@@ -510,6 +528,7 @@ function roulette_game(props){
 				self.drawRoulette();
 				
 				ctx.font = font_bold_12; 
+				self.drawButton(button_bet.x, button_bet.y, button_bet.r, button_bet.sAngle, button_bet.eAngle, button_bet.counterclockwise, button_bet.fillStyle, button_bet.lineWidth, button_bet.strokeStyle, button_bet.text, button_bet.text_x, button_bet.text_y);
 				self.drawButton(button_spin.x, button_spin.y, button_spin.r, button_spin.sAngle, button_spin.eAngle, button_spin.counterclockwise, button_spin.fillStyle, button_spin.lineWidth, button_spin.strokeStyle, button_spin.text, button_spin.text_x, button_spin.text_y);
 				self.drawButton(button_clear.x, button_clear.y, button_clear.r, button_clear.sAngle, button_clear.eAngle, button_clear.counterclockwise, button_clear.fillStyle, button_clear.lineWidth, button_clear.strokeStyle, button_clear.text, button_clear.text_x, button_clear.text_y);
 				ctx.font = font_bold_14; 
@@ -619,6 +638,7 @@ function roulette_game(props){
 		self.drawRoulette();
 		
 		ctx.font = font_bold_12; 
+		self.drawButton(button_bet.x, button_bet.y, button_bet.r, button_bet.sAngle, button_bet.eAngle, button_bet.counterclockwise, button_bet.fillStyle, button_bet.lineWidth, button_bet.strokeStyle, button_bet.text, button_bet.text_x, button_bet.text_y);
 		self.drawButton(button_spin.x, button_spin.y, button_spin.r, button_spin.sAngle, button_spin.eAngle, button_spin.counterclockwise, button_spin.fillStyle, button_spin.lineWidth, button_spin.strokeStyle, button_spin.text, button_spin.text_x, button_spin.text_y);
 		self.drawButton(button_clear.x, button_clear.y, button_clear.r, button_clear.sAngle, button_clear.eAngle, button_clear.counterclockwise, button_clear.fillStyle, button_clear.lineWidth, button_clear.strokeStyle, button_clear.text, button_clear.text_x, button_clear.text_y);
 		ctx.font = font_bold_14; 
