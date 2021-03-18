@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "624215011e7b28027201df674a6e2cc0",
+    "revision": "fdb47f9fcc62c50cc284218b159658a4",
     "url": "/index.html"
   },
   {
-    "revision": "7782482d264716d18b17",
+    "revision": "c70a438a71867d7e6c32",
     "url": "/static/css/2.c3594674.chunk.css"
   },
   {
-    "revision": "3936f811c8bc033f3d2c",
-    "url": "/static/css/main.85e8dd19.chunk.css"
+    "revision": "bdce498e538b5136974e",
+    "url": "/static/css/main.251199cf.chunk.css"
   },
   {
-    "revision": "7782482d264716d18b17",
-    "url": "/static/js/2.fe86627a.chunk.js"
+    "revision": "c70a438a71867d7e6c32",
+    "url": "/static/js/2.3a0538c0.chunk.js"
   },
   {
     "revision": "8343773d2bc1f91de45b56764e549199",
-    "url": "/static/js/2.fe86627a.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.3a0538c0.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "3936f811c8bc033f3d2c",
-    "url": "/static/js/main.eabe2c7e.chunk.js"
+    "revision": "bdce498e538b5136974e",
+    "url": "/static/js/main.5cdae33f.chunk.js"
   },
   {
     "revision": "73635f645c271e35ff15",
@@ -30,6 +30,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "572bbe97919aa68b11a8c82ece90a80b",
     "url": "/static/media/bg00a.572bbe97.jpg"
+  },
+  {
+    "revision": "896a711697e9e40a41b82006a60a16c5",
+    "url": "/static/media/bitcoin-love-heart.896a7116.svg"
   },
   {
     "revision": "269bad3ccccebf0ef98a240e701708d6",

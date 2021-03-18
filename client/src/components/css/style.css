@@ -18,6 +18,9 @@ body{
 	overflow-x: hidden;
 	height: 100vh;
 }
+.App{
+	padding:40px 0px;
+}
 .grad {
 	background-color:green;
 	/* background-image: radial-gradient(green, black); */
@@ -82,11 +85,8 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
    	box-shadow:         4px 4px 8px 2px rgba(0,0,0,0.7)!important;
 }
 
-#logo_splash{
+#logo_splash, #logo_icon{
 	width:40px;
-}
-#logo_icon{
-	width:50px;
 }
 .under_construction_icon{
 	width: 150px;
@@ -494,9 +494,13 @@ table {
   border-collapse: collapse;
 }
 
+.modal{
+	z-index:999999;
+}
 .modal.show{
 	opacity:1;
 	background: rgba(0,0,0,0.7);
+	padding:10px;
 }
 .modal-dialog{
 	margin: 0;
@@ -789,6 +793,10 @@ table {
 .casino_modal .modal-header{
 	border-bottom: 1px solid black;
 }
+.casino_modal .modal-footer{
+	border-top: 1px solid black;
+	text-align: center;
+}
 .casino_modal .close{
 	opacity: 1;
 	text-shadow: none;
@@ -797,6 +805,14 @@ table {
 	text-align:left;
 	display: block;
 }
+.casino_modal p{
+	font-size:12px;
+	line-height:12px;
+}
+#qr_code{
+	margin-bottom: 5px;
+}
+
 #link_forget{
 	cursor: pointer;
 }
@@ -906,6 +922,21 @@ table {
 	text-align: center;
 }
 
+/* donate */
+#donate{
+	position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 999999;
+    width: 36px;
+    height: 36px;
+	cursor: pointer;
+}
+#donate svg{
+	fill:yellow;
+}
+
+/* media */
 @media (max-width:540px) {
 	.cookies_msg {
 		flex-direction: column;
