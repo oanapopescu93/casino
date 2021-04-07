@@ -287,13 +287,13 @@ function blackjack_wheel(props){
 		if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
 			var click = -1;
 			if (isInside(mousePos, start_button_coordonates)) {
-				console.log('START');			
+				//console.log('START');			
 				socket.emit('blackjack_send', ['start', blackjack_payload_server]);							
 			} else if (isInside(mousePos, hit_button_coordonates)) {
-				console.log('HIT');	
+				//console.log('HIT');	
 				socket.emit('blackjack_send', ['hit', blackjack_payload_server]);							
 			} else if (isInside(mousePos, stay_button_coordonates)) {
-				console.log('STAY');
+				//console.log('STAY');
 				socket.emit('blackjack_send', ['stay', blackjack_payload_server]);								
 			} 
 	
@@ -304,24 +304,28 @@ function blackjack_wheel(props){
 						alert(data)
 					} else {
 						blackjack_hand = data;
-						console.log('blackjack_hand00 ', blackjack_hand)
+						//console.log('blackjack_hand00 ', blackjack_hand)
 						self.draw_table();
 						self.draw_cards();	
 						switch(data[0]){
 							case 'start':						
-																	
+								self.check_win_lose();									
 								break;						
 							case 'hit':
-								
+								self.check_win_lose();	
 								break;
 							case 'stay':
-									
+								self.check_win_lose();		
 								break;
 						}
 					}
 				}
 			});	
 		}		
+	}
+
+	this.check_win_lose = function(){
+		//console.log('blackjack_hand01 ', blackjack_hand)
 	}
 }
 

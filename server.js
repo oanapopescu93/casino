@@ -1,25 +1,17 @@
 var express = require("express");
-var path = require("path");
-var hbs = require('express-handlebars');
-var bodyParser = require('body-parser');
+const app = express();
+const cheerio = require('cheerio');
+const request = require('request');
 
 var constants = require('./var/constants');
 var routes = require("./routes");
 var sess_users = constants.SESS_USERS;
 
-const app = express();
+
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const port = process.env.PORT || 5000;
 app.set("port", port);
-
-// app.set("views", path.join(__dirname, "react_build/views"));
-// app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/react_build/views/include/', partialsDir: __dirname + '/react_build/views/include/partials/'}));
-// app.set("view engine", "hbs");
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-// app.use('/react_build/assets', express.static('assets'));
 
 var user_join = [];
 var user_id = -1;
@@ -76,6 +68,18 @@ io.on('connection', function(socket) {
 
 	socket.on('salon_send', function(data) {
 		io.emit('salon_read', {server_tables: server_tables, server_user: user });
+	});
+
+	socket.on('sports_send', function(data) {
+		var url = "https://www.unibet.ro/betting/sports/filter/football/matches"
+		request({
+			method: 'GET',
+			url: url,
+		}, (err, res, body) => {		
+			if (err) return console.error('error', err);	
+			io.emit('sports_read', res);
+			io.emit('sports_read', body);
+		});
 	});
 
 	socket.on('logout_send', function(data) {	
@@ -212,11 +216,20 @@ io.on('connection', function(socket) {
 				break;
 			case 'hit':
 				hitMe();
+				//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
 				io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
 				break;
 			case 'stay':
-				stay();
-				io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
+				if(blackjack_current_player != blackjack_players.length-1){
+					blackjack_current_player++;
+					io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
+					//console.log('stay--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				} else {
+					blackjack_win_lose();
+					io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1]);
+					//console.log('stay--> ', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
+				}
+				
 				break;
 		  }	
 		  
@@ -262,27 +275,47 @@ io.on('connection', function(socket) {
 					blackjack_players[j].hand.push(card);			
 				}
 			}
-			points();
+			points('deal_hands');
 			check('blackjack');
 		}
 		
 		function hitMe(){
 			var card = blackjack_deck.pop();
 			blackjack_players[blackjack_current_player].hand.push(card);
-			points();
+			points('hit_me');
 			check('busted');
 		}
 		
-		function points(){
-			for(var i in blackjack_players){
-				var points = 0;
-				for(var j in blackjack_players[i].hand){
-					points = points + blackjack_players[i].hand[j].Weight;
-				}
-				blackjack_players[i].points = points;
-				blackjack_players[i].lose = false;
-				blackjack_players[i].win = false;
-			}
+		function points(reason){
+			switch (reason) {
+				case 'deal_hands':
+					for(var i in blackjack_players){
+						var points = 0;
+						for(var j in blackjack_players[i].hand){
+							points = points + blackjack_players[i].hand[j].Weight;
+						}
+						blackjack_players[i].points = points;
+						blackjack_players[i].lose = false;
+						blackjack_players[i].win = false;
+					}	
+					break;
+				case 'hit_me':
+					var points = 0;
+					for(var j in blackjack_players[blackjack_current_player].hand){
+						points = points + blackjack_players[blackjack_current_player].hand[j].Weight;
+					}
+					blackjack_players[blackjack_current_player].points = points;
+					blackjack_players[blackjack_current_player].lose = false;
+					blackjack_players[blackjack_current_player].win = false;
+					break;	
+				case 'dealer':
+					var points = 0;
+					for(var i in blackjack_dealer.hand){
+						points = points + blackjack_dealer.hand[i].Weight;
+					}
+					blackjack_dealer.points = points;
+					break;				
+			  }	
 		}
 		
 		function check(reason){
@@ -302,32 +335,30 @@ io.on('connection', function(socket) {
 			  }		
 		}
 		
-		function stay(){
-			if(blackjack_current_player != blackjack_players.length-1){
-				blackjack_current_player++;
-			} else {
-				blackjack_win_lose();
-			}
-		}
-		
 		function blackjack_win_lose(){
-			dealer_hand();
+			points('dealer');
 
 			var winner = -1;
 			var score = 0;
 			for(var i in blackjack_players){
-				if(blackjack_players[i].lose){
-					if(blackjack_players[i].points > score){
-						winner = i;
-						score = blackjack_players[i].points;
-					}
+				if(blackjack_players[i].points > score){
+					winner = i;
+					score = blackjack_players[i].points;
 				}
 			}
-			blackjack_players[winner].win = true;
-		}
-
-		function dealer_hand(){
-
+				
+			if(winner !== -1){
+				if(blackjack_players[winner].points > blackjack_dealer.points){
+					blackjack_players[winner].win = true;
+					console.log('zzz01a--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
+				} else {
+					blackjack_dealer.win = true;
+					console.log('zzz01b--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
+				}
+			} else {				
+				blackjack_dealer.win = true;
+				console.log('zzz02--> ', blackjack_dealer.points)	
+			}
 		}
 	});
 

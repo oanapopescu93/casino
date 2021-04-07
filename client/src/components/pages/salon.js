@@ -5,9 +5,8 @@ import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 
 import logo_icon from '../img/logo.png';
-import under_construction_icon from '../img/icons/under_construction_icon.png'
-
-import Carousel from './carousel'
+import SalonGames from './games/salon_games'
+import Sports from './games/sports'
 
 var self;
 var socket;
@@ -24,8 +23,8 @@ class Salon extends Component {
 		self = this;
 		socket = props.socket;	
 		
-		self.handleDropdown = self.handleDropdown.bind(self);	
 		self.handleBack = self.handleBack.bind(self);
+		self.handleChange = self.handleChange.bind(self);
 		self.salonData = self.salonData.bind(self);
 		self.getCookie = self.getCookie.bind(self);	
 	}	
@@ -34,6 +33,7 @@ class Salon extends Component {
 		empty: false,
 		casino_games: '',
 		user: '',
+		sports: false,
 	}; 
   
 	componentDidMount() {
@@ -104,19 +104,18 @@ class Salon extends Component {
 		});
 	};
 
-	handleDropdown(t) {
-		$('.casino_games_table_container').removeClass('open')
-		$('.casino_games_table_container').each(function() {
-			if($(this).attr('box') === t){
-				$(this).addClass('open');
-			}
-		});
-	}
-
 	handleBack() {
 		var url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];
+	}
+
+	handleChange(type){
+		if(type === "games"){			
+			this.setState({ sports: false })
+		} else if(type === "sports"){
+			this.setState({ sports: true })
+		}
 	}
   
 	render() {	
@@ -126,8 +125,7 @@ class Salon extends Component {
 				{self.state.empty ? (
 					<div className="color_yellow">No tables</div>
 				) : (
-					<Row>
-						
+					<Row>						
 						{self.state.user === '' ? (
 							<div className="table_container color_yellow">
 								<h3>No access</h3>
@@ -135,53 +133,32 @@ class Salon extends Component {
 								<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
 							</div>
 						) : (
-							<Col sm={12} className="salon_page color_yellow">
-								<Row>
-									<Col sm={12} id="sapou">
-										<a href="/"><img id="logo_icon" alt="logo_icon" src={logo_icon} /></a>
-										<h1 className="text_stroke">BunnyBet</h1>	
-										<h6>Welcome to the salon</h6>								
-									</Col>
-								</Row>	
-								<Row>
-									<Col sm={2}></Col>
-									<Col sm={8}>
-										{
-											casino_games_title.map(function(t, i){
-												var title = t.split('_').join(' ')
-												var box = "casino_games_table_container";
-												if(i === 0){
-													box = box + " open"
-												}
-
-												return(
-													<div key={i}>
-														<div key={i} className="casino_games_title_container">
-															<div className="capitalize casino_games_title shadow_convex" onClick={()=>self.handleDropdown(t)}>{title}</div>
-														</div>
-														<div box={t} className={box}>
-															<div className="casino_games_table">
-																{(() => {
-																	if (casino_games[t].length === 0) {
-																		return (
-																			<img className="under_construction_icon" alt="under construction" src={under_construction_icon} />
-																		)
-																	} else {
-																		return (
-																			<Carousel template="salon" socket={socket} user={self.state.user} item_list={casino_games[t]}></Carousel>
-																		)
-																	}
-																})()}
-															</div>
-														</div>	
-													</div>													
-												)
-											})
-										}
-									</Col>
-									<Col sm={2}></Col>
-								</Row>																
-							</Col>																
+							<>
+								<div className="salon_button_container">
+									<div className="salon_button_box">
+										<div id="salon_buton_games" className="salon_button" onClick={()=>{self.handleChange('games')}}>
+											<span>Games</span>
+										</div>            
+										<div id="salon_buton_sports" className="salon_button" onClick={()=>{self.handleChange('sports')}}>
+											<span>Sports</span>
+										</div>
+									</div>
+								</div>
+								<Col sm={12} className="salon_page color_yellow">
+									<Row>
+										<Col sm={12} id="sapou">
+											<a href="/"><img id="logo_icon" alt="logo_icon" src={logo_icon} /></a>
+											<h1>BunnyBet</h1>	
+											<h6>Welcome to the salon</h6>								
+										</Col>
+									</Row>
+									{self.state.sports ? (
+										<Sports socket={socket} user={self.state.user}></Sports>									
+									) : (
+										<SalonGames casino_games_title={casino_games_title} socket={socket} user={self.state.user} casino_games={casino_games}></SalonGames>
+									)}														
+								</Col>
+							</>																
 						)}			
 					</Row>
 				)}

@@ -31,7 +31,7 @@ function Home(props) {
 								</Route>
 								<Route path="/recovery">
 									<SignInRecovery socket={socket}></SignInRecovery>
-								</Route>								
+								</Route>							
 								<Route exact path="/">
 									<HomePage socket={socket}></HomePage>
 								</Route>

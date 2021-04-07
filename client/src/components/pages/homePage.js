@@ -138,7 +138,7 @@ class HomePage extends React.Component {
 								<Row>
 									<Col sm={12}>
 										<img id="logo_icon" alt="logo_icon" src={logo_icon} />
-										<h1 className="text_stroke">BunnyBet</h1>
+										<h1>BunnyBet</h1>
 									</Col>
 								</Row>					
 								<Row>
@@ -153,8 +153,7 @@ class HomePage extends React.Component {
 										</Row>
 										<Row>
 											<Col sm={12} className="user_form_container">
-												{ this.state.visible ? <SignIn socket={socket}></SignIn> : null }
-												{ !this.state.visible ? <SignUp socket={socket}></SignUp> : null }
+												{ this.state.visible ? <SignIn socket={socket}></SignIn> : <SignUp socket={socket}></SignUp> }
 											</Col>
 										</Row>
 									</Col>

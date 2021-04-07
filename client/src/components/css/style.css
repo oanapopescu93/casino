@@ -877,10 +877,10 @@ table {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;	
-	background: yellow;	
+	background: var(--yellow);	
 	border-radius: 10px;
 	padding: 20px;
-	border: 1px solid yellow;
+	border: 1px solid var(--yellow);
 }
 
 .cookies_text {
@@ -901,12 +901,12 @@ table {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background:black;
-	color:yellow;
+	color:var(--yellow);
 	border-radius:20px;
 	border:solid 1px black;
 }
 .confirm_cookies button:hover {
-	background:yellow;
+	background:var(--yellow);
 	color:black;
 	border:solid 1px black;
 }
@@ -933,7 +933,53 @@ table {
 	cursor: pointer;
 }
 #donate svg{
-	fill:yellow;
+	fill:var(--yellow);
+}
+
+.salon_button_container{
+	position: fixed;
+    z-index: 9999;
+    top: 0px;
+	bottom:0px;
+    left: 0px;
+    width: 50px;
+}
+.salon_button_box{
+	position: relative;
+    top: 50%;
+    transform: translate(0px, -50%);
+}
+.salon_button {
+    background: transparent;
+	border:solid 1px var(--yellow);
+	border-left:none;
+    color: var(--yellow);
+    border-radius: 0px 10px 10px 0px;
+    width: 50px;
+    height: 140px;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    vertical-align: top;
+    padding: 10px 10px 10px 8px;
+    cursor: pointer;
+	margin-bottom:10px;	
+}
+.salon_button:hover, .salon_button:focus{
+	background: rgba(255, 255, 0, 0.2);
+    color: var(--yellow);
+    border: solid 1px var(--yellow);
+	border-left:none;
+}
+.salon_button span{
+	writing-mode: vertical-rl;
+	-webkit-text-orientation: upright;
+  	text-orientation: upright;
+	font-size: 16px;
+	text-transform: uppercase;	
+}
+#salon_buton_games span{
+	margin-top: 12px;
 }
 
 /* media */
@@ -955,7 +1001,6 @@ table {
 		margin-top:5px;
 	}
 }
-
 @media (max-width: 767px) {
 	#salon .full-height-content{
 		top: 0;
@@ -1132,7 +1177,6 @@ table {
 		background-clip: content-box;
 	}
 }
-
 
 @media (max-width: 768px) and (orientation: landscape) {
 	#roulette .full-height-content{
