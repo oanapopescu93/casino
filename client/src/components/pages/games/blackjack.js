@@ -113,10 +113,10 @@ function blackjack_wheel(props){
 		draw_rect(space + 3 * (card_base.width + card_base.x), 100, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
 	}
 	
-	this.draw_cards = function(member){
+	this.draw_cards = function(dealer){
 		self.draw_table_players();
 		self.draw_table_dealer();
-		self.draw_card_values('white', 'black');		
+		self.draw_card_values('white', 'black', dealer);		
 	}
 
 	this.draw_table_players = function(){
@@ -141,6 +141,33 @@ function blackjack_wheel(props){
 	this.draw_table_dealer = function(){
 		var space = (canvas_width - (card_base.width*7 + card_base.x*6))/2;
 		self.draw_card(space + 3 * (card_base.width + card_base.x), 100, card.width, card.height, blackjack_hand[2].hand, "dealer", -1);
+	}
+
+	this.draw_card_values = function(fillStyle, color, dealer){
+		for(var i in all_cards_value){
+			var value_hand = all_cards_value[i].value_hand;
+			if(dealer){
+				if(all_cards_value[i].elem !== "dealer"){					
+					ctx.beginPath();
+					ctx.fillStyle = fillStyle;
+					ctx.rect(all_cards_value[i].x, all_cards_value[i].y + card_base.height + 10, 100, 20);
+					ctx.fill();
+					ctx.beginPath();
+					ctx.fillStyle = color;
+					ctx.textAlign = "center";	
+					ctx.fillText(value_hand, all_cards_value[i].x+50, all_cards_value[i].y + card_base.height + 25);
+				}
+			} else {
+				ctx.beginPath();
+				ctx.fillStyle = fillStyle;
+				ctx.rect(all_cards_value[i].x, all_cards_value[i].y + card_base.height + 10, 100, 20);
+				ctx.fill();
+				ctx.beginPath();
+				ctx.fillStyle = color;
+				ctx.textAlign = "center";	
+				ctx.fillText(value_hand, all_cards_value[i].x+50, all_cards_value[i].y + card_base.height + 25);
+			}
+		}
 	}
 
 	this.draw_card = function(x, y, w, h, hand, elem, id){
@@ -213,22 +240,6 @@ function blackjack_wheel(props){
 		}
 		var card_value = {elem: elem, id: parseInt(id), x: x, y: y, card: hand, value_hand: value_hand}
 		all_cards_value.push(card_value);	
-	}
-
-	this.draw_card_values = function(fillStyle, color){
-		for(var i in all_cards_value){
-			if(all_cards_value[i].elem !== "dealer"){
-				var value_hand = all_cards_value[i].value_hand;
-				ctx.beginPath();
-				ctx.fillStyle = fillStyle;
-				ctx.rect(all_cards_value[i].x, all_cards_value[i].y + card_base.height + 10, 100, 20);
-				ctx.fill();
-				ctx.beginPath();
-				ctx.fillStyle = color;
-				ctx.textAlign = "center";	
-				ctx.fillText(value_hand, all_cards_value[i].x+50, all_cards_value[i].y + card_base.height + 25);
-			}
-		}
 	}
 
 	this.draw_card_number = function(text, x, y, w, h){		
@@ -304,28 +315,59 @@ function blackjack_wheel(props){
 						alert(data)
 					} else {
 						blackjack_hand = data;
-						//console.log('blackjack_hand00 ', blackjack_hand)
-						self.draw_table();
-						self.draw_cards();	
+						console.log('blackjack_hand00 ', blackjack_hand)
+						self.draw_table();						
 						switch(data[0]){
-							case 'start':						
-								self.check_win_lose();									
+							case 'start':	
+								self.draw_cards(false);					
+								self.check_win_lose('start');									
 								break;						
 							case 'hit':
-								self.check_win_lose();	
+								self.draw_cards(false);		
+								self.check_win_lose('hit');	
 								break;
 							case 'stay':
-								self.check_win_lose();		
+								self.draw_cards(true);		
+								self.check_win_lose('stay');		
 								break;
-						}
+						}						
 					}
 				}
 			});	
 		}		
 	}
 
-	this.check_win_lose = function(){
-		//console.log('blackjack_hand01 ', blackjack_hand)
+	this.check_win_lose = function(type){		
+		if(typeof blackjack_hand[2].win != "undefined" && blackjack_hand[2].win === true){
+			self.end_game(blackjack_hand[2]);		
+		} else {
+			var all_lose = 0;
+			for(var i in blackjack_hand[1]){
+				if(blackjack_hand[1][i].win){
+					self.end_game(blackjack_hand[1][i]);	
+					break;
+				}
+				if(blackjack_hand[1][i].lose){
+					all_lose++;
+				}				
+			}
+			if(all_lose === blackjack_hand[1].length){
+				self.end_game(blackjack_hand[2]);
+			}
+		}
+	}
+
+	this.end_game = function(obj){
+		if(obj.id === "dealer"){
+			setTimeout(function(){
+				alert('The dealer has won')
+			}, 500);			
+		} else {
+			setTimeout(function(){
+				alert('Player ' + obj.user + 'has won')
+			}, 500);				
+		}
+		
 	}
 }
 

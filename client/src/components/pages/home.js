@@ -44,7 +44,6 @@ function Home(props) {
 			</div>			
 		</div>
 		<Donate></Donate>
-		<Footer></Footer>
 		</>
 	);
 }

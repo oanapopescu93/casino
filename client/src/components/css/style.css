@@ -14,9 +14,14 @@ body{
     position: relative;
 }
 #casino_root, .App{
-	position: relative;
+	position: absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
 	overflow-x: hidden;
-	height: 100vh;
+	height: 100%;
+	width:100%;
 }
 .App{
 	padding:40px 0px;
@@ -1002,6 +1007,9 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.salon_page{
+		padding-left:60px;
+	}
 	#salon .full-height-content{
 		top: 0;
     	transform: translate(0px, 0px);
