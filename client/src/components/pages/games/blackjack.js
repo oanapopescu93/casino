@@ -39,7 +39,11 @@ function blackjack_wheel(props){
 		
 	this.ready = function(){
 		self.createCanvas(canvas_width, canvas_height);		
-		self.start();	
+		self.draw_table();
+		if(blackjack_hand.length !== 0){
+			self.draw_cards(false);	
+		}
+		self.blackjack_table_click();
 	}
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
@@ -67,11 +71,6 @@ function blackjack_wheel(props){
 		canvas_width = canvas.width;
 		canvas_height = canvas.height;		
 		canvas.height = canvas_height;
-	}
-
-	this.start = function(){		
-		self.draw_table();
-		self.blackjack_table_click();
 	}
 
 	this.draw_table = function(){
