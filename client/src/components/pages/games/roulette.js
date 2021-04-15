@@ -421,7 +421,7 @@ function roulette_game(props){
 		$('#roulette_canvas').off('mousemove').on('mousemove', function(event) {
 			var mousePos = getMousePos(canvas, event);
 			$('#roulette_canvas').css('cursor', "default")
-			if (isInside(mousePos, clear_button_coordonates) || isInside(mousePos, spin_button_coordonates) || isInside(mousePos, clear_button_coordonates)) {
+			if (isInside(mousePos, bet_button_coordonates) || isInside(mousePos, spin_button_coordonates) || isInside(mousePos, clear_button_coordonates)) {
 				$('#roulette_canvas').css('cursor', "pointer")				
 			} else {			
 				for(var i in list_bets){

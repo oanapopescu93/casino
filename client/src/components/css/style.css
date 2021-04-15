@@ -916,7 +916,7 @@ table {
 	border:solid 1px black;
 }
 
-.roulette_container{
+.roulette_container, .blackjack_container{
     position: relative;
 	z-index: 1;
     top: 0px;
@@ -1137,7 +1137,7 @@ table {
 	.footer_container{
 		bottom:10px;
 	}
-	.roulette_container{
+	.roulette_container, .blackjack_container{
 		overflow-x: auto;
 		overflow-y: hidden;
 		position: relative;
