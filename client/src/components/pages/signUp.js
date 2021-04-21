@@ -56,13 +56,14 @@ class SignUp extends Component {
 		if(self.check_submit()){
 			$('#signup_pass_red').empty();
 			self.loader().then(function(data) {
-				if(data){
+				console.log('signup--> ', data)
+				if(data[0]){
 					$('#loader_container').hide(); 
 					$('#home').show();
 					alert('You are already registered.')
 				} else {
-					self.setCookie("casino_email", $('#signin_email').val(), 1);
-					self.setCookie("casino_user", $('#signin_user').val(), 1);
+					self.setCookie("casino_email", $('#signup_email').val(), 1);
+					self.setCookie("casino_user", $('#signup_user').val(), 1);
 					self.submit_form();
 				}
 			});
@@ -118,19 +119,16 @@ class SignUp extends Component {
 	}
 
 	render() {
-		console.log('state', self.state, self.state.user_minor, typeof self.state.user_minor)		
 		return (
 			<div>
 				{(() => {
 					if (self.state.user_minor === "true") {
-						//console.log('111', self.state.user_minor === "true")
 						$('.user_form_container').css('height', 'auto');
 						$('.login_link_container').remove();
 						return (
 							<div className="color_yellow"><p>You are too young to enter.</p></div>
 						)
 					} else if (self.state.user_minor === "false") {
-						//console.log('222', self.state.user_minor === "false")
 						return (
 							<Form id="user_form" method="post" action="/registration">
 								<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />
@@ -141,7 +139,6 @@ class SignUp extends Component {
 							</Form>
 						)
 					} else {
-						//console.log('333', self.state.user_minor === "true", self.state.user_minor === "false")
 						return (
 							<div>
 								<Form id="user_form" method="post" action="/registration">

@@ -14,12 +14,10 @@ const port = process.env.PORT || 5000;
 app.set("port", port);
 
 var user_join = [];
-var user_id = -1;
-
 var email = "";
 var user = "";
 var pass = "";
-var user_money = constants.MONEY;
+var user_money = 0;
 
 var text01 = 'The user is offline or does not exist';
 var text02 = 'Please type a user ( /w username message )';
@@ -43,27 +41,40 @@ app.use(routes);
 io.on('connection', function(socket) {	
 	socket.on('signin_send', function(data) {	
 		var exists = false;	
+		var obj = {};
 		for(var i in sess_users){
 			if(data.user === sess_users[i].user && data.pass === sess_users[i].pass){
 				exists = true;
 				user = data.user;
 				pass = data.pass;
+				user_money = sess_users[i].money;
+				obj = {id: sess_users[i].id, user: user, email: sess_users[i].email, money: user_money};
+				break;
 			}
 		}
-		io.to(socket.id).emit('signin_read', exists);		
+		io.to(socket.id).emit('signin_read', [exists, obj]);		
 	});
 
 	socket.on('signup_send', function(data) {		
 		var exists = false;	
+		user = data.user;
+		email = data.email;
+		pass = data.pass;
+		var obj = {};
 		for(var i in sess_users){	
 			if(data.user === sess_users[i].user && data.email === sess_users[i].email && data.pass === sess_users[i].pass){
 				exists = true;
-				user = data.user;
-				email = data.user;
-				pass = data.pass;
+				break;
 			}
+		}
+		if(!exists){
+			sort_array_obj(sess_users, "id");
+			var id = sess_users[sess_users.length-1].id+1;
+			user_money = 100;
+			obj = {id: id, user: user, email: email, money: user_money};
+			sess_users.push(obj);
 		}	
-		io.to(socket.id).emit('signup_read', exists);
+		io.to(socket.id).emit('signup_read', [exists, obj]);
 	});
 
 	socket.on('salon_send', function(data) {
@@ -90,13 +101,11 @@ io.on('connection', function(socket) {
 		io.to(socket.id).emit('logout_read', data);
 	});
 
-	socket.on('username', function(payload) { 	
-		user_id++	
-		payload.id = user_id;
+	socket.on('username', function(payload) {
 		var username = payload.user;
 		var user_table = payload.user_table.split(' ').join('_');
 		
-		socket.user_id = user_id;
+		socket.user_id = payload.id;
 		socket.username = username;
 		socket.user_table = user_table;
 
@@ -114,7 +123,6 @@ io.on('connection', function(socket) {
 		
 		if(typeof username !== "undefined" && username !== ""){
 			io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
-			io.to(room_name).emit('user_id', user_id);
 			io.to(room_name).emit('chatlist', user_join);
 		}		
     });		
@@ -139,9 +147,19 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('user_page_send', function(data) {
-		var my_table = data;
+		var my_table = data[0];
 		var game = my_table.split('_')[0]
-		var server_user = {user: user, money: user_money, user_table: my_table, game: game}
+		var id = data[1];
+		if(id != -1){
+			for(var i in sess_users){	
+				if(id === sess_users[i].id){
+					exists = true;
+					user_money = sess_users[i].money;
+					break;
+				}
+			}
+		}
+		var server_user = {id: id, user: user, money: user_money, user_table: my_table, game: game}
 		io.to(socket.id).emit('user_page_read', server_user);
 	});
 
@@ -149,8 +167,8 @@ io.on('connection', function(socket) {
 		//console.log('market_send1', data)		
 		var this_user = data.id;
 		for(var i in sockets){
-			if(sockets[i].user_id === this_user){
-				//console.log('market_send2', sockets[i].user_id, this_user)
+			if(sockets[i].id === this_user){
+				//console.log('market_send2', sockets[i].id, this_user)
 				sockets[i].emit('market_read', market);
 			} 
 		}
@@ -350,14 +368,14 @@ io.on('connection', function(socket) {
 			if(winner !== -1){
 				if(blackjack_players[winner].points > blackjack_dealer.points){
 					blackjack_players[winner].win = true;
-					console.log('zzz01a--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
+					//console.log('zzz01a--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
 				} else {
 					blackjack_dealer.win = true;
-					console.log('zzz01b--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
+					//console.log('zzz01b--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
 				}
 			} else {				
 				blackjack_dealer.win = true;
-				console.log('zzz02--> ', blackjack_dealer.points)	
+				//console.log('zzz02--> ', blackjack_dealer.points)	
 			}
 		}
 	});
@@ -391,6 +409,39 @@ function chatMessage(from, text){
 		return {from: from, text:text, time: new Date().getTime()};
 	}    
 };
+
+function sort_array_obj(array, sort_by){
+	var sorted = false
+	switch (typeof sort_by) {
+		case 'string': // sort array of objects
+			while (!sorted){
+				sorted = true;
+				for(var i=0; i<array.length-1; i++){
+					if (array[i][sort_by] > array[i+1][sort_by]) {
+						var t = array[i+1];
+						array[i+1] = array[i];
+						array[i] = t;
+						sorted = false;
+					  }
+				}
+			}			
+			break;
+		case 'undefined': // sort a simple array
+			while (!sorted){
+				sorted = true;
+				for(var i=0; i<array.length-1; i++){
+					if (array[i] > array[i+1]) {
+						var t = array[i+1];
+						array[i+1] = array[i];
+						array[i] = t;
+						sorted = false;
+					  }
+				}
+			}
+			break;				
+	}
+  	
+}
 
 http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));
 

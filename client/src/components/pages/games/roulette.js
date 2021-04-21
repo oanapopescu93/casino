@@ -988,6 +988,8 @@ function isInside(mousePos, obj){
 }
 
 function Roulette(props) {
+	//console.log('game ', props)
+
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'roulette')		
 		my_roulette = new roulette_game(props);

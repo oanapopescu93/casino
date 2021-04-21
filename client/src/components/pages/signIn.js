@@ -9,7 +9,9 @@ var socket;
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data) {
-			if(data){
+			console.log('signin--> ', data)
+			if(data[0]){
+				setCookie("casino_id", data[1].id, 1);
 				setCookie("casino_user", $('#signin_user').val(), 1);
 				submit_form();
 			} else {

@@ -55,21 +55,16 @@ class UserPage extends Component {
   
 	componentDidMount() {
 		self.userPageData()
-			.then(res => {						
-					self.setState({ user: res});
-					var table = self.state.user.user_table;
+			.then(res => {	
+					var table = this.state.user.user_table;
 					var table_split = table.split('_');
 					var table_user = table_split[0] + ' ' + table_split[1];
 					var table_type = table_split[2];	
-					var payload = {user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime()}
+					var payload = {id:this.state.user_id, user: this.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime()}
 					socket.emit('username', payload);
 					socket.on('is_online', function(data) {
 						$('#chatmessages').append(data);
-					});
-					socket.on('user_id', function(data) {
-					 	self.setState({ user_id: data })
-					});
-					
+					});			
 				})
 			.catch(err => console.log(err));  
 	}
@@ -77,12 +72,17 @@ class UserPage extends Component {
 	userPageData(){
 		return new Promise(function(resolve, reject){
 			var table = window.location.href.split('table/')
-			socket.emit('user_page_send', table[1]);	
-			socket.on('user_page_read', function(data){
-				//console.log('user_page_read--> ', data)
-				if(data.user === "" || data.user !== "indefined"){
+			var id = parseInt(self.getCookie("casino_id"));
+			if(id === "" || id === "indefined"){
+				id = -1;
+			}
+			socket.emit('user_page_send', [table[1], id]);
+			socket.on('user_page_read', function(data){		
+				if(data.user === "" || data.user === "indefined"){
 					data.user = self.getCookie("casino_user")
 				}
+				self.setState({ user: data});
+				self.setState({ user_id: data.id});
 				resolve(data);	
 			});	
 		});
@@ -105,7 +105,8 @@ class UserPage extends Component {
 	}  
   
 	render() {
-		var user_id = this.state.user_id		
+		var user_id = this.state.user_id;
+
 		if(this.state.user.user === ""){
 			var url_back = window.location.href.split('/table/');
 			window.location.href = url_back[0];
