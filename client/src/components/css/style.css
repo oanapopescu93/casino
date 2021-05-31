@@ -663,7 +663,27 @@ table {
 }
 .user_list li:hover, .user_list li:focus{
 	background: rgba(255, 255, 0, 0.2);
-
+}
+#user_list_user{
+	margin-top:15px;
+}
+.user_list_button {
+    display: inline-block;
+    padding: 10px 10px;
+    border: solid 1px var(--yellow);
+    width: 50%;
+    cursor: pointer;
+    height: 40px;
+	text-align: center;
+}
+.user_list_button:first-child {
+    border-radius: 20px 0px 0px 20px;
+}
+.user_list_button:last-child {
+    border-radius: 0px 20px 20px 0px;
+}
+.user_list_button.active, .user_list_button:hover{
+	background: rgba(255, 255, 0, 0.2);
 }
 #user_subtitle{
 	padding-left:5px;
@@ -955,12 +975,12 @@ table {
     transform: translate(0px, -50%);
 }
 .salon_button {
-    background: transparent;
+    background: black;
 	border:solid 1px var(--yellow);
 	border-left:none;
     color: var(--yellow);
     border-radius: 0px 10px 10px 0px;
-    width: 50px;
+    width: 40px;
     height: 140px;
     font-size: 20px;
     line-height: 24px;
@@ -986,6 +1006,14 @@ table {
 #salon_buton_games span{
 	margin-top: 12px;
 }
+#exit_salon{
+	display:inline-block;
+	padding:10px 20px;
+	border:solid 1px yellow;
+	margin:10px;
+	background-color: black;
+	border-radius:10px;
+}
 
 /* media */
 @media (max-width:540px) {
@@ -1007,6 +1035,18 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.casino_games_table, .casino_games_table_container.open{
+		height: 130px;
+	}
+	.button_table{
+		height: 40px;
+		width: 40px;
+		margin-top: 5px;
+		padding: 12px 0px;
+	}
+	.table_box{
+		height:110px
+	}
 	.salon_page{
 		padding-left:60px;
 	}
@@ -1094,10 +1134,10 @@ table {
 		padding: 5px 10px;
 	}
 	.casino_games_table_container.open{
-		height:180px;
+		height:130px;
 	}
 	.casino_games_table {
-		height: 180px;
+		height: 130px;
 		padding: 5px;
 		margin-top: 5px;
 	}
@@ -1150,6 +1190,13 @@ table {
 	#roulette .full-height-content{
 		margin-top: 25%;
 	}
+	.salon_button{
+		width: 35px;
+		height: 110px;
+	}
+	.salon_button span{
+		font-size: 12px;
+	}
 }
 @media (max-width: 480px) {  
 	.table_inside {
@@ -1195,6 +1242,21 @@ table {
 	}
 	#casino_root, .App {
 		height: auto;
+	}
+	.App{
+		padding:10px 0px;
+	}
+	.casino_games_table, .casino_games_table_container.open{
+		height: 130px;
+	}
+	.button_table{
+		height: 40px;
+		width: 40px;
+		margin-top: 5px;
+		padding: 12px 0px;
+	}
+	.table_box{
+		height:110px
 	}
 	.footer_container {
 		bottom: -25px;

@@ -2,17 +2,17 @@ var money_obj = {};
 var history_obj = {};
 var mystate = [money_obj, history_obj];
 
-const rouletteReducer = (state = -1, action) => {	
-	//console.log("user_info0-- ", state, action);
+const blackjackReducer = (state = -1, action) => {	
+	//console.log("user_info0-- ", action);
 	switch(action.type){
-		case "roulette_calculate_money":	
+		case "blackjack_calculate_money":	
 			money_obj = action;	
 			mystate[0] = money_obj;		
-			//console.log("user_info1-- ", mystate);
+			//console.log("user_info11-- ", mystate);
 			
 			state = mystate;			
 			return state;	
-		case "roulette_get_history":	
+		case "blackjack_get_history":	
 			history_obj = action;	
 			mystate[1] = history_obj;
 			//console.log("user_info2-- ", history_obj, mystate);
@@ -24,4 +24,4 @@ const rouletteReducer = (state = -1, action) => {
 	}
 }
 
-export default rouletteReducer;
+export default blackjackReducer;

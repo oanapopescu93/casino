@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery'; 
 
-import {calculate_money, get_history} from '../../actions/actions'
+import {roulette_calculate_money, roulette_get_history} from '../../actions/actions'
 import {connect} from 'react-redux'
 
 import carrot_img from '../../img/icons/carrot_icon.png';
@@ -967,8 +967,8 @@ function roulette_game(props){
 					user_info.money = user_info.money - arr[i].bet_value;	
 				}
 			}
-			dispatch(calculate_money(user_info.money))
-			dispatch(get_history(your_bets))
+			dispatch(roulette_calculate_money(user_info.money))
+			dispatch(roulette_get_history(your_bets))
 		}
 		//console.log('history000a--> ', user_info.money)	
 		$('#user_money span').text(user_info.money);

@@ -1,12 +1,25 @@
-export const calculate_money = function(money_sum) {
+export const roulette_calculate_money = function(money_sum) {
 	return {
-		type: "calculate_money",
+		type: "roulette_calculate_money",
 		money: money_sum
 	}
 }
-export const get_history = function(history) {
+export const roulette_get_history = function(history) {
 	return {
-		type: "get_history",
+		type: "roulette_get_history",
+		history: history
+	}
+}
+
+export const blackjack_calculate_money = function(money_sum) {
+	return {
+		type: "blackjack_calculate_money",
+		money: money_sum
+	}
+}
+export const blackjack_get_history = function(history) {
+	return {
+		type: "blackjack_get_history",
 		history: history
 	}
 }

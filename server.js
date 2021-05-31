@@ -32,6 +32,7 @@ var blackjack_current_player = 0
 var blackjack_players = [];
 var blackjack_dealer = {};
 var game_start = false;
+var your_bets = [];
 
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
@@ -246,8 +247,7 @@ io.on('connection', function(socket) {
 					blackjack_win_lose();
 					io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1]);
 					//console.log('stay--> ', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
-				}
-				
+				}				
 				break;
 		  }	
 		  
@@ -289,8 +289,12 @@ io.on('connection', function(socket) {
 					var card = blackjack_deck.pop();
 					if(i === 0){
 						blackjack_players[j].hand = [];
+					} else {
+						if(data[1].user_id == blackjack_players[j].id){
+							blackjack_players[j].bets = data[1].bets;
+						}	
 					}	
-					blackjack_players[j].hand.push(card);			
+					blackjack_players[j].hand.push(card);
 				}
 			}
 			points('deal_hands');

@@ -61,9 +61,13 @@ function Panel(props){
     function handleClick(link) {
 		switch (link) {
 			case "account":
+                $('#user_list_user_game').removeClass('active');
+			    $('#user_list_user_account').addClass('active');
                 dispatch(game_visible(false))
 			  	break;
 			case "casino":
+                $('#user_list_user_game').addClass('active');
+			    $('#user_list_user_account').removeClass('active');
 				dispatch(game_visible(true))
 				break;
             case "salon":	
@@ -119,9 +123,11 @@ function Panel(props){
                         <span id="user_name">{user}</span>
                         <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
                     </p>
+                    <p id="user_list_user">
+                        <span id="user_list_user_game" className="user_list_button active" onClick={() => handleClick('casino')}>Game</span>
+                        <span id="user_list_user_account" className="user_list_button" onClick={() => handleClick('account')}>My account</span>
+                    </p>
                     <ul className="user_list">
-                        <li id="user_list_user" className="user_list_item" onClick={() => handleClick('casino')}><span>Game</span></li>
-                        <li id="user_list_account" className="user_list_item" onClick={() => handleClick('account')}><span>My account</span></li>
                         <li id="user_list_salon" className="user_list_item" onClick={() => handleClick('salon')}><span>Salon</span></li>
                         <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}><span>Settings</span></li>
                         <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}><span>Logout</span></li>

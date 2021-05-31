@@ -110,6 +110,21 @@ class Salon extends Component {
 		window.location.href = url[0];
 	}
 
+	handleExit(){
+		self.setCookie("casino_user", '', 1);
+		self.setCookie("casino_email", '', 1);
+		var url = window.location.href;
+		url = url.split('/salon');
+		window.location.href = url[0];
+	}
+
+	setCookie(cname,cvalue,exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires=" + d.toGMTString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
 	handleChange(type){
 		if(type === "games"){			
 			this.setState({ sports: false })
@@ -136,10 +151,10 @@ class Salon extends Component {
 							<>
 								<div className="salon_button_container">
 									<div className="salon_button_box">
-										<div id="salon_buton_games" className="salon_button" onClick={()=>{self.handleChange('games')}}>
+										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{self.handleChange('games')}}>
 											<span>Games</span>
 										</div>            
-										<div id="salon_buton_sports" className="salon_button" onClick={()=>{self.handleChange('sports')}}>
+										<div id="salon_buton_sports" className="salon_button shadow_convex" onClick={()=>{self.handleChange('sports')}}>
 											<span>Sports</span>
 										</div>
 									</div>
@@ -158,7 +173,12 @@ class Salon extends Component {
 										<Sports socket={socket} user={self.state.user}></Sports>									
 									) : (
 										<SalonGames casino_games_title={casino_games_title} socket={socket} user={self.state.user} casino_games={casino_games}></SalonGames>
-									)}														
+									)}	
+									<Row>
+										<Col sm={12}>
+											<h6 id="exit_salon" onClick={() => self.handleExit()}>Exit salon</h6>								
+										</Col>
+									</Row>													
 								</Col>
 							</>																
 						)}			

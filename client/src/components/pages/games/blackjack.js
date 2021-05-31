@@ -2,7 +2,9 @@ import React from 'react';
 import $ from 'jquery'; 
 
 import img_cards from '../../img/img_cards.png';
+import carrot_img from '../../img/icons/carrot_icon.png';
 
+import {blackjack_calculate_money, blackjack_get_history} from '../../actions/actions'
 import {connect} from 'react-redux'
 
 var canvas;
@@ -24,14 +26,32 @@ var card_base = {}
 var card = {};
 var all_cards_pos = [];
 var all_cards_value = [];
+var blackjack_pos = [];
+
+var your_bets = [];
+var your_last_bet = {};
+var bet_value = 1;
+var bet_square = 40;
 
 var font_bold_10 = 'bold 10px sans-serif';
 var font_bold_12 = 'bold 12px sans-serif';
 var font_bold_14 = 'bold 14px sans-serif';
 var font_bold_16 = 'bold 16px sans-serif';
 
+var user_info = 0;
+var dispatch_nr = 0; //this prevents multiplication
+
 function blackjack_wheel(props){
 	var self = this;
+	const dispatch = props.dispatch;
+
+	user_info = {money: props.money};	
+	if(props.blackjack !== -1){
+		user_info = props.blackjack[0];			
+	}
+	
+	//console.log('history000b--> ', props, user_info.money)	
+	$('#user_money span').text(user_info.money);	
 		
 	this.ready = function(){
 		self.createCanvas(canvas_width, canvas_height);		
@@ -76,6 +96,7 @@ function blackjack_wheel(props){
 				card_base = {x: 20, y:500, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:50}
 				card = {width: 80, height: 120};
 			}
+			bet_square = 30;
 
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
@@ -95,6 +116,7 @@ function blackjack_wheel(props){
 
 			card_base = {x: 20, y:400, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:100}
 			card = {width: 80, height: 120};
+			bet_square = 40;
 
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
@@ -135,6 +157,13 @@ function blackjack_wheel(props){
 		var b = 0;
 		for(var i=0; i<7; i++){
 			draw_rect(space + i * (card_base.width + card_base.x), card_base.y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
+			
+			// draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle)
+			//draw_rect(x, y, width, height, fillStyle, lineWidth, strokeStyle)
+			// draw_dot(roulette_radius_x, roulette_radius_y, outsideRadius*1.05, 0, 2 * Math.PI, false, '#a87b51', 15, '#5e391c');
+
+			draw_dot(space + i * (card_base.width + card_base.x)+50, card_base.y+card_base.height+65, 30, 0, 2 * Math.PI, false, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle);
+			
 			if(i === 0){
 				a = 3;
 			} else {
@@ -144,8 +173,10 @@ function blackjack_wheel(props){
 				} else {
 					a = 3 + b;
 				}				
-			}			
+			}		
 			self.draw_card_number(i, space + a * (card_base.width + card_base.x), card_base.y, card_base.width, card_base.height);
+			self.draw_card_text(space + a * (card_base.width + card_base.x), card_base.y+card_base.height+77, card_base.width, card_base.height);
+			blackjack_pos.push({x: space + a * (card_base.width + card_base.x)+20, y: card_base.y+card_base.height+35, width: 60, height:60, text: i, value: bet_value}); 
 		}
 		if (window.innerWidth < 900){
 			draw_rect(my_width-(card_base.width+10), card_base.dealet_y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
@@ -157,7 +188,8 @@ function blackjack_wheel(props){
 	this.draw_cards = function(){
 		self.draw_table_players();
 		self.draw_table_dealer();
-		self.draw_card_values('white', 'black');		
+		self.draw_card_values('white', 'black');	
+		self.draw_bets();	
 	}
 
 	this.draw_table_players = function(){
@@ -203,6 +235,12 @@ function blackjack_wheel(props){
 			ctx.fillStyle = color;
 			ctx.textAlign = "center";	
 			ctx.fillText(value_hand, all_cards_value[i].x+50, all_cards_value[i].y + card_base.height + 25);
+		}
+	}
+
+	this.draw_bets = function(){
+		for(var i in your_bets){
+			self.draw_tokens(your_bets[i]);
 		}
 	}
 
@@ -278,12 +316,22 @@ function blackjack_wheel(props){
 		all_cards_value.push(card_value);	
 	}
 
-	this.draw_card_number = function(text, x, y, w, h){		
+	this.draw_card_number = function(text, x, y, w, h){	
 		ctx.beginPath();
 		ctx.fillStyle = "white";
 		ctx.textAlign = "center";
 		ctx.font = font_bold_16;	
 		ctx.fillText(text, x+w/2, y-15);
+		ctx.font = font_bold_14;
+	}
+
+	this.draw_card_text = function(x, y, w, h){		
+		ctx.beginPath();
+		ctx.fillStyle = "white";
+		ctx.textAlign = "center";
+		ctx.font = font_bold_10;	
+		ctx.fillText('BET', x+w/2, y);
+		ctx.fillText('HERE', x+w/2, y-15);
 		ctx.font = font_bold_14;
 	}
 
@@ -317,6 +365,7 @@ function blackjack_wheel(props){
 			user_id: props.user_id, 
 			user: props.user, 
 			user_table: props.user_table, 
+			bets: your_bets
 		}
 
 		// ctx.beginPath();
@@ -334,8 +383,12 @@ function blackjack_wheel(props){
 		if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
 			var click = -1;
 			if (isInside(mousePos, start_button_coordonates)) {
-				//console.log('START');			
-				socket.emit('blackjack_send', ['start', blackjack_payload_server]);							
+				//console.log('START');
+				if(your_bets.length > 0){
+					socket.emit('blackjack_send', ['start', blackjack_payload_server]);	
+				} else {
+					alert('Please place your bets before starting the game')
+				}						
 			} else if (isInside(mousePos, hit_button_coordonates)) {
 				//console.log('HIT');	
 				socket.emit('blackjack_send', ['hit', blackjack_payload_server]);							
@@ -352,15 +405,45 @@ function blackjack_wheel(props){
 					} else {
 						blackjack_hand = data;
 						self.draw_table();
-						self.draw_cards();								
+						self.draw_cards();							
 						self.check_win_lose();						
 					}
 				}
 			});	
+		} else {
+			for(var i in blackjack_pos){
+				if(isInside(mousePos, blackjack_pos[i])){
+					// ctx.strokeStyle = "blue";
+					// ctx.rect(blackjack_pos[i].x, blackjack_pos[i].y, blackjack_pos[i].width, blackjack_pos[i].height);
+					// ctx.stroke();
+
+					if(blackjack_payload_server.user_id != blackjack_pos[i].text){
+						alert("You can only bet in your spot. Your spot is "+blackjack_payload_server.user_id);
+					} else {
+						your_bets.push(blackjack_pos[i]);					
+						your_last_bet = blackjack_pos[i];
+						blackjack_payload_server.bets = your_bets;
+						socket.emit('blackjack_send', ['bet', blackjack_payload_server]);	
+						self.draw_tokens(your_bets[your_bets.length-1]);
+					}
+					break;
+				}
+			}
 		}		
 	}
 
-	this.check_win_lose = function(){		
+	this.draw_tokens = function(your_last_bet){
+		var x = your_last_bet.x + your_last_bet.width/2 - bet_square/4;
+		var y = your_last_bet.y + your_last_bet.height/2 - bet_square/4 - 5;
+		var w = bet_square/2;
+		var h = bet_square/2+10;		
+		
+		var img = new Image();
+		img.src = carrot_img; 
+		ctx.drawImage(img, x, y, w, h);	
+	}
+
+	this.check_win_lose = function(){	
 		if(typeof blackjack_hand[2].win != "undefined" && blackjack_hand[2].win === true){
 			self.end_game(blackjack_hand[2]);		
 		} else {
@@ -383,13 +466,33 @@ function blackjack_wheel(props){
 	this.end_game = function(obj){
 		setTimeout(function(){
 			if(obj.id === "dealer"){
+				self.pay("dealer");
 				alert('The dealer has won');
 			} else {
+				self.pay(obj);
 				alert('Player ' + obj.user + ' has won');			
 			}
 			self.draw_table();
 			blackjack_hand = [];
+			your_last_bet = {}
+			your_bets = [];
 		}, 300);
+	}
+
+	this.pay = function(obj){
+		for(var i in blackjack_hand[1]){
+			if(blackjack_hand[1][i].id == props.user_id){	
+				if(obj == "dealer" || obj.id != blackjack_hand[1][i].id){
+					user_info.money = user_info.money - blackjack_hand[1][i].bets.length;
+					dispatch(blackjack_get_history(['lose', your_bets.length]))
+				} else {
+					user_info.money = user_info.money + blackjack_hand[1][i].bets.length;
+					dispatch(blackjack_get_history(['win', your_bets.length]))
+				}
+				dispatch(blackjack_calculate_money(user_info.money))				
+			}
+			break;
+		}
 	}
 }
 
