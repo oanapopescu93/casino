@@ -66,10 +66,10 @@ function blackjack_wheel(props){
 		canvas = document.getElementById("blackjack_canvas");		
 		ctx = canvas.getContext("2d");	
 		
-		if (window.innerWidth < 900){
+		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 900;
+				canvas.width = 500;
 				canvas.height = 300;
 
 				button_start = {x: 45, y: 45, r: 20, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'START', text_x: 45, text_y: 49}
@@ -83,7 +83,7 @@ function blackjack_wheel(props){
 				card = {width: 45, height: 64};
 			} else {
 				//small portrait
-				canvas.width = 900;
+				canvas.width = 300;
 				canvas.height = 400;
 				
 				button_start = {x: 50, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'START', text_x: 48, text_y: 54}

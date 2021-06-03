@@ -27,7 +27,7 @@ function slot_game(props){
 		canvas = document.getElementById("slot_canvas");		
 		ctx = canvas.getContext("2d");	
 		
-		if (window.innerWidth < 900){
+		if (window.innerWidth < 960){
 			canvas.width = window.innerWidth - 30;
 			canvas.height = 300;			
 			

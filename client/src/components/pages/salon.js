@@ -176,7 +176,7 @@ class Salon extends Component {
 									)}	
 									<Row>
 										<Col sm={12}>
-											<h6 id="exit_salon" onClick={() => self.handleExit()}>Exit salon</h6>								
+											<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>								
 										</Col>
 									</Row>													
 								</Col>

@@ -105,7 +105,7 @@ function roulette_game(props){
 		canvas = document.getElementById("roulette_canvas");		
 		ctx = canvas.getContext("2d");
 		
-		if (window.innerWidth < 900){
+		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
 				canvas.width = 900;
@@ -459,7 +459,7 @@ function roulette_game(props){
 				scrollLeft: width
 			}, 500);	
 		} else if (isInside(mousePos, spin_button_coordonates)) {
-			console.log('SPIN');
+			//console.log('SPIN');
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
 				alert("Please place your bet before betting.");				
