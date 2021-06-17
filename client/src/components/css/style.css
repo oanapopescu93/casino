@@ -1063,6 +1063,47 @@ table {
 	background: rgba(255, 255, 0, 0.2);
 }
 
+.slot_header{
+	display: inline-block;
+	width: 350px;
+	padding:10px;
+	background-color: #777;
+	border-radius:5px 5px 0px 0px;
+	border-top:solid 0px #999;
+	border-right:solid 2px #999;
+	border-bottom:solid 7px #999;
+	border-left:solid 2px #999;
+	margin-bottom:-5px;
+}
+.slot_machine{
+	display: inline-block;
+    position: relative;
+	width: 600px;
+	height: 146px;
+    text-align: center;
+    background: #000;
+    border: 10px solid;
+    border-color: #777 #999 #666 #999;
+    border-radius: 5px;
+	padding:10px 20px;
+}
+.slot_machine .box{
+	height: 100%;
+	width:100%;
+    overflow: hidden;
+}
+.slot_machine canvas{
+    position: relative;
+    background: white;
+    border: 3px solid gold;
+    margin: 1px;
+}
+
+.slot_header h1, .slot_header h3{
+    color: #555;
+    text-shadow: rgb(255 255 255 / 60%) 0px 1px 0px;
+}
+
 /* media */
 @media (max-width: 960px){
 	.casino_games_title_container{
