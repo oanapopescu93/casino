@@ -417,7 +417,7 @@ function blackjack_wheel(props){
 					// ctx.rect(blackjack_pos[i].x, blackjack_pos[i].y, blackjack_pos[i].width, blackjack_pos[i].height);
 					// ctx.stroke();
 
-					if(blackjack_payload_server.user_id != blackjack_pos[i].text){
+					if(blackjack_payload_server.user_id !== blackjack_pos[i].text){
 						alert("You can only bet in your spot. Your spot is "+blackjack_payload_server.user_id);
 					} else {
 						your_bets.push(blackjack_pos[i]);					
@@ -444,7 +444,7 @@ function blackjack_wheel(props){
 	}
 
 	this.check_win_lose = function(){	
-		if(typeof blackjack_hand[2].win != "undefined" && blackjack_hand[2].win === true){
+		if(typeof blackjack_hand[2].win !== "undefined" && blackjack_hand[2].win === true){
 			self.end_game(blackjack_hand[2]);		
 		} else {
 			var all_lose = 0;
@@ -481,8 +481,8 @@ function blackjack_wheel(props){
 
 	this.pay = function(obj){
 		for(var i in blackjack_hand[1]){
-			if(blackjack_hand[1][i].id == props.user_id){	
-				if(obj == "dealer" || obj.id != blackjack_hand[1][i].id){
+			if(blackjack_hand[1][i].id === props.user_id){	
+				if(obj === "dealer" || obj.id !== blackjack_hand[1][i].id){
 					user_info.money = user_info.money - blackjack_hand[1][i].bets.length;
 					dispatch(blackjack_get_history(['lose', your_bets.length]))
 				} else {

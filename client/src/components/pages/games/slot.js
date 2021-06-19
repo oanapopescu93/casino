@@ -1,5 +1,8 @@
 import React from 'react';
 import $ from 'jquery'; 
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
 import {connect} from 'react-redux'
 import item01 from '../../img/slot_imgs/energy.png';
 import item02 from '../../img/slot_imgs/staff.png';
@@ -17,11 +20,18 @@ var font_bold_16 = 'bold 16px sans-serif';
 
 var items = [{id: 'energy', src: item01},{id: 'staff', src: item02},{id: 'cash', src: item03},{id: 'build', src: item04},{id: 'goods', src: item05},{id: 'gold', src: item06}];
 var slots_canvas = [];
+var slots_ctx = [];
+var runtime = 3000; // how long all slots spin before starting countdown
+var spintime = 1000; // how long each slot spins at minimum
+var slot_speed = 15; // how many pixels per second slots roll
+
 var my_slot;
+
 var ctx;
 var socket;
 
 function slot_game(props){
+	console.log(props)
 	var self = this;
 	this.reel = [$('#slot_canvas1'), $('#slot_canvas2'), $('#slot_canvas3'), $('#slot_canvas4'), $('#slot_canvas5')];
 		
@@ -51,6 +61,10 @@ function slot_game(props){
 				self.draw_reel(slots_canvas[slots_canvas.length-1], result);
 			}
 		});
+
+		$('#slot_spin').click(function(e) {
+			self.spin();
+		});
 	}
 
 	this.preaload_images = function(item){
@@ -66,7 +80,7 @@ function slot_game(props){
 	
 	this.createCanvas = function(canvas){
 		ctx = canvas.getContext("2d");
-			
+		slots_ctx.push(ctx)	
 		if (window.innerWidth < 960){
 			canvas.width = 50;
 			canvas.height = 300;		
@@ -95,6 +109,33 @@ function slot_game(props){
 			ctx.fillRect(0, (i + items.length)  * canvas.width, canvas.width, 2);
 		}
 	}
+
+	this.spin = function(){
+		this.speed1 = this.speed2 = this.speed3 = this.speed4 = this.speed5 = slot_speed;
+		var spin_nr = 0;		
+
+		window.requestAnimFrame = (function(){
+			return  window.requestAnimationFrame       ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame    ||
+			function( callback ){
+			  window.setTimeout(callback, 1000 / 60);
+			};
+	  	})();
+	  
+	  	function loop() {
+			var stop = false;
+			console.log('SPIN', slots_canvas, slots_ctx);
+
+			if(!stop){
+				window.requestAnimFrame(loop);
+			} else {
+				window.cancelAnimationFrame(loop);
+			}
+		}
+
+	  	loop();
+	}
 }
 
 function shuffleArray(array) {
@@ -105,24 +146,6 @@ function shuffleArray(array) {
 		array[j] = tmp;
     }
 	return array;
-}
-
-function getMousePos(canvas, event) {
-	var rect = canvas.getBoundingClientRect();
-	return {
-		x: event.clientX - rect.left,
-		y: event.clientY - rect.top
-	};
-}
-	
-function isInside(mousePos, obj){
-	return mousePos.x > obj.x && mousePos.x < obj.x + obj.width && mousePos.y < obj.y + obj.height && mousePos.y > obj.y
-}
-
-function handleBack(){
-    var url = window.location.href;
-    url = url.split('/table/');
-    window.location.href = url[0];
 }
 
 function Slot(props) {	
@@ -146,7 +169,7 @@ function Slot(props) {
 					<h3>Play and Win</h3>
 				</div>
 			</div>
-			<div className="slot_container">
+			<div className="slot_machine_container">
 				<div className="slot_machine">
 					<div className="box">
 						<canvas id="slot_canvas1"></canvas>
@@ -155,6 +178,23 @@ function Slot(props) {
 						<canvas id="slot_canvas4"></canvas>
 						<canvas id="slot_canvas5"></canvas>
 					</div>
+				</div>
+			</div>
+			<div className="slot_buttons_container">
+				<div className="slot_buttons">
+					<Row>
+						<Col sm={5}>
+							<p>Carrots</p>
+							<input className="slot_input" type="number" id="slot_balance" min="1" defaultValue="1" max="5000"></input>
+						</Col>
+						<Col sm={5}>
+							<p>BET</p>
+							<input className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max="3"></input>
+						</Col>
+						<Col sm={2} className="slot_spin_container">
+							<button className="slot_spin shadow_convex" id="slot_spin">SPIN</button>
+						</Col>
+					</Row>
 				</div>
 			</div>
 		</>

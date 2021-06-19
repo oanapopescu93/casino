@@ -9,7 +9,6 @@ import Salon from './salon';
 import SignInRecovery from './signIn_recovery';
 import Not_found from './not_found';
 import UserPage from './userPage';
-import Footer from './footer';
 import Donate from './money/donate'
 
 import socketIOClient from "socket.io-client/dist/socket.io";
@@ -43,7 +42,7 @@ function Home(props) {
 				</Container>				
 			</div>			
 		</div>
-		<Donate></Donate>
+		<Donate socket={socket}></Donate>
 		</>
 	);
 }

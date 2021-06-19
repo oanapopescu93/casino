@@ -1,13 +1,15 @@
 :root {
 	--yellow: yellow;
 	--green: green;
+	--dark_yellow:#ccad00;
+	--gold: gold;
   }
 
 html{
 	height: 100%;
 }
 body{
-	background:green;
+	background:var(--green);
 	color:black;
 	font-family: 'Roboto Condensed';
 	min-height: 100% !important;
@@ -27,7 +29,7 @@ body{
 	padding:40px 0px;
 }
 .grad {
-	background-color:green;
+	background-color:var(--green);
 	/* background-image: radial-gradient(green, black); */
 	background-image: url('./../img/bg00a.jpg');
 	background-repeat: repeat;
@@ -47,7 +49,7 @@ body{
 }
 
 .deco {
-	--c:yellow;   /* color */
+	--c:var(--yellow);   /* color */
 	--b:1px;   /* thickness of lines */
 	--o1:15px; /* offest of lines*/
 	--o2:10px; /* offset of rectangle */
@@ -132,7 +134,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 	width: 100%;
 	border-radius:50px;
 	background-color: transparent;
-	border:solid 1px yellow;
+	border:solid 1px var(--yellow);
 	margin-top:20px;
 	height: 10px;
 	overflow: hidden;
@@ -209,7 +211,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 	width:100%;
 }
 .loader_container .loader{
-	color: yellow;
+	color: var(--yellow);
     position: relative;
     top: 50%;
     transform: translate(0px, -50%);
@@ -316,10 +318,10 @@ h6 {
 	color:red;
 }
 .text_stroke{
-	color: yellow;
+	color: var(--yellow);
 	-webkit-text-fill-color: transparent; 
 	-webkit-text-stroke-width: 1px;
-	-webkit-text-stroke-color: yellow;
+	-webkit-text-stroke-color: var(--yellow);
 }
 
 #signin_user_red, #signin_pass_red{
@@ -392,7 +394,7 @@ input:-internal-autofill-selected {
     appearance: none;
     background-color: transparent !important;
     background-image: none !important;
-    color: yellow !important;
+    color: var(--yellow) !important;
 }
 
 .input_yellow, .input_yellow:focus{
@@ -521,9 +523,9 @@ table {
 #chatform button{
 	width:100%;
 	/* color: #a87b51; */
-	color: yellow;
+	color: var(--yellow);
     background: rgba(0, 0, 0, 0.2);
-    border: solid 1px yellow;
+    border: solid 1px var(--yellow);
     outline: none!important;
     box-shadow: none!important;
 	padding: 6px 4px;
@@ -535,8 +537,8 @@ table {
 }
 #user_list table tr td{
 	vertical-align:top;
-	border-bottom: solid 1px yellow;
-	color:yellow;
+	border-bottom: solid 1px var(--yellow);
+	color:var(--yellow);
 }
 #user_list table tr td:first-child{
 	width:65%;
@@ -554,8 +556,8 @@ table {
 	text-align:left;
 	height:180px;
 	background:black;
-	color:yellow;
-	border:solid 1px yellow;
+	color:var(--yellow);
+	border:solid 1px var(--yellow);
 	border-radius:5px;
 	padding:5px 10px;
 	outline: none;
@@ -565,8 +567,8 @@ table {
 	width:100%;
 	margin-bottom:10px;
 	background:black;
-	color:yellow;
-	border:solid 1px yellow;
+	color:var(--yellow);
+	border:solid 1px var(--yellow);
 	border-radius:5px;
 	padding:5px 10px;
 	outline: none;
@@ -600,7 +602,7 @@ table {
 	display:none;
 	background-color: rgba(0,0,0,0.5);
 	background-image: linear-gradient(black, rgba(0,0,0,0.5) 50%);
-	border-left:solid 1px yellow;
+	border-left:solid 1px var(--yellow);
 	padding: 20px 10px;	
 	position:absolute;
 	height:100%;
@@ -608,7 +610,7 @@ table {
 	width:90%;
 	max-width:250px;
 	text-align: left;
-	color:yellow;
+	color:var(--yellow);
 }
 .button_container{
 	position: absolute;
@@ -625,10 +627,10 @@ table {
 }
 .button_container > div{
 	background-color: black;	
-	border:solid 1px yellow;
+	border:solid 1px var(--yellow);
 	border-right:solid 0px black;
 	border-radius:10px 0px 0px 10px;
-	color:yellow;
+	color:var(--yellow);
 	height:100px;
 	text-align:center;
 	cursor:pointer;
@@ -648,7 +650,7 @@ table {
 }
 .user_list li{
 	list-style-type: none;
-	border-bottom: solid 1px yellow;	
+	border-bottom: solid 1px var(--yellow);	
 }
 .user_list li:first-child{	
 	overflow: auto;
@@ -689,7 +691,7 @@ table {
 	padding-left:5px;
 }
 #user_list_user{
-	color:yellow;
+	color:var(--yellow);
 }
 #user_name, #user_money{
 	display:inline-block;
@@ -878,6 +880,9 @@ table {
 	font-size:12px;
 	line-height:12px;
 }
+.casino_modal a{
+	color:black;
+}
 #qr_code{
 	margin-bottom: 5px;
 }
@@ -993,6 +998,7 @@ table {
 
 /* donate */
 #donate{
+	opacity: 0;
 	position: fixed;
     bottom: 10px;
     right: 10px;
@@ -1003,6 +1009,12 @@ table {
 }
 #donate svg{
 	fill:var(--yellow);
+}
+#donate.open{
+	-webkit-transition: opacity 2.0s ease-in;
+       -moz-transition: opacity 2.0s ease-in;
+         -o-transition: opacity 2.0s ease-in;
+                                  opacity: 1;
 }
 
 .salon_button_container{
@@ -1053,7 +1065,7 @@ table {
 #exit_salon{
 	display:inline-block;
 	padding:5px 20px;
-	border:solid 1px yellow;
+	border:solid 1px var(--yellow);
 	margin:10px;
 	border-radius:10px;
 	cursor: pointer;
@@ -1067,25 +1079,27 @@ table {
 	display: inline-block;
 	width: 350px;
 	padding:10px;
-	background-color: #777;
+	background-color: #ccad00;
 	border-radius:5px 5px 0px 0px;
-	border-top:solid 0px #999;
-	border-right:solid 2px #999;
-	border-bottom:solid 7px #999;
-	border-left:solid 2px #999;
+	border-top:solid 0px var(--yellow);
+	border-right:solid 2px var(--yellow);
+	border-bottom:solid 7px var(--yellow);
+	border-left:solid 2px var(--yellow);
 	margin-bottom:-5px;
+	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 }
 .slot_machine{
 	display: inline-block;
     position: relative;
 	width: 600px;
-	height: 146px;
+	height: 346px;
     text-align: center;
     background: #000;
     border: 10px solid;
-    border-color: #777 #999 #666 #999;
+    border-color: #ccad00 var(--yellow);
     border-radius: 5px;
 	padding:10px 20px;
+	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 }
 .slot_machine .box{
 	height: 100%;
@@ -1095,13 +1109,59 @@ table {
 .slot_machine canvas{
     position: relative;
     background: white;
-    border: 3px solid gold;
+    border: 3px solid var(--dark_yellow);
     margin: 1px;
 }
 
 .slot_header h1, .slot_header h3{
-    color: #555;
-    text-shadow: rgb(255 255 255 / 60%) 0px 1px 0px;
+    color: var(--yellow);
+    text-shadow: rgb(0 0 0 / 50%) 3px 3px 3px;
+}
+.slot_buttons_container{
+	margin-top:10px;
+}
+.slot_buttons{
+	background: var(--dark_yellow);
+	display: inline-block;
+    position: relative;
+	width: 600px;
+    text-align: center;
+	border-top:solid 0px var(--yellow);
+	border-right:solid 2px var(--yellow);
+	border-bottom:solid 0px var(--yellow);
+	border-left:solid 2px var(--yellow);
+    border-radius: 5px;
+	padding:10px 20px;
+	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
+	color:black;
+}
+.slot_input{
+	background: black;
+	color:var(--yellow);
+	width:100%;
+	padding:5px 10px;
+	border:solid 1px var(--yellow);
+	border-radius:5px;
+}
+.slot_spin_container{
+	text-align: right;
+}
+#slot_spin{
+	border-radius: 100%;
+    height: 55px;
+    width: 55px;
+}
+
+.slot_spin{
+	color: black;
+    background: rgba(0, 0, 0, 0.2);
+    border: solid 1px black;
+	outline: none!important;
+}
+.slot_spin:hover, .slot_spin:focus, .slot_spin:active, .slot_spin:active:focus{
+    background: rgba(0, 0, 0, 0.2);
+	border: solid 1px var(--yellow);
+	color: var(--yellow);
 }
 
 /* media */
@@ -1117,6 +1177,9 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.slot_spin_container{
+		text-align: center;
+	}
 	.button_table{
 		height: 40px;
 		width: 40px;

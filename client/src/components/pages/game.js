@@ -1,7 +1,4 @@
 import React, {Component} from 'react'
-
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 import Roulette from './games/roulette'
@@ -50,8 +47,6 @@ class Game extends Component {
 		if(this.state.user !== ""){
 			user = true;
 		} 
-
-		//console.log('game ', this.state, this.props)
 		
 		return (
 			<div className="color_yellow">
@@ -82,8 +77,6 @@ class Game extends Component {
 											)						
 									}
 								})()}
-
-								
 							</div>
 						) : (
 							<div>No user</div>

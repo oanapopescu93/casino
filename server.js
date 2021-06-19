@@ -36,6 +36,7 @@ var your_bets = [];
 
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
+var bitcoin = constants.BITCOIN;
 
 app.use(routes);
 
@@ -100,6 +101,10 @@ io.on('connection', function(socket) {
             socket.handshake.session.save();
         }
 		io.to(socket.id).emit('logout_read', data);
+	});
+
+	socket.on('donate_send', function(data) {
+		io.to(socket.id).emit('donate_read', bitcoin);		
 	});
 
 	socket.on('username', function(payload) {
