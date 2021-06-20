@@ -16,9 +16,11 @@ var canvas_height = 800;
 var blackjack_hand = [];
 
 var button_start = {}
+var button_clear = {}
 var button_hit = {}
 var button_stay = {}
 var start_button_coordonates = {};
+var clear_button_coordonates = {};
 var hit_button_coordonates = {};
 var stay_button_coordonates = {};
 
@@ -32,6 +34,7 @@ var your_bets = [];
 var your_last_bet = {};
 var bet_value = 1;
 var bet_square = 40;
+var start_game = false;
 
 var font_bold_10 = 'bold 10px sans-serif';
 var font_bold_12 = 'bold 12px sans-serif';
@@ -73,11 +76,13 @@ function blackjack_wheel(props){
 				canvas.height = 300;
 
 				button_start = {x: 45, y: 45, r: 20, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'START', text_x: 45, text_y: 49}
-				button_hit = {x: 100, y: 45, r: 20, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 102, text_y: 49}
+				button_clear = {x: 100, y: 45, r: 20, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: 102, text_y: 49}
+				button_hit = {x: 155, y: 45, r: 20, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 155, text_y: 49}
 				button_stay = {x: 155, y: 45, r: 20, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'STAY', text_x: 155, text_y: 49}
 				start_button_coordonates = {x:20, y:20, width:50, height:50};
-				hit_button_coordonates = {x:75, y:20, width:50, height:50};
-				stay_button_coordonates = {x:130, y:20, width:50, height:50};
+				clear_button_coordonates = {x:75, y:20, width:50, height:50};
+				hit_button_coordonates = {x:130, y:20, width:50, height:50};
+				stay_button_coordonates = {x:165, y:20, width:50, height:50};
 
 				card_base = {x: 20, y:180, width: 50, height: 80, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:50}
 				card = {width: 45, height: 64};
@@ -87,13 +92,15 @@ function blackjack_wheel(props){
 				canvas.height = 400;
 				
 				button_start = {x: 50, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'START', text_x: 48, text_y: 54}
-				button_hit = {x: 140, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 140, text_y: 54}
+				button_clear = {x: 140, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: 140, text_y: 54}
+				button_hit = {x: 230, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 230, text_y: 54}
 				button_stay = {x: 230, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'STAY', text_x: 230, text_y: 54}
 				start_button_coordonates = {x:20, y:20, width:60, height:60};
-				hit_button_coordonates = {x:110, y:20, width:60, height:60};
-				stay_button_coordonates = {x:200, y:20, width:60, height:60};
+				clear_button_coordonates = {x:110, y:20, width:60, height:60};
+				hit_button_coordonates = {x:200, y:20, width:60, height:60};
+				stay_button_coordonates = {x:290, y:20, width:60, height:60};
 
-				card_base = {x: 20, y:500, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:50}
+				card_base = {x: 20, y:400, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:50}
 				card = {width: 80, height: 120};
 			}
 			bet_square = 30;
@@ -108,13 +115,15 @@ function blackjack_wheel(props){
 			canvas.height = 800;			
 			
 			button_start = {x: 50, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'START', text_x: 48, text_y: 54}
-			button_hit = {x: 140, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 140, text_y: 54}
-			button_stay = {x: 230, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'STAY', text_x: 230, text_y: 54}
+			button_clear = {x: 140, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: 140, text_y: 54}
+			button_hit = {x: 230, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 230, text_y: 54}
+			button_stay = {x: 320, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'STAY', text_x: 320, text_y: 54}
 			start_button_coordonates = {x:20, y:20, width:60, height:60};
-			hit_button_coordonates = {x:110, y:20, width:60, height:60};
-			stay_button_coordonates = {x:200, y:20, width:60, height:60};
+			clear_button_coordonates = {x:110, y:20, width:60, height:60};
+			hit_button_coordonates = {x:200, y:20, width:60, height:60};
+			stay_button_coordonates = {x:290, y:20, width:60, height:60};
 
-			card_base = {x: 20, y:400, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:100}
+			card_base = {x: 20, y:320, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:100}
 			card = {width: 80, height: 120};
 			bet_square = 40;
 
@@ -141,6 +150,7 @@ function blackjack_wheel(props){
 		ctx.shadowOffsetY = 0;
 		
 		self.drawButton(button_start.x, button_start.y, button_start.r, button_start.sAngle, button_start.eAngle, button_start.counterclockwise, button_start.fillStyle, button_start.lineWidth, button_start.strokeStyle, button_start.text, button_start.text_x, button_start.text_y);
+		self.drawButton(button_clear.x, button_clear.y, button_clear.r, button_clear.sAngle, button_clear.eAngle, button_clear.counterclockwise, button_clear.fillStyle, button_clear.lineWidth, button_clear.strokeStyle, button_clear.text, button_clear.text_x, button_clear.text_y);
 		self.drawButton(button_hit.x, button_hit.y, button_hit.r, button_hit.sAngle, button_hit.eAngle, button_hit.counterclockwise, button_hit.fillStyle, button_hit.lineWidth, button_hit.strokeStyle, button_hit.text, button_hit.text_x, button_hit.text_y);
 		self.drawButton(button_stay.x, button_stay.y, button_stay.r, button_stay.sAngle, button_stay.eAngle, button_stay.counterclockwise, button_stay.fillStyle, button_stay.lineWidth, button_stay.strokeStyle, button_stay.text, button_stay.text_x, button_stay.text_y);
 		
@@ -173,8 +183,10 @@ function blackjack_wheel(props){
 				} else {
 					a = 3 + b;
 				}				
-			}		
-			self.draw_card_number(i, space + a * (card_base.width + card_base.x), card_base.y, card_base.width, card_base.height);
+			}	
+			
+			draw_rect(space + a * (card_base.width + card_base.x), card_base.dealet_y+card_base.height+50, 20, 20, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
+			self.draw_card_number(i, space + a * (card_base.width + card_base.x), card_base.y+10, 20, card_base.height);
 			self.draw_card_text(space + a * (card_base.width + card_base.x), card_base.y+card_base.height+77, card_base.width, card_base.height);
 			blackjack_pos.push({x: space + a * (card_base.width + card_base.x)+20, y: card_base.y+card_base.height+35, width: 60, height:60, text: i, value: bet_value}); 
 		}
@@ -188,7 +200,7 @@ function blackjack_wheel(props){
 	this.draw_cards = function(){
 		self.draw_table_players();
 		self.draw_table_dealer();
-		self.draw_card_values('white', 'black');	
+		self.draw_card_values('white', 1, 'white', 'black');	
 		self.draw_bets();	
 	}
 
@@ -224,17 +236,23 @@ function blackjack_wheel(props){
 		self.draw_card(space + 3 * (card_base.width + card_base.x), 100, card.width, card.height, blackjack_hand[2].hand, "dealer", -1);
 	}
 
-	this.draw_card_values = function(fillStyle, color){
+	this.draw_card_values = function(fillStyle, lineWidth, strokeStyle, color){
 		for(var i in all_cards_value){
 			var value_hand = all_cards_value[i].value_hand;
 			ctx.beginPath();
 			ctx.fillStyle = fillStyle;
-			ctx.rect(all_cards_value[i].x, all_cards_value[i].y + card_base.height + 10, 100, 20);
+			ctx.rect(all_cards_value[i].x+20, all_cards_value[i].y - 20, 80, 20);
+			ctx.fillStyle = fillStyle;
+			if(strokeStyle !== ""){
+				ctx.lineWidth = lineWidth;
+				ctx.strokeStyle = strokeStyle;
+				ctx.stroke();
+			}
 			ctx.fill();
 			ctx.beginPath();
 			ctx.fillStyle = color;
 			ctx.textAlign = "center";	
-			ctx.fillText(value_hand, all_cards_value[i].x+50, all_cards_value[i].y + card_base.height + 25);
+			ctx.fillText(value_hand, all_cards_value[i].x+60, all_cards_value[i].y - 5);
 		}
 	}
 
@@ -350,7 +368,7 @@ function blackjack_wheel(props){
 		});
 		$('#blackjack_canvas').off('mousemove').on('mousemove', function(event) {
 			var mousePos = getMousePos(canvas, event);
-			if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
+			if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, clear_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
 				$('#blackjack_canvas').css('cursor', "pointer")
 			} else {
 				$('#blackjack_canvas').css('cursor', "default")
@@ -366,35 +384,78 @@ function blackjack_wheel(props){
 			user: props.user, 
 			user_table: props.user_table, 
 			bets: your_bets
-		}
-
-		// ctx.beginPath();
-		// ctx.lineWidth = "1";
-		// ctx.strokeStyle = "red";
-		// ctx.rect(start_button_coordonates.x, start_button_coordonates.y, start_button_coordonates.width, start_button_coordonates.height);
-		// ctx.stroke();	
-		// ctx.strokeStyle = "green";
-		// ctx.rect(hit_button_coordonates.x, hit_button_coordonates.y, hit_button_coordonates.width, hit_button_coordonates.height);
-		// ctx.stroke();	
-		// ctx.strokeStyle = "blue";
-		// ctx.rect(stay_button_coordonates.x, stay_button_coordonates.y, stay_button_coordonates.width, stay_button_coordonates.height);
-		// ctx.stroke();
+		}		
 		
-		if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
+		if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, clear_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
 			var click = -1;
 			if (isInside(mousePos, start_button_coordonates)) {
 				//console.log('START');
+
+				// ctx.beginPath();
+				// ctx.lineWidth = "1";
+				// ctx.strokeStyle = "red";
+				// ctx.rect(start_button_coordonates.x, start_button_coordonates.y, start_button_coordonates.width, start_button_coordonates.height);
+				// ctx.stroke();
+				
 				if(your_bets.length > 0){
+					start_game = true;
 					socket.emit('blackjack_send', ['start', blackjack_payload_server]);	
 				} else {
 					alert('Please place your bets before starting the game')
 				}						
+			} else if (isInside(mousePos, clear_button_coordonates)) {
+				//console.log('CLEAR', your_bets);
+
+				// ctx.beginPath();
+				// ctx.lineWidth = "1";
+				// ctx.strokeStyle = "red";
+				// ctx.rect(clear_button_coordonates.x, clear_button_coordonates.y, clear_button_coordonates.width, clear_button_coordonates.height);
+				// ctx.stroke();	
+
+				if(start_game){
+					alert("You can't clear your bets. The game has already begun.")
+				} else {
+					your_bets = [];
+					self.draw_table();
+				} 
+								
 			} else if (isInside(mousePos, hit_button_coordonates)) {
-				//console.log('HIT');	
-				socket.emit('blackjack_send', ['hit', blackjack_payload_server]);							
+				// console.log('HIT', blackjack_payload_server, start_game);
+
+				// ctx.beginPath();
+				// ctx.lineWidth = "1";
+				// ctx.strokeStyle = "green";
+				// ctx.rect(hit_button_coordonates.x, hit_button_coordonates.y, hit_button_coordonates.width, hit_button_coordonates.height);
+				// ctx.stroke();	
+
+				if(your_bets.length > 0){
+					if(start_game){
+						socket.emit('blackjack_send', ['hit', blackjack_payload_server]);	
+					} else {
+						alert("Start the game first.")
+					} 
+				} else {
+					alert('Please place your bets before hitting.')
+				}
+										
 			} else if (isInside(mousePos, stay_button_coordonates)) {
-				//console.log('STAY');
-				socket.emit('blackjack_send', ['stay', blackjack_payload_server]);								
+				// console.log('STAY', blackjack_payload_server, start_game);
+				
+				// ctx.beginPath();
+				// ctx.lineWidth = "1";				
+				// ctx.strokeStyle = "blue";
+				// ctx.rect(stay_button_coordonates.x, stay_button_coordonates.y, stay_button_coordonates.width, stay_button_coordonates.height);
+				// ctx.stroke();
+
+				if(your_bets.length > 0){
+					if(start_game){
+						socket.emit('blackjack_send', ['stay', blackjack_payload_server]);
+					} else {
+						alert("Start the game first.")
+					} 
+				} else {
+					alert('Please place your bets before hitting.')
+				}					
 			} 
 	
 			socket.on('blackjack_read', function(data){
@@ -467,10 +528,10 @@ function blackjack_wheel(props){
 		setTimeout(function(){
 			if(obj.id === "dealer"){
 				self.pay("dealer");
-				alert('The dealer has won');
+				show_results('The dealer has won');
 			} else {
 				self.pay(obj);
-				alert('Player ' + obj.user + ' has won');			
+				show_results('Player ' + obj.user + ' has won')			
 			}
 			self.draw_table();
 			blackjack_hand = [];
@@ -494,6 +555,11 @@ function blackjack_wheel(props){
 			break;
 		}
 	}
+}
+
+function show_results(message){
+	$('.show_results_container').show();
+	$('.show_results p').text(message);
 }
 
 function getMousePos(canvas, event) {
@@ -538,6 +604,10 @@ function Blackjack(props) {
 		$('.full-height').attr('id', 'blackjack')	
 		blackjack_game = new blackjack_wheel(props);
 		blackjack_game.ready();
+
+		$('.show_results_container').click(function () {
+			$(this).hide();
+		});
 		
 		$(window).resize(function(){
 			blackjack_game.ready();	
@@ -549,6 +619,12 @@ function Blackjack(props) {
 	return (
 		<div className="blackjack_container">
 			<canvas id="blackjack_canvas"></canvas>
+			<div className="show_results_container">
+				<div className="show_results">
+					<h1>Results</h1>
+					<p></p>
+				</div>
+			</div>	
 			<img style={{'display': 'none'}} id="img_cards" alt="img_cards" src={img_cards} />
 		</div>
 	);

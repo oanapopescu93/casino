@@ -540,8 +540,8 @@ function roulette_game(props){
 				
 				self.check_win_lose(your_bets,win_nr);
 				
-				setTimeout(function(){ 						
-					alert("The win number is " + win_nr.nr);
+				setTimeout(function(){ 
+					show_results("The lucky number is " + win_nr.nr);
 					your_last_bet = {}
 					your_bets = [];
 					spin_click = 0;
@@ -621,6 +621,11 @@ function roulette_game(props){
 	  if(dispatch_nr === 1){
 		spin_roulette();
 	  }	  
+	}
+
+	function show_results(message){
+		$('.show_results_container').show();
+		$('.show_results p').text(message);
 	}
 	
 	function rotateWheel(x) {
@@ -995,6 +1000,10 @@ function Roulette(props) {
 		my_roulette = new roulette_game(props);
 		my_roulette.ready();
 		
+		$('.show_results_container').click(function () {
+			$(this).hide();
+		});
+		
 		$(window).resize(function(){
 			if(document.getElementById("roulette_canvas") !== null){
 				my_roulette.ready();
@@ -1006,7 +1015,13 @@ function Roulette(props) {
 	
 	return (
 		<div className="roulette_container">
-			<canvas id="roulette_canvas"></canvas>				
+			<canvas id="roulette_canvas"></canvas>	
+			<div className="show_results_container">
+				<div className="show_results">
+					<h1>Results</h1>
+					<p></p>
+				</div>
+			</div>			
 		</div>
 	);
 }

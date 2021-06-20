@@ -138,6 +138,11 @@ function slot_game(props){
 	}
 }
 
+function show_results(message){
+	$('.show_results_container').show();
+	$('.show_results p').text(message);
+}
+
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
 		var j = parseInt(Math.random() * i)
@@ -153,6 +158,10 @@ function Slot(props) {
 		$('.full-height').attr('id', 'slots')		
 		my_slot = new slot_game(props);
 		my_slot.ready();
+
+		$('.show_results_container').click(function () {
+			$(this).hide();
+		});
 		
 		$(window).resize(function(){
 			my_slot.ready();	
@@ -197,6 +206,12 @@ function Slot(props) {
 					</Row>
 				</div>
 			</div>
+			<div className="show_results_container">
+				<div className="show_results">
+					<h1>Results</h1>
+					<p></p>
+				</div>
+			</div>	
 		</>
 	);
 }

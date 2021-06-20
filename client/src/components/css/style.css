@@ -1083,7 +1083,7 @@ table {
 	border-radius:5px 5px 0px 0px;
 	border-top:solid 0px var(--yellow);
 	border-right:solid 2px var(--yellow);
-	border-bottom:solid 7px var(--yellow);
+	border-bottom:solid 0px var(--yellow);
 	border-left:solid 2px var(--yellow);
 	margin-bottom:-5px;
 	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
@@ -1162,6 +1162,40 @@ table {
     background: rgba(0, 0, 0, 0.2);
 	border: solid 1px var(--yellow);
 	color: var(--yellow);
+}
+
+.show_results_container{
+	background:rgba(0,0,0,0.5);
+	position: fixed;
+	z-index: 1;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	width:100%;
+	text-align: center;
+	padding:10px;
+	display:none;
+}
+.show_results{
+	position: absolute;
+	z-index: 1;
+	top:50%;
+	left: 50%;
+    transform: translate(-50%, -50%);
+	width:100%;
+	max-width: 200px;
+	padding:10px;
+	background: var(--yellow);
+	border-radius: 10px;
+	color: black;
+}
+.show_results h1{
+	font-size: 24px;
+	margin-bottom:10px;
+}
+.show_results p{
+	font-size: 14px;
 }
 
 /* media */
