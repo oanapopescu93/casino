@@ -35,5 +35,9 @@ module.exports = Object.freeze({
     BITCOIN: {
         text: "bc1qf856valhr4xrwzvgtxng8rsftzyhcrvphs6ztm",
         link: "bitcoin:bc1qf856valhr4xrwzvgtxng8rsftzyhcrvphs6ztm?amount=0.0001&time=1624099991"
+    },
+
+    CONTACT: {
+        email: "oanapopescu93@gmail.com",
     }
 })

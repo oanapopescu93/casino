@@ -8,6 +8,7 @@ import $ from 'jquery';
 
 import Game from './game';
 import UserAccount from './userAccount';
+import Contact from './contact';
 import Panel from './panel_control';
 
 var socket;
@@ -27,12 +28,27 @@ function Child(props) {
 			<BrowserRouter>
 				<div className="userPage"> 
 					<Row>
-						<Col sm={12}>							
-							{ visible ? 
-								<Game user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>									
-								: 
-								<UserAccount user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
-							}						
+						<Col sm={12}>	
+							{(() => {
+								switch (visible) {
+									case "game":
+										return (
+											<Game user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
+										)
+									case "account":
+										return (
+											<UserAccount user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
+										)	
+									case "contact":
+										return (
+											<Contact user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Contact> 
+										)
+									default:
+										return(
+											<Game user_id={user_id} user={user} socket={socket}></Game>
+										)						
+								}
+							})()}					
 						</Col>
 					</Row>	
 				</div>

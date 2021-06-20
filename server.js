@@ -37,6 +37,7 @@ var your_bets = [];
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
 var bitcoin = constants.BITCOIN;
+var contact_details = constants.CONTACT;
 
 app.use(routes);
 
@@ -105,6 +106,10 @@ io.on('connection', function(socket) {
 
 	socket.on('donate_send', function(data) {
 		io.to(socket.id).emit('donate_read', bitcoin);		
+	});
+
+	socket.on('contact_send', function(data) {
+		io.to(socket.id).emit('contact_read', contact_details);		
 	});
 
 	socket.on('username', function(payload) {

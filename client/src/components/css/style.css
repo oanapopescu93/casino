@@ -547,6 +547,13 @@ table {
 #user_list table tr td:last-child{
 	text-align:right;
 }
+#contact{
+	position: absolute;
+    bottom: 15px;
+    cursor: pointer;
+    left: 10px;
+    padding: 5px 10px;
+}
 
 .chatroom #chatmessages{
 	display:block;

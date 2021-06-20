@@ -59,19 +59,19 @@ function Panel(props){
 	}, 0);
 
     function handleClick(link) {
+        var url_back01 = window.location.href.split('/table/');
 		switch (link) {
 			case "account":
                 $('#user_list_user_game').removeClass('active');
 			    $('#user_list_user_account').addClass('active');
-                dispatch(game_visible(false))
+                dispatch(game_visible('account'))
 			  	break;
 			case "casino":
                 $('#user_list_user_game').addClass('active');
 			    $('#user_list_user_account').removeClass('active');
-				dispatch(game_visible(true))
+				dispatch(game_visible('game'))
 				break;
-            case "salon":	
-				var url_back01 = window.location.href.split('/table/');
+            case "salon":					
 				window.location.href = url_back01[0]+"/salon";
 			 	break;
             case "settings":	
@@ -80,9 +80,11 @@ function Panel(props){
 			case "logout":				
 				setCookie("casino_user", '', 1);
 				setCookie("casino_email", '', 1);
-				var url_back01 = window.location.href.split('/table/');
 				window.location.href = url_back01[0];
 			 	break;
+            case "contact":
+                dispatch(game_visible('contact'))
+                break;
 			default:
 				var url_back02 = window.location.href.split('/table/');
 				window.location.href = url_back02[0];
@@ -132,6 +134,7 @@ function Panel(props){
                         <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}><span>Settings</span></li>
                         <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}><span>Logout</span></li>
                     </ul>
+                    <div id="contact" onClick={() => handleClick('contact')}><span>Contact</span></div>
                 </div>
                 <div id="chat_panel_box" className="panel_box">
                     <ChatForm user={user} type={type} user_table={user_table} socket={socket}></ChatForm>
@@ -162,35 +165,35 @@ function Panel(props){
 
                         <div>
                             <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img className="vegetable radish" src={vegetables}/></div>
+                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable radish" src={vegetables}/></div>
                                 <p>100</p>
                             </div>
                             <div className="crop_vegetables_box">
                                 <FontAwesomeIcon icon={faArrowsAltH} />
                             </div>                            
                             <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img className="vegetable onion" src={vegetables}/></div>
+                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable onion" src={vegetables}/></div>
                                 <p>50</p>
                             </div>
                             <div className="crop_vegetables_box">
                                 <FontAwesomeIcon icon={faArrowsAltH} />
                             </div>  
                             <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img className="vegetable potato" src={vegetables}/></div>
+                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable potato" src={vegetables}/></div>
                                 <p>20</p>
                             </div>
                             <div className="crop_vegetables_box">
                                 <FontAwesomeIcon icon={faArrowsAltH} />
                             </div>  
                             <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img className="vegetable carrot" src={vegetables}/></div>
+                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable carrot" src={vegetables}/></div>
                                 <p>10</p>
                             </div>
                             <div className="crop_vegetables_box">
                                 <FontAwesomeIcon icon={faArrowsAltH} />
                             </div>  
                             <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img className="vegetable cabbage" src={vegetables}/></div>
+                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable cabbage" src={vegetables}/></div>
                                 <p>1</p>
                             </div>
                         </div>

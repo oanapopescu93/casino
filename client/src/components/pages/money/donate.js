@@ -40,16 +40,13 @@ function Donate(props){
             
             <Modal className="casino_modal" id="donate_modal" show={show} onHide={handleClose} size="sm">
                 <Modal.Header closeButton>
-                    <Modal.Title>Donation</Modal.Title>
+                    <Modal.Title>Support</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        <a href="https://bitcoin.org" rel="nofollow" target="_NEW">BitCoin: </a>
-                        <a rel="nofollow" href={bitcoin.link}><b>{bitcoin.text}</b></a>
-                    </p>
+                    <p><span>BitCoin: </span><a rel="nofollow" href={bitcoin.link}><b>{bitcoin.text}</b></a></p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <p>Please play and donate if you liked our games.</p>
+                    <p>Feel free to support us if you liked the app.</p>
                 </Modal.Footer>				
             </Modal>
         </>
