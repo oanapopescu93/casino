@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import Modal from 'react-bootstrap/Modal'
 
+import Settings from './control_settings'
 import ChatForm from './chatForm'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -82,8 +83,8 @@ function Panel(props){
 				setCookie("casino_email", '', 1);
 				window.location.href = url_back01[0];
 			 	break;
-            case "contact":
-                dispatch(game_visible('contact'))
+            case "support":
+                dispatch(game_visible('support'))
                 break;
 			default:
 				var url_back02 = window.location.href.split('/table/');
@@ -97,12 +98,6 @@ function Panel(props){
 		var expires = "expires=" + d.toGMTString();
 		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
-
-    function settings_save(){   
-        setCookie("casino_data", $('#settings_data').val(), 1);
-		setCookie("casino_currency", $('#settings_currency').val(), 1);
-        handleClose();
-    }
 
 	return (
         <>
@@ -134,7 +129,7 @@ function Panel(props){
                         <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}><span>Settings</span></li>
                         <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}><span>Logout</span></li>
                     </ul>
-                    <div id="contact" onClick={() => handleClick('contact')}><span>Contact</span></div>
+                    <div id="support" onClick={() => handleClick('support')}><span>Support</span></div>
                 </div>
                 <div id="chat_panel_box" className="panel_box">
                     <ChatForm user={user} type={type} user_table={user_table} socket={socket}></ChatForm>
@@ -146,60 +141,7 @@ function Panel(props){
                     <Modal.Title>Settings</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form id="settings_form" method="post" action="/settings">
-                        <Form.Group>
-                            <Form.Label for="settings_data">Date</Form.Label>
-                            <Form.Control id="settings_data" name="settings_data" className="input_yellow" as="select">
-                                <option>MM/DD/YYYY H:M</option>
-                                <option>MM/DD/YYYY H:M</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label for="settings_currency">Currency</Form.Label>
-                            <Form.Control id="settings_currency" name="settings_currency" className="input_yellow" as="select">
-                                <option value="carrot">Carrot</option>
-                                <option value="raddish">Radish</option>                                
-                                <option value="cabbage">Cabbage</option>
-                            </Form.Control>
-                        </Form.Group>
-
-                        <div>
-                            <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable radish" src={vegetables}/></div>
-                                <p>100</p>
-                            </div>
-                            <div className="crop_vegetables_box">
-                                <FontAwesomeIcon icon={faArrowsAltH} />
-                            </div>                            
-                            <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable onion" src={vegetables}/></div>
-                                <p>50</p>
-                            </div>
-                            <div className="crop_vegetables_box">
-                                <FontAwesomeIcon icon={faArrowsAltH} />
-                            </div>  
-                            <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable potato" src={vegetables}/></div>
-                                <p>20</p>
-                            </div>
-                            <div className="crop_vegetables_box">
-                                <FontAwesomeIcon icon={faArrowsAltH} />
-                            </div>  
-                            <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable carrot" src={vegetables}/></div>
-                                <p>10</p>
-                            </div>
-                            <div className="crop_vegetables_box">
-                                <FontAwesomeIcon icon={faArrowsAltH} />
-                            </div>  
-                            <div className="crop_vegetables_box">
-                                <div className="crop_vegetables"><img alt="vegetable" className="vegetable cabbage" src={vegetables}/></div>
-                                <p>1</p>
-                            </div>
-                        </div>
-                        
-                        <Button onClick={settings_save} className="settings_save">Save</Button>							
-                    </Form>
+                    <Settings></Settings>
                 </Modal.Body>				
             </Modal>
         </>	

@@ -24,7 +24,7 @@ function Account_profile(props) {
 		history = blackjack_info[1].history;	
 	}
 	
-	console.warn('history00--> ', money, history, rowspan)
+	//console.warn('history00--> ', money, history, rowspan)
 	
 	return (
 		<Row className="account_box_container color_yellow">
@@ -43,13 +43,13 @@ function Account_profile(props) {
 						<h3>History: </h3>
 							{(() => {
 								if (roulette_info === -1 && blackjack_info === -1) {
-									console.log('zzz00', history, history.length)
+									//console.log('zzz00', history, history.length)
 									return (
 										<p>There is no history.</p>
 									)
 								} else {
 									if(roulette_info !== -1){
-										console.log('zzz01', history, history.length)
+										//console.log('zzz01', history, history.length)
 										if(history.length === 0){	
 											return (
 													<div className="color_yellow 111">No history</div>

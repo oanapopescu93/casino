@@ -5,6 +5,8 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
+import vegetables_yellow from '../img/icons/vegetables_yellow.png';
+
 var socket;
 
 function Carousel(props){
@@ -14,7 +16,6 @@ function Carousel(props){
 	var user = props.user;
 
 	function my_click(id){
-		console.log('buy', id);
 		alert('No payment methods yet')
 	}	
 
@@ -86,7 +87,7 @@ function Carousel(props){
 				</OwlCarousel>
 			</div>
 		);
-	} else {
+	} else if(template === "market"){
 		const options = {
 			items: 4,
 			nav: false,
@@ -114,9 +115,17 @@ function Carousel(props){
 							return(
 								<div key={i} className="table_inside">
 									<div className="table_box shadow_concav">
+										{(() => {
+											return (
+												<div className="crop_vegetables">
+													<img alt="vegetable" className={'vegetable '+item.name} src={vegetables_yellow}></img>
+												</div>
+											)
+										})()}    
 										<h3>{item.name}</h3>
-										<p>Value: {item.value}</p>
-										<p>Price: <b>{item.price}</b></p>
+										<p>Value: <b>{item.value}</b></p>
+										<p>Qty: <b>{item.quantity}</b></p>
+										<p>Price: <b>{item.value}</b></p>
 										<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => my_click(id)}>Buy</Button>
 									</div>
 								</div>												

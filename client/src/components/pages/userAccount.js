@@ -35,6 +35,7 @@ class UserAccount extends Component {
 		}
 		socket.emit('market_send', payload);	
 		socket.on('market_read', function(data){
+			console.log('market_read', data)
 			self.setState({ market: data});
 		});	
 	}

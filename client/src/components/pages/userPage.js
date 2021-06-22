@@ -8,7 +8,7 @@ import $ from 'jquery';
 
 import Game from './game';
 import UserAccount from './userAccount';
-import Contact from './contact';
+import Support from './support';
 import Panel from './panel_control';
 
 var socket;
@@ -39,9 +39,9 @@ function Child(props) {
 										return (
 											<UserAccount user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
 										)	
-									case "contact":
+									case "support":
 										return (
-											<Contact user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Contact> 
+											<Support user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Support> 
 										)
 									default:
 										return(
@@ -86,6 +86,7 @@ class UserPage extends Component {
 	}
 
 	userPageData(){
+		console.log('user_page_read0')	
 		return new Promise(function(resolve, reject){
 			var table = window.location.href.split('table/')
 			var id = parseInt(self.getCookie("casino_id"));
@@ -93,7 +94,8 @@ class UserPage extends Component {
 				id = -1;
 			}
 			socket.emit('user_page_send', [table[1], id]);
-			socket.on('user_page_read', function(data){		
+			socket.on('user_page_read', function(data){	
+				console.log('user_page_read1', data)	
 				if(data.user === "" || data.user === "indefined"){
 					data.user = self.getCookie("casino_user")
 				}

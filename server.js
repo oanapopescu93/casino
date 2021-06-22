@@ -175,12 +175,10 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('market_send', function(data) {
-		//console.log('market_send1', data)		
 		var this_user = data.id;
 		for(var i in sockets){
-			if(sockets[i].id === this_user){
-				//console.log('market_send2', sockets[i].id, this_user)
-				sockets[i].emit('market_read', market);
+			if(sockets[i].user_id === this_user){
+				io.to(socket.id).emit('market_read', market);
 			} 
 		}
 	});

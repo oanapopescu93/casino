@@ -340,7 +340,7 @@ h6 {
 	padding: 10px 0px;
 }
 
-#salon.full-height{
+#salon.full-height, #roulette.full-height, #user_account.full-height{
     position: relative;
 	display:block;
 	top:0px;
@@ -350,15 +350,11 @@ h6 {
     height: 100%;
     width: 100%;
 }
+#salon.full-height {
+    height: 100%;
+}
 #roulette.full-height {
-    position: relative;
-	display:block;
-	top:0px;
-	left:0px;
-	right:0px;
-	bottom:0px;
     height: auto;
-    width: 100%;
 }
 #salon .full-height-content{
 	padding: 10px 0px;
@@ -368,7 +364,7 @@ h6 {
     transform: translate(0px, -50%);
 	display: block;
 }
-#roulette .full-height-content{
+#roulette .full-height-content, #user_account .full-height-content{
 	padding: 10px 0px;	
 	display: block;
 }
@@ -547,11 +543,11 @@ table {
 #user_list table tr td:last-child{
 	text-align:right;
 }
-#contact{
+#support{
 	position: absolute;
-    bottom: 15px;
+    bottom: 10px;
     cursor: pointer;
-    left: 10px;
+    right: 10px;
     padding: 5px 10px;
 }
 
@@ -907,32 +903,83 @@ table {
 	width: 40px;
 	height: 40px;
 	overflow: hidden;
-	display:inline-block;
+	display:inline-block!important;
 }
 .crop_vegetables .vegetable {
-	width: 160px;
+	width: 160px!important;
 	height: 160px;	
 }
-.crop_vegetables .radish {
-	margin-top: -40px;
+.crop_vegetables .garlic {
+	margin-top: -80px;
     margin-left: -80px;
 }
 .crop_vegetables .onion {
 	margin-top: 0px;
     margin-left: -40px;
 }
-.crop_vegetables .potato {
-	margin-top: 0px;
+.crop_vegetables .radish {
+	margin-top: -40px;
     margin-left: -80px;
 }
 .crop_vegetables .carrot {
 	margin-top: 0px;
 	margin-left: 0px;
 }
+.crop_vegetables .turnip {
+	margin-top: -120px;
+	margin-left: -120px;
+}
+.crop_vegetables .potato {
+	margin-top: 0px;
+    margin-left: -80px;
+}
 .crop_vegetables .cabbage {
 	margin-top: -80px;
     margin-left: -40px;
 }
+
+.dropdown_group{
+	padding:10px;
+}
+.dropbtn {
+	background-color: black;
+	color: var(--yellow);
+	border:solid 1px var(--yellow);
+	border-radius:5px;
+	padding: 16px;
+	font-size: 16px;
+	cursor: pointer;
+	width:100%;
+}  
+.dropdown {
+	position: relative;
+	display: block;
+}  
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: black;
+	min-width: 100%;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	height:auto;
+	max-height:160px;
+	overflow-y: auto;
+}
+.dropdown-content .dropdown_item {
+	color: var(--yellow);
+	border-bottom:solid 1px var(--yellow);
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}  
+.dropdown-content .dropdown_item:hover {
+	background-color: rgba(255, 255, 0, 0.2)
+}  
+.dropdown:hover .dropdown-content {
+	display: block;
+	border-radius:5px;
+}  
 
 /* footer */
 .footer_container{
@@ -1008,7 +1055,7 @@ table {
 	opacity: 0;
 	position: fixed;
     bottom: 10px;
-    right: 10px;
+    left: 10px;
     z-index: 999999;
     width: 36px;
     height: 36px;
