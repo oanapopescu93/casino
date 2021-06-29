@@ -5,18 +5,21 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
-import vegetables_yellow from '../img/icons/vegetables_yellow.png';
-
-var socket;
+import vegetables_yellow from '../../img/icons/vegetables_yellow.png';
 
 function Carousel(props){
-	socket = props.socket;	
+	var socket = props.socket;	
+	var lang = props.lang;
 	var item_list = props.item_list;
 	var template = props.template;
 	var user = props.user;
 
 	function my_click(id){
-		alert('No payment methods yet')
+		if(lang === "ro"){
+			alert('Nu exista metoda de plata inca.')
+		} else {
+			alert('No payment methods yet.')
+		}
 	}	
 
 	if(template === "salon"){
@@ -60,9 +63,11 @@ function Carousel(props){
 										<div key={i} className="table_inside">
 											<div className="table_box shadow_concav">
 												<div>
-													<p>Table: {item.table_name} {item.table_id}</p>
-													<p>Type: {item.table_type}</p>
-													<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>handleClick(item.table_name, item.table_id, item.table_type, user)}>Play</Button>
+													<p>{lang === "ro" ? <span>Masa: </span> : <span>Tabel: </span>}{item.table_name} {item.table_id}</p>
+													<p>{lang === "ro" ? <span>Tip: </span> : <span>Type: </span>}{item.table_type}</p>
+													<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>handleClick(item.table_name, item.table_id, item.table_type, user)}>
+														{lang === "ro" ? <span>Joaca</span> : <span>Play</span>}
+													</Button>
 												</div>
 											</div>
 										</div>
@@ -73,14 +78,20 @@ function Carousel(props){
 										<div key={i} className="table_inside">
 											<div className="table_box shadow_concav">
 												<div>
-													<p>Table: {item.table_name} {item.table_id}</p>
-													<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>handleClick(item.table_name, item.table_id, '', user)}>Play</Button>
+													<p>{lang === "ro" ? <span>Masa: </span> : <span>Tabel: </span>}{item.table_name} {item.table_id}</p>
+													<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>handleClick(item.table_name, item.table_id, '', user)}>
+														{lang === "ro" ? <span>Joaca</span> : <span>Play</span>}
+													</Button>
 												</div>
 											</div>
 										</div>
 									)
 								default:
-									break;						
+									return (
+										<div>
+											{lang === "ro" ? <span>Nu exista masa!</span> : <span>Ups, no tabel!</span>}
+										</div>										
+									);					
 							}
 						})
 					} 
@@ -123,10 +134,13 @@ function Carousel(props){
 											)
 										})()}    
 										<h3>{item.name}</h3>
-										<p>Value: <b>{item.value}</b></p>
-										<p>Qty: <b>{item.quantity}</b></p>
-										<p>Price: <b>{item.value}</b></p>
-										<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => my_click(id)}>Buy</Button>
+										<p>{lang === "ro" ? <span>Valoare: </span> : <span>Value: </span>}<b>{item.value}</b></p>
+										<p>{lang === "ro" ? <span>Cantitate: </span> : <span>Qty: </span>}<b>{item.quantity}</b></p>
+										<p>{lang === "ro" ? <span>Pret: </span> : <span>Pret: </span>}<b>{item.value}</b></p>
+										{lang === "ro" ? 
+											<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => my_click(id)}>Click</Button> : 
+											<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => my_click(id)}>Buy</Button>
+										}										
 									</div>
 								</div>												
 							)

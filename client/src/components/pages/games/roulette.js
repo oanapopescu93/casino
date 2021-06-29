@@ -994,6 +994,7 @@ function isInside(mousePos, obj){
 
 function Roulette(props) {
 	//console.log('game ', props)
+	var lang = props.lang;
 
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'roulette')		
@@ -1018,7 +1019,7 @@ function Roulette(props) {
 			<canvas id="roulette_canvas"></canvas>	
 			<div className="show_results_container">
 				<div className="show_results">
-					<h1>Results</h1>
+					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}	</h1>
 					<p></p>
 				</div>
 			</div>			

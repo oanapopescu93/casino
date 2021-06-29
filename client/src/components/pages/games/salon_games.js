@@ -5,20 +5,18 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import under_construction_icon from '../../img/icons/under_construction_icon.png'
-import Carousel from '../carousel'
+import Carousel from '../partials/carousel'
 
 var self;
-var socket;
-
-
 class SalonGames extends React.Component {
 	constructor(props) {
 		super(props);
-		self = this;
-		socket = props.socket;	
+		self = this;		
 		self.state = {
               info: props,
-              width: window.innerWidth
+              width: window.innerWidth,
+              socket: props.socket,	
+              lang: props.lang,	
 		};
         self.handleDropdown = self.handleDropdown.bind(self);
         self.handleDropdown_small = self.handleDropdown_small.bind(self);
@@ -95,7 +93,7 @@ class SalonGames extends React.Component {
                 <Col sm={8}>
                     {
                         self.state.info.casino_games_title.map(function(t, i){
-                            var title = t.split('_').join(' ')
+                            var title = t.split('_')[0];
                             var box = "casino_games_table_container";
                             if(i === 0){
                                 box = box + " open"
@@ -121,7 +119,7 @@ class SalonGames extends React.Component {
                                                     )
                                                 } else {
                                                     return (
-                                                        <Carousel template="salon" socket={socket} user={self.state.user} item_list={self.state.info.casino_games[t]}></Carousel>
+                                                        <Carousel template="salon" lang={self.state.lang} socket={self.state.socket} user={self.state.user} item_list={self.state.info.casino_games[t]}></Carousel>
                                                     )
                                                 }
                                             })()}

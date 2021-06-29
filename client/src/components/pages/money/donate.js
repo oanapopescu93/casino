@@ -46,7 +46,7 @@ function Donate(props){
                     <p><span>BitCoin: </span><a rel="nofollow" href={bitcoin.link}><b>{bitcoin.text}</b></a></p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <p>Feel free to support us if you liked the app.</p>
+                    <p>Feel free to support us if you like our app.</p>
                 </Modal.Footer>				
             </Modal>
         </>

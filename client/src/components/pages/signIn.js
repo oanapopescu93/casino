@@ -9,7 +9,6 @@ var socket;
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data) {
-			console.log('signin--> ', data)
 			if(data[0]){
 				setCookie("casino_id", data[1].id, 1);
 				setCookie("casino_user", $('#signin_user').val(), 1);
@@ -94,6 +93,7 @@ function SignIn(props) {
   	const handleShow = () => setShow(true);
 
 	socket = props.socket;
+	var lang = props.lang;
 
 	$('.full-height').attr('id', 'home');
 
@@ -101,25 +101,28 @@ function SignIn(props) {
 		<div>
 			<Form id="user_form" method="post" action="/registration">
 				<Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>
-				<h6 id="signin_user_red" className="text_red">You didn't write the username</h6>
+				<h6 id="signin_user_red" className="text_red">{lang === "ro" ? <span>Nu ai scris user-ul</span> : <span>You didn't write the username</span>}</h6>
 				<Form.Control id="signin_pass" autoComplete="off" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>
-				<h6 id="signin_pass_red" className="text_red">You didn't write the password</h6>
-				<Button className="button_yellow shadow_convex" onClick={submit}>Sign In</Button>
+				<h6 id="signin_pass_red" className="text_red">{lang === "ro" ? <span>Nu ai scris parola</span> : <span>You didn't write the password</span>}</h6>
+				<Button className="button_yellow shadow_convex" onClick={submit}>{lang === "ro" ? <span>Logare</span> : <span>Sign In</span>}</Button>
 				<div className="login_link_container">
-					<div onClick={handleShow} id="link_forget"><h6>Forgot Username/Password?</h6></div>	
+					<div onClick={handleShow} id="link_forget">{lang === "ro" ? <span>Am uitat user/parola</span> : <span>Forgot Username/Password</span>}</div>	
 				</div>
 			</Form>
 
 			<Modal className="casino_modal" id="casino_modal" show={show} onHide={handleClose} size="sm">
 				<Modal.Header closeButton>
-					<Modal.Title>Forgot Username/Password?</Modal.Title>
+					<Modal.Title>
+						{lang === "ro" ? <span>Am uitat user/parola</span> : <span>Forgot Username/Password</span>}						
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<p>If you forgot your username or password you can reset it here</p>
+					{lang === "ro" ? <p>Daca ai uitat user-ul sau parola, poti sa o resetezi aici</p> : 
+						<p>If you forgot your username or password you can reset it here</p>}					
 					<Form id="recovery_form" method="post" action="/recovery">						
 						<Form.Control id="signin_email" className="input_yellow" type="text" name="email" placeholder="Email" />
 						<h6 id="signin_email_red" className="text_red"> </h6>
-						<Button className="minor_check" onClick={submit_recovery}>Recover</Button>							
+						<Button className="minor_check" onClick={submit_recovery}>{lang === "ro" ? <span>Recupereaza</span> : <span>Recover</span>}</Button>							
 					</Form>
 				</Modal.Body>				
 			</Modal>

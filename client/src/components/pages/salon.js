@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import $ from 'jquery'; 
+
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import $ from 'jquery'; 
 
-import logo_icon from '../img/logo.png';
 import SalonGames from './games/salon_games'
 import Sports from './games/sports'
+import Sapou from './partials/sapou';
 
 var self;
-var socket;
 var casino_games = {
 	roulette_tables: [], 
 	blackjack_tables: [],
@@ -21,20 +21,20 @@ class Salon extends Component {
 	constructor(props) {
 		super(props);
 		self = this;
-		socket = props.socket;	
+		self.state = {
+			socket: props.socket,
+			lang: props.lang,
+			empty: false,
+			casino_games: '',
+			user: '',
+			sports: false,
+	  	};
 		
 		self.handleBack = self.handleBack.bind(self);
 		self.handleChange = self.handleChange.bind(self);
 		self.salonData = self.salonData.bind(self);
 		self.getCookie = self.getCookie.bind(self);	
-	}	
-  
-	state = {
-		empty: false,
-		casino_games: '',
-		user: '',
-		sports: false,
-	}; 
+	}
   
 	componentDidMount() {
 		self.salonData()
@@ -97,8 +97,8 @@ class Salon extends Component {
 	
 	salonData(){
 		return new Promise(function(resolve, reject){
-			socket.emit('salon_send', 'salon');	
-			socket.on('salon_read', function(data){
+			self.state.socket.emit('salon_send', 'salon');	
+			self.state.socket.on('salon_read', function(data){
 				resolve(data);	
 			});	
 		});
@@ -138,45 +138,51 @@ class Salon extends Component {
 		return (
 			<div>
 				{self.state.empty ? (
-					<div className="color_yellow">No tables</div>
+					<div className="color_yellow">
+						{self.statelang == "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
+					</div>
 				) : (
 					<Row>						
 						{self.state.user === '' ? (
 							<div className="table_container color_yellow">
-								<h3>No access</h3>
-								<h4>Please go back and login in / sign in</h4>
-								<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
+								{self.state.lang == "ro" ? 
+									<>
+										<h3>Acces interzis</h3>
+										<h4>Intoarce-te si logheaza-te/inregistreaza-te</h4>
+										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
+									</> : 
+									<>
+										<h3>No access</h3>
+										<h4>Please go back and login in / sign in</h4>
+										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
+									</>
+								}								
 							</div>
 						) : (
 							<>
 								<div className="salon_button_container">
 									<div className="salon_button_box">
 										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{self.handleChange('games')}}>
-											<span>Games</span>
+											{self.state.lang == "ro" ? <span>Jocuri</span> : <span>Games</span>}											
 										</div>            
 										<div id="salon_buton_sports" className="salon_button shadow_convex" onClick={()=>{self.handleChange('sports')}}>
-											<span>Sports</span>
+											{self.state.lang == "ro" ? <span>Sport</span> : <span>Sport</span>}	
 										</div>
 									</div>
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
-									<Row>
-										<Col sm={12} id="sapou">
-											<a href="/">
-												<img id="logo_icon" alt="logo_icon" src={logo_icon} />
-												<h1>BunnyBet</h1>
-												<h6>Welcome to the salon</h6>
-											</a>								
-										</Col>
-									</Row>
+									<Sapou lang={self.state.lang} page="salon"></Sapou>
 									{self.state.sports ? (
-										<Sports socket={socket} user={self.state.user}></Sports>									
+										<Sports lang={self.state.lang} socket={self.state.socket} user={self.state.user}></Sports>									
 									) : (
-										<SalonGames casino_games_title={casino_games_title} socket={socket} user={self.state.user} casino_games={casino_games}></SalonGames>
+										<SalonGames lang={self.state.lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></SalonGames>
 									)}	
 									<Row>
 										<Col sm={12}>
-											<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>								
+											{self.state.lang == "ro" ? 
+												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Iesi din salon</p> : 
+												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>	
+											}																			
 										</Col>
 									</Row>													
 								</Col>

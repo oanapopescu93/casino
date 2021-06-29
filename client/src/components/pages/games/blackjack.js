@@ -624,13 +624,14 @@ function Blackjack(props) {
 	}, 0);
 	
 	socket = props.socket;
+	var lang = props.lang;
 	
 	return (
 		<div className="blackjack_container">
 			<canvas id="blackjack_canvas"></canvas>
 			<div className="show_results_container">
 				<div className="show_results">
-					<h1>Results</h1>
+					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}	</h1>
 					<p></p>
 				</div>
 			</div>	

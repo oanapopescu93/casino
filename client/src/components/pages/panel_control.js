@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {game_visible} from '../actions/actions'
 
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import Modal from 'react-bootstrap/Modal'
 
@@ -13,9 +11,7 @@ import ChatForm from './chatForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
-import { faArrowsAltH } from '@fortawesome/free-solid-svg-icons'
 import carrot_img from '../img/icons/carrot_icon.png';
-import vegetables from '../img/icons/vegetables_black.png'
 
 function Panel(props){
     var user = props.user;

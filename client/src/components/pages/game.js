@@ -21,6 +21,7 @@ class Game extends Component {
 			money: '',
 			user_table: '',
 			game: '',
+			lang: 'eng',
 		}; 		
 	}
 	
@@ -32,6 +33,7 @@ class Game extends Component {
 		this.setState({ type: this.props.type });
 		this.setState({ money: this.props.money });
 		this.setState({ user_table: this.props.user_table });
+		this.setState({ lang: this.props.lang });
 		finish = true;		
 	}
 
@@ -58,32 +60,42 @@ class Game extends Component {
 									switch (this.state.game) {
 										case "roulette":
 											return (
-												<Roulette user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Roulette>
+												<Roulette lang={this.state.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Roulette>
 											)
 										case "blackjack":
 											return (
-												<Blackjack user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} socket={this.props.socket} money={this.state.money}></Blackjack>
+												<Blackjack lang={this.state.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} socket={this.props.socket} money={this.state.money}></Blackjack>
 											)	
 										case "slots":
 											return (
-												<Slot user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} socket={this.props.socket} money={this.state.money}></Slot>
+												<Slot lang={this.state.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} socket={this.props.socket} money={this.state.money}></Slot>
 											)
 										default:
 											return(
 												<div>
-													<p>Somethis went wrong</p>
-													<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
+													{self.state.lang === "ro" ? 
+														<>
+															<p>Eroare</p>
+															<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Inapoi</Button>
+														</> : 
+														<>
+															<p>Somethis went wrong</p>
+															<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
+														</>
+													}														
 												</div>
 											)						
 									}
 								})()}
 							</div>
 						) : (
-							<div>No user</div>
+							<div>
+								{self.state.lang === "ro" ? <span>Nu exista user</span> : <span>No user</span>}	
+							</div>
 						)}
 					</div>
 				) : (
-					<div>Error loading page</div>
+					<div>{self.state.lang === "ro" ? <span>Eroare</span> : <span>Error loading page</span>}</div>
 				)}
 			</div>
 		);

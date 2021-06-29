@@ -423,6 +423,7 @@ input:-internal-autofill-selected {
 	border-radius: 100%;
     height: 55px;
     width: 55px;
+	padding: 5px;
     margin-top: 10px;
 }
 .button_table:hover, .button_table:focus, .button_table:active, .button_table:active:focus{
@@ -783,7 +784,6 @@ table {
 .table_inside{
 	display:inline-block;
 	padding:10px;
-	width:100%;
 }
 .table_box{	
 	padding:20px 10px;
@@ -894,20 +894,41 @@ table {
 	cursor: pointer;
 }
 
+#crop_language_container{
+	position: fixed;
+	z-index: 999999;
+	top:5px;
+	right:5px;
+}
 .crop_vegetables_box {
 	display:inline-block;
 	padding:5px;
 	vertical-align: middle;
 }
-.crop_vegetables {
+.crop_language_box {
+	display:inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.crop_vegetables{
 	width: 40px;
 	height: 40px;
+	overflow: hidden;
+	display:inline-block!important;
+}
+.crop_language {
+	width: 38px;
+	height: 45px;
 	overflow: hidden;
 	display:inline-block!important;
 }
 .crop_vegetables .vegetable {
 	width: 160px!important;
 	height: 160px;	
+}
+.crop_language .language {
+	width: 220px!important;
+    height: 280px;
 }
 .crop_vegetables .garlic {
 	margin-top: -80px;
@@ -936,6 +957,14 @@ table {
 .crop_vegetables .cabbage {
 	margin-top: -80px;
     margin-left: -40px;
+}
+.crop_language .lang_ro {
+	margin-top: -70px;
+    margin-left: -16px;
+}
+.crop_language .lang_eng {
+	margin-top: -24px;
+    margin-left: -86px;
 }
 
 .dropdown_group{
@@ -1446,11 +1475,6 @@ table {
 	}
 }
 @media (max-width: 480px) {  
-	.table_inside {
-		width: 50%;
-	}
-}
-@media (max-width: 320px) {  
 	.table_inside {
 		width: 100%;
 	}

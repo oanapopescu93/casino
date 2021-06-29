@@ -9,6 +9,7 @@ function Account_profile(props) {
 	var username = props.info.user;
 	var roulette_info = useSelector(state => state.roulette);
 	var blackjack_info = useSelector(state => state.blackjack);
+	var lang = props.lang;
 	
 	var money = props.info.money;
 	var history = [];
@@ -30,14 +31,14 @@ function Account_profile(props) {
 		<Row className="account_box_container color_yellow">
 			<Col sm={2}></Col>
 			<Col sm={8}>					
-				<Row>
-					<Col sm={12}><h2>Profile</h2></Col>
+				<Row>				
+					<Col sm={12}>{lang === "ro" ? <h2>Profil</h2> : <h2>Profile</h2>}</Col>
 				</Row>
 				<Row className="profile_container">
 					<Col sm={4}>
 						<h3>User info: </h3>
-						<p className="profile_user"><b>Username: </b>{username}</p>
-						<p className="profile_money"><b>Money: </b>{money}</p>
+						<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}{username}</p>
+						<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
 					</Col>
 					<Col sm={8}>
 						<h3>History: </h3>
@@ -45,24 +46,24 @@ function Account_profile(props) {
 								if (roulette_info === -1 && blackjack_info === -1) {
 									//console.log('zzz00', history, history.length)
 									return (
-										<p>There is no history.</p>
+										<p>{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</p>
 									)
 								} else {
 									if(roulette_info !== -1){
 										//console.log('zzz01', history, history.length)
 										if(history.length === 0){	
 											return (
-													<div className="color_yellow 111">No history</div>
+													<div className="color_yellow 111">{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</div>
 											)
 										} else {
 											return (
 												<Table className="history_container 111">
 															<thead>
 																<tr>
-																	<th>Lucky nr</th>
-																	<th>Your bet</th>
-																	<th>Status</th>
-																	<th>Money</th>
+																	<th>{lang === "ro" ? <span>Nr. norocos</span> : <span>Lucky no.</span>}</th>
+																	<th>{lang === "ro" ? <span>Nr. tau</span> : <span>Your no.</span>}</th>
+																	<th>{lang === "ro" ? <span>Status</span> : <span>Status</span>}</th>
+																	<th>{lang === "ro" ? <span>Morcovi</span> : <span>Carrots</span>}</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -76,7 +77,7 @@ function Account_profile(props) {
 																					<tr key={i} className="history_box">
 																						<td rowSpan={rowspan}>{history_elem.lucky_nr}</td>
 																						<td>{history_elem.text}</td>	
-																						<td>Win {history_elem.bet_value} carrot</td>
+																						<td>{lang === "ro" ? <span>Ai castigat </span> : <span>Won </span>}{history_elem.bet_value}</td>
 																						<td>{history_elem.money_history}</td>																				
 																					</tr>
 																				)
@@ -85,7 +86,7 @@ function Account_profile(props) {
 																					<tr key={i} className="history_box">
 																						<td rowSpan={rowspan}>{history_elem.lucky_nr}</td>
 																						<td>{history_elem.text}</td>
-																						<td>Lose {history_elem.bet_value} carrot</td>
+																						<td>{lang === "ro" ? <span>Ai pierdut </span> : <span>Lost </span>}{history_elem.bet_value}</td>
 																						<td>{history_elem.money_history}</td>																						
 																					</tr>
 																				)
@@ -95,7 +96,7 @@ function Account_profile(props) {
 																				return(
 																					<tr key={i} className="history_box">
 																						<td>{history_elem.text}</td>	
-																						<td>Win {history_elem.bet_value} carrot</td>
+																						<td>{lang === "ro" ? <span>Ai castigat </span> : <span>Won </span>}{history_elem.bet_value} carrot</td>
 																						<td>{history_elem.money_history}</td>																				
 																					</tr>
 																				)
@@ -103,7 +104,7 @@ function Account_profile(props) {
 																				return(
 																					<tr key={i} className="history_box">
 																						<td>{history_elem.text}</td>
-																						<td>Lose {history_elem.bet_value} carrot</td>
+																						<td>{lang === "ro" ? <span>Ai pierdut </span> : <span>Lost </span>}{history_elem.bet_value} carrot</td>
 																						<td>{history_elem.money_history}</td>																					
 																					</tr>
 																				)
@@ -120,15 +121,15 @@ function Account_profile(props) {
 									if(blackjack_info !== -1){
 										if(history.length === 0){	
 											return (
-													<div className="color_yellow 222">No history</div>
+													<div className="color_yellow 222">{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</div>
 											)
 										} else {
 											return (
 												<Table className="history_container 222">
 													<thead>
 														<tr>
-															<th>Status</th>
-															<th>Money</th>
+															<th>{lang === "ro" ? <span>Status</span> : <span>Status</span>}</th>
+															<th>{lang === "ro" ? <span>Morcovi</span> : <span>Carrots</span>}</th>
 														</tr>
 													</thead>
 													<tbody>

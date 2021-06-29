@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
@@ -7,8 +8,7 @@ import $ from 'jquery';
 import SignIn from './signIn';
 import SignUp from './signUp';
 import Splash from './splash_screen';
-
-import logo_icon from '../img/logo.png';
+import Sapou from './partials/sapou';
 
 var self;
 var socket;
@@ -21,11 +21,12 @@ class HomePage extends React.Component {
 	constructor(props) {
 		super(props);
 		self = this;
-		socket = props.socket;	
+		socket = props.socket;
 		self.state = {
 			  visible: true,
 			  splash: true,
-			  cookies:false
+			  cookies:false,
+			  lang: props.lang,
 		};
 		self.splash_screen = self.splash_screen.bind(self);
 		self.progress_move = self.progress_move.bind(self);
@@ -135,25 +136,24 @@ class HomePage extends React.Component {
 					<Col sm={4} md={4} lg={4} className="HomePage color_yellow">
 						<div className="deco">
 							<div className="HomePage_box">
-								<Row>
-									<Col sm={12}>
-										<img id="logo_icon" alt="logo_icon" src={logo_icon} />
-										<h1>BunnyBet</h1>
-									</Col>
-								</Row>					
+								<Sapou lang={this.state.lang} page="home"></Sapou>													
 								<Row>
 									<Col sm={12}>					
 										<Row>
 											<Col sm={12}>
 												<div className="login_link_container shadow_convex">
-													<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}><h4>Sign In</h4></div>	
-													<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}><h4>Sign Up</h4></div>	
+													<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}>
+														{this.state.lang == "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
+													</div>	
+													<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}>
+														{this.state.lang == "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
+													</div>	
 												</div>
 											</Col>
 										</Row>
 										<Row>
 											<Col sm={12} className="user_form_container">
-												{ this.state.visible ? <SignIn socket={socket}></SignIn> : <SignUp socket={socket}></SignUp> }
+												{ this.state.visible ? <SignIn lang={this.state.lang} socket={socket}></SignIn> : <SignUp lang={this.state.lang} socket={socket}></SignUp> }
 											</Col>
 										</Row>
 									</Col>
@@ -166,13 +166,31 @@ class HomePage extends React.Component {
 						!this.state.cookies ? 
 						<div className="cookies_msg_container" id ="cookies_msg">
 							<div className="cookies_msg">
-								<div className="cookies_text">
-									<h4>Cookies Notification</h4>
-									<h6>
-										In order to offer you the most relevant information and for optimal system performance,
-										we use cookies that collect statistical information from your fleet's activity.
-									</h6>
-								</div>
+								{(() => {
+									switch (this.state.lang) {
+										case "ro":
+											return (
+												<div className="cookies_text">
+													<h4>Notificari de cookies</h4>
+													<h6>
+														Pentru a va oferi cele mai relevante informatii si pentru o performanta optima a sistemul,
+														noi folosim cookies pentru a colecta informatii din activitatea dumneavoatra.
+													</h6>
+												</div>
+											)
+										case "eng":
+										default:
+											return(
+												<div className="cookies_text">
+													<h4>Cookies Notification</h4>
+													<h6>
+														In order to offer you the most relevant information and for optimal system performance,
+														we use cookies that collect information from your game activity.
+													</h6>
+												</div>
+											)						
+									}
+								})()}								
 								<div className="confirm_cookies">
 									<button type="button" id="cookies_btn_ok" onClick={()=>this.casino_cookies()}>OK</button>
 								</div>

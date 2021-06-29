@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import logo_splash from '../img/logo.png';
+import Sapou from './partials/sapou';
 
 function Splash(props) {
 	return (
@@ -16,8 +16,7 @@ function Splash(props) {
 				        <Col sm={4} md={4} lg={4} className="HomePage color_yellow">
                             <div className="deco">
                                 <div className="HomePage_box">
-                                    <img id="logo_splash" alt="logo_splash" src={logo_splash} />
-                                    <h1>BunnyBet</h1>
+                                    <Sapou page="splash_screen"></Sapou>                                    
                                     <div id="myProgress" className="shadow_convex">
                                         <div id="myBar"></div>                                
                                     </div>

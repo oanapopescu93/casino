@@ -3,14 +3,16 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 
-var socket;
 var self; 
-
 class SignUp extends Component {	
 	constructor(props) {
 		super(props);
 		self = this;
-		socket = props.socket;
+		self.state = {
+			socket: props.socket,
+			lang: props.lang,
+			user_minor: null,
+	  	};		
 		
 		self.getCookie = self.getCookie.bind(self);	
 		self.setCookie = self.setCookie.bind(self);			
@@ -19,11 +21,7 @@ class SignUp extends Component {
 		self.check_submit = self.check_submit.bind(self);	
 		self.submit_form = self.submit_form.bind(self);	
 		self.minor_check = self.minor_check.bind(self);	
-	}	
-  
-	state = {
-		user_minor: null,
-	}; 
+	}
 
 	componentDidMount() {		
 		self.setState({ user_minor: self.getCookie('user_minor') });
@@ -56,11 +54,14 @@ class SignUp extends Component {
 		if(self.check_submit()){
 			$('#signup_pass_red').empty();
 			self.loader().then(function(data) {
-				console.log('signup--> ', data)
 				if(data[0]){
 					$('#loader_container').hide(); 
 					$('#home').show();
-					alert('You are already registered.')
+					if(self.state.lang === "ro"){
+						alert('Esti deja inregistrat.');
+					} else {
+						alert('You are already registered.');
+					}					
 				} else {
 					self.setCookie("casino_email", $('#signup_email').val(), 1);
 					self.setCookie("casino_user", $('#signup_user').val(), 1);
@@ -68,16 +69,20 @@ class SignUp extends Component {
 				}
 			});
 		} else {
-			$('#signup_pass_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
+			if(self.state.lang === "ro"){
+				$('#signup_pass_red').append('<p><b>Parola invalida</b></p><p>Minim o litera mare, o litera mica, o cifra, un caracter special si lungimea totala minima de opt caractere</p>')
+			} else {
+				$('#signup_pass_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
+			}			
 		}
 	}
 	
 	loader = function(){
 		return new Promise(function(resolve, reject){
 			$('#loader_container').show();
-			$('#home').hide();		
-			socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
-			socket.on('signup_read', function(data){
+			$('#home').hide();	
+			self.state.socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
+			self.state.socket.on('signup_read', function(data){
 				resolve(data);
 			});	
 		});
@@ -126,7 +131,9 @@ class SignUp extends Component {
 						$('.user_form_container').css('height', 'auto');
 						$('.login_link_container').remove();
 						return (
-							<div className="color_yellow"><p>You are too young to enter.</p></div>
+							<div className="color_yellow">
+								{this.state.lang === "ro" ? <p>Esti prea tanar ca sa intri.</p> : <p>You are too young to enter.</p>}
+							</div>
 						)
 					} else if (self.state.user_minor === "false") {
 						return (
@@ -135,7 +142,7 @@ class SignUp extends Component {
 								<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />
 								<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
 								<h6 id="signup_pass_red" className="text_red"></h6>
-								<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>Sign Up</Button>
+								<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
 							</Form>
 						)
 					} else {
@@ -146,18 +153,36 @@ class SignUp extends Component {
 										<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />
 										<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
 										<h6 id="signup_pass_red" className="text_red"></h6>
-										<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>Sign Up</Button>
+										<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
 								</Form>
 						
 								<div id="minor_container" className="minor_container">
 									<div className="minor_inside">
-										<div className="minor_box">
-											<h1>Age Verification</h1>
-											<p>You must be 18 or over to access this website.</p>
-											<p>Are you 18 or older?</p>
-											<Button id="minor_check_false" className="minor_check minor_check_false" type="button" onClick={() => self.minor_check(false)}>YES</Button>
-											<Button id="minor_check_true" className="minor_check minor_check_true" type="button" onClick={() => self.minor_check(true)}>NO</Button>
-										</div>
+										{(() => {
+											switch (this.state.lang) {
+												case "ro":
+													return (
+														<div className="minor_box">
+															<h1>Verificare varsta</h1>
+															<p>Trebuie sa ai cel putin 18 ani pentru a accesa acest site.</p>
+															<p>Ai 18 ani sau mai mult?</p>
+															<Button id="minor_check_false" className="minor_check minor_check_false" type="button" onClick={() => self.minor_check(false)}>DA</Button>
+															<Button id="minor_check_true" className="minor_check minor_check_true" type="button" onClick={() => self.minor_check(true)}>NU</Button>
+														</div>
+													)
+												case "eng":
+												default:
+													return(
+														<div className="minor_box">
+															<h1>Age Verification</h1>
+															<p>You must be 18 or over to access this website.</p>
+															<p>Are you 18 or older?</p>
+															<Button id="minor_check_false" className="minor_check minor_check_false" type="button" onClick={() => self.minor_check(false)}>YES</Button>
+															<Button id="minor_check_true" className="minor_check minor_check_true" type="button" onClick={() => self.minor_check(true)}>NO</Button>
+														</div>
+													)						
+											}
+										})()}											
 									</div>
 								</div>
 							</div>

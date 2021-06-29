@@ -8,14 +8,12 @@ import $ from 'jquery';
 
 import Game from './game';
 import UserAccount from './userAccount';
-import Support from './support';
+import Support from './partials/support';
 import Panel from './panel_control';
 
-var socket;
 var self;
 
 function Child(props) {
-	self = this;	
 	var visible = useSelector(state => state.visibility);
 	var user_id = props.user_id;
 	var user = props.user;
@@ -23,6 +21,8 @@ function Child(props) {
 	var type = props.type;
 	var user_table = props.user_table;
 	var game = props.game;
+	var socket = props.socket;
+	var lang = props.lang;
 	
 	return (			
 			<BrowserRouter>
@@ -33,26 +33,26 @@ function Child(props) {
 								switch (visible) {
 									case "game":
 										return (
-											<Game user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
+											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
 										)
 									case "account":
 										return (
-											<UserAccount user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
+											<UserAccount lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
 										)	
 									case "support":
 										return (
-											<Support user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Support> 
+											<Support lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Support> 
 										)
 									default:
 										return(
-											<Game user_id={user_id} user={user} socket={socket}></Game>
+											<Game lang={lang} user_id={user_id} user={user} socket={socket}></Game>
 										)						
 								}
 							})()}					
 						</Col>
 					</Row>	
 				</div>
-				<Panel user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Panel>
+				<Panel lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Panel>
 			</BrowserRouter>
 		);
 }
@@ -61,24 +61,24 @@ class UserPage extends Component {
 	constructor(props) {
 		super(props);
 		self = this;
-		socket = props.socket;	
-	}
-	
-	state = {
-		user: '',
-		user_id: -1,
-	}; 	
+		self.state = {
+			user: '',
+			user_id: -1,
+			socket: props.socket,
+			lang: props.lang,
+		};
+	}	
   
 	componentDidMount() {
 		self.userPageData()
 			.then(res => {	
-					var table = this.state.user.user_table;
+					var table = self.state.user.user_table;
 					var table_split = table.split('_');
 					var table_user = table_split[0] + ' ' + table_split[1];
-					var table_type = table_split[2];	
-					var payload = {id:this.state.user_id, user: this.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime()}
-					socket.emit('username', payload);
-					socket.on('is_online', function(data) {
+					var table_type = table_split[2];					
+					var payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.state.lang}
+					self.state.socket.emit('username', payload);
+					self.state.socket.on('is_online', function(data) {
 						$('#chatmessages').append(data);
 					});			
 				})
@@ -86,16 +86,14 @@ class UserPage extends Component {
 	}
 
 	userPageData(){
-		console.log('user_page_read0')	
 		return new Promise(function(resolve, reject){
 			var table = window.location.href.split('table/')
 			var id = parseInt(self.getCookie("casino_id"));
 			if(id === "" || id === "indefined"){
 				id = -1;
 			}
-			socket.emit('user_page_send', [table[1], id]);
-			socket.on('user_page_read', function(data){	
-				console.log('user_page_read1', data)	
+			self.state.socket.emit('user_page_send', [table[1], id]);
+			self.state.socket.on('user_page_read', function(data){
 				if(data.user === "" || data.user === "indefined"){
 					data.user = self.getCookie("casino_user")
 				}
@@ -148,7 +146,7 @@ class UserPage extends Component {
 		}
 
 		return user_id !== -1 ? 
-			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} socket={socket} url={url}></Child>
+			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={self.state.lang} socket={self.state.socket} url={url}></Child>
 			 : (
 				<span className="color_yellow">Loading...</span>
 		  	)	
