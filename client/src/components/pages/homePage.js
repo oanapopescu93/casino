@@ -26,7 +26,6 @@ class HomePage extends React.Component {
 			  visible: true,
 			  splash: true,
 			  cookies:false,
-			  lang: props.lang,
 		};
 		self.splash_screen = self.splash_screen.bind(self);
 		self.progress_move = self.progress_move.bind(self);
@@ -127,6 +126,7 @@ class HomePage extends React.Component {
 	}
 	
 	render(){
+		var lang = this.props.lang;
 		return (
 			<>
 			{ 
@@ -136,24 +136,24 @@ class HomePage extends React.Component {
 					<Col sm={4} md={4} lg={4} className="HomePage color_yellow">
 						<div className="deco">
 							<div className="HomePage_box">
-								<Sapou lang={this.state.lang} page="home"></Sapou>													
+								<Sapou lang={lang} page="home"></Sapou>													
 								<Row>
 									<Col sm={12}>					
 										<Row>
 											<Col sm={12}>
 												<div className="login_link_container shadow_convex">
 													<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}>
-														{this.state.lang == "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
+														{lang == "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
 													</div>	
 													<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}>
-														{this.state.lang == "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
+														{lang == "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
 													</div>	
 												</div>
 											</Col>
 										</Row>
 										<Row>
 											<Col sm={12} className="user_form_container">
-												{ this.state.visible ? <SignIn lang={this.state.lang} socket={socket}></SignIn> : <SignUp lang={this.state.lang} socket={socket}></SignUp> }
+												{ this.state.visible ? <SignIn lang={lang} socket={socket}></SignIn> : <SignUp lang={lang} socket={socket}></SignUp> }
 											</Col>
 										</Row>
 									</Col>

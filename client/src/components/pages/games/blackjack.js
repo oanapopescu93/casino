@@ -46,6 +46,7 @@ var dispatch_nr = 0; //this prevents multiplication
 
 function blackjack_wheel(props){
 	var self = this;
+	var lang = props.lang;
 	const dispatch = props.dispatch;
 
 	user_info = {money: props.money};	
@@ -537,10 +538,18 @@ function blackjack_wheel(props){
 		setTimeout(function(){
 			if(obj.id === "dealer"){
 				self.pay("dealer");
-				show_results('The dealer has won');
+				if(lang === "ro"){
+					show_results('Dealer-ul a castigat!');
+				} else {
+					show_results('The dealer has won!');
+				}				
 			} else {
 				self.pay(obj);
-				show_results('Player ' + obj.user + ' has won')			
+				if(lang === "ro"){
+					show_results('Jucatorul ' + obj.user + ' a castigat!')	
+				} else {
+					show_results('Player ' + obj.user + ' has won!')	
+				}	
 			}
 			self.draw_table();
 			blackjack_hand = [];
@@ -631,7 +640,7 @@ function Blackjack(props) {
 			<canvas id="blackjack_canvas"></canvas>
 			<div className="show_results_container">
 				<div className="show_results">
-					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}	</h1>
+					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
 					<p></p>
 				</div>
 			</div>	

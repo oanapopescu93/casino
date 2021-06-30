@@ -21,9 +21,10 @@ var font_bold_16 = 'bold 16px sans-serif';
 var items = [{id: 'energy', src: item01},{id: 'staff', src: item02},{id: 'cash', src: item03},{id: 'build', src: item04},{id: 'goods', src: item05},{id: 'gold', src: item06}];
 var slots_canvas = [];
 var slots_ctx = [];
-var runtime = 3000; // how long all slots spin before starting countdown
-var spintime = 1000; // how long each slot spins at minimum
-var slot_speed = 15; // how many pixels per second slots roll
+var image_size = [100, 100]
+var spin_time = 300; // how long all slots spin before starting countdown
+var slot_speed = 10; // how many pixels per second slots roll
+var dispatch_nr = 0; //this prevents multiplication
 
 var my_slot;
 
@@ -31,21 +32,27 @@ var ctx;
 var socket;
 
 function slot_game(props){
-	console.log(props)
 	var self = this;
+	var lang = props.lang;
 	this.reel = [$('#slot_canvas1'), $('#slot_canvas2'), $('#slot_canvas3'), $('#slot_canvas4'), $('#slot_canvas5')];
+	this.images = [];
+	this.images_pos = [];
+    this.offset = [];
+    this.lastUpdate = new Date();
 		
 	this.ready = function(){
 		if (window.innerWidth < 960){
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';
-			font_bold_16 = 'bold 12px sans-serif';			
+			font_bold_16 = 'bold 12px sans-serif';
+			image_size = [50, 50];			
 		} else {			
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
-			font_bold_16 = 'bold 16px sans-serif';			
+			font_bold_16 = 'bold 16px sans-serif';	
+			image_size = [100, 100];		
 		}
 
 		var promises = [];
@@ -54,16 +61,20 @@ function slot_game(props){
 		}
 
 		Promise.all(promises).then(function(result){
-			for(var i in self.reel){
-				result = shuffleArray(result)
+			self.images = result;
+			for(var i in self.reel){				
+				self.images = shuffleArray(self.images)
+				self.offset.push(0);
 				slots_canvas.push(self.reel[i][0]);
 				self.createCanvas(slots_canvas[slots_canvas.length-1]);
-				self.draw_reel(slots_canvas[slots_canvas.length-1], result);
+				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images);
 			}
+			console.log(self.images_pos)	
 		});
 
 		$('#slot_spin').click(function(e) {
-			self.spin();
+			dispatch_nr = 0;
+			self.spin(spin_time, slot_speed);
 		});
 	}
 
@@ -83,10 +94,12 @@ function slot_game(props){
 		slots_ctx.push(ctx)	
 		if (window.innerWidth < 960){
 			canvas.width = 50;
-			canvas.height = 300;		
+			canvas.height = 300;
+			image_size = [50, 50]		
 		} else {
 			canvas.width = 100;	
-			canvas.height = 800;	
+			canvas.height = 1100;
+			image_size = [100, 100]	
 		}		
 		canvas_width = canvas.width;
 		canvas_height = canvas.height;		
@@ -94,25 +107,38 @@ function slot_game(props){
     }
 
 	this.draw_reel = function(canvas, assets){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#ddd';
+		var array = [];
 		for (var i = 0 ; i < items.length ; i++) {
-			var asset = items[i];
-			ctx.save();
-			ctx.shadowColor = "rgba(0,0,0,0.5)";
-			ctx.shadowOffsetX = 5;
-			ctx.shadowOffsetY = 5;
-			ctx.shadowBlur = 5;
-			ctx.drawImage(assets[i], 20, i * canvas.width + 15);
-			ctx.drawImage(assets[i], 20, (i + items.length) * canvas.width + 15);
-			ctx.restore();
 			ctx.fillRect(0, i * canvas.width, canvas.width, 2);
 			ctx.fillRect(0, (i + items.length)  * canvas.width, canvas.width, 2);
+			ctx.drawImage(assets[i], 20, i * canvas.width + 15);
+			ctx.drawImage(assets[i], 20, (i + items.length) * canvas.width + 15);	
+			var elem = {i:i, img:assets[i], x:0, y:i * canvas.width}
+			array.push(elem)	
+			var elem = {i:i + items.length, img:assets[i], x:0, y:(i + items.length) * canvas.width}
+			array.push(elem)					
 		}
+		array = sort_array(array, "i");
+		self.images_pos.push(array)
 	}
 
-	this.spin = function(){
-		this.speed1 = this.speed2 = this.speed3 = this.speed4 = this.speed5 = slot_speed;
-		var spin_nr = 0;		
+	this.rotate = function(i, spin_nr, spin_time){
+		self.offset[i] = self.offset[i] - slot_speed;
+		var max_height = -(self.reel[i][0].height - 3*image_size[1])
+		if(self.offset[i] < max_height){
+			self.offset[i] = 0;
+		}
+		if(i==0){
+			console.log(self.offset[i], max_height, self.offset[i] < max_height, spin_nr, spin_time)
+		}
+		self.reel[i].css('transform', 'translate(0px, '+self.offset[i]+'px)')
+	}
+
+	this.spin = function(spin_time){
+		var spin_nr = 0;
+		dispatch_nr++		
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
@@ -123,18 +149,29 @@ function slot_game(props){
 			};
 	  	})();
 	  
-	  	function loop() {
+	  	function spin_slot() {
 			var stop = false;
-			console.log('SPIN', slots_canvas, slots_ctx);
+			
+			if(spin_nr < spin_time){
+				stop = false;
+				spin_nr++;
+				for(var i in self.reel){
+					self.rotate(i, spin_nr, spin_time);
+				}
+			} else {
+				stop = true;
+			}
 
 			if(!stop){
-				window.requestAnimFrame(loop);
+				window.requestAnimFrame(spin_slot);
 			} else {
-				window.cancelAnimationFrame(loop);
+				window.cancelAnimationFrame(spin_slot);
 			}
 		}
 
-	  	loop();
+		if(dispatch_nr === 1){
+			spin_slot();
+		}	
 	}
 }
 
@@ -151,6 +188,44 @@ function shuffleArray(array) {
 		array[j] = tmp;
     }
 	return array;
+}
+
+function sort_array(list_element, sort_by) {
+	if(typeof sort_by == "undefined"){
+		sort_by = ""
+	}
+	switch (sort_by) {
+		case "i":
+			var done = false;
+			while (!done) {
+				done = true;
+				for (var i = 1; i < list_element.length; i += 1) {
+					if (list_element[i - 1].i > list_element[i].i) {
+						done = false;
+						var tmp = list_element[i - 1];
+						list_element[i - 1] = list_element[i];
+						list_element[i] = tmp;
+					} 
+				}
+			}
+		  break;            
+		  case "":
+			var done = false;
+			while (!done) {
+				done = true;
+				for (var i = 1; i < list_element.length; i += 1) {
+					if (parseFloat(list_element[i - 1]) > parseFloat(list_element[i])) {
+						done = false;
+						var tmp = list_element[i - 1];
+						list_element[i - 1] = list_element[i];
+						list_element[i] = tmp;
+					}
+				}
+			}                
+		  break;            
+	  }        
+  
+	return list_element;
 }
 
 function Slot(props) {	
@@ -170,13 +245,13 @@ function Slot(props) {
 	
 	socket = props.socket;
 	var lang = props.lang;
-	
+	var money = props.money;	
 	return (
 		<>
 			<div className="slot_header_container">
 				<div className="slot_header">
-					<h1>Slots Machine</h1>
-					<h3>Play and Win</h3>
+					{lang === "ro" ? <h1>Pacanele</h1> : <h1>Slots Machine</h1>}	
+					{lang === "ro" ? <h3>Joaca si castiga</h3> : <h3>Play and Win</h3>}
 				</div>
 			</div>
 			<div className="slot_machine_container">
@@ -195,7 +270,7 @@ function Slot(props) {
 					<Row>
 						<Col sm={5}>
 							<p>Carrots</p>
-							<input className="slot_input" type="number" id="slot_balance" min="1" defaultValue="1" max="5000"></input>
+							<input className="slot_input" type="number" id="slot_balance" min="1" defaultValue={money} max="5000"></input>
 						</Col>
 						<Col sm={5}>
 							<p>BET</p>
@@ -209,7 +284,7 @@ function Slot(props) {
 			</div>
 			<div className="show_results_container">
 				<div className="show_results">
-					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}	</h1>
+					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
 					<p></p>
 				</div>
 			</div>	

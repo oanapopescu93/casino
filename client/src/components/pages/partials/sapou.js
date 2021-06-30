@@ -20,7 +20,7 @@ function Sapou(props){
                                 <Col sm={12}>
                                     <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                                     <h1>BunnyBet</h1>
-                                    {lang === "ro" ? <h2>Indrazneste sa prinzi iepurele</h2> : <h2>Dare catch the rabbit</h2>} 
+                                    {lang === "ro" ? <h4>Indrazneste sa prinzi iepurele</h4> : <h4>Dare catch the rabbit</h4>} 
                                 </Col>
                             </Row>
                         ) 
@@ -30,7 +30,7 @@ function Sapou(props){
                                 <Col sm={12}>
                                     <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                                     <h1>BunnyBet</h1>
-                                    {lang === "ro" ? <h2>Recuperare</h2> : <h2>Recovery</h2>}                                    
+                                    {lang === "ro" ? <h4>Recuperare</h4> : <h4>Recovery</h4>}                                    
                                 </Col>
                             </Row>
                         ); 
@@ -41,7 +41,7 @@ function Sapou(props){
                                     <a href="/">
                                         <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                                         <h1>BunnyBet</h1>
-                                        {lang === "ro" ? <h6>Salon</h6> : <h6>Welcome to the salon</h6>}                                        
+                                        {lang === "ro" ? <h3>Salon</h3> : <h3>Welcome to the salon</h3>}                                        
                                     </a>								
                                 </Col>
                             </Row>      

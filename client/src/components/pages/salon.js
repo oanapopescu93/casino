@@ -15,7 +15,7 @@ var casino_games = {
 	blackjack_tables: [],
 	slots_tables: []
 }
-var casino_games_title = Object.getOwnPropertyNames(casino_games)
+var casino_games_title = Object.getOwnPropertyNames(casino_games);
 
 class Salon extends Component {	
 	constructor(props) {
@@ -23,20 +23,18 @@ class Salon extends Component {
 		self = this;
 		self.state = {
 			socket: props.socket,
-			lang: props.lang,
 			empty: false,
 			casino_games: '',
 			user: '',
 			sports: false,
-	  	};
-		
+	  	};		
 		self.handleBack = self.handleBack.bind(self);
 		self.handleChange = self.handleChange.bind(self);
 		self.salonData = self.salonData.bind(self);
 		self.getCookie = self.getCookie.bind(self);	
 	}
   
-	componentDidMount() {
+	componentDidMount(a) {
 		self.salonData()
 			.then(res => {	
 					for(var i in res.server_tables){
@@ -73,7 +71,8 @@ class Salon extends Component {
 						self.setState({ user: server_user });	
 					} else {
 						self.setState({ user: res.server_user });	
-					}					
+					}
+								
 				})
 			.catch(err => console.log(err)); 
 		
@@ -134,18 +133,19 @@ class Salon extends Component {
 	}
   
 	render() {	
-		$('.full-height').attr('id', 'salon')		
+		$('.full-height').attr('id', 'salon');
+		var lang = self.props.lang;
 		return (
 			<div>
 				{self.state.empty ? (
 					<div className="color_yellow">
-						{self.statelang == "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
+						{lang == "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
 					</div>
 				) : (
 					<Row>						
 						{self.state.user === '' ? (
 							<div className="table_container color_yellow">
-								{self.state.lang == "ro" ? 
+								{lang == "ro" ? 
 									<>
 										<h3>Acces interzis</h3>
 										<h4>Intoarce-te si logheaza-te/inregistreaza-te</h4>
@@ -163,23 +163,23 @@ class Salon extends Component {
 								<div className="salon_button_container">
 									<div className="salon_button_box">
 										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{self.handleChange('games')}}>
-											{self.state.lang == "ro" ? <span>Jocuri</span> : <span>Games</span>}											
+											{lang == "ro" ? <span>Jocuri</span> : <span>Games</span>}											
 										</div>            
 										<div id="salon_buton_sports" className="salon_button shadow_convex" onClick={()=>{self.handleChange('sports')}}>
-											{self.state.lang == "ro" ? <span>Sport</span> : <span>Sport</span>}	
+											{lang == "ro" ? <span>Sport</span> : <span>Sport</span>}	
 										</div>
 									</div>
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
-									<Sapou lang={self.state.lang} page="salon"></Sapou>
+									<Sapou lang={lang} page="salon"></Sapou>
 									{self.state.sports ? (
-										<Sports lang={self.state.lang} socket={self.state.socket} user={self.state.user}></Sports>									
+										<Sports lang={lang} socket={self.state.socket} user={self.state.user}></Sports>									
 									) : (
-										<SalonGames lang={self.state.lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></SalonGames>
+										<SalonGames lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></SalonGames>
 									)}	
 									<Row>
 										<Col sm={12}>
-											{self.state.lang == "ro" ? 
+											{lang == "ro" ? 
 												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Iesi din salon</p> : 
 												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>	
 											}																			

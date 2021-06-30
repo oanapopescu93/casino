@@ -784,6 +784,7 @@ table {
 .table_inside{
 	display:inline-block;
 	padding:10px;
+	width:100%;
 }
 .table_box{	
 	padding:20px 10px;
@@ -896,7 +897,7 @@ table {
 
 #crop_language_container{
 	position: fixed;
-	z-index: 999999;
+	z-index: 1;
 	top:5px;
 	right:5px;
 }
@@ -1141,9 +1142,6 @@ table {
   	text-orientation: upright;
 	font-size: 16px;
 	text-transform: uppercase;	
-}
-#salon_buton_games span{
-	margin-top: 12px;
 }
 #exit_salon{
 	display:inline-block;

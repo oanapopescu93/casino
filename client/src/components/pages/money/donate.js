@@ -16,7 +16,8 @@ function Donate(props){
         } 
     }
 
-    var socket = props.socket;    
+    var socket = props.socket; 
+    var lang = props.lang;   
 
     function get_wallet(){
         return new Promise(function(resolve, reject){
@@ -40,13 +41,13 @@ function Donate(props){
             
             <Modal className="casino_modal" id="donate_modal" show={show} onHide={handleClose} size="sm">
                 <Modal.Header closeButton>
-                    <Modal.Title>Support</Modal.Title>
+                    <Modal.Title>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p><span>BitCoin: </span><a rel="nofollow" href={bitcoin.link}><b>{bitcoin.text}</b></a></p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <p>Feel free to support us if you like our app.</p>
+                    {lang === "ro" ? null : <p>Feel free to support us if you like our app.</p>}                    
                 </Modal.Footer>				
             </Modal>
         </>

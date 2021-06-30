@@ -65,7 +65,6 @@ class UserPage extends Component {
 			user: '',
 			user_id: -1,
 			socket: props.socket,
-			lang: props.lang,
 		};
 	}	
   
@@ -76,7 +75,7 @@ class UserPage extends Component {
 					var table_split = table.split('_');
 					var table_user = table_split[0] + ' ' + table_split[1];
 					var table_type = table_split[2];					
-					var payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.state.lang}
+					var payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.props.lang}
 					self.state.socket.emit('username', payload);
 					self.state.socket.on('is_online', function(data) {
 						$('#chatmessages').append(data);
@@ -146,7 +145,7 @@ class UserPage extends Component {
 		}
 
 		return user_id !== -1 ? 
-			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={self.state.lang} socket={self.state.socket} url={url}></Child>
+			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={self.props.lang} socket={self.state.socket} url={url}></Child>
 			 : (
 				<span className="color_yellow">Loading...</span>
 		  	)	

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Route, Switch, BrowserRouter} from 'react-router-dom'
 
 import Container from 'react-bootstrap/Container'
@@ -15,58 +15,74 @@ import Language from './partials/language';
 import socketIOClient from "socket.io-client/dist/socket.io";
 const socket = socketIOClient("/");
 
-function getCookie(cname) {
-	var name = cname + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
-	for(var i = 0; i < ca.length; i++) {
-		  var c = ca[i];
-		  while (c.charAt(0) === ' ') {
-			c = c.substring(1);
-		  }
-		  if (c.indexOf(name) === 0) {
-			return c.substring(name.length, c.length);
-		  }
+var self;
+class Home extends Component {
+	constructor(props) {
+		super(props);
+		self = this;
+		self.state = {
+			lang: self.getCookie("casino_lang"),
+		};
+		self.getCookie = self.getCookie.bind(self);	
+		self.lang_change = self.lang_change.bind(self);	
 	}
-	return "";
-}
 
-function Home(props) {
-	var lang = getCookie("casino_lang");		
-	if(lang === ''){
-		lang = "eng";
-	} 
-	return (
+	getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i < ca.length; i++) {
+			  var c = ca[i];
+			  while (c.charAt(0) === ' ') {
+				c = c.substring(1);
+			  }
+			  if (c.indexOf(name) === 0) {
+				return c.substring(name.length, c.length);
+			  }
+		}
+		return "";
+	}
+
+	lang_change(text){
+		self.setState({ lang: text });
+	}
+	
+	render() {
+		if(self.state.lang === ''){
+			self.setState({ lang: 'eng' });
+		} 
+		return (
 		<>	
-		<div className="full-height">
-			<div className="full-height-content">
-				<Container>				
-						<BrowserRouter>					
-							<Switch>			
-								<Route path="/table/:name">
-									<UserPage lang={lang} socket={socket}></UserPage>
-								</Route>
-								<Route path="/salon">
-									<Salon lang={lang} socket={socket}></Salon>
-								</Route>
-								<Route path="/recovery">
-									<SignInRecovery lang={lang} socket={socket}></SignInRecovery>
-								</Route>							
-								<Route exact path="/">
-									<HomePage lang={lang} socket={socket}></HomePage>
-								</Route>
-								<Route path="*">
-									<Not_found lang={lang}></Not_found>
-								</Route>
-							</Switch>			
-						</BrowserRouter>
-				</Container>				
-			</div>			
-		</div>
-		<Language></Language>
-		<Donate lang={lang} socket={socket}></Donate>
+			<div className="full-height">
+				<div className="full-height-content">
+					<Container>				
+							<BrowserRouter>					
+								<Switch>			
+									<Route path="/table/:name">
+										<UserPage lang={self.state.lang} socket={socket}></UserPage>
+									</Route>
+									<Route path="/salon">
+										<Salon lang={self.state.lang} socket={socket}></Salon>
+									</Route>
+									<Route path="/recovery">
+										<SignInRecovery lang={self.state.lang} socket={socket}></SignInRecovery>
+									</Route>							
+									<Route exact path="/">
+										<HomePage lang={self.state.lang} socket={socket}></HomePage>
+									</Route>
+									<Route path="*">
+										<Not_found lang={self.state.lang}></Not_found>
+									</Route>
+								</Switch>			
+							</BrowserRouter>
+					</Container>				
+				</div>			
+			</div>
+			<Language lang_change={self.lang_change}></Language>
+			<Donate lang={self.state.lang} socket={socket}></Donate>
 		</>
-	);
+		);
+	}
 }
 
 export default Home;

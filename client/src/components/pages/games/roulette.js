@@ -68,6 +68,7 @@ var dispatch_nr = 0; //this prevents multiplication
 
 function roulette_game(props){
 	var self = this;
+	var lang = props.lang;
 	const dispatch = props.dispatch;
 	roulette_type = props.type;	
 	
@@ -541,7 +542,11 @@ function roulette_game(props){
 				self.check_win_lose(your_bets,win_nr);
 				
 				setTimeout(function(){ 
-					show_results("The lucky number is " + win_nr.nr);
+					if(lang === "ro"){
+						show_results("Numarul norocos este " + win_nr.nr);
+					} else {
+						show_results("The lucky number is " + win_nr.nr);
+					}						
 					your_last_bet = {}
 					your_bets = [];
 					spin_click = 0;
@@ -993,9 +998,6 @@ function isInside(mousePos, obj){
 }
 
 function Roulette(props) {
-	//console.log('game ', props)
-	var lang = props.lang;
-
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'roulette')		
 		my_roulette = new roulette_game(props);
@@ -1013,13 +1015,14 @@ function Roulette(props) {
 	}, 0);
 	
 	socket = props.socket;
+	var lang = props.lang;
 	
 	return (
 		<div className="roulette_container">
 			<canvas id="roulette_canvas"></canvas>	
 			<div className="show_results_container">
 				<div className="show_results">
-					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}	</h1>
+					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
 					<p></p>
 				</div>
 			</div>			

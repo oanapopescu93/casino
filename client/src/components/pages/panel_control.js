@@ -21,6 +21,7 @@ function Panel(props){
     var socket = props.socket;
     var dispatch = props.dispatch;
     var game_title = props.user_table;
+    var lang = props.lang;
 
     const [show, setShow] = useState(false);
 
@@ -117,15 +118,15 @@ function Panel(props){
                         <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
                     </p>
                     <p id="user_list_user">
-                        <span id="user_list_user_game" className="user_list_button active" onClick={() => handleClick('casino')}>Game</span>
-                        <span id="user_list_user_account" className="user_list_button" onClick={() => handleClick('account')}>My account</span>
+                        <span id="user_list_user_game" className="user_list_button active" onClick={() => handleClick('casino')}>{lang === "ro" ? <span>Joc</span> : <span>Game</span>}</span>
+                        <span id="user_list_user_account" className="user_list_button" onClick={() => handleClick('account')}>{lang === "ro" ? <span>Contul meu</span> : <span>My account</span>}</span>
                     </p>
                     <ul className="user_list">
-                        <li id="user_list_salon" className="user_list_item" onClick={() => handleClick('salon')}><span>Salon</span></li>
-                        <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}><span>Settings</span></li>
-                        <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}><span>Logout</span></li>
+                        <li id="user_list_salon" className="user_list_item" onClick={() => handleClick('salon')}>{lang === "ro" ? <span>Salon</span> : <span>Salon</span>}</li>
+                        <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}>{lang === "ro" ? <span>Setari</span> : <span>Settings</span>}</li>
+                        <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}>{lang === "ro" ? <span>Delogare</span> : <span>Logout</span>}</li>
                     </ul>
-                    <div id="support" onClick={() => handleClick('support')}><span>Support</span></div>
+                    <div id="support" onClick={() => handleClick('support')}>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</div>
                 </div>
                 <div id="chat_panel_box" className="panel_box">
                     <ChatForm user={user} type={type} user_table={user_table} socket={socket}></ChatForm>
@@ -134,7 +135,7 @@ function Panel(props){
 
             <Modal className="casino_modal" id="settings_modal" show={show} onHide={handleClose} size="sm">
                 <Modal.Header closeButton>
-                    <Modal.Title>Settings</Modal.Title>
+                    <Modal.Title>{lang === "ro" ? <span>Setari</span> : <span>Settings</span>}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Settings></Settings>
