@@ -19,6 +19,7 @@ var font_bold_14 = 'bold 14px sans-serif';
 var font_bold_16 = 'bold 16px sans-serif';
 
 var items = [{id: 'energy', src: item01},{id: 'staff', src: item02},{id: 'cash', src: item03},{id: 'build', src: item04},{id: 'goods', src: item05},{id: 'gold', src: item06}];
+var prize = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129]
 var slots_canvas = [];
 var slots_ctx = [];
 var image_size = [100, 100]
@@ -42,17 +43,17 @@ function slot_game(props){
 		
 	this.ready = function(){
 		if (window.innerWidth < 960){
+			image_size = [50, 50];
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';
-			font_bold_16 = 'bold 12px sans-serif';
-			image_size = [50, 50];			
-		} else {			
+			font_bold_16 = 'bold 12px sans-serif';				
+		} else {
+			image_size = [100, 100];			
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
-			font_bold_16 = 'bold 16px sans-serif';	
-			image_size = [100, 100];		
+			font_bold_16 = 'bold 16px sans-serif';			
 		}
 
 		var promises = [];
@@ -69,7 +70,6 @@ function slot_game(props){
 				self.createCanvas(slots_canvas[slots_canvas.length-1]);
 				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images);
 			}
-			console.log(self.images_pos)	
 		});
 
 		$('#slot_spin').click(function(e) {
@@ -92,15 +92,10 @@ function slot_game(props){
 	this.createCanvas = function(canvas){
 		ctx = canvas.getContext("2d");
 		slots_ctx.push(ctx)	
-		if (window.innerWidth < 960){
-			canvas.width = 50;
-			canvas.height = 300;
-			image_size = [50, 50]		
-		} else {
-			canvas.width = 100;	
-			canvas.height = 1100;
-			image_size = [100, 100]	
-		}		
+		
+		canvas.width = image_size[0];
+		canvas.height = 2 * items.length * image_size[1];
+
 		canvas_width = canvas.width;
 		canvas_height = canvas.height;		
 		canvas.height = canvas_height;
@@ -111,27 +106,25 @@ function slot_game(props){
 		ctx.fillStyle = '#ddd';
 		var array = [];
 		for (var i = 0 ; i < items.length ; i++) {
-			ctx.fillRect(0, i * canvas.width, canvas.width, 2);
-			ctx.fillRect(0, (i + items.length)  * canvas.width, canvas.width, 2);
-			ctx.drawImage(assets[i], 20, i * canvas.width + 15);
-			ctx.drawImage(assets[i], 20, (i + items.length) * canvas.width + 15);	
-			var elem = {i:i, img:assets[i], x:0, y:i * canvas.width}
-			array.push(elem)	
-			var elem = {i:i + items.length, img:assets[i], x:0, y:(i + items.length) * canvas.width}
-			array.push(elem)					
+				ctx.fillRect(0, i * canvas.width, canvas.width, 2);
+				ctx.fillRect(0, (i + items.length)  * canvas.width, canvas.width, 2);
+				ctx.drawImage(assets[i], 0, i * 100);
+				ctx.drawImage(assets[i], 0, (i + items.length) * canvas.width);	
+				var elem = {i:i, img:assets[i], pos:i * canvas.width}
+				array.push(elem)	
+				var elem = {i:i + items.length, img:assets[i], pos:(i + items.length) * canvas.width}
+				array.push(elem)		
 		}
+
 		array = sort_array(array, "i");
 		self.images_pos.push(array)
 	}
 
-	this.rotate = function(i, spin_nr, spin_time){
+	this.rotate = function(i){
 		self.offset[i] = self.offset[i] - slot_speed;
-		var max_height = -(self.reel[i][0].height - 3*image_size[1])
+		var max_height = -(self.reel[i][0].height - items.length * image_size[1])
 		if(self.offset[i] < max_height){
 			self.offset[i] = 0;
-		}
-		if(i==0){
-			console.log(self.offset[i], max_height, self.offset[i] < max_height, spin_nr, spin_time)
 		}
 		self.reel[i].css('transform', 'translate(0px, '+self.offset[i]+'px)')
 	}
@@ -156,22 +149,142 @@ function slot_game(props){
 				stop = false;
 				spin_nr++;
 				for(var i in self.reel){
-					self.rotate(i, spin_nr, spin_time);
+					self.rotate(i);
 				}
 			} else {
 				stop = true;
+				for(var i in self.reel){
+					if(self.offset[i]%100 !== 0){
+						stop = false;
+						self.rotate(i);
+					}
+				}
 			}
+			
 
 			if(!stop){
 				window.requestAnimFrame(spin_slot);
 			} else {
 				window.cancelAnimationFrame(spin_slot);
+				self.win_lose(self.get_results_pos());				
 			}
 		}
 
 		if(dispatch_nr === 1){
 			spin_slot();
 		}	
+	}
+
+	this.win_lose = function(results){
+		console.log('res--> ', results);
+		var win = [];
+		for(var i=0; i<30; i++){
+			win.push(self.check_win(i, results));
+		}
+		//console.log('win--> ', win);
+	}
+
+	this.check_win = function(x, results){
+		var same = false;	
+		var matrix = [];
+		var t = 0;	
+		var k = 0;
+		var my_prize = prize[x];
+
+		switch (x) {
+			case 0:
+			case 1:
+			case 2:				
+				for(var i=0; i<results.length; i++){
+					matrix.push([x, i]);
+				}
+				break; 
+			case 3:	
+			case 4:				
+				for(var i=0; i<results.length; i++){
+					if(i === 2){
+						t  = Math.round((results[0].length-1) / 2);
+					} else {
+						if(x===3){
+							if(i===3 || i===4){
+								t = results[0].length-1;
+							}
+						} else {
+							t=results[0].length-1;
+							if(i === 3 || i === 4){
+								t=0;
+							}
+						}
+					}					
+					
+					matrix.push([t, i]);
+				}
+				break; 	
+			case 5:	
+			case 6:				
+				for(var i=0; i<results.length; i++){
+					t = 0
+					if(x === 5){
+						if(i%2 !== 0){
+							t = results[0].length-1;
+						}
+					} else {
+						if(i%2 === 0){
+							t = results[0].length-1;
+						}
+					}
+					matrix.push([t, i]);
+				}
+				break; 
+			case 7:	
+			case 8:				
+				for(var i=0; i<results.length; i++){
+					t = 0
+					if(x === 7){
+						if(i%2 !== 0){
+							t  = Math.round((results[0].length-1) / 2);
+						}
+					} else {
+						if(i%2 === 0){
+							t  = Math.round((results[0].length-1) / 2);
+						}
+					}
+					matrix.push([t, i]);
+				}
+				break; 	
+		} 
+
+		for(var i=1; i<results.length; i++){
+		// 	if(results[0][0].img.id === results[i][x].img.id){
+		// 		k++
+		// 	}
+		}
+		if(k === results.length){
+		 	same = true;
+		}
+		console.log(x, matrix)
+		return {payable: x, win:same, prize:prize};
+	}
+
+	this.get_results_pos = function(){
+		var results = [];
+		for(var i in self.reel){
+			for(var j in self.images_pos[i]){
+				if(self.images_pos[i][j].pos === -self.offset[i]){
+					var k = j-1;
+					var result = [];
+					for(var t=0; t<3; t++){	
+						k++;
+						if(k > self.images_pos[i].length-1 ){
+							k = 0;
+						}
+						result.push(self.images_pos[i][k]);	
+					}
+					results.push(result);
+				}
+			}
+		}
+		return results;
 	}
 }
 
@@ -223,7 +336,7 @@ function sort_array(list_element, sort_by) {
 				}
 			}                
 		  break;            
-	  }        
+	}        
   
 	return list_element;
 }
@@ -248,6 +361,7 @@ function Slot(props) {
 	var money = props.money;	
 	return (
 		<>
+			<p>Still under construction.</p>
 			<div className="slot_header_container">
 				<div className="slot_header">
 					{lang === "ro" ? <h1>Pacanele</h1> : <h1>Slots Machine</h1>}	
@@ -258,9 +372,17 @@ function Slot(props) {
 				<div className="slot_machine">
 					<div className="box">
 						<canvas id="slot_canvas1"></canvas>
+					</div>
+					<div className="box">
 						<canvas id="slot_canvas2"></canvas>
+					</div>
+					<div className="box">
 						<canvas id="slot_canvas3"></canvas>
+					</div>
+					<div className="box">
 						<canvas id="slot_canvas4"></canvas>
+					</div>
+					<div className="box">
 						<canvas id="slot_canvas5"></canvas>
 					</div>
 				</div>

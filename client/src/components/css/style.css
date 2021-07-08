@@ -1173,7 +1173,7 @@ table {
 	display: inline-block;
     position: relative;
 	width: 600px;
-	height: 346px;
+	height: 300px;
     text-align: center;
     background: #000;
     border: 10px solid;
@@ -1181,17 +1181,22 @@ table {
     border-radius: 5px;
 	padding:10px 20px;
 	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
+	box-sizing: content-box; /* so that the box can actually have 300px, not 320 because of the padding */
 }
 .slot_machine .box{
-	height: 100%;
-	width:100%;
     overflow: hidden;
+	display:inline-block;
+	width:100px;
+	height: 300px;
+	border: 3px solid var(--dark_yellow);
+	border-right: 0px solid transparent;
+}
+.slot_machine .box:last-child{
+	border-right: 3px solid var(--dark_yellow);
 }
 .slot_machine canvas{
     position: relative;
     background: white;
-    border: 3px solid var(--dark_yellow);
-    margin: 1px;
 }
 
 .slot_header h1, .slot_header h3{
