@@ -291,6 +291,9 @@ function slot_game(props){
 function show_results(message){
 	$('.show_results_container').show();
 	$('.show_results p').text(message);
+	$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
+		$(this).hide();
+	});
 }
 
 function shuffleArray(array) {
@@ -345,12 +348,7 @@ function Slot(props) {
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'slots')		
 		my_slot = new slot_game(props);
-		my_slot.ready();
-
-		$('.show_results_container').click(function () {
-			$(this).hide();
-		});
-		
+		my_slot.ready();		
 		$(window).resize(function(){
 			my_slot.ready();	
 		});

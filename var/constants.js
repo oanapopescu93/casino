@@ -26,20 +26,13 @@ module.exports = Object.freeze({
         {id: "potato", name: "potato", value:"5 carrots", price:5, quantity: 1},
         {id: "cabbage", name: "cabbage", value:"10 carrots", price:10, quantity: 1},
     ],
-    SESS_USERS: [
-        {id: 0, user: "oana", email: "oanapopescu93@gmail.com", pass: "oana", money: 100},
-        {id: 1, user: "client01", email: "client01@gmail.com", pass: "client", money: 101},
-        {id: 3, user: "client02", email: "client02@gmail.com", pass: "client", money: 102},
+    CRYPTO: [
+        {type: "Bitcoin", text: "-", link: "bitcoin:-"},
     ],
-    NODE_ENV: "development",
-    SESS_HOURS: 2,
-
-    BITCOIN: {
-        text: "-",
-        link: "bitcoin:-"
-    },
-
     CONTACT: {
-        email: "oanapopescu93@gmail.com",
-    }
+        address: "-",
+        email: "-",
+        phone: "-",
+        facebook: "-"
+    },
 })

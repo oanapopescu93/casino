@@ -133,31 +133,33 @@ class HomePage extends React.Component {
 				this.state.splash ? <Splash></Splash>  : 
 				<Row>
 					<Col sm={4} md={4} lg={4}></Col>
-					<Col sm={4} md={4} lg={4} className="HomePage color_yellow">
-						<div className="deco">
-							<div className="HomePage_box">
-								<Sapou lang={lang} page="home"></Sapou>													
-								<Row>
-									<Col sm={12}>					
-										<Row>
-											<Col sm={12}>
-												<div className="login_link_container shadow_convex">
-													<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}>
-														{lang == "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
-													</div>	
-													<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}>
-														{lang == "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
-													</div>	
-												</div>
-											</Col>
-										</Row>
-										<Row>
-											<Col sm={12} className="user_form_container">
-												{ this.state.visible ? <SignIn lang={lang} socket={socket}></SignIn> : <SignUp lang={lang} socket={socket}></SignUp> }
-											</Col>
-										</Row>
-									</Col>
-								</Row>
+					<Col sm={4} md={4} lg={4} className="color_yellow">
+						<div className="HomePage">
+							<div className="deco">
+								<div className="HomePage_box">
+									<Sapou lang={lang} page="home"></Sapou>													
+									<Row>
+										<Col sm={12}>					
+											<Row>
+												<Col sm={12}>
+													<div className="login_link_container shadow_convex">
+														<div id="link_login" className="login_link active" onClick={()=>this.casino_log("sign_in")}>
+															{lang === "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
+														</div>	
+														<div id="link_sign" className="login_link" onClick={()=>this.casino_log("sign_up")}>
+															{lang === "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
+														</div>	
+													</div>
+												</Col>
+											</Row>
+											<Row>
+												<Col sm={12} className="user_form_container">
+													{ this.state.visible ? <SignIn lang={lang} socket={socket}></SignIn> : <SignUp lang={lang} socket={socket}></SignUp> }
+												</Col>
+											</Row>
+										</Col>
+									</Row>
+								</div>
 							</div>
 						</div>
 					</Col>

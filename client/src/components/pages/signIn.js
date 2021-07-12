@@ -16,7 +16,7 @@ function submit(){
 			} else {
 				$('#loader_container').hide(); 
 				$('#home').show();
-				alert('You are not registered.')
+				show_results('You are not registered.');
 			}
 		});
 	} else {
@@ -86,6 +86,14 @@ function setCookie(cname,cvalue,exdays) {
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
+function show_results(message){
+	$('.show_results_container').show();
+	$('.show_results p').text(message);
+	$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
+		$(this).hide();
+	});
+}
+
 function SignIn(props) {
 	const [show, setShow] = useState(false);
 
@@ -101,14 +109,21 @@ function SignIn(props) {
 		<div>
 			<Form id="user_form" method="post" action="/registration">
 				<Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>
-				<h6 id="signin_user_red" className="text_red">{lang === "ro" ? <span>Nu ai scris user-ul</span> : <span>You didn't write the username</span>}</h6>
+				<h6 id="signin_user_red" className="hidden_red text_red">{lang === "ro" ? <span>Nu ai scris user-ul</span> : <span>You didn't write the username</span>}</h6>
 				<Form.Control id="signin_pass" autoComplete="off" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>
-				<h6 id="signin_pass_red" className="text_red">{lang === "ro" ? <span>Nu ai scris parola</span> : <span>You didn't write the password</span>}</h6>
+				<h6 id="signin_pass_red" className="hidden_red text_red">{lang === "ro" ? <span>Nu ai scris parola</span> : <span>You didn't write the password</span>}</h6>
 				<Button className="button_yellow shadow_convex" onClick={submit}>{lang === "ro" ? <span>Logare</span> : <span>Sign In</span>}</Button>
 				<div className="login_link_container">
 					<div onClick={handleShow} id="link_forget">{lang === "ro" ? <span>Am uitat user/parola</span> : <span>Forgot Username/Password</span>}</div>	
 				</div>
 			</Form>
+
+			<div className="show_results_container">
+				<div className="show_results">
+					<h1>{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
+					<p></p>
+				</div>
+			</div>
 
 			<Modal className="casino_modal" id="casino_modal" show={show} onHide={handleClose} size="sm">
 				<Modal.Header closeButton>

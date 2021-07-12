@@ -17,8 +17,8 @@ class Settings extends React.Component {
 	}
 
     handleChoose(e, type, choose){  
-        if(typeof type !== "undefined" && type != ""){
-            if(typeof choose !== "undefined" && choose != ""){
+        if(typeof type !== "undefined" && type !== ""){
+            if(typeof choose !== "undefined" && choose !== ""){
                 var target = e.target;
                 var parent = target.parentElement.parentElement;
                 $(parent).find('.dropbtn').text(choose);
@@ -61,10 +61,10 @@ class Settings extends React.Component {
 	}
 
     componentDidMount(){
-        if(self.getCookie("casino_date") != ""){
+        if(self.getCookie("casino_date") !== ""){
             self.setState({ date: self.getCookie("casino_date") }); 
         }
-        if(self.getCookie("casino_currency") != ""){
+        if(self.getCookie("casino_currency") !== ""){
             self.setState({ currency: self.getCookie("casino_currency") }); 
         }
     }

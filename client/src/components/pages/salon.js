@@ -139,13 +139,13 @@ class Salon extends Component {
 			<div>
 				{self.state.empty ? (
 					<div className="color_yellow">
-						{lang == "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
+						{lang === "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
 					</div>
 				) : (
 					<Row>						
 						{self.state.user === '' ? (
 							<div className="table_container color_yellow">
-								{lang == "ro" ? 
+								{lang === "ro" ? 
 									<>
 										<h3>Acces interzis</h3>
 										<h4>Intoarce-te si logheaza-te/inregistreaza-te</h4>
@@ -163,10 +163,10 @@ class Salon extends Component {
 								<div className="salon_button_container">
 									<div className="salon_button_box">
 										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{self.handleChange('games')}}>
-											{lang == "ro" ? <span>Jocuri</span> : <span>Games</span>}											
+											{lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
 										</div>            
 										<div id="salon_buton_sports" className="salon_button shadow_convex" onClick={()=>{self.handleChange('sports')}}>
-											{lang == "ro" ? <span>Sport</span> : <span>Sport</span>}	
+											{lang === "ro" ? <span>Sport</span> : <span>Sport</span>}	
 										</div>
 									</div>
 								</div>
@@ -179,7 +179,7 @@ class Salon extends Component {
 									)}	
 									<Row>
 										<Col sm={12}>
-											{lang == "ro" ? 
+											{lang === "ro" ? 
 												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Iesi din salon</p> : 
 												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>	
 											}																			

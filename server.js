@@ -1,12 +1,14 @@
 var express = require("express");
 const app = express();
+const fs = require('fs');
 const cheerio = require('cheerio');
 const request = require('request');
 
 var constants = require('./var/constants');
 var routes = require("./routes");
-var sess_users = constants.SESS_USERS;
 
+var users_file = './var/users.json';
+var users_json = JSON.parse(fs.readFileSync(users_file).toString());
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -17,7 +19,7 @@ var user_join = [];
 var email = "";
 var user = "";
 var pass = "";
-var user_money = 0;
+var user_money = 100;
 
 var text01 = 'The user is offline or does not exist';
 var text02 = 'Please type a user ( /w username message )';
@@ -32,11 +34,10 @@ var blackjack_current_player = 0
 var blackjack_players = [];
 var blackjack_dealer = {};
 var game_start = false;
-var your_bets = [];
 
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
-var bitcoin = constants.BITCOIN;
+var crypto = constants.CRYPTO;
 var contact_details = constants.CONTACT;
 
 app.use(routes);
@@ -45,13 +46,12 @@ io.on('connection', function(socket) {
 	socket.on('signin_send', function(data) {	
 		var exists = false;	
 		var obj = {};
-		for(var i in sess_users){
-			if(data.user === sess_users[i].user && data.pass === sess_users[i].pass){
+		for(var i in users_json){
+			if(data.user === users_json[i].user && data.pass === users_json[i].pass){
 				exists = true;
 				user = data.user;
 				pass = data.pass;
-				user_money = sess_users[i].money;
-				obj = {id: sess_users[i].id, user: user, email: sess_users[i].email, money: user_money};
+				obj = {id: users_json[i].id, user: user, email: users_json[i].email, money: users_json[i].money};
 				break;
 			}
 		}
@@ -64,19 +64,22 @@ io.on('connection', function(socket) {
 		email = data.email;
 		pass = data.pass;
 		var obj = {};
-		for(var i in sess_users){	
-			if(data.user === sess_users[i].user && data.email === sess_users[i].email && data.pass === sess_users[i].pass){
+
+		for(var i in users_json){	
+			if(data.user === users_json[i].user && data.email === users_json[i].email && data.pass === users_json[i].pass){
 				exists = true;
 				break;
 			}
 		}
 		if(!exists){
-			sort_array_obj(sess_users, "id");
-			var id = sess_users[sess_users.length-1].id+1;
-			user_money = 100;
-			obj = {id: id, user: user, email: email, money: user_money};
-			sess_users.push(obj);
-		}	
+			sort_array_obj(users_json, "id");
+			var id = users_json[users_json.length-1].id+1;
+			obj = {id: id, user: data.user, email: data.email, pass: data.pass, money: user_money};
+			users_json.push(obj);
+		}
+		
+		fs.writeFileSync(users_file, JSON.stringify(users_json));
+
 		io.to(socket.id).emit('signup_read', [exists, obj]);
 	});
 
@@ -105,11 +108,17 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('donate_send', function(data) {
-		io.to(socket.id).emit('donate_read', bitcoin);		
+		io.to(socket.id).emit('donate_read', crypto);		
 	});
-
 	socket.on('contact_send', function(data) {
 		io.to(socket.id).emit('contact_read', contact_details);		
+	});
+	socket.on('support_send', function(data) {
+		if(data.lang === "ro"){
+			io.to(socket.id).emit('support_read', "Mesajul a fost trimis");	
+		} else {
+			io.to(socket.id).emit('support_read', "Message has been sent");	
+		}			
 	});
 
 	socket.on('username', function(payload) {
@@ -161,16 +170,17 @@ io.on('connection', function(socket) {
 		var my_table = data[0];
 		var game = my_table.split('_')[0]
 		var id = data[1];
+		var money = 0;
 		if(id != -1){
-			for(var i in sess_users){	
-				if(id === sess_users[i].id){
+			for(var i in users_json){	
+				if(id === users_json[i].id){
 					exists = true;
-					user_money = sess_users[i].money;
+					money = users_json[i].money;
 					break;
 				}
 			}
 		}
-		var server_user = {id: id, user: user, money: user_money, user_table: my_table, game: game}
+		var server_user = {id: id, user: user, money: money, user_table: my_table, game: game, contact: contact_details}
 		io.to(socket.id).emit('user_page_read', server_user);
 	});
 
@@ -423,7 +433,7 @@ function chatMessage(from, text){
 };
 
 function sort_array_obj(array, sort_by){
-	var sorted = false
+	var sorted = false;
 	switch (typeof sort_by) {
 		case 'string': // sort array of objects
 			while (!sorted){

@@ -126,7 +126,7 @@ function Panel(props){
                         <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}>{lang === "ro" ? <span>Setari</span> : <span>Settings</span>}</li>
                         <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}>{lang === "ro" ? <span>Delogare</span> : <span>Logout</span>}</li>
                     </ul>
-                    <div id="support" onClick={() => handleClick('support')}>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</div>
+                    <div id="support_button" onClick={() => handleClick('support')}>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</div>
                 </div>
                 <div id="chat_panel_box" className="panel_box">
                     <ChatForm user={user} type={type} user_table={user_table} socket={socket}></ChatForm>

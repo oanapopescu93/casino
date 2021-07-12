@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { ReactComponent as Bitcoin } from '../../img/icons/bitcoin-love-heart.svg';
 import Modal from 'react-bootstrap/Modal'
 
-var bitcoin = {};
+var crypto = [];
 function Donate(props){
     const [show, setShow] = useState(false);
 
@@ -11,7 +11,7 @@ function Donate(props){
     function handleShow(){ setShow(true) };
 
     function click_donate(){
-        if(typeof bitcoin !== "undefined" && bitcoin !== "" && bitcoin != null && bitcoin !== "null" && JSON.stringify(bitcoin) !== JSON.stringify({})){
+        if(typeof crypto !== "undefined" && crypto !== "" && crypto != null && crypto !== "null" && crypto.length>0){
             handleShow();
         } 
     }
@@ -29,7 +29,7 @@ function Donate(props){
     }
     
     get_wallet().then(function(data) {
-        bitcoin = data;
+        crypto = data;
         $('#donate').addClass("open");
     });
 
@@ -44,7 +44,13 @@ function Donate(props){
                     <Modal.Title>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p><span>BitCoin: </span><a rel="nofollow" href={bitcoin.link}><b>{bitcoin.text}</b></a></p>
+                    {																					
+						crypto.map(function(item, i){
+                            return(
+                                <p key={i}><span>{item.type}: </span><a rel="nofollow" href={item.link}><b>{item.text}</b></a></p>
+                            )
+                        })
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     {lang === "ro" ? null : <p>Feel free to support us if you like our app.</p>}                    

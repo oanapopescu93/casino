@@ -21,6 +21,7 @@ class SignUp extends Component {
 		self.check_submit = self.check_submit.bind(self);	
 		self.submit_form = self.submit_form.bind(self);	
 		self.minor_check = self.minor_check.bind(self);	
+		self.show_results = self.show_results.bind(self);
 	}
 
 	componentDidMount() {		
@@ -51,16 +52,17 @@ class SignUp extends Component {
 	}
 
 	submit = function(){
-		if(self.check_submit()){
-			$('#signup_pass_red').empty();
+		$('#signup_email_red').empty();
+		$('#signup_pass_red').empty();
+		if(self.check_submit('email') && self.check_submit('pass')){
 			self.loader().then(function(data) {
 				if(data[0]){
 					$('#loader_container').hide(); 
 					$('#home').show();
 					if(self.state.lang === "ro"){
-						alert('Esti deja inregistrat.');
+						self.show_results('Esti deja inregistrat.');
 					} else {
-						alert('You are already registered.');
+						self.show_results('You are already registered.');
 					}					
 				} else {
 					self.setCookie("casino_email", $('#signup_email').val(), 1);
@@ -69,11 +71,21 @@ class SignUp extends Component {
 				}
 			});
 		} else {
-			if(self.state.lang === "ro"){
-				$('#signup_pass_red').append('<p><b>Parola invalida</b></p><p>Minim o litera mare, o litera mica, o cifra, un caracter special si lungimea totala minima de opt caractere</p>')
-			} else {
-				$('#signup_pass_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
-			}			
+			if(!self.check_submit('email')){
+				if(self.state.lang === "ro"){
+					$('#signup_email_red').append('<p><b>Email invalid</b></p><p>exemplu@mail.com</p>')
+				} else {
+					$('#signup_email_red').append('<p><b>Invalid email</b></p><p>example@mail.com</p>')
+				}	
+			}	
+
+			if(!self.check_submit('pass')){
+				if(self.state.lang === "ro"){
+					$('#signup_pass_red').append('<p><b>Parola invalida</b></p><p>Minim o litera mare, o litera mica, o cifra, un caracter special si lungimea totala minima de opt caractere</p>')
+				} else {
+					$('#signup_pass_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
+				}	
+			}	
 		}
 	}
 	
@@ -88,20 +100,28 @@ class SignUp extends Component {
 		});
 	}
 	
-	check_submit = function(){
-		var signup_pass = $('#signup_pass').val();		
-		var regex_pass = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');		
-			
-		// At least one upper case English letter, (?=.*?[A-Z])
-		// At least one lower case English letter, (?=.*?[a-z])
-		// At least one digit, (?=.*?[0-9])
-		// At least one special character, (?=.*?[#?!@$%^&*-])
-		// Minimum eight in length .{8,}
-		
-		var pass_result = regex_pass.test(signup_pass);
-		pass_result = true;
-		
-		//console.log('pass_result', pass_result);
+	check_submit = function(type){
+		var signup_input = "";
+		var regex = "";
+		switch(type){
+			case "email":
+				signup_input = $('#signup_email').val();
+				regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$'
+				//letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
+			   	break;
+			case "pass":
+				signup_input = $('#signup_pass').val();		
+				regex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';	
+				// At least one upper case English letter, (?=.*?[A-Z])
+				// At least one lower case English letter, (?=.*?[a-z])
+				// At least one digit, (?=.*?[0-9])
+				// At least one special character, (?=.*?[#?!@$%^&*-])
+				// Minimum eight in length .{8,}
+				break;
+		}
+		var regex_exp = new RegExp(regex);					
+		var pass_result = regex_exp.test(signup_input);
+		//pass_result = true;
 		return pass_result;
 	}
 
@@ -123,6 +143,14 @@ class SignUp extends Component {
 		}
 	}
 
+	show_results = function(message){
+		$('.show_results_container').show();
+		$('.show_results p').text(message);
+		$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
+			$(this).hide();
+		});
+	}
+
 	render() {
 		return (
 			<div>
@@ -137,13 +165,22 @@ class SignUp extends Component {
 						)
 					} else if (self.state.user_minor === "false") {
 						return (
-							<Form id="user_form" method="post" action="/registration">
-								<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />
-								<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />
-								<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
-								<h6 id="signup_pass_red" className="text_red"></h6>
-								<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
-							</Form>
+							<>
+								<Form id="user_form" method="post" action="/registration">
+									<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />
+									<h6 id="signup_email_red" className="text_red"></h6>
+									<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />									
+									<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
+									<h6 id="signup_pass_red" className="text_red"></h6>
+									<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
+								</Form>
+								<div className="show_results_container">
+									<div className="show_results">
+										<h1>{self.state.lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
+										<p></p>
+									</div>
+								</div>
+							</>
 						)
 					} else {
 						return (

@@ -631,6 +631,9 @@ function roulette_game(props){
 	function show_results(message){
 		$('.show_results_container').show();
 		$('.show_results p').text(message);
+		$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
+			$(this).hide();
+		});
 	}
 	
 	function rotateWheel(x) {
@@ -1001,12 +1004,7 @@ function Roulette(props) {
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'roulette')		
 		my_roulette = new roulette_game(props);
-		my_roulette.ready();
-		
-		$('.show_results_container').click(function () {
-			$(this).hide();
-		});
-		
+		my_roulette.ready();		
 		$(window).resize(function(){
 			if(document.getElementById("roulette_canvas") !== null){
 				my_roulette.ready();

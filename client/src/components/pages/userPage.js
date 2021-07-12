@@ -23,7 +23,7 @@ function Child(props) {
 	var game = props.game;
 	var socket = props.socket;
 	var lang = props.lang;
-	
+	var contact = props.contact;	
 	return (			
 			<BrowserRouter>
 				<div className="userPage"> 
@@ -41,7 +41,7 @@ function Child(props) {
 										)	
 									case "support":
 										return (
-											<Support lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Support> 
+											<Support contact={contact} lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Support> 
 										)
 									default:
 										return(
@@ -65,6 +65,7 @@ class UserPage extends Component {
 			user: '',
 			user_id: -1,
 			socket: props.socket,
+			contact: {},
 		};
 	}	
   
@@ -98,6 +99,7 @@ class UserPage extends Component {
 				}
 				self.setState({ user: data});
 				self.setState({ user_id: data.id});
+				self.setState({ contact: data.contact});
 				resolve(data);	
 			});	
 		});
@@ -133,6 +135,7 @@ class UserPage extends Component {
 		var type = "";
 		var user_table = ""
 		var game = this.state.user.game;
+		var contact = this.state.contact;
 		
 		if(typeof this.state.user.user_table !== "undefined"){
 			var user_table_text = this.state.user.user_table.split('_');
@@ -145,7 +148,7 @@ class UserPage extends Component {
 		}
 
 		return user_id !== -1 ? 
-			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={self.props.lang} socket={self.state.socket} url={url}></Child>
+			<Child contact={contact} user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={self.props.lang} socket={self.state.socket} url={url}></Child>
 			 : (
 				<span className="color_yellow">Loading...</span>
 		  	)	

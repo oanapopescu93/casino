@@ -42,7 +42,6 @@ var font_bold_14 = 'bold 14px sans-serif';
 var font_bold_16 = 'bold 16px sans-serif';
 
 var user_info = 0;
-var dispatch_nr = 0; //this prevents multiplication
 
 function blackjack_wheel(props){
 	var self = this;
@@ -578,6 +577,9 @@ function blackjack_wheel(props){
 function show_results(message){
 	$('.show_results_container').show();
 	$('.show_results p').text(message);
+	$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
+		$(this).hide();
+	});
 }
 
 function getMousePos(canvas, event) {
@@ -621,12 +623,7 @@ function Blackjack(props) {
 	setTimeout(function(){ 	
 		$('.full-height').attr('id', 'blackjack')	
 		blackjack_game = new blackjack_wheel(props);
-		blackjack_game.ready();
-
-		$('.show_results_container').click(function () {
-			$(this).hide();
-		});
-		
+		blackjack_game.ready();		
 		$(window).resize(function(){
 			blackjack_game.ready();	
 		});
