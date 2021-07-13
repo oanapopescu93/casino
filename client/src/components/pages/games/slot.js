@@ -38,44 +38,52 @@ function slot_game(props){
 	this.reel = [$('#slot_canvas1'), $('#slot_canvas2'), $('#slot_canvas3'), $('#slot_canvas4'), $('#slot_canvas5')];
 	this.images = [];
 	this.images_pos = [];
+	this.images_set = [];
     this.offset = [];
-    this.lastUpdate = new Date();
 		
-	this.ready = function(){
-		if (window.innerWidth < 960){
+	this.ready = function(reason){
+		if (window.innerWidth < 768){
 			image_size = [50, 50];
+			slot_speed = 5;
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';
 			font_bold_16 = 'bold 12px sans-serif';				
 		} else {
-			image_size = [100, 100];			
+			image_size = [100, 100];
+			slot_speed = 10;			
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
 			font_bold_16 = 'bold 16px sans-serif';			
 		}
 
-		var promises = [];
-		for(var i in items){
-			promises.push(self.preaload_images(items[i]));
-		}
+		if(reason != "resize"){
+			var promises = [];
+			for(var i in items){
+				promises.push(self.preaload_images(items[i]));
+			}
 
-		Promise.all(promises).then(function(result){
-			self.images = result;
-			for(var i in self.reel){				
-				self.images = shuffleArray(self.images)
-				self.offset.push(0);
+			Promise.all(promises).then(function(result){
+				self.images = result;	
+				slots_canvas = [];		
+				for(var i in self.reel){				
+					self.images = shuffleArray(self.images, reason)
+					self.offset.push(0);
+					slots_canvas.push(self.reel[i][0]);
+					self.createCanvas(slots_canvas[slots_canvas.length-1]);					
+					self.draw_reel(slots_canvas[slots_canvas.length-1], self.images, reason);
+				}
+			});	
+		} else {
+			slots_canvas = [];
+			console.log(self.images_pos)
+			for(var i in self.reel){
 				slots_canvas.push(self.reel[i][0]);
 				self.createCanvas(slots_canvas[slots_canvas.length-1]);
-				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images);
+				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images_pos[i], reason);
 			}
-		});
-
-		$('#slot_spin').click(function(e) {
-			dispatch_nr = 0;
-			self.spin(spin_time, slot_speed);
-		});
+		}
 	}
 
 	this.preaload_images = function(item){
@@ -101,23 +109,41 @@ function slot_game(props){
 		canvas.height = canvas_height;
     }
 
-	this.draw_reel = function(canvas, assets){
+	this.draw_reel = function(canvas, assets, reason){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#ddd';
 		var array = [];
+
 		for (var i = 0 ; i < items.length ; i++) {
-				ctx.fillRect(0, i * canvas.width, canvas.width, 2);
-				ctx.fillRect(0, (i + items.length)  * canvas.width, canvas.width, 2);
-				ctx.drawImage(assets[i], 0, i * 100);
-				ctx.drawImage(assets[i], 0, (i + items.length) * canvas.width);	
-				var elem = {i:i, img:assets[i], pos:i * canvas.width}
-				array.push(elem)	
-				var elem = {i:i + items.length, img:assets[i], pos:(i + items.length) * canvas.width}
-				array.push(elem)		
+			var img = assets[i];
+			if(reason === "resize"){
+				img = assets[i].img;
+			}	
+			ctx.fillRect(0, i * canvas.width, canvas.width, 2);
+			ctx.fillRect(0, (i + items.length)  * canvas.width, canvas.width, 2);
+			ctx.drawImage(img, 0, 0, image_size[0], image_size[1], 0, i*image_size[1], image_size[0], image_size[1]);
+			ctx.drawImage(img, 0, 0, image_size[0], image_size[1], 0, (i + items.length) * canvas.width, image_size[0], image_size[1]);
+
+			var elem = {i:i, img:img, pos:i * canvas.width}
+			array.push(elem)	
+			var elem = {i:i + items.length, img:img, pos:(i + items.length) * canvas.width}
+			array.push(elem)		
 		}
 
+		// img - Specifies the image, canvas, or video element to use	 
+		// sx - Optional. The x coordinate where to start clipping	
+		// sy - Optional. The y coordinate where to start clipping	
+		// swidth - Optional. The width of the clipped image	
+		// sheight - Optional. The height of the clipped image	
+		// x - The x coordinate where to place the image on the canvas	
+		// y - The y coordinate where to place the image on the canvas	
+		// width - Optional. The width of the image to use (stretch or reduce the image)	
+		// height - Optional. The height of the image to use (stretch or reduce the image)
+
 		array = sort_array(array, "i");
-		self.images_pos.push(array)
+		if(reason != "resize"){
+			self.images_pos.push(array)
+		}		
 	}
 
 	this.rotate = function(i){
@@ -128,6 +154,11 @@ function slot_game(props){
 		}
 		self.reel[i].css('transform', 'translate(0px, '+self.offset[i]+'px)')
 	}
+
+	$('body').off('click', '#slot_spin').on('click', '#slot_spin', function () {
+		dispatch_nr = 0;
+		self.spin(spin_time, slot_speed);
+	})
 
 	this.spin = function(spin_time){
 		var spin_nr = 0;
@@ -181,7 +212,7 @@ function slot_game(props){
 		for(var i=0; i<30; i++){
 			win.push(self.check_win(i, results));
 		}
-		//console.log('win--> ', win);
+		console.log('win--> ', win);
 	}
 
 	this.check_win = function(x, results){
@@ -350,7 +381,7 @@ function Slot(props) {
 		my_slot = new slot_game(props);
 		my_slot.ready();		
 		$(window).resize(function(){
-			my_slot.ready();	
+			my_slot.ready("resize");	
 		});
 	}, 0);
 	

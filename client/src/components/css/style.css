@@ -65,6 +65,7 @@ body{
 	background-size:200% var(--b),var(--b) 200%; 
 	background-origin:padding-box;
 	background-repeat:no-repeat;
+	padding:1px;
 }
 .HomePage{
 	background-color: rgba(0,0,0,0.5);
@@ -410,10 +411,19 @@ input:-internal-autofill-selected {
 	outline: none!important;
 	box-shadow:none!important;
 }
+.button_yellow[finished~="no"]{
+	border: solid 1px rgba(255, 255, 0, 0.2);
+	color: rgba(255, 255, 0, 0.2);
+}
 .button_yellow:hover, .button_yellow:focus, .button_yellow:active, .button_yellow:active:focus{
     background: rgba(255, 255, 0, 0.2);
 	color: var(--yellow);
 	border: solid 1px var(--yellow);
+}
+.button_yellow[finished~="no"]:hover, .button_yellow[finished~="no"]:focus, .button_yellow[finished~="no"]:active, .button_yellow[finished~="no"]:active:focus{
+    background: transparent;
+	color: rgba(255, 255, 0, 0.2);
+	border: solid 1px rgba(255, 255, 0, 0.2);
 }
 .button_table{
 	color: var(--yellow);
@@ -559,6 +569,8 @@ table {
 .support_container{
 	background-color: rgba(0,0,0,0.5);
     padding: 10px;
+	position: relative;
+	z-index:1;
 }
 .support_container .deco{
 	width: 100%;
@@ -566,9 +578,19 @@ table {
 }
 .support_container .box{
 	padding:10px;
+	background-color: black;
 }
 .support_info{
 	padding:15px 0px;
+}
+#support_form{
+	background-color: rgba(0,0,0,0.5);
+	padding: 10px;
+	width:50%;
+	position:absolute;
+	z-index:1;
+	top:-40px;
+	right:-10px;
 }
 #support_form button, #support_form input, #support_form textarea{
 	width: 100%;
@@ -1123,9 +1145,10 @@ table {
 }
 #donate.open{
 	-webkit-transition: opacity 2.0s ease-in;
-       -moz-transition: opacity 2.0s ease-in;
-         -o-transition: opacity 2.0s ease-in;
-                                  opacity: 1;
+	-moz-transition: opacity 2.0s ease-in;
+	-o-transition: opacity 2.0s ease-in;
+	transition: opacity 2.0s ease-in;
+	opacity: 1;
 }
 
 .salon_button_container{
@@ -1185,7 +1208,8 @@ table {
 
 .slot_header{
 	display: inline-block;
-	width: 350px;
+	max-width: 350px;
+	width: 100%;
 	padding:10px;
 	background-color: #ccad00;
 	border-radius:5px 5px 0px 0px;
@@ -1199,7 +1223,8 @@ table {
 .slot_machine{
 	display: inline-block;
     position: relative;
-	width: 600px;
+	max-width: 600px;
+	width:100%;
 	height: 300px;
     text-align: center;
     background: #000;
@@ -1208,7 +1233,7 @@ table {
     border-radius: 5px;
 	padding:10px 20px;
 	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
-	box-sizing: content-box; /* so that the box can actually have 300px, not 320 because of the padding */
+	box-sizing: content-box;
 }
 .slot_machine .box{
     overflow: hidden;
@@ -1237,7 +1262,8 @@ table {
 	background: var(--dark_yellow);
 	display: inline-block;
     position: relative;
-	width: 600px;
+	width: 100%;
+	max-width:600px;
     text-align: center;
 	border-top:solid 0px var(--yellow);
 	border-right:solid 2px var(--yellow);
@@ -1324,6 +1350,14 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.slot_machine .box{
+		width:50px;
+		height:150px;
+	}
+	.slot_machine{
+		padding:10px 0px;
+		height: 150px;
+	}
 	.slot_spin_container{
 		text-align: center;
 	}

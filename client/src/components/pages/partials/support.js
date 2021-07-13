@@ -22,13 +22,15 @@ class Support extends Component {
         self.check_submit = self.check_submit.bind(self);
 	}
 
-    submit = function(){
+    submit = function(event){          
         $('#support_email_red').empty();
-        $('#support_message_red').empty();
-        $('#support_result').empty();
+        $('#support_message_red').empty();        
 
         if(self.check_submit('email') && $('#support_message').val() !== ""){
-            self.submit_form();
+            if(event.target.getAttribute("finished") == "yes"){
+                event.target.setAttribute("finished", "no");
+                self.submit_form(event);
+            } 
         } else {
             if(!self.check_submit('email')){
                 if(self.state.lang === "ro"){
@@ -47,14 +49,19 @@ class Support extends Component {
         }
     }
 
-    submit_form = function(){
+    submit_form = function(event){        
+        var target = event.target;
         var obj = {email: $('#support_email').val(), message: $('#support_message').val(), lang:self.state.lang}
         self.state.socket.emit('support_send', obj);	
         self.state.socket.on('support_read', function(data){
+            $('#support_result').empty();
             $('#support_result').append(data);
             setTimeout(function(){ 	
+                $('#support_email_red').empty();
+                $('#support_message_red').empty();
                 $('#support_result').empty();
-            }, 1000);
+                target.setAttribute("finished", "yes");
+            }, 2000);
         });	
     }
     
@@ -97,20 +104,21 @@ class Support extends Component {
                                         }
                                     </div>
                                 </Col>
-                                <Col sm={6}>
-                                    <Form id="support_form" method="post">
-                                        <div className="box">
-                                            <Form.Control id="support_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="email" defaultValue=""/>
-                                            <h6 id="support_email_red" className="text_red"></h6>
-                                            <Form.Control id="support_message" className="input_yellow shadow_convex" as="textarea" name="message"/>
-                                            <h6 id="support_message_red" className="text_red"></h6>
-                                            <Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{self.state.lang === "ro" ? <span>Trimite</span> : <span>Send</span>}</Button>
-                                        </div>
-                                    </Form>
-                                </Col>
-                                <p id="support_result"></p>
+                                <Col sm={6}></Col>                                
                             </div>
-                        </div>                        
+                            <Form id="support_form" method="post">
+                                <div className="deco">
+                                    <div className="box">
+                                        <Form.Control id="support_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="email" defaultValue=""/>
+                                        <h6 id="support_email_red" className="text_red"></h6>
+                                        <Form.Control id="support_message" className="input_yellow shadow_convex" as="textarea" name="message"/>
+                                        <h6 id="support_message_red" className="text_red"></h6>
+                                        <Button finished="yes" className="button_yellow shadow_convex" onClick={self.submit}>{self.state.lang === "ro" ? <span>Trimite</span> : <span>Send</span>}</Button>
+                                        <p id="support_result"></p>
+                                    </div>
+                                </div>
+                            </Form>  
+                        </div>                                              
                     </Col>
                     <Col sm={2}></Col>
                 </Row>
