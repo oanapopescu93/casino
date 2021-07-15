@@ -303,6 +303,14 @@ h6 {
     line-height: 12px;
 }
 
+ul{
+	margin:0px;
+	padding:0px;
+}
+ul li{
+	list-style: none;
+}
+
 textarea {
 	resize: none;
 }
@@ -571,6 +579,7 @@ table {
     padding: 10px;
 	position: relative;
 	z-index:1;
+	margin-top:60px;
 }
 .support_container .deco{
 	width: 100%;
@@ -596,6 +605,7 @@ table {
 	width: 100%;
     margin: 5px 0px;
     border-radius: 20px;
+	background-color: transparent;
 }
 #support_form textarea{
 	height: 200px
@@ -643,10 +653,11 @@ table {
 	right:-250px;
 	width:300px;
 	position:fixed;	
-	z-index:9997;
-	transition:0.7s;
+	z-index:9997;		
     -webkit-transition:0.7s;
     -moz-transition:0.7s;
+	-o-transition: 0.7s;
+	transition:0.7s;
 }
 .panel_container.open{	
 	right:0px;
@@ -785,9 +796,12 @@ table {
 	max-width: 600px;
     width: 100%;
 	padding: 0px 15px;
-	max-height:105px;
+	max-height:105px;	
+	-webkit-transition:height .5s ease-in-out;
+    -moz-transition:height .5s ease-in-out;
+	-o-transition: height .5s ease-in-out;
+	transition:height .5s ease-in-out;
 	height: 0;
-	transition: height .5s ease-in-out;
 	overflow:hidden;
 	display: inline-block;
 	position: absolute;
@@ -816,7 +830,10 @@ table {
 	border-bottom: solid 1px transparent;
 }
 .casino_games_table_container{
-	transition: all .5s ease-in-out;
+	-webkit-transition:all .5s ease-in-out;
+    -moz-transition:all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition:all .5s ease-in-out;
 	max-height:200px;
 	height: 0;
 	overflow:hidden
@@ -1062,11 +1079,57 @@ table {
 
 /* footer */
 .footer_container{
-	position:absolute;
+	display:none;
+	position:fixed;
 	z-index:9990;
-	/* bottom:20px; */
+	height:65px;
+	bottom:-65px;
 	color:var(--yellow);
 	width:100%;
+	background-color: black;
+	border-top:solid 1px var(--yellow);
+	padding-top:10px;
+	padding-bottom:10px;
+	-webkit-transition:all .5s ease-out;
+    -moz-transition:all .5s ease-out;
+	-o-transition: all .5s ease-out;
+	transition:all .5s ease-out;
+}
+#salon .footer_container{
+	display:block;
+}
+.footer_container.open{
+	bottom: 0px!important;
+}
+.footer_container .footer_button{
+	display:inline-block;
+	background-color: black;
+	border:solid 1px var(--yellow);
+	border-bottom:solid 0px transparent;
+	padding:5px 20px;
+	border-radius:10px 10px 0px 0px;
+	position: absolute;
+	top:-21px;
+	right: 15px;
+	cursor: pointer;
+}
+.footer_container .box_info{
+	color:var(--yellow);
+	margin-bottom: 10px;
+}
+.footer_container .box_info li{
+	display:inline-block;
+	padding:0px 10px;
+	border-right: solid 1px var(--yellow);
+	font-size:12px;
+	cursor: pointer;
+}
+.footer_container .box_info li:last-child{
+	border-right: solid 0px transparent;	
+}
+.footer_container h6{
+	font-size: 10px;
+	line-height: 10px;
 }
 
 /* COOKIES MESSAGE */
@@ -1170,13 +1233,11 @@ table {
 	border-left:none;
     color: var(--yellow);
     border-radius: 0px 10px 10px 0px;
-    width: 40px;
-    height: 140px;
-    font-size: 20px;
-    line-height: 24px;
+    width: 30px;
+    height: 100px;
     text-align: center;
     vertical-align: top;
-    padding: 10px 10px 10px 8px;
+    padding: 10px;
     cursor: pointer;
 	margin-bottom:10px;	
 }
@@ -1190,7 +1251,8 @@ table {
 	writing-mode: vertical-rl;
 	-webkit-text-orientation: upright;
   	text-orientation: upright;
-	font-size: 16px;
+	font-size: 12px;
+	line-height: 12px;
 	text-transform: uppercase;	
 }
 #exit_salon{
@@ -1350,6 +1412,18 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	#support_form{
+		width: 100%;
+		position: static;
+		padding: 10px 0px;
+		background-color: transparent;
+	}
+	.support_container{
+		margin-top:20px;
+	}
+	.support_container .box{
+		background-color: transparent;
+	}
 	.slot_machine .box{
 		width:50px;
 		height:150px;
@@ -1496,9 +1570,6 @@ table {
 	#chat_button{
 		top: 100px;
 	}
-	.footer_container{
-		bottom:10px;
-	}
 	.roulette_container, .blackjack_container{
 		overflow-x: auto;
 		overflow-y: hidden;
@@ -1520,7 +1591,7 @@ table {
 		font-size: 12px;
 	}
 }
-@media (max-width:540px) {
+@media (max-width:600px) {
 	.cookies_msg {
 		flex-direction: column;
 	}
@@ -1537,6 +1608,24 @@ table {
 		display: block;
 		margin-top:5px;
 	}
+	.footer_container{
+		height:210px;
+		bottom:-210px;
+	}
+	.footer_container .footer_button{
+		right: 50%;
+		transform: translate(50%, 0px);
+	}
+	.footer_container .box_info ul{
+		display: inline-block;
+		width:300px;
+	}
+	.footer_container .box_info li{
+		display:block;
+		border-right:none;
+		border-bottom:solid 1px var(--yellow);
+		padding: 5px 10px;
+	}
 }
 @media (max-width: 480px) {  
 	.table_inside {
@@ -1545,7 +1634,7 @@ table {
 }
 
 @media (min-width: 768px){
-	.container {
+	.full-height .container {
 		width: 100%;
 	}
 	.full-height-content{

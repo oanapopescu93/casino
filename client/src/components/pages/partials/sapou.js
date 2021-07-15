@@ -47,6 +47,12 @@ function Sapou(props){
                             </Row>      
                         ); 
                     case "splash_screen":
+                    case "about":
+                    case "support":
+                    case "terms":
+                    case "privacy":
+                    case "questions":
+                    case "career":
                         return(
                             <>
                                 <img id="logo_splash" alt="logo_splash" src={logo_icon} />

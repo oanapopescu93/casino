@@ -11,6 +11,7 @@ import Not_found from './not_found';
 import UserPage from './userPage';
 import Donate from './money/donate';
 import Language from './partials/language';
+import Footer from './partials/footer';
 
 import socketIOClient from "socket.io-client/dist/socket.io";
 const socket = socketIOClient("/");
@@ -22,10 +23,22 @@ class Home extends Component {
 		self = this;
 		self.state = {
 			lang: self.getCookie("casino_lang"),
+			contact: "",
 		};
 		self.getCookie = self.getCookie.bind(self);	
 		self.lang_change = self.lang_change.bind(self);	
 	}
+
+	componentDidMount(){
+		var id = parseInt(self.getCookie("casino_id"));
+		if(id === "" || id === "indefined"){
+			id = -1;
+		}
+		socket.emit('user_page_send', ["", id]);
+		socket.on('user_page_read', function(data){
+			self.setState({ contact: data.contact});
+		});	    
+    }
 
 	getCookie(cname) {
 		var name = cname + "=";
@@ -62,7 +75,7 @@ class Home extends Component {
 										<UserPage lang={self.state.lang} socket={socket}></UserPage>
 									</Route>
 									<Route path="/salon">
-										<Salon lang={self.state.lang} socket={socket}></Salon>
+										<Salon lang={self.state.lang} socket={socket} contact={self.state.contact}></Salon>
 									</Route>
 									<Route path="/recovery">
 										<SignInRecovery lang={self.state.lang} socket={socket}></SignInRecovery>
@@ -80,6 +93,7 @@ class Home extends Component {
 			</div>
 			<Language lang_change={self.lang_change}></Language>
 			<Donate lang={self.state.lang} socket={socket}></Donate>
+			<Footer lang={self.state.lang} socket={socket}></Footer>
 		</>
 		);
 	}

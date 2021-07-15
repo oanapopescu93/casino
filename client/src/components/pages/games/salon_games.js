@@ -18,8 +18,15 @@ class SalonGames extends React.Component {
               socket: props.socket,	
               lang: props.lang,	
 		};
+        self.handleBack = self.handleBack.bind(self);
         self.handleDropdown = self.handleDropdown.bind(self);
         self.handleDropdown_small = self.handleDropdown_small.bind(self);
+	}
+
+    handleBack() {
+		var url = window.location.href;
+		url = url.split('/salon');
+		window.location.href = url[0];
 	}
 
     handleDropdown(t) {
@@ -132,6 +139,14 @@ class SalonGames extends React.Component {
                 </Col>
                 <Col sm={2}></Col>
             </Row>
+            <Row>
+                <Col sm={12}>
+                    {self.state.lang === "ro" ? 
+                        <p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Iesi din salon</p> : 
+                        <p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>	
+                    }																			
+                </Col>
+            </Row>	
         </>
 		);
 	};

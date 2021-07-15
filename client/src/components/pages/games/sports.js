@@ -1,15 +1,12 @@
 import React from 'react';
-
+import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import under_construction_icon from '../../img/icons/under_construction_icon.png'
 
-var socket;
-
 function Sports(props){
-	socket = props.socket;
-	//var lang = props.lang;
+	var socket = props.socket;
 	socket.emit('sports_send', "sports_send");	
 	socket.on('sports_read', function(data){
 		//$("body").append(data.body)

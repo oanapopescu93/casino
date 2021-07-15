@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery'; 
+import { useSelector} from 'react-redux'
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -9,6 +10,13 @@ import SalonGames from './games/salon_games'
 import Sports from './games/sports'
 import Sapou from './partials/sapou';
 
+import About from './other_pages/about';
+import Support from './other_pages/support';
+import Terms from './other_pages/terms';
+import Privacy from './other_pages/privacy';
+import Questions from './other_pages/questions';
+import Career from './other_pages/career';
+
 var self;
 var casino_games = {
 	roulette_tables: [], 
@@ -16,6 +24,80 @@ var casino_games = {
 	slots_tables: []
 }
 var casino_games_title = Object.getOwnPropertyNames(casino_games);
+
+function Child(props){
+	var lang = props.lang;
+	var casino_games_title = props.casino_games_title;
+	var socket = props.socket;
+	var user = props.user;
+	var casino_games = props.casino_games;
+	var visible = useSelector(state => state.visibility);
+	var contact = props.contact;
+	return(
+		<>	
+			{(() => {
+				switch (visible) {
+					case "game":
+						return (
+							<>
+								<Sapou lang={lang} page="salon"></Sapou>
+								<SalonGames lang={lang} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></SalonGames>
+							</>
+						)
+					case "about":
+						return (
+							<>
+								<Sapou lang={lang} page={visible}></Sapou>
+								<About lang={lang} socket={socket} user={user}></About>
+							</>
+						)	
+					case "support":
+						return (
+							<>
+								<Sapou lang={lang} page={visible}></Sapou>
+								<Support contact={contact} lang={lang} socket={socket} user={user}></Support>
+							</>
+						)
+					case "terms":
+						return (
+							<>
+								<Sapou lang={lang} page={visible}></Sapou>
+								<Terms lang={lang} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></Terms>
+							</>
+						)
+					case "privacy":
+						return (
+							<>
+								<Sapou lang={lang} page={visible}></Sapou>
+								<Privacy lang={lang} socket={socket} user={user}></Privacy>
+							</>
+						)
+					case "questions":
+						return (
+							<>
+								<Sapou lang={lang} page={visible}></Sapou>
+								<Questions lang={lang} socket={socket} user={user}></Questions>
+							</>
+						)
+					case "career":
+						return (
+							<>
+								<Sapou lang={lang} page={visible}></Sapou>
+								<Career lang={lang} socket={socket} user={user}></Career>
+							</>
+						)
+					default:
+						return(
+							<>
+								<Sapou lang={lang} page="salon"></Sapou>
+								<SalonGames lang={lang} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></SalonGames>
+							</>
+						)						
+				}
+			})()}					
+		</>		
+	);
+}
 
 class Salon extends Component {	
 	constructor(props) {
@@ -149,12 +231,16 @@ class Salon extends Component {
 									<>
 										<h3>Acces interzis</h3>
 										<h4>Intoarce-te si logheaza-te/inregistreaza-te</h4>
-										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
+										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>
+											{lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
+										</Button>
 									</> : 
 									<>
 										<h3>No access</h3>
 										<h4>Please go back and login in / sign in</h4>
-										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
+										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>
+											{lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
+										</Button>
 									</>
 								}								
 							</div>
@@ -171,20 +257,11 @@ class Salon extends Component {
 									</div>
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
-									<Sapou lang={lang} page="salon"></Sapou>
 									{self.state.sports ? (
 										<Sports lang={lang} socket={self.state.socket} user={self.state.user}></Sports>									
 									) : (
-										<SalonGames lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></SalonGames>
-									)}	
-									<Row>
-										<Col sm={12}>
-											{lang === "ro" ? 
-												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Iesi din salon</p> : 
-												<p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>	
-											}																			
-										</Col>
-									</Row>													
+										<Child contact={self.props.contact} lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></Child>
+									)}											
 								</Col>
 							</>																
 						)}			

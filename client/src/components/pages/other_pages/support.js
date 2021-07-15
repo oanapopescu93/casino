@@ -27,7 +27,7 @@ class Support extends Component {
         $('#support_message_red').empty();        
 
         if(self.check_submit('email') && $('#support_message').val() !== ""){
-            if(event.target.getAttribute("finished") == "yes"){
+            if(event.target.getAttribute("finished") === "yes"){
                 event.target.setAttribute("finished", "no");
                 self.submit_form(event);
             } 

@@ -8,7 +8,7 @@ import $ from 'jquery';
 
 import Game from './game';
 import UserAccount from './userAccount';
-import Support from './partials/support';
+import Support from './other_pages/support';
 import Panel from './panel_control';
 
 var self;
@@ -45,7 +45,7 @@ function Child(props) {
 										)
 									default:
 										return(
-											<Game lang={lang} user_id={user_id} user={user} socket={socket}></Game>
+											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
 										)						
 								}
 							})()}					
