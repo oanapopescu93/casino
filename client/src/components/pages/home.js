@@ -34,8 +34,8 @@ class Home extends Component {
 		if(id === "" || id === "indefined"){
 			id = -1;
 		}
-		socket.emit('user_page_send', ["", id]);
-		socket.on('user_page_read', function(data){
+		socket.emit('contact_send', ["contact", id]);
+		socket.on('contact_read', function(data){
 			self.setState({ contact: data.contact});
 		});	    
     }

@@ -43,6 +43,7 @@ var contact_details = constants.CONTACT;
 app.use(routes);
 
 io.on('connection', function(socket) {	
+	socket.join('room001');
 	socket.on('signin_send', function(data) {	
 		var exists = false;	
 		var obj = {};
@@ -111,7 +112,8 @@ io.on('connection', function(socket) {
 		io.to(socket.id).emit('donate_read', crypto);		
 	});
 	socket.on('contact_send', function(data) {
-		io.to(socket.id).emit('contact_read', contact_details);		
+		//io.to(socket.id).emit('contact_read', contact_details);	
+		io.emit('contact_read', contact_details);	
 	});
 	socket.on('support_send', function(data) {
 		if(data.lang === "ro"){
@@ -194,7 +196,6 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('roulette_spin_send', function(data) {
-		//console.log('roulette_spin_send', data)
 		if(data.spin_click === 1){
 			var spin_time = Math.floor(Math.random() * (1000 - 500)) + 500;
 			//var spin_time = 100;
@@ -208,7 +209,7 @@ io.on('connection', function(socket) {
 			var payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}
 			
 			io.to(room_name).emit('roulette_spin_read', payload);
-			//io.emit('spin_read', payload);
+			//io.emit('roulette_spin_read', payload);
 		}
 	});
 

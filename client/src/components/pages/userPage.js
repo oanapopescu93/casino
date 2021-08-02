@@ -88,10 +88,12 @@ class UserPage extends Component {
 	userPageData(){
 		return new Promise(function(resolve, reject){
 			var table = window.location.href.split('table/')
+			
 			var id = parseInt(self.getCookie("casino_id"));
 			if(id === "" || id === "indefined"){
 				id = -1;
 			}
+
 			self.state.socket.emit('user_page_send', [table[1], id]);
 			self.state.socket.on('user_page_read', function(data){
 				if(data.user === "" || data.user === "indefined"){

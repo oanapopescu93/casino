@@ -85,6 +85,7 @@ function roulette_game(props){
 		self.choose_roulette_type();
 
 		socket.on('roulette_spin_read', function(data){	
+			console.log('roulette_click000')
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				spin_time = data.spin_time;
 				ball.speed = data.ball_speed;				
@@ -416,6 +417,7 @@ function roulette_game(props){
 		
 	this.roulette_table_click = function(){			
 		$('#roulette_canvas').off('click').on('click', function(event) {
+			console.log('roulette_click1')
 			self.canvas_click(canvas, event);
 		});
 		
@@ -454,13 +456,13 @@ function roulette_game(props){
 		// ctx.stroke();
 		
 		if (isInside(mousePos, bet_button_coordonates)) {
-			//console.log('BET');			
+			console.log('BET');			
 			var width = $('.roulette_container').width();
 			$('.roulette_container').animate({
 				scrollLeft: width
 			}, 500);	
 		} else if (isInside(mousePos, spin_button_coordonates)) {
-			//console.log('SPIN');
+			console.log('SPIN');
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
 				alert("Please place your bet before betting.");				
@@ -480,7 +482,7 @@ function roulette_game(props){
 				}, 500);
 			}				
 		} else if (isInside(mousePos, clear_button_coordonates)) {
-			//console.log('CLEAR');
+			console.log('CLEAR');
 			your_last_bet = {}
 			your_bets = [];
 			self.start();	
@@ -490,7 +492,7 @@ function roulette_game(props){
 				obj03.bet_value = bet_value;
 				
 				if (isInside(mousePos,obj03)) {
-					//console.log('CARROTS', spin_click);
+					console.log('CARROTS', spin_click);
 					if(spin_click === 0){
 						your_bets.push(obj03);					
 						your_last_bet = obj03;
@@ -631,8 +633,8 @@ function roulette_game(props){
 	function show_results(message){
 		$('.show_results_container').show();
 		$('.show_results p').text(message);
-		$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
-			$(this).hide();
+		$( ".show_results_container" ).click(function() {
+			$('.show_results_container').hide();
 		});
 	}
 	

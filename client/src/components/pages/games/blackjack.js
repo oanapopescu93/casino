@@ -577,8 +577,8 @@ function blackjack_wheel(props){
 function show_results(message){
 	$('.show_results_container').show();
 	$('.show_results p').text(message);
-	$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
-		$(this).hide();
+	$( ".show_results_container" ).click(function() {
+		$('.show_results_container').hide();
 	});
 }
 

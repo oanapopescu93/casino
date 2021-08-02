@@ -1680,18 +1680,3 @@ table {
 		padding:10px;
 	}
 }
-
-
-
-@-webkit-keyframes autofill {
-    0%,100% {
-        color: #666;
-        background: transparent;
-    }
-}
-
-input:-webkit-autofill {
-    -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
-    -webkit-animation-name: autofill;
-    -webkit-animation-fill-mode: both;
-}
