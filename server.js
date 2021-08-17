@@ -26,7 +26,9 @@ var text02 = 'Please type a user ( /w username message )';
 var text03 = "Game has begun. Please wait for the next round."
 var users = [];
 var sockets = [];
-var monkey = [];
+var monkey_roulette = [];
+var monkey_blackjack = [];
+var monkey_slots = true;
 
 var blackjack_deck = new Array();
 var hidden_dealer = {};
@@ -34,6 +36,8 @@ var blackjack_current_player = 0
 var blackjack_players = [];
 var blackjack_dealer = {};
 var game_start = false;
+
+var slot_prize = constants.SLOT_PRIZE;
 
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
@@ -43,7 +47,7 @@ var contact_details = constants.CONTACT;
 app.use(routes);
 
 io.on('connection', function(socket) {	
-	socket.join('room001');
+	//socket.join('room001');
 	socket.on('signin_send', function(data) {	
 		var exists = false;	
 		var obj = {};
@@ -111,10 +115,12 @@ io.on('connection', function(socket) {
 	socket.on('donate_send', function(data) {
 		io.to(socket.id).emit('donate_read', crypto);		
 	});
+
 	socket.on('contact_send', function(data) {
 		//io.to(socket.id).emit('contact_read', contact_details);	
 		io.emit('contact_read', contact_details);	
 	});
+
 	socket.on('support_send', function(data) {
 		if(data.lang === "ro"){
 			io.to(socket.id).emit('support_read', "Mesajul a fost trimis");	
@@ -206,7 +212,7 @@ io.on('connection', function(socket) {
 			var room_name = user_table + '_' + user_type;
 			
 			var k = data.my_click;
-			var payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}
+			var payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey_roulette[k]}
 			
 			io.to(room_name).emit('roulette_spin_read', payload);
 			//io.emit('roulette_spin_read', payload);
@@ -403,6 +409,29 @@ io.on('connection', function(socket) {
 		}
 	});
 
+	socket.on('slots_send', function(data) {
+		var this_user = data.id;
+		var reel = data.reel;
+		var items = data.items;
+		var array_big = [];	
+		var matrix = [];
+
+		for(var i=0; i<19; i++){
+			matrix.push(slot_matrix(i, [reel, 3]));
+		}
+		for(var i=0; i<reel; i++){
+			var array_small = Array.from(Array(items).keys());
+			array_small = shuffleArray(array_small);
+			array_big.push(array_small)
+		}		
+			
+		for(var i in sockets){
+		 	if(sockets[i].user_id === this_user){
+		 		io.to(socket.id).emit('slots_read', [array_big, matrix, monkey_slots]);
+		 	} 
+		}
+	})
+
 	socket.on('disconnect', function(username) {		
 		var k = sockets.indexOf(socket); 		
 		if(k !== -1){
@@ -464,6 +493,183 @@ function sort_array_obj(array, sort_by){
 			break;				
 	}
   	
+}
+
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+		var j = parseInt(Math.random() * i)
+		var tmp = array[i];
+		array[i] = array[j]
+		array[j] = tmp;
+    }
+	return array;
+}
+
+function slot_matrix(x, size){
+	var matrix = [];
+	var t = 0;	
+	var my_prize = slot_prize[x];
+	var length01 = size[0];
+	var length02 = size[1];
+	switch (x) {
+		case 0:
+		case 1:
+		case 2:				
+			for(var i=0; i<length01; i++){
+				matrix.push([x, i]);
+			}
+			break; 
+		case 3:	
+		case 4:				
+			for(var i=0; i<length01; i++){
+				if(i === 2){
+					t  = Math.round((length02-1) / 2);
+				} else {
+					if(x===3){
+						if(i===3 || i===4){
+							t = length02-1;
+						}
+					} else {
+						t=length02-1;
+						if(i === 3 || i === 4){
+							t=0;
+						}
+					}
+				}					
+				
+				matrix.push([t, i]);
+			}
+			break; 	
+		case 5:	
+		case 6:				
+			for(var i=0; i<length01; i++){
+				t = 0
+				if(x === 5){
+					if(i%2 !== 0){
+						t = length02-1;
+					}
+				} else {
+					if(i%2 === 0){
+						t = length02-1;
+					}
+				}
+				matrix.push([t, i]);
+			}
+			break; 
+		case 7:	
+		case 8:				
+			for(var i=0; i<length01; i++){
+				t = 0
+				if(x === 7){
+					if(i%2 !== 0){
+						t  = Math.round((length02-1) / 2);
+					}
+				} else{
+					if(i%2 === 0){
+						t  = Math.round((length02-1) / 2);
+					}
+				}
+				matrix.push([t, i]);
+			}
+			break; 	
+		case 9:	
+		case 10:				
+			for(var i=0; i<length01; i++){
+				t = 1
+				if(x === 9){
+					if(i%2 !== 0){
+						t = 2;
+					}
+				} else{
+					if(i%2 === 0){
+						t  = 0;
+					}
+				}
+				matrix.push([t, i]);
+			}
+			break; 	
+		case 11:	
+		case 12:	
+			t = (length01-1)/2+1; //3			
+			for(var i=0; i<length01; i++){					
+				if(x === 11){
+					if(i <= (length01-1)/2){
+						t = i;
+					} else {
+						t--;
+					}						
+				} else{
+					if(i > (length01-1)/2){
+						t++;
+					} else {
+						t--;
+					}
+				}
+				matrix.push([t, i]);
+			}
+			break; 	
+		case 11:	
+		case 12:	
+			t = (length01-1)/2+1; //3			
+			for(var i=0; i<length01; i++){					
+				if(x === 11){
+					if(i <= (length01-1)/2){
+						t = i;
+					} else {
+						t--;
+					}						
+				} else{
+					if(i > (length01-1)/2){
+						t++;
+					} else {
+						t--;
+					}
+				}
+				matrix.push([t, i]);
+			}
+			break; 	
+		case 13:	
+		case 14:		
+			for(var i=0; i<length01; i++){
+				t = 1;	
+				if(i === (length01-1)/2){
+					if(x === 13){
+						t = 0;		
+					} else{
+						t = (length01-1)/2;	
+					}	
+				}
+				matrix.push([t, i]);
+			}
+			break; 	
+		case 15:	
+		case 16:
+		case 17:
+		case 18:		
+			for(var i=0; i<length01; i++){					
+				if(x === 15 || x === 16){
+					t = (length01-1)/2;
+					if(i === (length01-1)/2){
+						t = 0;
+						if(x === 16){
+							t = 1
+						}
+					}			
+				} else{
+					t = 0;
+					if(i === (length01-1)/2){
+						t = 1;
+						if(x === 18){
+							t = (length01-1)/2
+						}
+					}		
+				}
+				
+				matrix.push([t, i]);
+			}
+			break; 	
+	} 
+	return {payable: x, matrix:matrix, prize:my_prize};
 }
 
 http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));

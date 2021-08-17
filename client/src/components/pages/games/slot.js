@@ -4,14 +4,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import {connect} from 'react-redux'
-import item_image from '../../img/icons/vegetables_black.png'
+import item_image from '../../img/icons/vegetables_color.png'
 
 var canvas_width = 200;
 var canvas_height = 800;
-var font_bold_10 = 'bold 10px sans-serif';
-var font_bold_12 = 'bold 12px sans-serif';
-var font_bold_14 = 'bold 14px sans-serif';
-var font_bold_16 = 'bold 16px sans-serif';
 
 var items = [
 	{id: 'carrot', src: item_image, coord:[0, 0]},
@@ -22,15 +18,15 @@ var items = [
 	{id: 'garlic', src: item_image, coord:[600, 600]},
 	{id: 'turnip', src: item_image, coord:[900, 900]},
 ];
-var prize = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129]
 var slots_canvas = [];
 var slots_ctx = [];
 var image_size = [100, 100]
 var image_size_canvas = [290, 290, 5, 5, 80, 80];
-var spin_time = 300; // how long all slots spin before starting countdown
-var slot_speed = 10; // how many pixels per second slots roll
+var spin_time = 3000; // how long all slots spin before starting countdown
+var spin_time_reel = spin_time/5 // how long each slot spins at minimum
+var slot_speed = []; // how many pixels per second slots roll
+var speed = 10;
 var dispatch_nr = 0; //this prevents multiplication
-
 var my_slot;
 
 var ctx;
@@ -39,35 +35,33 @@ var socket;
 function slot_game(props){
 	var self = this;
 	var lang = props.lang;
-	this.reel = [$('#slot_canvas1'), $('#slot_canvas2'), $('#slot_canvas3'), $('#slot_canvas4'), $('#slot_canvas5')];
+	this.reel = [$('#slot_canvas1'), $('#slot_canvas2'), $('#slot_canvas3'), $('#slot_canvas4'), $('#slot_canvas5')];	
+	this.state = 0;
 	this.images = [];
 	this.images_pos = [];
 	this.images_set = [];
     this.offset = [];
+	var suffle_array = [];
+	var win = [];
+	this.lastUpdate = new Date();
+	var now = new Date();
 		
 	this.ready = function(reason){
+		self.fit();
+		var payload = {id: props.user_id, reel:self.reel.length, items:items.length}		
+		socket.emit('slots_send', payload);
+		socket.on('slots_read', function(data){				
+			suffle_array = data[0];
+			win = data[1];
+			self.start(reason);
+		});
+	}
+
+	this.start = function(reason){
 		$('body').off('click', '#slot_spin').on('click', '#slot_spin', function () {
-			dispatch_nr = 0;
+			dispatch_nr = 0;		
 			self.spin(spin_time, slot_speed);
 		})
-
-		if (window.innerWidth < 768){
-			image_size = [50, 50];
-			image_size_canvas = [290, 290, 3, 3, 40, 40];
-			slot_speed = 5;
-			font_bold_10 = 'bold 8px sans-serif';
-			font_bold_12 = 'bold 10px sans-serif';
-			font_bold_14 = 'bold 12px sans-serif';
-			font_bold_16 = 'bold 12px sans-serif';				
-		} else {
-			image_size = [100, 100];
-			image_size_canvas = [290, 290, 5, 5, 80, 80];
-			slot_speed = 10;			
-			font_bold_10 = 'bold 10px sans-serif';
-			font_bold_12 = 'bold 12px sans-serif';
-			font_bold_14 = 'bold 14px sans-serif';
-			font_bold_16 = 'bold 16px sans-serif';			
-		}
 
 		if(reason != "resize"){
 			var promises = [];
@@ -77,9 +71,11 @@ function slot_game(props){
 
 			Promise.all(promises).then(function(result){
 				self.images = result;	
-				slots_canvas = [];		
-				for(var i in self.reel){				
-					self.images = shuffleArray(self.images, reason)
+				slots_canvas = [];
+				$('.slot_machine canvas').css('width', image_size[0]);
+				$('.slot_machine canvas').css('height', 2 * items.length * image_size[1]);		
+				for(var i in self.reel){	
+					self.images = self.create_suffle(i, self.images);
 					self.offset.push(0);
 					slots_canvas.push(self.reel[i][0]);
 					self.createCanvas(slots_canvas[slots_canvas.length-1]);					
@@ -88,12 +84,38 @@ function slot_game(props){
 			});	
 		} else {
 			slots_canvas = [];
+			$('.slot_machine canvas').css('width', image_size[0]);
+			$('.slot_machine canvas').css('height', 2 * items.length * image_size[1]);		
 			for(var i in self.reel){
 				slots_canvas.push(self.reel[i][0]);
 				self.createCanvas(slots_canvas[slots_canvas.length-1]);
 				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images_pos[i], reason);
 			}
 		}
+	}
+
+	this.fit = function(){
+		speed = 10;
+		image_size = [100, 100];
+		image_size_canvas = [290, 290, 5, 5, 80, 80];
+		slot_speed = [];
+		if (window.innerWidth < 768){
+			image_size = [50, 50];
+			image_size_canvas = [290, 290, 3, 3, 40, 40];
+			speed = 5;
+		}
+		for(var i in self.reel){
+			slot_speed.push(speed)
+		}	
+	}
+
+	this.create_suffle = function(i, images){
+		var images01 = [];
+		for(var j in suffle_array[i]){
+			var t = suffle_array[i][j];
+			images01.push(images[t]);
+		}
+		return images01;
 	}
 
 	this.preaload_images = function(item){
@@ -168,7 +190,7 @@ function slot_game(props){
 		}		
 	}
 
-	this.rotate = function(i){
+	this.rotate = function(i, slot_speed){
 		self.offset[i] = self.offset[i] - slot_speed;
 		var max_height = -(self.reel[i][0].height - items.length * image_size[1])
 		if(self.offset[i] < max_height){
@@ -177,10 +199,24 @@ function slot_game(props){
 		self.reel[i].css('transform', 'translate(0px, '+self.offset[i]+'px)')
 	}
 
-	this.spin = function(spin_time){
-		var spin_nr = 0;
+	this.reset = function(){
+		self.running = true;
+		self.state = 0;
+		self.stopped = [];
+		slot_speed = [];
+		for(var i in self.reel){
+			self.stopped.push(false);
+			slot_speed.push(speed)
+		}
+	}
+
+	this.spin = function(){
+		self.reset();
 		dispatch_nr++
-		spin_time = 50;	
+		var same = false;	
+		var result;	
+		var matrix_result;
+		var pos;
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
@@ -190,32 +226,20 @@ function slot_game(props){
 			  window.setTimeout(callback, 1000 / 60);
 			};
 	  	})();
-	  
+
 	  	function spin_slot() {
-			var stop = false;
-			
-			if(spin_nr < spin_time){
-				stop = false;
-				spin_nr++;
-				for(var i in self.reel){
-					self.rotate(i);
-				}
-			} else {
-				stop = true;
-				for(var i in self.reel){
-					if(self.offset[i]%100 !== 0){
-						stop = false;
-						self.rotate(i);
-					}
-				}
-			}
 			
 
-			if(!stop){
+			self.update(self.state);
+			if(self.running){
 				window.requestAnimFrame(spin_slot);
 			} else {
 				window.cancelAnimationFrame(spin_slot);
-				self.win_lose(self.get_results_pos());				
+				result = self.win_lose(self.get_results_pos());
+				same = result[0];
+				matrix_result = result[1];
+				pos = result[2];
+				console.log('result', result)				
 			}
 		}
 
@@ -224,12 +248,52 @@ function slot_game(props){
 		}	
 	}
 
-	this.win_lose = function(results){
-		var win = [];
-		for(var i=0; i<30; i++){
-			win.push(self.check_win(i, results));
+	this.update = function(state){
+		now = new Date();
+		function check_slot() {
+			if ( now - self.lastUpdate > spin_time_reel ) {
+				return true; // done
+			}
+			return false;
 		}
+
+		switch (state) {
+			case 0: // all slots spinning
+				if (now - self.lastUpdate > spin_time) {
+					self.state = 1;
+					self.lastUpdate = now;
+				}
+				break;
+			case 6:
+				self.running = false;
+				break;
+			default: //stop slots one after the other
+				self.stopped[state-1] = check_slot();
+				if (self.stopped[state-1]) {
+					slot_speed[state-1] = 0;
+					self.state++;
+					self.lastUpdate = now;
+				}
+				break;			
+		}
+		for(var i in self.reel){
+			self.rotate(i, slot_speed[i]);
+		}
+		for(var i in self.reel){
+			if(slot_speed[i] == 0){
+				if(self.offset[i]%100 !== 0){
+					self.running = true;
+					self.rotate(i, 10);
+				}
+			}
+		}
+	}
+
+	this.win_lose = function(results){		
 		var win_results = [];
+		var same;
+		var my_matrix = [];
+
 		for(var i=0; i<3;i++){
 			var array = [];
 			for(var j=0; j<results.length; j++){
@@ -239,190 +303,29 @@ function slot_game(props){
 			win_results.push(array)
 		}
 			
-		for(var i in win){
-			var same = true;	
+		for(var i in win){			
 			if(win[i].matrix.length !== 0){
 				var x = win[i].matrix[0][0];
 				var y = win[i].matrix[0][1];
 				var elem = win_results[x][y];
 				for(var j=1; j<win[i].matrix.length; j++){
+					same = true;	
 					x = win[i].matrix[j][0];
 					y = win[i].matrix[j][1];
+					my_matrix = win[i].matrix;
 					if (elem.img !== win_results[x][y].img) {
 						same = false;
-						console.log(same, elem.img, win_results[x][y].img)
+						my_matrix = [];				
+						if(same){
+							break;
+						}
 					}
 				}
-				console.log('aaa', i, same)
+				
 			}
 		}
-	}
-
-	this.check_win = function(x, results){
-		var same = false;	
-		var matrix = [];
-		var t = 0;	
-		var my_prize = prize[x];
-
-		switch (x) {
-			case 0:
-			case 1:
-			case 2:				
-				for(var i=0; i<results.length; i++){
-					matrix.push([x, i]);
-				}
-				break; 
-			case 3:	
-			case 4:				
-				for(var i=0; i<results.length; i++){
-					if(i === 2){
-						t  = Math.round((results[0].length-1) / 2);
-					} else {
-						if(x===3){
-							if(i===3 || i===4){
-								t = results[0].length-1;
-							}
-						} else {
-							t=results[0].length-1;
-							if(i === 3 || i === 4){
-								t=0;
-							}
-						}
-					}					
-					
-					matrix.push([t, i]);
-				}
-				break; 	
-			case 5:	
-			case 6:				
-				for(var i=0; i<results.length; i++){
-					t = 0
-					if(x === 5){
-						if(i%2 !== 0){
-							t = results[0].length-1;
-						}
-					} else {
-						if(i%2 === 0){
-							t = results[0].length-1;
-						}
-					}
-					matrix.push([t, i]);
-				}
-				break; 
-			case 7:	
-			case 8:				
-				for(var i=0; i<results.length; i++){
-					t = 0
-					if(x === 7){
-						if(i%2 !== 0){
-							t  = Math.round((results[0].length-1) / 2);
-						}
-					} else{
-						if(i%2 === 0){
-							t  = Math.round((results[0].length-1) / 2);
-						}
-					}
-					matrix.push([t, i]);
-				}
-				break; 	
-			case 9:	
-			case 10:				
-				for(var i=0; i<results.length; i++){
-					t = 1
-					if(x === 9){
-						if(i%2 !== 0){
-							t = 2;
-						}
-					} else{
-						if(i%2 === 0){
-							t  = 0;
-						}
-					}
-					matrix.push([t, i]);
-				}
-				break; 	
-			case 11:	
-			case 12:	
-				t = (results.length-1)/2+1; //3			
-				for(var i=0; i<results.length; i++){					
-					if(x === 11){
-						if(i <= (results.length-1)/2){
-							t = i;
-						} else {
-							t--;
-						}						
-					} else{
-						if(i > (results.length-1)/2){
-							t++;
-						} else {
-							t--;
-						}
-					}
-					matrix.push([t, i]);
-				}
-				break; 	
-			case 11:	
-			case 12:	
-				t = (results.length-1)/2+1; //3			
-				for(var i=0; i<results.length; i++){					
-					if(x === 11){
-						if(i <= (results.length-1)/2){
-							t = i;
-						} else {
-							t--;
-						}						
-					} else{
-						if(i > (results.length-1)/2){
-							t++;
-						} else {
-							t--;
-						}
-					}
-					matrix.push([t, i]);
-				}
-				break; 	
-			case 13:	
-			case 14:		
-				for(var i=0; i<results.length; i++){
-					t = 1;	
-					if(i === (results.length-1)/2){
-						if(x === 13){
-							t = 0;		
-						} else{
-							t = (results.length-1)/2;	
-						}	
-					}
-					matrix.push([t, i]);
-				}
-				break; 	
-			case 15:	
-			case 16:
-			case 17:
-			case 18:		
-				for(var i=0; i<results.length; i++){					
-					if(x === 15 || x === 16){
-						t = (results.length-1)/2;
-						if(i === (results.length-1)/2){
-							t = 0;
-							if(x === 16){
-								t = 1
-							}
-						}			
-					} else{
-						t = 0;
-						if(i === (results.length-1)/2){
-							t = 1;
-							if(x === 18){
-								t = (results.length-1)/2
-							}
-						}		
-					}
-					
-					matrix.push([t, i]);
-				}
-				break; 	
-		} 
-		return {payable: x, matrix:matrix, prize:my_prize};
+		
+		return [same, my_matrix, results];
 	}
 
 	this.get_results_pos = function(){
@@ -437,6 +340,7 @@ function slot_game(props){
 						if(k > self.images_pos[i].length-1 ){
 							k = 0;
 						}
+						
 						result.push(self.images_pos[i][k]);	
 					}
 					results.push(result);
@@ -453,16 +357,6 @@ function show_results(message){
 	$( ".show_results_container" ).click(function() {
 		$('.show_results_container').hide();
 	});
-}
-
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-		var j = parseInt(Math.random() * i)
-		var tmp = array[i];
-		array[i] = array[j]
-		array[j] = tmp;
-    }
-	return array;
 }
 
 function sort_array(list_element, sort_by) {

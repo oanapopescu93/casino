@@ -38,9 +38,9 @@ router.post('/recovery', function(req, res, next) {
 
 	transport.sendMail(mailOptions, function(error, info){
 		if (error) {
-		  //console.log('error--> ', error);
+		  console.log('error--> ', error);
 		} else {
-		  //console.log('info--> ', info.response);
+		  console.log('info--> ', info.response);
 		}
 	  });
 
