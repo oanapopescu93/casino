@@ -28,6 +28,7 @@ var slot_speed = []; // how many pixels per second slots roll
 var speed = 10;
 var dispatch_nr = 0; //this prevents multiplication
 var my_slot;
+var results_array = [];
 
 var ctx;
 var socket;
@@ -48,7 +49,7 @@ function slot_game(props){
 		
 	this.ready = function(reason){
 		self.fit();
-		var payload = {id: props.user_id, reel:self.reel.length, items:items.length}		
+		var payload = {id: props.user_id, reel:self.reel.length, items:items.length, reason: reason}		
 		socket.emit('slots_send', payload);
 		socket.on('slots_read', function(data){				
 			suffle_array = data[0];
@@ -72,8 +73,9 @@ function slot_game(props){
 			Promise.all(promises).then(function(result){
 				self.images = result;	
 				slots_canvas = [];
-				$('.slot_machine canvas').css('width', image_size[0]);
-				$('.slot_machine canvas').css('height', 2 * items.length * image_size[1]);		
+				$('.slot_machine .slot_canvas').css('width', image_size[0]);
+				$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
+				$('#slot_canvas_results').css('width', image_size[0]*self.reel.length)	
 				for(var i in self.reel){	
 					self.images = self.create_suffle(i, self.images);
 					self.offset.push(0);
@@ -84,14 +86,17 @@ function slot_game(props){
 			});	
 		} else {
 			slots_canvas = [];
-			$('.slot_machine canvas').css('width', image_size[0]);
-			$('.slot_machine canvas').css('height', 2 * items.length * image_size[1]);		
+			$('.slot_machine .slot_canvas').css('width', image_size[0]);
+			$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
+			$('#slot_canvas_results').css('width', image_size[0]*self.reel.length)		
 			for(var i in self.reel){
 				slots_canvas.push(self.reel[i][0]);
 				self.createCanvas(slots_canvas[slots_canvas.length-1]);
 				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images_pos[i], reason);
 			}
 		}
+
+		self.createResultsArray();
 	}
 
 	this.fit = function(){
@@ -239,7 +244,7 @@ function slot_game(props){
 				same = result[0];
 				matrix_result = result[1];
 				pos = result[2];
-				console.log('result', result)				
+				self.drawResultsArray(result);		
 			}
 		}
 
@@ -349,6 +354,20 @@ function slot_game(props){
 		}
 		return results;
 	}
+
+	this.createResultsArray = function(){
+		results_array = [];
+		for(var j=0; j<3; j++){
+			for(var i=0; i<self.reel.length; i++){
+				var elem = {i:i, j:j, x:image_size[0]*i, y:image_size[1]*j};
+				results_array.push(elem)
+			}
+		}
+    }
+
+	this.drawResultsArray = function(result){
+		console.log('results_array', results_array, result)
+    }
 }
 
 function show_results(message){
@@ -422,19 +441,22 @@ function Slot(props) {
 			<div className="slot_machine_container">
 				<div className="slot_machine">
 					<div className="box">
-						<canvas id="slot_canvas1"></canvas>
+						<canvas className="slot_canvas" id="slot_canvas1"></canvas>
 					</div>
 					<div className="box">
-						<canvas id="slot_canvas2"></canvas>
+						<canvas className="slot_canvas" id="slot_canvas2"></canvas>
 					</div>
 					<div className="box">
-						<canvas id="slot_canvas3"></canvas>
+						<canvas className="slot_canvas" id="slot_canvas3"></canvas>
 					</div>
 					<div className="box">
-						<canvas id="slot_canvas4"></canvas>
+						<canvas className="slot_canvas" id="slot_canvas4"></canvas>
 					</div>
 					<div className="box">
-						<canvas id="slot_canvas5"></canvas>
+						<canvas className="slot_canvas" id="slot_canvas5"></canvas>
+					</div>
+					<div className="box_results">
+						<canvas id="slot_canvas_results"></canvas>
 					</div>
 				</div>
 			</div>

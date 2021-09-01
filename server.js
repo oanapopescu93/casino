@@ -47,7 +47,6 @@ var contact_details = constants.CONTACT;
 app.use(routes);
 
 io.on('connection', function(socket) {	
-	//socket.join('room001');
 	socket.on('signin_send', function(data) {	
 		var exists = false;	
 		var obj = {};
@@ -157,12 +156,11 @@ io.on('connection', function(socket) {
 	
 	socket.on('chat_message_send', function(data) {
 		var user_table = data.user_table.split(' ').join('_');
-		var room_name = user_table;
+		var room_name = user_table;		
 		if(typeof data.user_type !== "undefined"){
 			var user_type = data.user_type;	
 			room_name = room_name + '_' + user_type;
 		}
-
 		io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));		
 	});	
 
@@ -409,21 +407,25 @@ io.on('connection', function(socket) {
 		}
 	});
 
+	var array_big = [];	
 	socket.on('slots_send', function(data) {
 		var this_user = data.id;
 		var reel = data.reel;
 		var items = data.items;
-		var array_big = [];	
 		var matrix = [];
+		var reason = data.reason;
 
 		for(var i=0; i<19; i++){
 			matrix.push(slot_matrix(i, [reel, 3]));
 		}
-		for(var i=0; i<reel; i++){
-			var array_small = Array.from(Array(items).keys());
-			array_small = shuffleArray(array_small);
-			array_big.push(array_small)
-		}		
+
+		if(reason != "resize"){
+			for(var i=0; i<reel; i++){
+				var array_small = Array.from(Array(items).keys());
+				array_small = shuffleArray(array_small);
+				array_big.push(array_small)
+			}	
+		}
 			
 		for(var i in sockets){
 		 	if(sockets[i].user_id === this_user){
@@ -436,16 +438,16 @@ io.on('connection', function(socket) {
 		var k = sockets.indexOf(socket); 		
 		if(k !== -1){
 			if(typeof user_join[k].user !== "undefined"){
-				var user_table = user_join[k].user_table.split(' ').join('_');				
-				var room_name = user_table + '_' + user_type;
+				var user_table = user_join[k].user_table.split(' ');		
+				user_table = user_table.join('_');				
+				var room_name = user_table;
+
 				if(typeof user_join[k].user_type !== "undefined"){
 					var user_type = user_join[k].user_type;	
-					room_name = room_name + '_' + user_type;
-				}				
-				//console.log('username2--- ', k, username, room_name, user_join[k]);
+					room_name = room_name + '_' + user_type;				
+				}	
 				
 				io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
-				//io.emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
 				
 				sockets.splice(k, 1);			
 				user_join.splice(user_join.indexOf(k), 1);	

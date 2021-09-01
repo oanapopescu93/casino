@@ -1308,11 +1308,25 @@ table {
 .slot_machine .box:last-child{
 	border-right: 3px solid var(--dark_yellow);
 }
-.slot_machine canvas{
+.slot_machine .slot_canvas{
     position: relative;
     background: white;
 	width: 100%;
     height: 100%;
+}
+.slot_machine .box_results{
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+	width:100%;
+	text-align: center;
+	height: 100%;
+	padding:10px 0px;
+}
+#slot_canvas_results{
+	height: 100%;
 }
 
 .slot_header h1, .slot_header h3{
