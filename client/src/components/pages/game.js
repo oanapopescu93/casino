@@ -66,7 +66,7 @@ class Game extends Component {
 											)	
 										case "slots":
 											return (
-												<Slot lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} socket={this.props.socket} money={this.state.money}></Slot>
+												<Slot lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Slot>
 											)
 										default:
 											return(

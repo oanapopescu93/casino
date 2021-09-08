@@ -23,7 +23,7 @@ function Child(props) {
 	var game = props.game;
 	var socket = props.socket;
 	var lang = props.lang;
-	var contact = props.contact;	
+	var contact = props.contact;
 	return (			
 			<BrowserRouter>
 				<div className="userPage"> 

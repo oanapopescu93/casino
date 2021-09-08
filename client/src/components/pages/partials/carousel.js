@@ -59,6 +59,7 @@ function Carousel(props){
 							var button_id = "button_"+i;
 							switch (item.table_name) {
 								case "roulette":
+								case "slots":
 									return (
 										<div key={i} className="table_inside">
 											<div className="table_box shadow_concav">
@@ -73,7 +74,6 @@ function Carousel(props){
 										</div>
 									)
 								case "blackjack":
-								case "slots":
 									return (
 										<div key={i} className="table_inside">
 											<div className="table_box shadow_concav">

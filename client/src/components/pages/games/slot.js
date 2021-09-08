@@ -29,14 +29,16 @@ var speed = 10;
 var dispatch_nr = 0; //this prevents multiplication
 var my_slot;
 var results_array = [];
+var slot_type = "";
 
 var ctx;
 var socket;
 
-function slot_game(props){
+function slot_game(props, id){
 	var self = this;
-	var lang = props.lang;
-	this.reel = [$('#slot_canvas1'), $('#slot_canvas2'), $('#slot_canvas3'), $('#slot_canvas4'), $('#slot_canvas5')];	
+	var slot_id = "#"+id;
+	this.lang = props.lang;
+	this.reel = [];	
 	this.state = 0;
 	this.images = [];
 	this.images_pos = [];
@@ -46,9 +48,13 @@ function slot_game(props){
 	var win = [];
 	this.lastUpdate = new Date();
 	var now = new Date();
+	slot_type = props.type;	
+	var reason = "";
 		
-	this.ready = function(reason){
+	this.ready = function(r){
+		reason = r;
 		self.fit();
+		self.choose_slot_type();
 		var payload = {id: props.user_id, reel:self.reel.length, items:items.length, reason: reason}		
 		socket.emit('slots_send', payload);
 		socket.on('slots_read', function(data){				
@@ -56,6 +62,31 @@ function slot_game(props){
 			win = data[1];
 			self.start(reason);
 		});
+	}
+
+	this.choose_slot_type = function(){
+		switch(slot_type) {
+			case 'type1':
+				self.reel = self.get_reel(5);
+			  break;
+			case 'type2':
+				self.reel = self.get_reel(3);
+			  break;
+		  }
+		
+	}
+
+	this.get_reel = function(t){
+		var reel = [];
+		if(reason != "resize"){
+			for(var i=0; i<t; i++){
+				$(slot_id+' .slot_machine').append('<div class="box"><canvas class="slot_canvas" id="slot_canvas'+i+'"></canvas></div>');
+			}
+			$(slot_id+' .slot_canvas').each(function(x, y){
+				reel.push($(this))
+			});
+		}
+		return reel;
 	}
 
 	this.start = function(reason){
@@ -419,7 +450,7 @@ function sort_array(list_element, sort_by) {
 function Slot(props) {	
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'slots')		
-		my_slot = new slot_game(props);
+		my_slot = new slot_game(props, "slot_machine111");
 		my_slot.ready();		
 		$(window).resize(function(){
 			my_slot.ready("resize");	
@@ -430,7 +461,7 @@ function Slot(props) {
 	var lang = props.lang;
 	var money = props.money;	
 	return (
-		<>
+		<div id="slot_machine111">
 			<p>Still under construction.</p>
 			<div className="slot_header_container">
 				<div className="slot_header">
@@ -440,7 +471,7 @@ function Slot(props) {
 			</div>
 			<div className="slot_machine_container">
 				<div className="slot_machine">
-					<div className="box">
+					{/* <div className="box">
 						<canvas className="slot_canvas" id="slot_canvas1"></canvas>
 					</div>
 					<div className="box">
@@ -457,7 +488,7 @@ function Slot(props) {
 					</div>
 					<div className="box_results">
 						<canvas id="slot_canvas_results"></canvas>
-					</div>
+					</div> */}
 				</div>
 			</div>
 			<div className="slot_buttons_container">
@@ -483,7 +514,7 @@ function Slot(props) {
 					<p></p>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
 
