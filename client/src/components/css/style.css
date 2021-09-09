@@ -1,8 +1,8 @@
 :root {
-	--yellow: yellow;
+	--yellow: gold;	
+	--dark_yellow:#b39800;
+	--light_yellow:yellow;
 	--green: green;
-	--dark_yellow:#ccad00;
-	--gold: gold;
   }
 
 html{
@@ -396,7 +396,9 @@ a, a:hover, a:focus, a:active{
 
 textarea, input{
     outline: none!important;
-	box-shadow:none!important;	
+	-moz-box-shadow:    none!important;
+   	-webkit-box-shadow: none!important;
+   	box-shadow:         none!important;
 }
 
 input:-internal-autofill-selected {
@@ -417,7 +419,9 @@ input:-internal-autofill-selected {
     background: transparent;
     border: solid 1px var(--yellow);
 	outline: none!important;
-	box-shadow:none!important;
+	-moz-box-shadow:    none!important;
+   	-webkit-box-shadow: none!important;
+   	box-shadow:         none!important;
 }
 .button_yellow[finished~="no"]{
 	border: solid 1px rgba(255, 255, 0, 0.2);
@@ -438,7 +442,9 @@ input:-internal-autofill-selected {
     background: transparent;
     border: solid 1px var(--yellow);
 	outline: none!important;
-	box-shadow:none!important;
+	-moz-box-shadow:    none!important;
+   	-webkit-box-shadow: none!important;
+   	box-shadow:         none!important;
 	/* -moz-box-shadow:    4px 4px 8px 2px rgba(0,0,0,0.7)!important;
    	-webkit-box-shadow: 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
    	box-shadow:         4px 4px 8px 2px rgba(0,0,0,0.7)!important; */
@@ -459,7 +465,9 @@ input:-internal-autofill-selected {
     background: rgba(0, 0, 0, 0.2);
     border: solid 1px black;
 	outline: none!important;
-	box-shadow:none!important;
+	-moz-box-shadow:    none!important;
+   	-webkit-box-shadow: none!important;
+   	box-shadow:         none!important;
 }
 .button_green:hover, .button_green:focus, .button_green:active, .button_green:active:focus{
     background: rgba(0, 0, 0, 0.2);
@@ -546,7 +554,9 @@ table {
     background: rgba(0, 0, 0, 0.2);
     border: solid 1px var(--yellow);
     outline: none!important;
-    box-shadow: none!important;
+	-moz-box-shadow:    none!important;
+   	-webkit-box-shadow: none!important;
+   	box-shadow:         none!important;
 	padding: 6px 4px;
 }
 
@@ -928,7 +938,9 @@ table {
 }
 .casino_modal .modal-content{
 	background:var(--yellow);
-	box-shadow: none;
+	-moz-box-shadow:    none;
+   	-webkit-box-shadow: none;
+   	box-shadow:         none;
 	border: none;
 }
 .casino_modal .modal-header{
@@ -963,9 +975,9 @@ table {
 
 #crop_language_container{
 	position: fixed;
-	z-index: 1;
-	top:5px;
-	right:5px;
+	z-index: 9999;
+	top:10px;
+	left:5px;
 }
 .crop_vegetables_box {
 	display:inline-block;
@@ -973,9 +985,13 @@ table {
 	vertical-align: middle;
 }
 .crop_language_box {
-	display:inline-block;
-	vertical-align: middle;
-	cursor: pointer;
+	display: inline;
+    cursor: pointer;
+    padding: 0px 10px;
+    border-right: solid 1px var(--yellow);
+}
+.crop_language_box:last-child{
+	border-right:none;
 }
 .crop_vegetables{
 	width: 40px;
@@ -1056,6 +1072,8 @@ table {
 	position: absolute;
 	background-color: black;
 	min-width: 100%;
+	-moz-box-shadow:    0px 8px 16px 0px rgba(0,0,0,0.2);
+   -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
 	height:auto;
@@ -1270,40 +1288,43 @@ table {
 
 .slot_header{
 	display: inline-block;
-	max-width: 350px;
+	max-width: 320px;
 	width: 100%;
 	padding:10px;
-	background-color: #ccad00;
+	background-color: var(--dark_yellow);
 	border-radius:5px 5px 0px 0px;
 	border-top:solid 0px var(--yellow);
 	border-right:solid 2px var(--yellow);
 	border-bottom:solid 0px var(--yellow);
 	border-left:solid 2px var(--yellow);
 	margin-bottom:-5px;
+	-moz-box-shadow:    2px 2px 8px 8px rgb(0 0 0 / 50%);
+   -webkit-box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 }
 .slot_machine{
 	display: inline-block;
     position: relative;
-	max-width: 600px;
+	max-width: 520px;
 	width:100%;
-	height: 300px;
+	height: 320px;
     text-align: center;
     background: #000;
     border: 10px solid;
-    border-color: #ccad00 var(--yellow);
+    border-color: var(--dark_yellow) var(--yellow);
     border-radius: 5px;
-	padding:10px 20px;
+	-moz-box-shadow:    2px 2px 8px 8px rgb(0 0 0 / 50%);
+   -webkit-box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
-	box-sizing: content-box;
 }
 .slot_machine .box{
     overflow: hidden;
 	display:inline-block;
 	width:100px;
 	height: 300px;
-	border: 3px solid var(--dark_yellow);
-	border-right: 0px solid transparent;
+	border: 3px solid;
+    border-color: var(--dark_yellow) var(--yellow) var(--dark_yellow) var(--dark_yellow);
+	/* border-right: 0px solid transparent; */
 }
 .slot_machine .box:last-child{
 	border-right: 3px solid var(--dark_yellow);
@@ -1330,8 +1351,20 @@ table {
 }
 
 .slot_header h1, .slot_header h3{
-    color: var(--yellow);
+    color: var(--light_yellow);
     text-shadow: rgb(0 0 0 / 50%) 3px 3px 3px;
+}
+.slot_buttons_box{
+	height:52px;
+	display:table;
+}
+.slot_buttons_box .slot_buttons_box_cell{
+	display:table-cell;
+	vertical-align: middle;
+}
+.slot_buttons_box .slot_buttons_box_text{
+	color: var(--light_yellow);
+	text-shadow: rgb(0 0 0 / 50%) 3px 3px 3px;	
 }
 .slot_buttons_container{
 	margin-top:10px;
@@ -1341,7 +1374,7 @@ table {
 	display: inline-block;
     position: relative;
 	width: 100%;
-	max-width:600px;
+	max-width:520px;
     text-align: center;
 	border-top:solid 0px var(--yellow);
 	border-right:solid 2px var(--yellow);
@@ -1349,16 +1382,21 @@ table {
 	border-left:solid 2px var(--yellow);
     border-radius: 5px;
 	padding:10px 20px;
+	-moz-box-shadow:    2px 2px 8px 8px rgb(0 0 0 / 50%);
+   	-webkit-box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 	color:black;
 }
 .slot_input{
-	background: black;
+	background: rgba(0,0,0,0.5);
 	color:var(--yellow);
 	width:100%;
 	padding:5px 10px;
 	border:solid 1px var(--yellow);
 	border-radius:5px;
+	-moz-box-shadow:    inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+   	-webkit-box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+	box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
 }
 .slot_spin_container{
 	text-align: right;
@@ -1371,7 +1409,7 @@ table {
 
 .slot_spin{
 	color: black;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.5);
     border: solid 1px black;
 	outline: none!important;
 }
@@ -1428,6 +1466,16 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.slot_buttons_box{
+		display:block;
+		height:auto;
+	}
+	.slot_buttons_box .slot_buttons_box_cell{
+		display:block;
+	}
+	.slot_header{
+		max-width: 200px;
+	}
 	#support_form{
 		width: 100%;
 		position: static;
@@ -1445,8 +1493,14 @@ table {
 		height:150px;
 	}
 	.slot_machine{
-		padding:10px 0px;
-		height: 150px;
+		height: 170px;
+		max-width: 270px;
+	}
+	.slot_buttons{
+		max-width: 270px;
+	}
+	#slot_spin{
+		margin-top:10px;
 	}
 	.slot_spin_container{
 		text-align: center;

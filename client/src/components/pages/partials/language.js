@@ -1,5 +1,4 @@
 import React from 'react';
-import lang_sprite from '../../img/languages/lang.png';
 
 var self;
 class Language extends React.Component {
@@ -40,15 +39,11 @@ class Language extends React.Component {
     render(){
         return (
             <div id="crop_language_container">
-                <div className="crop_language_box" onClick={()=>self.click_lang('eng')}>
-                    <div className="crop_language">
-                        <img alt="language" className="language lang_eng" src={lang_sprite}></img>
-                    </div>
+                <div className="crop_language_box color_yellow" onClick={()=>self.click_lang('eng')}>
+                    <span>ENG</span>
                 </div>
-                <div className="crop_language_box" onClick={()=>self.click_lang('ro')}>
-                    <div className="crop_language">
-                        <img alt="language" className="language lang_ro" src={lang_sprite}></img>
-                    </div>
+                <div className="crop_language_box color_yellow" onClick={()=>self.click_lang('ro')}>
+                    <span>RO</span>
                 </div>                
             </div>
         );

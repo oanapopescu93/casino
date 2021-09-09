@@ -79,12 +79,14 @@ function slot_game(props, id){
 	this.get_reel = function(t){
 		var reel = [];
 		if(reason != "resize"){
-			for(var i=0; i<t; i++){
-				$(slot_id+' .slot_machine').append('<div class="box"><canvas class="slot_canvas" id="slot_canvas'+i+'"></canvas></div>');
+			if($(slot_id+' .slot_machine .box').length == 0){
+				for(var i=0; i<t; i++){
+					$(slot_id+' .slot_machine').append('<div class="box"><canvas class="slot_canvas" id="slot_canvas'+i+'"></canvas></div>');
+				}
+				$(slot_id+' .slot_canvas').each(function(x, y){
+					reel.push($(this))
+				});
 			}
-			$(slot_id+' .slot_canvas').each(function(x, y){
-				reel.push($(this))
-			});
 		}
 		return reel;
 	}
@@ -325,63 +327,52 @@ function slot_game(props, id){
 		}
 	}
 
-	this.win_lose = function(results){		
-		var win_results = [];
-		var same;
+	this.win_lose = function(results){
+		var same = true;
 		var my_matrix = [];
+		var win_results = [];
 
-		for(var i=0; i<3;i++){
-			var array = [];
-			for(var j=0; j<results.length; j++){
-				var obj = {i:i, j:j, img:results[j][i].img.id}
-				array.push(obj)
-			}
-			win_results.push(array)
-		}
-			
 		for(var i in win){			
-			if(win[i].matrix.length !== 0){
-				var x = win[i].matrix[0][0];
-				var y = win[i].matrix[0][1];
-				var elem = win_results[x][y];
-				for(var j=1; j<win[i].matrix.length; j++){
-					same = true;	
-					x = win[i].matrix[j][0];
-					y = win[i].matrix[j][1];
+			//if(i == 0){
+				if(win[i].matrix.length !== 0){
 					my_matrix = win[i].matrix;
-					if (elem.img !== win_results[x][y].img) {
-						same = false;
-						my_matrix = [];				
-						if(same){
+					same = true;
+					for(var j=0; j<my_matrix.length-1; j++){
+						var x1 = my_matrix[j][0];
+						var y1 = my_matrix[j][1];
+						var x2 = my_matrix[j+1][0];
+						var y2 = my_matrix[j+1][1];						
+						if(results[x1][y1].img.id === results[x2][y2].img.id || results[x1][y1].img.id === "carrot" || results[x2][y2].img.id === "carrot"){
+							//console.log('aaa01', results[x1][y1].img.id === results[x2][y2].img.id, results[x1][y1].img.id === "carrot", results[x2][y2].img.id === "carrot")
+						} else {
+							same = false;
+							//console.log('aaa02', results[x1][y1].img.id === results[x2][y2].img.id, results[x1][y1].img.id === "carrot", results[x2][y2].img.id === "carrot")
 							break;
 						}
 					}
+					if(same){
+						win_results.push(my_matrix)
+					}
 				}
-				
-			}
+			//}
 		}
 		
-		return [same, my_matrix, results];
+		return [same, win_results, results];
 	}
 
 	this.get_results_pos = function(){
 		var results = [];
-		for(var i in self.reel){
-			for(var j in self.images_pos[i]){
-				if(self.images_pos[i][j].pos === -self.offset[i]){
-					var k = j-1;
-					var result = [];
-					for(var t=0; t<3; t++){	
-						k++;
-						if(k > self.images_pos[i].length-1 ){
-							k = 0;
-						}
-						
-						result.push(self.images_pos[i][k]);	
+		var result_offset = self.offset
+		for(var t=0; t<3; t++){
+			var result = [];
+			for(var i in result_offset){
+				for(var j in self.images_pos[i]){
+					if(self.images_pos[i][j].pos === -result_offset[i]){
+						result.push(self.images_pos[i][j]);	
 					}
-					results.push(result);
 				}
 			}
+			results.push(result);
 		}
 		return results;
 	}
@@ -470,36 +461,22 @@ function Slot(props) {
 				</div>
 			</div>
 			<div className="slot_machine_container">
-				<div className="slot_machine">
-					{/* <div className="box">
-						<canvas className="slot_canvas" id="slot_canvas1"></canvas>
-					</div>
-					<div className="box">
-						<canvas className="slot_canvas" id="slot_canvas2"></canvas>
-					</div>
-					<div className="box">
-						<canvas className="slot_canvas" id="slot_canvas3"></canvas>
-					</div>
-					<div className="box">
-						<canvas className="slot_canvas" id="slot_canvas4"></canvas>
-					</div>
-					<div className="box">
-						<canvas className="slot_canvas" id="slot_canvas5"></canvas>
-					</div>
-					<div className="box_results">
-						<canvas id="slot_canvas_results"></canvas>
-					</div> */}
-				</div>
+				<div className="slot_machine"></div>
 			</div>
 			<div className="slot_buttons_container">
 				<div className="slot_buttons">
 					<Row>
-						<Col sm={5}>
-							<p>Carrots</p>
-							<input className="slot_input" type="number" id="slot_balance" min="1" defaultValue={money} max="5000"></input>
+						<Col className="slot_buttons_box" sm={5}>
+							{lang === "ro" ? 
+								<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{money} morcovi</span></p> : 
+								<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{money} carrots</span></p>
+							}
 						</Col>
-						<Col sm={5}>
-							<p>BET</p>
+						<Col className="slot_buttons_box" sm={5}>
+							{lang === "ro" ? 
+								<p className="slot_buttons_box_text">PARIAZA</p> : 
+								<p className="slot_buttons_box_text">BET</p>
+							}
 							<input className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max="3"></input>
 						</Col>
 						<Col sm={2} className="slot_spin_container">

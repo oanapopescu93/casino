@@ -1,25 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.f17a2663.chunk.css",
-    "main.js": "/static/js/main.c98a9fe8.chunk.js",
-    "main.js.map": "/static/js/main.c98a9fe8.chunk.js.map",
+    "main.css": "/static/css/main.6179c9b9.chunk.css",
+    "main.js": "/static/js/main.9874eebc.chunk.js",
+    "main.js.map": "/static/js/main.9874eebc.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.83c3e0c4.js",
     "runtime-main.js.map": "/static/js/runtime-main.83c3e0c4.js.map",
     "static/css/2.4fd09901.chunk.css": "/static/css/2.4fd09901.chunk.css",
-    "static/js/2.012c9503.chunk.js": "/static/js/2.012c9503.chunk.js",
-    "static/js/2.012c9503.chunk.js.map": "/static/js/2.012c9503.chunk.js.map",
+    "static/js/2.b2ae345c.chunk.js": "/static/js/2.b2ae345c.chunk.js",
+    "static/js/2.b2ae345c.chunk.js.map": "/static/js/2.b2ae345c.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.f97c7cf91c7a7d6f94cf83ba173284c2.js": "/precache-manifest.f97c7cf91c7a7d6f94cf83ba173284c2.js",
+    "precache-manifest.df97471cad5196a4452817cc66efabd3.js": "/precache-manifest.df97471cad5196a4452817cc66efabd3.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.4fd09901.chunk.css.map": "/static/css/2.4fd09901.chunk.css.map",
-    "static/css/main.f17a2663.chunk.css.map": "/static/css/main.f17a2663.chunk.css.map",
-    "static/js/2.012c9503.chunk.js.LICENSE.txt": "/static/js/2.012c9503.chunk.js.LICENSE.txt",
+    "static/css/main.6179c9b9.chunk.css.map": "/static/css/main.6179c9b9.chunk.css.map",
+    "static/js/2.b2ae345c.chunk.js.LICENSE.txt": "/static/js/2.b2ae345c.chunk.js.LICENSE.txt",
     "static/media/style.css": "/static/media/bg00a.572bbe97.jpg",
     "static/media/bitcoin-love-heart.896a7116.svg": "/static/media/bitcoin-love-heart.896a7116.svg",
     "static/media/carrot_icon.png": "/static/media/carrot_icon.269bad3c.png",
     "static/media/img_cards.png": "/static/media/img_cards.51cacaf2.png",
     "static/media/inventory_icon.png": "/static/media/inventory_icon.5c7b84a7.png",
-    "static/media/lang.png": "/static/media/lang.c6412e5c.png",
     "static/media/rabbit_run.gif": "/static/media/rabbit_run.c1ab81a7.gif",
     "static/media/rabbit_stand_left.png": "/static/media/rabbit_stand_left.aad7218e.png",
     "static/media/rabbit_stand_right.png": "/static/media/rabbit_stand_right.dd8ca881.png",
@@ -30,8 +29,8 @@
   "entrypoints": [
     "static/js/runtime-main.83c3e0c4.js",
     "static/css/2.4fd09901.chunk.css",
-    "static/js/2.012c9503.chunk.js",
-    "static/css/main.f17a2663.chunk.css",
-    "static/js/main.c98a9fe8.chunk.js"
+    "static/js/2.b2ae345c.chunk.js",
+    "static/css/main.6179c9b9.chunk.css",
+    "static/js/main.9874eebc.chunk.js"
   ]
 }
