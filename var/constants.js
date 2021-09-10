@@ -28,7 +28,7 @@ module.exports = Object.freeze({
     ],
     SLOT_PRIZE: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129],
     CRYPTO: [
-        {type: "Bitcoin", text: "bc1qf2hs6gr630fdftrcs3ynqhxt7qzkl7w32kwtph", link: "bitcoin:bc1qf2hs6gr630fdftrcs3ynqhxt7qzkl7w32kwtph"},
+        {type: "Bitcoin", text: "bc1quttj9jakgf44e5emd7cvmeg7t80zamj7gy2dda", link: "bitcoin:bc1quttj9jakgf44e5emd7cvmeg7t80zamj7gy2dda"},
     ],
     CONTACT: {
         address: "-",
