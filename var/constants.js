@@ -3,6 +3,7 @@ module.exports = Object.freeze({
     AUTH_USER: "09f009efe7b9ae",
     AUTH_PASS: "cd1233a2d8d6a7",
     AUTH_FROM: "oanapopescu93@gmail.com",
+
     SERVER_TABLES: [
         {table_id: '001', table_name: "roulette", table_type: "european"},
         {table_id: '002', table_name: "roulette", table_type: "american"},
@@ -27,6 +28,15 @@ module.exports = Object.freeze({
         {id: "cabbage", name: "cabbage", value:"10 carrots", price:10, quantity: 1},
     ],
     SLOT_PRIZE: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129],
+    SERVER_RABBITS: [
+        {id: 1, name: "Rabbit01", color: "red"},
+        {id: 2, name: "Rabbit02", color: "orange"},
+        {id: 3, name: "Rabbit03", color: "yellow"},
+        {id: 4, name: "Rabbit04", color: "green"},
+        {id: 5, name: "Rabbit05", color: "blue"},
+        {id: 6, name: "Rabbit06", color: "purple"},
+    ],
+    
     CRYPTO: [
         {type: "Bitcoin", text: "bc1quttj9jakgf44e5emd7cvmeg7t80zamj7gy2dda", link: "bitcoin:bc1quttj9jakgf44e5emd7cvmeg7t80zamj7gy2dda"},
     ],

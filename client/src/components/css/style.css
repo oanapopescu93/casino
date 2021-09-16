@@ -353,7 +353,10 @@ textarea {
 	padding: 10px 0px;
 }
 
-#salon.full-height, #roulette.full-height, #user_account.full-height{
+#salon.full-height, 
+#roulette.full-height, 
+#user_account.full-heigh, 
+#race.full-height{
     position: relative;
 	display:block;
 	top:0px;
@@ -363,9 +366,9 @@ textarea {
     height: 100%;
     width: 100%;
 }
-#salon.full-height {
+/* #salon.full-height {
     height: 100%;
-}
+} */
 #roulette.full-height {
     height: auto;
 }
@@ -377,9 +380,15 @@ textarea {
     transform: translate(0px, -50%);
 	display: block;
 }
-#roulette .full-height-content, #user_account .full-height-content{
+#roulette .full-height-content, 
+#user_account .full-height-content,
+#race .full-height-content{
 	padding: 10px 0px;	
 	display: block;
+}
+
+#race .salon_page{
+	padding:0px;
 }
 
 a, a:hover, a:focus, a:active{
@@ -1453,7 +1462,165 @@ table {
 	font-size: 14px;
 }
 
+.race_table_header{
+	padding:5px 10px;
+	border:solid 1px var(--yellow);
+	border-radius:50px;
+	color:var(--yellow);
+}
+.race_table_body_container{
+	padding:0px 12px;
+}
+.race_table_body{
+	border:solid 1px var(--yellow);
+	border-top:none;
+	border-radius:0px 0px 10px 10px;
+	padding:10px;
+}
+.race_table_body > div{
+	height:490px;
+	overflow-y: auto;
+}
+.rabbit_box_container{
+	padding:10px;
+	border-bottom:solid 1px var(--yellow);
+}
+.rabbit_box_container:last-child{
+	border-bottom:none;
+}
+.rabbit_box{
+	display:inline-block;
+	width:50%;
+	padding:10px;
+}
+.rabbit_box_info, .rabbit_box_input{
+	display:inline-block;
+	width:50%;
+	padding:10px;
+	position: relative;
+	z-index:1;
+	min-height:120px;
+	vertical-align: top;
+}
+.rabbit_box_name{
+	position: absolute;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	padding:5px;
+	background-color: var(--yellow);
+	color:black;
+	border-radius:50px;
+}
+.rabbit_box_nr{
+	position: absolute;
+	top:10px;
+	left:15px;
+	border:solid 1px white;
+	padding:4px;
+	border-radius:100px;
+	width:30px;
+	height:30px;
+	color:white;
+	text-align: center;
+}
+.rabbit_box_nr.red{
+	background-color: red;
+}
+.rabbit_box_nr.orange{
+	background-color: orange;
+	color:black;
+}
+.rabbit_box_nr.yellow{
+	background-color: yellow;
+	color:black;
+}
+.rabbit_box_nr.green{
+	background-color: green;
+}
+.rabbit_box_nr.blue{
+	background-color: blue;
+}
+.rabbit_box_nr.purple{
+	background-color: purple;
+}
+.rabbit_box_info img{
+	height:100px;
+	border-radius:100px;
+	border:solid 1px var(--yellow);
+}
+.rabbit_box_input > div span{
+	border:solid 1px var(--yellow);
+	padding:4px;
+	border-radius:100px;
+	width:30px;
+	height:30px;
+	color:var(--yellow);
+	display: inline-block;
+	cursor: pointer;
+}
+.race_input{
+	color:var(--yellow);
+	width:40px;
+	padding:5px 10px;
+	border:solid 1px var(--yellow);
+	border-radius:5px;
+	-moz-box-shadow:    inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+   	-webkit-box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+	box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+	background-color: transparent;
+	height: 25px;
+	margin:0px 5px;
+}
+.race_bets_container{
+	margin: 40px 0px;
+    border: solid 1px var(--yellow);
+    border-radius: 50px;
+    padding: 5px 10px;
+    position: relative;
+    z-index: 1;
+}
+#race_clear_bets{
+	position: absolute;
+	z-index:1;
+	width:50px;
+	height:50px;
+	border:solid 1px var(--yellow);
+	background-color: var(--yellow);
+	color:black;
+	padding: 10px;
+	border-radius: 100px;
+	top:-70px;
+	left:50%;
+	transform: translate(-50%, 0%);
+	font-size: 14px;
+    line-height: 14px;
+	cursor: pointer;
+}
+#race_start{
+	position: absolute;
+	z-index:1;
+	width:50px;
+	height:50px;
+	border:solid 1px var(--yellow);
+	background-color: var(--yellow);
+	color:black;
+	padding: 16px 8px;
+	border-radius: 100px;
+	font-size: 14px;
+    line-height: 14px;
+	right: 25px;
+    top: -10px;
+	cursor: pointer;
+}
+
 /* media */
+@media (max-width: 1024px){
+	.rabbit_box_info, .rabbit_box_input{
+		width:100%;
+		min-height:auto;
+	}
+}
 @media (max-width: 960px){
 	.casino_games_title_container{
 		margin-bottom: -15px;
@@ -1662,6 +1829,9 @@ table {
 	}
 }
 @media (max-width:600px) {
+	.rabbit_box{
+		width:100%;
+	}
 	.cookies_msg {
 		flex-direction: column;
 	}

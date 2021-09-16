@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 import SalonGames from './games/salon_games'
-import Sports from './games/sports'
+import Race from './games/race'
 import Sapou from './partials/sapou';
 
 import About from './other_pages/about';
@@ -108,7 +108,7 @@ class Salon extends Component {
 			empty: false,
 			casino_games: '',
 			user: '',
-			sports: false,
+			race: false,
 	  	};		
 		self.handleBack = self.handleBack.bind(self);
 		self.handleChange = self.handleChange.bind(self);
@@ -208,9 +208,9 @@ class Salon extends Component {
 
 	handleChange(type){
 		if(type === "games"){			
-			this.setState({ sports: false })
-		} else if(type === "sports"){
-			this.setState({ sports: true })
+			this.setState({ race: false })
+		} else if(type === "race"){
+			this.setState({ race: true })
 		}
 	}
   
@@ -218,7 +218,7 @@ class Salon extends Component {
 		$('.full-height').attr('id', 'salon');
 		var lang = self.props.lang;
 		return (
-			<div>
+			<>
 				{self.state.empty ? (
 					<div className="color_yellow">
 						{lang === "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
@@ -251,14 +251,14 @@ class Salon extends Component {
 										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{self.handleChange('games')}}>
 											{lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
 										</div>            
-										<div id="salon_buton_sports" className="salon_button shadow_convex" onClick={()=>{self.handleChange('sports')}}>
-											{lang === "ro" ? <span>Sport</span> : <span>Sport</span>}	
+										<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{self.handleChange('race')}}>
+											{lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
 										</div>
 									</div>
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
-									{self.state.sports ? (
-										<Sports lang={lang} socket={self.state.socket} user={self.state.user}></Sports>									
+									{self.state.race ? (
+										<Race lang={lang} socket={self.state.socket} user={self.state.user}></Race>									
 									) : (
 										<Child contact={self.props.contact} lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></Child>
 									)}											
@@ -267,7 +267,7 @@ class Salon extends Component {
 						)}			
 					</Row>
 				)}
-			</div>
+			</>
 		);		
 	}
 }

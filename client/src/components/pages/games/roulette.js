@@ -85,7 +85,6 @@ function roulette_game(props){
 		self.choose_roulette_type();
 
 		socket.on('roulette_spin_read', function(data){	
-			console.log('roulette_click000')
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				spin_time = data.spin_time;
 				ball.speed = data.ball_speed;				

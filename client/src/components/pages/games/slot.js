@@ -477,7 +477,7 @@ function Slot(props) {
 								<p className="slot_buttons_box_text">PARIAZA</p> : 
 								<p className="slot_buttons_box_text">BET</p>
 							}
-							<input className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max="3"></input>
+							<input className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max={money}></input>
 						</Col>
 						<Col sm={2} className="slot_spin_container">
 							<button className="slot_spin shadow_convex" id="slot_spin">SPIN</button>

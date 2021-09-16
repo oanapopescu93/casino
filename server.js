@@ -41,6 +41,7 @@ var slot_prize = constants.SLOT_PRIZE;
 
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
+var rabbit_race = constants.SERVER_RABBITS;
 var crypto = constants.CRYPTO;
 var contact_details = constants.CONTACT;
 
@@ -89,18 +90,6 @@ io.on('connection', function(socket) {
 
 	socket.on('salon_send', function(data) {
 		io.emit('salon_read', {server_tables: server_tables, server_user: user });
-	});
-
-	socket.on('sports_send', function(data) {
-		var url = "https://www.unibet.ro/betting/sports/filter/football/matches"
-		request({
-			method: 'GET',
-			url: url,
-		}, (err, res, body) => {		
-			if (err) return console.error('error', err);	
-			io.emit('sports_read', res);
-			io.emit('sports_read', body);
-		});
 	});
 
 	socket.on('logout_send', function(data) {	
@@ -433,6 +422,22 @@ io.on('connection', function(socket) {
 		 	} 
 		}
 	})
+
+	socket.on('race_send', function(data) {
+		var id = data.id;
+		var money = 0;
+		var race_user = data.user;
+		if(id != -1){
+		 	for(var i in users_json){	
+				if(id === users_json[i].id){
+					money = users_json[i].money;
+					break;
+				}
+		 	}
+		}
+		var server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
+		io.to(socket.id).emit('race_read', server_user);
+	});
 
 	socket.on('disconnect', function(username) {		
 		var k = sockets.indexOf(socket); 		
