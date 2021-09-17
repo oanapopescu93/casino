@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col'
 import {connect} from 'react-redux'
 import item_image from '../../img/icons/vegetables_color.png'
 
-var canvas_width = 200;
 var canvas_height = 800;
 
 var items = [
@@ -68,18 +67,20 @@ function slot_game(props, id){
 		switch(slot_type) {
 			case 'type1':
 				self.reel = self.get_reel(5);
-			  break;
+			  	break;
 			case 'type2':
 				self.reel = self.get_reel(3);
-			  break;
+			  	break;
+			default: 
+				self.reel = self.get_reel(5);
 		  }
 		
 	}
 
 	this.get_reel = function(t){
 		var reel = [];
-		if(reason != "resize"){
-			if($(slot_id+' .slot_machine .box').length == 0){
+		if(reason !== "resize"){
+			if($(slot_id+' .slot_machine .box').length === 0){
 				for(var i=0; i<t; i++){
 					$(slot_id+' .slot_machine').append('<div class="box"><canvas class="slot_canvas" id="slot_canvas'+i+'"></canvas></div>');
 				}
@@ -97,7 +98,7 @@ function slot_game(props, id){
 			self.spin(spin_time, slot_speed);
 		})
 
-		if(reason != "resize"){
+		if(reason !== "resize"){
 			var promises = [];
 			for(var i in items){				
 				promises.push(self.preaload_images(items[i]));
@@ -176,7 +177,6 @@ function slot_game(props, id){
 		canvas.width = image_size[0];
 		canvas.height = 2 * items.length * image_size[1];
 
-		canvas_width = canvas.width;
 		canvas_height = canvas.height;		
 		canvas.height = canvas_height;
     }
@@ -208,7 +208,7 @@ function slot_game(props, id){
 
 			var elem = {i:i, img:img, pos:i * canvas.width}
 			array.push(elem)	
-			var elem = {i:i + length, img:img, pos:(i + length) * canvas.width}
+			elem = {i:i + length, img:img, pos:(i + length) * canvas.width}
 			array.push(elem)		
 		}
 
@@ -223,7 +223,7 @@ function slot_game(props, id){
 		// height - Optional. The height of the image to use (stretch or reduce the image)
 
 		array = sort_array(array, "i");
-		if(reason != "resize"){
+		if(reason !== "resize"){
 			self.images_pos.push(array)
 		}		
 	}
@@ -318,7 +318,7 @@ function slot_game(props, id){
 			self.rotate(i, slot_speed[i]);
 		}
 		for(var i in self.reel){
-			if(slot_speed[i] == 0){
+			if(slot_speed[i] === 0){
 				if(self.offset[i]%100 !== 0){
 					self.running = true;
 					self.rotate(i, 10);
@@ -404,15 +404,17 @@ function sort_array(list_element, sort_by) {
 	if(typeof sort_by == "undefined"){
 		sort_by = ""
 	}
+	var tmp;
+	var done = false;
 	switch (sort_by) {
 		case "i":
-			var done = false;
+			done = false;
 			while (!done) {
 				done = true;
 				for (var i = 1; i < list_element.length; i += 1) {
 					if (list_element[i - 1].i > list_element[i].i) {
 						done = false;
-						var tmp = list_element[i - 1];
+						tmp = list_element[i - 1];
 						list_element[i - 1] = list_element[i];
 						list_element[i] = tmp;
 					} 
@@ -420,13 +422,13 @@ function sort_array(list_element, sort_by) {
 			}
 		  break;            
 		  case "":
-			var done = false;
+			done = false;
 			while (!done) {
 				done = true;
 				for (var i = 1; i < list_element.length; i += 1) {
 					if (parseFloat(list_element[i - 1]) > parseFloat(list_element[i])) {
 						done = false;
-						var tmp = list_element[i - 1];
+						tmp = list_element[i - 1];
 						list_element[i - 1] = list_element[i];
 						list_element[i] = tmp;
 					}

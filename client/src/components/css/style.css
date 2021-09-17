@@ -3,6 +3,7 @@
 	--dark_yellow:#b39800;
 	--light_yellow:yellow;
 	--green: green;
+	--transparent_yellow: rgba(255, 215, 0, 0.2);
   }
 
 html{
@@ -144,7 +145,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
   #myBar {
 	width: 0%;
 	height: 8px;
-	background-color: rgba(255, 255, 0, 0.2);;
+	background-color: var(--transparent_yellow);
 	line-height: 8px;
 	border-radius:50px;
   }
@@ -433,18 +434,18 @@ input:-internal-autofill-selected {
    	box-shadow:         none!important;
 }
 .button_yellow[finished~="no"]{
-	border: solid 1px rgba(255, 255, 0, 0.2);
-	color: rgba(255, 255, 0, 0.2);
+	border: solid 1px var(--transparent_yellow);
+	color: var(--transparent_yellow);
 }
 .button_yellow:hover, .button_yellow:focus, .button_yellow:active, .button_yellow:active:focus{
-    background: rgba(255, 255, 0, 0.2);
+    background: var(--transparent_yellow);
 	color: var(--yellow);
 	border: solid 1px var(--yellow);
 }
 .button_yellow[finished~="no"]:hover, .button_yellow[finished~="no"]:focus, .button_yellow[finished~="no"]:active, .button_yellow[finished~="no"]:active:focus{
     background: transparent;
-	color: rgba(255, 255, 0, 0.2);
-	border: solid 1px rgba(255, 255, 0, 0.2);
+	color: var(--transparent_yellow);
+	border: solid 1px var(--transparent_yellow);
 }
 .button_table{
 	color: var(--yellow);
@@ -464,7 +465,7 @@ input:-internal-autofill-selected {
     margin-top: 10px;
 }
 .button_table:hover, .button_table:focus, .button_table:active, .button_table:active:focus{
-    background: rgba(255, 255, 0, 0.2);
+    background: var(--transparent_yellow);
 	color: var(--yellow);
 	border: solid 1px var(--yellow);
 }
@@ -500,7 +501,7 @@ input:-internal-autofill-selected {
 	cursor:pointer;
 }
 .login_link.active{
-	background: rgba(255, 255, 0, 0.2)
+	background: var(--transparent_yellow)
 }
 .login_link:first-child{
 	border-radius:20px 0px 0px 20px;
@@ -747,7 +748,7 @@ table {
 	margin-top:5px;
 }
 .user_list li:hover, .user_list li:focus{
-	background: rgba(255, 255, 0, 0.2);
+	background: var(--transparent_yellow);
 }
 #user_list_user{
 	margin-top:15px;
@@ -768,7 +769,7 @@ table {
     border-radius: 0px 20px 20px 0px;
 }
 .user_list_button.active, .user_list_button:hover{
-	background: rgba(255, 255, 0, 0.2);
+	background: var(--transparent_yellow);
 }
 #user_subtitle{
 	padding-left:5px;
@@ -798,7 +799,7 @@ table {
 	position: relative;
 }
 .casino_games_title:hover{
-	background: rgba(255, 255, 0, 0.2);
+	background: var(--transparent_yellow);
 }
 .casino_games_title i{
 	position:absolute;
@@ -900,7 +901,7 @@ table {
     border-radius: 20px 0px 0px 20px;
 }
 .account_tabs.active {
-    background: rgba(255, 255, 0, 0.2);
+    background: var(--transparent_yellow);
 }
 .account_tabs:last-child {
     border-radius: 0px 20px 20px 0px;
@@ -929,7 +930,7 @@ table {
 	text-align:left;
 }
 .history_container thead tr{
-	background: rgba(255, 255, 0, 0.2);
+	background: var(--transparent_yellow);
 }
 .history_container thead tr th{
 	border: solid 1px var(--yellow)!important;
@@ -1097,7 +1098,7 @@ table {
 	display: block;
 }  
 .dropdown-content .dropdown_item:hover {
-	background-color: rgba(255, 255, 0, 0.2)
+	background-color: var(--transparent_yellow)
 }  
 .dropdown:hover .dropdown-content {
 	display: block;
@@ -1269,7 +1270,7 @@ table {
 	margin-bottom:10px;	
 }
 .salon_button:hover, .salon_button:focus{
-	background: rgba(255, 255, 0, 0.2);
+	background:  var(--transparent_yellow);
     color: var(--yellow);
     border: solid 1px var(--yellow);
 	border-left:none;
@@ -1292,7 +1293,7 @@ table {
 	font-size: 12px;
 }
 #exit_salon:hover, #exit_salon:active, #exit_salon:focus{
-	background: rgba(255, 255, 0, 0.2);
+	background: var(--transparent_yellow);
 }
 
 .slot_header{
@@ -1612,6 +1613,11 @@ table {
 	right: 25px;
     top: -10px;
 	cursor: pointer;
+}
+
+#race_canvas{
+	border:solid 1px var(--yellow);
+	border-radius:10px;
 }
 
 /* media */

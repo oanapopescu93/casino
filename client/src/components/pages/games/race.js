@@ -2,110 +2,153 @@ import React, { Component } from 'react';
 import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Table from 'react-bootstrap/Table'
 import {connect} from 'react-redux'
-
-import sky from '../../img/race_imgs/sky.png'
-import clouds from '../../img/race_imgs/clouds.png'
-import mountains from '../../img/race_imgs/mountains.png'
-import hills_far from '../../img/race_imgs/hills_far.png'
-import hills_near from '../../img/race_imgs/hills_near.png'
-import road from '../../img/race_imgs/road.png'
-import grass from '../../img/race_imgs/grass.png'
-
 import rabbit_img from "../../img/race_imgs/rabbit.jpg"
 
-var canvas_width = window.innerWidth;
-var canvas_height = 800;
-var my_race;
 var canvas;
 var ctx;
-var rabbit_array = [];
-
-var items = [
-	{id: 'sky', src: sky},
-	{id: 'clouds', src: clouds},
-	{id: 'mountains', src: mountains},
-	{id: 'hills_far', src: hills_far},
-	{id: 'hills_near', src: hills_near},
-	{id: 'road', src: road},
-	{id: 'grass', src: grass},
-];
-var image_size = [1440, 800];
+var canvas_width = 900;
+var canvas_height = 800;
+var my_race;
 var font_title = 'bold 30px sans-serif';
+var rabbit_array = [];
+var landscape = [];
+var land_color = [['rgba(255, 215, 0, 0.2)', 'gold', 1], ['rgba(255, 215, 0, 0.2)', 'gold', 1], ['rgba(255, 215, 0, 0.2)', 'gold', 1]]
+var offset_lanscape = 100;
 
+function Land(config) {
+	var self = this;
+    self.layer = config.layer;
+    self.x = config.x;
+    self.y = config.y;
+    self.width = config.width;
+    self.height = config.height;
+};
+
+function Landscape(config){
+	var self = this;
+	self.x = 0;
+    self.lands = [];
+	self.layer = config.layer;
+	self.width = {
+		min: config.width.min,
+    	max: config.width.max
+	}
+	self.height = {
+		min: config.height.min,
+    	max: config.height.max
+	}  
+	self.speed = config.speed;
+	self.color = config.color;
+	self.color_stroke = config.color_stroke;
+	self.stroke = config.stroke;
+	self.populate = function (){
+		var totalWidth = 0;
+		var x = 0;
+		while (totalWidth <= canvas.width + (10 * self.width.max)) {
+			var newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
+			var newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
+			if(self.lands.length !== 0){
+				x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width;
+			}
+
+			self.lands.push(new Land({
+				layer: self.layer,
+				width: newWidth,
+				height: newHeight,
+				color: self.color,
+				color_stroke: self.color_stroke,
+				stroke: self.stroke,
+				x: x,
+        		y: 500 - newHeight,
+			}));
+
+			totalWidth = totalWidth + newWidth;
+		}
+	}
+	self.draw = function(){
+		ctx.save();
+		ctx.translate(self.x, canvas.height/ offset_lanscape * self.layer);
+		ctx.beginPath();
+		var lands = self.lands;
+		ctx.moveTo(self.lands[0].x, self.lands[0].y);
+		
+		for(var i=0; i<lands.length-1; i++){
+			var point01 = (self.lands[i].x + self.lands[i + 1].x) / 2;
+			var point02 = (self.lands[i].y + self.lands[i + 1].y) / 2;
+			ctx.quadraticCurveTo(self.lands[i].x, self.lands[i].y, point01, point02);
+		}
+		ctx.lineTo(canvas.width - self.x, canvas.height);
+    	ctx.lineTo(0 - self.x, canvas.height);
+
+		ctx.fillStyle = self.color;
+		ctx.lineWidth = self.stroke;
+		ctx.strokeStyle = self.color_stroke;
+		ctx.fill();
+		ctx.stroke();
+	}
+}
 
 function race_game(props){
 	var self = this;
-	self.images = [];
-	var offset = 0;
 		
 	this.ready = function(){
-		self.create_game();
-	}
-
-	this.create_game = function(){	
 		self.createCanvas(canvas_width, canvas_height);	
 		self.start();
 	}
 
 	this.start = function(){
-		var promises = [];
-		for(var i in items){				
-			promises.push(self.preaload_images(items[i]));
-		}
-
-		Promise.all(promises).then(function(result){
-			self.images = result;
-			self.draw_background(offset);
-			self.add_title();
-		});	
-	}
-
-	this.run = function(){
-
+		self.background();
+		self.add_title();
 	}
 
 	this.add_title = function(){
 		ctx.font = font_title;
-		ctx.fillStyle = "black";
+		ctx.fillStyle = "gold";
 		ctx.textAlign = "center";
-		ctx.fillText("Rabbit Race", canvas.width/2,  canvas.height*8/100);
+		ctx.fillText("Rabbit Race", canvas.width/2,  20);
 	}
 
-	this.draw_background = function(offset){
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	this.background = function(){
+		self.create_background();	
+		self.draw_background();	
+	}
 
-		for(var i in self.images){
-			var img = self.images[i];
-			var sx = 0
-			var sy = 0
-			var swidth = image_size[0];
-			var sheight = image_size[1];
-			var x = offset;
-			var y = -100;
-			var width = image_size[0];
-			var height = image_size[1];
-			if(img.id === "grass"){
-				y = 400;
+	this.create_background = function(){
+		var i = land_color.length;
+		while(i--){
+			var config = {
+				layer: i,
+				width: {
+					min: (i + 1) * 50,
+					max: (i + 1) * 70
+				},
+				height: {
+					min: 200 - (i * 40),
+					max: 300 - (i * 40)
+				},
+				speed: (i + 1) * 0.003,
+				color: land_color[i][0],
+				color_stroke: land_color[i][1],
+				stroke: land_color[i][2]
 			}
-			if(img.id === "road"){
-				y = 450;
-			}
-			ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
-			ctx.drawImage(img, sx, sy, swidth, sheight, x+swidth, y, width, height);
+			var my_land = new Landscape(config)
+			my_land.populate();
+			landscape.push(my_land)
+		}		
+	}
+
+	this.draw_background = function(){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		self.draw_sun();
+		var i = landscape.length;
+		while (i--) {
+			landscape[i].draw();
 		}
 	}
 
-	this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
-			var image = new Image();
-			image.id = item.id;
-			image.src = item.src;
-			image.addEventListener("load", function() {
-				resolve(image)
-			}, false);
-		});
+	this.draw_sun = function(){
+		draw_dot(canvas.width-50, 50, 40, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.2)', 1, 'gold');
 	}
 
 	this.createCanvas = function(canvas_width, canvas_height){		
@@ -115,28 +158,47 @@ function race_game(props){
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = window.innerWidth;
+				canvas.width = 300;
 				canvas.height = 300;
-				image_size = [1440, 800]				
+				offset_lanscape = 50;				
 			} else {
 				//small portrait
-				canvas.width = window.innerWidth;
+				canvas.width = 400;
 				canvas.height = 400;
-				image_size = [1440, 800]
+				offset_lanscape = 50;	
 			}
 			font_title = 'bold 20px sans-serif';
 		} else {
 			//big
-			canvas.width = window.innerWidth;
+			canvas.width = 900;
 			canvas.height = 800;
-			image_size = [1440, 800];
-			font_title = 'bold 30px sans-serif';	
+			font_title = 'bold 30px sans-serif';
+			offset_lanscape = 100;	
+			if (window.innerWidth >= 1200){
+				canvas.width = 1000;
+			} 
+			if (window.innerWidth >= 1400){
+				canvas.width = 1200;
+			} 
 		}
 		
 		canvas_width = canvas.width;
 		canvas_height = canvas.height;		
 		canvas.height = canvas_height;
 	}
+}
+
+function draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
+	ctx.beginPath();
+	ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
+	ctx.fillStyle = fillStyle;
+	if(strokeStyle !== ""){
+		ctx.lineWidth = lineWidth;
+		ctx.strokeStyle = strokeStyle;
+		ctx.stroke();
+	}		
+	ctx.fill();
+	ctx.closePath();
 }
 
 function RaceGame(props){
@@ -367,4 +429,8 @@ class Race extends Component {
 	}
 }
 
-export default Race;
+function mapStateToProps(state) {	
+	return { ...state }
+}
+
+export default connect(mapStateToProps)(Race)
