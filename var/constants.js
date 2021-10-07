@@ -38,7 +38,7 @@ module.exports = Object.freeze({
     ],
     
     CRYPTO: [
-        {type: "Bitcoin", text: "bc1quttj9jakgf44e5emd7cvmeg7t80zamj7gy2dda", link: "bitcoin:bc1quttj9jakgf44e5emd7cvmeg7t80zamj7gy2dda"},
+        {type: "Bitcoin", text: "bc1qldrswfud8q5k3w92n5ywawaymzumsfv5quks7v", link: "bitcoin:bc1qldrswfud8q5k3w92n5ywawaymzumsfv5quks7v"},
     ],
     CONTACT: {
         address: "-",

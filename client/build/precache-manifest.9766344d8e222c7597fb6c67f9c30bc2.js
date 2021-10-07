@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5ef47f1e0328b2c228c01cb7798de87e",
+    "revision": "5beaff0bdde1a6205afd4cefce24bfde",
     "url": "/index.html"
   },
   {
-    "revision": "6e468e0f1e1deaa17f04",
+    "revision": "c49c4e0752b3bb6fd7d1",
     "url": "/static/css/2.4fd09901.chunk.css"
   },
   {
-    "revision": "b456e6cc7c36636aeb39",
-    "url": "/static/css/main.426f7c5d.chunk.css"
+    "revision": "888ac69b8e90509dd022",
+    "url": "/static/css/main.6420e6f3.chunk.css"
   },
   {
-    "revision": "6e468e0f1e1deaa17f04",
-    "url": "/static/js/2.a8160bcc.chunk.js"
+    "revision": "c49c4e0752b3bb6fd7d1",
+    "url": "/static/js/2.ce7e8200.chunk.js"
   },
   {
     "revision": "8343773d2bc1f91de45b56764e549199",
-    "url": "/static/js/2.a8160bcc.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.ce7e8200.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b456e6cc7c36636aeb39",
-    "url": "/static/js/main.57f80694.chunk.js"
+    "revision": "888ac69b8e90509dd022",
+    "url": "/static/js/main.cb5a9d15.chunk.js"
   },
   {
     "revision": "73635f645c271e35ff15",
@@ -62,6 +62,22 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "dd8ca8815ca229253b7899814d50637a",
     "url": "/static/media/rabbit_stand_right.dd8ca881.png"
+  },
+  {
+    "revision": "0bc53c9879d95148be93b1c2ca6373f5",
+    "url": "/static/media/roulette_bets_american.0bc53c98.png"
+  },
+  {
+    "revision": "676419e1ae326e736a23a03b40591fb4",
+    "url": "/static/media/roulette_bets_american_small.676419e1.png"
+  },
+  {
+    "revision": "282f2a1f0bdac786091ad1f278ed14cc",
+    "url": "/static/media/roulette_bets_european.282f2a1f.png"
+  },
+  {
+    "revision": "216b1a1c1903dcba32e8c88a175ed964",
+    "url": "/static/media/roulette_bets_european_small.216b1a1c.png"
   },
   {
     "revision": "a0844a3a1556c90a251da67cc2bb9ab6",
