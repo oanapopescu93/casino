@@ -355,7 +355,6 @@ textarea {
 }
 
 #salon.full-height, 
-#roulette.full-height, 
 #user_account.full-heigh, 
 #race.full-height{
     position: relative;
@@ -367,12 +366,6 @@ textarea {
     height: 100%;
     width: 100%;
 }
-/* #salon.full-height {
-    height: 100%;
-} */
-#roulette.full-height {
-    height: auto;
-}
 #salon .full-height-content{
 	padding: 10px 0px;
 	z-index: 1;
@@ -381,7 +374,6 @@ textarea {
     transform: translate(0px, -50%);
 	display: block;
 }
-#roulette .full-height-content, 
 #user_account .full-height-content,
 #race .full-height-content{
 	padding: 10px 0px;	
@@ -1218,18 +1210,19 @@ table {
 	position: fixed;
 	z-index:1;
 	top:0px;
-	left:0px;
 	bottom:0px;
-	right:0px;
+	right:100%;
 	width:100%;
-	background: rgba(0,0,0,0.5);
-	text-align: center;
 	padding:0px 50px;
-	display:none;
+	-webkit-transition:0.7s;
+    -moz-transition:0.7s;
+	-o-transition: 0.7s;
+	transition:0.7s;
 }
-.roulette_bets_container.show{
-	display:block;
+.roulette_bets_container.open{
+	right:0px;
 }
+
 .roulette_bets_box{
 	position: relative;
 	z-index:1;
