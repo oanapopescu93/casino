@@ -356,7 +356,8 @@ textarea {
 
 #salon.full-height, 
 #user_account.full-heigh, 
-#race.full-height{
+#race.full-height, 
+#user_account.full-height{
     position: relative;
 	display:block;
 	top:0px;
@@ -379,7 +380,6 @@ textarea {
 	padding: 10px 0px;	
 	display: block;
 }
-
 #race .salon_page{
 	padding:0px;
 }
@@ -598,7 +598,7 @@ table {
     min-height: 235px;
 }
 .support_container .box{
-	padding:10px;
+	padding:15px;
 	background-color: black;
 }
 .support_info{
@@ -910,11 +910,13 @@ table {
 	border:solid 1px var(--yellow);
 	padding:15px;
 }
-.profile_container .profile_right{
+.profile_container .profile_left{
 	border-radius:10px 0px 0px 10px;
+	border-right: none;
 }
 .profile_container .profile_right{
 	border-radius:0px 10px 10px 0px;
+	min-height: 300px;
 }
 
 .account_box_container h2{
@@ -947,8 +949,9 @@ table {
 	text-align:left!important;
 }
 .history_box{
-	max-height:400px;
+	max-height:500px;
 	overflow-y: auto;
+	padding-right:10px;
 }
 
 .casino_modal .modal-dialog{

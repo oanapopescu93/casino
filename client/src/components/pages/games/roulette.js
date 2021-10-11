@@ -447,7 +447,7 @@ function roulette_game(props){
 	
 	this.spin = function(arc, spin_time, monkey){
 		var spin_nr = 0;
-		var spin_time = 10;
+		//var spin_time = 10;
 		var monkey_wait = 200;	
 		
 		dispatch_nr++;		

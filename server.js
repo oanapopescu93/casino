@@ -207,7 +207,6 @@ io.on('connection', function(socket) {
 	});
 	socket.on('roulette_results_send', function(data) {
 		var money = data.money;
-		var user_id = data.user_id;
 		for(var i in users_json){	
 			if(data.user_id === users_json[i].id){
 				users_json[i].money = money;
@@ -407,16 +406,13 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('blackjack_results_send', function(data) {
-		//socket.emit("blackjack_results_read", "hello friend");
 		var money = data.money;
-		var user_id = data.user_id;
 		for(var i in users_json){	
 			if(data.user_id === users_json[i].id){
 				users_json[i].money = money;
 				break;
 			}
 		}
-		// const data = fs.readFileSync(path,{encoding: "utf8"}); 
 		fs.writeFileSync(users_file, JSON.stringify(users_json));
 	});
 
