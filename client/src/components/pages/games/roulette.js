@@ -226,7 +226,7 @@ function roulette_game(props){
 	this.choose_roulette_type = function(){			
 		self.nr_colors();	
 		self.start();
-		self.roulette_table_click();
+		self.roulette_click();
 	}
 	
 	this.nr_colors = function(){
@@ -381,7 +381,7 @@ function roulette_game(props){
 		ctx.fillText(text, text_x, text_y);
 	}	
 		
-	this.roulette_table_click = function(){			
+	this.roulette_click = function(){			
 		$('#roulette_canvas').off('click').on('click', function(event) {
 			self.canvas_click(canvas, event);
 		});
@@ -389,7 +389,7 @@ function roulette_game(props){
 		$('#roulette_canvas').off('mousemove').on('mousemove', function(event) {
 			var mousePos = getMousePos(canvas, event);
 			$('#roulette_canvas').css('cursor', "default")
-			if (isInside(mousePos, bet_button_coordonates) || isInside(mousePos, spin_button_coordonates) || isInside(mousePos, show_bets_button_coordonates)) {
+			if (isInside(mousePos, spin_button_coordonates) || isInside(mousePos, show_bets_button_coordonates)) {
 				$('#roulette_canvas').css('cursor', "pointer")				
 			} 
 		});
@@ -447,7 +447,7 @@ function roulette_game(props){
 	
 	this.spin = function(arc, spin_time, monkey){
 		var spin_nr = 0;
-		//var spin_time = 10;
+		var spin_time = 10;
 		var monkey_wait = 200;	
 		
 		dispatch_nr++;		
@@ -499,7 +499,7 @@ function roulette_game(props){
 				
 			} else {
 				spin_nr++; 
-				rotateWheel(arc-0.04);		
+				self.rotateWheel(arc-0.04);		
 				
 				roulette_index = parseInt(self.closest_nr(ball, roulette_pos, "nr"));
 				win_nr = roulette_pos[roulette_index];
@@ -514,23 +514,23 @@ function roulette_game(props){
 			
 			switch (true) {
 				case (spin_nr <= spin_time/2):						
-					rotateWheel(arc);
+					self.rotateWheel(arc);
 					circle.angle += ball.speed;		
 					break;
 				case (spin_nr > spin_time/2 && spin_nr <= 2*spin_time/3):
-					rotateWheel(arc-0.01);
+					self.rotateWheel(arc-0.01);
 					circle.angle += ball.speed-0.01;	
 					break;
 				case (spin_nr > 2*spin_time/3 && spin_nr <= 5*spin_time/6):
-					rotateWheel(arc-0.02);
+					self.rotateWheel(arc-0.02);
 					circle.angle += ball.speed-0.02;		
 					break;
 				case (spin_nr > 5*spin_time/6 && spin_nr <= spin_time-20):
-					rotateWheel(arc-0.03);
+					self.rotateWheel(arc-0.03);
 					circle.angle += ball.speed-0.03;	
 					break;
 				case (spin_nr > spin_time-20 && spin_nr <= spin_time-10):
-					rotateWheel(arc-0.04);
+					self.rotateWheel(arc-0.04);
 					circle.angle += ball.speed-0.04;	
 					break;
 				default:
@@ -570,7 +570,7 @@ function roulette_game(props){
 	  }	  
 	}
 	
-	function rotateWheel(x) {
+	this.rotateWheel = function(x) {
 		startAngle  = startAngle + x;
 		startAngle01  = startAngle01 + x;
 		ball.y = roulette_radius_y + Math.cos(circle.angle) * circle.radius;
@@ -801,8 +801,19 @@ function roulette_game(props){
 			dispatch(roulette_calculate_money(user_info.money))
 			dispatch(roulette_get_history(your_bets))
 		}
-		//console.log('history000a--> ', user_info.money)	
 		$('#user_money span').text(user_info.money);
+
+		var roulette_payload_server = {
+			user_id: props.user_id,
+			user: props.user, 
+			user_table: props.user_table, 
+			user_type: props.type,
+			money: user_info.money
+		}
+		socket.emit('roulette_results_send', roulette_payload_server);
+		// socket.on('roulette_results_read', function(data){
+		// 	console.log('roulette_results--> ', data)
+		// });	   
 	}	
 }
 
@@ -875,16 +886,16 @@ function roulette_bets(props){
 				self.images = result;
 				self.choose_roulette_bets();
 				self.create_roulette_bets();
-				self.roulette_table_click();
+				self.roulette_click();
 			});	
 		} else {
 			self.choose_roulette_bets();
 			self.create_roulette_bets();
-			self.roulette_table_click();
+			self.roulette_click();
 		}
 	}
 
-	this.roulette_table_click = function(){			
+	this.roulette_click = function(){			
 		$('#roulette_bets_canvas').off('click').on('click', function(event) {
 			self.canvas_click(canvas_bets, event);
 		});
@@ -979,9 +990,9 @@ function roulette_bets(props){
 		// draw_rect(ctx_bets, squares.f.x, 0*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
 		// draw_rect(ctx_bets, squares.f.x, 1*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
 		// draw_rect(ctx_bets, squares.f.x, 2*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
-		list_bets.push({x: squares.f.x, y: squares.f.y, width: squares.f.w, height: 0*squares.f.h + squares.f.h, color: "", text: "2 to 1a"});	
-		list_bets.push({x: squares.f.x, y: squares.f.y, width: squares.f.w, height: 1*squares.f.h + squares.f.h, color: "", text: "2 to 1b"});	
-		list_bets.push({x: squares.f.x, y: squares.f.y, width: squares.f.w, height: 2*squares.f.h + squares.f.h, color: "", text: "2 to 1c"});
+		list_bets.push({x: squares.f.x, y: 0*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1a"});	
+		list_bets.push({x: squares.f.x, y: 1*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1b"});	
+		list_bets.push({x: squares.f.x, y: 2*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c"});
 	}
 
 	this.create_roulette_bets = function(){
@@ -1108,9 +1119,12 @@ function show_results(title, message){
 function Roulette(props) {
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'roulette');
+
 		var title = props.user_table;
 		title = title.charAt(0).toUpperCase() + title.slice(1);
+		$('.roulette_title').empty();
 		$('.roulette_title').append(title);
+		
 		my_roulette = new roulette_game(props);
 		my_roulette.ready();		
 		$(window).resize(function(){

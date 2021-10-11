@@ -905,6 +905,18 @@ table {
 .profile_container{
 	height: 360px;
 }
+.profile_container .profile_left,
+.profile_container .profile_right{
+	border:solid 1px var(--yellow);
+	padding:15px;
+}
+.profile_container .profile_right{
+	border-radius:10px 0px 0px 10px;
+}
+.profile_container .profile_right{
+	border-radius:0px 10px 10px 0px;
+}
+
 .account_box_container h2{
 	margin:15px 0px;
 }
@@ -921,6 +933,9 @@ table {
 .table>tbody>tr>td:last-child{
 	text-align:left;
 }
+.history_container{
+	margin:0px;
+}
 .history_container thead tr{
 	background: var(--transparent_yellow);
 }
@@ -930,6 +945,10 @@ table {
 .history_container tbody tr td{
 	border: solid 1px var(--yellow);
 	text-align:left!important;
+}
+.history_box{
+	max-height:400px;
+	overflow-y: auto;
 }
 
 .casino_modal .modal-dialog{
@@ -1666,6 +1685,9 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.history_box{
+		max-height:200px;
+	}
 	.slot_buttons_box{
 		display:block;
 		height:auto;

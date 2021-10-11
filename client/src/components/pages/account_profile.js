@@ -35,13 +35,14 @@ function Account_profile(props) {
 					<Col sm={12}>{lang === "ro" ? <h2>Profil</h2> : <h2>Profile</h2>}</Col>
 				</Row>
 				<Row className="profile_container">
-					<Col sm={4}>
+					<Col  className="profile_left" sm={4}>
 						<h3>User info: </h3>
 						<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}{username}</p>
 						<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
 					</Col>
-					<Col sm={8}>
+					<Col className="profile_right" sm={8}>
 						<h3>History: </h3>
+						<div className="history_box">
 							{(() => {
 								if (roulette_info === -1 && blackjack_info === -1) {
 									//console.log('zzz00', history, history.length)
@@ -155,6 +156,7 @@ function Account_profile(props) {
 									}
 								}
 							})()}
+						</div>
 					</Col>
 				</Row>
 			</Col>

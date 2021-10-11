@@ -571,6 +571,18 @@ function blackjack_wheel(props){
 			}
 			break;
 		}
+
+		var blackjack_payload_server = {
+			user_id: props.user_id,
+			user: props.user, 
+			user_table: props.user_table, 
+			user_type: props.type,
+			money: user_info.money
+		}
+		socket.emit('blackjack_results_send', blackjack_payload_server);
+		socket.on('blackjack_results_read', function(data){
+			console.log('blackjack_results--> ', data)
+		});	 
 	}
 }
 
@@ -621,7 +633,13 @@ function draw_rect(x, y, width, height, fillStyle, lineWidth, strokeStyle){
 
 function Blackjack(props) {	
 	setTimeout(function(){ 	
-		$('.full-height').attr('id', 'blackjack')	
+		$('.full-height').attr('id', 'blackjack');
+		
+		var title = props.user_table;
+		title = title.charAt(0).toUpperCase() + title.slice(1);
+		$('.blackjack_title').empty();
+		$('.blackjack_title').append(title);
+
 		blackjack_game = new blackjack_wheel(props);
 		blackjack_game.ready();		
 		$(window).resize(function(){
@@ -634,6 +652,7 @@ function Blackjack(props) {
 	
 	return (
 		<div className="blackjack_container">
+			<h1 className="blackjack_title"></h1>
 			<canvas id="blackjack_canvas"></canvas>
 			<div className="show_results_container">
 				<div className="show_results">
