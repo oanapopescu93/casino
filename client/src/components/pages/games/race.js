@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import {connect} from 'react-redux'
 import rabbit_img from "../../img/race_imgs/rabbit.jpg"
+import { getCookie, show_results } from '../../utils';
 
 var canvas;
 var ctx;
@@ -371,7 +372,7 @@ class Race extends Component {
 
 	componentDidMount() {
 		$('.full-height').attr('id', 'race')		
-		var id = parseInt(self.getCookie("casino_id"));
+		var id = parseInt(getCookie("casino_id"));
 		if(id === "" || id === "indefined"){
 			id = -1;
 		}
@@ -385,22 +386,6 @@ class Race extends Component {
 		 	self.setState({ ready: true })
 		});
 	}
-
-	getCookie = function (cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-		  	var c = ca[i];
-		  	while (c.charAt(0) === ' ') {
-				c = c.substring(1);
-		  	}
-		  	if (c.indexOf(name) === 0) {
-				return c.substring(name.length, c.length);
-		  	}
-		}
-		return "";
-	} 
 	
 	get_data = function(x){
 		if(x === "tables"){

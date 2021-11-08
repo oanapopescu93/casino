@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 
 import under_construction_icon from '../../img/icons/under_construction_icon.png'
 import Carousel from '../partials/carousel'
+import { setCookie } from '../../utils';
 
 var self;
 class SalonGames extends React.Component {
@@ -21,19 +22,11 @@ class SalonGames extends React.Component {
         self.handleExit = self.handleExit.bind(self);
         self.handleDropdown = self.handleDropdown.bind(self);
         self.handleDropdown_small = self.handleDropdown_small.bind(self);
-        self.setCookie = self.setCookie.bind(self);
-	}
-
-    setCookie(cname,cvalue,exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires=" + d.toGMTString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 
     handleExit() {
-        self.setCookie("casino_user", '', 1);
-		self.setCookie("casino_email", '', 1);
+        setCookie("casino_user", '', 1);
+		setCookie("casino_email", '', 1);
 		var url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];

@@ -1,8 +1,8 @@
 import React from 'react';
 import $ from 'jquery'; 
+import { getCookie, setCookie } from '../utils';
 
 var self;
-
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
@@ -12,8 +12,6 @@ class Settings extends React.Component {
               currency: "carrot"
 		};
         self.handleChoose = self.handleChoose.bind(self);
-        self.getCookie = self.getCookie.bind(self);
-		self.setCookie = self.setCookie.bind(self);
 	}
 
     handleChoose(e, type, choose){  
@@ -25,10 +23,10 @@ class Settings extends React.Component {
 
                 switch(type){
                     case "date":
-                        self.setCookie("casino_date", choose, 1);
+                        setCookie("casino_date", choose, 1);
                        break;
                     case "currency":
-                        self.setCookie("casino_currency", choose, 1);
+                        setCookie("casino_currency", choose, 1);
                         break;		
                     default: 
                         break;
@@ -37,35 +35,12 @@ class Settings extends React.Component {
         }
     }
 
-    getCookie = function (cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-		  	var c = ca[i];
-		  	while (c.charAt(0) === ' ') {
-				c = c.substring(1);
-		  	}
-		  	if (c.indexOf(name) === 0) {
-				return c.substring(name.length, c.length);
-		  	}
-		}
-		return "";
-	}
-
-	setCookie = function(cname,cvalue,exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires=" + d.toGMTString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
-
     componentDidMount(){
-        if(self.getCookie("casino_date") !== ""){
-            self.setState({ date: self.getCookie("casino_date") }); 
+        if(getCookie("casino_date") !== ""){
+            self.setState({ date: getCookie("casino_date") }); 
         }
-        if(self.getCookie("casino_currency") !== ""){
-            self.setState({ currency: self.getCookie("casino_currency") }); 
+        if(getCookie("casino_currency") !== ""){
+            getCookie({ currency: getCookie("casino_currency") }); 
         }
     }
 	

@@ -7,6 +7,8 @@ import carrot_img from '../../img/icons/carrot_icon.png';
 import {blackjack_calculate_money, blackjack_get_history} from '../../actions/actions'
 import {connect} from 'react-redux'
 
+import { showResults } from '../../utils';
+
 var canvas;
 var ctx;
 var socket;
@@ -51,10 +53,12 @@ function blackjack_wheel(props){
 	user_info = {money: props.money};	
 	if(props.blackjack !== -1){
 		user_info = props.blackjack[0];			
-	}
-	
-	//console.log('history000b--> ', props, user_info.money)	
-	$('#user_money span').text(user_info.money);	
+	}	
+	if($('#user_money').length>0){
+		if($('#user_money span').length>0){
+			$('#user_money span').text(user_info.money);
+		}
+	}	
 		
 	this.ready = function(){
 		self.createCanvas(canvas_width, canvas_height);		
@@ -538,16 +542,16 @@ function blackjack_wheel(props){
 			if(obj.id === "dealer"){
 				self.pay("dealer");
 				if(lang === "ro"){
-					show_results('Dealer-ul a castigat!');
+					showResults('Dealer-ul a castigat!');
 				} else {
-					show_results('The dealer has won!');
+					showResults('The dealer has won!');
 				}				
 			} else {
 				self.pay(obj);
 				if(lang === "ro"){
-					show_results('Jucatorul ' + obj.user + ' a castigat!')	
+					showResults('Jucatorul ' + obj.user + ' a castigat!')	
 				} else {
-					show_results('Player ' + obj.user + ' has won!')	
+					showResults('Player ' + obj.user + ' has won!')	
 				}	
 			}
 			self.draw_table();
@@ -580,18 +584,10 @@ function blackjack_wheel(props){
 			money: user_info.money
 		}
 		socket.emit('blackjack_results_send', blackjack_payload_server);
-		socket.on('blackjack_results_read', function(data){
-			console.log('blackjack_results--> ', data)
-		});	 
+		// socket.on('blackjack_results_read', function(data){
+		// 	console.log('blackjack_results--> ', data)
+		// });	 
 	}
-}
-
-function show_results(message){
-	$('.show_results_container').show();
-	$('.show_results p').text(message);
-	$( ".show_results_container" ).click(function() {
-		$('.show_results_container').hide();
-	});
 }
 
 function getMousePos(canvas, event) {

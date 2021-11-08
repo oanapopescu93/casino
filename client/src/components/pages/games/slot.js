@@ -3,11 +3,13 @@ import $ from 'jquery';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import {slot_calculate_money, slot_get_history} from '../../actions/actions'
 import {connect} from 'react-redux'
+import { bigText, showResults } from '../../utils';
+
 import item_image from '../../img/icons/vegetables_color.png'
 
 var canvas_height = 800;
-
 var items = [
 	{id: 'carrot', src: item_image, coord:[0, 0]},
 	{id: 'onion', src: item_image, coord:[300, 0]},
@@ -29,15 +31,15 @@ var dispatch_nr = 0; //this prevents multiplication
 var my_slot;
 var results_array = [];
 var slot_type = "";
-
+var reel = [];
 var ctx;
 var socket;
+var user_info;
 
 function slot_game(props, id){
 	var self = this;
 	var slot_id = "#"+id;
 	this.lang = props.lang;
-	this.reel = [];	
 	this.state = 0;
 	this.images = [];
 	this.images_pos = [];
@@ -49,12 +51,23 @@ function slot_game(props, id){
 	var now = new Date();
 	slot_type = props.type;	
 	var reason = "";
+	const dispatch = props.dispatch;
+
+	user_info = {money: props.money};	
+	if(props.slot !== -1){
+		user_info = props.slot[0];			
+	}
+	if($('#user_money').length>0){
+		if($('#user_money span').length>0){
+			$('#user_money span').text(user_info.money);
+		}
+	}	
 		
 	this.ready = function(r){
 		reason = r;
 		self.fit();
 		self.choose_slot_type();
-		var payload = {id: props.user_id, reel:self.reel.length, items:items.length, reason: reason}		
+		var payload = {id: props.user_id, reel:reel.length, items:items.length, reason: reason}		
 		socket.emit('slots_send', payload);
 		socket.on('slots_read', function(data){				
 			suffle_array = data[0];
@@ -66,13 +79,22 @@ function slot_game(props, id){
 	this.choose_slot_type = function(){
 		switch(slot_type) {
 			case 'type1':
-				self.reel = self.get_reel(5);
+				if($('#slot_machine').length>0){
+					$('#slot_machine').addClass('color_5');
+				}
+				reel = self.get_reel(5);
 			  	break;
 			case 'type2':
-				self.reel = self.get_reel(3);
+				if($('#slot_machine').length>0){
+					$('#slot_machine').addClass('color_3');
+				}
+				reel = self.get_reel(5);
 			  	break;
 			default: 
-				self.reel = self.get_reel(5);
+				if($('#slot_machine').length>0){
+					$('#slot_machine').addClass('color_5');
+				}
+				reel = self.get_reel(5);
 		  }
 		
 	}
@@ -97,6 +119,48 @@ function slot_game(props, id){
 			dispatch_nr = 0;		
 			self.spin(spin_time, slot_speed);
 		})
+		$('body').off('click', '#slot_rules').on('click', '#slot_rules', function () {
+			if(self.lang === "ro"){
+				var text = bigText("slot_rules", self.lang);
+				showResults("Reguli", text, 600);
+			} else {      
+				var pay_table = `
+					<h1>Pay table</h1>
+					<div id="pay_table" class="rules_box">
+						<table>
+							<thead>
+								<tr>
+									<th>Matrix</th>
+									<th>Pay</th>
+								</tr>
+							</thead>
+							<tbody class="pay_table_info"></tbody>	
+						</table>
+					</div>
+				`;
+				var text = bigText("slot_rules", self.lang, pay_table);
+				showResults("Rules", text, 400);
+				for(var i in win){
+					var my_matrix = win[i].matrix;
+					var my_prize = win[i].prize;
+					$('.pay_table_info').append("<tr><td id='pay_table_info_"+i+"' class='pay_table_matrix'></td><td class='pay_table_prize'>"+my_prize+"</td></tr>");
+					$('#pay_table_info_'+i).append("<div class='my_matrix'></div>");
+					
+					var x = -1;
+					for(var j=0; j<3; j++){
+						for(var k=0; k<5; k++){
+							x++;
+							if(x>4){ x=0 }
+							if(my_matrix[x][0] === j && my_matrix[x][1] === k){
+								$('#pay_table_info_'+i+' .my_matrix').append("<div class='color' x='"+j+"' y='"+k+"'></div>");
+							} else {
+								$('#pay_table_info_'+i+' .my_matrix').append("<div x='"+j+"' y='"+k+"'></div>");
+							}											
+						}
+					}
+				}				
+			}
+		})
 
 		if(reason !== "resize"){
 			var promises = [];
@@ -109,11 +173,11 @@ function slot_game(props, id){
 				slots_canvas = [];
 				$('.slot_machine .slot_canvas').css('width', image_size[0]);
 				$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
-				$('#slot_canvas_results').css('width', image_size[0]*self.reel.length)	
-				for(var i in self.reel){	
+				$('#slot_canvas_results').css('width', image_size[0]*reel.length)	
+				for(var i in reel){	
 					self.images = self.create_suffle(i, self.images);
 					self.offset.push(0);
-					slots_canvas.push(self.reel[i][0]);
+					slots_canvas.push(reel[i][0]);
 					self.createCanvas(slots_canvas[slots_canvas.length-1]);					
 					self.draw_reel(slots_canvas[slots_canvas.length-1], self.images, reason);
 				}
@@ -122,9 +186,9 @@ function slot_game(props, id){
 			slots_canvas = [];
 			$('.slot_machine .slot_canvas').css('width', image_size[0]);
 			$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
-			$('#slot_canvas_results').css('width', image_size[0]*self.reel.length)		
-			for(var i in self.reel){
-				slots_canvas.push(self.reel[i][0]);
+			$('#slot_canvas_results').css('width', image_size[0]*reel.length)		
+			for(var i in reel){
+				slots_canvas.push(reel[i][0]);
 				self.createCanvas(slots_canvas[slots_canvas.length-1]);
 				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images_pos[i], reason);
 			}
@@ -143,7 +207,7 @@ function slot_game(props, id){
 			image_size_canvas = [290, 290, 3, 3, 40, 40];
 			speed = 5;
 		}
-		for(var i in self.reel){
+		for(var i in reel){
 			slot_speed.push(speed)
 		}	
 	}
@@ -179,6 +243,10 @@ function slot_game(props, id){
 
 		canvas_height = canvas.height;		
 		canvas.height = canvas_height;
+
+		var canvas_lines = $('#slot_machine_lines')[0];
+		canvas_lines.width = image_size[0] * $('.slot_machine .slot_canvas').length;
+		canvas_lines.height = 3 * image_size[1];
     }
 
 	this.draw_reel = function(canvas, assets, reason){
@@ -230,11 +298,11 @@ function slot_game(props, id){
 
 	this.rotate = function(i, slot_speed){
 		self.offset[i] = self.offset[i] - slot_speed;
-		var max_height = -(self.reel[i][0].height - items.length * image_size[1])
+		var max_height = -(reel[i][0].height - items.length * image_size[1])
 		if(self.offset[i] < max_height){
 			self.offset[i] = 0;
 		}
-		self.reel[i].css('transform', 'translate(0px, '+self.offset[i]+'px)')
+		reel[i].css('transform', 'translate(0px, '+self.offset[i]+'px)')
 	}
 
 	this.reset = function(){
@@ -242,10 +310,13 @@ function slot_game(props, id){
 		self.state = 0;
 		self.stopped = [];
 		slot_speed = [];
-		for(var i in self.reel){
+		for(var i in reel){
 			self.stopped.push(false);
 			slot_speed.push(speed)
 		}
+		var canvas_lines = $('#slot_machine_lines')[0];
+		var ctx_lines = canvas_lines.getContext("2d");
+		ctx_lines.clearRect(0, 0, canvas_lines.width, canvas_lines.height);
 	}
 
 	this.spin = function(){
@@ -266,8 +337,6 @@ function slot_game(props, id){
 	  	})();
 
 	  	function spin_slot() {
-			
-
 			self.update(self.state);
 			if(self.running){
 				window.requestAnimFrame(spin_slot);
@@ -280,10 +349,8 @@ function slot_game(props, id){
 				self.drawResultsArray(result);		
 			}
 		}
-
-		if(dispatch_nr === 1){
-			spin_slot();
-		}	
+		
+		spin_slot();
 	}
 
 	this.update = function(state){
@@ -294,13 +361,12 @@ function slot_game(props, id){
 			}
 			return false;
 		}
-
 		switch (state) {
 			case 0: // all slots spinning
 				if (now - self.lastUpdate > spin_time) {
 					self.state = 1;
 					self.lastUpdate = now;
-				}
+				} 
 				break;
 			case 6:
 				self.running = false;
@@ -311,13 +377,12 @@ function slot_game(props, id){
 					slot_speed[state-1] = 0;
 					self.state++;
 					self.lastUpdate = now;
-				}
-				break;			
+				}		
 		}
-		for(var i in self.reel){
+		for(var i in reel){
 			self.rotate(i, slot_speed[i]);
 		}
-		for(var i in self.reel){
+		for(var i in reel){
 			if(slot_speed[i] === 0){
 				if(self.offset[i]%100 !== 0){
 					self.running = true;
@@ -331,33 +396,30 @@ function slot_game(props, id){
 		var same = true;
 		var my_matrix = [];
 		var win_results = [];
-
-		for(var i in win){			
-			//if(i == 0){
-				if(win[i].matrix.length !== 0){
-					my_matrix = win[i].matrix;
-					same = true;
-					for(var j=0; j<my_matrix.length-1; j++){
-						var x1 = my_matrix[j][0];
-						var y1 = my_matrix[j][1];
-						var x2 = my_matrix[j+1][0];
-						var y2 = my_matrix[j+1][1];						
-						if(results[x1][y1].img.id === results[x2][y2].img.id || results[x1][y1].img.id === "carrot" || results[x2][y2].img.id === "carrot"){
-							//console.log('aaa01', results[x1][y1].img.id === results[x2][y2].img.id, results[x1][y1].img.id === "carrot", results[x2][y2].img.id === "carrot")
-						} else {
-							same = false;
-							//console.log('aaa02', results[x1][y1].img.id === results[x2][y2].img.id, results[x1][y1].img.id === "carrot", results[x2][y2].img.id === "carrot")
-							break;
-						}
-					}
-					if(same){
-						win_results.push(my_matrix)
+		var t = -1;
+		for(var i in win){	
+			if(win[i].matrix.length !== 0){
+				my_matrix = win[i].matrix;
+				same = true;
+				for(var j=0; j<my_matrix.length-1; j++){
+					var x1 = my_matrix[j][0];
+					var y1 = my_matrix[j][1];
+					var x2 = my_matrix[j+1][0];
+					var y2 = my_matrix[j+1][1];
+					var my_veggy = results[x1][y1].img.id === "carrot" || results[x2][y2].img.id === "carrot" || results[x1][y1].img.id === "potato" || results[x2][y2].img.id === "potato"					
+					if(results[x1][y1].img.id === results[x2][y2].img.id || my_veggy){
+						win_results = my_matrix;
+						t = i;
+					} else {
+						same = false;
+						win_results = [];
+						break;
 					}
 				}
-			//}
+			}
 		}
 		
-		return [same, win_results, results];
+		return [same, win_results, results, t];
 	}
 
 	this.get_results_pos = function(){
@@ -380,7 +442,7 @@ function slot_game(props, id){
 	this.createResultsArray = function(){
 		results_array = [];
 		for(var j=0; j<3; j++){
-			for(var i=0; i<self.reel.length; i++){
+			for(var i=0; i<reel.length; i++){
 				var elem = {i:i, j:j, x:image_size[0]*i, y:image_size[1]*j};
 				results_array.push(elem)
 			}
@@ -388,16 +450,51 @@ function slot_game(props, id){
     }
 
 	this.drawResultsArray = function(result){
-		console.log('results_array', results_array, result)
-    }
-}
+		console.log(result)
+		var canvas = $('#slot_machine_lines')[0];
+		ctx = canvas.getContext("2d");
+		if(result[0]){
+			ctx.beginPath();
+			ctx.moveTo(image_size[0]/2, image_size[1]/2);
+			ctx.strokeStyle = "red";
+			ctx.lineWidth = 5;
 
-function show_results(message){
-	$('.show_results_container').show();
-	$('.show_results p').text(message);
-	$( ".show_results_container" ).click(function() {
-		$('.show_results_container').hide();
-	});
+			for(var i=1; i<result[1].length; i++){				
+				ctx.lineTo(result[1][i][1] * image_size[1] + image_size[1]/2, result[1][i][0] * image_size[1] + image_size[1]/2);
+			}
+			ctx.stroke();
+			ctx.closePath();
+
+			for(var i=0; i<result[1].length; i++){	
+			 	draw_dot(canvas, result[1][i][1] * image_size[1] + image_size[1]/2, result[1][i][0] * image_size[1] + image_size[1]/2, 8, 0, 2 * Math.PI, false, 'red', 1, 'red');
+			}
+
+			if($('#slot_bet').length>0){
+				user_info.money = user_info.money + parseInt($('#slot_bet').val());
+				dispatch(slot_calculate_money(user_info.money))	
+			}
+
+			if(self.lang === "ro"){
+				showResults("Results", "Ai castigat ");
+			} else {
+				showResults("Results", "You won ");
+			}
+		} else {
+			if($('#slot_bet').length>0){
+				user_info.money = user_info.money - parseInt($('#slot_bet').val());
+				dispatch(slot_calculate_money(user_info.money))	
+			}
+		}
+
+		var slot_payload_server = {
+			user_id: props.user_id,
+			user: props.user, 
+			user_table: props.user_table, 
+			user_type: props.type,
+			money: user_info.money
+		}		
+		socket.emit('slot_results_send', slot_payload_server);
+    }
 }
 
 function sort_array(list_element, sort_by) {
@@ -440,22 +537,44 @@ function sort_array(list_element, sort_by) {
 	return list_element;
 }
 
+function draw_dot(canvas, x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
+	ctx = canvas.getContext("2d");
+	ctx.beginPath();
+	ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
+	ctx.fillStyle = fillStyle;
+	if(strokeStyle !== ""){
+		ctx.lineWidth = lineWidth;
+		ctx.strokeStyle = strokeStyle;
+		ctx.stroke();
+	}		
+	ctx.fill();
+	ctx.closePath();
+}
+
 function Slot(props) {	
+	socket = props.socket;
+	var lang = props.lang;
+	var money = props.money;	
+
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'slots')		
-		my_slot = new slot_game(props, "slot_machine111");
+		my_slot = new slot_game(props, "slot_machine");
 		my_slot.ready();		
 		$(window).resize(function(){
 			my_slot.ready("resize");	
 		});
 	}, 0);
+
+	function handleChange(e){
+		var bet = e.target.value;		
+		if($('#money_total').length>0){
+			$('#money_total').text(money-bet);
+		}
+	}
 	
-	socket = props.socket;
-	var lang = props.lang;
-	var money = props.money;	
+	
 	return (
-		<div id="slot_machine111">
-			<p>Still under construction.</p>
+		<div id="slot_machine">
 			<div className="slot_header_container">
 				<div className="slot_header">
 					{lang === "ro" ? <h1>Pacanele</h1> : <h1>Slots Machine</h1>}	
@@ -463,15 +582,17 @@ function Slot(props) {
 				</div>
 			</div>
 			<div className="slot_machine_container">
-				<div className="slot_machine"></div>
+				<div className="slot_machine">
+					<canvas id="slot_machine_lines"></canvas>
+				</div>
 			</div>
 			<div className="slot_buttons_container">
 				<div className="slot_buttons">
 					<Row>
 						<Col className="slot_buttons_box" sm={5}>
 							{lang === "ro" ? 
-								<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{money} morcovi</span></p> : 
-								<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{money} carrots</span></p>
+								<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span id="money_total">{money-1}</span> morcovi</p> : 
+								<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span id="money_total">{money-1}</span> carrots</p>
 							}
 						</Col>
 						<Col className="slot_buttons_box" sm={5}>
@@ -479,7 +600,7 @@ function Slot(props) {
 								<p className="slot_buttons_box_text">PARIAZA</p> : 
 								<p className="slot_buttons_box_text">BET</p>
 							}
-							<input className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max={money}></input>
+							<input onChange={(e) => {handleChange(e)}} className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max={money}></input>
 						</Col>
 						<Col sm={2} className="slot_spin_container">
 							<button className="slot_spin shadow_convex" id="slot_spin">SPIN</button>
@@ -487,9 +608,13 @@ function Slot(props) {
 					</Row>
 				</div>
 			</div>
+			{lang === "ro" ? 
+				<p id="slot_rules">Click aici pentru a vedea regulile</p> : 
+				<p id="slot_rules">Click here to see rules</p>
+			}
 			<div className="show_results_container">
 				<div className="show_results">
-					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
+					<h1></h1>
 					<p></p>
 				</div>
 			</div>

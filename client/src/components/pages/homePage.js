@@ -9,6 +9,7 @@ import SignIn from './signIn';
 import SignUp from './signUp';
 import Splash from './splash_screen';
 import Sapou from './partials/sapou';
+import { getCookie, setCookie } from '../utils';
 
 var self;
 var socket;
@@ -32,8 +33,6 @@ class HomePage extends React.Component {
 		self.casino_log = self.casino_log.bind(self);
 		self.casino_cookies = self.casino_cookies.bind(self);
 		self.checkCookie = self.checkCookie.bind(self);
-		self.getCookie = self.getCookie.bind(self);
-		self.setCookie = self.setCookie.bind(self);
 	}
 
 	componentDidMount() {
@@ -41,41 +40,18 @@ class HomePage extends React.Component {
 	}
 
 	checkCookie = function(){
-		var cookies = self.getCookie("casino_cookies");
+		var cookies = getCookie("casino_cookies");
 		
 		if(cookies !== ''){
 			self.setState({ cookies: true });
 		} 
 
-		var user = self.getCookie("casino_user");
+		var user = getCookie("casino_user");
 		if(user === ""){
 			self.splash_screen();
 		} else {
 			window.location.href = '/salon';
 		}
-	}
-
-	getCookie = function (cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-		  	var c = ca[i];
-		  	while (c.charAt(0) === ' ') {
-				c = c.substring(1);
-		  	}
-		  	if (c.indexOf(name) === 0) {
-				return c.substring(name.length, c.length);
-		  	}
-		}
-		return "";
-	}
-
-	setCookie = function(cname,cvalue,exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires=" + d.toGMTString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 	
 	casino_log = function(link){	
@@ -91,7 +67,7 @@ class HomePage extends React.Component {
 	}	
 
 	casino_cookies = function(){
-		self.setCookie("casino_cookies", true, 30);
+		setCookie("casino_cookies", true, 30);
 		self.setState({ cookies: true });
 	}
 

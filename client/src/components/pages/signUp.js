@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
+import { getCookie, setCookie, showResults } from '../utils';
 
 var self; 
 class SignUp extends Component {	
@@ -12,43 +13,16 @@ class SignUp extends Component {
 			socket: props.socket,
 			lang: props.lang,
 			user_minor: null,
-	  	};		
-		
-		self.getCookie = self.getCookie.bind(self);	
-		self.setCookie = self.setCookie.bind(self);			
+	  	};				
 		self.submit = self.submit.bind(self);	
 		self.loader = self.loader.bind(self);	
 		self.check_submit = self.check_submit.bind(self);	
 		self.submit_form = self.submit_form.bind(self);	
 		self.minor_check = self.minor_check.bind(self);	
-		self.show_results = self.show_results.bind(self);
 	}
 
 	componentDidMount() {		
-		self.setState({ user_minor: self.getCookie('user_minor') });
-	}
-
-	getCookie = function (cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-		  	var c = ca[i];
-		  	while (c.charAt(0) === ' ') {
-				c = c.substring(1);
-		  	}
-		  	if (c.indexOf(name) === 0) {
-				return c.substring(name.length, c.length);
-		  	}
-		}
-		return "";
-	}
-
-	setCookie = function(cname,cvalue,exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires=" + d.toGMTString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		self.setState({ user_minor: getCookie('user_minor') });
 	}
 
 	submit = function(){
@@ -60,13 +34,13 @@ class SignUp extends Component {
 					$('#loader_container').hide(); 
 					$('#home').show();
 					if(self.state.lang === "ro"){
-						self.show_results('Esti deja inregistrat.');
+						showResults('Esti deja inregistrat.');
 					} else {
-						self.show_results('You are already registered.');
+						showResults('You are already registered.');
 					}					
 				} else {
-					self.setCookie("casino_email", $('#signup_email').val(), 1);
-					self.setCookie("casino_user", $('#signup_user').val(), 1);
+					setCookie("casino_email", $('#signup_email').val(), 1);
+					setCookie("casino_user", $('#signup_user').val(), 1);
 					self.submit_form();
 				}
 			});
@@ -137,18 +111,10 @@ class SignUp extends Component {
 	minor_check = function(check){
 		$('#minor_container').remove();	
 		if(check){
-			self.setCookie("user_minor", true, 1);
+			setCookie("user_minor", true, 1);
 		} else {		
-			self.setCookie("user_minor", false, 1);
+			setCookie("user_minor", false, 1);
 		}
-	}
-
-	show_results = function(message){
-		$('.show_results_container').show();
-		$('.show_results p').text(message);
-		$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
-			$(this).hide();
-		});
 	}
 
 	render() {

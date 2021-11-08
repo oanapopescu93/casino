@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {game_visible} from '../actions/actions'
-
 import $ from 'jquery'; 
 import Modal from 'react-bootstrap/Modal'
 
@@ -11,7 +10,10 @@ import ChatForm from './chatForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
+
 import carrot_img from '../img/icons/carrot_icon.png';
+
+import { setCookie } from '../utils';
 
 function Panel(props){
     var user = props.user;
@@ -87,13 +89,6 @@ function Panel(props){
 				var url_back02 = window.location.href.split('/table/');
 				window.location.href = url_back02[0];
 		  }
-	}
-
-	function setCookie(cname,cvalue,exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires=" + d.toGMTString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 
 	return (

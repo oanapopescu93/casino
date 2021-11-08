@@ -4,6 +4,8 @@ import $ from 'jquery';
 import {roulette_calculate_money, roulette_get_history} from '../../actions/actions'
 import {connect} from 'react-redux'
 
+import { showResults } from '../../utils'
+
 import carrot_img from '../../img/icons/carrot_icon.png';
 import roulette_bets_european from '../../img/roulette/roulette_bets_european.png'
 import roulette_bets_american from '../../img/roulette/roulette_bets_american.png'
@@ -69,7 +71,7 @@ var font_bold_12 = 'bold 12px sans-serif';
 var font_bold_14 = 'bold 14px sans-serif';
 var font_bold_16 = 'bold 16px sans-serif';
 
-var user_info = 0;
+var user_info;
 var dispatch_nr = 0; //this prevents multiplication
 
 var items = [
@@ -90,8 +92,12 @@ function roulette_game(props){
 	user_info = {money: props.money};	
 	if(props.roulette !== -1){
 		user_info = props.roulette[0];			
-	}	
-	$('#user_money span').text(user_info.money);	
+	}
+	if($('#user_money').length>0){
+		if($('#user_money span').length>0){
+			$('#user_money span').text(user_info.money);	
+		}
+	}
 	
 	this.ready = function(){
 		self.createCanvas(canvas_width, canvas_height);
@@ -122,7 +128,7 @@ function roulette_game(props){
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 900;
+				canvas.width = 260;
 				canvas.height = 300;
 
 				roulette_radius_x = 130;
@@ -139,17 +145,17 @@ function roulette_game(props){
 				bet_y = 130;
 				bet_square = 30;
 
-				button_spin  = {x: 125, y: roulette_radius_y+140, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 115, text_y: roulette_radius_y+144};
-				button_show_bets = {x: bet_x+55, y: roulette_radius_y+100, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'BET', text_x: bet_x+39, text_y: roulette_radius_y+104}
+				button_spin  = {x: 100, y: roulette_radius_y+140, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 88, text_y: roulette_radius_y+144};
+				button_show_bets = {x: 150, y: roulette_radius_y+140, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'BET', text_x: 140, text_y: roulette_radius_y+144}
 				
-				spin_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
-				show_bets_button_coordonates = {x:bet_x+35, y:roulette_radius_y+75, width:45, height:45};
+				spin_button_coordonates = {x:80, y:roulette_radius_y+120, width:45, height:45};
+				show_bets_button_coordonates = {x:130, y:roulette_radius_y+120, width:45, height:45};
 
 				spin_clear = [[0,0, 260, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
 			} else {
 				//small portrait
 				canvas.width = 290;
-				canvas.height = 300;
+				canvas.height = 400;
 				roulette_radius_x = 150;
 				roulette_radius_y = 150;
 				outsideRadius = 120;
@@ -162,13 +168,13 @@ function roulette_game(props){
 				
 				bet_x = 330;
 				bet_y = 130;
-				bet_square = 30;
+				bet_square = 30;				
 				
-				button_spin  = {x: 115, y: roulette_radius_y+180, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 105, text_y: roulette_radius_y+184};
+				button_spin  = {x: 115, y: roulette_radius_y+180, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 102, text_y: roulette_radius_y+184};
 				button_show_bets = {x: 170, y: roulette_radius_y+180, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'BET', text_x: 160, text_y: roulette_radius_y+184}
 				
-				spin_button_coordonates = {x:bet_x-20, y:roulette_radius_y+75, width:45, height:45};
-				show_bets_button_coordonates = {x:bet_x+35, y:roulette_radius_y+75, width:45, height:45};
+				spin_button_coordonates = {x:90, y:roulette_radius_y+160, width:45, height:45};
+				show_bets_button_coordonates = {x:150, y:roulette_radius_y+160, width:45, height:45};
 
 				spin_clear = [[0,0, 298, canvas.height], [roulette_radius_x + 120, roulette_radius_y + 65, 150, 120]];
 			}
@@ -421,7 +427,7 @@ function roulette_game(props){
 			//console.log('SPIN', your_bets);
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
-				show_results("", "Please place your bet before betting.");			
+				showResults("", "Please place your bet before betting.");			
 			} else {
 				spin_click++;
 				my_click++;
@@ -485,9 +491,9 @@ function roulette_game(props){
 				
 				setTimeout(function(){ 
 					if(lang === "ro"){
-						show_results("Results", "Numarul norocos este " + win_nr.nr);
+						showResults("Resultate", "Numarul norocos este " + win_nr.nr);
 					} else {
-						show_results("Results", "The lucky number is " + win_nr.nr);
+						showResults("Results", "The lucky number is " + win_nr.nr);
 					}						
 					your_last_bet = {}
 					your_bets = [];
@@ -789,7 +795,6 @@ function roulette_game(props){
 	}
 	
 	this.win_lose = function(arr){
-		//console.log('win', arr, user_info)
 		if(Object.keys(user_info).length !== 0 || !isNaN(user_info.money)){			
 			for(var i in arr){			
 				if(arr[i].win){		
@@ -801,7 +806,11 @@ function roulette_game(props){
 			dispatch(roulette_calculate_money(user_info.money))
 			dispatch(roulette_get_history(your_bets))
 		}
-		$('#user_money span').text(user_info.money);
+		if($('#user_money').length>0){
+			if($('#user_money span').length>0){
+				$('#user_money span').text(user_info.money);
+			}
+		}
 
 		var roulette_payload_server = {
 			user_id: props.user_id,
@@ -811,9 +820,6 @@ function roulette_game(props){
 			money: user_info.money
 		}
 		socket.emit('roulette_results_send', roulette_payload_server);
-		// socket.on('roulette_results_read', function(data){
-		// 	console.log('roulette_results--> ', data)
-		// });	   
 	}	
 }
 
@@ -822,11 +828,12 @@ function roulette_bets(props){
 	this.images = [];
 	var reason = "";
 
-	$('.roulette_bets_box .close').click(function() {
+	$('.roulette_bets .close').click(function() {
 		$('.roulette_bets_container').removeClass('open');
 	});
 	
 	this.ready = function(r){
+		console.log('ready', r)
 		reason = r;
 		self.createCanvas(canvas_width_bets, canvas_height_bets);
 		self.getImage(reason);
@@ -840,12 +847,12 @@ function roulette_bets(props){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
 				canvas_bets.width = 400;
-				canvas_bets.height = 200;
-				small_image = true;
-				roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
+				canvas_bets.height = 150;
+				small_image = false;
+				roulette_bets_coord = [0, 0, 795, 268, 0, 0, 400, 135];
 			} else {
 				//small portrait
-				canvas_bets.width = 200;
+				canvas_bets.width = 150;
 				canvas_bets.height = 400;
 				small_image = true;
 				roulette_bets_coord = [0, 0, 382, 1136, 0, 0, 191, 568];
@@ -876,6 +883,7 @@ function roulette_bets(props){
 	}
 
 	this.getImage = function(reason){
+		console.log('getImage', reason)
 		if(reason !== "resize"){
 			var promises = [];
 			for(var i in items){				
@@ -940,17 +948,103 @@ function roulette_bets(props){
 		ctx_bets.drawImage(img, x, y, w, h);		
 	}
 
-	function my_bets(squares, k, color){
+	this.create_roulette_bets = function(){
+		var color = ['red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red'];
+		var k = 0;
+		var squares;
+		if (window.innerWidth < 960){
+			if(window.innerHeight < window.innerWidth){
+				//small landscape					
+				if(roulette_type === "european"){
+					//console.log('type01a--> european small landscape')
+					squares = {
+						a: {x:0, y:0, w:27, h:78}, //0
+						b: {}, //00
+						c: {x:26, y:80, w:27, h:27}, //first square
+						d: {x:27, y:80, w:106, h:27}, //first 12
+						e: {x:27, y:110, w:53, h:27}, //1-18
+						f: {x:345, y:0, w:53, h:27}, //2 to 1
+					}					
+				} else {
+					//console.log('type01b--> american small landscape')
+					k = 1;
+					squares = {
+						a: {x:0, y:0, w:27, h:40}, //0
+						b: {x:0, y:40, w:27, h:40}, //00
+						c: {x:26, y:80, w:27, h:27}, //first square
+						d: {x:27, y:80, w:106, h:27}, //first 12
+						e: {x:27, y:110, w:53, h:27}, //1-18
+						f: {x:345, y:0, w:53, h:27}, //2 to 1
+					}	
+				}
+			} else {
+				//small portrait
+				if(roulette_type === "european"){
+					//console.log('type02a--> european small portrait')
+					squares = {
+						a: {x:53, y:0, w:78, h:27}, //0
+						b: {}, //00
+						c: {x:53, y:346, w:27, h:27}, //first square
+						d: {x:27, y:27, w:27, h:106}, //first 12
+						e: {x:0, y:27, w:27, h:53}, //1-18
+						f: {x:53, y:345, w:27, h:53}, //2 to 1
+					}
+				} else {
+					k = 1;
+					//console.log('type02b--> american small portrait')
+					squares = {
+						a: {x:53, y:0, w:40, h:27}, //0
+						b: {x:93, y:0, w:40, h:27}, //00
+						c: {x:53, y:346, w:27, h:27}, //first square
+						d: {x:27, y:27, w:27, h:106}, //first 12
+						e: {x:0, y:27, w:27, h:53}, //1-18
+						f: {x:53, y:345, w:27, h:53}, //2 to 1
+					}
+				}
+			}			
+		} else {
+			//big
+			if(roulette_type === "european"){
+				//console.log('type03a--> european big')
+				squares = {
+					a: {x:0, y:0, w:53, h:160}, //0
+					b: {}, //00
+					c: {x:50, y:160, w:53, h:57}, //first square
+					d: {x:50, y:160, w:212, h:57}, //first 12
+					e: {x:50, y:212, w:106, h:57}, //1-18
+					f: {x:685, y:0, w:106, h:53}, //2 to 1
+				}
+			} else {
+				k = 1;
+				//console.log('type03b--> american big')
+				squares = {
+					a: {x:0, y:0, w:53, h:80}, //0
+					b: {x:0, y:80, w:53, h:80}, //00
+					c: {x:50, y:160, w:53, h:57}, //first square
+					d: {x:50, y:160, w:212, h:57}, //first 12
+					e: {x:50, y:212, w:106, h:57}, //1-18
+					f: {x:685, y:0, w:106, h:53}, //2 to 1
+				}
+			}
+		}
+
+		my_bets(squares, k, color);
+	}
+	
+	function my_bets(squares, k, color, up){
 		var a = 0;
+		list_bets = [];
 		//draw_rect(ctx_bets, squares.a.x, squares.a.y, squares.a.w, squares.a.h, 'transparent', 1, 'red');
 		list_bets.push({x: squares.a.x, y: squares.a.y, width: squares.a.w, height: squares.a.h, color:"green", text: "0"});
 		
 		if(Object.keys(squares.b).length !== 0){ // it means it is american roulette and has 00
-			// draw_rect(ctx_bets, squares.b.x, squares.b.y, squares.b.w, squares.b.h, 'transparent', 1, 'red');
+			//draw_rect(ctx_bets, squares.b.x, squares.b.y, squares.b.w, squares.b.h, 'transparent', 1, 'red');
 			list_bets.push({x: squares.b.x, y: squares.b.y, width: squares.b.w, height: squares.b.h, color:"green", text: "00"});
 		}
-
+		
 		if(!small_image){
+			//big or small landscape
+			//console.log('type001')
 			for(var i = 1; i < numbers.length-k; i++) {	
 				a++
 				if(a > 3){
@@ -963,86 +1057,77 @@ function roulette_bets(props){
 				//draw_rect(ctx_bets, squares.c.x, squares.c.y, squares.c.w, squares.c.h, 'transparent', 1, 'red');
 				list_bets.push({x: squares.c.x, y: squares.c.y, width: squares.c.w, height: squares.c.h, color: color[i-1], text: i.toString()});
 			}
-		} else {
 
-		}		
+			// draw_rect(ctx_bets, 0*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 1*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 2*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
+			list_bets.push({x: 0*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "1st 12"});	
+			list_bets.push({x: 1*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "2st 12"});	
+			list_bets.push({x: 2*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "3st 12"});	
 		
-		// draw_rect(ctx_bets, 0*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, 1*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, 2*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
-		list_bets.push({x: 0*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "1st 12"});	
-		list_bets.push({x: 1*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "2st 12"});	
-		list_bets.push({x: 2*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "3st 12"});	
+			// draw_rect(ctx_bets, 0*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 1*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 2*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 3*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 4*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 5*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');				
+			list_bets.push({x: 0*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "1-18"});	
+			list_bets.push({x: 1*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Even"});	
+			list_bets.push({x: 2*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "reds"});	
+			list_bets.push({x: 3*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "blacks"});	
+			list_bets.push({x: 4*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Odd"});	
+			list_bets.push({x: 5*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "19-36"});
 
-		// draw_rect(ctx_bets, 0*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, 1*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, 2*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, 3*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, 4*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, 5*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');				
-		list_bets.push({x: 0*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "1-18"});	
-		list_bets.push({x: 1*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Even"});	
-		list_bets.push({x: 2*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "reds"});	
-		list_bets.push({x: 3*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "blacks"});	
-		list_bets.push({x: 4*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Odd"});	
-		list_bets.push({x: 5*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "19-36"});
-		
-		// draw_rect(ctx_bets, squares.f.x, 0*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, squares.f.x, 1*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
-		// draw_rect(ctx_bets, squares.f.x, 2*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
-		list_bets.push({x: squares.f.x, y: 0*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1a"});	
-		list_bets.push({x: squares.f.x, y: 1*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1b"});	
-		list_bets.push({x: squares.f.x, y: 2*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c"});
-	}
-
-	this.create_roulette_bets = function(){
-		var color = ['red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red'];
-		var k = 0;
-		var squares;
-		if(roulette_type === "european"){
-			if(!small_image){
-				squares = {
-					a: {x:0, y:0, w:53, h:160}, //0
-					b: {}, //first square
-					c: {x:50, y:160, w:53, h:57}, //first square
-					d: {x:50, y:160, w:212, h:57}, //first 12
-					e: {x:50, y:212, w:106, h:57}, //first 12
-					f: {x:685, y:0, w:106, h:53}, //2 to 1
-				}
-			} else {
-				squares = {
-					a: {x:0, y:0, w:53, h:160}, //0
-					b: {}, //first square
-					c: {x:50, y:160, w:53, h:57}, //first square
-					d: {x:50, y:160, w:212, h:57}, //first 12
-					e: {x:50, y:212, w:106, h:57}, //first 12
-					f: {x:685, y:0, w:106, h:53}, //2 to 1
-				}
-			}
+			// draw_rect(ctx_bets, squares.f.x, 0*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.f.x, 1*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.f.x, 2*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
+			list_bets.push({x: squares.f.x, y: 0*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1a"});	
+			list_bets.push({x: squares.f.x, y: 1*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1b"});	
+			list_bets.push({x: squares.f.x, y: 2*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c"});
 		} else {
-			k = 1;
-			if(!small_image){
-				squares = {
-					a: {x:0, y:0, w:53, h:80}, //0
-					b: {x:0, y:80, w:53, h:80}, //00
-					c: {x:50, y:160, w:53, h:57}, //first square
-					d: {x:50, y:160, w:212, h:57}, //first 12
-					e: {x:50, y:212, w:106, h:57}, //first 12
-					f: {x:685, y:0, w:106, h:53}, //2 to 1
+			//small portrait
+			//console.log('type002')
+			for(var i = 1; i < numbers.length-k; i++) {	
+				a++
+				if(a > 12){
+					squares.c.x = squares.c.x + squares.c.w;	
+					squares.c.y = squares.c.y + 11 * squares.c.w;
+					a = 1;
+				} else {
+					squares.c.y = squares.c.y - squares.c.w;
 				}
-			} else {
-				squares = {
-					a: {x:0, y:0, w:53, h:80}, //0
-					b: {x:0, y:80, w:53, h:80}, //00
-					c: {x:50, y:160, w:53, h:57}, //first square
-					d: {x:50, y:160, w:212, h:57}, //first 12
-					e: {x:50, y:212, w:106, h:57}, //first 12
-					f: {x:685, y:0, w:106, h:53}, //2 to 1
-				}
+				//draw_rect(ctx_bets, squares.c.x, squares.c.y, squares.c.w, squares.c.h, 'transparent', 1, 'red');
+				list_bets.push({x: squares.c.x, y: squares.c.y, width: squares.c.w, height: squares.c.h, color: color[i-1], text: i.toString()});
 			}
+
+			// draw_rect(ctx_bets, squares.d.x, 0 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.d.x, 1 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.d.x, 2 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red');
+			list_bets.push({x: squares.d.x, y: 0 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "1st 12"});	
+			list_bets.push({x: squares.d.x, y: 1 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "2st 12"});	
+			list_bets.push({x: squares.d.x, y: 2 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "3st 12"});	
+
+			// draw_rect(ctx_bets, squares.e.x, 0 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.e.x, 1 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.e.x, 2 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.e.x, 3 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.e.x, 4 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, squares.e.x, 5 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red');				
+			list_bets.push({x: squares.e.x, y: 0 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "1-18"});	
+			list_bets.push({x: squares.e.x, y: 1 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Even"});	
+			list_bets.push({x: squares.e.x, y: 2 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "reds"});	
+			list_bets.push({x: squares.e.x, y: 3 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "blacks"});	
+			list_bets.push({x: squares.e.x, y: 4 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Odd"});	
+			list_bets.push({x: squares.e.x, y: 5 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "19-36"});
+
+			// draw_rect(ctx_bets, 0 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 1 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
+			// draw_rect(ctx_bets, 2 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red');
+			list_bets.push({x: 0 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1a"});	
+			list_bets.push({x: 1 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1b"});	
+			list_bets.push({x: 2 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c"});
 		}
-		my_bets(squares, k, color);
-	}
+	}	
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
@@ -1107,14 +1192,6 @@ function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
 	ctx.fill();
 	ctx.closePath();
 }
-function show_results(title, message){
-	$('.show_results_container').show();
-	$('.show_results h1').text(title);
-	$('.show_results p').text(message);
-	$( ".show_results_container" ).click(function() {
-		$('.show_results_container').hide();
-	});
-}
 
 function Roulette(props) {
 	setTimeout(function(){ 
@@ -1123,43 +1200,48 @@ function Roulette(props) {
 		var title = props.user_table;
 		title = title.charAt(0).toUpperCase() + title.slice(1);
 		$('.roulette_title').empty();
-		$('.roulette_title').append(title);
+		if (window.innerWidth >= 960){
+			$('.roulette_title').append(title);
+		}		
 		
 		my_roulette = new roulette_game(props);
-		my_roulette.ready();		
+		my_roulette.ready();
+		my_roulette_bets = new roulette_bets(props);
+		my_roulette_bets.ready();
+
 		$(window).resize(function(){
+			console.log('resize', document.getElementById("roulette_bets_canvas"))
 			if(document.getElementById("roulette_canvas") !== null){
 				my_roulette.ready();
 			}
-		});
-
-		my_roulette_bets = new roulette_bets(props);
-		my_roulette_bets.ready();		
-		$(window).resize(function(){
-			if(document.getElementById("roulette_canvas_bets") !== null){
-				my_roulette_bets.ready();
+			if(document.getElementById("roulette_bets_canvas") !== null){
+				my_roulette_bets.ready('resize');
 			}
 		});
 	}, 0);	
 	socket = props.socket;
 	
 	return (
-		<div className="roulette_container">
-			<h1 className="roulette_title"></h1>
-			<canvas id="roulette_canvas"></canvas>
-			<div className="roulette_bets_container">
-				<div className="roulette_bets_box shadow_concav">
-					<div className="close">x</div>
-					<canvas id="roulette_bets_canvas"></canvas>	
-				</div>
+		<>
+			<div className="roulette_container">
+				<h1 className="roulette_title"></h1>
+				<canvas id="roulette_canvas"></canvas>
 			</div>
 			<div className="show_results_container">
 				<div className="show_results">
 					<h1></h1>
 					<p></p>
 				</div>
-			</div>			
-		</div>
+			</div>
+			<div className="roulette_bets_container">
+				<div className="roulette_bets shadow_concav">
+					<div className="close">x</div>
+					<div className="roulette_bets_box">						
+						<canvas id="roulette_bets_canvas"></canvas>	
+					</div>
+				</div>
+			</div>
+		</>
 	);
 }
 

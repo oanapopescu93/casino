@@ -3,9 +3,9 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import Modal from 'react-bootstrap/Modal'
+import { setCookie, showResults } from '../utils';
 
 var socket;
-
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data) {
@@ -16,7 +16,7 @@ function submit(){
 			} else {
 				$('#loader_container').hide(); 
 				$('#home').show();
-				show_results('You are not registered.');
+				showResults('You are not registered.');
 			}
 		});
 	} else {
@@ -77,21 +77,6 @@ function check_submit(){
 	
 	//console.log('pass_result', email, regex_pass, pass_result);
 	return pass_result;
-}
-
-function setCookie(cname,cvalue,exdays) {
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	var expires = "expires=" + d.toGMTString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function show_results(message){
-	$('.show_results_container').show();
-	$('.show_results p').text(message);
-	$('body').off('click', '.show_results_container').on('click', '.show_results_container', function () {
-		$(this).hide();
-	});
 }
 
 function SignIn(props) {

@@ -17,6 +17,8 @@ import Privacy from './other_pages/privacy';
 import Questions from './other_pages/questions';
 import Career from './other_pages/career';
 
+import { getCookie, setCookie } from '../utils';
+
 var self;
 var casino_games = {
 	roulette_tables: [], 
@@ -113,7 +115,6 @@ class Salon extends Component {
 		self.handleBack = self.handleBack.bind(self);
 		self.handleChange = self.handleChange.bind(self);
 		self.salonData = self.salonData.bind(self);
-		self.getCookie = self.getCookie.bind(self);	
 	}
   
 	componentDidMount(a) {
@@ -149,7 +150,7 @@ class Salon extends Component {
 					self.setState({ casino_games: casino_games }); 
 
 					if(res.server_user === "" || res.server_user === null || typeof res.server_user === "undefined"){
-						var server_user = self.getCookie("casino_user");
+						var server_user = getCookie("casino_user");
 						self.setState({ user: server_user });	
 					} else {
 						self.setState({ user: res.server_user });	
@@ -158,22 +159,6 @@ class Salon extends Component {
 				})
 			.catch(err => console.log(err)); 
 		
-	}
-
-	getCookie = function (cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-		  	var c = ca[i];
-		  	while (c.charAt(0) === ' ') {
-				c = c.substring(1);
-		  	}
-		  	if (c.indexOf(name) === 0) {
-				return c.substring(name.length, c.length);
-		  	}
-		}
-		return "";
 	}
 	
 	salonData(){
@@ -192,18 +177,11 @@ class Salon extends Component {
 	}
 
 	handleExit(){
-		self.setCookie("casino_user", '', 1);
-		self.setCookie("casino_email", '', 1);
+		setCookie("casino_user", '', 1);
+		setCookie("casino_email", '', 1);
 		var url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];
-	}
-
-	setCookie(cname,cvalue,exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires=" + d.toGMTString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 
 	handleChange(type){

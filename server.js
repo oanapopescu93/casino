@@ -28,7 +28,7 @@ var users = [];
 var sockets = [];
 var monkey_roulette = [];
 var monkey_blackjack = [];
-var monkey_slots = true;
+var monkey_slots = false;
 
 var blackjack_deck = new Array();
 var hidden_dealer = {};
@@ -62,7 +62,6 @@ io.on('connection', function(socket) {
 		}
 		io.to(socket.id).emit('signin_read', [exists, obj]);		
 	});
-
 	socket.on('signup_send', function(data) {		
 		var exists = false;	
 		user = data.user;
@@ -87,11 +86,9 @@ io.on('connection', function(socket) {
 
 		io.to(socket.id).emit('signup_read', [exists, obj]);
 	});
-
 	socket.on('salon_send', function(data) {
 		io.emit('salon_read', {server_tables: server_tables, server_user: user });
 	});
-
 	socket.on('logout_send', function(data) {	
 		if (socket.handshake.session.userdata) {
             delete socket.handshake.session.userdata;
@@ -99,16 +96,13 @@ io.on('connection', function(socket) {
         }
 		io.to(socket.id).emit('logout_read', data);
 	});
-
 	socket.on('donate_send', function(data) {
 		io.to(socket.id).emit('donate_read', crypto);		
 	});
-
 	socket.on('contact_send', function(data) {
 		//io.to(socket.id).emit('contact_read', contact_details);	
 		io.emit('contact_read', contact_details);	
 	});
-
 	socket.on('support_send', function(data) {
 		if(data.lang === "ro"){
 			io.to(socket.id).emit('support_read', "Mesajul a fost trimis");	
@@ -438,10 +432,25 @@ io.on('connection', function(socket) {
 			
 		for(var i in sockets){
 		 	if(sockets[i].user_id === this_user){
+				var is_lucky = Math.floor(Math.random() * 100);
+				var how_lucky = 7;
+				if(is_lucky % how_lucky === 0){
+					monkey_slots = true;
+				}
 		 		io.to(socket.id).emit('slots_read', [array_big, matrix, monkey_slots]);
 		 	} 
 		}
-	})
+	});
+	socket.on('slot_results_send', function(data) {
+		var money = data.money;
+		for(var i in users_json){	
+			if(data.user_id === users_json[i].id){
+				users_json[i].money = money;
+				break;
+			}
+		}
+		fs.writeFileSync(users_file, JSON.stringify(users_json));
+	});
 
 	socket.on('race_send', function(data) {
 		var id = data.id;
@@ -457,19 +466,6 @@ io.on('connection', function(socket) {
 		}
 		var server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
 		io.to(socket.id).emit('race_read', server_user);
-	});
-	socket.on('slots_results_send', function(data) {
-		//socket.emit("slots_results_read", "hello friend");
-		var money = data.money;
-		var user_id = data.user_id;
-		for(var i in users_json){	
-			if(data.user_id === users_json[i].id){
-				users_json[i].money = money;
-				break;
-			}
-		}
-		// const data = fs.readFileSync(path,{encoding: "utf8"}); 
-		fs.writeFileSync(users_file, JSON.stringify(users_json));
 	});
 
 	socket.on('disconnect', function(username) {		
@@ -709,7 +705,7 @@ function slot_matrix(x, size){
 			}
 			break; 	
 	} 
-	return {payable: x, matrix:matrix, prize:my_prize};
+	return {matrix_id: x, matrix:matrix, prize:my_prize};
 }
 
 http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));

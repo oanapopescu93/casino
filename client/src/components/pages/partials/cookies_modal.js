@@ -1,7 +1,6 @@
 import React from 'react';
 
-
-function Cookies(props) {
+function Cookies() {
 	return (
 		<div className="cookies_msg_container" id ="cookies_msg">
             <div className="cookies_msg">

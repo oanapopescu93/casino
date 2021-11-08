@@ -10,6 +10,7 @@ import Game from './game';
 import UserAccount from './userAccount';
 import Support from './other_pages/support';
 import Panel from './panel_control';
+import { getCookie } from '../utils';
 
 var self;
 
@@ -89,7 +90,7 @@ class UserPage extends Component {
 		return new Promise(function(resolve, reject){
 			var table = window.location.href.split('table/')
 			
-			var id = parseInt(self.getCookie("casino_id"));
+			var id = parseInt(getCookie("casino_id"));
 			if(id === "" || id === "indefined"){
 				id = -1;
 			}
@@ -97,7 +98,7 @@ class UserPage extends Component {
 			self.state.socket.emit('user_page_send', [table[1], id]);
 			self.state.socket.on('user_page_read', function(data){
 				if(data.user === "" || data.user === "indefined"){
-					data.user = self.getCookie("casino_user")
+					data.user = getCookie("casino_user")
 				}
 				self.setState({ user: data});
 				self.setState({ user_id: data.id});
@@ -106,22 +107,6 @@ class UserPage extends Component {
 			});	
 		});
 	};
-
-	getCookie = function (cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-		  	var c = ca[i];
-		  	while (c.charAt(0) === ' ') {
-				c = c.substring(1);
-		  	}
-		  	if (c.indexOf(name) === 0) {
-				return c.substring(name.length, c.length);
-		  	}
-		}
-		return "";
-	}  
   
 	render() {
 		var user_id = this.state.user_id;

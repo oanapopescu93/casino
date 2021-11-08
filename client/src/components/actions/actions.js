@@ -24,6 +24,19 @@ export const blackjack_get_history = function(history) {
 	}
 }
 
+export const slot_calculate_money = function(money_sum) {
+	return {
+		type: "slot_calculate_money",
+		money: money_sum
+	}
+}
+export const slot_get_history = function(history) {
+	return {
+		type: "slot_get_history",
+		history: history
+	}
+}
+
 export const game_visible = function(data) {
 	return {
 		type: "game_visible",

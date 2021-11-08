@@ -13,6 +13,8 @@ import Donate from './money/donate';
 import Language from './partials/language';
 import Footer from './partials/footer';
 
+import { getCookie } from '../utils';
+
 import socketIOClient from "socket.io-client/dist/socket.io";
 const socket = socketIOClient("/");
 
@@ -22,15 +24,14 @@ class Home extends Component {
 		super(props);
 		self = this;
 		self.state = {
-			lang: self.getCookie("casino_lang"),
+			lang: getCookie("casino_lang"),
 			contact: "",
 		};
-		self.getCookie = self.getCookie.bind(self);	
 		self.lang_change = self.lang_change.bind(self);	
 	}
 
 	componentDidMount(){
-		var id = parseInt(self.getCookie("casino_id"));
+		var id = parseInt(getCookie("casino_id"));
 		if(id === "" || id === "indefined"){
 			id = -1;
 		}
@@ -39,22 +40,6 @@ class Home extends Component {
 			self.setState({ contact: data.contact});
 		});	    
     }
-
-	getCookie(cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-			  var c = ca[i];
-			  while (c.charAt(0) === ' ') {
-				c = c.substring(1);
-			  }
-			  if (c.indexOf(name) === 0) {
-				return c.substring(name.length, c.length);
-			  }
-		}
-		return "";
-	}
 
 	lang_change(text){
 		self.setState({ lang: text });
