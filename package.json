@@ -28,6 +28,7 @@
     "nodemon": "^2.0.7",
     "owl.carousel": "^2.3.4",
     "path": "^0.12.7",
+    "react-google-login": "^5.2.2",
     "react-owl-carousel": "^2.3.3",
     "request": "^2.88.2",
     "session-file-store": "^1.5.0",

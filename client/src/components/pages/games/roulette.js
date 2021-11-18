@@ -833,7 +833,6 @@ function roulette_bets(props){
 	});
 	
 	this.ready = function(r){
-		console.log('ready', r)
 		reason = r;
 		self.createCanvas(canvas_width_bets, canvas_height_bets);
 		self.getImage(reason);

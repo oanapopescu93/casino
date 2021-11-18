@@ -450,7 +450,6 @@ function slot_game(props, id){
     }
 
 	this.drawResultsArray = function(result){
-		console.log(result)
 		var canvas = $('#slot_machine_lines')[0];
 		ctx = canvas.getContext("2d");
 		if(result[0]){

@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6ed4ea2bd74159cb3cb9c06e79130ef0",
+    "revision": "da93273dd57ef21d91b01ad04ffa9ca9",
     "url": "/index.html"
   },
   {
-    "revision": "c49c4e0752b3bb6fd7d1",
-    "url": "/static/css/2.4fd09901.chunk.css"
+    "revision": "391e71569fb36fea97a4",
+    "url": "/static/css/2.c3594674.chunk.css"
   },
   {
-    "revision": "e6c8b9ae8b9ac0ceedfc",
-    "url": "/static/css/main.d2b398a9.chunk.css"
+    "revision": "d202caa0e100067d15f9",
+    "url": "/static/css/main.937380af.chunk.css"
   },
   {
-    "revision": "c49c4e0752b3bb6fd7d1",
-    "url": "/static/js/2.ce7e8200.chunk.js"
+    "revision": "391e71569fb36fea97a4",
+    "url": "/static/js/2.2cbde4c8.chunk.js"
   },
   {
     "revision": "8343773d2bc1f91de45b56764e549199",
-    "url": "/static/js/2.ce7e8200.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.2cbde4c8.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e6c8b9ae8b9ac0ceedfc",
-    "url": "/static/js/main.7b552f43.chunk.js"
+    "revision": "d202caa0e100067d15f9",
+    "url": "/static/js/main.ea578f32.chunk.js"
   },
   {
     "revision": "73635f645c271e35ff15",
@@ -40,8 +40,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/carrot_icon.269bad3c.png"
   },
   {
-    "revision": "51cacaf2454040a83f9d7a0395a01937",
-    "url": "/static/media/img_cards.51cacaf2.png"
+    "revision": "179336c690fbe793a42524082762debc",
+    "url": "/static/media/img_cards.179336c6.png"
   },
   {
     "revision": "5c7b84a78b7a46cea395c60af426f12d",
@@ -50,6 +50,14 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "d95f8421bc7bd672b7b075f4abb0d1d4",
     "url": "/static/media/rabbit.d95f8421.jpg"
+  },
+  {
+    "revision": "910ee3b126fc6b9dd033de8b3462f7c9",
+    "url": "/static/media/rabbit000.910ee3b1.png"
+  },
+  {
+    "revision": "b6445cdb6a7327ec7b6506afe484ed73",
+    "url": "/static/media/rabbit_move.b6445cdb.png"
   },
   {
     "revision": "c1ab81a7cd89fafbf5626c3bf7f0af55",

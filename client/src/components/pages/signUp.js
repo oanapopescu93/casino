@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import { getCookie, setCookie, showResults } from '../utils';
+import GoogleLogin from 'react-google-login';
 
 var self; 
 class SignUp extends Component {	
@@ -13,6 +14,7 @@ class SignUp extends Component {
 			socket: props.socket,
 			lang: props.lang,
 			user_minor: null,
+			client_id: '',
 	  	};				
 		self.submit = self.submit.bind(self);	
 		self.loader = self.loader.bind(self);	
@@ -21,7 +23,11 @@ class SignUp extends Component {
 		self.minor_check = self.minor_check.bind(self);	
 	}
 
-	componentDidMount() {		
+	componentDidMount() {
+		self.state.socket.emit('client_id_send', '');
+		self.state.socket.on('client_id_read', function(data){
+			self.setState({ client_id: data });
+		});	
 		self.setState({ user_minor: getCookie('user_minor') });
 	}
 
@@ -137,7 +143,7 @@ class SignUp extends Component {
 									<h6 id="signup_email_red" className="text_red"></h6>
 									<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />									
 									<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
-									<h6 id="signup_pass_red" className="text_red"></h6>
+									<h6 id="signup_pass_red 111" className="text_red"></h6>
 									<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
 								</Form>
 								<div className="show_results_container">
@@ -155,7 +161,7 @@ class SignUp extends Component {
 										<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />
 										<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />
 										<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
-										<h6 id="signup_pass_red" className="text_red"></h6>
+										<h6 id="signup_pass_red 222" className="text_red"></h6>
 										<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
 								</Form>
 						

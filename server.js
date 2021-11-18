@@ -86,9 +86,14 @@ io.on('connection', function(socket) {
 
 		io.to(socket.id).emit('signup_read', [exists, obj]);
 	});
+	socket.on('client_id_send', function(data) {
+		io.emit('client_id_read', constants.GOOGLE_CLIENT_ID);	
+	});
+
 	socket.on('salon_send', function(data) {
 		io.emit('salon_read', {server_tables: server_tables, server_user: user });
 	});
+
 	socket.on('logout_send', function(data) {	
 		if (socket.handshake.session.userdata) {
             delete socket.handshake.session.userdata;
@@ -96,6 +101,7 @@ io.on('connection', function(socket) {
         }
 		io.to(socket.id).emit('logout_read', data);
 	});
+
 	socket.on('donate_send', function(data) {
 		io.to(socket.id).emit('donate_read', crypto);		
 	});
@@ -409,7 +415,6 @@ io.on('connection', function(socket) {
 		}
 		fs.writeFileSync(users_file, JSON.stringify(users_json));
 	});
-
 	var array_big = [];	
 	socket.on('slots_send', function(data) {
 		var this_user = data.id;
@@ -452,10 +457,10 @@ io.on('connection', function(socket) {
 		fs.writeFileSync(users_file, JSON.stringify(users_json));
 	});
 
-	socket.on('race_send', function(data) {
+	socket.on('race_board_send', function(data) {
 		var id = data.id;
-		var money = 0;
 		var race_user = data.user;
+		var money = 0;
 		if(id != -1){
 		 	for(var i in users_json){	
 				if(id === users_json[i].id){
@@ -465,7 +470,7 @@ io.on('connection', function(socket) {
 		 	}
 		}
 		var server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
-		io.to(socket.id).emit('race_read', server_user);
+		io.to(socket.id).emit('race_board_read', server_user);
 	});
 
 	socket.on('disconnect', function(username) {		

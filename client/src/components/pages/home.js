@@ -16,6 +16,7 @@ import Footer from './partials/footer';
 import { getCookie } from '../utils';
 
 import socketIOClient from "socket.io-client/dist/socket.io";
+import GoogleLogin from 'react-google-login';
 const socket = socketIOClient("/");
 
 var self;

@@ -1633,22 +1633,24 @@ table {
 .rabbit_box_name{
 	position: absolute;
 	bottom:0px;
-	left:0px;
-	right:0px;
+	left:50%;
 	padding:5px;
 	background-color: var(--yellow);
 	color:black;
 	border-radius:50px;
+	transform: translate(-50%, 0px);
+	width:50%;
+	max-width: 100px;
 }
 .rabbit_box_nr{
 	position: absolute;
 	top:10px;
-	left:15px;
-	border:solid 1px white;
+	left:45px;	
 	padding:4px;
 	border-radius:100px;
 	width:30px;
 	height:30px;
+	border:solid 1px white;
 	color:white;
 	text-align: center;
 }
@@ -1657,10 +1659,12 @@ table {
 }
 .rabbit_box_nr.orange{
 	background-color: orange;
+	border:solid 1px black;
 	color:black;
 }
 .rabbit_box_nr.yellow{
 	background-color: yellow;
+	border:solid 1px black;
 	color:black;
 }
 .rabbit_box_nr.green{
@@ -1674,6 +1678,7 @@ table {
 }
 .rabbit_box_info img{
 	height:100px;
+	width:100px;
 	border-radius:100px;
 	border:solid 1px var(--yellow);
 }
@@ -1745,6 +1750,8 @@ table {
 #race_canvas{
 	border:solid 1px var(--yellow);
 	border-radius:10px;
+	/* background-color: rgba(255, 215, 0, 0.5); */
+	background-image: radial-gradient(transparent, black);
 }
 
 /* media */
@@ -1943,7 +1950,7 @@ table {
 	#chat_button{
 		top: 100px;
 	}
-	.roulette_container, .blackjack_container{
+	.roulette_container{
 		overflow-x: auto;
 		overflow-y: hidden;
 		position: relative;

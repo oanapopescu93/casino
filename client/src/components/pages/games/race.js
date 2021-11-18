@@ -1,21 +1,35 @@
 import React, { Component } from 'react';
 import $ from 'jquery'; 
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import {connect} from 'react-redux'
-import rabbit_img from "../../img/race_imgs/rabbit.jpg"
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import {connect} from 'react-redux';
+import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
 import { getCookie, show_results } from '../../utils';
+import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
+import rabbit_move from '../../img/rabbit_move/rabbit_move.png';
 
 var canvas;
 var ctx;
 var canvas_width = 900;
 var canvas_height = 800;
 var my_race;
-var font_title = 'bold 30px sans-serif';
-var rabbit_array = [];
 var landscape = [];
-var land_color = [['rgba(255, 215, 0, 0.2)', 'gold', 1], ['rgba(255, 215, 0, 0.2)', 'gold', 1], ['rgba(255, 215, 0, 0.2)', 'gold', 1]]
-var offset_lanscape = 100;
+var land_color = [
+	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
+	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
+	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1]
+]
+var distance = 1;
+
+var font_title = 'bold 30px sans-serif';
+var font_counter = 'bold 40px sans-serif';
+
+var dispatch_nr = 0;
+var socket;
+
+var rabbit_img = {src: rabbit_sit};
+var rabbit_img_move = {src: rabbit_move};
+var rabbit_size = [10, 350, 80, 80, -10];
 
 function Land(config) {
 	var self = this;
@@ -28,7 +42,7 @@ function Land(config) {
 
 function Landscape(config){
 	var self = this;
-	self.x = 0;
+	self.x = -config.speed * distance;
     self.lands = [];
 	self.layer = config.layer;
 	self.width = {
@@ -50,9 +64,8 @@ function Landscape(config){
 			var newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
 			var newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
 			if(self.lands.length !== 0){
-				x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width;
+				x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x;
 			}
-
 			self.lands.push(new Land({
 				layer: self.layer,
 				width: newWidth,
@@ -69,7 +82,7 @@ function Landscape(config){
 	}
 	self.draw = function(){
 		ctx.save();
-		ctx.translate(self.x, canvas.height/ offset_lanscape * self.layer);
+		ctx.translate(self.x, 0);
 		ctx.beginPath();
 		var lands = self.lands;
 		ctx.moveTo(self.lands[0].x, self.lands[0].y);
@@ -87,27 +100,148 @@ function Landscape(config){
 		ctx.strokeStyle = self.color_stroke;
 		ctx.fill();
 		ctx.stroke();
+		ctx.restore()
+	}
+	self.update = function(){
+		//self.x -= self.speed * distance; 
+		var x = 0;
+		var newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
+		var newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
+		
+		if(self.lands.length !== 0){
+			x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x;
+		}
+		self.lands.push(new Land({
+			layer: self.layer,
+			width: newWidth,
+			height: newHeight,
+			color: self.color,
+			color_stroke: self.color_stroke,
+			stroke: self.stroke,
+			x: x,
+			y: 500 - newHeight,
+		}));
+	}
+}
+
+function Rabbit(config){
+	var self = this;
+
+	self.id = config.id;
+	self.name = config.name;
+	self.color = config.color;
+	self.speed = config.speed;
+	self.delay = config.delay;
+	self.img = config.img;
+	self.img_move = config.img_move;
+	self.x = config.x;
+	self.y = config.y;
+	self.w = config.w;
+	self.h = config.h;
+
+	self.frameWidth = 672;
+	self.frameHeight = 592;
+	self.frame = 0
+	
+	self.draw = function(ctx){
+		ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+	}
+	self.run = function(ctx, nr){		
+		if(nr % self.speed === 0){
+			self.frame++;
+		}		
+		if(self.frame > 7){
+			self.frame = 0;
+		}
+		ctx.drawImage(self.img_move, self.frame * self.frameWidth, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 	}
 }
 
 function race_game(props){
 	var self = this;
+	socket = props.data.socket;
+	var rabbit_array = props.data.rabbit_array;
 		
-	this.ready = function(){
+	this.ready = function(reason){
 		self.createCanvas(canvas_width, canvas_height);	
-		self.start();
+		self.start(reason);
 	}
 
-	this.start = function(){
-		self.background();
-		self.add_title();
+	this.start = function(reason){
+		var promises = [];
+		if(reason !== "resize"){
+			promises.push(self.preaload_images(rabbit_img));
+			promises.push(self.preaload_images(rabbit_img_move));
+			Promise.all(promises).then(function(result){
+				rabbit_array = self.get_rabbits(result);				
+				self.background();
+				self.draw_rabbits('sit');
+				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");				
+				setTimeout(function(){
+					self.counter(3);
+				}, 500);
+			});			
+		} else {			
+			self.background();
+			self.draw_rabbits('sit');
+			self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
+			setTimeout(function(){
+				self.counter(3);
+			}, 500);
+		}
 	}
 
-	this.add_title = function(){
-		ctx.font = font_title;
-		ctx.fillStyle = "gold";
-		ctx.textAlign = "center";
-		ctx.fillText("Rabbit Race", canvas.width/2,  20);
+	this.preaload_images = function(item){
+		return new Promise(function(resolve, reject){
+			var image = new Image();
+			image.src = item.src;
+			image.addEventListener("load", function() {
+				resolve(image)
+			}, false);
+		});
+	}
+
+	this.get_rabbits = function(img){
+		var rabbits = []
+		for(var i in rabbit_array){
+			var random_speed = Math.floor(Math.random() * 10) + 3;
+			var random_delay = Math.floor(Math.random() * 10) + 3;
+			var config = {
+				id: rabbit_array[i].id, 
+				name: rabbit_array[i].name, 
+				color: rabbit_array[i].color, 
+				img: img[0], 
+				img_move: img[1], 
+				speed: random_speed,
+				delay: random_delay,
+				x: rabbit_size[0],
+				y: rabbit_size[1]+i*(rabbit_size[3]+rabbit_size[4]),
+				w: rabbit_size[2],
+				h: rabbit_size[3],
+			}
+			var rabbit = new Rabbit(config);
+			rabbits.push(rabbit);
+		}
+		return rabbits;
+	}
+
+	this.draw_rabbits = function(action, nr){
+		if(action==="run"){
+			for(var i in rabbit_array){
+				rabbit_array[i].run(ctx, nr);
+			}
+		} else {
+			for(var i in rabbit_array){
+				rabbit_array[i].draw(ctx);
+			}
+		}
+	}
+
+	this.add_text = function(text, x, y, font, color, text_align){
+		ctx.font = font;
+		ctx.fillStyle = color;
+		ctx.textAlign = text_align;
+		ctx.fillText(text, x, y);
 	}
 
 	this.background = function(){
@@ -117,6 +251,7 @@ function race_game(props){
 
 	this.create_background = function(){
 		var i = land_color.length;
+		landscape = [];
 		while(i--){
 			var config = {
 				layer: i,
@@ -128,7 +263,7 @@ function race_game(props){
 					min: 200 - (i * 40),
 					max: 300 - (i * 40)
 				},
-				speed: (i + 1) * 0.003,
+				speed: (i + 1) * 1.8,
 				color: land_color[i][0],
 				color_stroke: land_color[i][1],
 				stroke: land_color[i][2]
@@ -141,15 +276,26 @@ function race_game(props){
 
 	this.draw_background = function(){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		self.draw_sun();
+		self.draw_sun();		
 		var i = landscape.length;
 		while (i--) {
 			landscape[i].draw();
 		}
+		self.draw_road(-100, canvas.height/2, 2*canvas.width, canvas.height/2, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)");
 	}
 
 	this.draw_sun = function(){
 		draw_dot(canvas.width-50, 50, 40, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.2)', 1, 'gold');
+	}
+
+	this.draw_road = function(x, y, w, h, line, bg, color){
+		ctx.clearRect(0, h, canvas.width, h);
+		ctx.beginPath();
+		ctx.fillStyle = bg;
+		ctx.fillRect(x, y, w, h);
+		ctx.strokeStyle = color;
+		ctx.lineWidth = line;
+		ctx.strokeRect(x, y, w, h);
 	}
 
 	this.createCanvas = function(canvas_width, canvas_height){		
@@ -160,21 +306,20 @@ function race_game(props){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
 				canvas.width = 300;
-				canvas.height = 300;
-				offset_lanscape = 50;				
+				canvas.height = 300;				
 			} else {
 				//small portrait
 				canvas.width = 400;
-				canvas.height = 400;
-				offset_lanscape = 50;	
+				canvas.height = 400;	
 			}
 			font_title = 'bold 20px sans-serif';
+			font_counter = 'bold 30px sans-serif';
 		} else {
 			//big
 			canvas.width = 900;
 			canvas.height = 800;
 			font_title = 'bold 30px sans-serif';
-			offset_lanscape = 100;	
+			font_counter = 'bold 40px sans-serif';
 			if (window.innerWidth >= 1200){
 				canvas.width = 1000;
 			} 
@@ -186,6 +331,85 @@ function race_game(props){
 		canvas_width = canvas.width;
 		canvas_height = canvas.height;		
 		canvas.height = canvas_height;
+	}
+
+	this.counter = function(totalTime){
+		var self_counter = this;
+		self_counter.totaTime = totalTime;
+		self_counter.timeRemaining = self_counter.totaTime;
+		var my_counter;
+
+		timerGame();
+
+		function timerGame(){	
+			my_counter = setInterval(function(){
+				self_counter.timeRemaining = self_counter.timeRemaining - 1;
+				self.draw_background();
+				self.draw_rabbits('sit');
+				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
+				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "black", "center");
+			  	if(self_counter.timeRemaining <= 0){
+					clearInterval(my_counter);
+					self.start_race(1000);
+			  	}
+			}, 1000);
+		}
+	}
+
+	this.start_race = function(time, monkey){
+		var nr = 0;
+		dispatch_nr++;
+
+		window.requestAnimFrame = (function(){
+			return  window.requestAnimationFrame       ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame    ||
+			function( callback ){
+			  window.setTimeout(callback, 1000 / 60);
+			};
+	  	})();	  
+	  
+	  	function race() {			
+			var stop = false;
+			if (nr > time) {
+				stop = true	
+			} else {
+				nr++; 			
+				stop = false;
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				self.draw_sun();
+				self.draw_background();
+
+				var i = landscape.length;
+				while (i--) {
+					landscape[i].update();
+					var my_lands = landscape[i].lands;
+					for(var j in my_lands){
+						my_lands[j].x = my_lands[j].x + landscape[i].x;
+					}
+				}
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				self.draw_sun();	
+				var i = landscape.length;
+				while (i--) {
+					landscape[i].draw();
+				}
+				self.draw_road(-100, canvas.height/2, 2*canvas.width, canvas.height/2, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)");
+				self.draw_rabbits('run', nr);
+			}		
+			
+			if(!stop){
+				window.requestAnimFrame(race);
+			} else {
+				window.cancelAnimationFrame(race);
+			}
+	  	};
+
+	  	if(dispatch_nr === 1){
+			race();
+	  	}	  
 	}
 }
 
@@ -206,20 +430,19 @@ function RaceGame(props){
 	var socket = props.socket;
 	var lang = props.lang;
 	var money = props.money;
-
-	// var payload = {id: props.user_id}	
-	// socket.emit('race_send', payload);
-	// socket.on('race_read', function(data){	
-	// 	rabbit_array = data;
-	// });
-
+	
 	setTimeout(function(){ 
+		$('.full-height').attr('id', 'race')		
 		my_race = new race_game(props);
-		my_race.ready();
-	}, 0);	
+		my_race.ready();	
+		$(window).resize(function(){
+			my_race.ready("resize");	
+		});
+	}, 0);
 
 	return (
 		<>
+			<p>Under construction.</p>
 			<canvas id="race_canvas"></canvas>
 			<div className="show_results_container">
 				<div className="show_results">
@@ -296,7 +519,7 @@ function RaceTables(props){
 																<div className="rabbit_box_info">
 																	<div className="rabbit_box_name shadow_convex"><p>{rabbit01.name}</p></div>
 																	<div className={rabbit_box_nr01}><p>{rabbit01.id}</p></div>
-																	<img className="shadow_convex" src={rabbit_img} alt="rabbit_img" />
+																	<img className="shadow_convex" src={rabbit_img_board} alt="rabbit_img_board" />
 																</div>
 																<div className="rabbit_box_input">
 																	{self.state.lang === "ro" ? <p>Pariaza:</p> : <p>Bet:</p>}
@@ -311,7 +534,7 @@ function RaceTables(props){
 																<div className="rabbit_box_info">
 																	<div className="rabbit_box_name shadow_convex"><p>{rabbit02.name}</p></div>
 																	<div className={rabbit_box_nr02}><p>{rabbit02.id}</p></div>
-																	<img className="shadow_convex" src={rabbit_img} alt="rabbit_img" />
+																	<img className="shadow_convex" src={rabbit_img_board} alt="rabbit_img_board" />
 																</div>
 																<div className="rabbit_box_input">
 																	{self.state.lang === "ro" ? <p>Pariaza:</p> : <p>Bet:</p>}
@@ -366,7 +589,7 @@ class Race extends Component {
 			start_race: false,
 			user: props.user,
 			id: -1,
-			money: 0,
+			money:0,
 	  	};
 	}
 
@@ -378,8 +601,8 @@ class Race extends Component {
 		}
 
 		var payload = {id: id, user: this.state.user}
-		self.state.socket.emit('race_send', payload);
-		self.state.socket.on('race_read', function(data){	
+		self.state.socket.emit('race_board_send', payload);
+		self.state.socket.on('race_board_read', function(data){	
 		 	self.setState({ rabbit_array: data.rabbit_race })
 			self.setState({ money: data.money })
 			self.setState({ id: data.id })

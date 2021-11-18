@@ -40,10 +40,14 @@ module.exports = Object.freeze({
     CRYPTO: [
         {type: "Bitcoin", text: "-", link: "bitcoin:-"},
     ],
+
     CONTACT: {
         address: "-",
         email: "-",
         phone: "-",
         facebook: "-"
     },
+
+    GOOGLE_CLIENT_ID: '287917990003-9l5albqoaoo06tsvknmftludhtg08hha.apps.googleusercontent.com',
+    GOOGLE_CLIENT_SECRET: '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',
 })

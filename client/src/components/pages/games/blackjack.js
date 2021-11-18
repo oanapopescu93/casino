@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery'; 
 
-import img_cards from '../../img/img_cards.png';
+import img_cards from '../../img/blackjack/img_cards.png';
 import carrot_img from '../../img/icons/carrot_icon.png';
 
 import {blackjack_calculate_money, blackjack_get_history} from '../../actions/actions'
@@ -37,6 +37,8 @@ var your_last_bet = {};
 var bet_value = 1;
 var bet_square = 40;
 var start_game = false;
+var player_nr = [20, 20];
+var bet_spot = 30;
 
 var font_bold_10 = 'bold 10px sans-serif';
 var font_bold_12 = 'bold 12px sans-serif';
@@ -64,7 +66,7 @@ function blackjack_wheel(props){
 		self.createCanvas(canvas_width, canvas_height);		
 		self.draw_table();
 		if(blackjack_hand.length !== 0){
-			self.draw_cards(false);	
+			self.draw_cards();	
 		}
 		self.blackjack_table_click();
 	}
@@ -88,24 +90,15 @@ function blackjack_wheel(props){
 				hit_button_coordonates = {x:130, y:20, width:50, height:50};
 				stay_button_coordonates = {x:165, y:20, width:50, height:50};
 
-				card_base = {x: 20, y:180, width: 50, height: 80, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:50}
-				card = {width: 45, height: 64};
+				card_base = {x: 10, y:140, width: 35, height: 55, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:40}
+				card = {width: 30, height: 43};
+				bet_square = 5;
+				player_nr = [12, 12];
+				bet_spot = 20;
 			} else {
 				//small portrait
 				canvas.width = 300;
 				canvas.height = 400;
-				
-				button_start = {x: 50, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'START', text_x: 48, text_y: 54}
-				button_clear = {x: 140, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'CLEAR', text_x: 140, text_y: 54}
-				button_hit = {x: 230, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'HIT ME', text_x: 230, text_y: 54}
-				button_stay = {x: 230, y: 50, r: 30, sAngle: 0, eAngle: 50, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'STAY', text_x: 230, text_y: 54}
-				start_button_coordonates = {x:20, y:20, width:60, height:60};
-				clear_button_coordonates = {x:110, y:20, width:60, height:60};
-				hit_button_coordonates = {x:200, y:20, width:60, height:60};
-				stay_button_coordonates = {x:290, y:20, width:60, height:60};
-
-				card_base = {x: 20, y:400, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealet_y:50}
-				card = {width: 80, height: 120};
 			}
 			bet_square = 30;
 
@@ -127,9 +120,11 @@ function blackjack_wheel(props){
 			hit_button_coordonates = {x:200, y:20, width:60, height:60};
 			stay_button_coordonates = {x:290, y:20, width:60, height:60};
 
-			card_base = {x: 20, y:320, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealet_y:100}
+			card_base = {x: 20, y:320, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:100}
 			card = {width: 80, height: 120};
 			bet_square = 40;
+			player_nr = [20, 20];
+			bet_spot = 30;
 
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
@@ -144,40 +139,61 @@ function blackjack_wheel(props){
 
 	this.draw_table = function(){
 		ctx.clearRect(0,0, canvas_width, canvas_height);
-		all_cards_pos = [];
-		all_cards_value = [];
-		self.draw_table_spots();
+		if(window.innerWidth < 960 && window.innerHeight >= window.innerWidth){
+			//small device and portrait
+			ctx.beginPath();
+			ctx.fillStyle = "gold";
+			ctx.textAlign = "center";
+			ctx.font = font_bold_14;	
 
-		ctx.font = font_bold_12; 
-		ctx.shadowColor = "black";
-		ctx.shadowOffsetX = 0;
-		ctx.shadowOffsetY = 0;
-		
-		self.drawButton(button_start.x, button_start.y, button_start.r, button_start.sAngle, button_start.eAngle, button_start.counterclockwise, button_start.fillStyle, button_start.lineWidth, button_start.strokeStyle, button_start.text, button_start.text_x, button_start.text_y);
-		self.drawButton(button_clear.x, button_clear.y, button_clear.r, button_clear.sAngle, button_clear.eAngle, button_clear.counterclockwise, button_clear.fillStyle, button_clear.lineWidth, button_clear.strokeStyle, button_clear.text, button_clear.text_x, button_clear.text_y);
-		self.drawButton(button_hit.x, button_hit.y, button_hit.r, button_hit.sAngle, button_hit.eAngle, button_hit.counterclockwise, button_hit.fillStyle, button_hit.lineWidth, button_hit.strokeStyle, button_hit.text, button_hit.text_x, button_hit.text_y);
-		self.drawButton(button_stay.x, button_stay.y, button_stay.r, button_stay.sAngle, button_stay.eAngle, button_stay.counterclockwise, button_stay.fillStyle, button_stay.lineWidth, button_stay.strokeStyle, button_stay.text, button_stay.text_x, button_stay.text_y);
-		
-		ctx.font = font_bold_14; 
+			var txt = 'Please use landscape\nfor a better user experience';
+			if(lang === "ro"){
+				txt = 'Va rog puneti telefonul pe orizontala\npentru a juca';
+			} 
+			
+			var x = canvas.width/2;
+			var y = canvas.height/2;
+			var lineheight = 15;
+			var lines = txt.split('\n');
+			
+			for (var i = 0; i<lines.length; i++){
+				ctx.fillText(lines[i], x, y + (i*lineheight) );
+			}    
+			
+			ctx.closePath();
+		} else {
+			//not small device and portrait
+			all_cards_pos = [];
+			all_cards_value = [];
+			self.draw_table_spots();
+
+			ctx.font = font_bold_12; 
+			ctx.shadowColor = "black";
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
+			
+			self.drawButton(button_start.x, button_start.y, button_start.r, button_start.sAngle, button_start.eAngle, button_start.counterclockwise, button_start.fillStyle, button_start.lineWidth, button_start.strokeStyle, button_start.text, button_start.text_x, button_start.text_y);
+			self.drawButton(button_clear.x, button_clear.y, button_clear.r, button_clear.sAngle, button_clear.eAngle, button_clear.counterclockwise, button_clear.fillStyle, button_clear.lineWidth, button_clear.strokeStyle, button_clear.text, button_clear.text_x, button_clear.text_y);
+			self.drawButton(button_hit.x, button_hit.y, button_hit.r, button_hit.sAngle, button_hit.eAngle, button_hit.counterclockwise, button_hit.fillStyle, button_hit.lineWidth, button_hit.strokeStyle, button_hit.text, button_hit.text_x, button_hit.text_y);
+			self.drawButton(button_stay.x, button_stay.y, button_stay.r, button_stay.sAngle, button_stay.eAngle, button_stay.counterclockwise, button_stay.fillStyle, button_stay.lineWidth, button_stay.strokeStyle, button_stay.text, button_stay.text_x, button_stay.text_y);
+			
+			ctx.font = font_bold_14; 
+		}
 	}
 
 	this.draw_table_spots = function(){
-		var my_width = canvas_width;
-		if (window.innerWidth < 900){
-			my_width = $('.blackjack_container').width();
+		var my_width = canvas.width;
+		var space_after_dealer = 50;
+		if (window.innerWidth < 960){
+			space_after_dealer = 35;
 		}
 		var space = (my_width - (card_base.width*7 + card_base.x*6))/2;
 		var a = 0;
 		var b = 0;
 		for(var i=0; i<7; i++){
+			//draw rect where the cards will be
 			draw_rect(space + i * (card_base.width + card_base.x), card_base.y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
-			
-			// draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle)
-			//draw_rect(x, y, width, height, fillStyle, lineWidth, strokeStyle)
-			// draw_dot(roulette_radius_x, roulette_radius_y, outsideRadius*1.05, 0, 2 * Math.PI, false, '#a87b51', 15, '#5e391c');
-
-			draw_dot(space + i * (card_base.width + card_base.x)+50, card_base.y+card_base.height+65, 30, 0, 2 * Math.PI, false, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle);
-			
+						
 			if(i === 0){
 				a = 3;
 			} else {
@@ -189,28 +205,29 @@ function blackjack_wheel(props){
 				}				
 			}	
 			
-			draw_rect(space + a * (card_base.width + card_base.x), card_base.dealet_y+card_base.height+50, 20, 20, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
-			self.draw_card_number(i, space + a * (card_base.width + card_base.x), card_base.y+10, 20, card_base.height);
-			self.draw_card_text(space + a * (card_base.width + card_base.x), card_base.y+card_base.height+77, card_base.width, card_base.height);
-			blackjack_pos.push({x: space + a * (card_base.width + card_base.x)+20, y: card_base.y+card_base.height+35, width: 60, height:60, text: i, value: bet_value}); 
+			//draw square with number
+			draw_rect(space + a * (card_base.width + card_base.x), card_base.y - player_nr[1], player_nr[0], player_nr[1], card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
+			self.draw_card_number(i, space + a * (card_base.width + card_base.x), card_base.y + 10, player_nr[0], card_base.height);
+			
+			//draw bet spot			
+			draw_dot(space + a * (card_base.width + card_base.x) + card_base.width/2, card_base.y + card_base.height + space_after_dealer, bet_spot, 0, 2 * Math.PI, false, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle);
+			self.draw_card_text(space + a * (card_base.width + card_base.x), card_base.y+card_base.height + space_after_dealer, card_base.width, card_base.height);
+
+			blackjack_pos.push({x: space + a * (card_base.width + card_base.x), y: card_base.y + card_base.height + space_after_dealer - bet_spot, width: card_base.width, height:2*bet_spot, text: i, value: bet_value}); 
 		}
-		if (window.innerWidth < 900){
-			draw_rect(my_width-(card_base.width+10), card_base.dealet_y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
-		} else {
-			draw_rect(space + 3 * (card_base.width + card_base.x), card_base.dealet_y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
-		}
+		draw_rect(space + 3 * (card_base.width + card_base.x), card_base.dealer_y, card_base.width, card_base.height, card_base.fillStyle, card_base.lineWidth, card_base.strokeStyle)
 	}
 	
 	this.draw_cards = function(){
 		self.draw_table_players();
 		self.draw_table_dealer();
-		self.draw_card_values('white', card_base.lineWidth, 'white', 'black');	
+		self.draw_card_values('white', card_base.lineWidth, 'white', 'black'); //the white board above	
 		self.draw_bets();	
 	}
 
 	this.draw_table_players = function(){
 		var my_width = canvas_width;
-		if (window.innerWidth < 900){
+		if (window.innerWidth < 960){
 			my_width = $('.blackjack_container').width();
 		}
 		var space = (my_width - (card_base.width*7 + card_base.x*6))/2;
@@ -232,12 +249,12 @@ function blackjack_wheel(props){
 	}
 
 	this.draw_table_dealer = function(){
-		var my_width = canvas_width;
-		if (window.innerWidth < 900){
-			my_width = $('.blackjack_container').width();
-		}
+		var my_width = canvas.width;
 		var space = (my_width - (card_base.width*7 + card_base.x*6))/2;
 		self.draw_card(space + 3 * (card_base.width + card_base.x), card_base.width, card.width, card.height, blackjack_hand[2].hand, "dealer", -1);
+		if(blackjack_hand[2].hand.length === 1){ //the dealer's card is still hidden
+			self.draw_card(space + 3 * (card_base.width + card_base.x) + 10, card_base.width + 10, card.width, card.height, "hidden", "dealer", -1);
+		}
 	}
 
 	this.draw_card_values = function(fillStyle, lineWidth, strokeStyle, color){
@@ -245,10 +262,13 @@ function blackjack_wheel(props){
 			var value_hand = all_cards_value[i].value_hand;
 			ctx.beginPath();
 			ctx.fillStyle = fillStyle;
-			if(all_cards_value[i].elem === "dealer"){					
-				ctx.rect(all_cards_value[i].x, all_cards_value[i].y - 20, card_base.width, 20);
+			
+			if(all_cards_value[i].elem === "dealer"){
+				if(all_cards_value[i].card !== "hidden"){
+					ctx.rect(all_cards_value[i].x, all_cards_value[i].y - 20, card_base.width, 20);
+				}
 			} else {
-				ctx.rect(all_cards_value[i].x+20, all_cards_value[i].y - 20, card_base.width-20, 20);
+				ctx.rect(all_cards_value[i].x + 20, all_cards_value[i].y - 20, card_base.width-20, 20);
 			}
 			
 			if(strokeStyle !== ""){
@@ -257,11 +277,15 @@ function blackjack_wheel(props){
 				ctx.stroke();
 			}
 			ctx.fill();
+			ctx.closePath();
+
 			ctx.beginPath();
 			ctx.fillStyle = color;
 			ctx.textAlign = "center";	
 			if(all_cards_value[i].elem === "dealer"){
-				ctx.fillText(value_hand, all_cards_value[i].x + card_base.width/2, all_cards_value[i].y - 5);
+				if(all_cards_value[i].card !== "hidden"){
+					ctx.fillText(value_hand, all_cards_value[i].x + card_base.width/2, all_cards_value[i].y - 5);
+				}				
 			} else {
 				ctx.fillText(value_hand, all_cards_value[i].x + card_base.width/2 + 10, all_cards_value[i].y - 5);
 			}
@@ -282,67 +306,74 @@ function blackjack_wheel(props){
 		var b = 120;
 		var value_hand = 0;
 		var space = 5;
-		for(var i in hand){		
-			switch (hand[i].Suit) { 
-				case "Spades":
-					img_y = 0 * (b + 4);							
-					break;
-				case "Hearts":
-					img_y = 1 * (b + 4);			
-					break;
-				case "Diamonds":
-					img_y = 2 * (b + 4);		
-					break;
-				case "Clubs":
-					img_y = 3 * (b + 4);		
-					break;
-			}		  
-			switch (hand[i].Value) {
-				case "A":
-					img_x = 0 * (a + 4);						
-					break;
-				case "2":
-					img_x = 1 * (a + 4);						
-					break;
-				case "3":
-					img_x = 2 * (a + 4);							
-					break;
-				case "4":
-					img_x = 3 * (a + 4);						
-					break;
-				case "5":
-					img_x = 4 * (a + 4);						
-					break;
-				case "6":
-					img_x = 5 * (a + 4);						
-					break;
-				case "7":
-					img_x = 6 * (a + 4);					
-					break;
-				case "8":
-					img_x = 7 * (a + 4);							
-					break;
-				case "9":
-					img_x = 8 * (a + 4);					
-					break;
-				case "10":
-					img_x = 9 * (a + 4);						
-					break;
-				case "J":
-					img_x = 10 * (a + 4);						
-					break;
-				case "Q":
-					img_x = 11 * (a + 4);				
-					break;
-				case "K":
-					img_x = 12 * (a + 4);						
-					break;			
+		if(hand === "hidden"){
+			img_x = 2 * (a + 4)
+			img_y = 4 * (b + 4);		
+			ctx.drawImage(img, img_x, img_y, w, h, x, y + space, w, h);
+		} else {
+			for(var i in hand){		
+				switch (hand[i].Suit) { 
+					case "Clubs":
+						img_y = 0 * (b + 4);							
+						break;
+					case "Hearts":
+						img_y = 1 * (b + 4);			
+						break;
+					case "Diamonds":
+						img_y = 2 * (b + 4);		
+						break;
+					case "Spades":
+						img_y = 3 * (b + 4);		
+						break;
+				}		  
+				switch (hand[i].Value) {
+					case "A":
+						img_x = 0 * (a + 4);						
+						break;
+					case "2":
+						img_x = 1 * (a + 4);						
+						break;
+					case "3":
+						img_x = 2 * (a + 4);							
+						break;
+					case "4":
+						img_x = 3 * (a + 4);						
+						break;
+					case "5":
+						img_x = 4 * (a + 4);						
+						break;
+					case "6":
+						img_x = 5 * (a + 4);						
+						break;
+					case "7":
+						img_x = 6 * (a + 4);					
+						break;
+					case "8":
+						img_x = 7 * (a + 4);							
+						break;
+					case "9":
+						img_x = 8 * (a + 4);					
+						break;
+					case "10":
+						img_x = 9 * (a + 4);						
+						break;
+					case "J":
+						img_x = 10 * (a + 4);						
+						break;
+					case "Q":
+						img_x = 11 * (a + 4);				
+						break;
+					case "K":
+						img_x = 12 * (a + 4);						
+						break;			
+				}
+				ctx.drawImage(img, img_x, img_y, w, h, x + i*12, y + i*12 + space, w, h);
+				var card_pos = {elem: elem, id: parseInt(id), x: x + i*12, y: y + i*12 + space, card: hand[i]}
+				all_cards_pos.push(card_pos);
+				value_hand = value_hand + hand[i].Weight;
 			}
-			ctx.drawImage(img, img_x, img_y, w, h, x + i*12, y + i*12 + space, w, h);
-			var card_pos = {elem: elem, id: parseInt(id), x: x + i*12, y: y + i*12 + space, card: hand[i]}
-			all_cards_pos.push(card_pos);
-			value_hand = value_hand + hand[i].Weight;
 		}
+		
 		var card_value = {elem: elem, id: parseInt(id), x: x, y: y, card: hand, value_hand: value_hand}
 		all_cards_value.push(card_value);	
 	}
@@ -354,6 +385,7 @@ function blackjack_wheel(props){
 		ctx.font = font_bold_12;	
 		ctx.fillText(text, x+w/2, y-15);
 		ctx.font = font_bold_14;
+		ctx.closePath();
 	}
 
 	this.draw_card_text = function(x, y, w, h){		
@@ -364,6 +396,7 @@ function blackjack_wheel(props){
 		ctx.fillText('BET', x+w/2, y);
 		ctx.fillText('HERE', x+w/2, y-15);
 		ctx.font = font_bold_14;
+		ctx.closePath();
 	}
 
 	this.drawButton = function(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle, text, text_x, text_y){
@@ -373,6 +406,7 @@ function blackjack_wheel(props){
 		ctx.shadowBlur = 0;
 		ctx.fillStyle = strokeStyle;
 		ctx.fillText(text, text_x, text_y);
+		ctx.closePath();
 	}	
 
 	this.blackjack_table_click = function(){			
