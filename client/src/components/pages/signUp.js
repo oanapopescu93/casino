@@ -3,7 +3,6 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import { getCookie, setCookie, showResults } from '../utils';
-import GoogleLogin from 'react-google-login';
 
 var self; 
 class SignUp extends Component {	
