@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {connect} from 'react-redux';
 import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
-import { getCookie, show_results } from '../../utils';
+import { getCookie, showResults } from '../../utils';
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
 import rabbit_move from '../../img/rabbit_move/rabbit_move.png';
 
@@ -27,8 +27,9 @@ var font_counter = 'bold 40px sans-serif';
 var dispatch_nr = 0;
 var socket;
 
-var rabbit_img = {src: rabbit_sit};
+var rabbit_img_sit = {src: rabbit_sit};
 var rabbit_img_move = {src: rabbit_move};
+var rabbit_img_stop = {src: rabbit_sit};
 var rabbit_size = [10, 350, 80, 80, -10];
 
 function Land(config) {
@@ -103,7 +104,6 @@ function Landscape(config){
 		ctx.restore()
 	}
 	self.update = function(){
-		//self.x -= self.speed * distance; 
 		var x = 0;
 		var newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
 		var newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
@@ -132,8 +132,9 @@ function Rabbit(config){
 	self.color = config.color;
 	self.speed = config.speed;
 	self.delay = config.delay;
-	self.img = config.img;
+	self.img_sit = config.img_sit;
 	self.img_move = config.img_move;
+	self.img_stop = config.img_stop;
 	self.x = config.x;
 	self.y = config.y;
 	self.w = config.w;
@@ -144,16 +145,56 @@ function Rabbit(config){
 	self.frame = 0
 	
 	self.draw = function(ctx){
-		ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+		ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 	}
-	self.run = function(ctx, nr){		
-		if(nr % self.speed === 0){
-			self.frame++;
+	self.run = function(ctx, nr){
+		if(nr >= self.delay){
+			if(nr % self.speed === 0){
+				self.frame++;
+				self.x = self.x+5;				
+			}		
+			if(self.frame > 7){
+				self.frame = 0;
+			}
+			
+			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+		} else {
+			ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 		}		
-		if(self.frame > 7){
-			self.frame = 0;
+	}
+	self.stop = function(ctx, nr){
+		if(self.frame !== 4){	
+			if(nr % self.speed === 0){
+				self.frame++;
+				self.x = self.x+5;				
+			}		
+			if(self.frame > 7){
+				self.frame = 0;
+			}
+
+			if(self.frame !== 4){			
+				ctx.drawImage(self.img_move, self.frame * self.frameWidth, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+			} else {
+				ctx.drawImage(self.img_stop, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+			}
+		} else {
+			ctx.drawImage(self.img_stop, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 		}
-		ctx.drawImage(self.img_move, self.frame * self.frameWidth, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+	}
+	self.change_speed = function(){
+		var random_speed = Math.floor(Math.random() * 5) + 1;
+		self.speed = random_speed;
+	}
+	self.move_view = function(all, nr){
+		var avg_dist = 0;
+		var sum_dist = 0;
+		for(var i in all){
+			sum_dist = sum_dist + all[i].x;
+		}
+		avg_dist = sum_dist/all.length;
+		if(avg_dist > canvas.width/2){
+			self.x = self.x-5;
+		}
 	}
 }
 
@@ -170,8 +211,9 @@ function race_game(props){
 	this.start = function(reason){
 		var promises = [];
 		if(reason !== "resize"){
-			promises.push(self.preaload_images(rabbit_img));
+			promises.push(self.preaload_images(rabbit_img_sit));
 			promises.push(self.preaload_images(rabbit_img_move));
+			promises.push(self.preaload_images(rabbit_img_stop));
 			Promise.all(promises).then(function(result){
 				rabbit_array = self.get_rabbits(result);				
 				self.background();
@@ -204,14 +246,15 @@ function race_game(props){
 	this.get_rabbits = function(img){
 		var rabbits = []
 		for(var i in rabbit_array){
-			var random_speed = Math.floor(Math.random() * 10) + 3;
-			var random_delay = Math.floor(Math.random() * 10) + 3;
+			var random_speed = 0;
+			var random_delay = Math.floor(Math.random() * 40) + 20;
 			var config = {
 				id: rabbit_array[i].id, 
 				name: rabbit_array[i].name, 
 				color: rabbit_array[i].color, 
-				img: img[0], 
-				img_move: img[1], 
+				img_sit: img[0], 
+				img_move: img[1],
+				img_stop: img[2], 
 				speed: random_speed,
 				delay: random_delay,
 				x: rabbit_size[0],
@@ -227,7 +270,9 @@ function race_game(props){
 
 	this.draw_rabbits = function(action, nr){
 		if(action==="run"){
-			for(var i in rabbit_array){
+			for(var i in rabbit_array){				
+				rabbit_array[i].change_speed();
+				rabbit_array[i].move_view(rabbit_array, nr);
 				rabbit_array[i].run(ctx, nr);
 			}
 		} else {
@@ -350,7 +395,7 @@ function race_game(props){
 				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "black", "center");
 			  	if(self_counter.timeRemaining <= 0){
 					clearInterval(my_counter);
-					self.start_race(1000);
+					self.start_race(1500);
 			  	}
 			}, 1000);
 		}
@@ -359,6 +404,7 @@ function race_game(props){
 	this.start_race = function(time, monkey){
 		var nr = 0;
 		dispatch_nr++;
+		//time = 100;
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
@@ -371,10 +417,31 @@ function race_game(props){
 	  
 	  	function race() {			
 			var stop = false;
-			if (nr > time) {
-				stop = true	
+			if (nr > time) {				
+				var end = true;
+				for(var i in rabbit_array){		
+					if(rabbit_array[i].frame !== 4){
+						end = false;
+						break;
+					}
+				}
+				if(end){
+					stop = true;
+				} else {
+					nr++; 		
+					stop = false;
+
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					self.draw_sun();
+					self.draw_background();
+
+					for(var i in rabbit_array){		
+						rabbit_array[i].stop(ctx, nr);
+					}
+				}
+				
 			} else {
-				nr++; 			
+				nr++; 		
 				stop = false;
 
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -468,20 +535,43 @@ function RaceTables(props){
 	$('body').off('click', '.rabbit_box_minus').on('click', '.rabbit_box_minus', function () {
 		var input_value = parseInt($(this).parent().find('.race_input').val());
 		if(input_value > 0){
-			$(this).parent().find('.race_input').val(input_value-1)
+			change_bets(this, input_value-1);
 		}
 	})
 
 	$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {
 		var input_value = parseInt($(this).parent().find('.race_input').val());
 		if(input_value < money){
-			$(this).parent().find('.race_input').val(input_value+1)
+			change_bets(this, input_value+1);
 		}
 	})
 
 	$('body').off('click', '#race_start').on('click', '#race_start', function () {
-		props.get_data('tables')
+		var start = false;
+		for(var i in rabbit_array){
+			if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== 0){
+				start = true;
+			}
+		}
+		if(start){
+			props.get_data('start')
+		} else {
+			showResults("", "Please place your bet before playing.");		
+		}
+		
 	})
+
+	function change_bets(rabbit, x){
+		$(rabbit).parent().find('.race_input').val(x);
+		const rabbit_box = $(rabbit).closest(".rabbit_box")[0].id;
+		const rabbit_nr = rabbit_box.split("rabbit_box_")[rabbit_box.split("rabbit_box_").length-1];
+		for(var i in rabbit_array){
+			if(rabbit_array[i].id === parseInt(rabbit_nr)){
+				rabbit_array[i].bet = x;
+				break;
+			}
+		}
+	}
 
 	return (
 		<>
@@ -513,9 +603,15 @@ function RaceTables(props){
 													var rabbit02 = rabbit_array[i+1];
 													var rabbit_box_nr01 = "rabbit_box_nr shadow_convex " + rabbit01.color;
 													var rabbit_box_nr02 = "rabbit_box_nr shadow_convex " + rabbit02.color;
+													var t = 1;
+													if(i%2===0){
+														t=i+1;
+													}
+													var a = t;
+													var b = a+1;
 													return(
 														<div className="rabbit_box_container" key={i}>
-															<div className="rabbit_box">
+															<div id={"rabbit_box_"+a} className="rabbit_box">
 																<div className="rabbit_box_info">
 																	<div className="rabbit_box_name shadow_convex"><p>{rabbit01.name}</p></div>
 																	<div className={rabbit_box_nr01}><p>{rabbit01.id}</p></div>
@@ -530,7 +626,7 @@ function RaceTables(props){
 																	</div>
 																</div>																													
 															</div>
-															<div className="rabbit_box">
+															<div id={"rabbit_box_"+b} className="rabbit_box">
 																<div className="rabbit_box_info">
 																	<div className="rabbit_box_name shadow_convex"><p>{rabbit02.name}</p></div>
 																	<div className={rabbit_box_nr02}><p>{rabbit02.id}</p></div>
@@ -611,7 +707,7 @@ class Race extends Component {
 	}
 	
 	get_data = function(x){
-		if(x === "tables"){
+		if(x === "start"){
 			self.setState({ start_race: true })
 		}
 	}
@@ -632,6 +728,12 @@ class Race extends Component {
 						)
 					}
 				})()}
+				<div className="show_results_container">
+					<div className="show_results">
+						<h1></h1>
+						<p></p>
+					</div>
+				</div>
 			</>
 	  	)
 	}

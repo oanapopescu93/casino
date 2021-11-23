@@ -1534,7 +1534,7 @@ table {
     transform: translate(-50%, -50%);
 	width:100%;
 	max-width: 200px;
-	padding:10px;
+	padding:0px 10px;
 	background: var(--yellow);
 	border-radius: 10px;
 	color: black;
@@ -1545,6 +1545,7 @@ table {
 }
 .show_results p{
 	font-size: 14px;
+	margin-bottom:10px;
 }
 #slot_rules{
 	cursor: pointer;

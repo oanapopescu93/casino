@@ -427,7 +427,7 @@ function roulette_game(props){
 			//console.log('SPIN', your_bets);
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
-				showResults("", "Please place your bet before betting.");			
+				showResults("", "Please place your bet before playing.");			
 			} else {
 				spin_click++;
 				my_click++;

@@ -7,7 +7,7 @@ import '../css/style.css';
 import HomePage from './homePage';
 import Salon from './salon';
 import SignInRecovery from './signIn_recovery';
-import Not_found from './not_found';
+import NotFound from './not_found';
 import UserPage from './userPage';
 import Donate from './money/donate';
 import Language from './partials/language';
@@ -69,7 +69,7 @@ class Home extends Component {
 										<HomePage lang={self.state.lang} socket={socket}></HomePage>
 									</Route>
 									<Route path="*">
-										<Not_found lang={self.state.lang}></Not_found>
+										<NotFound lang={self.state.lang}></NotFound>
 									</Route>
 								</Switch>			
 							</BrowserRouter>

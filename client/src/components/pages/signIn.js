@@ -72,8 +72,9 @@ function submit_form(){
 function check_submit(){
 	var email = $('#signin_email').val();
 	
-	var regex_pass = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-    var pass_result = regex_pass.test(email);
+	var regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$';
+	//letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
+    var pass_result = regex.test(email);
 	
 	//console.log('pass_result', email, regex_pass, pass_result);
 	return pass_result;
