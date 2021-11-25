@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.1deb54bc.chunk.css",
-    "main.js": "/static/js/main.5ca3301e.chunk.js",
-    "main.js.map": "/static/js/main.5ca3301e.chunk.js.map",
+    "main.css": "/static/css/main.874798e6.chunk.css",
+    "main.js": "/static/js/main.9685a988.chunk.js",
+    "main.js.map": "/static/js/main.9685a988.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.83c3e0c4.js",
     "runtime-main.js.map": "/static/js/runtime-main.83c3e0c4.js.map",
     "static/css/2.4fd09901.chunk.css": "/static/css/2.4fd09901.chunk.css",
     "static/js/2.e203370a.chunk.js": "/static/js/2.e203370a.chunk.js",
     "static/js/2.e203370a.chunk.js.map": "/static/js/2.e203370a.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.0a50efcad3ca23596df4d0350f72c2cd.js": "/precache-manifest.0a50efcad3ca23596df4d0350f72c2cd.js",
+    "precache-manifest.97e89fd74f552c308af0a39e703290df.js": "/precache-manifest.97e89fd74f552c308af0a39e703290df.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.4fd09901.chunk.css.map": "/static/css/2.4fd09901.chunk.css.map",
-    "static/css/main.1deb54bc.chunk.css.map": "/static/css/main.1deb54bc.chunk.css.map",
+    "static/css/main.874798e6.chunk.css.map": "/static/css/main.874798e6.chunk.css.map",
     "static/js/2.e203370a.chunk.js.LICENSE.txt": "/static/js/2.e203370a.chunk.js.LICENSE.txt",
     "static/media/style.css": "/static/media/bg00a.572bbe97.jpg",
     "static/media/bitcoin-love-heart.896a7116.svg": "/static/media/bitcoin-love-heart.896a7116.svg",
@@ -21,7 +21,7 @@
     "static/media/inventory_icon.png": "/static/media/inventory_icon.5c7b84a7.png",
     "static/media/rabbit.jpg": "/static/media/rabbit.d95f8421.jpg",
     "static/media/rabbit000.png": "/static/media/rabbit000.910ee3b1.png",
-    "static/media/rabbit_move.png": "/static/media/rabbit_move.b6445cdb.png",
+    "static/media/rabbit_move_colored.png": "/static/media/rabbit_move_colored.e9893b87.png",
     "static/media/rabbit_run.gif": "/static/media/rabbit_run.c1ab81a7.gif",
     "static/media/rabbit_stand_left.png": "/static/media/rabbit_stand_left.aad7218e.png",
     "static/media/rabbit_stand_right.png": "/static/media/rabbit_stand_right.dd8ca881.png",
@@ -37,7 +37,7 @@
     "static/js/runtime-main.83c3e0c4.js",
     "static/css/2.4fd09901.chunk.css",
     "static/js/2.e203370a.chunk.js",
-    "static/css/main.1deb54bc.chunk.css",
-    "static/js/main.5ca3301e.chunk.js"
+    "static/css/main.874798e6.chunk.css",
+    "static/js/main.9685a988.chunk.js"
   ]
 }

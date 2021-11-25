@@ -871,6 +871,7 @@ table {
 	height:150px;
 	width: 100%;
 	display:table;
+	background: rgba(0,0,0,0.2);
 }
 .table_box > div{
 	display:table-cell;
@@ -1307,7 +1308,7 @@ table {
     transform: translate(0px, -50%);
 }
 .salon_button {
-    background: black;
+    background: rgba(0,0,0,0.5);
 	border:solid 1px var(--yellow);
 	border-left:none;
     color: var(--yellow);
@@ -1655,28 +1656,6 @@ table {
 	color:white;
 	text-align: center;
 }
-.rabbit_box_nr.red{
-	background-color: red;
-}
-.rabbit_box_nr.orange{
-	background-color: orange;
-	border:solid 1px black;
-	color:black;
-}
-.rabbit_box_nr.yellow{
-	background-color: yellow;
-	border:solid 1px black;
-	color:black;
-}
-.rabbit_box_nr.green{
-	background-color: green;
-}
-.rabbit_box_nr.blue{
-	background-color: blue;
-}
-.rabbit_box_nr.purple{
-	background-color: purple;
-}
 .rabbit_box_info img{
 	height:100px;
 	width:100px;
@@ -1748,11 +1727,62 @@ table {
 	cursor: pointer;
 }
 
+.race_container{
+	position:relative;
+	z-index: 1;
+}
 #race_canvas{
 	border:solid 1px var(--yellow);
 	border-radius:10px;
 	/* background-color: rgba(255, 215, 0, 0.5); */
 	background-image: radial-gradient(transparent, black);
+}
+#race_order_container{
+	position: absolute;
+	top:0px;
+	left: 50%;
+    transform: translate(-50%, 0px);
+	width:100px;
+}
+#race_order_box{
+	border:solid 1px var(--yellow);
+	border-radius:10px 0px 0px 0px;
+	background: rgba(0,0,0,0.5);
+	color:var(--yellow);
+	padding:10px;
+	width:25%;
+	text-align: center;
+}
+.race_order_elem{
+	padding:0px 5px;
+	margin-top:5px;
+	border:solid 1px white;
+	color:white;
+	text-align: center;
+	border-radius:5px;
+}
+
+.red{
+	background-color: red;
+}
+.orange{
+	background-color: orange;
+	border:solid 1px black;
+	color:black;
+}
+.yellow{
+	background-color: yellow;
+	border:solid 1px black;
+	color:black;
+}
+.green{
+	background-color: green;
+}
+.blue{
+	background-color: blue;
+}
+.purple{
+	background-color: purple;
 }
 
 /* media */
