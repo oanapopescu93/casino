@@ -1623,7 +1623,7 @@ table {
 	width:50%;
 	padding:10px;
 }
-.rabbit_box_info, .rabbit_box_input{
+.rabbit_box_left, .rabbit_box_right{
 	display:inline-block;
 	width:50%;
 	padding:10px;
@@ -1656,13 +1656,14 @@ table {
 	color:white;
 	text-align: center;
 }
-.rabbit_box_info img{
+.rabbit_box_pic img{
 	height:100px;
 	width:100px;
 	border-radius:100px;
 	border:solid 1px var(--yellow);
 }
-.rabbit_box_input > div span{
+.rabbit_box_input > div .rabbit_box_minus,
+.rabbit_box_input > div .rabbit_box_plus{
 	border:solid 1px var(--yellow);
 	padding:4px;
 	border-radius:100px;
@@ -1671,6 +1672,29 @@ table {
 	color:var(--yellow);
 	display: inline-block;
 	cursor: pointer;
+}
+.dropdown {
+	position: relative;
+}  
+.dropdown-content {
+	display: none;
+	position: absolute;
+	border:solid 1px var(--yellow);
+	border-radius: 5px;
+	background: var(--transparent_yellow);
+	color:var(--yellow);
+	padding: 5px;
+	z-index: 999999;
+}  
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+.dropdown-content li{
+	cursor: pointer;
+}
+.dropdown-content li:hover{
+	background: var(--transparent_yellow);
+	color:black;
 }
 .race_input{
 	color:var(--yellow);
@@ -1738,20 +1762,24 @@ table {
 	background-image: radial-gradient(transparent, black);
 }
 #race_order_container{
-	position: absolute;
-	top:0px;
-	left: 50%;
-    transform: translate(-50%, 0px);
-	width:100px;
+	display: block;
+	margin:auto;
 }
 #race_order_box{
 	border:solid 1px var(--yellow);
-	border-radius:10px 0px 0px 0px;
+	border-top:solid 0px transparent;
+	border-radius:0px 0px 10px 10px;
 	background: rgba(0,0,0,0.5);
 	color:var(--yellow);
 	padding:10px;
-	width:25%;
+	padding-top:20px;
+	margin-top:-10px;
 	text-align: center;
+}
+.race_order_elem_container{
+	padding:0px 5px;
+	display: inline-block;
+	width:16.6%
 }
 .race_order_elem{
 	padding:0px 5px;

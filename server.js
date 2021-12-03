@@ -39,9 +39,12 @@ var game_start = false;
 
 var slot_prize = constants.SLOT_PRIZE;
 
+var rabbit_race = constants.SERVER_RABBITS;
+var rabbit_speed = [3, 1] //max, min
+var rabbit_delay = [40, 20] //max, min
+
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
-var rabbit_race = constants.SERVER_RABBITS;
 var crypto = constants.CRYPTO;
 var contact_details = constants.CONTACT;
 
@@ -217,17 +220,15 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('blackjack_send', function(data) {
-		//console.log('blackjack_send', data)	
 		var user_table = data[1].user_table.split(' ').join('_');
 		var room_name = user_table;
 		if(typeof data[1].user_type !== "undefined"){
 			var user_type = data[1].user_type;	
 			room_name = room_name + '_' + user_type;
 		}
-
 		switch (data[0]) {
 			case 'start':
-				//if(!game_start){
+				if(!game_start){
 					var suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
 					var values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
@@ -241,13 +242,13 @@ io.on('connection', function(socket) {
 					hidden_dealer.hand.push(blackjack_dealer.hand[0])
 					io.to(room_name).emit('blackjack_read', ['start', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
 					game_start = true;
-				// } else {
-				// 	io.to(room_name).emit('blackjack_read', text03);
-				// }				
+				} else {
+				 	io.to(room_name).emit('blackjack_read', text03);
+				}				
 				break;
 			case 'pause':
 				if(!game_start){
-					//io.to(room_name).emit('blackjack_read', "aaa");
+					io.to(room_name).emit('blackjack_read', "pause");
 				} else {					
 					hidden_dealer.id = blackjack_dealer.id;
 					hidden_dealer.hand = [];
@@ -271,7 +272,7 @@ io.on('connection', function(socket) {
 					//console.log('stay--> ', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
 				}				
 				break;
-		  }	
+		}	
 		  
 		function createDeck(suits, values, turns){
 			blackjack_deck = new Array();
@@ -287,8 +288,7 @@ io.on('connection', function(socket) {
 				}
 			}		
 			return shuffle(turns);
-		}
-		
+		}		
 		function shuffle(turns){        
 			for (var i = 0; i < turns; i++){
 				var a = Math.floor((Math.random() * blackjack_deck.length));
@@ -300,8 +300,7 @@ io.on('connection', function(socket) {
 			}
 		
 			return blackjack_deck;
-		}
-		
+		}		
 		function dealHands(){
 			blackjack_dealer = {id: "dealer", hand: []}
 			for(var i = 0; i < 2; i++){	
@@ -321,15 +320,13 @@ io.on('connection', function(socket) {
 			}
 			points('deal_hands');
 			check('blackjack');
-		}
-		
+		}		
 		function hitMe(){
 			var card = blackjack_deck.pop();
 			blackjack_players[blackjack_current_player].hand.push(card);
 			points('hit_me');
 			check('busted');
-		}
-		
+		}		
 		function points(reason){
 			switch (reason) {
 				case 'deal_hands':
@@ -360,8 +357,7 @@ io.on('connection', function(socket) {
 					blackjack_dealer.points = points;
 					break;				
 			  }	
-		}
-		
+		}		
 		function check(reason){
 			switch (reason) {
 				case 'busted':
@@ -377,8 +373,7 @@ io.on('connection', function(socket) {
 					}	
 					break;				
 			  }		
-		}
-		
+		}		
 		function blackjack_win_lose(){
 			points('dealer');
 
@@ -415,6 +410,7 @@ io.on('connection', function(socket) {
 		}
 		fs.writeFileSync(users_file, JSON.stringify(users_json));
 	});
+
 	var array_big = [];	
 	socket.on('slots_send', function(data) {
 		var this_user = data.id;
@@ -468,6 +464,12 @@ io.on('connection', function(socket) {
 					break;
 				}
 		 	}
+		}
+		for(var i in rabbit_race){
+			var random_delay = Math.floor(Math.random() * rabbit_delay[0]) + rabbit_delay[1];
+			rabbit_race[i].delay = random_delay;
+			rabbit_race[i].max_speed = rabbit_speed[0];
+			rabbit_race[i].min_speed = rabbit_speed[1];
 		}
 		var server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
 		io.to(socket.id).emit('race_board_read', server_user);
