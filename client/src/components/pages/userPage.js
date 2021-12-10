@@ -10,10 +10,9 @@ import Game from './game';
 import UserAccount from './userAccount';
 import Support from './other_pages/support';
 import Panel from './panel_control';
-import { getCookie } from '../utils';
+import { getCookie, showResults } from '../utils';
 
 var self;
-
 function Child(props) {
 	var visible = useSelector(state => state.visibility);
 	var user_id = props.user_id;
@@ -67,43 +66,50 @@ class UserPage extends Component {
 			user_id: -1,
 			socket: props.socket,
 			contact: {},
+			lang: props.lang
 		};
 	}	
   
 	componentDidMount() {
 		self.userPageData()
 			.then(res => {	
-					var table = self.state.user.user_table;
-					var table_split = table.split('_');
-					var table_user = table_split[0] + ' ' + table_split[1];
-					var table_type = table_split[2];					
-					var payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.props.lang}
-					self.state.socket.emit('username', payload);
-					self.state.socket.on('is_online', function(data) {
-						$('#chatmessages').append(data);
-					});			
+					if(res !== null){
+						var table = self.state.user.user_table;
+						var table_split = table.split('_');
+						var table_user = table_split[0] + ' ' + table_split[1];
+						var table_type = table_split[2];					
+						var payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.props.lang}
+						self.state.socket.emit('username', payload);
+						self.state.socket.on('is_online', function(data) {
+							$('#chatmessages').append(data);
+						});	
+					} else {
+						if(self.state.lang === "ro"){
+							showResults("Eroare", "Ups, ceva s-a intamplat.");
+						} else {
+							showResults("Error", "Ups, something went wrong.");
+						}	
+					}							
 				})
 			.catch(err => console.log(err));  
 	}
 
 	userPageData(){
 		return new Promise(function(resolve, reject){
-			var table = window.location.href.split('table/')
-			
+			var table = window.location.href.split('table/')			
 			var id = parseInt(getCookie("casino_id"));
-			if(id === "" || id === "indefined"){
-				id = -1;
-			}
-
-			self.state.socket.emit('user_page_send', [table[1], id]);
+			var user = getCookie("casino_user");
+			self.state.socket.emit('user_page_send', [table[1], id, user]);
 			self.state.socket.on('user_page_read', function(data){
-				if(data.user === "" || data.user === "indefined"){
-					data.user = getCookie("casino_user")
-				}
-				self.setState({ user: data});
-				self.setState({ user_id: data.id});
-				self.setState({ contact: data.contact});
-				resolve(data);	
+				if(data !== null){
+					if(data.user === "" || data.user === "indefined"){
+						data.user = getCookie("casino_user")
+					}
+					self.setState({ user: data});
+					self.setState({ user_id: data.id});
+					self.setState({ contact: data.contact});						
+				} 
+				resolve(data);				
 			});	
 		});
 	};

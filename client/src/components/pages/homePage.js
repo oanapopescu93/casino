@@ -40,12 +40,10 @@ class HomePage extends React.Component {
 	}
 
 	checkCookie = function(){
-		var cookies = getCookie("casino_cookies");
-		
+		var cookies = getCookie("casino_cookies");		
 		if(cookies !== ''){
 			self.setState({ cookies: true });
 		} 
-
 		var user = getCookie("casino_user");
 		if(user === ""){
 			self.splash_screen();
@@ -54,7 +52,9 @@ class HomePage extends React.Component {
 		}
 	}
 	
-	casino_log = function(link){	
+	casino_log = function(link){
+		$('.sign_errors').hide();
+		$('.sign_errors').empty();	
 		if(link === "sign_in"){			
 			this.setState({ visible: true })
 			$('#link_login').addClass('active');
@@ -138,6 +138,7 @@ class HomePage extends React.Component {
 								</div>
 							</div>
 						</div>
+						<div className="sign_errors"></div>
 					</Col>
 					<Col sm={4} md={4} lg={4}></Col>					
 					{

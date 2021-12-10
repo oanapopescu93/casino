@@ -882,7 +882,6 @@ function roulette_bets(props){
 	}
 
 	this.getImage = function(reason){
-		console.log('getImage', reason)
 		if(reason !== "resize"){
 			var promises = [];
 			for(var i in items){				
@@ -1179,18 +1178,18 @@ function getMousePos(canvas, event) {
 function isInside(mousePos, obj){
 	return mousePos.x > obj.x && mousePos.x < obj.x + obj.width && mousePos.y < obj.y + obj.height && mousePos.y > obj.y
 }
-function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
-	ctx.beginPath();
-	ctx.rect(x, y, width, height);
-	ctx.fillStyle = fillStyle;
-	if(strokeStyle !== ""){
-		ctx.lineWidth = lineWidth;
-		ctx.strokeStyle = strokeStyle;
-		ctx.stroke();
-	}		
-	ctx.fill();
-	ctx.closePath();
-}
+// function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
+// 	ctx.beginPath();
+// 	ctx.rect(x, y, width, height);
+// 	ctx.fillStyle = fillStyle;
+// 	if(strokeStyle !== ""){
+// 		ctx.lineWidth = lineWidth;
+// 		ctx.strokeStyle = strokeStyle;
+// 		ctx.stroke();
+// 	}		
+// 	ctx.fill();
+// 	ctx.closePath();
+// }
 
 function Roulette(props) {
 	setTimeout(function(){ 
@@ -1211,7 +1210,7 @@ function Roulette(props) {
 		$(window).resize(function(){
 			console.log('resize', document.getElementById("roulette_bets_canvas"))
 			if(document.getElementById("roulette_canvas") !== null){
-				my_roulette.ready();
+				my_roulette.ready('resize');
 			}
 			if(document.getElementById("roulette_bets_canvas") !== null){
 				my_roulette_bets.ready('resize');

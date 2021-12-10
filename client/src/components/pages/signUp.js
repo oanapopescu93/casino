@@ -23,25 +23,21 @@ class SignUp extends Component {
 	}
 
 	componentDidMount() {
-		self.state.socket.emit('client_id_send', '');
-		self.state.socket.on('client_id_read', function(data){
-			self.setState({ client_id: data });
-		});	
 		self.setState({ user_minor: getCookie('user_minor') });
 	}
 
 	submit = function(){
-		$('#signup_email_red').empty();
-		$('#signup_pass_red').empty();
+		$('.sign_errors').hide();
+		$('.sign_errors').empty();
 		if(self.check_submit('email') && self.check_submit('pass')){
 			self.loader().then(function(data) {
 				if(data[0]){
 					$('#loader_container').hide(); 
 					$('#home').show();
 					if(self.state.lang === "ro"){
-						showResults('Esti deja inregistrat.');
+						showResults('Alerta', 'Esti deja inregistrat.');
 					} else {
-						showResults('You are already registered.');
+						showResults('Alert', 'You are already registered.');
 					}					
 				} else {
 					setCookie("casino_email", $('#signup_email').val(), 1);
@@ -51,6 +47,8 @@ class SignUp extends Component {
 			});
 		} else {
 			if(!self.check_submit('email')){
+				$('.sign_errors').show();
+				$('.sign_errors').append('<h6 id="signup_email_red" class="text_red"></h6>');
 				if(self.state.lang === "ro"){
 					$('#signup_email_red').append('<p><b>Email invalid</b></p><p>exemplu@mail.com</p>')
 				} else {
@@ -59,6 +57,8 @@ class SignUp extends Component {
 			}	
 
 			if(!self.check_submit('pass')){
+				$('.sign_errors').show();
+				$('.sign_errors').append('<h6 id="signup_pass_red" class="text_red"></h6>');
 				if(self.state.lang === "ro"){
 					$('#signup_pass_red').append('<p><b>Parola invalida</b></p><p>Minim o litera mare, o litera mica, o cifra, un caracter special si lungimea totala minima de opt caractere</p>')
 				} else {
@@ -138,13 +138,11 @@ class SignUp extends Component {
 						return (
 							<>
 								<Form id="user_form" method="post" action="/registration">
-									<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />
-									<h6 id="signup_email_red" className="text_red"></h6>
+									<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />									
 									<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />									
-									<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
-									<h6 id="signup_pass_red 111" className="text_red"></h6>
+									<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />									
 									<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
-								</Form>
+								</Form>																
 								<div className="show_results_container">
 									<div className="show_results">
 										<h1>{self.state.lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
@@ -159,8 +157,7 @@ class SignUp extends Component {
 								<Form id="user_form" method="post" action="/registration">
 										<Form.Control id="signup_email" className="input_yellow shadow_convex" type="text" name="email" placeholder="Email" />
 										<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />
-										<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />
-										<h6 id="signup_pass_red 222" className="text_red"></h6>
+										<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />										
 										<Button className="button_yellow shadow_convex" onClick={() => self.submit()}>{this.state.lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
 								</Form>
 						

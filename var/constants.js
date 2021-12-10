@@ -4,6 +4,16 @@ module.exports = Object.freeze({
     AUTH_PASS: "cd1233a2d8d6a7",
     AUTH_FROM: "oanapopescu93@gmail.com",
 
+    DATABASE: [
+        {
+            host: 'sql11.freemysqlhosting.net', 
+            user: 'sql11457323', 
+            password: 'cVmj7G5WeV',
+            database: 'sql11457323',
+            sql: "SELECT * FROM casino_users",
+        },
+    ],
+
     SERVER_TABLES: [
         {table_id: '001', table_name: "roulette", table_type: "european"},
         {table_id: '002', table_name: "roulette", table_type: "american"},

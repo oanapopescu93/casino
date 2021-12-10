@@ -46,11 +46,14 @@ var font_bold_14 = 'bold 14px sans-serif';
 var font_bold_16 = 'bold 16px sans-serif';
 
 var user_info = 0;
+var user_join = [];
 
 function blackjack_wheel(props){
 	var self = this;
+	var user_id = props.user_id;
 	var lang = props.lang;
 	const dispatch = props.dispatch;
+	var reason = "";
 
 	user_info = {money: props.money};	
 	if(props.blackjack !== -1){
@@ -62,13 +65,26 @@ function blackjack_wheel(props){
 		}
 	}	
 		
-	this.ready = function(){
+	this.ready = function(r){
+		reason = r;
 		self.createCanvas(canvas_width, canvas_height);		
 		self.draw_table();
 		if(blackjack_hand.length !== 0){
 			self.draw_cards();	
 		}
 		self.blackjack_table_click();
+		if(reason !== "resize"){			
+			var blackjack_payload_server = {
+				user_id: user_id, 
+				user: props.user, 
+				user_table: props.user_table, 
+				bets: your_bets
+			}	
+			socket.emit('blackjack_get_users_send', blackjack_payload_server);
+			socket.on('blackjack_get_users_read', function(data){
+				user_join = data;
+			});
+		}
 	}
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
@@ -427,7 +443,7 @@ function blackjack_wheel(props){
 		var mousePos = getMousePos(canvas, event);		
 
 		var blackjack_payload_server = {
-			user_id: props.user_id, 
+			user_id: user_id, 
 			user: props.user, 
 			user_table: props.user_table, 
 			bets: your_bets
@@ -525,8 +541,15 @@ function blackjack_wheel(props){
 					// ctx.rect(blackjack_pos[i].x, blackjack_pos[i].y, blackjack_pos[i].width, blackjack_pos[i].height);
 					// ctx.stroke();
 
-					if(blackjack_payload_server.user_id !== blackjack_pos[i].text){
-						alert("You can only bet in your spot. Your spot is "+blackjack_payload_server.user_id);
+					var pos = -1;
+					for(var i in user_join){
+						if(user_id === user_join[i].id){
+							pos = parseInt(i);
+						}
+					}
+
+					if(pos !== blackjack_pos[i].text){
+					 	alert("You can only bet in your spot. Your spot is "+pos);
 					} else {
 						your_bets.push(blackjack_pos[i]);					
 						your_last_bet = blackjack_pos[i];
@@ -618,9 +641,6 @@ function blackjack_wheel(props){
 			money: user_info.money
 		}
 		socket.emit('blackjack_results_send', blackjack_payload_server);
-		// socket.on('blackjack_results_read', function(data){
-		// 	console.log('blackjack_results--> ', data)
-		// });	 
 	}
 }
 
@@ -673,7 +693,7 @@ function Blackjack(props) {
 		blackjack_game = new blackjack_wheel(props);
 		blackjack_game.ready();		
 		$(window).resize(function(){
-			blackjack_game.ready();	
+			blackjack_game.ready('resize');	
 		});
 	}, 0);
 	

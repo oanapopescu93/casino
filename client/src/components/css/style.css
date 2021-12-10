@@ -4,6 +4,7 @@
 	--light_yellow:yellow;
 	--green: green;
 	--transparent_yellow: rgba(255, 215, 0, 0.2);
+	--red: red;
   }
 
 html{
@@ -15,9 +16,11 @@ body{
 	font-family: 'Roboto Condensed';
 	min-height: 100% !important;
     position: relative;
+	z-index: 1;
 }
 #casino_root, .App{
 	position: absolute;
+	z-index: 1;
 	top:0px;
 	bottom:0px;
 	left:0px;
@@ -42,6 +45,7 @@ body{
 	background-color:transparent;
 	background-image: radial-gradient(transparent, black);
 	position:absolute;
+	z-index: 1;
 	top:0px;
 	bottom:0px;
 	left:0px;
@@ -164,6 +168,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 
 .minor_container{
 	position: fixed;
+	z-index: 1;
     width: 100%;
     top: 0;
     bottom: 0;
@@ -172,8 +177,9 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
     background: rgba(0,0,0,0.7);
 }
 .minor_inside{
-	padding:10px;
 	position:relative;
+	z-index: 1;
+	padding:10px;	
 	top:50%;
 	left:50%;
 	width:100%;
@@ -205,6 +211,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 .loader_container{
 	display:none;
 	position:absolute;
+	z-index: 1;
 	z-index:1;
 	top:0px;
 	bottom:0px;
@@ -212,12 +219,13 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 	right:0px;
 	width:100%;
 }
-.loader_container .loader{
-	color: var(--yellow);
+.loader_container .loader{	
     position: relative;
+	z-index: 1;
     top: 50%;
     transform: translate(0px, -50%);
     font-size: 20px;
+	color: var(--yellow);
 }
 .loader_container .loader img{
 	width:200px;
@@ -329,7 +337,7 @@ textarea {
   }
 
 .text_red{
-	color:red;
+	color:var(--red);
 }
 .text_stroke{
 	color: var(--yellow);
@@ -344,6 +352,7 @@ textarea {
 
 .full-height {
     position: relative;
+	z-index: 1;
     display: table;
     height: 100%;
     width: 100%;
@@ -359,6 +368,7 @@ textarea {
 #race.full-height, 
 #user_account.full-height{
     position: relative;
+	z-index: 1;
 	display:block;
 	top:0px;
 	left:0px;
@@ -367,13 +377,13 @@ textarea {
     height: 100%;
     width: 100%;
 }
-#salon .full-height-content{
-	padding: 10px 0px;
-	z-index: 1;
+#salon .full-height-content{	
 	position: relative;
+	z-index: 1;
     top: 50%;
     transform: translate(0px, -50%);
 	display: block;
+	padding: 10px 0px;
 }
 #user_account .full-height-content,
 #race .full-height-content{
@@ -478,7 +488,16 @@ input:-internal-autofill-selected {
 }
 
 .user_form_container{
-	height:170px;
+	position: relative;
+	z-index: 1;
+}
+.sign_errors{
+	border: solid 1px var(--red);
+	border-radius:5px;
+	padding:10px;
+	margin-top: 10px;
+	display:none;
+	background-color: rgba(0,0,0,0.5);
 }
 .login_link_container{
 	margin:10px 0px;
@@ -580,17 +599,18 @@ table {
 }
 #support_button{
 	position: absolute;
+	z-index: 1;
     bottom: 10px;
     cursor: pointer;
     right: 10px;
     padding: 5px 10px;
 }
 
-.support_container{
-	background-color: rgba(0,0,0,0.5);
-    padding: 10px;
+.support_container{	
 	position: relative;
 	z-index:1;
+	background-color: rgba(0,0,0,0.5);
+    padding: 10px;
 	margin-top:60px;
 }
 .support_container .deco{
@@ -605,13 +625,13 @@ table {
 	padding:15px 0px;
 }
 #support_form{
-	background-color: rgba(0,0,0,0.5);
-	padding: 10px;
-	width:50%;
 	position:absolute;
 	z-index:1;
 	top:-40px;
 	right:-10px;
+	background-color: rgba(0,0,0,0.5);
+	padding: 10px;
+	width:50%;	
 }
 #support_form button, #support_form input, #support_form textarea{
 	width: 100%;
@@ -681,6 +701,7 @@ table {
 	border-left:solid 1px var(--yellow);
 	padding: 20px 10px;	
 	position:absolute;
+	z-index:1;
 	height:100%;
 	right:0px;
 	width:90%;
@@ -690,6 +711,7 @@ table {
 }
 .button_container{
 	position: absolute;
+	z-index:1;
     left: 1px;
     width: 50px;
 }
@@ -747,11 +769,11 @@ table {
 }
 .user_list_button {
     display: inline-block;
-    padding: 10px 10px;
+    padding: 5px 10px;
     border: solid 1px var(--yellow);
     width: 50%;
     cursor: pointer;
-    height: 40px;
+    height: 30px;
 	text-align: center;
 }
 .user_list_button:first-child {
@@ -789,6 +811,7 @@ table {
 	width: 100%;
 	cursor: pointer;
 	position: relative;
+	z-index:1;
 }
 .casino_games_title:hover{
 	background: var(--transparent_yellow);
@@ -802,7 +825,7 @@ table {
 }
 #casino_games_title_dropdown_container{
 	position: relative;
-	z-index: 2;
+	z-index: 1;
 }
 .casino_games_title_box_container{
 	max-width: 600px;
@@ -910,6 +933,7 @@ table {
 .profile_container .profile_right{
 	border:solid 1px var(--yellow);
 	padding:15px;
+	background: rgba(0,0,0,0.2);
 }
 .profile_container .profile_left{
 	border-radius:10px 0px 0px 10px;
@@ -1075,50 +1099,6 @@ table {
     margin-left: -86px;
 }
 
-.dropdown_group{
-	padding:10px;
-}
-.dropbtn {
-	background-color: black;
-	color: var(--yellow);
-	border:solid 1px var(--yellow);
-	border-radius:5px;
-	padding: 16px;
-	font-size: 16px;
-	cursor: pointer;
-	width:100%;
-}  
-.dropdown {
-	position: relative;
-	display: block;
-}  
-.dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: black;
-	min-width: 100%;
-	-moz-box-shadow:    0px 8px 16px 0px rgba(0,0,0,0.2);
-   -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
-	height:auto;
-	max-height:160px;
-	overflow-y: auto;
-}
-.dropdown-content .dropdown_item {
-	color: var(--yellow);
-	border-bottom:solid 1px var(--yellow);
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-}  
-.dropdown-content .dropdown_item:hover {
-	background-color: var(--transparent_yellow)
-}  
-.dropdown:hover .dropdown-content {
-	display: block;
-	border-radius:5px;
-}  
 
 /* footer */
 .footer_container{
@@ -1626,28 +1606,30 @@ table {
 .rabbit_box_left, .rabbit_box_right{
 	display:inline-block;
 	width:50%;
-	padding:10px;
-	position: relative;
-	z-index:1;
+	padding:10px;	
 	min-height:120px;
 	vertical-align: top;
 }
+.rabbit_box_pic{
+	position: relative;
+	z-index:1;
+}
 .rabbit_box_name{
-	position: absolute;
-	bottom:0px;
-	left:50%;
+	display: inline-block;
 	padding:5px;
 	background-color: var(--yellow);
 	color:black;
 	border-radius:50px;
-	transform: translate(-50%, 0px);
-	width:50%;
+	width:100%;
 	max-width: 100px;
+	margin-top:-5px;
+	margin-bottom: 5px;
 }
 .rabbit_box_nr{
 	position: absolute;
-	top:10px;
-	left:45px;	
+	z-index: 1;
+	top:-5px;
+	left:-5px;	
 	padding:4px;
 	border-radius:100px;
 	width:30px;
@@ -1657,9 +1639,9 @@ table {
 	text-align: center;
 }
 .rabbit_box_pic img{
-	height:100px;
-	width:100px;
-	border-radius:100px;
+	height:auto;
+	width:100%;
+	border-radius:100%;
 	border:solid 1px var(--yellow);
 }
 .rabbit_box_input > div .rabbit_box_minus,
@@ -1673,29 +1655,6 @@ table {
 	display: inline-block;
 	cursor: pointer;
 }
-.dropdown {
-	position: relative;
-}  
-.dropdown-content {
-	display: none;
-	position: absolute;
-	border:solid 1px var(--yellow);
-	border-radius: 5px;
-	background: var(--transparent_yellow);
-	color:var(--yellow);
-	padding: 5px;
-	z-index: 999999;
-}  
-.dropdown:hover .dropdown-content {
-	display: block;
-}
-.dropdown-content li{
-	cursor: pointer;
-}
-.dropdown-content li:hover{
-	background: var(--transparent_yellow);
-	color:black;
-}
 .race_input{
 	color:var(--yellow);
 	width:40px;
@@ -1708,6 +1667,7 @@ table {
 	background-color: transparent;
 	height: 25px;
 	margin:0px 5px;
+	text-align: center;
 }
 .race_bets_container{
 	margin: 40px 0px;
@@ -1813,6 +1773,89 @@ table {
 	background-color: purple;
 }
 
+/* dropdown */
+.dropdown_group{
+	padding:10px;
+}
+.dropbtn {
+	background-color: black;
+	color: var(--yellow);
+	border:solid 1px var(--yellow);
+	border-radius:5px;
+	padding: 15px;
+	font-size: 15px;
+	cursor: pointer;
+	width:100%;
+}  
+.dropdown {
+	position: relative;
+	z-index: 999999;
+	display: block;	
+}  
+.dropdown-content {
+	display: none;
+	position: absolute;
+	z-index: 999999;
+	min-width: 100%;
+	-moz-box-shadow:    0px 8px 16px 0px rgba(0,0,0,0.2);
+   -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);	
+	height:auto;
+	overflow-y: auto;
+	max-height: 100px;
+} 
+.dropdown-content .dropdown_item, .dropdown-content li {
+	color: var(--yellow);
+	border-bottom:solid 1px var(--yellow);
+	padding: 5px 10px;
+	text-decoration: none;
+	display: block;
+	cursor: pointer;
+} 
+.dropdown-content .dropdown_item:last-child {
+	border-bottom:solid 0px transparent;
+}  
+.dropdown-content .dropdown_item:hover {
+	background-color: var(--transparent_yellow)
+}  
+.dropdown:hover .dropdown-content {
+	display: block;
+	border-radius:5px;
+} 
+.dropdown-content li{
+	cursor: pointer;
+	color: var(--yellow);
+	border-bottom:solid 1px var(--yellow);
+}
+
+#settings_container .dropdown-content{
+	background-color: black;
+	padding:10px;
+}
+.place_header{
+	border:solid 1px var(--yellow);
+	border-radius: 5px;
+	display: inline-block;
+	width:100%;
+}
+.rabbit_box_input .dropdown-content {
+    display: none;
+    position: absolute;
+	z-index: 999999;
+    border: solid 1px var(--yellow);
+    border-radius: 5px;
+    background: var(--transparent_yellow);
+    color: var(--yellow);
+    padding: 5px;    
+}
+.rabbit_box_input .dropdown-content li {
+    cursor: pointer;
+}
+.rabbit_box_input .dropdown-content li:hover {
+    background: var(--transparent_yellow);
+    color: black;
+}
+
 /* media */
 @media (max-width: 1024px){
 	.rabbit_box_info, .rabbit_box_input{
@@ -1821,14 +1864,19 @@ table {
 	}
 }
 @media (max-width: 960px){
-	.casino_games_title_container{
-		margin-bottom: -15px;
+	.casino_games_title_container{		
 		position: absolute;
-		width: 100%;
 		z-index: 2;
+		width: 100%;
+		margin-bottom: -15px;		
 	}
 	.casino_games_table_container.open{
 		margin-top: 40px;
+	}
+	.rabbit_box_input > div .rabbit_box_minus, .rabbit_box_input > div .rabbit_box_plus{
+		padding:0px;
+		width:22px;
+		height: 22px;
 	}
 }
 @media (max-width: 767px) {
@@ -2042,6 +2090,7 @@ table {
 	}
 	.confirm_cookies button {
 		position: relative;
+		z-index: 1;
 		transform: none;
 		top: auto;
 		left: auto;
@@ -2072,6 +2121,10 @@ table {
 @media (max-width: 480px) {  
 	.table_inside {
 		width: 100%;
+	}
+	.rabbit_box_left, .rabbit_box_right{
+		width:100%;
+		padding: 0px 10px;
 	}
 }
 

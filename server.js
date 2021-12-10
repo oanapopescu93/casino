@@ -1,33 +1,37 @@
 var express = require("express");
 const app = express();
 const fs = require('fs');
-const cheerio = require('cheerio');
-const request = require('request');
-
+const database = require('./utils/mysql');
+const md5 = require('md5');
 var constants = require('./var/constants');
 var routes = require("./routes");
-
-var users_file = './var/users.json';
-var users_json = JSON.parse(fs.readFileSync(users_file).toString());
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const port = process.env.PORT || 5000;
 app.set("port", port);
 
+var users_json
 var user_join = [];
-var email = "";
-var user = "";
-var pass = "";
 var user_money = 100;
+var account_type = 1;
+
+var rabbit_race = constants.SERVER_RABBITS;
+var slot_prize = constants.SLOT_PRIZE;
+var server_tables = constants.SERVER_TABLES;
+var market = constants.SERVER_MARKET;
+var crypto = constants.CRYPTO;
+var contact_details = constants.CONTACT;
+var database_config = constants.DATABASE[0];
 
 var text01 = 'The user is offline or does not exist';
 var text02 = 'Please type a user ( /w username message )';
 var text03 = "Game has begun. Please wait for the next round."
+
 var users = [];
 var sockets = [];
 var monkey_roulette = [];
-var monkey_blackjack = [];
+var monkey_blackjack = false;
 var monkey_slots = false;
 
 var blackjack_deck = new Array();
@@ -37,16 +41,12 @@ var blackjack_players = [];
 var blackjack_dealer = {};
 var game_start = false;
 
-var slot_prize = constants.SLOT_PRIZE;
-
-var rabbit_race = constants.SERVER_RABBITS;
 var rabbit_speed = [3, 1] //max, min
 var rabbit_delay = [40, 20] //max, min
 
-var server_tables = constants.SERVER_TABLES;
-var market = constants.SERVER_MARKET;
-var crypto = constants.CRYPTO;
-var contact_details = constants.CONTACT;
+database(database_config).then(function(data){
+	users_json = data;
+});
 
 app.use(routes);
 
@@ -54,72 +54,73 @@ io.on('connection', function(socket) {
 	socket.on('signin_send', function(data) {	
 		var exists = false;	
 		var obj = {};
+		var pass = md5(data.pass);
 		for(var i in users_json){
-			if(data.user === users_json[i].user && data.pass === users_json[i].pass){
-				exists = true;
-				user = data.user;
-				pass = data.pass;
-				obj = {id: users_json[i].id, user: user, email: users_json[i].email, money: users_json[i].money};
+			if(data.user === users_json[i].user && pass === users_json[i].pass){
+				exists = true;	
+				obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
+				io.to(socket.id).emit('signin_read', [exists, obj]);	
 				break;
 			}
 		}
-		io.to(socket.id).emit('signin_read', [exists, obj]);		
+		if(!exists){
+			io.to(socket.id).emit('signin_read', [exists, obj]);	
+		}			
 	});
-	socket.on('signup_send', function(data) {		
+	socket.on('signup_send', function(data) {
 		var exists = false;	
-		user = data.user;
-		email = data.email;
-		pass = data.pass;
+		var pass = md5(data.pass);
 		var obj = {};
-
 		for(var i in users_json){	
-			if(data.user === users_json[i].user && data.email === users_json[i].email && data.pass === users_json[i].pass){
+			if(data.user === users_json[i].user && data.email === users_json[i].email && pass === users_json[i].pass){
 				exists = true;
 				break;
 			}
 		}
 		if(!exists){
-			sort_array_obj(users_json, "id");
-			var id = users_json[users_json.length-1].id+1;
-			obj = {id: id, user: data.user, email: data.email, pass: data.pass, money: user_money};
-			users_json.push(obj);
-		}
-		
-		fs.writeFileSync(users_file, JSON.stringify(users_json));
-
-		io.to(socket.id).emit('signup_read', [exists, obj]);
-	});
-	socket.on('client_id_send', function(data) {
-		io.emit('client_id_read', constants.GOOGLE_CLIENT_ID);	
-	});
-
-	socket.on('salon_send', function(data) {
-		io.emit('salon_read', {server_tables: server_tables, server_user: user });
-	});
-
-	socket.on('logout_send', function(data) {	
-		if (socket.handshake.session.userdata) {
-            delete socket.handshake.session.userdata;
-            socket.handshake.session.save();
-        }
-		io.to(socket.id).emit('logout_read', data);
-	});
-
-	socket.on('donate_send', function(data) {
-		io.to(socket.id).emit('donate_read', crypto);		
-	});
-	socket.on('contact_send', function(data) {
-		//io.to(socket.id).emit('contact_read', contact_details);	
-		io.emit('contact_read', contact_details);	
-	});
-	socket.on('support_send', function(data) {
-		if(data.lang === "ro"){
-			io.to(socket.id).emit('support_read', "Mesajul a fost trimis");	
+			sort_array_obj(users_json, "id");	
+			database_config.sql = "INSERT INTO casino_users (user, email, pass, account_type, money) VALUES ('" + data.user + "', '" + data.email + "', '" + pass + "', '" + account_type + "', '" + user_money + "')";
+			database(database_config).then(function(result1){
+				database_config.sql = "SELECT * FROM casino_users";
+				database(database_config).then(function(result2){
+					users_json = result2;			
+					for(var i in users_json){						
+						if(users_json[i].email === data.email){
+							obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
+							io.to(socket.id).emit('signup_read', [exists, obj]);
+							break;
+						}
+					}
+				});
+			});
 		} else {
-			io.to(socket.id).emit('support_read', "Message has been sent");	
-		}			
+			io.to(socket.id).emit('signup_read', [exists, obj]);	
+		}
 	});
-
+	socket.on('salon_send', function(data) {
+		io.emit('salon_read', {server_tables: server_tables, server_user: data });
+	});
+	socket.on('user_page_send', function(data) {
+		var my_table = data[0];
+		var game = my_table.split('_')[0]
+		var id = data[1];
+		var user = data[2];
+		var money = 0;
+		var server_user = null;
+		if((id !== "" && id !== "indefined") || (user !== "" && user !== "indefined")){
+			for(var i in users_json){	
+				if(id === users_json[i].id){
+					exists = true;
+					money = users_json[i].money;
+					break;
+				}
+			}
+			server_user = {id: id, user: user, money: money, user_table: my_table, game: game, contact: contact_details}
+			io.to(socket.id).emit('user_page_read', server_user);
+		} else {
+			io.to(socket.id).emit('user_page_read', server_user);
+		}		
+	});	
 	socket.on('username', function(payload) {
 		var username = payload.user;
 		var user_table = payload.user_table.split(' ').join('_');
@@ -144,7 +145,29 @@ io.on('connection', function(socket) {
 			io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
 			io.to(room_name).emit('chatlist', user_join);
 		}		
-    });		
+    });	
+	socket.on('logout_send', function(data) {	
+		if (socket.handshake.session.userdata) {
+            delete socket.handshake.session.userdata;
+            socket.handshake.session.save();
+        }
+		io.to(socket.id).emit('logout_read', data);
+	});
+
+	socket.on('donate_send', function(data) {
+		io.to(socket.id).emit('donate_read', crypto);		
+	});
+	socket.on('contact_send', function(data) {
+		//io.to(socket.id).emit('contact_read', contact_details);	
+		io.emit('contact_read', contact_details);	
+	});
+	socket.on('support_send', function(data) {
+		if(data.lang === "ro"){
+			io.to(socket.id).emit('support_read', "Mesajul a fost trimis");	
+		} else {
+			io.to(socket.id).emit('support_read', "Message has been sent");	
+		}			
+	});		
 	
 	socket.on('chat_message_send', function(data) {
 		var user_table = data.user_table.split(' ').join('_');
@@ -155,7 +178,6 @@ io.on('connection', function(socket) {
 		}
 		io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));		
 	});	
-
 	socket.on('choose_table_send', function(data) {
 		var my_table = data.table_name + '_' +data.table_id;
 		if(data.table_type !== "" && typeof data.table_type !== "undefined" && data.table_type !== null){
@@ -163,25 +185,6 @@ io.on('connection', function(socket) {
 		} 
 		io.emit('choose_table_read', my_table);
 	});
-
-	socket.on('user_page_send', function(data) {
-		var my_table = data[0];
-		var game = my_table.split('_')[0]
-		var id = data[1];
-		var money = 0;
-		if(id != -1){
-			for(var i in users_json){	
-				if(id === users_json[i].id){
-					exists = true;
-					money = users_json[i].money;
-					break;
-				}
-			}
-		}
-		var server_user = {id: id, user: user, money: money, user_table: my_table, game: game, contact: contact_details}
-		io.to(socket.id).emit('user_page_read', server_user);
-	});
-
 	socket.on('market_send', function(data) {
 		var this_user = data.id;
 		for(var i in sockets){
@@ -210,15 +213,22 @@ io.on('connection', function(socket) {
 	});
 	socket.on('roulette_results_send', function(data) {
 		var money = data.money;
-		for(var i in users_json){	
-			if(data.user_id === users_json[i].id){
-				users_json[i].money = money;
-				break;
+		var id = parseInt(data.user_id);
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id = "+id;
+		database(database_config).then(function(result){
+			for(var i in users_json){	
+				if(data.user_id === users_json[i].id){
+					users_json[i].money = money;
+					break;
+				}
 			}
-		}
-		fs.writeFileSync(users_file, JSON.stringify(users_json));
+		});
 	});
 
+	socket.on('blackjack_get_users_send', function(data) {
+		var room_name = data.user_table.split(' ').join('_');
+		io.to(room_name).emit('blackjack_get_users_read', user_join);
+	});
 	socket.on('blackjack_send', function(data) {
 		var user_table = data[1].user_table.split(' ').join('_');
 		var room_name = user_table;
@@ -402,13 +412,16 @@ io.on('connection', function(socket) {
 	});
 	socket.on('blackjack_results_send', function(data) {
 		var money = data.money;
-		for(var i in users_json){	
-			if(data.user_id === users_json[i].id){
-				users_json[i].money = money;
-				break;
+		var id = parseInt(data.user_id);
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id = "+id;
+		database(database_config).then(function(result){
+			for(var i in users_json){	
+				if(data.user_id === users_json[i].id){
+					users_json[i].money = money;
+					break;
+				}
 			}
-		}
-		fs.writeFileSync(users_file, JSON.stringify(users_json));
+		});
 	});
 
 	var array_big = [];	
@@ -444,13 +457,16 @@ io.on('connection', function(socket) {
 	});
 	socket.on('slot_results_send', function(data) {
 		var money = data.money;
-		for(var i in users_json){	
-			if(data.user_id === users_json[i].id){
-				users_json[i].money = money;
-				break;
+		var id = parseInt(data.user_id);
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id = "+id;
+		database(database_config).then(function(result){
+			for(var i in users_json){	
+				if(data.user_id === users_json[i].id){
+					users_json[i].money = money;
+					break;
+				}
 			}
-		}
-		fs.writeFileSync(users_file, JSON.stringify(users_json));
+		});
 	});
 
 	socket.on('race_board_send', function(data) {
@@ -716,30 +732,3 @@ function slot_matrix(x, size){
 }
 
 http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));
-
-
-
-
-// var mysql = require('mysql');
-// var con = mysql.createConnection({
-// 	host     : 'localhost',
-// 	user     : 'root',
-// 	password : '',
-// 	database : 'my_db'
-// });
-// con.connect(function(err) {
-// 	if (err) {
-// 		console.log('err1--> ', err);
-// 		throw err;
-// 	}
-// 	console.log('connection');
-// 	con.query("SELECT * FROM users", function (err, result, fields) {
-// 	  	if (err) {
-// 			console.log('err2--> ', err);
-// 		  	throw err;
-// 	  	}
-// 	  	console.log(result);
-// 	});
-// }); 
-
-// con.end();

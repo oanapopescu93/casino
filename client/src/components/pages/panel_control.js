@@ -8,8 +8,7 @@ import Settings from './control_settings'
 import ChatForm from './chatForm'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import { faComments } from '@fortawesome/free-solid-svg-icons'
+import { faUserCircle, faComments, faHome, faCog, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
 import carrot_img from '../img/icons/carrot_icon.png';
 
@@ -117,9 +116,9 @@ function Panel(props){
                         <span id="user_list_user_account" className="user_list_button" onClick={() => handleClick('account')}>{lang === "ro" ? <span>Contul meu</span> : <span>My account</span>}</span>
                     </p>
                     <ul className="user_list">
-                        <li id="user_list_salon" className="user_list_item" onClick={() => handleClick('salon')}>{lang === "ro" ? <span>Salon</span> : <span>Salon</span>}</li>
-                        <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}>{lang === "ro" ? <span>Setari</span> : <span>Settings</span>}</li>
-                        <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}>{lang === "ro" ? <span>Delogare</span> : <span>Logout</span>}</li>
+                        <li id="user_list_salon" className="user_list_item" onClick={() => handleClick('salon')}>{lang === "ro" ? <span><FontAwesomeIcon icon={faHome} /> Salon</span> : <span><FontAwesomeIcon icon={faHome} /> Salon</span>}</li>
+                        <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}>{lang === "ro" ? <span><FontAwesomeIcon icon={faCog} /> Setari</span> : <span><FontAwesomeIcon icon={faCog} /> Settings</span>}</li>
+                        <li id="user_list_logout" className="user_list_item" onClick={() => handleClick('logout')}>{lang === "ro" ? <span><FontAwesomeIcon icon={faPowerOff} /> Delogare</span> : <span><FontAwesomeIcon icon={faPowerOff} /> Logout</span>}</li>
                     </ul>
                     <div id="support_button" onClick={() => handleClick('support')}>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</div>
                 </div>

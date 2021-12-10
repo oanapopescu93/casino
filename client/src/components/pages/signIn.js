@@ -6,7 +6,10 @@ import Modal from 'react-bootstrap/Modal'
 import { setCookie, showResults } from '../utils';
 
 var socket;
+var lang;
 function submit(){
+	$('.sign_errors').hide();
+	$('.sign_errors').empty();
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data) {
 			if(data[0]){
@@ -15,20 +18,32 @@ function submit(){
 				submit_form();
 			} else {
 				$('#loader_container').hide(); 
-				$('#home').show();
-				showResults('You are not registered.');
+				$('#home').show();				
+				if(lang === "ro"){
+					showResults("Eroare", "Nu esti integistrat SAU nu ai scris ceva corect.");
+				} else {
+					showResults("Error", "You are not registered OR you have a typo somewhere.");
+				}	
 			}
 		});
 	} else {
+		$('.sign_errors').show();
 		if($('#signin_user').val() === ""){
-			$('#signin_user_red').show();
-		} else {
-			$('#signin_user_red').hide();
-		}
+			//$('#signin_user_red').show();			
+			$('.sign_errors').append('<h6 id="signin_user_red" class="text_red"></h6>');
+			if(lang === "ro"){
+				$('#signin_user_red').append("<p>Nu ai scris nume utilizator</p>")
+			} else {
+				$('#signin_user_red').append("<p>You didn't write the username</p>")
+			}	
+		} 
 		if($('#signin_pass').val() === ""){
-			$('#signin_pass_red').show();
-		} else {
-			$('#signin_pass_red').hide();
+			$('.sign_errors').append('<h6 id="signin_pass_red" class="text_red"></h6>');
+			if(lang === "ro"){
+				$('#signin_pass_red').append("<p>Nu ai scris parola</p>")
+			} else {
+				$('#signin_pass_red').append("<p>You didn't write the password</p>")
+			}
 		}
 	}	
 }
@@ -87,17 +102,15 @@ function SignIn(props) {
   	const handleShow = () => setShow(true);
 
 	socket = props.socket;
-	var lang = props.lang;
+	lang = props.lang;
 
 	$('.full-height').attr('id', 'home');
 
 	return (
-		<div>
+		<>
 			<Form id="user_form" method="post" action="/registration">
-				<Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>
-				<h6 id="signin_user_red" className="hidden_red text_red">{lang === "ro" ? <span>Nu ai scris user-ul</span> : <span>You didn't write the username</span>}</h6>
-				<Form.Control id="signin_pass" autoComplete="off" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>
-				<h6 id="signin_pass_red" className="hidden_red text_red">{lang === "ro" ? <span>Nu ai scris parola</span> : <span>You didn't write the password</span>}</h6>
+				<Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>				
+				<Form.Control id="signin_pass" autoComplete="off" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>				
 				<Button className="button_yellow shadow_convex" onClick={submit}>{lang === "ro" ? <span>Logare</span> : <span>Sign In</span>}</Button>
 				<div className="login_link_container">
 					<div onClick={handleShow} id="link_forget">{lang === "ro" ? <span>Am uitat user/parola</span> : <span>Forgot Username/Password</span>}</div>	
@@ -127,7 +140,7 @@ function SignIn(props) {
 					</Form>
 				</Modal.Body>				
 			</Modal>
-		</div>		
+		</>		
 	);
 }
 

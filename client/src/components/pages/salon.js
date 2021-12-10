@@ -163,7 +163,8 @@ class Salon extends Component {
 	
 	salonData(){
 		return new Promise(function(resolve, reject){
-			self.state.socket.emit('salon_send', 'salon');	
+			var user = getCookie("casino_user");
+			self.state.socket.emit('salon_send', user);	
 			self.state.socket.on('salon_read', function(data){
 				resolve(data);	
 			});	

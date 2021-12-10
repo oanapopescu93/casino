@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {connect} from 'react-redux';
 import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
-import { getCookie, showResults } from '../../utils';
+import { getCookie, setCookie, showResults } from '../../utils';
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
 import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png';
 
@@ -720,6 +720,7 @@ class RaceTables extends Component {
 		};
 		rabbit_array = this.props.data.rabbit_array;
 		self_race_tables.check_bets = self_race_tables.check_bets.bind(self_race_tables);
+		self_race_tables.handleExit = self_race_tables.handleExit.bind(self_race_tables);
 	}
 
 	check_bets(){
@@ -736,6 +737,14 @@ class RaceTables extends Component {
 			}
 		});
 		return start;
+	}
+
+	handleExit() {
+        setCookie("casino_user", '', 1);
+		setCookie("casino_email", '', 1);
+		var url = window.location.href;
+		url = url.split('/salon');
+		window.location.href = url[0];
 	}
 
 	render() {
@@ -838,16 +847,16 @@ class RaceTables extends Component {
 															<div className="rabbit_box_container" key={i}>
 																<div id={"rabbit_box_"+a} className="rabbit_box">
 																	<div className="rabbit_box_left">
-																		<div className="rabbit_box_pic">
-																			<div className="rabbit_box_name shadow_convex"><p>{rabbit01.name}</p></div>
+																		<div className="rabbit_box_pic">																			
 																			<div className={rabbit_box_nr01}><p>{rabbit01.id}</p></div>
-																			<img className="shadow_convex" src={rabbit_img_board} alt="rabbit_img_board" />
+																			<img className="shadow_convex" src={rabbit_img_board} alt="rabbit_img_board" />																			
 																		</div>
+																		<div className="rabbit_box_name shadow_convex"><p>{rabbit01.name}</p></div>
 																		<div className="rabbit_box_info">
 																			<p className="rabbit_info rabbit_delay">Delay: {rabbit01.delay}</p>
 																			<p className="rabbit_info rabbit_max_speed">Max speed: {rabbit01.max_speed}</p>
 																			<p className="rabbit_info rabbit_min_speed">Min speed: {rabbit01.min_speed}</p>
-																		</div>
+																		</div>																		
 																	</div>
 																	<div className="rabbit_box_right">
 																		<div className="rabbit_box_input">
@@ -861,7 +870,7 @@ class RaceTables extends Component {
 																			<div className="dropdown">
 																				{lang === "ro" ? <span place="1" className="place_header">Locul 1</span> : <span place="1" className="place_header">1st place</span>}
 																				<ul className="dropdown-content shadow_convex">
-																					<li place="1">{lang === "ro" ? <span>Locul 1</span> : <span>1st place</span>}</li>
+																				<li place="1">{lang === "ro" ? <span>Locul 1</span> : <span>1st place</span>}</li>
 																					<li place="2">{lang === "ro" ? <span>Locul 2</span> : <span>2nd place</span>}</li>
 																					<li place="3">{lang === "ro" ? <span>Locul 3</span> : <span>3rd place</span>}</li>
 																					<li place="4">{lang === "ro" ? <span>Locul 4</span> : <span>4th place</span>}</li>
@@ -874,16 +883,16 @@ class RaceTables extends Component {
 																</div>
 																<div id={"rabbit_box_"+b} className="rabbit_box">
 																	<div className="rabbit_box_left">
-																		<div className="rabbit_box_pic">
-																			<div className="rabbit_box_name shadow_convex"><p>{rabbit02.name}</p></div>
+																		<div className="rabbit_box_pic">																			
 																			<div className={rabbit_box_nr02}><p>{rabbit02.id}</p></div>
 																			<img className="shadow_convex" src={rabbit_img_board} alt="rabbit_img_board" />
 																		</div>
+																		<div className="rabbit_box_name shadow_convex"><p>{rabbit02.name}</p></div>	
 																		<div className="rabbit_box_info">
 																			<p className="rabbit_info rabbit_delay">Delay: {rabbit02.delay}</p>
 																			<p className="rabbit_info rabbit_max_speed">Max speed: {rabbit02.max_speed}</p>
 																			<p className="rabbit_info rabbit_min_speed">Min speed: {rabbit02.min_speed}</p>
-																		</div>																		
+																		</div>																																			
 																	</div>
 																	<div className="rabbit_box_right">
 																		<div className="rabbit_box_input">
@@ -930,6 +939,14 @@ class RaceTables extends Component {
 								<div className="race_buttons_box">
 									<div className="race_start shadow_convex" id="race_start">START</div>
 								</div>
+							</Col>
+						</Row>
+						<Row>
+							<Col sm={12}>
+								{self.state.lang === "ro" ? 
+									<p id="exit_salon" className="shadow_convex" onClick={() => self_race_tables.handleExit()}>Iesi din salon</p> : 
+									<p id="exit_salon" className="shadow_convex" onClick={() => self_race_tables.handleExit()}>Exit salon</p>	
+								}																			
 							</Col>
 						</Row>
 					</Col>
