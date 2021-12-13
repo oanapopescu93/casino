@@ -47,8 +47,13 @@ module.exports = Object.freeze({
         {id: 6, name: "Rabbit06", color: "purple"},
     ],
     
-    CRYPTO: [
-        {type: "Bitcoin", text: "-", link: "bitcoin:-"},
+    DONATIONS: [        
+        {type: "crypto", title: "Bitcoin", text: "-", link: "bitcoin:-"},
+        {type: "crypto", title: "Ethereum", text: "-"},
+        {type: "crypto", title: "Litecoin", text: "-"},
+        {type: "crypto", title: "Bitcoin Cash", text: "-"},
+        {type: "crypto", title: "Dogecoin", text: "-"},
+        {type: "paypal", title: "Paypal", link: "#"},
     ],
 
     CONTACT: {

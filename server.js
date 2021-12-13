@@ -20,7 +20,7 @@ var rabbit_race = constants.SERVER_RABBITS;
 var slot_prize = constants.SLOT_PRIZE;
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
-var crypto = constants.CRYPTO;
+var donations = constants.DONATIONS;
 var contact_details = constants.CONTACT;
 var database_config = constants.DATABASE[0];
 
@@ -155,7 +155,7 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('donate_send', function(data) {
-		io.to(socket.id).emit('donate_read', crypto);		
+		io.to(socket.id).emit('donate_read', donations);		
 	});
 	socket.on('contact_send', function(data) {
 		//io.to(socket.id).emit('contact_read', contact_details);	

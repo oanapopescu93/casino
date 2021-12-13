@@ -20,8 +20,8 @@ module.exports = function database(database_config){
 				}			
 				sql_result = result;
 				resolve(sql_result);
-			});
-			con.end();
+				con.end();
+			});			
 		}); 
 	});		
 }

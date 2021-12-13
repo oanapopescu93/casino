@@ -1827,6 +1827,9 @@ table {
 	color: var(--yellow);
 	border-bottom:solid 1px var(--yellow);
 }
+.dropdown-content li:last-child{
+	border-bottom:solid 0px transparent;
+}
 
 #settings_container .dropdown-content{
 	background-color: black;
@@ -1854,6 +1857,45 @@ table {
 .rabbit_box_input .dropdown-content li:hover {
     background: var(--transparent_yellow);
     color: black;
+}
+
+/* donations */
+.donation_container{
+	text-align: left;
+}
+.donation_box{
+	padding:10px;
+}
+.donation_header{
+	margin-bottom:5px;
+}
+.donation_body_crypto{
+	border: solid 1px var(--yellow);
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);	
+}
+.donation_body{	
+    padding: 10px 15px;
+}
+.paypal_button{
+	border: solid 1px var(--yellow);
+    border-radius: 5px;
+    color: var(--yellow);
+	width:100%;
+	max-width: 100px;
+	padding:5px 10px;
+	display: block;
+    text-align: center;
+}
+.paypal_button:hover, .paypal_button:active, .paypal_button:focus{
+    color: var(--yellow);
+	background: var(--transparent_yellow);
+}
+.donation_link{
+	padding-bottom: 5px;
+}
+.donation_link:last-child{
+	padding-bottom: 0px;
 }
 
 /* media */

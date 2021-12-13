@@ -24,6 +24,16 @@ function Sapou(props){
                                 </Col>
                             </Row>
                         ) 
+                    case "donations":
+                        return (
+                            <Row>
+                                <Col sm={12} className="color_yellow">
+                                    <img id="logo_icon" alt="logo_icon" src={logo_icon} />
+                                    <h1>BunnyBet</h1>
+                                    {lang === "ro" ? <h4>Donatii</h4> : <h4>Donations</h4>} 
+                                </Col>
+                            </Row>
+                        ) 
                     case "recovery":
                         return(
                             <Row>
@@ -61,7 +71,7 @@ function Sapou(props){
                         )                
                     default:
                         return(
-                            <h1>BunnyBet</h1>
+                            <h1 className="color_yellow">BunnyBet</h1>
                         )						
                 }
             })()}
