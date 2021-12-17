@@ -69,7 +69,7 @@ function loader(){
 		$('#loader_container').show(); 
 		$('#home').hide();		
 		socket.emit('signin_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()});	
-		socket.on('signin_read', function(data){			
+		socket.on('signin_read', function(data){		
 			resolve(data);
 		});
 	});

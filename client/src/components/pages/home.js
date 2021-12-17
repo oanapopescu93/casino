@@ -14,9 +14,10 @@ import Crypto from './money/crypto';
 import Language from './partials/language';
 import Footer from './partials/footer';
 
-import { getCookie } from '../utils';
+import { getCookie, setCookie } from '../utils';
 
 import socketIOClient from "socket.io-client/dist/socket.io";
+import Cookies from './partials/cookies_modal';
 const socket = socketIOClient("/");
 
 var self;
@@ -29,20 +30,26 @@ class Home extends Component {
 			contact: "",
 			donation_show: false,
 			donation_info: null,
+			cookies:false,
 		};
 		self.lang_change = self.lang_change.bind(self);	
 		self.my_donation = self.my_donation.bind(self);
+	  	self.casino_cookies = self.casino_cookies.bind(self);
 	}
 
 	componentDidMount(){
-		var id = parseInt(getCookie("casino_id"));
+		let id = parseInt(getCookie("casino_id"));
 		if(id === "" || id === "indefined"){
 			id = -1;
 		}
 		socket.emit('contact_send', ["contact", id]);
 		socket.on('contact_read', function(data){
 			self.setState({ contact: data.contact});
-		});	    
+		});	 
+		let casino_cookies = getCookie("casino_cookies");  
+		if(casino_cookies !== ""){
+			self.setState({ cookies: true });
+		}
     }
 
 	lang_change(text){
@@ -56,6 +63,11 @@ class Home extends Component {
 	
 	back(){
 		self.setState({ donation_show: false});
+	}
+
+	casino_cookies = function(){
+		setCookie("casino_cookies", true, 30);
+		self.setState({ cookies: true });
 	}
 
 	render() {
@@ -92,6 +104,7 @@ class Home extends Component {
 						}									
 					</div>			
 				</div>
+				{!self.state.cookies ? <Cookies casino_cookies={self.casino_cookies} lang={self.state.lang}></Cookies>  : null}
 				<Language lang_change={self.lang_change}></Language>
 				<Donate my_donation={self.my_donation} info={self.state.donation_info} socket={socket}></Donate>
 				<Footer lang={self.state.lang} socket={socket}></Footer>

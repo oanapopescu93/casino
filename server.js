@@ -490,6 +490,20 @@ io.on('connection', function(socket) {
 		var server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
 		io.to(socket.id).emit('race_board_read', server_user);
 	});
+	socket.on('race_results_send', function(data) {
+		console.log('race_results_send', data)
+		var money = data.money;
+		var id = parseInt(data.user_id);
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id = "+id;
+		database(database_config).then(function(result){
+			for(var i in users_json){	
+				if(data.user_id === users_json[i].id){
+					users_json[i].money = money;
+					break;
+				}
+			}
+		});
+	});
 
 	socket.on('disconnect', function(username) {		
 		var k = sockets.indexOf(socket); 		

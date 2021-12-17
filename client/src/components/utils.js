@@ -1,10 +1,16 @@
 import $ from 'jquery'; 
 
 export const setCookie = function (cname,cvalue,exdays=30) {
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	var expires = "expires=" + d.toGMTString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires=" + d.toGMTString();
+  if(getCookie("casino_cookies") === "true"){
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  } else {
+    if(cname === "casino_id" || cname === "casino_user" || cname === "casino_cookies"){
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+  }
 }
 export const getCookie = function (cname) {
     var name = cname + "=";

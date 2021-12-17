@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {race_calculate_money, race_get_history} from '../../actions/actions'
 import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -247,6 +248,7 @@ function race_game(props){
 	socket = props.data.socket;
 	dispatch_nr = 0;
 	var lang = props.lang;
+	const dispatch = props.data.dispatch;
 		
 	this.ready = function(reason){
 		self.createCanvas(canvas_width, canvas_height);	
@@ -328,7 +330,6 @@ function race_game(props){
 	this.get_rabbits = function(img){
 		var rabbits = []
 		for(var i in rabbit_array){
-			var random_delay = Math.floor(Math.random() * 40) + 20;
 			var config = {
 				id: rabbit_array[i].id, 
 				name: rabbit_array[i].name, 
@@ -384,11 +385,20 @@ function race_game(props){
 		}
 	}
 
-	this.add_text = function(text, x, y, font, color, text_align){
+	this.add_text = function(text, x, y, font, color, text_align, stroke, line){
 		ctx.font = font;
-		ctx.fillStyle = color;
-		ctx.textAlign = text_align;
-		ctx.fillText(text, x, y);
+		if(stroke && line){
+			ctx.strokeStyle = stroke;
+    		ctx.lineWidth = line;
+			ctx.strokeText(text, x, y);
+			ctx.fillStyle = color;
+			ctx.textAlign = text_align;
+			ctx.fillText(text, x, y);
+		} else {
+			ctx.fillStyle = color;
+			ctx.textAlign = text_align;
+			ctx.fillText(text, x, y);
+		}		
 	}
 
 	this.background = function(){
@@ -474,7 +484,7 @@ function race_game(props){
 				self.draw_background();
 				self.draw_rabbits('sit');
 				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
-				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "black", "center");
+				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "'rgba(255, 215, 0, 0.5)'", "center", "gold", "1");
 			  	if(self_counter.timeRemaining <= 0){
 					clearInterval(my_counter);
 					self.start_race(1500);
@@ -486,7 +496,7 @@ function race_game(props){
 	this.start_race = function(time, monkey){
 		var nr = 0;
 		dispatch_nr++;
-		time = 500;
+		time = 100;
 		var move_landscape = false;
 
 		window.requestAnimFrame = (function(){
@@ -594,28 +604,60 @@ function race_game(props){
 
 	this.win_lose = function(){
 		rabbit_list = self.order_rabbits(rabbit_list);
-		//console.log('win00--> ', rabbit_list, rabbit_array)
-		for(var i in rabbit_array){
+		let win_lose = [];
+		let money = props.data.money;
+		for(let i in rabbit_array){
 			if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
-				var bet = rabbit_array[i].bet;
-				var win = 10 * bet;
-				var place = rabbit_array[i].place;
-				//console.log('win--> ', rabbit_list[place-1], rabbit_array[i], place)
+				let bet = rabbit_array[i].bet;
+				let win = 10 * bet;
+				let place = rabbit_array[i].place;
+				let elem = {};
 				if(rabbit_list[place-1].id === rabbit_array[i].id){
-					if(lang === "ro"){
-						showResults("Rezultate", "Ai gasitigat " + win + " morcovi. Iepurele tau este pe locul " + place + "!");	
-					} else {
-						showResults("Rezultate", "You won " + win + " carrots. Your bunny got " + place + "place!");
-					}	
+					money = money + win;
+					elem = {win: true, get:win, remaining: money, history: rabbit_array[i]}				
 				} else {
-					if(lang === "ro"){
-						showResults("Rezultate", "Ai pierdut " + bet + " morcovi. Iepurele tau nu este pe locul " + place + "!");	
-					} else {
-						showResults("Rezultate", "You lost " + bet + " carrots. Your bunny didn't get " + place + "place!");
-					}	
+					money = money - bet;
+					elem = {win: false, get:-bet, remaining: money, history: rabbit_array[i]}							
 				}
+				win_lose.push(elem);
 			}
 		}
+		
+		var get = props.data.money - win_lose[win_lose.length-1].remaining;
+		var remaining_money = win_lose[win_lose.length-1].remaining;
+
+		if(lang === "ro"){
+			if(props.data.money<remaining_money){
+				showResults("Rezultate", "Ai pierdut " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
+			} else if(get>0){
+				showResults("Rezultate", "Ai castigat " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
+			} else {
+				showResults("Rezultate", "Ai " + remaining_money + " morcovi!");
+			}			
+		} else {
+			if(props.data.money<remaining_money){
+				showResults("Results", "You lost " + get + " carrots. You have " + remaining_money + " carrots!");
+			} else if(get>0){
+				showResults("Results", "you won " + get + " carrots. You have " + remaining_money + " carrots!");
+			} else {
+				showResults("Results", "You have " + remaining_money + " carrots!");
+			}
+		}
+		self.pay(win_lose);	
+	}
+
+	this.pay = function(win_lose){
+		var money = win_lose[win_lose.length-1].remaining;
+		var date = new Date();
+		var history = {where: "race", when: date, data: win_lose}			
+		var race_payload_server = {
+			user_id: props.data.id,
+			user: props.data.user, 
+			money: money,
+			history: JSON.stringify(history)
+		}
+		//console.log('race_payload_server', props, money, race_payload_server)
+		socket.emit('race_results_send', race_payload_server);
 	}
 
 	this.check_rabbits = function(line){
@@ -673,10 +715,8 @@ function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
 }
 
 function RaceGame(props){
-	var socket = props.socket;
 	var lang = props.lang;
-	var money = props.money;
-	
+	$('.full-height').attr('id', 'race')
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'race')		
 		my_race = new race_game(props);
@@ -684,9 +724,7 @@ function RaceGame(props){
 		$(window).resize(function(){
 			my_race.ready("resize");	
 		});
-	}, 0);
-
-	$('.full-height').attr('id', 'race')
+	}, 0);	
 
 	return (
 		<div className="race_container">
@@ -765,7 +803,7 @@ class RaceTables extends Component {
 				}
 			})	
 
-			$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {
+			$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {				
 				var input_value = parseInt($(this).parent().find('.race_input').val());
 				if(input_value < self_race_tables.state.money){
 					$(this).parent().find('.race_input').val(input_value+1);
@@ -970,8 +1008,9 @@ class Race extends Component {
 			user: props.user,
 			id: -1,
 			money:0,
+			dispatch: props.dispatch
 	  	};
-	}
+	}	
 
 	componentDidMount() {		
 		var id = parseInt(getCookie("casino_id"));
