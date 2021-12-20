@@ -10,7 +10,7 @@ import SignInRecovery from './signIn_recovery';
 import NotFound from './not_found';
 import UserPage from './userPage';
 import Donate from './money/donate';
-import Crypto from './money/crypto';
+import Page from './money/page';
 import Language from './partials/language';
 import Footer from './partials/footer';
 
@@ -79,7 +79,7 @@ class Home extends Component {
 				<div className="full-height">
 					<div className="full-height-content">
 						{ 
-							self.state.donation_show ? <Crypto back={self.back} info={self.state.donation_info} lang={self.state.lang} socket={socket}></Crypto> : 
+							self.state.donation_show ? <Page back={self.back} info={self.state.donation_info} lang={self.state.lang} socket={socket}></Page> : 
 							<Container>				
 								<BrowserRouter>					
 									<Switch>			

@@ -31,6 +31,7 @@
     "path": "^0.12.7",
     "react-google-login": "^5.2.2",
     "react-owl-carousel": "^2.3.3",
+    "react-paypal-button-v2": "^2.6.3",
     "request": "^2.88.2",
     "session-file-store": "^1.5.0",
     "socket.io": "^2.4.1"

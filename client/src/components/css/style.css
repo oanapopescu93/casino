@@ -1877,15 +1877,21 @@ table {
 .donation_body{	
     padding: 10px 15px;
 }
+.paypal-buttons{
+	opacity: 0;
+	z-index: 9999999;
+}
 .paypal_button{
-	border: solid 1px var(--yellow);
-    border-radius: 5px;
-    color: var(--yellow);
-	width:100%;
-	max-width: 100px;
-	padding:5px 10px;
-	display: block;
-    text-align: center;
+	border: solid 1px var(--yellow)!important;
+    border-radius: 5px!important;
+    color: var(--yellow)!important;
+	width:100%!important;
+	max-width: 100px!important;
+	padding:5px 10px!important;
+	display: block!important;
+    text-align: center!important;
+	position: relative;
+	/*top: -40px;*/
 }
 .paypal_button:hover, .paypal_button:active, .paypal_button:focus{
     color: var(--yellow);
@@ -1896,6 +1902,10 @@ table {
 }
 .donation_link:last-child{
 	padding-bottom: 0px;
+}
+.donation_link_paypall{
+	width:100%;
+	max-width: 100px;
 }
 
 /* media */

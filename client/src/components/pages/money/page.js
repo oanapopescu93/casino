@@ -3,13 +3,14 @@ import Sapou from '../partials/sapou';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Paypal from './paypal';
 
 function Child(props){
 	return(
 		<div className="donation_header"><h4>{props.title}</h4></div>
     );
 }
-function Crypto(props){
+function Page(props){
     var lang = props.lang;  
     var info = props.info;
     var info_title = ["crypto", "paypal"];
@@ -36,16 +37,22 @@ function Crypto(props){
                                             {
                                                 info.map(function(item02, j){
                                                     if(item01 === item02.type){
-                                                        if(item01 !== "crypto"){
+                                                        if(item01 === "crypto"){
                                                             return (
-                                                                <a key={i} className="paypal_button" rel="nofollow" href={item02.link}><b>{item02.title}</b></a>
-                                                            ); 
-                                                        } else {
-                                                            return (
-                                                                <li key={j} className="donation_link">
+                                                                <li key={j} className="donation_link donation_link_crypto">
                                                                     <p key={i}><span>{item02.title}: </span><b>{item02.text}</b></p>
                                                                 </li>
+                                                            );                                                            
+                                                        } else if(item01 === "paypal"){
+                                                            return (                                                                
+                                                                <li key={j} className="donation_link donation_link_paypall">
+                                                                    {/* <Paypal></Paypal>
+                                                                    <div className="paypal_button">Paypal</div> */}
+                                                                    <a className="paypal_button" target="_blank" href="https://paypal.me/oanapopescu93?country.x=RO&locale.x=en_US">Paypal</a>
+                                                                </li>
                                                             ); 
+                                                        } else {
+                                                            return null;
                                                         }
                                                     }                                                                                                                    
                                                 }) 
@@ -65,4 +72,4 @@ function Crypto(props){
         </>
     )
 }
-export default Crypto;
+export default Page;
