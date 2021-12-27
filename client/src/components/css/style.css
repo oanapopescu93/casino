@@ -3,8 +3,11 @@
 	--dark_yellow:#b39800;
 	--light_yellow:yellow;
 	--green: green;
+	--transparent_8: rgba(0, 0, 0, 0.8);
 	--transparent_yellow: rgba(255, 215, 0, 0.2);
 	--red: red;
+	--game_button_border:#735f0c;
+	--game_button_color:#eac739;
   }
 
 html{
@@ -1209,6 +1212,10 @@ table {
 	z-index: 1;
     top: 0px;
 }
+#roulette_bets_canvas, #roulette_bets_clear{
+	display: block;
+	margin:auto;
+}
 .roulette_bets_container{
 	position: fixed;
 	z-index:1;
@@ -1226,7 +1233,7 @@ table {
 	right:0px;
 }
 .roulette_bets_box{
-	overflow: auto;
+	overflow: hidden;
 }
 .roulette_bets{
 	position: relative;
@@ -1245,6 +1252,15 @@ table {
 	opacity:1;
 	font-size:25px;
 	line-height:10px;
+}
+#roulette_bets_clear{
+	background-color: var(--game_button_color);
+	color:var(--game_button_border);
+	border-radius: 100%;
+	border:solid 1px var(--game_button_border);
+	width: 50px;
+    height: 50px;
+    padding: 12px 10px;
 }
 
 #user_title{

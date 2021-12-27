@@ -52,15 +52,14 @@ function slot_game(props, id){
 	slot_type = props.type;	
 	var reason = "";
 	const dispatch = props.dispatch;
+	var game_pay = 0;
 
 	user_info = {money: props.money};	
 	if(props.slot !== -1){
 		user_info = props.slot[0];			
 	}
-	if($('#user_money').length>0){
-		if($('#user_money span').length>0){
-			$('#user_money span').text(user_info.money);
-		}
+	if($('#user_money').length>0 && $('#user_money span').length>0){
+		$('#user_money span').text(user_info.money);
 	}	
 		
 	this.ready = function(r){
@@ -100,12 +99,12 @@ function slot_game(props, id){
 	}
 
 	this.get_reel = function(t){
-		var reel = [];
 		if(reason !== "resize"){
 			if($(slot_id+' .slot_machine .box').length === 0){
 				for(var i=0; i<t; i++){
 					$(slot_id+' .slot_machine').append('<div class="box"><canvas class="slot_canvas" id="slot_canvas'+i+'"></canvas></div>');
 				}
+				reel = [];
 				$(slot_id+' .slot_canvas').each(function(x, y){
 					reel.push($(this))
 				});
@@ -116,8 +115,17 @@ function slot_game(props, id){
 
 	this.start = function(reason){
 		$('body').off('click', '#slot_spin').on('click', '#slot_spin', function () {
-			dispatch_nr = 0;		
-			self.spin(spin_time, slot_speed);
+			if($('#slot_bet').val() !== '0'){
+				game_pay = parseInt($('#slot_bet').val())
+				dispatch_nr = 0;		
+				self.spin(spin_time, slot_speed);
+			} else {
+				if(self.lang === "ro"){
+					showResults("Eroare", "Ceva s-a intamplat. Va rog restartati jocul!");
+				} else {
+					showResults("Error", "Something went wrong. Please restart the game!");
+				}
+			}			
 		})
 		$('body').off('click', '#slot_rules').on('click', '#slot_rules', function () {
 			if(self.lang === "ro"){
@@ -365,7 +373,7 @@ function slot_game(props, id){
 			case 0: // all slots spinning
 				if (now - self.lastUpdate > spin_time) {
 					self.state = 1;
-					self.lastUpdate = now;
+					self.lastUpdate = now;					
 				} 
 				break;
 			case 6:
@@ -377,7 +385,7 @@ function slot_game(props, id){
 					slot_speed[state-1] = 0;
 					self.state++;
 					self.lastUpdate = now;
-				}		
+				}	
 		}
 		for(var i in reel){
 			self.rotate(i, slot_speed[i]);
@@ -468,21 +476,10 @@ function slot_game(props, id){
 			 	draw_dot(canvas, result[1][i][1] * image_size[1] + image_size[1]/2, result[1][i][0] * image_size[1] + image_size[1]/2, 8, 0, 2 * Math.PI, false, 'red', 1, 'red');
 			}
 
-			if($('#slot_bet').length>0){
-				user_info.money = user_info.money + parseInt($('#slot_bet').val());
-				dispatch(slot_calculate_money(user_info.money))	
-			}
-
-			if(self.lang === "ro"){
-				showResults("Results", "Ai castigat ");
-			} else {
-				showResults("Results", "You won ");
-			}
+			self.pay(game_pay, true);
+			
 		} else {
-			if($('#slot_bet').length>0){
-				user_info.money = user_info.money - parseInt($('#slot_bet').val());
-				dispatch(slot_calculate_money(user_info.money))	
-			}
+			self.pay(game_pay, false);
 		}
 
 		var slot_payload_server = {
@@ -494,6 +491,33 @@ function slot_game(props, id){
 		}		
 		socket.emit('slot_results_send', slot_payload_server);
     }
+
+	this.pay = function(pay, win){
+		if(win){
+			user_info.money = user_info.money + pay;
+		} else {
+			user_info.money = user_info.money - pay;
+		}
+		
+		dispatch(slot_calculate_money(user_info.money));
+		if($('#user_money').length>0 && $('#user_money span').length>0){
+			$('#user_money span').text(user_info.money);
+		}
+
+		if(win){
+			if(self.lang === "ro"){
+				showResults("Results", "Ai castigat " + game_pay + "morcovi");
+			} else {
+				showResults("Results", "You won " + game_pay + "carrots!");
+			}
+		} else {
+			if(self.lang === "ro"){
+				showResults("Results", "Ai pierdut " + game_pay + "morcovi");
+			} else {
+				showResults("Results", "You lost " + game_pay + "carrots!");
+			}
+		}		
+	}
 }
 
 function sort_array(list_element, sort_by) {

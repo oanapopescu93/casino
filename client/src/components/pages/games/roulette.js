@@ -865,7 +865,7 @@ function roulette_bets(props){
 		} else {
 			//big
 			canvas_bets.width = 900;
-			canvas_bets.height = 300;
+			canvas_bets.height = 280;
 			
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
@@ -903,7 +903,17 @@ function roulette_bets(props){
 
 	this.roulette_click = function(){			
 		$('#roulette_bets_canvas').off('click').on('click', function(event) {
+			//console.log('BET')
 			self.canvas_click(canvas_bets, event);
+		});
+
+		$('#roulette_bets_clear').off('click').on('click', function(event) {
+			//console.log('CLEAR')
+			your_last_bet = {}
+			your_bets = [];
+			self.choose_roulette_bets();
+			self.create_roulette_bets();
+			self.roulette_click();
 		});
 		
 		$('#roulette_bets_canvas').off('mousemove').on('mousemove', function(event) {
@@ -1178,18 +1188,6 @@ function getMousePos(canvas, event) {
 function isInside(mousePos, obj){
 	return mousePos.x > obj.x && mousePos.x < obj.x + obj.width && mousePos.y < obj.y + obj.height && mousePos.y > obj.y
 }
-// function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
-// 	ctx.beginPath();
-// 	ctx.rect(x, y, width, height);
-// 	ctx.fillStyle = fillStyle;
-// 	if(strokeStyle !== ""){
-// 		ctx.lineWidth = lineWidth;
-// 		ctx.strokeStyle = strokeStyle;
-// 		ctx.stroke();
-// 	}		
-// 	ctx.fill();
-// 	ctx.closePath();
-// }
 
 function Roulette(props) {
 	setTimeout(function(){ 
@@ -1208,7 +1206,6 @@ function Roulette(props) {
 		my_roulette_bets.ready();
 
 		$(window).resize(function(){
-			console.log('resize', document.getElementById("roulette_bets_canvas"))
 			if(document.getElementById("roulette_canvas") !== null){
 				my_roulette.ready('resize');
 			}
@@ -1236,6 +1233,7 @@ function Roulette(props) {
 					<div className="close">x</div>
 					<div className="roulette_bets_box">						
 						<canvas id="roulette_bets_canvas"></canvas>	
+						<div id="roulette_bets_clear" className="shadow_convex">Clear</div>
 					</div>
 				</div>
 			</div>

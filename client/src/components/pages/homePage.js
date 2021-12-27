@@ -9,8 +9,7 @@ import SignIn from './signIn';
 import SignUp from './signUp';
 import Splash from './splash_screen';
 import Sapou from './partials/sapou';
-import { getCookie, setCookie } from '../utils';
-import Cookies from './partials/cookies_modal';
+import { getCookie} from '../utils';
 
 var self;
 var socket;
