@@ -6,10 +6,10 @@ module.exports = Object.freeze({
 
     DATABASE: [
         {
-            host: 'sql11.freemysqlhosting.net', 
-            user: 'sql11457323', 
-            password: 'cVmj7G5WeV',
-            database: 'sql11457323',
+            host: 'db4free.net', 
+            user: 'oanapopescu93', 
+            password: 'Qazwsxedc123rfv123!',
+            database: 'bunny_bet_casino',
             sql: "SELECT * FROM casino_users",
         },
     ],

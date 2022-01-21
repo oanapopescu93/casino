@@ -1,10 +1,14 @@
 var express = require("express");
+// var bodyParser = require('body-parser')
 var path = require("path");
 var router = express.Router();
 var nodemailer = require('nodemailer');
 var constants = require('./var/constants');
+// var jsonParser = bodyParser.json() 
 
 var my_server = constants.SERVER;
+// var market = constants.SERVER_MARKET;
+
 var transport = nodemailer.createTransport({
 	host: "smtp.mailtrap.io",
 	port: 2525,
@@ -46,5 +50,10 @@ router.post('/recovery', function(req, res, next) {
 
 	res.redirect('/recovery');
 });
+
+// router.post('/api/market', jsonParser, function(req, res, next) {
+// 	var api_market = {data: market};
+// 	res.send(JSON.stringify(api_market));
+// });
 
 module.exports = router;

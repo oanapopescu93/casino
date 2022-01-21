@@ -40,7 +40,7 @@ body{
 	/* background-image: radial-gradient(green, black); */
 	background-image: url('./../img/bg00a.jpg');
 	background-repeat: repeat;
-	background-size: 400px auto;
+	background-size: 300px auto;
 	text-align:center;
 }
 .grad:before{
@@ -1623,7 +1623,6 @@ table {
 	display:inline-block;
 	width:50%;
 	padding:10px;	
-	min-height:120px;
 	vertical-align: top;
 }
 .rabbit_box_pic{
@@ -1932,6 +1931,15 @@ table {
 	}
 }
 @media (max-width: 960px){
+	.race_table_body > div{
+		height:220px;
+	}
+	.race_bets_container{
+		margin: 10px 0px;
+	}
+	.rabbit_box_pic img{
+		width:100px;
+	}
 	.casino_games_title_container{		
 		position: absolute;
 		z-index: 2;
@@ -1948,6 +1956,12 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.rabbit_box{
+		width:100%;
+	}
+	.rabbit_box_left, .rabbit_box_right{
+		padding: 5px;
+	}
 	.history_box{
 		max-height:200px;
 	}
@@ -2007,15 +2021,6 @@ table {
 		display:inline-block;
 		vertical-align: middle;
 	}
-	#sapou img{
-		display:inline-block;
-		vertical-align: middle;
-	}
-	#sapou h1{
-		display:inline-block;
-		vertical-align: middle;
-		margin: 25px 0px 0px 5px;
-	}
 	#sapou h6{
 		margin-top: 5px;
 	}
@@ -2070,7 +2075,7 @@ table {
 		font-size:16px;
 	}
 	#logo_icon{
-		width:20px;
+		width:30px;
 	}
 	.navbar-text{
 		float:none;
@@ -2145,11 +2150,12 @@ table {
 	.salon_button span{
 		font-size: 12px;
 	}
-}
-@media (max-width:600px) {
-	.rabbit_box{
-		width:100%;
+
+	.race_table_body{
+		padding: 10px 10px 30px 10px;
 	}
+}
+@media (max-width:600px) {	
 	.cookies_msg {
 		flex-direction: column;
 	}
@@ -2189,11 +2195,7 @@ table {
 @media (max-width: 480px) {  
 	.table_inside {
 		width: 100%;
-	}
-	.rabbit_box_left, .rabbit_box_right{
-		width:100%;
-		padding: 0px 10px;
-	}
+	}	
 }
 
 @media (min-width: 768px){
@@ -2236,8 +2238,8 @@ table {
 	.table_box{
 		height:110px
 	}
-	.footer_container {
-		bottom: -25px;
+	.footer_container.open{
+		bottom: 0px!important;
 	}
 	footer{
 		padding:10px;

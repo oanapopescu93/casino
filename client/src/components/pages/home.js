@@ -50,6 +50,9 @@ class Home extends Component {
 		if(casino_cookies !== ""){
 			self.setState({ cookies: true });
 		}
+		if(self.state.lang === ''){
+			self.setState({ lang: 'eng' });
+		} 
     }
 
 	lang_change(text){
@@ -71,9 +74,6 @@ class Home extends Component {
 	}
 
 	render() {
-		if(self.state.lang === ''){
-			self.setState({ lang: 'eng' });
-		} 
 		return (
 			<>	
 				<div className="full-height">

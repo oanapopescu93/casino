@@ -25,16 +25,34 @@ class UserAccount extends Component {
 
 	componentDidMount() {
 		var payload = {
-			'id': self.state.account_info.user_id, 
-			'user': self.state.account_info.user, 
-			'type': self.state.account_info.type, 
-			'user_table': self.state.account_info.user_table
+			id: self.state.account_info.user_id, 
+			user: self.state.account_info.user, 
+			type: self.state.account_info.type, 
+			user_table: self.state.account_info.user_table
 		}
 		self.state.socket.emit('market_send', payload);	
 		self.state.socket.on('market_read', function(data){
 			console.log('market_read', data)
 			self.setState({ market: data});
 		});	
+		// fetch("/api/market", {
+		// 	headers : { 
+		// 		'Content-Type': 'application/json',
+		// 		'Accept': 'application/json'
+		// 	},
+		// 	method: "POST",
+		// 	body: JSON.stringify(payload)
+		// })
+		// .then(function(response) {
+		// 	return response.text();
+		// })
+		// .then(function(text) {
+		// 	var data = JSON.parse(text)
+		// 	self.setState({ market: data.data});
+		// })
+		// .catch(error => {
+		// 	console.error("There has been a problem with your fetch operation:", error);
+		// });    
 	}
 	
 	account_choose_tab = function(link){	

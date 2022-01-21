@@ -15,12 +15,14 @@ var canvas_width = 900;
 var canvas_height = 800;
 var my_race;
 var landscape = [];
+var lanscape_config = {};
 var land_color = [
 	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
 	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
 	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1]
 ]
 var distance = 1;
+var draw_road_height;
 
 var font_title = 'bold 30px sans-serif';
 var font_counter = 'bold 40px sans-serif';
@@ -33,10 +35,15 @@ var rabbit_list = [];
 var rabbit_img_sit = {src: rabbit_sit};
 var rabbit_img_move = {src: rabbit_move};
 var rabbit_img_stop = {src: rabbit_sit};
-var rabbit_size = [10, 350, 80, 80, -10];
+var rabbit_size;
 
 var finish_line;
 var finish_line_x = 0;
+
+var font_bold_10 = 'bold 10px sans-serif';
+var font_bold_12 = 'bold 12px sans-serif';
+var font_bold_14 = 'bold 14px sans-serif';
+var font_bold_16 = 'bold 16px sans-serif';
 
 function Land(config) {
 	var self = this;
@@ -50,6 +57,7 @@ function Land(config) {
 function Landscape(config){
 	var self = this;
 	self.x = -config.speed * distance;
+	self.y = config.y;
     self.lands = [];
 	self.layer = config.layer;
 	self.width = {
@@ -81,7 +89,7 @@ function Landscape(config){
 				color_stroke: self.color_stroke,
 				stroke: self.stroke,
 				x: x,
-        		y: 500 - newHeight,
+        		y: self.y - newHeight,
 			}));
 
 			totalWidth = totalWidth + newWidth;
@@ -125,7 +133,7 @@ function Landscape(config){
 			color_stroke: self.color_stroke,
 			stroke: self.stroke,
 			x: x,
-			y: 500 - newHeight,
+			y: self.y - newHeight,
 		}));
 	}
 }
@@ -220,7 +228,7 @@ function FinishLine(config){
 
 	self.draw = function(ctx){
 		//line01
-		draw_rect(ctx, self.x, self.y, self.cube/2, canvas.height/2, self.fillStyle, self.lineWidth, self.strokeStyle);
+		draw_rect(ctx, self.x, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle);
 		
 		//cubes
 		var t = self.y-self.cube;
@@ -236,7 +244,7 @@ function FinishLine(config){
 		}		
 
 		//line03
-		draw_rect(ctx, self.x + 4*self.cube-space, self.y, self.cube/2, canvas.height/2, self.fillStyle, self.lineWidth, self.strokeStyle);	
+		draw_rect(ctx, self.x + 4*self.cube-space, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle);	
 	}
 	self.move = function(x){
 		self.x = x;
@@ -266,11 +274,23 @@ function race_game(props){
 				canvas.height = 300;			
 			} else {
 				//small portrait
-				canvas.width = 400;
-				canvas.height = 400;		
+				canvas.width = 280;
+				canvas.height = 300;		
 			}
+			lanscape_config = {
+				y: 100,
+				width: [1, 5, 1, 7],
+				height: [20, 4, 30, 4],
+				sun: [35, 35, 15],
+			}
+			draw_road_height = 101;
+			rabbit_size = [5, 100, 50, 50, -3];
 			font_title = 'bold 20px sans-serif';
 			font_counter = 'bold 30px sans-serif';
+			font_bold_10 = 'bold 8px sans-serif';
+			font_bold_12 = 'bold 10px sans-serif';
+			font_bold_14 = 'bold 12px sans-serif';
+			font_bold_16 = 'bold 12px sans-serif';
 		} else {
 			//big
 			canvas.width = 900;
@@ -283,11 +303,23 @@ function race_game(props){
 			if (window.innerWidth >= 1400){
 				canvas.width = 1200;
 			} 
+			lanscape_config = {
+				y: 500,
+				width: [1, 50, 1, 70],
+				height: [200, 40, 300, 40],
+				sun: [50, 50, 30],
+			}
+			draw_road_height = canvas.height/2;
+			rabbit_size = [10, 350, 80, 80, -10];	
+			font_bold_10 = 'bold 10px sans-serif';
+			font_bold_12 = 'bold 12px sans-serif';
+			font_bold_14 = 'bold 14px sans-serif';
+			font_bold_16 = 'bold 16px sans-serif';		
 		}
 		
 		canvas_width = canvas.width;
 		canvas_height = canvas.height;		
-		canvas.height = canvas_height;
+		canvas.height = canvas_height;		
 		$('#race_order_container').css("width", canvas_width+"px");	
 		finish_line_x = canvas_width;
 	}
@@ -307,7 +339,7 @@ function race_game(props){
 					self.counter(3);
 				}, 500);
 			});			
-		} else {			
+		} else {
 			self.background();
 			self.draw_rabbits('sit');
 			self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
@@ -413,13 +445,14 @@ function race_game(props){
 		while(i--){
 			var config = {
 				layer: i,
+				y: lanscape_config.y,
 				width: {
-					min: (i + 1) * 50,
-					max: (i + 1) * 70
+					min: (i + lanscape_config.width[0]) * lanscape_config.width[1],
+					max: (i + lanscape_config.width[2]) * lanscape_config.width[3]
 				},
 				height: {
-					min: 200 - (i * 40),
-					max: 300 - (i * 40)
+					min: lanscape_config.height[0] - (i * lanscape_config.height[1]),
+					max: lanscape_config.height[2] - (i * lanscape_config.height[3])
 				},
 				speed: (i + 1) * 0.5,
 				color: land_color[i][0],
@@ -429,7 +462,7 @@ function race_game(props){
 			var my_land = new Landscape(config)
 			my_land.populate();
 			landscape.push(my_land)
-		}		
+		}	
 	}
 	this.draw_background = function(){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -438,7 +471,7 @@ function race_game(props){
 		while (i--) {
 			landscape[i].draw();
 		}
-		self.draw_road(-100, canvas.height/2, 2*canvas.width, canvas.height/2, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)");		
+		self.draw_road(-100, draw_road_height, 2*canvas.width, draw_road_height, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)");		
 	}
 
 	this.create_finish_line = function(){
@@ -447,24 +480,24 @@ function race_game(props){
 			lineWidth: 1,
 			strokeStyle: "rgba(255, 215, 0, 0.1)",
 			x: finish_line_x,
-			y: canvas.height/2,
+			y: draw_road_height,
 			cube: 10,
 		});
 		finish_line.draw(ctx);
 	}
 
 	this.draw_sun = function(){
-		draw_dot(canvas.width-50, 50, 30, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, 'rgba(255, 255, 0, 0.5)');
+		draw_dot(canvas.width-lanscape_config.sun[0], lanscape_config.sun[1], lanscape_config.sun[2], 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, 'rgba(255, 255, 0, 0.5)');
 	}
 
 	this.draw_road = function(x, y, w, h, line, bg, color){
-		ctx.clearRect(0, h, canvas.width, h);
+		ctx.clearRect(0, h, canvas.width, canvas.height);
 		ctx.beginPath();
 		ctx.fillStyle = bg;
-		ctx.fillRect(x, y, w, h);
+		ctx.fillRect(x, y, w, canvas.height);
 		ctx.strokeStyle = color;
 		ctx.lineWidth = line;
-		ctx.strokeRect(x, y, w, h);
+		ctx.strokeRect(x, y, w, canvas.height);
 	}
 
 	this.counter = function(totalTime){
@@ -496,7 +529,7 @@ function race_game(props){
 	this.start_race = function(time, monkey){
 		var nr = 0;
 		dispatch_nr++;
-		time = 100;
+		//time = 100;
 		var move_landscape = false;
 
 		window.requestAnimFrame = (function(){
@@ -510,7 +543,9 @@ function race_game(props){
 	  
 	  	function race() {			
 			var stop = false;
-			var avg_dist = rabbit_list[0].avg_dist;			
+			console.log(rabbit_list)			
+			var avg_dist = rabbit_list[0].avg_dist;
+			
 
 			if (nr > time) {	
 				rabbit_list = self.order_rabbits(rabbit_list);			
@@ -585,7 +620,7 @@ function race_game(props){
 							my_lands[j].x = my_lands[j].x + landscape[i].x;
 						}
 					}					
-				} 
+				}
 				self.draw_background();	
 				self.draw_rabbits('run', nr);
 			} 	
@@ -785,76 +820,71 @@ class RaceTables extends Component {
 		window.location.href = url[0];
 	}
 
-	render() {
+	componentDidMount() {	
 		var lang = this.props.lang;		
+		$('.full-height').attr('id', 'race');
 
+		$('body').off('click', '#race_clear_bets').on('click', '#race_clear_bets', function () {
+			$('.race_input').val('0');
+		})	
+
+		$('body').off('click', '.rabbit_box_minus').on('click', '.rabbit_box_minus', function () {
+			var input_value = parseInt($(this).parent().find('.race_input').val());
+			if(input_value > 0){
+				$(this).parent().find('.race_input').val(input_value-1);
+			}
+		})	
+
+		$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {				
+			var input_value = parseInt($(this).parent().find('.race_input').val());
+			if(input_value < self_race_tables.state.money){
+				$(this).parent().find('.race_input').val(input_value+1);
+			}
+		})
+
+		$('body').off('click', '.dropdown-content li').on('click', '.dropdown-content li', function () {
+			var value = parseInt($(this).attr('place'));
+			var text = '';
+			if(lang === 'ro'){
+				text = 'Locul' + value;
+			} else {
+				switch(value) {
+					case 1:
+						text = value + 'st place';
+						break;
+					case 2:
+						text = value + 'nd place';
+						break;
+					case 3:
+						text = value + 'rd place';
+						break;
+					default:
+						text = value + 'th place';
+				}
+			}
+			$(this).closest('.dropdown').find('.place_header').html(text);
+			$(this).closest('.dropdown').find('.place_header').attr('place', value);
+		})
+
+		$('body').off('click', '#race_start').on('click', '#race_start', function () {
+			var start = self_race_tables.check_bets();				
+			if(start){
+				self_race_tables.state.get_data('start')
+			} else {
+				if(lang === "ro"){
+					showResults("", "Pariati pe un iepure pentru a intra in joc.");	
+				} else {
+					showResults("", "Please place your bet before playing.");	
+				}							
+			}			
+		})
+	}
+
+	render() {
+		var lang = this.props.lang;	
 		$('.full-height').attr('id', 'race')
-		setTimeout(function(){ 
-			$('.full-height').attr('id', 'race');
-
-			$('body').off('click', '#race_clear_bets').on('click', '#race_clear_bets', function () {
-				$('.race_input').val('0');
-			})	
-
-			$('body').off('click', '.rabbit_box_minus').on('click', '.rabbit_box_minus', function () {
-				var input_value = parseInt($(this).parent().find('.race_input').val());
-				if(input_value > 0){
-					$(this).parent().find('.race_input').val(input_value-1);
-				}
-			})	
-
-			$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {				
-				var input_value = parseInt($(this).parent().find('.race_input').val());
-				if(input_value < self_race_tables.state.money){
-					$(this).parent().find('.race_input').val(input_value+1);
-				}
-			})
-
-			$('body').off('click', '.dropdown-content li').on('click', '.dropdown-content li', function () {
-				var value = parseInt($(this).attr('place'));
-				var text = '';
-				if(lang === 'ro'){
-					text = 'Locul' + value;
-				} else {
-					switch(value) {
-						case 1:
-							text = value + 'st place';
-							break;
-						case 2:
-							text = value + 'nd place';
-							break;
-						case 3:
-							text = value + 'rd place';
-							break;
-						default:
-							text = value + 'th place';
-					}
-				}
-				$(this).closest('.dropdown').find('.place_header').html(text);
-				$(this).closest('.dropdown').find('.place_header').attr('place', value);
-			})
-
-			$('body').off('click', '#race_start').on('click', '#race_start', function () {
-				var start = self_race_tables.check_bets();				
-				if(start){
-					self_race_tables.state.get_data('start')
-				} else {
-					if(lang === "ro"){
-						showResults("", "Pariati pe un iepure pentru a intra in joc.");	
-					} else {
-						showResults("", "Please place your bet before playing.");	
-					}							
-				}			
-			})
-		}, 1000);
-		
 		return (
 			<>
-				<Row className="race_container">
-					<Col sm={12} className="race">
-						<h2>Under construction</h2>
-					</Col>
-				</Row>
 				<Row>
 					<Col sm={2}></Col>
 					<Col sm={8} className="race_table_container">

@@ -491,7 +491,6 @@ io.on('connection', function(socket) {
 		io.to(socket.id).emit('race_board_read', server_user);
 	});
 	socket.on('race_results_send', function(data) {
-		console.log('race_results_send', data)
 		var money = data.money;
 		var id = parseInt(data.user_id);
 		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id = "+id;
