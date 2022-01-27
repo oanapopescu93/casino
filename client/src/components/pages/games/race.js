@@ -75,7 +75,7 @@ function Landscape(config){
 	self.populate = function (){
 		var totalWidth = 0;
 		var x = 0;
-		while (totalWidth <= canvas.width + (10 * self.width.max)) {
+		while (totalWidth <= 2*canvas.width + (10 * self.width.max)) {
 			var newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
 			var newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
 			if(self.lands.length !== 0){
