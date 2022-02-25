@@ -193,6 +193,14 @@ io.on('connection', function(socket) {
 			} 
 		}
 	});
+	socket.on('change_username_send', function(data) {
+		var this_user = data.id;
+		for(var i in sockets){
+			if(sockets[i].user_id === this_user){
+				io.to(socket.id).emit('change_username_read', 'oana was here');
+			} 
+		}	
+	});
 
 	socket.on('roulette_spin_send', function(data) {
 		if(data.spin_click === 1){

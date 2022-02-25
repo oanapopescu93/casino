@@ -3,7 +3,7 @@ import Sapou from '../partials/sapou';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import Paypal from './paypal';
+// import Paypal from './paypal';
 
 function Child(props){
 	return(

@@ -32,7 +32,7 @@ class UserAccount extends Component {
 		}
 		self.state.socket.emit('market_send', payload);	
 		self.state.socket.on('market_read', function(data){
-			console.log('market_read', data)
+			//console.log('market_read', data)
 			self.setState({ market: data});
 		});	
 		// fetch("/api/market", {
