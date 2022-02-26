@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import { setCookie } from '../utils';
 
 function Account_profile(props) {
 	var username = props.info.user;
@@ -14,7 +15,6 @@ function Account_profile(props) {
 	var blackjack_info = useSelector(state => state.blackjack);
 	var lang = props.lang;
 	var socket = props.info.socket; 
-	var info = props.info;
 
 	socket.on('change_username_read', function(data){
 		console.log(data)
@@ -47,10 +47,11 @@ function Account_profile(props) {
 		}
 	}
 	function change_username(){
-		console.log($)
 		var input = $('#change_username').val();
 		if(typeof input != "undefned" && input != "null" && input != null && input != ""){
-			socket.emit('change_username_send', {id: props.info.user_id, input: input});
+			setCookie("casino_user", input, 1);
+			$('#profile_user_text').text(input);
+			socket.emit('change_username_send', {id: props.info.user_id, user_new: input});
 		}
     }   
 	
@@ -63,126 +64,130 @@ function Account_profile(props) {
 						<Col sm={12}>{lang === "ro" ? <h2>Profil</h2> : <h2>Profile</h2>}</Col>
 					</Row>
 					<Row className="profile_container">
-						<Col  className="profile_left shadow_concav" sm={4}>
-							<h3>User info: </h3>
-							<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}{username}</p>
-							<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
-							<div id="profile_change_username" className="button_yellow" onClick={handleShow}>Change username</div>
-							<div id="profile_buy_carrots" className="button_yellow" onClick={buy_carrots}>Buy carrots</div>
+						<Col sm={4}>
+							<div className="profile_left shadow_concav">
+								<h3>User info: </h3>
+								<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}<span id="profile_user_text">{username}</span></p>
+								<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
+								<div id="profile_change_username" className="profile_button button_yellow" onClick={handleShow}>Change username</div>
+								<div id="profile_buy_carrots" className="profile_button button_yellow" onClick={buy_carrots}>Buy carrots</div>
+							</div>
 						</Col>
-						<Col className="profile_right shadow_concav" sm={8}>
-							<h3>History: </h3>
-							<div className="history_box">
-								{(() => {
-									if (roulette_info === -1 && blackjack_info === -1) {
-										return (
-											<p>{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</p>
-										)
-									} else {
-										if(roulette_info !== -1){
-											if(history.length === 0){	
-												return (
-														<div className="color_yellow 111">{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</div>
-												)
-											} else {
-												return (
-													<Table className="history_container 111">
-																<thead>
-																	<tr>
-																		<th>{lang === "ro" ? <span>Nr. norocos</span> : <span>Lucky no.</span>}</th>
-																		<th>{lang === "ro" ? <span>Nr. tau</span> : <span>Your no.</span>}</th>
-																		<th>{lang === "ro" ? <span>Status</span> : <span>Status</span>}</th>
-																		<th>{lang === "ro" ? <span>Morcovi</span> : <span>Carrots</span>}</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	{																					
-																		history.map(function(item, i){
-																			var history_elem = item	
-																			if(i === 0){
-																				if(history_elem.win){
-																					return(
-																						<tr key={i} className="history_box">
-																							<td rowSpan={rowspan}>{history_elem.lucky_nr}</td>
-																							<td>{history_elem.text}</td>	
-																							<td>{lang === "ro" ? <span>Ai castigat </span> : <span>Won </span>}{history_elem.bet_value}</td>
-																							<td>{history_elem.money_history}</td>																				
-																						</tr>
-																					)
+						<Col sm={8}>
+							<div className="profile_right shadow_concav">
+								<h3>History: </h3>
+								<div className="history_box">
+									{(() => {
+										if (roulette_info === -1 && blackjack_info === -1) {
+											return (
+												<p>{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</p>
+											)
+										} else {
+											if(roulette_info !== -1){
+												if(history.length === 0){	
+													return (
+															<div className="color_yellow 111">{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</div>
+													)
+												} else {
+													return (
+														<Table className="history_container 111">
+																	<thead>
+																		<tr>
+																			<th>{lang === "ro" ? <span>Nr. norocos</span> : <span>Lucky no.</span>}</th>
+																			<th>{lang === "ro" ? <span>Nr. tau</span> : <span>Your no.</span>}</th>
+																			<th>{lang === "ro" ? <span>Status</span> : <span>Status</span>}</th>
+																			<th>{lang === "ro" ? <span>Morcovi</span> : <span>Carrots</span>}</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		{																					
+																			history.map(function(item, i){
+																				var history_elem = item	
+																				if(i === 0){
+																					if(history_elem.win){
+																						return(
+																							<tr key={i} className="history_box">
+																								<td rowSpan={rowspan}>{history_elem.lucky_nr}</td>
+																								<td>{history_elem.text}</td>	
+																								<td>{lang === "ro" ? <span>Ai castigat </span> : <span>Won </span>}{history_elem.bet_value}</td>
+																								<td>{history_elem.money_history}</td>																				
+																							</tr>
+																						)
+																					} else {
+																						return(
+																							<tr key={i} className="history_box">
+																								<td rowSpan={rowspan}>{history_elem.lucky_nr}</td>
+																								<td>{history_elem.text}</td>
+																								<td>{lang === "ro" ? <span>Ai pierdut </span> : <span>Lost </span>}{history_elem.bet_value}</td>
+																								<td>{history_elem.money_history}</td>																						
+																							</tr>
+																						)
+																					}													
 																				} else {
-																					return(
-																						<tr key={i} className="history_box">
-																							<td rowSpan={rowspan}>{history_elem.lucky_nr}</td>
-																							<td>{history_elem.text}</td>
-																							<td>{lang === "ro" ? <span>Ai pierdut </span> : <span>Lost </span>}{history_elem.bet_value}</td>
-																							<td>{history_elem.money_history}</td>																						
-																						</tr>
-																					)
-																				}													
-																			} else {
-																				if(history_elem.win){
-																					return(
-																						<tr key={i} className="history_box">
-																							<td>{history_elem.text}</td>	
-																							<td>{lang === "ro" ? <span>Ai castigat </span> : <span>Won </span>}{history_elem.bet_value} carrot</td>
-																							<td>{history_elem.money_history}</td>																				
-																						</tr>
-																					)
-																				} else {
-																					return(
-																						<tr key={i} className="history_box">
-																							<td>{history_elem.text}</td>
-																							<td>{lang === "ro" ? <span>Ai pierdut </span> : <span>Lost </span>}{history_elem.bet_value} carrot</td>
-																							<td>{history_elem.money_history}</td>																					
-																						</tr>
-																					)
-																				}	
-																			}																																		
-																		})
-																	}
-																</tbody>
-															</Table>	
-												)
+																					if(history_elem.win){
+																						return(
+																							<tr key={i} className="history_box">
+																								<td>{history_elem.text}</td>	
+																								<td>{lang === "ro" ? <span>Ai castigat </span> : <span>Won </span>}{history_elem.bet_value} carrot</td>
+																								<td>{history_elem.money_history}</td>																				
+																							</tr>
+																						)
+																					} else {
+																						return(
+																							<tr key={i} className="history_box">
+																								<td>{history_elem.text}</td>
+																								<td>{lang === "ro" ? <span>Ai pierdut </span> : <span>Lost </span>}{history_elem.bet_value} carrot</td>
+																								<td>{history_elem.money_history}</td>																					
+																							</tr>
+																						)
+																					}	
+																				}																																		
+																			})
+																		}
+																	</tbody>
+																</Table>	
+													)
+												}
 											}
-										}
 
-										if(blackjack_info !== -1){
-											if(history.length === 0){	
-												return (
-														<div className="color_yellow 222">{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</div>
-												)
-											} else {
-												return (
-													<Table className="history_container 222">
-														<thead>
-															<tr>
-																<th>{lang === "ro" ? <span>Status</span> : <span>Status</span>}</th>
-																<th>{lang === "ro" ? <span>Morcovi</span> : <span>Carrots</span>}</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																{(() => {
-																	var text = history[0].charAt(0).toUpperCase() + history[0].slice(1);
-																	var carot = 'carot';
-																	if(history[1] > 1){
-																		carot = 'carots';
-																	}
-																	return(
-																		<>
-																			<td>{text}</td>
-																			<td>{text} {history[1]} {carot}</td>
-																		</>
-																	)
-																})()}
-															</tr>
-														</tbody>
-													</Table>
-												)
+											if(blackjack_info !== -1){
+												if(history.length === 0){	
+													return (
+															<div className="color_yellow 222">{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</div>
+													)
+												} else {
+													return (
+														<Table className="history_container 222">
+															<thead>
+																<tr>
+																	<th>{lang === "ro" ? <span>Status</span> : <span>Status</span>}</th>
+																	<th>{lang === "ro" ? <span>Morcovi</span> : <span>Carrots</span>}</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	{(() => {
+																		var text = history[0].charAt(0).toUpperCase() + history[0].slice(1);
+																		var carot = 'carot';
+																		if(history[1] > 1){
+																			carot = 'carots';
+																		}
+																		return(
+																			<>
+																				<td>{text}</td>
+																				<td>{text} {history[1]} {carot}</td>
+																			</>
+																		)
+																	})()}
+																</tr>
+															</tbody>
+														</Table>
+													)
+												}
 											}
 										}
-									}
-								})()}
+									})()}
+								</div>
 							</div>
 						</Col>
 					</Row>
@@ -190,14 +195,14 @@ function Account_profile(props) {
 				<Col sm={2}></Col>
 			</Row>
 
-			<Modal className="casino_modal" id="settings_modal" show={show} onHide={handleClose} size="sm">
+			<Modal className="casino_modal" id="change_username_modal" show={show} onHide={handleClose} size="sm">
 				<Modal.Header closeButton>
-					<Modal.Title>{lang === "ro" ? <span>Setari</span> : <span>Settings</span>}</Modal.Title>
+					<Modal.Title>{lang === "ro" ? <span>Schimba nume user</span> : <span>Change username</span>}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<input className="change_username" type="text" id="change_username"></input>
-					<Button className="button_table shadow_convex" type="button" onClick={() => change_username()}>
-						{lang === "ro" ? <span>Trimite</span> : <span>Send</span>}
+					<input className="change_username_input" type="text" id="change_username"></input>
+					<Button className="change_username_button shadow_convex" type="button" onClick={() => change_username()}>
+						{lang === "ro" ? <span>Schimba</span> : <span>Change</span>}
 					</Button>
 				</Modal.Body>				
 			</Modal>

@@ -11,11 +11,13 @@ const database = require('./utils/mysql');
 const md5 = require('md5');
 var constants = require('./var/constants');
 var routes = require("./routes");
+const axios = require('axios');
 
 var users_json
 var user_join = [];
 var user_money = 100;
 var account_type = 1;
+var sign_in_up = false;
 
 var rabbit_race = constants.SERVER_RABBITS;
 var slot_prize = constants.SLOT_PRIZE;
@@ -53,14 +55,19 @@ app.use(routes);
 
 io.on('connection', function(socket) {	
 	socket.on('signin_send', function(data) {	
-		var exists = false;	
-		var obj = {};
-		var pass = md5(data.pass);
-		for(var i in users_json){
+		let exists = false;	
+		let obj = {};
+		let pass = md5(data.pass);
+		for(let i in users_json){
 			if(data.user === users_json[i].user && pass === users_json[i].pass){
 				exists = true;	
 				obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
 				io.to(socket.id).emit('signin_read', [exists, obj]);	
+				sign_in_up = true;
+				get_extra_data().then(function(data) {
+					let extra_data = data.data;
+					console.log('extra_data01', extra_data)
+				});
 				break;
 			}
 		}
@@ -69,10 +76,10 @@ io.on('connection', function(socket) {
 		}			
 	});
 	socket.on('signup_send', function(data) {
-		var exists = false;	
-		var pass = md5(data.pass);
-		var obj = {};
-		for(var i in users_json){	
+		let exists = false;	
+		let pass = md5(data.pass);
+		let obj = {};
+		for(let i in users_json){	
 			if(data.user === users_json[i].user && data.email === users_json[i].email && pass === users_json[i].pass){
 				exists = true;
 				break;
@@ -85,7 +92,7 @@ io.on('connection', function(socket) {
 				database_config.sql = "SELECT * FROM casino_users";
 				database(database_config).then(function(result2){
 					users_json = result2;			
-					for(var i in users_json){						
+					for(let i in users_json){						
 						if(users_json[i].email === data.email){
 							obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
 							io.to(socket.id).emit('signup_read', [exists, obj]);
@@ -93,6 +100,11 @@ io.on('connection', function(socket) {
 						}
 					}
 				});
+			});
+			sign_in_up = true;
+			get_extra_data().then(function(data) {
+				let extra_data = data.data;
+				console.log('extra_data02', extra_data)
 			});
 		} else {
 			io.to(socket.id).emit('signup_read', [exists, obj]);	
@@ -102,14 +114,14 @@ io.on('connection', function(socket) {
 		io.emit('salon_read', {server_tables: server_tables, server_user: data });
 	});
 	socket.on('user_page_send', function(data) {
-		var my_table = data[0];
-		var game = my_table.split('_')[0]
-		var id = data[1];
-		var user = data[2];
-		var money = 0;
-		var server_user = null;
+		let my_table = data[0];
+		let game = my_table.split('_')[0]
+		let id = data[1];
+		let user = data[2];
+		let money = 0;
+		let server_user = null;
 		if((id !== "" && id !== "indefined") || (user !== "" && user !== "indefined")){
-			for(var i in users_json){	
+			for(let i in users_json){	
 				if(id === users_json[i].id){
 					exists = true;
 					money = users_json[i].money;
@@ -123,16 +135,16 @@ io.on('connection', function(socket) {
 		}		
 	});	
 	socket.on('username', function(payload) {
-		var username = payload.user;
-		var user_table = payload.user_table.split(' ').join('_');
+		let username = payload.user;
+		let user_table = payload.user_table.split(' ').join('_');
 		
 		socket.user_id = payload.id;
 		socket.username = username;
 		socket.user_table = user_table;
 
-		var room_name = user_table;
+		let room_name = user_table;
 		if(typeof payload.user_type !== "undefined"){
-			var user_type = payload.user_type;	
+			let user_type = payload.user_type;	
 			socket.user_type = user_type;
 			room_name = room_name + '_' + user_type;
 		}
@@ -145,7 +157,14 @@ io.on('connection', function(socket) {
 		if(typeof username !== "undefined" && username !== ""){
 			io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
 			io.to(room_name).emit('chatlist', user_join);
-		}		
+		}
+
+		if(!sign_in_up){
+			get_extra_data().then(function(data) {
+				let extra_data = data.data;
+				console.log('extra_data03', extra_data)
+			});
+		}
     });	
 	socket.on('logout_send', function(data) {	
 		if (socket.handshake.session.userdata) {
@@ -171,34 +190,44 @@ io.on('connection', function(socket) {
 	});		
 	
 	socket.on('chat_message_send', function(data) {
-		var user_table = data.user_table.split(' ').join('_');
-		var room_name = user_table;		
+		let user_table = data.user_table.split(' ').join('_');
+		let room_name = user_table;		
 		if(typeof data.user_type !== "undefined"){
-			var user_type = data.user_type;	
+			let user_type = data.user_type;	
 			room_name = room_name + '_' + user_type;
 		}
 		io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));		
 	});	
 	socket.on('choose_table_send', function(data) {
-		var my_table = data.table_name + '_' +data.table_id;
+		let my_table = data.table_name + '_' +data.table_id;
 		if(data.table_type !== "" && typeof data.table_type !== "undefined" && data.table_type !== null){
 			my_table = my_table + '_' + data.table_type;
 		} 
 		io.emit('choose_table_read', my_table);
 	});
 	socket.on('market_send', function(data) {
-		var this_user = data.id;
-		for(var i in sockets){
+		let this_user = data.id;
+		for(let i in sockets){
 			if(sockets[i].user_id === this_user){
 				io.to(socket.id).emit('market_read', market);
 			} 
 		}
 	});
 	socket.on('change_username_send', function(data) {
-		var this_user = data.id;
+		let id = data.id;
+		let user_new = data.user_new;
 		for(var i in sockets){
-			if(sockets[i].user_id === this_user){
-				io.to(socket.id).emit('change_username_read', 'oana was here');
+			if(sockets[i].user_id === id){
+				database_config.sql = "UPDATE casino_users SET user='"+user_new+"' WHERE id="+id;
+				database(database_config).then(function(result){
+					for(var i in users_json){	
+						if(id === users_json[i].id){
+							users_json[i].user = user_new;
+							io.to(socket.id).emit('change_username_read', users_json);
+							break;
+						}
+					}
+				});
 			} 
 		}	
 	});
@@ -751,6 +780,29 @@ function slot_matrix(x, size){
 			break; 	
 	} 
 	return {matrix_id: x, matrix:matrix, prize:my_prize};
+}
+
+function get_extra_data(){
+	axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=2813994f865540fe848c8bcb293ec74c')
+		.then(response => {
+			console.log(response)
+			return response;
+		})
+		.catch(error => {
+			return error
+		});
+}
+
+function get_extra_data(){
+	return new Promise(function(resolve, reject){
+		axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=2813994f865540fe848c8bcb293ec74c')
+		.then(response => {
+			resolve(response);	
+		})
+		.catch(error => {
+			resolve(error);
+		});
+	});
 }
 
 http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));

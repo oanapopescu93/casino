@@ -24,6 +24,8 @@ class UserAccount extends Component {
 	}	
 
 	componentDidMount() {
+		self.setState({ lang: self.props.lang });
+
 		var payload = {
 			id: self.state.account_info.user_id, 
 			user: self.state.account_info.user, 
@@ -32,7 +34,6 @@ class UserAccount extends Component {
 		}
 		self.state.socket.emit('market_send', payload);	
 		self.state.socket.on('market_read', function(data){
-			//console.log('market_read', data)
 			self.setState({ market: data});
 		});	
 		// fetch("/api/market", {
@@ -54,7 +55,7 @@ class UserAccount extends Component {
 		// 	console.error("There has been a problem with your fetch operation:", error);
 		// });    
 	}
-	
+
 	account_choose_tab = function(link){	
 		if(link === "account_profile"){			
 			this.setState({ visible: true })
