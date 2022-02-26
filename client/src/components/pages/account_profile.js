@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector} from 'react-redux'
+import $ from 'jquery'; 
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -46,6 +47,7 @@ function Account_profile(props) {
 		}
 	}
 	function change_username(){
+		console.log($)
 		var input = $('#change_username').val();
 		if(typeof input != "undefned" && input != "null" && input != null && input != ""){
 			socket.emit('change_username_send', {id: props.info.user_id, input: input});

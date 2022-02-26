@@ -1,15 +1,16 @@
 var express = require("express");
 const app = express();
-const fs = require('fs');
-const database = require('./utils/mysql');
-const md5 = require('md5');
-var constants = require('./var/constants');
-var routes = require("./routes");
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const port = process.env.PORT || 5000;
 app.set("port", port);
+
+const fs = require('fs');
+const database = require('./utils/mysql');
+const md5 = require('md5');
+var constants = require('./var/constants');
+var routes = require("./routes");
 
 var users_json
 var user_join = [];
