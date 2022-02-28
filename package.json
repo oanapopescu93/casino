@@ -2,6 +2,14 @@
   "name": "react_project",
   "version": "1.0.0",
   "description": "react project",
+  "homepage": "https://bunnybet.herokuapp.com",
+  "engines": {
+    "node": "10.15.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oanapopescu93"
+  },
   "scripts": {
     "client": "cd client && npm start",
     "server": "nodemon server.js",

@@ -48,10 +48,11 @@ function Account_profile(props) {
 	}
 	function change_username(){
 		var input = $('#change_username').val();
-		if(typeof input != "undefned" && input != "null" && input != null && input != ""){
+		if(typeof input !== "undefined" && input !== "null" && input !== null && input !== ""){
 			setCookie("casino_user", input, 1);
 			$('#profile_user_text').text(input);
 			socket.emit('change_username_send', {id: props.info.user_id, user_new: input});
+			handleClose();
 		}
     }   
 	

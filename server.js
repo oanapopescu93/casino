@@ -783,17 +783,6 @@ function slot_matrix(x, size){
 }
 
 function get_extra_data(){
-	axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=2813994f865540fe848c8bcb293ec74c')
-		.then(response => {
-			console.log(response)
-			return response;
-		})
-		.catch(error => {
-			return error
-		});
-}
-
-function get_extra_data(){
 	return new Promise(function(resolve, reject){
 		axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=2813994f865540fe848c8bcb293ec74c')
 		.then(response => {

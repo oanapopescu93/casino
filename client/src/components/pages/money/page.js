@@ -48,7 +48,7 @@ function Page(props){
                                                                 <li key={j} className="donation_link donation_link_paypall">
                                                                     {/* <Paypal></Paypal>
                                                                     <div className="paypal_button">Paypal</div> */}
-                                                                    <a className="paypal_button" target="_blank" href="https://paypal.me/oanapopescu93?country.x=RO&locale.x=en_US">Paypal</a>
+                                                                    <a className="paypal_button" rel="noopener noreferrer" target="_blank" href="https://paypal.me/oanapopescu93?country.x=RO&locale.x=en_US">Paypal</a>
                                                                 </li>
                                                             ); 
                                                         } else {
