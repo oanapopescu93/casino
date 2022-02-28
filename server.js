@@ -49,11 +49,21 @@ var rabbit_delay = [40, 20] //max, min
 
 database(database_config).then(function(data){
 	users_json = data;
+	//console.log('aaa', data)
 });
 
 app.use(routes);
 
-io.on('connection', function(socket) {	
+io.on('connection', function(socket) {
+	let headers = socket.request.headers
+	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
+	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
+			device = 1
+		}
+	} else {
+		device = 2;
+	}
 	socket.on('signin_send', function(data) {	
 		let exists = false;	
 		let obj = {};
@@ -62,11 +72,32 @@ io.on('connection', function(socket) {
 			if(data.user === users_json[i].user && pass === users_json[i].pass){
 				exists = true;	
 				obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
-				io.to(socket.id).emit('signin_read', [exists, obj]);	
+				io.to(socket.id).emit('signin_read', [exists, obj]);
 				sign_in_up = true;
-				get_extra_data().then(function(data) {
-					let extra_data = data.data;
-					console.log('extra_data01', extra_data)
+				get_extra_data().then(function(data1) {				
+					let extra_data = {
+						city: "",
+						country: "",
+						ip_address: "",
+					};
+					if(typeof data1.data.city !== "undefined"){
+						extra_data.city = data1.data.city;
+					}
+					if(typeof data1.data.country !== "undefined"){
+						extra_data.country = data1.data.country;
+					}
+					if(typeof data1.data.ip_address !== "undefined"){
+						extra_data.ip_address = data1.data.ip_address;
+					}
+					let timestamp = new Date().getTime() + "";
+					database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+users_json[i].id;
+					database(database_config).then(function(result){
+						users_json[i].ip_address = extra_data.ip_addres;
+						users_json[i].city = extra_data.city;
+						users_json[i].country = extra_data.country;
+						users_json[i].device = device;
+						users_json[i].last_signin = timestamp;
+					});
 				});
 				break;
 			}
@@ -86,25 +117,38 @@ io.on('connection', function(socket) {
 			}
 		}
 		if(!exists){
-			sort_array_obj(users_json, "id");	
-			database_config.sql = "INSERT INTO casino_users (user, email, pass, account_type, money) VALUES ('" + data.user + "', '" + data.email + "', '" + pass + "', '" + account_type + "', '" + user_money + "')";
-			database(database_config).then(function(result1){
-				database_config.sql = "SELECT * FROM casino_users";
-				database(database_config).then(function(result2){
-					users_json = result2;			
-					for(let i in users_json){						
-						if(users_json[i].email === data.email){
-							obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
-							io.to(socket.id).emit('signup_read', [exists, obj]);
-							break;
-						}
-					}
-				});
-			});
 			sign_in_up = true;
-			get_extra_data().then(function(data) {
-				let extra_data = data.data;
-				console.log('extra_data02', extra_data)
+			get_extra_data().then(function(data1) {				
+				let extra_data = {
+					city: "",
+					country: "",
+					ip_address: "",
+				};
+				if(typeof data1.data.city !== "undefined"){
+					extra_data.city = data1.data.city;
+				}
+				if(typeof data1.data.country !== "undefined"){
+					extra_data.country = data1.data.country;
+				}
+				if(typeof data1.data.ip_address !== "undefined"){
+					extra_data.ip_address = data1.data.ip_address;
+				}
+				let timestamp = new Date().getTime() + "";
+				sort_array_obj(users_json, "id");	
+				database_config.sql = "INSERT INTO casino_users (user, email, pass, account_type, money, city, country, ip_address, signup, last_signin, device) VALUES ('" + data.user + "', '" + data.email + "', '" + pass + "', '" + account_type + "', '" + user_money + "', '" + extra_data.city + "', '" + extra_data.country + "', '" + extra_data.ip_address + "', '" + timestamp + "', '" + timestamp + "', " + device + ")";
+				database(database_config).then(function(result1){
+					database_config.sql = "SELECT * FROM casino_users";
+					database(database_config).then(function(result2){
+						users_json = result2;			
+						for(let i in users_json){						
+							if(users_json[i].email === data.email){
+								obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
+								io.to(socket.id).emit('signup_read', [exists, obj]);
+								break;
+							}
+						}
+					});
+				});
 			});
 		} else {
 			io.to(socket.id).emit('signup_read', [exists, obj]);	
@@ -160,9 +204,35 @@ io.on('connection', function(socket) {
 		}
 
 		if(!sign_in_up){
-			get_extra_data().then(function(data) {
-				let extra_data = data.data;
-				console.log('extra_data03', extra_data)
+			get_extra_data().then(function(data1) {
+				let extra_data = {
+					city: "",
+					country: "",
+					ip_address: "",
+				};
+				if(typeof data1.data.city !== "undefined"){
+					extra_data.city = data1.data.city;
+				}
+				if(typeof data1.data.country !== "undefined"){
+					extra_data.country = data1.data.country;
+				}
+				if(typeof data1.data.ip_address !== "undefined"){
+					extra_data.ip_address = data1.data.ip_address;
+				}
+				let timestamp = new Date().getTime() + "";
+				database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+payload.id;
+				database(database_config).then(function(result){
+					for(var i in users_json){
+						if(payload.id === users_json[i].id){
+							users_json[i].ip_address = extra_data.ip_addres;
+							users_json[i].city = extra_data.city;
+							users_json[i].country = extra_data.country;
+							users_json[i].device = device;
+							users_json[i].last_signin = timestamp;
+							break;
+						}
+					}
+				});
 			});
 		}
     });	
