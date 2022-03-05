@@ -15,7 +15,6 @@ function ChatForm(props) {
 	
 	socket.on('chat_message_read', function(data){
 		socket_click++
-		// console.log('chat_message_read', socket_click, data)
 		if(socket_click === 1){
 			if(data.from){
 				$('#chatmessages').append('<div class="message message01"><div class="chat_header"><span class="user"><strong>' + data.from + '</strong></span> (<span class="date">' + formatDate(data.time) + '</span>)</div><div class="chat_body"><span class="text">' + data.text + '</span></div></div>');
@@ -42,7 +41,6 @@ function ChatForm(props) {
 	
 	function my_click(e){
 		if($('#chattext').val() !== ""){
-			// console.log('chatform', user, $('#chattext').val());
 			socket.emit('chat_message_send', {user: user, user_table: props.user_table, user_type: props.type, message: $('#chattext').val()});
 			$('#chattext').val('');
 		}

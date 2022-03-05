@@ -24,6 +24,7 @@ function Child(props) {
 	var socket = props.socket;
 	var lang = props.lang;
 	var contact = props.contact;
+	console.log('userpage--> ', lang, user_id, game, user, money, user_table, type)
 	return (			
 			<BrowserRouter>
 				<div className="userPage"> 

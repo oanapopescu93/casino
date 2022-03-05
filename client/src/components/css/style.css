@@ -38,8 +38,7 @@ body{
 }
 .grad {
 	background-color:var(--green);
-	/* background-image: radial-gradient(green, black); */
-	background-image: url('./../img/bg00a.jpg');
+	background-image: url('./../img/bg.jpg');
 	background-repeat: repeat;
 	background-size: 300px auto;
 	text-align:center;

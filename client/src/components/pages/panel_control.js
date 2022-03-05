@@ -15,6 +15,7 @@ import carrot_img from '../img/icons/carrot_icon.png';
 import { setCookie } from '../utils';
 
 function Panel(props){
+    console.log('panel', props)
     var user = props.user;
     var type = props.type;
     var user_table = props.user_table;
@@ -89,6 +90,10 @@ function Panel(props){
 				window.location.href = url_back02[0];
 		  }
 	}
+
+    console.log('chat1', user)
+    console.log('chat2', type)
+    console.log('chat3', user_table)
 
 	return (
         <>

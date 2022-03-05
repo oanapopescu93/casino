@@ -155,7 +155,15 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('salon_send', function(data) {
-		io.emit('salon_read', {server_tables: server_tables, server_user: data });
+		let id = data;
+		let money = 0;
+		for(let i in users_json){						
+			if(users_json[i].id === id){
+				money = users_json[i].money;
+				break;
+			}
+		}
+		io.emit('salon_read', {server_tables: server_tables, money: money});		
 	});
 	socket.on('user_page_send', function(data) {
 		let my_table = data[0];
@@ -179,6 +187,7 @@ io.on('connection', function(socket) {
 		}		
 	});	
 	socket.on('username', function(payload) {
+		console.log('username', payload)
 		let username = payload.user;
 		let user_table = payload.user_table.split(' ').join('_');
 		
@@ -261,11 +270,15 @@ io.on('connection', function(socket) {
 	
 	socket.on('chat_message_send', function(data) {
 		let user_table = data.user_table.split(' ').join('_');
+		if(data.user_table === "Rabbit Race"){
+			user_table = "salon";
+		}
 		let room_name = user_table;		
 		if(typeof data.user_type !== "undefined"){
 			let user_type = data.user_type;	
 			room_name = room_name + '_' + user_type;
 		}
+		console.log('room_name', room_name)
 		io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));		
 	});	
 	socket.on('choose_table_send', function(data) {

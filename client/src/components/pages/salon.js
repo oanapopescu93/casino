@@ -16,6 +16,7 @@ import Terms from './other_pages/terms';
 import Privacy from './other_pages/privacy';
 import Questions from './other_pages/questions';
 import Career from './other_pages/career';
+import Panel from './panel_control';
 
 import { getCookie, setCookie } from '../utils';
 
@@ -111,6 +112,8 @@ class Salon extends Component {
 			casino_games: '',
 			user: '',
 			race: false,
+			id: -1,
+			money: 0,
 	  	};		
 		self.handleBack = self.handleBack.bind(self);
 		self.handleChange = self.handleChange.bind(self);
@@ -145,29 +148,23 @@ class Salon extends Component {
 
 					if(empty === casino_games_title.length){
 						self.setState({ empty: true }); 
-					}
-					
-					self.setState({ casino_games: casino_games }); 
-
-					if(res.server_user === "" || res.server_user === null || typeof res.server_user === "undefined"){
-						var server_user = getCookie("casino_user");
-						self.setState({ user: server_user });	
-					} else {
-						self.setState({ user: res.server_user });	
-					}
-								
+					}					
+					self.setState({ casino_games: casino_games });
+					self.setState({ money: res.money });
 				})
-			.catch(err => console.log(err)); 
-		
+			.catch(err => console.log(err));		
 	}
 	
 	salonData(){
 		return new Promise(function(resolve, reject){
-			var user = getCookie("casino_user");
-			self.state.socket.emit('salon_send', user);	
-			self.state.socket.on('salon_read', function(data){
-				resolve(data);	
-			});	
+			self.setState({ user_id: parseInt(getCookie("casino_id")) });
+			self.setState({ user: getCookie("casino_user") });
+			setTimeout(function(){
+				self.state.socket.emit('salon_send', self.state.user_id);	
+				self.state.socket.on('salon_read', function(data){
+					resolve(data);	
+				});	
+			}, 1000);
 		});
 	};
 
@@ -237,7 +234,10 @@ class Salon extends Component {
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
 									{self.state.race ? (
-										<Race lang={lang} socket={self.state.socket} user={self.state.user}></Race>									
+										<>
+											<Race lang={lang} socket={self.state.socket} user={self.state.user}></Race>
+											<Panel lang={lang} user_id={self.state.user_id} user={self.state.user} money={self.state.money} user_table={"Rabbit Race"} socket={self.state.socket}></Panel>
+										</>							
 									) : (
 										<Child contact={self.props.contact} lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></Child>
 									)}											

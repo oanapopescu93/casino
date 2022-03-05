@@ -125,7 +125,7 @@ class SalonGames extends React.Component {
                                             {(() => {
                                                 if (self.state.info.casino_games[t].length === 0) {
                                                     return (
-                                                        <img className="under_construction_icon" alt="under construction" src={under_construction_icon} />
+                                                        <div><p>Loading...</p></div>
                                                     )
                                                 } else {
                                                     return (
