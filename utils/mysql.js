@@ -8,20 +8,24 @@ module.exports = function database(database_config){
 	});
 	var sql_result
 	return new Promise(function(resolve, reject){
-		con.connect(function(err) {
-			if (err) {
-				console.log('err1--> ', err);
-				throw err;
-			}
-			con.query(database_config.sql, function (err, result, fields) {
-				if (err) {
-					console.log('err2--> ', err, database_config.sql);
-					throw err;
-				}			
-				sql_result = result;
-				resolve(sql_result);
-				con.end();
-			});			
-		}); 
+		try{
+			con.connect(function(err) {
+				// if (err) {
+				// 	console.log('err1--> ', err);
+				// 	throw err;
+				// }
+				con.query(database_config.sql, function (err, result, fields) {
+					// if (err) {
+					// 	console.log('err2--> ', err, database_config.sql);
+					// 	throw err;
+					// }			
+					sql_result = result;
+					resolve(sql_result);
+					con.end();
+				});			
+			}); 
+		} catch(err){
+			console.error('err--> ' + err);
+		}
 	});		
 }

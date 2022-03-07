@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "cab73b8a10a67023957b22229d764b0c",
+    "revision": "6691cf8c36362c0fb32e844e9f4506e7",
     "url": "/index.html"
   },
   {
-    "revision": "fac3baf3b87a63a441c5",
-    "url": "/static/css/2.4fd09901.chunk.css"
+    "revision": "ad939cd258855578fc38",
+    "url": "/static/css/2.c3594674.chunk.css"
   },
   {
-    "revision": "805c7d145eebf4db1ff0",
-    "url": "/static/css/main.e3d1e98c.chunk.css"
+    "revision": "198eb0f652ef844b1cdc",
+    "url": "/static/css/main.c370cf57.chunk.css"
   },
   {
-    "revision": "fac3baf3b87a63a441c5",
-    "url": "/static/js/2.289f7f52.chunk.js"
+    "revision": "ad939cd258855578fc38",
+    "url": "/static/js/2.db213569.chunk.js"
   },
   {
     "revision": "8343773d2bc1f91de45b56764e549199",
-    "url": "/static/js/2.289f7f52.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.db213569.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "805c7d145eebf4db1ff0",
-    "url": "/static/js/main.59e2bd9d.chunk.js"
+    "revision": "198eb0f652ef844b1cdc",
+    "url": "/static/js/main.86a4c30a.chunk.js"
   },
   {
     "revision": "73635f645c271e35ff15",
@@ -29,7 +29,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   },
   {
     "revision": "572bbe97919aa68b11a8c82ece90a80b",
-    "url": "/static/media/bg00a.572bbe97.jpg"
+    "url": "/static/media/bg.572bbe97.jpg"
   },
   {
     "revision": "896a711697e9e40a41b82006a60a16c5",
@@ -72,20 +72,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/rabbit_stand_right.dd8ca881.png"
   },
   {
-    "revision": "0bc53c9879d95148be93b1c2ca6373f5",
-    "url": "/static/media/roulette_bets_american.0bc53c98.png"
+    "revision": "4fdbaab5f6dce0969b9749617a649bd9",
+    "url": "/static/media/roulette_bets_american.4fdbaab5.png"
   },
   {
-    "revision": "676419e1ae326e736a23a03b40591fb4",
-    "url": "/static/media/roulette_bets_american_small.676419e1.png"
+    "revision": "833d89bb33f742b18e23edcf2280d2a3",
+    "url": "/static/media/roulette_bets_american_small.833d89bb.png"
   },
   {
-    "revision": "282f2a1f0bdac786091ad1f278ed14cc",
-    "url": "/static/media/roulette_bets_european.282f2a1f.png"
+    "revision": "ce978b350b675763c2ea1d7c1bbc2bb3",
+    "url": "/static/media/roulette_bets_european.ce978b35.png"
   },
   {
-    "revision": "216b1a1c1903dcba32e8c88a175ed964",
-    "url": "/static/media/roulette_bets_european_small.216b1a1c.png"
+    "revision": "6c9a368dd6d61f82a34e420e71cfef50",
+    "url": "/static/media/roulette_bets_european_small.6c9a368d.png"
   },
   {
     "revision": "a0844a3a1556c90a251da67cc2bb9ab6",

@@ -24,7 +24,6 @@ function Child(props) {
 	var socket = props.socket;
 	var lang = props.lang;
 	var contact = props.contact;
-	console.log('userpage--> ', lang, user_id, game, user, money, user_table, type)
 	return (			
 			<BrowserRouter>
 				<div className="userPage"> 
@@ -82,7 +81,9 @@ class UserPage extends Component {
 						var payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.props.lang}
 						self.state.socket.emit('username', payload);
 						self.state.socket.on('is_online', function(data) {
-							$('#chatmessages').append(data);
+							if(typeof $('#chatmessages') !== "undefined"){
+								$('#chatmessages').append(data);
+							}
 						});	
 					} else {
 						if(self.state.lang === "ro"){

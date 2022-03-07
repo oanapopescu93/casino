@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 import SalonGames from './games/salon_games'
-import Race from './games/race'
 import Sapou from './partials/sapou';
 
 import About from './other_pages/about';
@@ -16,9 +15,9 @@ import Terms from './other_pages/terms';
 import Privacy from './other_pages/privacy';
 import Questions from './other_pages/questions';
 import Career from './other_pages/career';
-import Panel from './panel_control';
 
 import { getCookie, setCookie } from '../utils';
+import UserRace from './userRace';
 
 var self;
 var casino_games = {
@@ -234,10 +233,7 @@ class Salon extends Component {
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
 									{self.state.race ? (
-										<>
-											<Race lang={lang} socket={self.state.socket} user={self.state.user}></Race>
-											<Panel lang={lang} user_id={self.state.user_id} user={self.state.user} money={self.state.money} user_table={"Rabbit Race"} socket={self.state.socket}></Panel>
-										</>							
+										<UserRace lang={lang} user_id={self.state.user_id} user={self.state.user} money={self.state.money} user_table={"Rabbit Race"} socket={self.state.socket}></UserRace>						
 									) : (
 										<Child contact={self.props.contact} lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></Child>
 									)}											

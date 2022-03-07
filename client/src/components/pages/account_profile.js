@@ -17,7 +17,7 @@ function Account_profile(props) {
 	var socket = props.info.socket; 
 
 	socket.on('change_username_read', function(data){
-		console.log(data)
+		//console.log(data)
 	});	
 
 	const [show, setShow] = useState(false);

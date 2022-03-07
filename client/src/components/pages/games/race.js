@@ -529,7 +529,7 @@ function race_game(props){
 	this.start_race = function(time, monkey){
 		var nr = 0;
 		dispatch_nr++;
-		//time = 100;
+		time = 100;
 		var move_landscape = false;
 
 		window.requestAnimFrame = (function(){
@@ -545,7 +545,6 @@ function race_game(props){
 			var stop = false;
 			console.log(rabbit_list)			
 			var avg_dist = rabbit_list[0].avg_dist;
-			
 
 			if (nr > time) {	
 				rabbit_list = self.order_rabbits(rabbit_list);			
@@ -791,7 +790,7 @@ class RaceTables extends Component {
 			user: props.data.user,
 			get_data: props.get_data,
 		};
-		rabbit_array = this.props.data.rabbit_array;
+		rabbit_array = self_race_tables.props.data.rabbit_array;
 		self_race_tables.check_bets = self_race_tables.check_bets.bind(self_race_tables);
 		self_race_tables.handleExit = self_race_tables.handleExit.bind(self_race_tables);
 	}
@@ -821,7 +820,7 @@ class RaceTables extends Component {
 	}
 
 	componentDidMount() {	
-		var lang = this.props.lang;		
+		var lang = self_race_tables.props.lang;		
 		$('.full-height').attr('id', 'race');
 
 		$('body').off('click', '#race_clear_bets').on('click', '#race_clear_bets', function () {
@@ -881,7 +880,7 @@ class RaceTables extends Component {
 	}
 
 	render() {
-		var lang = this.props.lang;	
+		var lang = self_race_tables.props.lang;	
 		$('.full-height').attr('id', 'race')
 		return (
 			<>

@@ -49,7 +49,7 @@ var rabbit_delay = [40, 20] //max, min
 
 database(database_config).then(function(data){
 	users_json = data;
-	//console.log('aaa', data)
+	//console.log('users_json--> ', users_json)
 });
 
 app.use(routes);
@@ -72,7 +72,11 @@ io.on('connection', function(socket) {
 			if(data.user === users_json[i].user && pass === users_json[i].pass){
 				exists = true;	
 				obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
-				io.to(socket.id).emit('signin_read', [exists, obj]);
+				try{
+					io.to(socket.id).emit('signin_read', [exists, obj]);
+				}catch(e){
+					console.log('[error]','signin_read1 :', e);
+				}
 				sign_in_up = true;
 				get_extra_data().then(function(data1) {				
 					let extra_data = {
@@ -103,7 +107,11 @@ io.on('connection', function(socket) {
 			}
 		}
 		if(!exists){
-			io.to(socket.id).emit('signin_read', [exists, obj]);	
+			try{
+				io.to(socket.id).emit('signin_read', [exists, obj]);	
+			}catch(e){
+				console.log('[error]','signin_read2 :', e);
+			}
 		}			
 	});
 	socket.on('signup_send', function(data) {
@@ -143,7 +151,11 @@ io.on('connection', function(socket) {
 						for(let i in users_json){						
 							if(users_json[i].email === data.email){
 								obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
-								io.to(socket.id).emit('signup_read', [exists, obj]);
+								try{
+									io.to(socket.id).emit('signup_read', [exists, obj]);
+								}catch(e){
+									console.log('[error]','signup_read1 :', e);
+								}
 								break;
 							}
 						}
@@ -151,7 +163,11 @@ io.on('connection', function(socket) {
 				});
 			});
 		} else {
-			io.to(socket.id).emit('signup_read', [exists, obj]);	
+			try{
+				io.to(socket.id).emit('signup_read', [exists, obj]);
+			}catch(e){
+				console.log('[error]','signup_read2 :', e);
+			}
 		}
 	});
 	socket.on('salon_send', function(data) {
@@ -163,7 +179,11 @@ io.on('connection', function(socket) {
 				break;
 			}
 		}
-		io.emit('salon_read', {server_tables: server_tables, money: money});		
+		try{
+			io.emit('salon_read', {server_tables: server_tables, money: money});
+		}catch(e){
+			console.log('[error]','salon_read :', e);
+		}		
 	});
 	socket.on('user_page_send', function(data) {
 		let my_table = data[0];
@@ -181,15 +201,23 @@ io.on('connection', function(socket) {
 				}
 			}
 			server_user = {id: id, user: user, money: money, user_table: my_table, game: game, contact: contact_details}
-			io.to(socket.id).emit('user_page_read', server_user);
+			try{
+				io.to(socket.id).emit('user_page_read', server_user);
+			}catch(e){
+				console.log('[error]','user_page_send1 :', e);
+			}
 		} else {
-			io.to(socket.id).emit('user_page_read', server_user);
+			try{
+				io.to(socket.id).emit('user_page_read', server_user);
+			}catch(e){
+				console.log('[error]','user_page_send2 :', e);
+			}
 		}		
 	});	
 	socket.on('username', function(payload) {
-		console.log('username', payload)
 		let username = payload.user;
 		let user_table = payload.user_table.split(' ').join('_');
+		user_table = user_table.toLowerCase();
 		
 		socket.user_id = payload.id;
 		socket.username = username;
@@ -201,76 +229,90 @@ io.on('connection', function(socket) {
 			socket.user_type = user_type;
 			room_name = room_name + '_' + user_type;
 		}
-		socket.join(room_name);
-		
-		user_join.push(payload);		
-		sockets.push(socket);
-		users[socket.username] = socket;
-		
-		if(typeof username !== "undefined" && username !== ""){
-			io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
-			io.to(room_name).emit('chatlist', user_join);
-		}
 
-		if(!sign_in_up){
-			get_extra_data().then(function(data1) {
-				let extra_data = {
-					city: "",
-					country: "",
-					ip_address: "",
-				};
-				if(typeof data1.data.city !== "undefined"){
-					extra_data.city = data1.data.city;
-				}
-				if(typeof data1.data.country !== "undefined"){
-					extra_data.country = data1.data.country;
-				}
-				if(typeof data1.data.ip_address !== "undefined"){
-					extra_data.ip_address = data1.data.ip_address;
-				}
-				let timestamp = new Date().getTime() + "";
-				database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+payload.id;
-				database(database_config).then(function(result){
-					for(var i in users_json){
-						if(payload.id === users_json[i].id){
-							users_json[i].ip_address = extra_data.ip_addres;
-							users_json[i].city = extra_data.city;
-							users_json[i].country = extra_data.country;
-							users_json[i].device = device;
-							users_json[i].last_signin = timestamp;
-							break;
-						}
+		try{
+			socket.join(room_name);
+		
+			user_join.push(payload);		
+			sockets.push(socket);
+			users[socket.username] = socket;
+			
+			if(typeof username !== "undefined" && username !== ""){
+				io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
+				io.to(room_name).emit('chatlist', user_join);
+			}
+
+			if(!sign_in_up){
+				get_extra_data().then(function(data1) {
+					let extra_data = {
+						city: "",
+						country: "",
+						ip_address: "",
+					};
+					if(typeof data1.data.city !== "undefined"){
+						extra_data.city = data1.data.city;
 					}
+					if(typeof data1.data.country !== "undefined"){
+						extra_data.country = data1.data.country;
+					}
+					if(typeof data1.data.ip_address !== "undefined"){
+						extra_data.ip_address = data1.data.ip_address;
+					}
+					let timestamp = new Date().getTime() + "";
+					database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+payload.id;
+					database(database_config).then(function(result){
+						for(var i in users_json){
+							if(payload.id === users_json[i].id){
+								users_json[i].ip_address = extra_data.ip_addres;
+								users_json[i].city = extra_data.city;
+								users_json[i].country = extra_data.country;
+								users_json[i].device = device;
+								users_json[i].last_signin = timestamp;
+								break;
+							}
+						}
+					});
 				});
-			});
+			}
+		}catch(e){
+			console.log('[error]','join room :',e);
 		}
     });	
-	socket.on('logout_send', function(data) {	
-		if (socket.handshake.session.userdata) {
-            delete socket.handshake.session.userdata;
-            socket.handshake.session.save();
-        }
-		io.to(socket.id).emit('logout_read', data);
-	});
 
 	socket.on('donate_send', function(data) {
-		io.to(socket.id).emit('donate_read', donations);		
+		try{
+			io.to(socket.id).emit('donate_read', donations);	
+		}catch(e){
+			console.log('[error]','donate_read :', e);
+		}	
 	});
 	socket.on('contact_send', function(data) {
-		//io.to(socket.id).emit('contact_read', contact_details);	
-		io.emit('contact_read', contact_details);	
+		try{
+			io.emit('contact_read', contact_details);	
+		}catch(e){
+			console.log('[error]','contact_read :', e);
+		}
 	});
 	socket.on('support_send', function(data) {
 		if(data.lang === "ro"){
-			io.to(socket.id).emit('support_read', "Mesajul a fost trimis");	
+			try{
+				io.to(socket.id).emit('support_read', "Mesajul a fost trimis");
+			}catch(e){
+				console.log('[error]','support_send1 :', e);
+			}
 		} else {
-			io.to(socket.id).emit('support_read', "Message has been sent");	
+			try{
+				io.to(socket.id).emit('support_read', "Message has been sent");	
+			}catch(e){
+				console.log('[error]','support_send2 :', e);
+			}
 		}			
 	});		
 	
 	socket.on('chat_message_send', function(data) {
 		let user_table = data.user_table.split(' ').join('_');
-		if(data.user_table === "Rabbit Race"){
+		user_table = user_table.toLowerCase();
+		if(data.user_table === "rabbit_race"){
 			user_table = "salon";
 		}
 		let room_name = user_table;		
@@ -278,21 +320,32 @@ io.on('connection', function(socket) {
 			let user_type = data.user_type;	
 			room_name = room_name + '_' + user_type;
 		}
-		console.log('room_name', room_name)
-		io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));		
+		try{
+			io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));
+		}catch(e){
+			console.log('[error]','chat_message_read :', e);
+		}
 	});	
 	socket.on('choose_table_send', function(data) {
 		let my_table = data.table_name + '_' +data.table_id;
 		if(data.table_type !== "" && typeof data.table_type !== "undefined" && data.table_type !== null){
 			my_table = my_table + '_' + data.table_type;
 		} 
-		io.emit('choose_table_read', my_table);
+		try{
+			io.emit('choose_table_read', my_table);
+		}catch(e){
+			console.log('[error]','choose_table_read :', e);
+		}
 	});
 	socket.on('market_send', function(data) {
 		let this_user = data.id;
 		for(let i in sockets){
 			if(sockets[i].user_id === this_user){
-				io.to(socket.id).emit('market_read', market);
+				try{
+					io.to(socket.id).emit('market_read', market);
+				}catch(e){
+					console.log('[error]','market_read :', e);
+				}
 			} 
 		}
 	});
@@ -306,7 +359,11 @@ io.on('connection', function(socket) {
 					for(var i in users_json){	
 						if(id === users_json[i].id){
 							users_json[i].user = user_new;
-							io.to(socket.id).emit('change_username_read', users_json);
+							try{
+								io.to(socket.id).emit('change_username_read', users_json);
+							}catch(e){
+								console.log('[error]','change_username_read :', e);
+							}
 							break;
 						}
 					}
@@ -520,14 +577,11 @@ io.on('connection', function(socket) {
 			if(winner !== -1){
 				if(blackjack_players[winner].points > blackjack_dealer.points){
 					blackjack_players[winner].win = true;
-					//console.log('zzz01a--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
 				} else {
 					blackjack_dealer.win = true;
-					//console.log('zzz01b--> ', blackjack_players[winner].points, blackjack_dealer.points, blackjack_players[winner].points > blackjack_dealer.points)	
 				}
 			} else {				
 				blackjack_dealer.win = true;
-				//console.log('zzz02--> ', blackjack_dealer.points)	
 			}
 		}
 	});
@@ -638,10 +692,14 @@ io.on('connection', function(socket) {
 					room_name = room_name + '_' + user_type;				
 				}	
 				
-				io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
-				
-				sockets.splice(k, 1);			
-				user_join.splice(user_join.indexOf(k), 1);	
+				try{
+					io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
+					sockets.splice(k, 1);			
+					user_join.splice(user_join.indexOf(k), 1);	
+					socket.leave(room_name);
+				}catch(e){
+					console.log('[error]','disconnect :', e);
+				}
 			}			
 		}
     });

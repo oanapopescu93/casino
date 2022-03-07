@@ -1,10 +1,7 @@
 import React from 'react';
-import $ from 'jquery'; 
-
+import $ from 'jquery';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-
-import under_construction_icon from '../../img/icons/under_construction_icon.png'
 import Carousel from '../partials/carousel'
 import { setCookie } from '../../utils';
 
