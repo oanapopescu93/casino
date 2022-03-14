@@ -31,6 +31,7 @@ function Child(props){
 	var lang = props.lang;
 	var casino_games_title = props.casino_games_title;
 	var socket = props.socket;
+	var user_id = props.user_id;
 	var user = props.user;
 	var casino_games = props.casino_games;
 	var visible = useSelector(state => state.visibility);
@@ -50,42 +51,42 @@ function Child(props){
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<About lang={lang} socket={socket} user={user}></About>
+								<About lang={lang} socket={socket} user_id={user_id} user={user}></About>
 							</>
 						)	
 					case "support":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Support contact={contact} lang={lang} socket={socket} user={user}></Support>
+								<Support contact={contact} lang={lang} socket={socket} user_id={user_id} user={user}></Support>
 							</>
 						)
 					case "terms":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Terms lang={lang} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></Terms>
+								<Terms lang={lang} casino_games_title={casino_games_title} socket={socket} user_id={user_id} user={user} casino_games={casino_games}></Terms>
 							</>
 						)
 					case "privacy":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Privacy lang={lang} socket={socket} user={user}></Privacy>
+								<Privacy lang={lang} socket={socket} user_id={user_id} user={user}></Privacy>
 							</>
 						)
 					case "questions":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Questions lang={lang} socket={socket} user={user}></Questions>
+								<Questions lang={lang} socket={socket} user_id={user_id} user={user}></Questions>
 							</>
 						)
 					case "career":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Career lang={lang} socket={socket} user={user}></Career>
+								<Career lang={lang} socket={socket} user_id={user_id} user={user}></Career>
 							</>
 						)
 					default:
@@ -235,7 +236,7 @@ class Salon extends Component {
 									{self.state.race ? (
 										<UserRace lang={lang} user_id={self.state.user_id} user={self.state.user} money={self.state.money} user_table={"Rabbit Race"} socket={self.state.socket}></UserRace>						
 									) : (
-										<Child contact={self.props.contact} lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user={self.state.user} casino_games={casino_games}></Child>
+										<Child contact={self.props.contact} lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user_id={self.state.user_id} user={self.state.user} casino_games={casino_games}></Child>
 									)}											
 								</Col>
 							</>																

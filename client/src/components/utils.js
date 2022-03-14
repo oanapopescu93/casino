@@ -1,9 +1,9 @@
 import $ from 'jquery'; 
 
 export const setCookie = function (cname,cvalue,exdays=30) {
-  var d = new Date();
+  let d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires=" + d.toGMTString();
+  let expires = "expires=" + d.toGMTString();
   if(getCookie("casino_cookies") === "true"){
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   } else {
@@ -13,19 +13,19 @@ export const setCookie = function (cname,cvalue,exdays=30) {
   }
 }
 export const getCookie = function (cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
     }
-    return "";
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }
 
 export const showResults = function(title="", message="", w=200, h="auto") {
@@ -48,7 +48,7 @@ export const showResults = function(title="", message="", w=200, h="auto") {
 }
 
 export const bigText = function(type, lang, payload) {
-  var text = ``;
+  let text = ``;
   if(type === "slot_rules"){
     if(lang === "ro"){
       text = `<div class="big_text_container">
@@ -61,4 +61,66 @@ export const bigText = function(type, lang, payload) {
     }
   }
   return text;
+}
+
+export const sort = function(list=[], sort_by="", asc=true) {
+  if(list && list.length>0){
+    if(sort_by === ""){
+      let done = false;
+      if(asc){
+        while (!done) {
+          done = true;
+          for (let i = 1; i < list.length; i += 1) {
+              if (list[i - 1] > list[i]){
+                  done = false;
+                  let tmp = list[i - 1];
+                  list[i - 1] = list[i];
+                  list[i] = tmp;
+              }
+          }
+        }
+      } else {
+        while (!done) {
+          done = true;
+          for (let i = 1; i < list.length; i += 1) {
+              if (list[i - 1] < list[i]){
+                  done = false;
+                  let tmp = list[i - 1];
+                  list[i - 1] = list[i];
+                  list[i] = tmp;
+              }
+          }
+        }
+      }
+    } else {
+      let done = false;
+      if(asc){
+        while (!done) {
+          done = true;
+          for (let i = 1; i < list.length; i += 1) {
+              if (list[i - 1][sort_by] > list[i][sort_by]){
+                  done = false;
+                  let tmp = list[i - 1];
+                  list[i - 1] = list[i];
+                  list[i] = tmp;
+              }
+          }
+        }
+      } else {
+        while (!done) {
+          done = true;
+          for (let i = 1; i < list.length; i += 1) {
+              if (list[i - 1][sort_by] < list[i][sort_by]){
+                  done = false;
+                  let tmp = list[i - 1];
+                  list[i - 1] = list[i];
+                  list[i] = tmp;
+              }
+          }
+        }
+      }
+    }
+  }   
+
+  return list;
 }

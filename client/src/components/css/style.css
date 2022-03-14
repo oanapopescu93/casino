@@ -828,7 +828,7 @@ table {
 }
 #casino_games_title_dropdown_container{
 	position: relative;
-	z-index: 1;
+	z-index: 2;
 }
 .casino_games_title_box_container{
 	max-width: 600px;
@@ -1960,6 +1960,92 @@ table {
     outline-offset: 0px!important;
 }
 
+/* Career */
+.career_header_container{
+	margin-top: 10px;
+	border-bottom: solid 1px var(--yellow);
+	text-align: left;
+}
+.career_header_box{
+	display:inline-block;
+	vertical-align: middle;
+	text-align: center;
+	padding: 10px;
+	margin-left: 5px;
+	border: solid 1px var(--yellow);
+	border-bottom: solid 0px transparent;
+	border-radius: 10px 10px 0px 0px;
+	width: 80px;
+}
+.career_header_box:hover, .career_header_box:active, .career_header_box:focus, .career_header_box.open{
+	background-color: var(--transparent_yellow);
+}
+#career_header_title_dropdown_container{
+	position: relative;
+	z-index: 2;
+}
+.career_header_title_container {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    margin-bottom: -15px;
+}
+.career_header_title {
+    padding: 10px 20px;
+    border: solid 1px var(--yellow);
+    border-radius: 50px;
+    display: inline-block;
+    max-width: 600px;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+.career_header_title_box_container {
+    max-width: 600px;
+    width: 100%;
+    padding: 0px 15px;
+    max-height: 105px;
+    transition: height .5s ease-in-out;
+    height: 0;
+    overflow: hidden;
+    display: inline-block;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    color: black;
+    top: 52px;
+	margin-top: -10px;
+}
+.career_header_title_box_container.open {
+    height: 105px;
+}
+.career_header_title_box {
+    border: solid 1px var(--yellow);
+    border-radius: 0px 0px 20px 20px;
+    padding: 5px 10px;
+    overflow: hidden;
+    background-color: var(--yellow);
+}
+.career_header_title_box div {
+    padding: 5px 20px;
+    border-bottom: solid 1px black;
+}
+
+.career_container{
+	text-align: left;
+	padding: 10px;
+}
+.career_scroll{
+	max-height: 400px;
+	overflow-y: auto;
+}
+.career_box{
+	padding: 10px 0px;
+	border-bottom: solid 1px var(--yellow);
+}
+
 /* media */
 @media (max-width: 1024px){
 	.rabbit_box_info, .rabbit_box_input{
@@ -1968,6 +2054,13 @@ table {
 	}
 }
 @media (max-width: 960px){
+	.career_header_container{
+		position: relative;
+		z-index: 2;
+		margin-top: 10px;
+		height:60px;
+		text-align: center;
+	}
 	.race_table_body > div{
 		height:220px;
 	}

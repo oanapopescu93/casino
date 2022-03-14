@@ -10,6 +10,8 @@ const fs = require('fs');
 const database = require('./utils/mysql');
 const md5 = require('md5');
 var constants = require('./var/constants');
+var career = require('./var/career');
+var question = require('./var/questions');
 var routes = require("./routes");
 const axios = require('axios');
 
@@ -19,6 +21,8 @@ var user_money = 100;
 var account_type = 1;
 var sign_in_up = false;
 
+var career_array = career.CAREER_ARRAY;
+var question_array = question.QUESTION_ARRAY;
 var rabbit_race = constants.SERVER_RABBITS;
 var slot_prize = constants.SLOT_PRIZE;
 var server_tables = constants.SERVER_TABLES;
@@ -307,6 +311,20 @@ io.on('connection', function(socket) {
 				console.log('[error]','support_send2 :', e);
 			}
 		}			
+	});	
+	socket.on('career_send', function(data) {
+		try{
+			io.to(socket.id).emit('career_read', career_array);	
+		}catch(e){
+			console.log('[error]','career :', e);
+		}	
+	});	
+	socket.on('question_send', function(data) {
+		try{
+			io.to(socket.id).emit('question_read', question_array);	
+		}catch(e){
+			console.log('[error]','question :', e);
+		}	
 	});		
 	
 	socket.on('chat_message_send', function(data) {
