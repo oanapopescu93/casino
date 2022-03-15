@@ -15,12 +15,20 @@ function handleBack(text="game") {
 function Career(props){
     dispatch = props.dispatch;
 	return (
-        <Row>
-            <Col sm={12}>
-                <h2>{props.lang === "ro" ? <span>Cariera</span> : <span>Career</span>}</h2>
-                <CareerList handleBack={handleBack} user_id={props.user_id} user={props.user} socket={props.socket} lang={props.lang}></CareerList>
-            </Col>
-        </Row>
+        <>
+            <Row>
+                <Col sm={12}>
+                    <h2>{props.lang === "ro" ? <span>Cariera</span> : <span>Career</span>}</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={2}></Col>
+                <Col sm={8}>
+                    <CareerList handleBack={handleBack} user_id={props.user_id} user={props.user} socket={props.socket} lang={props.lang}></CareerList>
+                </Col>
+                <Col sm={2}></Col>
+            </Row>
+        </>
 	);
 }
 
@@ -98,7 +106,7 @@ class CareerList extends React.Component {
     }
 	render() {
 		return (
-			<div>
+			<>
                 {(() => {
                         if(this.state.filter && this.state.header){
                             if(this.state.filter.length>0 && this.state.header.length>0){
@@ -175,7 +183,7 @@ class CareerList extends React.Component {
                                                                                         {
                                                                                             requirements.map(function(item1, j){
                                                                                                 return(
-                                                                                                    <li key={j}> {item1}</li>
+                                                                                                    <li key={j}>{item1}</li>
                                                                                                 );
                                                                                             })
                                                                                         }
@@ -227,9 +235,9 @@ class CareerList extends React.Component {
                                 </div>
                             );
                         }
-                    })()}
-                    <p id="exit_salon" className="shadow_convex" onClick={() => this.handleExit()}>Exit salon</p>
-            </div>
+                })()}
+                <p id="exit_salon" className="shadow_convex" onClick={() => this.handleExit()}>Exit salon</p>
+            </>
 		);
 	}
 }

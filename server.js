@@ -319,9 +319,9 @@ io.on('connection', function(socket) {
 			console.log('[error]','career :', e);
 		}	
 	});	
-	socket.on('question_send', function(data) {
+	socket.on('questions_send', function(data) {
 		try{
-			io.to(socket.id).emit('question_read', question_array);	
+			io.to(socket.id).emit('questions_read', question_array);	
 		}catch(e){
 			console.log('[error]','question :', e);
 		}	
