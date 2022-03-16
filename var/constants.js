@@ -56,12 +56,16 @@ module.exports = Object.freeze({
         {type: "paypal", title: "Paypal", link: "#"},
     ],
 
-    CONTACT: {
-        address: "-",
-        email: "-",
-        phone: "-",
-        facebook: "-"
-    },
+    CONTACT: [
+        {title: "info", text: "I'm a self-taught frontend and javascript developer. My passion is to create websites, web applications, and games."},
+        {title: "website", link: "https://oana-popescu.000webhostapp.com/", icon: "fa fa-globe"},
+        {title: "github", link: "https://github.com/oanapopescu93", icon: "fa fa-github"},
+        {title: "email", link: "mailto:oanapopescu93@gmail.com", text: "oanapopescu93@gmail.com", icon: "fa fa-envelope"},
+        {title: "phone", link: "#", text: "-", icon: "fa fa-phone"},
+        // {title: "phone", link: "tel:+40729699148", text: "0729.699.148", icon: "fa fa-phone"},
+        {title: "linkedin", link: "https://www.linkedin.com/in/oanapopescu93/", icon: "fa fa-linkedin"},
+        {title: "location", text: "Romania, Bucharest", icon: "fa fa-map-marker"},        
+    ],
 
     GOOGLE_CLIENT_ID: '287917990003-9l5albqoaoo06tsvknmftludhtg08hha.apps.googleusercontent.com',
     GOOGLE_CLIENT_SECRET: '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',

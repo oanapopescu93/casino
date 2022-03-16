@@ -27,7 +27,6 @@ class Home extends Component {
 		self = this;
 		self.state = {
 			lang: getCookie("casino_lang"),
-			contact: "",
 			donation_show: false,
 			donation_info: null,
 			cookies:false,
@@ -38,14 +37,6 @@ class Home extends Component {
 	}
 
 	componentDidMount(){
-		let id = parseInt(getCookie("casino_id"));
-		if(id === "" || id === "indefined"){
-			id = -1;
-		}
-		socket.emit('contact_send', ["contact", id]);
-		socket.on('contact_read', function(data){
-			self.setState({ contact: data.contact});
-		});	 
 		let casino_cookies = getCookie("casino_cookies");  
 		if(casino_cookies !== ""){
 			self.setState({ cookies: true });
@@ -87,7 +78,7 @@ class Home extends Component {
 											<UserPage lang={self.state.lang} socket={socket}></UserPage>
 										</Route>
 										<Route path="/salon">
-											<Salon lang={self.state.lang} socket={socket} contact={self.state.contact}></Salon>
+											<Salon lang={self.state.lang} socket={socket}></Salon>
 										</Route>
 										<Route path="/recovery">
 											<SignInRecovery lang={self.state.lang} socket={socket}></SignInRecovery>

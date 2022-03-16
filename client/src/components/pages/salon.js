@@ -35,7 +35,6 @@ function Child(props){
 	var user = props.user;
 	var casino_games = props.casino_games;
 	var visible = useSelector(state => state.visibility);
-	var contact = props.contact;
 	return(
 		<>	
 			{(() => {
@@ -58,7 +57,7 @@ function Child(props){
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Support contact={contact} lang={lang} socket={socket} user_id={user_id} user={user}></Support>
+								<Support lang={lang} socket={socket} user_id={user_id} user={user}></Support>
 							</>
 						)
 					case "terms":
@@ -236,7 +235,7 @@ class Salon extends Component {
 									{self.state.race ? (
 										<UserRace lang={lang} user_id={self.state.user_id} user={self.state.user} money={self.state.money} user_table={"Rabbit Race"} socket={self.state.socket}></UserRace>						
 									) : (
-										<Child contact={self.props.contact} lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user_id={self.state.user_id} user={self.state.user} casino_games={casino_games}></Child>
+										<Child lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user_id={self.state.user_id} user={self.state.user} casino_games={casino_games}></Child>
 									)}											
 								</Col>
 							</>																
