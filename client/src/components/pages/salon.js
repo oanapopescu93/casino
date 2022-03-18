@@ -107,10 +107,11 @@ class Salon extends Component {
 		self = this;
 		self.state = {
 			socket: props.socket,
+			lang: props.lang,
 			empty: false,
 			casino_games: '',
 			user: '',
-			race: false,
+			open_race: false,
 			id: -1,
 			money: 0,
 	  	};		
@@ -182,39 +183,42 @@ class Salon extends Component {
 	}
 
 	handleChange(type){
-		if(type === "games"){			
+		if(type === "games"){	
 			this.setState({ race: false })
 		} else if(type === "race"){
 			this.setState({ race: true })
 		}
 	}
   
-	render() {	
-		$('.full-height').attr('id', 'salon');
-		var lang = self.props.lang;
+	render() { 
+		if(this.state.race){
+			$('.full-height').attr('id', 'race');
+		} else {
+			$('.full-height').attr('id', 'salon');
+		}
 		return (
 			<>
-				{self.state.empty ? (
+				{this.state.empty ? (
 					<div className="color_yellow">
-						{lang === "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
+						{this.state.lang === "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
 					</div>
 				) : (
 					<Row>						
-						{self.state.user === '' ? (
+						{this.state.user === '' ? (
 							<div className="table_container color_yellow">
-								{lang === "ro" ? 
+								{this.state.lang === "ro" ? 
 									<>
 										<h3>Acces interzis</h3>
 										<h4>Intoarce-te si logheaza-te/inregistreaza-te</h4>
-										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>
-											{lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
+										<Button className="button_table shadow_convex" type="button" onClick={()=>this.handleBack()}>
+											{this.state.lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
 										</Button>
 									</> : 
 									<>
 										<h3>No access</h3>
 										<h4>Please go back and login in / sign in</h4>
-										<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>
-											{lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
+										<Button className="button_table shadow_convex" type="button" onClick={()=>this.handleBack()}>
+											{this.state.lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
 										</Button>
 									</>
 								}								
@@ -223,19 +227,19 @@ class Salon extends Component {
 							<>
 								<div className="salon_button_container">
 									<div className="salon_button_box">
-										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{self.handleChange('games')}}>
-											{lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
+										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
+											{this.state.lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
 										</div>            
-										<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{self.handleChange('race')}}>
-											{lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
+										<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
+											{this.state.lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
 										</div>
 									</div>
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
-									{self.state.race ? (
-										<UserRace lang={lang} user_id={self.state.user_id} user={self.state.user} money={self.state.money} user_table={"Rabbit Race"} socket={self.state.socket}></UserRace>						
+									{this.state.race ? (
+										<UserRace race={this.state.race} lang={this.state.lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
 									) : (
-										<Child lang={lang} casino_games_title={casino_games_title} socket={self.state.socket} user_id={self.state.user_id} user={self.state.user} casino_games={casino_games}></Child>
+										<Child lang={this.state.lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
 									)}											
 								</Col>
 							</>																

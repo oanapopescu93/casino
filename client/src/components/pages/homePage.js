@@ -101,8 +101,8 @@ class HomePage extends React.Component {
 				{ 
 					this.state.splash ? <Splash></Splash>  : 
 					<Row>
-						<Col sm={4} md={4} lg={4}></Col>
-						<Col sm={4} md={4} lg={4} className="color_yellow">
+						<Col sm={2} md={4} lg={4}></Col>
+						<Col sm={8} md={4} lg={4} className="color_yellow">
 							<div className="HomePage">
 								<div className="deco">
 									<div className="HomePage_box">
@@ -133,7 +133,7 @@ class HomePage extends React.Component {
 							</div>
 							<div className="sign_errors"></div>
 						</Col>
-						<Col sm={4} md={4} lg={4}></Col>
+						<Col sm={2} md={4} lg={4}></Col>
 					</Row> 
 				}			
 			</>

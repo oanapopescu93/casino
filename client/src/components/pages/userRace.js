@@ -1,47 +1,39 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux'
 import $ from 'jquery'; 
 import Panel from './panel_control';
 import Race from './games/race';
 
-var self;
-class UserRace extends Component {
-	constructor(props) {
-		super(props);
-		self = this;
-		self.state = {
-			user: props.user,
-			user_id: props.user_id,
-			socket: props.socket,
-			lang: props.lang,
-            money: props.money,
-            user_table: props.user_table,
-		};
-	}	
+function UserRace(props){
+	let user = props.user;
+    let user_id = props.user_id;
+    let socket = props.socket;
+    let lang = props.lang;
+    let money = props.money;
+    let user_table = props.user_table;
+    let race = props.race;
+    const dispatch = useDispatch();
   
-	componentDidMount() {
-		var payload = {
-            id:self.state.user_id, 
-            user: self.state.user, 
-            user_table: self.state.user_table, 
-            time: new Date().getTime(), 
-            lang:self.state.lang
+	var payload = {
+        id: user_id, 
+        user: user, 
+        user_table: user_table, 
+        time: new Date().getTime(), 
+        lang: lang
+    }
+    socket.emit('username', payload);
+    socket.on('is_online', function(data) {
+        if(typeof $('#chatmessages') !== "undefined"){
+            $('#chatmessages').append(data);
         }
-        self.state.socket.emit('username', payload);
-        self.state.socket.on('is_online', function(data) {
-            if(typeof $('#chatmessages') !== "undefined"){
-                $('#chatmessages').append(data);
-            }
-        });	
-	}
-  
-	render() {
-		return(
-            <>
-                <Race lang={self.state.lang} socket={self.state.socket} user={self.state.user}></Race>
-				<Panel lang={self.state.lang} user_id={self.state.user_id} user={self.state.user} money={self.state.money} user_table={self.state.user_table} socket={self.state.socket}></Panel>
-            </>
-        );		
-	}
+    }); 
+    
+    return(
+        <>
+            <Race open_race={race} lang={lang} socket={socket} user={user} dispatch={dispatch}></Race>
+            <Panel lang={lang} user_id={user_id} user={user} money={money} user_table={user_table} socket={socket}></Panel>
+        </>
+    );
 }
 
 export default UserRace;

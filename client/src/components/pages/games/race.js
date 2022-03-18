@@ -3,7 +3,6 @@ import {race_calculate_money, race_get_history} from '../../actions/actions'
 import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {connect} from 'react-redux';
 import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
 import { getCookie, setCookie, showResults } from '../../utils';
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
@@ -28,7 +27,6 @@ var font_title = 'bold 30px sans-serif';
 var font_counter = 'bold 40px sans-serif';
 
 var dispatch_nr = 0;
-var socket;
 
 var rabbit_array = [];
 var rabbit_list = [];
@@ -252,19 +250,19 @@ function FinishLine(config){
 }
 
 function race_game(props){
-	var self = this;
-	socket = props.data.socket;
+	let self = this;
+	let socket = props.data.socket;
+	let lang = props.lang;
+	let dispatch = props.data.dispatch;
 	dispatch_nr = 0;
-	var lang = props.lang;
-	const dispatch = props.data.dispatch;
 		
 	this.ready = function(reason){
 		self.createCanvas(canvas_width, canvas_height);	
 		self.start(reason);
 	}
 
-	this.createCanvas = function(canvas_width, canvas_height){		
-		canvas = document.getElementById("race_canvas");		
+	this.createCanvas = function(canvas_width, canvas_height){	
+		canvas = document.getElementById("race_canvas");	
 		ctx = canvas.getContext("2d");
 		
 		if (window.innerWidth < 960){
@@ -284,7 +282,7 @@ function race_game(props){
 				sun: [35, 35, 15],
 			}
 			draw_road_height = 101;
-			rabbit_size = [5, 100, 50, 50, -3];
+			rabbit_size = [5, 100, 35, 35, -5];
 			font_title = 'bold 20px sans-serif';
 			font_counter = 'bold 30px sans-serif';
 			font_bold_10 = 'bold 8px sans-serif';
@@ -660,19 +658,28 @@ function race_game(props){
 		var get = props.data.money - win_lose[win_lose.length-1].remaining;
 		var remaining_money = win_lose[win_lose.length-1].remaining;
 
+		dispatch(race_calculate_money(remaining_money))
+		dispatch(race_get_history(win_lose))
+
+		if($('#user_money').length>0){
+			if($('#user_money span').length>0){
+				$('#user_money span').text(remaining_money);
+			}
+		}
+
 		if(lang === "ro"){
 			if(props.data.money<remaining_money){
-				showResults("Rezultate", "Ai pierdut " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
-			} else if(get>0){
 				showResults("Rezultate", "Ai castigat " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
+			} else if(get>0){
+				showResults("Rezultate", "Ai pierdut " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
 			} else {
 				showResults("Rezultate", "Ai " + remaining_money + " morcovi!");
 			}			
 		} else {
 			if(props.data.money<remaining_money){
-				showResults("Results", "You lost " + get + " carrots. You have " + remaining_money + " carrots!");
-			} else if(get>0){
 				showResults("Results", "you won " + get + " carrots. You have " + remaining_money + " carrots!");
+			} else if(get>0){
+				showResults("Results", "You lost " + get + " carrots. You have " + remaining_money + " carrots!");
 			} else {
 				showResults("Results", "You have " + remaining_money + " carrots!");
 			}
@@ -749,10 +756,8 @@ function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
 }
 
 function RaceGame(props){
-	var lang = props.lang;
-	$('.full-height').attr('id', 'race')
-	setTimeout(function(){ 
-		$('.full-height').attr('id', 'race')		
+	let lang = props.lang;
+	setTimeout(function(){	
 		my_race = new race_game(props);
 		my_race.ready();	
 		$(window).resize(function(){
@@ -779,20 +784,18 @@ function RaceGame(props){
 	)
 }
 
-var self_race_tables;
 class RaceTables extends Component {
 	constructor(props) {
 		super(props);
-		self_race_tables = this;
-		self_race_tables.state = {
+		this.state = {
 			money: props.data.money,
 			socket: props.data.socket,
 			user: props.data.user,
 			get_data: props.get_data,
 		};
-		rabbit_array = self_race_tables.props.data.rabbit_array;
-		self_race_tables.check_bets = self_race_tables.check_bets.bind(self_race_tables);
-		self_race_tables.handleExit = self_race_tables.handleExit.bind(self_race_tables);
+		rabbit_array = this.props.data.rabbit_array;
+		this.check_bets = this.check_bets.bind(this);
+		this.handleExit = this.handleExit.bind(this);
 	}
 
 	check_bets(){
@@ -820,30 +823,30 @@ class RaceTables extends Component {
 	}
 
 	componentDidMount() {	
-		var lang = self_race_tables.props.lang;		
-		$('.full-height').attr('id', 'race');
+		let self_race_tables = this;
+		let lang = self_race_tables.props.lang;	
 
 		$('body').off('click', '#race_clear_bets').on('click', '#race_clear_bets', function () {
 			$('.race_input').val('0');
 		})	
 
 		$('body').off('click', '.rabbit_box_minus').on('click', '.rabbit_box_minus', function () {
-			var input_value = parseInt($(this).parent().find('.race_input').val());
+			let input_value = parseInt($(this).parent().find('.race_input').val());
 			if(input_value > 0){
 				$(this).parent().find('.race_input').val(input_value-1);
 			}
 		})	
 
 		$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {				
-			var input_value = parseInt($(this).parent().find('.race_input').val());
+			let input_value = parseInt($(this).parent().find('.race_input').val());
 			if(input_value < self_race_tables.state.money){
 				$(this).parent().find('.race_input').val(input_value+1);
 			}
 		})
 
 		$('body').off('click', '.dropdown-content li').on('click', '.dropdown-content li', function () {
-			var value = parseInt($(this).attr('place'));
-			var text = '';
+			let value = parseInt($(this).attr('place'));
+			let text = '';
 			if(lang === 'ro'){
 				text = 'Locul' + value;
 			} else {
@@ -866,7 +869,7 @@ class RaceTables extends Component {
 		})
 
 		$('body').off('click', '#race_start').on('click', '#race_start', function () {
-			var start = self_race_tables.check_bets();				
+			let start = self_race_tables.check_bets();				
 			if(start){
 				self_race_tables.state.get_data('start')
 			} else {
@@ -880,13 +883,12 @@ class RaceTables extends Component {
 	}
 
 	render() {
-		var lang = self_race_tables.props.lang;	
-		$('.full-height').attr('id', 'race')
+		let lang = this.props.lang;	
 		return (
 			<>
 				<Row>
 					<Col sm={2}></Col>
-					<Col sm={8} className="race_table_container">
+					<Col xs={10} sm={8} className="race_table_container spacing_small">
 						<Row>
 							<Col sm={12}>
 								<div className="race_table_header shadow_convex">
@@ -998,9 +1000,9 @@ class RaceTables extends Component {
 							<Col sm={12} className="race_bets_container">
 								<div className="race_clear_bets shadow_convex" id="race_clear_bets">Clear Bets</div>
 								<div className="race_buttons_box">
-									{self_race_tables.state.lang === "ro" ? 
-										<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{self_race_tables.state.money} morcovi</span></p> : 
-										<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{self_race_tables.state.money} carrots</span></p>
+									{lang === "ro" ? 
+										<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{this.state.money} morcovi</span></p> : 
+										<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{this.state.money} carrots</span></p>
 									}
 								</div>
 								<div className="race_buttons_box">
@@ -1010,9 +1012,9 @@ class RaceTables extends Component {
 						</Row>
 						<Row>
 							<Col sm={12}>
-								{self.state.lang === "ro" ? 
-									<p id="exit_salon" className="shadow_convex" onClick={() => self_race_tables.handleExit()}>Iesi din salon</p> : 
-									<p id="exit_salon" className="shadow_convex" onClick={() => self_race_tables.handleExit()}>Exit salon</p>	
+								{lang === "ro" ? 
+									<p id="exit_salon" className="shadow_convex" onClick={() => this.handleExit()}>Iesi din salon</p> : 
+									<p id="exit_salon" className="shadow_convex" onClick={() => this.handleExit()}>Exit salon</p>	
 								}																			
 							</Col>
 						</Row>
@@ -1024,12 +1026,10 @@ class RaceTables extends Component {
 	}
 }
 
-var self; 
 class Race extends Component {	
 	constructor(props) {
 		super(props);
-		self = this;
-		self.state = {
+		this.state = {
 			socket: props.socket,
 			rabbit_array: [],
 			ready: false,
@@ -1037,43 +1037,50 @@ class Race extends Component {
 			user: props.user,
 			id: -1,
 			money:0,
-			dispatch: props.dispatch
+			lang: props.lang,
+			open_race: props.open_race,
+			dispatch: props.dispatch,
 	  	};
+		this.get_data = this.get_data.bind(this);
 	}	
 
-	componentDidMount() {		
-		var id = parseInt(getCookie("casino_id"));
+	componentDidMount() {
+		let self = this;
+		let id = parseInt(getCookie("casino_id"));
 		if(id === "" || id === "indefined"){
 			id = -1;
 		}
-
-		var payload = {id: id, user: this.state.user}
-		self.state.socket.emit('race_board_send', payload);
-		self.state.socket.on('race_board_read', function(data){	
-		 	self.setState({ rabbit_array: data.rabbit_race })
+		let payload = {id: id, user: this.state.user}
+		this.state.socket.emit('race_board_send', payload);
+		this.state.socket.on('race_board_read', function(data){	
+			self.setState({ rabbit_array: data.rabbit_race })
 			self.setState({ money: data.money })
 			self.setState({ id: data.id })
-		 	self.setState({ ready: true })
+			self.setState({ ready: true })
 		});
 	}
 	
 	get_data = function(x){
+		let self = this;
 		if(x === "start"){
 			self.setState({ start_race: true })
 		}
 	}
 
 	render() {
-		var lang = this.props.lang;
-		$('.full-height').attr('id', 'race')
+		let lang = this.state.lang;
+		let start_race = this.state.start_race; 
+		if(this.state.open_race && this.state.start_race){
+			start_race = true;
+		}
 		return (
 			<>
 				{(() => {
-					if (self.state.ready) {
-						if (self.state.start_race) {
-							return <RaceGame lang={lang} data={self.state}></RaceGame>
+					if (this.state.ready) {
+						if (start_race) {
+							return <RaceGame lang={lang} data={this.state}></RaceGame>
 						} else {
-							return <RaceTables lang={lang} data={self.state} get_data={self.get_data}></RaceTables>
+							return <RaceTables lang={lang} data={this.state} get_data={this.get_data}></RaceTables>
 						}						
 					} else {
 						return (
@@ -1092,8 +1099,4 @@ class Race extends Component {
 	}
 }
 
-function mapStateToProps(state) {	
-	return { ...state }
-}
-
-export default connect(mapStateToProps)(Race)
+export default Race;

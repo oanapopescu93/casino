@@ -2124,6 +2124,13 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.spacing_small{
+		padding-left:70px;
+		padding-right:70px;
+	}
+	.race_order_elem_container{
+		width:100%
+	}
 	.rabbit_box{
 		width:100%;
 	}
