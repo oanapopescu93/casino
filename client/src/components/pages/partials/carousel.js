@@ -74,6 +74,7 @@ function Carousel(props){
 										</div>
 									)
 								case "blackjack":
+								case "craps":
 									return (
 										<div key={i} className="table_inside">
 											<div className="table_box shadow_concav">

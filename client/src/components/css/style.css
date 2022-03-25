@@ -17,7 +17,8 @@ html{
 body{
 	background:var(--green);
 	color:black;
-	font-family: 'Roboto Condensed';
+	/* font-family: 'Roboto Condensed'; */
+	font-family: Arial;
 	min-height: 100% !important;
     position: relative;
 	z-index: 1;

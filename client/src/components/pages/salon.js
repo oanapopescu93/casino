@@ -23,7 +23,8 @@ var self;
 var casino_games = {
 	roulette_tables: [], 
 	blackjack_tables: [],
-	slots_tables: []
+	slots_tables: [],
+	craps_tables: []
 }
 var casino_games_title = Object.getOwnPropertyNames(casino_games);
 
@@ -133,6 +134,9 @@ class Salon extends Component {
 							  	break;
 							case "slots":
 								casino_games.slots_tables.push(res.server_tables[i]);
+								break;
+							case "craps":
+								casino_games.craps_tables.push(res.server_tables[i]);
 								break;	
 							default:
 								break;						

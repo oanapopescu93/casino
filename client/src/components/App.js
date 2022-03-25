@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './css/bootstrap.css';
 import './css/style.css';
 import Home from './pages/home';
 import logo from './img/rabbit_loader/rabbit_run.gif';
@@ -26,7 +27,7 @@ var my_console = function(){
 
 class App extends Component {	
 	render() {
-		my_console.disable();	
+		// my_console.disable();	
 		return (
 			<div className="App">				
 				<div id="loader_container" className="loader_container">

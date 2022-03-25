@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import Roulette from './games/roulette'
 import Blackjack from './games/blackjack'
 import Slot from './games/slot'
+import Craps from './games/craps'
 
 var finish = false;
 var self;
@@ -67,6 +68,10 @@ class Game extends Component {
 										case "slots":
 											return (
 												<Slot lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Slot>
+											)
+										case "craps":
+											return (
+												<Craps lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Craps>
 											)
 										default:
 											return(
