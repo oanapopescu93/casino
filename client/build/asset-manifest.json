@@ -1,22 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.f726f657.chunk.css",
-    "main.js": "/static/js/main.79a85697.chunk.js",
-    "main.js.map": "/static/js/main.79a85697.chunk.js.map",
+    "main.css": "/static/css/main.a1722658.chunk.css",
+    "main.js": "/static/js/main.89e88423.chunk.js",
+    "main.js.map": "/static/js/main.89e88423.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.83c3e0c4.js",
     "runtime-main.js.map": "/static/js/runtime-main.83c3e0c4.js.map",
-    "static/css/2.c3594674.chunk.css": "/static/css/2.c3594674.chunk.css",
-    "static/js/2.4f7e17c6.chunk.js": "/static/js/2.4f7e17c6.chunk.js",
-    "static/js/2.4f7e17c6.chunk.js.map": "/static/js/2.4f7e17c6.chunk.js.map",
+    "static/css/2.754e1fb8.chunk.css": "/static/css/2.754e1fb8.chunk.css",
+    "static/js/2.3b454c1b.chunk.js": "/static/js/2.3b454c1b.chunk.js",
+    "static/js/2.3b454c1b.chunk.js.map": "/static/js/2.3b454c1b.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.c5e466c772d533cd10b52a46b67c3c11.js": "/precache-manifest.c5e466c772d533cd10b52a46b67c3c11.js",
+    "precache-manifest.16f21914d0b1d5ced77675ac57621e8d.js": "/precache-manifest.16f21914d0b1d5ced77675ac57621e8d.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/2.c3594674.chunk.css.map": "/static/css/2.c3594674.chunk.css.map",
-    "static/css/main.f726f657.chunk.css.map": "/static/css/main.f726f657.chunk.css.map",
-    "static/js/2.4f7e17c6.chunk.js.LICENSE.txt": "/static/js/2.4f7e17c6.chunk.js.LICENSE.txt",
+    "static/css/2.754e1fb8.chunk.css.map": "/static/css/2.754e1fb8.chunk.css.map",
+    "static/css/main.a1722658.chunk.css.map": "/static/css/main.a1722658.chunk.css.map",
+    "static/js/2.3b454c1b.chunk.js.LICENSE.txt": "/static/js/2.3b454c1b.chunk.js.LICENSE.txt",
     "static/media/style.css": "/static/media/bg.572bbe97.jpg",
     "static/media/bitcoin-love-heart.896a7116.svg": "/static/media/bitcoin-love-heart.896a7116.svg",
     "static/media/carrot_icon.png": "/static/media/carrot_icon.269bad3c.png",
+    "static/media/font-awesome.min.css": "/static/media/fontawesome-webfont.fee66e71.woff",
     "static/media/bootstrap.css": "/static/media/glyphicons-halflings-regular.fa277232.woff",
     "static/media/img_cards.png": "/static/media/img_cards.179336c6.png",
     "static/media/inventory_icon.png": "/static/media/inventory_icon.5c7b84a7.png",
@@ -36,9 +37,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.83c3e0c4.js",
-    "static/css/2.c3594674.chunk.css",
-    "static/js/2.4f7e17c6.chunk.js",
-    "static/css/main.f726f657.chunk.css",
-    "static/js/main.79a85697.chunk.js"
+    "static/css/2.754e1fb8.chunk.css",
+    "static/js/2.3b454c1b.chunk.js",
+    "static/css/main.a1722658.chunk.css",
+    "static/js/main.89e88423.chunk.js"
   ]
 }

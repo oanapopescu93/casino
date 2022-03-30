@@ -500,8 +500,8 @@ function slot_game(props, id){
 		}
 		
 		dispatch(slot_calculate_money(user_info.money));
-		if($('#user_money').length>0 && $('#user_money span').length>0){
-			$('#user_money span').text(user_info.money);
+		if($('span#money_total')){console.log(win, user_info.money, $('#user_money'))
+			$('span#money_total').text(user_info.money);
 		}
 
 		if(win){

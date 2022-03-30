@@ -7,6 +7,7 @@
 	--transparent_8: rgba(0, 0, 0, 0.8);
 	--transparent_yellow: rgba(255, 215, 0, 0.2);
 	--red: red;
+	--dark_red: darkred;
 	--game_button_border:#735f0c;
 	--game_button_color:#eac739;
   }
@@ -17,8 +18,7 @@ html{
 body{
 	background:var(--green);
 	color:black;
-	/* font-family: 'Roboto Condensed'; */
-	font-family: Arial;
+	font-family: 'Roboto Condensed';
 	min-height: 100% !important;
     position: relative;
 	z-index: 1;
@@ -2085,6 +2085,61 @@ table {
 	display:block;
 }
 
+/* CRAPS */
+.dice_box {
+	position: relative;
+	display: inline-block;
+	margin: 10px;
+}
+.dice {
+	position: relative;
+	width: 100px;
+	height: 100px;
+	transform-style: preserve-3d;
+	transition: transform 1s; 
+}
+.dot {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	margin: -10px 5px 5px -10px;
+	border-radius: 20px;
+	background-color: black;
+	box-shadow: inset 2px 2px #333;
+}
+.side {
+	position: absolute;
+	background-color: var(--dark_red);
+	border-radius:5px;
+	width: 100px;
+	height: 100px;
+	border: 1px solid black;
+	text-align: center;
+	line-height: 2em;
+}
+
+.side:nth-child(1) {transform: translateZ(50px); }
+.side:nth-child(6) {transform: rotateY(90deg) translateZ(50px); }
+.side:nth-child(3) {transform: rotateY(-90deg) translateZ(50px); }
+.side:nth-child(4) {transform: rotateX(90deg) translateZ(50px); }
+.side:nth-child(5) {transform: rotateX(-90deg) translateZ(50px); }
+.side:nth-child(2) {transform: rotateY(-180deg) translateZ(50px); }
+
+.show_1 {transform: rotateX(720deg) rotateZ(-720deg);  }
+.show_2 {transform: rotateX(-900deg) rotateZ(1080deg); }
+.show_3 {transform: rotateY(810deg) rotateZ(720deg); }
+.show_4 {transform: rotateX(-810deg) rotateZ(-1080deg); }
+.show_5 {transform: rotateX(450deg) rotateZ(-720deg);}
+.show_6 {transform: rotateY(-450deg) rotateZ(-1440deg); }
+
+.two_1, .three_1, .four_1, .five_1, .six_1 {top: 20%;left: 20%;}
+.four_3, .five_3, .six_4 {top: 20%;left: 80%;}
+.one_1, .three_2, .five_5 {top: 50%;left: 50%;}
+.four_2, .five_2, .six_3 {top: 80%;left: 20%;}
+.two_2, .three_3, .four_4, .five_4, .six_6 {top: 80%;left: 80%;}
+.six_2 {top: 50%;left: 20%;}
+.six_5 {top: 50%;left: 80%; }
+
 /* media */
 @media (max-width: 1024px){
 	.rabbit_box_info, .rabbit_box_input{
@@ -2125,6 +2180,25 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.dice {
+		width: 50px;
+		height: 50px;
+	}
+	.dot {
+		width: 10px;
+		height: 10px;
+		margin: -5px 2px 2px -5px;
+	}
+	.side {
+		width: 50px;
+		height: 50px;
+	}
+	.side:nth-child(1) {transform: translateZ(25px); }
+	.side:nth-child(6) {transform: rotateY(90deg) translateZ(25px); }
+	.side:nth-child(3) {transform: rotateY(-90deg) translateZ(25px); }
+	.side:nth-child(4) {transform: rotateX(90deg) translateZ(25px); }
+	.side:nth-child(5) {transform: rotateX(-90deg) translateZ(25px); }
+	.side:nth-child(2) {transform: rotateY(-180deg) translateZ(25px); }
 	.spacing_small{
 		padding-left:70px;
 		padding-right:70px;

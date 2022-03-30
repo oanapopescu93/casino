@@ -6,9 +6,10 @@ var io = require('socket.io')(http);
 const port = process.env.PORT || 5000;
 app.set("port", port);
 
-const fs = require('fs');
+// const fs = require('fs');
 const database = require('./utils/mysql');
-const md5 = require('md5');
+const { encrypt, decrypt } = require('./utils/crypto');
+// const md5 = require('md5');
 var constants = require('./var/constants');
 var career = require('./var/career');
 var question = require('./var/questions');
@@ -40,6 +41,8 @@ var sockets = [];
 var monkey_roulette = [];
 var monkey_blackjack = false;
 var monkey_slots = false;
+var monkey_craps = false;
+var monkey_race = false;
 
 var blackjack_deck = new Array();
 var hidden_dealer = {};
@@ -51,10 +54,20 @@ var game_start = false;
 var rabbit_speed = [3, 1] //max, min
 var rabbit_delay = [40, 20] //max, min
 
-database(database_config).then(function(data){
-	users_json = data;
-	//console.log('users_json--> ', users_json)
-});
+// database_config.sql = "DELETE FROM casino_users";
+// database(database_config).then(function(data){
+// 	database_config.sql = "SELECT * FROM casino_users";
+// 	database(database_config).then(function(data){
+// 		users_json = data;
+// 		console.log('users_json--> ', users_json)
+// 	});
+// });
+
+// database_config.sql = "SELECT * FROM casino_users";
+// database(database_config).then(function(data){
+// 	users_json = data;
+// 	console.log('users_json--> ', users_json)
+// });
 
 app.use(routes);
 
@@ -71,9 +84,10 @@ io.on('connection', function(socket) {
 	socket.on('signin_send', function(data) {	
 		let exists = false;	
 		let obj = {};
-		let pass = md5(data.pass);
+		let pass01 = data.pass;
 		for(let i in users_json){
-			if(data.user === users_json[i].user && pass === users_json[i].pass){
+			let pass02 = decrypt(JSON.parse(users_json[i].pass));
+			if(data.user === users_json[i].user && pass01 === pass02){
 				exists = true;	
 				obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
 				try{
@@ -120,7 +134,8 @@ io.on('connection', function(socket) {
 	});
 	socket.on('signup_send', function(data) {
 		let exists = false;	
-		let pass = md5(data.pass);
+		// let pass = md5(data.pass);
+		let pass = JSON.stringify(encrypt(data.pass));
 		let obj = {};
 		for(let i in users_json){	
 			if(data.user === users_json[i].user && data.email === users_json[i].email && pass === users_json[i].pass){
@@ -661,6 +676,21 @@ io.on('connection', function(socket) {
 			}
 		});
 	});
+
+	socket.on('craps_send', function(data) {
+		try{
+			var room_name = data.user_table.split(' ').join('_');
+			let how_many_dices = data.how_many_dices;
+			let numbers = [];
+			for(let i=0; i<how_many_dices; i++){
+				let number = Math.floor((Math.random() * 6) + 1);
+				numbers.push(number);
+			}
+			io.to(room_name).emit('craps_read', numbers);	
+		}catch(e){
+			console.log('[error]','craps :', e);
+		}	
+	});	
 
 	socket.on('race_board_send', function(data) {
 		var id = data.id;
