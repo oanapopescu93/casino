@@ -63,15 +63,16 @@ var rabbit_delay = [40, 20] //max, min
 // 	});
 // });
 
-// database_config.sql = "SELECT * FROM casino_users";
-// database(database_config).then(function(data){
-// 	users_json = data;
-// 	console.log('users_json--> ', users_json)
-// });
+database_config.sql = "SELECT * FROM casino_users";
+database(database_config).then(function(data){
+	users_json = data;
+	console.log('users_json--> ', users_json)
+});
 
 app.use(routes);
 
 io.on('connection', function(socket) {
+	console.log('connection')
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
@@ -138,7 +139,7 @@ io.on('connection', function(socket) {
 		let pass = JSON.stringify(encrypt(data.pass));
 		let obj = {};
 		for(let i in users_json){	
-			if(data.user === users_json[i].user && data.email === users_json[i].email && pass === users_json[i].pass){
+			if(data.user === users_json[i].user && data.email === users_json[i].email){
 				exists = true;
 				break;
 			}
@@ -161,22 +162,25 @@ io.on('connection', function(socket) {
 					extra_data.ip_address = data1.data.ip_address;
 				}
 				let timestamp = new Date().getTime() + "";
-				sort_array_obj(users_json, "id");	
+				
 				database_config.sql = "INSERT INTO casino_users (user, email, pass, account_type, money, city, country, ip_address, signup, last_signin, device) VALUES ('" + data.user + "', '" + data.email + "', '" + pass + "', '" + account_type + "', '" + user_money + "', '" + extra_data.city + "', '" + extra_data.country + "', '" + extra_data.ip_address + "', '" + timestamp + "', '" + timestamp + "', " + device + ")";
 				database(database_config).then(function(result1){
+					console.log('result1', result1)
 					database_config.sql = "SELECT * FROM casino_users";
-					database(database_config).then(function(result2){
-						users_json = result2;			
-						for(let i in users_json){						
-							if(users_json[i].email === data.email){
-								obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
-								try{
-									io.to(socket.id).emit('signup_read', [exists, obj]);
-								}catch(e){
-									console.log('[error]','signup_read1 :', e);
-								}
-								break;
-							}
+					database(database_config).then(function(result2){						
+						users_json = result2;
+						console.log('result2a', users_json, pass)
+						if(!users_json){
+							users_json = [];
+						} else {
+							sort_array_obj(users_json, "id");
+						}
+						console.log('result2b', users_json, pass)		
+						obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
+						try{
+							io.to(socket.id).emit('signup_read', [exists, obj]);
+						}catch(e){
+							console.log('[error]','signup_read1 :', e);
 						}
 					});
 				});
