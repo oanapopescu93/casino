@@ -500,7 +500,7 @@ function slot_game(props, id){
 		}
 		
 		dispatch(slot_calculate_money(user_info.money));
-		if($('span#money_total')){console.log(win, user_info.money, $('#user_money'))
+		if($('span#money_total')){
 			$('span#money_total').text(user_info.money);
 		}
 
@@ -524,14 +524,14 @@ function sort_array(list_element, sort_by) {
 	if(typeof sort_by == "undefined"){
 		sort_by = ""
 	}
-	var tmp;
-	var done = false;
+	let tmp;
+	let done = false;
 	switch (sort_by) {
 		case "i":
 			done = false;
 			while (!done) {
 				done = true;
-				for (var i = 1; i < list_element.length; i += 1) {
+				for (let i = 1; i < list_element.length; i += 1) {
 					if (list_element[i - 1].i > list_element[i].i) {
 						done = false;
 						tmp = list_element[i - 1];
@@ -545,7 +545,7 @@ function sort_array(list_element, sort_by) {
 			done = false;
 			while (!done) {
 				done = true;
-				for (var i = 1; i < list_element.length; i += 1) {
+				for (let i = 1; i < list_element.length; i += 1) {
 					if (parseFloat(list_element[i - 1]) > parseFloat(list_element[i])) {
 						done = false;
 						tmp = list_element[i - 1];
@@ -576,8 +576,8 @@ function draw_dot(canvas, x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lin
 
 function Slot(props) {	
 	socket = props.socket;
-	var lang = props.lang;
-	var money = props.money;	
+	let lang = props.lang;
+	let money = props.money;	
 
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'slots')		
@@ -589,7 +589,7 @@ function Slot(props) {
 	}, 0);
 
 	function handleChange(e){
-		var bet = e.target.value;		
+		let bet = e.target.value;		
 		if($('#money_total').length>0){
 			$('#money_total').text(money-bet);
 		}

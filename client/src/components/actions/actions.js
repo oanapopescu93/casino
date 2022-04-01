@@ -37,6 +37,19 @@ export const slot_get_history = function(history) {
 	}
 }
 
+export const craps_calculate_money = function(money_sum) {
+	return {
+		type: "craps_calculate_money",
+		money: money_sum
+	}
+}
+export const craps_get_history = function(history) {
+	return {
+		type: "craps_get_history",
+		history: history
+	}
+}
+
 export const race_calculate_money = function(money_sum) {
 	return {
 		type: "race_calculate_money",

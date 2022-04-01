@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import $ from 'jquery';
 import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import { showResults } from '../../utils';
 
 class Dice extends Component {
 	constructor(props) {
@@ -60,12 +63,23 @@ class Craps extends Component {
 		super(props);
 		this.state = {
 			data: props,
+			dices_number: [],
 		};
 		this.getDiceNumber = this.getDiceNumber.bind(this);
 		this.animate = this.animate.bind(this);
 		this.roll = this.roll.bind(this);
 		this.getNumbers = this.getNumbers.bind(this);
 		this.start = this.start.bind(this);
+		this.check_win_lose = this.check_win_lose.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+	}
+
+	handleChange(e){
+		let bet = e.target.value;	
+		let money = this.state.data.money;			
+		if($('#money_total').length>0){
+			$('#money_total').text(money-bet);
+		}
 	}
 
 	getDiceNumber(dice){
@@ -84,7 +98,7 @@ class Craps extends Component {
 		if(dice && roll){
 			for (var i = 1; i <= 6; i++) {
 				dice.removeClass('show_' + i);
-				if (roll == i) {
+				if (roll === i) {
 					dice.addClass('show_'+i);
 				}
 			}
@@ -92,22 +106,30 @@ class Craps extends Component {
 	}
 
 	roll(){
-		this.getNumbers()
-		.then(res => {
-			for(let k in res){
-				let t = parseInt(k)+1;
-				let dice = $('#dice'+t);
-				let dice_number = this.getDiceNumber(dice);
-				let roll = res[k];				
-				this.animate(dice, roll, t);
-				if(roll === dice_number){
-					roll++;
-					if(roll>6){
-						roll=1;
-					}				
-					this.animate(dice, roll, t);
+		let self = this;
+		let dices_number = [];
+		return new Promise(function(resolve, reject){
+			self.getNumbers()
+			.then(function(res){
+				$('.dice_container').addClass('jump');
+				for(let k in res){
+					let t = parseInt(k)+1;
+					let dice = $('#dice'+t);
+					let dice_number = self.getDiceNumber(dice);
+					let roll = res[k];				
+					self.animate(dice, roll, t);
+					if(roll === dice_number){
+						roll++;
+						if(roll>6){
+							roll=1;
+						}				
+						self.animate(dice, roll, t);
+					}
+					dices_number.push(dice_number)
 				}
-			}
+				self.setState({ dices_number: dices_number });
+				resolve(true);
+			});
 		});
 	}
 
@@ -125,10 +147,85 @@ class Craps extends Component {
 	};
 
 	start(){
-		this.roll();
+		let self = this;
+		if($('#craps_start').attr('finished') === "yes"){
+			console.log('START')
+			$('#craps_start').attr('finished', 'no');
+			$('#craps_start').prop('disabled', true);
+			$('#craps_start').addClass('start');
+			let state = 1;
+			let point;
+			let sum;			
+			let timer = setInterval(function () {
+				switch(state) {
+					case 1:
+						console.log('state', state)
+						self.roll().then(function(res){
+							$('.dice_container').removeClass('jump');
+							sum = self.state.dices_number[0] + self.state.dices_number[1];
+							console.log(self.state.dices_number[0] + ", " + self.state.dices_number[1], sum);
+							if(sum === 7|| sum === 11){
+								state = 2;
+							} else {
+								point = sum;
+								state = 3;
+							}
+						});
+						break;
+					case 2:
+						console.log('state', state)
+						self.check_win_lose(true);
+						clearInterval(timer);
+						break;
+					case 3:
+						console.log('state', state)
+						self.roll().then(function(res){
+							$('.dice_container').removeClass('jump');
+							sum = self.state.dices_number[0] + self.state.dices_number[1];
+							console.log(self.state.dices_number[0] + ", " + self.state.dices_number[1], sum, point);
+							if (sum == point) {
+								state = 2;
+							} else if (sum === 7) {
+								state = 4;
+							} else {
+								state = 3;
+							}
+						});
+						break;
+					case 4:
+						console.log('state', state)
+						self.check_win_lose(false);
+						clearInterval(timer);
+						break;
+				}
+			}, 1500);
+		}
+	}
+
+	check_win_lose(win, bet){
+		$('#craps_start').attr('finished', 'yes');
+		$('#craps_start').prop('disabled', false);
+		$('#craps_start').removeClass('start');
+
+		if(bet){
+			if(win){
+				if(this.state.data.lang === "ro"){
+					showResults("Resultate", "Ai castigat "+bet);
+				} else {
+					showResults("Results", "You won "+bet);
+				}			
+			} else {
+				if(this.state.data.lang === "ro"){
+					showResults("Resultate", "Ai pierdut "+bet);
+				} else {
+					showResults("Results", "You lost "+bet);
+				}
+			}
+		}
 	}
 
 	componentDidMount(){
+		console.log('aaa', this.state)
 		$('.full-height').attr('id', 'craps');
 		let title = this.state.data.user_table;
 		title = title.charAt(0).toUpperCase() + title.slice(1);
@@ -150,11 +247,39 @@ class Craps extends Component {
 				<div className="craps_container">
 					<h1 className="craps_title"></h1>
 					<p>Under construction</p>
-					<div className="dice_container">
-						<Dice number={1}></Dice>
-						<Dice number={2}></Dice>
-					</div>			
-					<Button id="craps_start" className="button_yellow shadow_convex" onClick={this.start}>{this.state.data.lang === "ro" ? <span>Incepe</span> : <span>Start</span>}</Button>
+					<Row>
+						<Col className="dice_container" sm={6}>
+							<Dice number={1}></Dice>
+							<Dice number={2}></Dice>
+						</Col>
+						<Col sm={6}>
+							<div className="craps_board_container">
+								<div id="craps_board" className="craps_board"></div>
+							</div>
+						</Col>
+					</Row>
+					<Row className="craps_buttons_container">
+						<Col sm={12} className="craps_buttons">
+							<Row>
+								<Col className="craps_buttons_box" sm={5}>
+									{this.state.data.lang === "ro" ? 
+										<p className="craps_buttons_box_cell craps_buttons_box_text">Ai: <span id="money_total">{this.state.money-1}</span> morcovi</p> : 
+										<p className="craps_buttons_box_cell craps_buttons_box_text">You have: <span id="money_total">{this.state.money-1}</span> carrots</p>
+									}
+								</Col>
+								<Col className="craps_buttons_box" sm={5}>
+									{this.state.data.lang === "ro" ? 
+										<p className="craps_buttons_box_text">PARIAZA</p> : 
+										<p className="craps_buttons_box_text">BET</p>
+									}
+									<input onChange={(e) => {this.handleChange(e)}} className="craps_input" type="number" id="craps_bet" min="1" defaultValue="1" max={this.state.money}></input>
+								</Col>
+								<Col sm={2} className="craps_spin_container">
+									<Button id="craps_start" finished={"yes"} className="button_yellow shadow_convex" onClick={this.start}>{this.state.data.lang === "ro" ? <span>Incepe</span> : <span>Start</span>}</Button>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
 				</div>
 				<div className="show_results_container">
 					<div className="show_results">

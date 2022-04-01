@@ -846,7 +846,7 @@ table {
 	max-width: 600px;
     width: 100%;
 	padding: 0px 15px;
-	max-height:105px;	
+	max-height:140px;	
 	-webkit-transition:height .5s ease-in-out;
     -moz-transition:height .5s ease-in-out;
 	-o-transition: height .5s ease-in-out;
@@ -862,7 +862,7 @@ table {
 	top:52px
 }
 .casino_games_title_box_container.open{
-    height: 105px;
+    height: 140px;
 }
 .casino_games_title_box{
 	border: solid 1px var(--yellow);
@@ -2089,7 +2089,7 @@ table {
 .dice_box {
 	position: relative;
 	display: inline-block;
-	margin: 10px;
+	margin: 0px 10px;
 }
 .dice {
 	position: relative;
@@ -2139,6 +2139,30 @@ table {
 .two_2, .three_3, .four_4, .five_4, .six_6 {top: 80%;left: 80%;}
 .six_2 {top: 50%;left: 20%;}
 .six_5 {top: 50%;left: 80%; }
+
+.craps_board_container{
+	padding:10px;
+	margin:10px 0px;
+	border:solid 1px var(--yellow);
+	border-radius: 10px;
+	color:var(--yellow);
+	background-color: var(--transparent_8);
+	height: 200px;
+}
+.craps_board{
+	padding:10px;
+	overflow-y: auto;
+}
+#craps_start.start{
+	border:solid 1px var(--game_button_border);
+	color:var(--game_button_border);
+}
+.dice_container{
+	margin: 20px 0px 10px 0px;
+}
+.dice_container.jump{
+	margin-top: 10px;
+}
 
 /* media */
 @media (max-width: 1024px){

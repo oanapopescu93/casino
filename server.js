@@ -63,11 +63,11 @@ var rabbit_delay = [40, 20] //max, min
 // 	});
 // });
 
-// database_config.sql = "SELECT * FROM casino_users";
-// database(database_config).then(function(data){
-// 	users_json = data;
-// 	console.log('users_json--> ', users_json)
-// });
+database_config.sql = "SELECT * FROM casino_users";
+database(database_config).then(function(data){
+	users_json = data;
+	console.log('users_json--> ', users_json)
+});
 
 app.use(routes);
 
@@ -169,8 +169,6 @@ io.on('connection', function(socket) {
 						users_json = result2;
 						if(!users_json){
 							users_json = [];
-						} else {
-							sort_array_obj(users_json, "id");
 						}
 						for(let i in users_json){						
 							if(data.user === users_json[i].user && data.email === users_json[i].email){
@@ -765,39 +763,6 @@ function chatMessage(from, text){
 		return {from: from, text:text, time: new Date().getTime()};
 	}    
 };
-
-function sort_array_obj(array, sort_by){
-	var sorted = false;
-	switch (typeof sort_by) {
-		case 'string': // sort array of objects
-			while (!sorted){
-				sorted = true;
-				for(var i=0; i<array.length-1; i++){
-					if (array[i][sort_by] > array[i+1][sort_by]) {
-						var t = array[i+1];
-						array[i+1] = array[i];
-						array[i] = t;
-						sorted = false;
-					  }
-				}
-			}			
-			break;
-		case 'undefined': // sort a simple array
-			while (!sorted){
-				sorted = true;
-				for(var i=0; i<array.length-1; i++){
-					if (array[i] > array[i+1]) {
-						var t = array[i+1];
-						array[i+1] = array[i];
-						array[i] = t;
-						sorted = false;
-					  }
-				}
-			}
-			break;				
-	}
-  	
-}
 
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
