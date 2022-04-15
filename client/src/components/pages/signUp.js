@@ -40,6 +40,7 @@ class SignUp extends Component {
 						showResults('Alert', 'You are already registered.');
 					}					
 				} else {
+					setCookie("casino_id", data[1].id, 1);
 					setCookie("casino_email", $('#signup_email').val(), 1);
 					setCookie("casino_user", $('#signup_user').val(), 1);
 					self.submit_form();

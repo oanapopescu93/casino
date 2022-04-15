@@ -837,10 +837,16 @@ class RaceTables extends Component {
 			}
 		})	
 
-		$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {				
+		$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {
 			let input_value = parseInt($(this).parent().find('.race_input').val());
 			if(input_value < self_race_tables.state.money){
 				$(this).parent().find('.race_input').val(input_value+1);
+			} else {
+				if(lang === "ro"){
+					showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 600);
+				} else {
+					showResults("You don't have enough carrots!", "Go and buy some from the Market.", 600);
+				}
 			}
 		})
 
@@ -998,12 +1004,14 @@ class RaceTables extends Component {
 						</Row>
 						<Row>				
 							<Col sm={12} className="race_bets_container">
-								<div className="race_clear_bets shadow_convex" id="race_clear_bets">Clear Bets</div>
 								<div className="race_buttons_box">
 									{lang === "ro" ? 
 										<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{this.state.money} morcovi</span></p> : 
 										<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{this.state.money} carrots</span></p>
 									}
+								</div>
+								<div className="race_buttons_box">
+									<div className="race_clear_bets shadow_convex" id="race_clear_bets">Clear Bets</div>	
 								</div>
 								<div className="race_buttons_box">
 									<div className="race_start shadow_convex" id="race_start">START</div>
@@ -1067,8 +1075,8 @@ class Race extends Component {
 		}
 	}
 
-	render() {
-		let lang = this.state.lang;
+	render() {		
+		let lang = this.props.lang
 		let start_race = this.state.start_race; 
 		if(this.state.open_race && this.state.start_race){
 			start_race = true;

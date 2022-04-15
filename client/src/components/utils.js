@@ -49,16 +49,14 @@ export const showResults = function(title="", message="", w=200, h="auto") {
 
 export const bigText = function(type, lang, payload) {
   let text = ``;
-  if(type === "slot_rules"){
-    if(lang === "ro"){
-      text = `<div class="big_text_container">
-        <div class="big_text">${payload}</div>
-      </div>`;
-    } else {
-      text = `<div class="big_text_container">
-        <div class="big_text">${payload}</div>
-      </div>`;
-    }
+  if(lang === "ro"){
+    text = `<div class="big_text_container">
+      <div class="big_text">${payload}</div>
+    </div>`;
+  } else {
+    text = `<div class="big_text_container">
+      <div class="big_text">${payload}</div>
+    </div>`;
   }
   return text;
 }

@@ -27,7 +27,6 @@ var spin_time = 3000; // how long all slots spin before starting countdown
 var spin_time_reel = spin_time/5 // how long each slot spins at minimum
 var slot_speed = []; // how many pixels per second slots roll
 var speed = 10;
-var dispatch_nr = 0; //this prevents multiplication
 var my_slot;
 var results_array = [];
 var slot_type = "";
@@ -53,6 +52,7 @@ function slot_game(props, id){
 	var reason = "";
 	const dispatch = props.dispatch;
 	var game_pay = 0;
+	var dispatch_nr = 0; //this prevents multiplication
 
 	user_info = {money: props.money};	
 	if(props.slot !== -1){
@@ -115,64 +115,71 @@ function slot_game(props, id){
 
 	this.start = function(reason){
 		$('body').off('click', '#slot_spin').on('click', '#slot_spin', function () {
-			if($('#slot_bet').val() !== '0'){
-				game_pay = parseInt($('#slot_bet').val())
-				dispatch_nr = 0;		
-				self.spin(spin_time, slot_speed);
-			} else {
-				if(self.lang === "ro"){
-					showResults("Eroare", "Ceva s-a intamplat. Va rog restartati jocul!");
-				} else {
-					showResults("Error", "Something went wrong. Please restart the game!");
-				}
-			}			
-		})
-		$('body').off('click', '#slot_rules').on('click', '#slot_rules', function () {
-			if(self.lang === "ro"){
-				var text = bigText("slot_rules", self.lang);
-				showResults("Reguli", text, 600);
-			} else {      
-				var pay_table = `
-					<h1>Pay table</h1>
-					<div id="pay_table" class="rules_box">
-						<table>
-							<thead>
-								<tr>
-									<th>Matrix</th>
-									<th>Pay</th>
-								</tr>
-							</thead>
-							<tbody class="pay_table_info"></tbody>	
-						</table>
-					</div>
-				`;
-				var text = bigText("slot_rules", self.lang, pay_table);
-				showResults("Rules", text, 400);
-				for(var i in win){
-					var my_matrix = win[i].matrix;
-					var my_prize = win[i].prize;
-					$('.pay_table_info').append("<tr><td id='pay_table_info_"+i+"' class='pay_table_matrix'></td><td class='pay_table_prize'>"+my_prize+"</td></tr>");
-					$('#pay_table_info_'+i).append("<div class='my_matrix'></div>");
-					
-					var x = -1;
-					for(var j=0; j<3; j++){
-						for(var k=0; k<5; k++){
-							x++;
-							if(x>4){ x=0 }
-							if(my_matrix[x][0] === j && my_matrix[x][1] === k){
-								$('#pay_table_info_'+i+' .my_matrix').append("<div class='color' x='"+j+"' y='"+k+"'></div>");
-							} else {
-								$('#pay_table_info_'+i+' .my_matrix').append("<div x='"+j+"' y='"+k+"'></div>");
-							}											
+			if($('#user_money span').val() > 0){
+				if($('#slot_spin').attr('finished') === "yes"){
+					if($('#slot_bet').val() !== '0'){
+						game_pay = parseInt($('#slot_bet').val())
+						dispatch_nr = 0;
+						$('#slot_spin').addClass('start');
+						$('#slot_spin').attr('finished', 'no');
+						$('#slot_spin').prop('disabled', true);
+						self.spin(spin_time, slot_speed);
+					} else {
+						if(self.lang === "ro"){
+							showResults("Eroare", "Ceva s-a intamplat. Va rog restartati jocul!");
+						} else {
+							showResults("Error", "Something went wrong. Please restart the game!");
 						}
 					}
-				}				
+				}
+			} else {
+				if(self.lang === "ro"){
+					showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 600);
+				} else {
+					showResults("You don't have enough carrots!", "Go and buy some from the Market.", 600);
+				}
+			}					
+		})
+		$('body').off('click', '#slot_rules').on('click', '#slot_rules', function () {
+			var pay_table = `
+			<h1>Pay table</h1>
+			<div id="pay_table" class="rules_box">
+				<table>
+					<thead>
+						<tr>
+							<th>Matrix</th>
+							<th>Pay</th>
+						</tr>
+					</thead>
+					<tbody class="pay_table_info"></tbody>	
+				</table>
+			</div>`;
+			var text = bigText("slot_rules", self.lang, pay_table);
+			showResults("Rules", text, 400);
+			for(let i in win){
+				var my_matrix = win[i].matrix;
+				var my_prize = win[i].prize;
+				$('.pay_table_info').append("<tr><td id='pay_table_info_"+i+"' class='pay_table_matrix'></td><td class='pay_table_prize'>"+my_prize+"</td></tr>");
+				$('#pay_table_info_'+i).append("<div class='my_matrix'></div>");
+				
+				var x = -1;
+				for(let j=0; j<3; j++){
+					for(let k=0; k<5; k++){
+						x++;
+						if(x>4){ x=0 }
+						if(my_matrix[x][0] === j && my_matrix[x][1] === k){
+							$('#pay_table_info_'+i+' .my_matrix').append("<div class='color' x='"+j+"' y='"+k+"'></div>");
+						} else {
+							$('#pay_table_info_'+i+' .my_matrix').append("<div x='"+j+"' y='"+k+"'></div>");
+						}											
+					}
+				}
 			}
 		})
 
 		if(reason !== "resize"){
-			var promises = [];
-			for(var i in items){				
+			let promises = [];
+			for(let i in items){				
 				promises.push(self.preaload_images(items[i]));
 			}
 
@@ -182,7 +189,7 @@ function slot_game(props, id){
 				$('.slot_machine .slot_canvas').css('width', image_size[0]);
 				$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
 				$('#slot_canvas_results').css('width', image_size[0]*reel.length)	
-				for(var i in reel){	
+				for(let i in reel){	
 					self.images = self.create_suffle(i, self.images);
 					self.offset.push(0);
 					slots_canvas.push(reel[i][0]);
@@ -195,7 +202,7 @@ function slot_game(props, id){
 			$('.slot_machine .slot_canvas').css('width', image_size[0]);
 			$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
 			$('#slot_canvas_results').css('width', image_size[0]*reel.length)		
-			for(var i in reel){
+			for(let i in reel){
 				slots_canvas.push(reel[i][0]);
 				self.createCanvas(slots_canvas[slots_canvas.length-1]);
 				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images_pos[i], reason);
@@ -215,7 +222,7 @@ function slot_game(props, id){
 			image_size_canvas = [290, 290, 3, 3, 40, 40];
 			speed = 5;
 		}
-		for(var i in reel){
+		for(let i in reel){
 			slot_speed.push(speed)
 		}	
 	}
@@ -263,7 +270,7 @@ function slot_game(props, id){
 		var array = [];
 		var length = assets.length;
 
-		for (var i = 0 ; i < length ; i++) {			
+		for (let i = 0 ; i < length ; i++) {			
 			var img = assets[i];
 			if(reason === "resize"){
 				img = assets[i].img;
@@ -271,18 +278,18 @@ function slot_game(props, id){
 			ctx.fillRect(0, i * canvas.width, canvas.width, 2);
 			ctx.fillRect(0, (i + length)  * canvas.width, canvas.width, 2);
 
-			var sx = img.getAttribute( "coord_x" )
-			var sy = img.getAttribute( "coord_y" )
-			var swidth = image_size_canvas[0];
-			var sheight = image_size_canvas[1];
-			var x = image_size_canvas[2];
-			var y = image_size_canvas[3]+i*image_size[1];
-			var width = image_size_canvas[4];
-			var height = image_size_canvas[5];
+			let sx = img.getAttribute( "coord_x" )
+			let sy = img.getAttribute( "coord_y" )
+			let swidth = image_size_canvas[0];
+			let sheight = image_size_canvas[1];
+			let x = image_size_canvas[2];
+			let y = image_size_canvas[3]+i*image_size[1];
+			let width = image_size_canvas[4];
+			let height = image_size_canvas[5];
 			ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
 			ctx.drawImage(img, sx, sy, swidth, sheight, x, (i + length) * canvas.width, width, height);
 
-			var elem = {i:i, img:img, pos:i * canvas.width}
+			let elem = {i:i, img:img, pos:i * canvas.width}
 			array.push(elem)	
 			elem = {i:i + length, img:img, pos:(i + length) * canvas.width}
 			array.push(elem)		
@@ -354,7 +361,10 @@ function slot_game(props, id){
 				same = result[0];
 				matrix_result = result[1];
 				pos = result[2];
-				self.drawResultsArray(result);		
+				self.drawResultsArray(result);
+				$('#slot_spin').removeClass('start');
+				$('#slot_spin').attr('finished', 'yes');
+				$('#slot_spin').prop('disabled', false);
 			}
 		}
 		
@@ -387,10 +397,10 @@ function slot_game(props, id){
 					self.lastUpdate = now;
 				}	
 		}
-		for(var i in reel){
+		for(let i in reel){
 			self.rotate(i, slot_speed[i]);
 		}
-		for(var i in reel){
+		for(let i in reel){
 			if(slot_speed[i] === 0){
 				if(self.offset[i]%100 !== 0){
 					self.running = true;
@@ -405,7 +415,7 @@ function slot_game(props, id){
 		var my_matrix = [];
 		var win_results = [];
 		var t = -1;
-		for(var i in win){	
+		for(let i in win){	
 			if(win[i].matrix.length !== 0){
 				my_matrix = win[i].matrix;
 				same = true;
@@ -435,8 +445,8 @@ function slot_game(props, id){
 		var result_offset = self.offset
 		for(var t=0; t<3; t++){
 			var result = [];
-			for(var i in result_offset){
-				for(var j in self.images_pos[i]){
+			for(let i in result_offset){
+				for(let j in self.images_pos[i]){
 					if(self.images_pos[i][j].pos === -result_offset[i]){
 						result.push(self.images_pos[i][j]);	
 					}
@@ -609,26 +619,26 @@ function Slot(props) {
 					<canvas id="slot_machine_lines"></canvas>
 				</div>
 			</div>
-			<div className="slot_buttons_container">
-				<div className="slot_buttons">
-					<Row>
-						<Col className="slot_buttons_box" sm={5}>
+			<div className="game_buttons_container">
+				<div className="game_buttons">
+					<div className="game_text_container">
+						<div className="game_buttons_box">
 							{lang === "ro" ? 
 								<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span id="money_total">{money-1}</span> morcovi</p> : 
 								<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span id="money_total">{money-1}</span> carrots</p>
 							}
-						</Col>
-						<Col className="slot_buttons_box" sm={5}>
+						</div>
+						<div className="game_buttons_box">
 							{lang === "ro" ? 
 								<p className="slot_buttons_box_text">PARIAZA</p> : 
 								<p className="slot_buttons_box_text">BET</p>
 							}
 							<input onChange={(e) => {handleChange(e)}} className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max={money}></input>
-						</Col>
-						<Col sm={2} className="slot_spin_container">
-							<button className="slot_spin shadow_convex" id="slot_spin">SPIN</button>
-						</Col>
-					</Row>
+						</div>
+					</div>
+					<div className="game_start_container">
+						<button finished={"yes"} className="slot_spin shadow_convex" id="slot_spin">SPIN</button>
+					</div>
 				</div>
 			</div>
 			{lang === "ro" ? 

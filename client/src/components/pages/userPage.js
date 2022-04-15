@@ -22,7 +22,7 @@ function Child(props) {
 	var user_table = props.user_table;
 	var game = props.game;
 	var socket = props.socket;
-	var lang = props.lang;
+	var lang = props.lang;	
 	return (			
 			<BrowserRouter>
 				<div className="userPage"> 

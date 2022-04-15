@@ -155,6 +155,7 @@ class Salon extends Component {
 					}					
 					self.setState({ casino_games: casino_games });
 					self.setState({ money: res.money });
+					console.log('salon ', res)
 				})
 			.catch(err => console.log(err));		
 	}

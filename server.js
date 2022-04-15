@@ -66,7 +66,7 @@ var rabbit_delay = [40, 20] //max, min
 database_config.sql = "SELECT * FROM casino_users";
 database(database_config).then(function(data){
 	users_json = data;
-	console.log('users_json--> ', users_json)
+	//console.log('users_json--> ', users_json)
 });
 
 app.use(routes);
@@ -195,7 +195,7 @@ io.on('connection', function(socket) {
 	socket.on('salon_send', function(data) {
 		let id = data;
 		let money = 0;
-		for(let i in users_json){						
+		for(let i in users_json){				
 			if(users_json[i].id === id){
 				money = users_json[i].money;
 				break;
@@ -271,15 +271,20 @@ io.on('connection', function(socket) {
 						country: "",
 						ip_address: "",
 					};
-					if(typeof data1.data.city !== "undefined"){
-						extra_data.city = data1.data.city;
+					if(data1){
+						if(data1.data){
+							if(typeof data1.data.city !== "undefined"){
+								extra_data.city = data1.data.city;
+							}
+							if(typeof data1.data.country !== "undefined"){
+								extra_data.country = data1.data.country;
+							}
+							if(typeof data1.data.ip_address !== "undefined"){
+								extra_data.ip_address = data1.data.ip_address;
+							}
+						}
 					}
-					if(typeof data1.data.country !== "undefined"){
-						extra_data.country = data1.data.country;
-					}
-					if(typeof data1.data.ip_address !== "undefined"){
-						extra_data.ip_address = data1.data.ip_address;
-					}
+					
 					let timestamp = new Date().getTime() + "";
 					database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+payload.id;
 					database(database_config).then(function(result){

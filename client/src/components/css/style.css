@@ -1473,21 +1473,6 @@ table {
 .color_5 .slot_header h3, .color_3 .slot_header h3{
 	color: var(--light_yellow);
 }
-.slot_buttons_box{
-	height:52px;
-	display:table;
-}
-.slot_buttons_box .slot_buttons_box_cell{
-	display:table-cell;
-	vertical-align: middle;
-}
-.slot_buttons_box .slot_buttons_box_text{
-	color: var(--light_yellow);
-	text-shadow: rgb(0 0 0 / 50%) 3px 3px 3px;	
-}
-.color_5 .slot_buttons_box .slot_buttons_box_text, .color_3 .slot_buttons_box .slot_buttons_box_text{
-	color: var(--light_yellow);
-}
 .slot_buttons_container{
 	margin:10px 0px;
 }
@@ -1502,15 +1487,13 @@ table {
 	-moz-box-shadow:    2px 2px 8px 8px rgb(0 0 0 / 50%);
    	-webkit-box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
 	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
-	
-}
-.color_5 .slot_buttons, .color_3 .slot_buttons{
 	background: var(--dark_yellow);
 	border-top:solid 0px var(--yellow);
 	border-right:solid 2px var(--yellow);
 	border-bottom:solid 0px var(--yellow);
 	border-left:solid 2px var(--yellow);
 	color:black;
+	
 }
 .slot_input{
 	width:100%;
@@ -1519,38 +1502,29 @@ table {
 	-moz-box-shadow:    inset 2px 2px 2px rgba(0,0,0,0.5)!important;
    	-webkit-box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
 	box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-}
-.color_5 .slot_input, .color_3 .slot_input{
 	background: rgba(0,0,0,0.5);
 	color:var(--yellow);
 	border:solid 1px var(--yellow);
-}
-.slot_spin_container{
-	text-align: right;
 }
 #slot_spin{
 	border-radius: 100%;
     height: 55px;
     width: 55px;
-}
-.slot_spin{
 	outline: none!important;
+	color: black;
+    background: rgba(0, 0, 0, 0.5);
+    border: solid 1px black;
+	
 }
-.slot_spin:hover, .slot_spin:focus, .slot_spin:active, .slot_spin:active:focus{
+#slot_spin:hover, #slot_spin:focus, #slot_spin:active, #slot_spin:active:focus{
     background: rgba(0, 0, 0, 0.2);
 	border: solid 1px var(--yellow);
 	color: var(--yellow);
 }
-.color_5 .slot_spin, .color_3 .slot_spin{
-	color: black;
-    background: rgba(0, 0, 0, 0.5);
-    border: solid 1px black;
-}
-.color_5 .slot_spin:hover, .color_5 .slot_spin:focus, .color_5 .slot_spin:active, .color_5 .slot_spin:active:focus, 
-.color_3 .slot_spin:hover, .color_3 .slot_spin:focus, .color_3 .slot_spin:active, .color_3 .slot_spin:active:focus{
-	background: rgba(0, 0, 0, 0.2);
-	border: solid 1px var(--yellow);
-	color: var(--yellow);
+#slot_spin.start{
+	color: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.2);
+    border: solid 1px rgba(0, 0, 0, 0.5);	
 }
 
 .show_results_container{
@@ -1848,7 +1822,7 @@ table {
 }  
 .dropdown {
 	position: relative;
-	z-index: 999999;
+	z-index: 1;
 	display: block;	
 }  
 .dropdown-content {
@@ -2148,9 +2122,6 @@ table {
 	color:var(--yellow);
 	background-color: var(--transparent_8);
 	height: 200px;
-}
-.craps_board{
-	padding:10px;
 	overflow-y: auto;
 }
 #craps_start.start{
@@ -2162,6 +2133,89 @@ table {
 }
 .dice_container.jump{
 	margin-top: 10px;
+}
+
+.game_buttons_container {
+    margin: 10px 0px;
+}
+.game_buttons {
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px 20px;
+    box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
+    background: var(--dark_yellow);
+    border: solid 0px var(--yellow);
+    border-right: solid 2px var(--yellow);
+    border-bottom: solid 0px var(--yellow);
+    border-left: solid 2px var(--yellow);
+    color: black;
+}
+.game_text_container{
+	display: inline-block;
+	vertical-align: middle;
+	width:80%;
+}
+.game_buttons_box {
+    display: inline-block;
+	vertical-align: middle;
+	width:50%;
+	padding:0px 5px;
+}
+.game_buttons_box .craps_buttons_box_text {
+    color: var(--light_yellow);
+	text-shadow: rgb(0 0 0 / 50%) 3px 3px 3px;
+}
+.craps_input {
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+	background: rgba(0,0,0,0.5);
+	color: var(--yellow);
+    border: solid 1px var(--yellow);
+}
+.game_start_container{
+	text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+	width:20%;
+}
+#craps_start {
+    border-radius: 100%;
+    height: 55px;
+    width: 55px;
+    color: black;
+    background: rgba(0, 0, 0, 0.5);
+    border: solid 1px black;
+    outline: none!important;
+}
+#craps_start:hover, #craps_start:focus, #craps_start:active{
+    background: rgba(0, 0, 0, 0.2);
+    border: solid 1px var(--yellow);
+    color: var(--yellow);
+}
+#craps_start.start{
+	background: rgba(0, 0, 0, 0.2);
+	color: rgba(0, 0, 0, 0.5);
+	border:solid 1px rgba(0, 0, 0, 0.5);
+}
+
+.craps_board_text{
+	padding:5px;
+	border-bottom: solid 1px var(--yellow);
+	margin-bottom: 5px;
+}
+.craps_board_text .text{
+	padding-right:5px;
+}
+.craps_board_text .text01, .craps_board_text .text03, .craps_board_text .text05{
+	font-weight: bold;
+}
+
+#craps_rules{
+	overflow-y: auto;
+    max-height: 325px;
+	text-align: left;
 }
 
 /* media */
@@ -2185,8 +2239,11 @@ table {
 	.race_bets_container{
 		margin: 10px 0px;
 	}
+	.rabbit_box_container{
+		padding:0px;
+	}
 	.rabbit_box_pic img{
-		width:100px;
+		width:70px;
 	}
 	.casino_games_title_container{		
 		position: absolute;
@@ -2204,6 +2261,18 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.game_text_container{
+		width: 70%;
+	}
+	.game_start_container{
+		width: 30%;
+	}
+	.craps_buttons_box{
+		width: 100%;
+	}
+	.craps_board_container{
+		height: 150px;
+	}
 	.dice {
 		width: 50px;
 		height: 50px;
@@ -2232,19 +2301,14 @@ table {
 	}
 	.rabbit_box{
 		width:100%;
+		padding:0px;
 	}
 	.rabbit_box_left, .rabbit_box_right{
 		padding: 5px;
+		width:100%;
 	}
 	.history_box{
 		max-height:200px;
-	}
-	.slot_buttons_box{
-		display:block;
-		height:auto;
-	}
-	.slot_buttons_box .slot_buttons_box_cell{
-		display:block;
 	}
 	.slot_header{
 		max-width: 200px;
@@ -2274,9 +2338,6 @@ table {
 	}
 	#slot_spin{
 		margin-top:10px;
-	}
-	.slot_spin_container{
-		text-align: center;
 	}
 	.button_table{
 		height: 40px;
@@ -2391,9 +2452,25 @@ table {
 	#rabbit_stand_right, #rabbit_stand_left{
 		float:none;
 	}
-	.button_container > div{
-		height: 50px;
-		padding: 12px 5px;
+	#race_start, #race_clear_bets{
+		transform: initial;
+		position: static;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.race_buttons_box{
+		display: inline-block;
+		vertical-align: middle;
+		padding: 0px 5px;
+		width:33.33%;
+	}
+
+	.button_container{
+		left: 11px;
+	}
+	.button_container > div {
+		height: 40px;
+		padding: 7px 5px;
 	}
 	.button_container div svg{
 		font-size: 24px;
@@ -2401,9 +2478,15 @@ table {
 	.button_container div h4{
 		display:none;
 	}
-	#chat_button{
-		top: 100px;
+	#user_button{
+		top: 10px;
+		width:40px
 	}
+	#chat_button{
+		top: 55px;
+		width:40px;
+	}
+	
 	.roulette_container{
 		overflow-x: auto;
 		overflow-y: hidden;
@@ -2424,9 +2507,12 @@ table {
 	.salon_button span{
 		font-size: 12px;
 	}
-
-	.race_table_body{
-		padding: 10px 10px 30px 10px;
+	.rabbit_box_name{
+		padding: 0px;
+		margin:0px;
+	}
+	.rabbit_box_info{
+		display: none;
 	}
 }
 @media (max-width:600px) {	
