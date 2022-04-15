@@ -196,6 +196,7 @@ class Salon extends Component {
 	}
   
 	render() { 
+		let lang = this.props.lang
 		if(this.state.race){
 			$('.full-height').attr('id', 'race');
 		} else {
@@ -205,25 +206,25 @@ class Salon extends Component {
 			<>
 				{this.state.empty ? (
 					<div className="color_yellow">
-						{this.state.lang === "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
+						{lang === "ro" ? <span>Nu exista mese</span> : <span>No tables</span>}
 					</div>
 				) : (
 					<Row>						
 						{this.state.user === '' ? (
 							<div className="table_container color_yellow">
-								{this.state.lang === "ro" ? 
+								{lang === "ro" ? 
 									<>
 										<h3>Acces interzis</h3>
 										<h4>Intoarce-te si logheaza-te/inregistreaza-te</h4>
 										<Button className="button_table shadow_convex" type="button" onClick={()=>this.handleBack()}>
-											{this.state.lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
+											{lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
 										</Button>
 									</> : 
 									<>
 										<h3>No access</h3>
 										<h4>Please go back and login in / sign in</h4>
 										<Button className="button_table shadow_convex" type="button" onClick={()=>this.handleBack()}>
-											{this.state.lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
+											{lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
 										</Button>
 									</>
 								}								
@@ -233,18 +234,18 @@ class Salon extends Component {
 								<div className="salon_button_container">
 									<div className="salon_button_box">
 										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
-											{this.state.lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
+											{lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
 										</div>            
 										<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
-											{this.state.lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
+											{lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
 										</div>
 									</div>
 								</div>
 								<Col sm={12} className="salon_page color_yellow">
 									{this.state.race ? (
-										<UserRace race={this.state.race} lang={this.state.lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
+										<UserRace race={this.state.race} lang={lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
 									) : (
-										<Child lang={this.state.lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
+										<Child lang={lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
 									)}											
 								</Col>
 							</>																
