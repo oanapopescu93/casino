@@ -134,9 +134,9 @@ function slot_game(props, id){
 				}
 			} else {
 				if(self.lang === "ro"){
-					showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 600);
+					showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
 				} else {
-					showResults("You don't have enough carrots!", "Go and buy some from the Market.", 600);
+					showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
 				}
 			}					
 		})

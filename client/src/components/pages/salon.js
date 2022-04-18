@@ -123,7 +123,7 @@ class Salon extends Component {
   
 	componentDidMount(a) {
 		self.salonData()
-			.then(res => {	
+			.then(res => {
 					for(var i in res.server_tables){
 						switch (res.server_tables[i].table_name) {
 							case "roulette":
@@ -152,10 +152,10 @@ class Salon extends Component {
 
 					if(empty === casino_games_title.length){
 						self.setState({ empty: true }); 
-					}					
-					self.setState({ casino_games: casino_games });
-					self.setState({ money: res.money });
-					console.log('salon ', res)
+					} else {
+						self.setState({ casino_games: casino_games });
+						self.setState({ money: res.money });
+					}
 				})
 			.catch(err => console.log(err));		
 	}

@@ -114,7 +114,6 @@ class UserPage extends Component {
 	};
   
 	render() {
-		console.log(this.state, this.props)
 		var user_id = this.state.user_id;
 
 		if(this.state.user.user === ""){

@@ -324,8 +324,10 @@ function blackjack_wheel(props){
 		var space = 5;
 		if(hand === "hidden"){
 			img_x = 2 * (a + 4)
-			img_y = 4 * (b + 4);		
-			ctx.drawImage(img, img_x, img_y, w, h, x, y + space, w, h);
+			img_y = 4 * (b + 4);
+			//img.onload = function() {
+				ctx.drawImage(img, img_x, img_y, w, h, x, y + space, w, h);
+			//};
 		} else {
 			for(var i in hand){		
 				switch (hand[i].Suit) { 
@@ -383,7 +385,9 @@ function blackjack_wheel(props){
 						img_x = 12 * (a + 4);						
 						break;			
 				}
-				ctx.drawImage(img, img_x, img_y, w, h, x + i*12, y + i*12 + space, w, h);
+				//img.onload = function() {
+					ctx.drawImage(img, img_x, img_y, w, h, x + i*12, y + i*12 + space, w, h);
+				//};				
 				var card_pos = {elem: elem, id: parseInt(id), x: x + i*12, y: y + i*12 + space, card: hand[i]}
 				all_cards_pos.push(card_pos);
 				value_hand = value_hand + hand[i].Weight;
@@ -452,7 +456,7 @@ function blackjack_wheel(props){
 		if(isInside(mousePos, start_button_coordonates) || isInside(mousePos, clear_button_coordonates) || isInside(mousePos, hit_button_coordonates) || isInside(mousePos, stay_button_coordonates)){
 			var click = -1;
 			if (isInside(mousePos, start_button_coordonates)) {
-				//console.log('START');
+				// console.log('START');
 
 				// ctx.beginPath();
 				// ctx.lineWidth = "1";
@@ -464,7 +468,11 @@ function blackjack_wheel(props){
 					start_game = true;
 					socket.emit('blackjack_send', ['start', blackjack_payload_server]);	
 				} else {
-					alert('Please place your bets before starting the game')
+					if(lang === "ro"){
+						showResults("Eroare", "Va rog pariati inainte de a incepe jocul.");
+					} else {
+						showResults("Error", "Please place your bets before starting the game.");
+					}
 				}						
 			} else if (isInside(mousePos, clear_button_coordonates)) {
 				//console.log('CLEAR', your_bets);
@@ -476,7 +484,11 @@ function blackjack_wheel(props){
 				// ctx.stroke();	
 
 				if(start_game){
-					alert("You can't clear your bets. The game has already begun.")
+					if(lang === "ro"){
+						showResults("Eroare", "Nu puteti sa stergeti pariul, jocl deja a inceput.");
+					} else {
+						showResults("Error", "You can't clear your bets. The game has already begun.");
+					}
 				} else {
 					your_bets = [];
 					self.draw_table();
@@ -496,9 +508,18 @@ function blackjack_wheel(props){
 						socket.emit('blackjack_send', ['hit', blackjack_payload_server]);	
 					} else {
 						alert("Start the game first.")
+						if(lang === "ro"){
+							showResults("Eroare", "Va rog incepeti jocul inainte de a apasa HIT.");
+						} else {
+							showResults("Error", "Please start the game first before hitting.");
+						}
 					} 
 				} else {
-					alert('Please place your bets before hitting.')
+					if(lang === "ro"){
+						showResults("Eroare", "Va rog pariati inainte de a apasa HIT.");
+					} else {
+						showResults("Error", "Please place your bets before hitting.");
+					}
 				}
 										
 			} else if (isInside(mousePos, stay_button_coordonates)) {
@@ -514,10 +535,18 @@ function blackjack_wheel(props){
 					if(start_game){
 						socket.emit('blackjack_send', ['stay', blackjack_payload_server]);
 					} else {
-						alert("Start the game first.")
+						if(lang === "ro"){
+							showResults("Eroare", "Va rog incepeti jocul inainte de a apasa STAY.");
+						} else {
+							showResults("Error", "Please start the game first before staying.");
+						}
 					} 
 				} else {
-					alert('Please place your bets before hitting.')
+					if(lang === "ro"){
+						showResults("Eroare", "Va rog pariati inainte de a apasa STAY.");
+					} else {
+						showResults("Error", "Please place your bets before staying.");
+					}
 				}					
 			} 
 	
@@ -551,11 +580,19 @@ function blackjack_wheel(props){
 					if(pos !== blackjack_pos[i].text){
 					 	alert("You can only bet in your spot. Your spot is "+pos);
 					} else {
-						your_bets.push(blackjack_pos[i]);					
-						your_last_bet = blackjack_pos[i];
-						blackjack_payload_server.bets = your_bets;
-						socket.emit('blackjack_send', ['bet', blackjack_payload_server]);	
-						self.draw_tokens(your_bets[your_bets.length-1]);
+						if(user_info.money>0){
+							your_bets.push(blackjack_pos[i]);					
+							your_last_bet = blackjack_pos[i];
+							blackjack_payload_server.bets = your_bets;
+							socket.emit('blackjack_send', ['bet', blackjack_payload_server]);	
+							self.draw_tokens(your_bets[your_bets.length-1]);
+						} else {
+							if(lang === "ro"){
+								showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
+							} else {
+								showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
+							}
+						}						
 					}
 					break;
 				}
@@ -571,7 +608,9 @@ function blackjack_wheel(props){
 		
 		var img = new Image();
 		img.src = carrot_img; 
-		ctx.drawImage(img, x, y, w, h);	
+		img.onload = function() {
+			ctx.drawImage(img, x, y, w, h);	
+		};		
 	}
 
 	this.check_win_lose = function(){	
@@ -595,6 +634,7 @@ function blackjack_wheel(props){
 	}
 
 	this.end_game = function(obj){
+		start_game = false;
 		setTimeout(function(){
 			if(obj.id === "dealer"){
 				self.pay("dealer");
@@ -611,10 +651,10 @@ function blackjack_wheel(props){
 					showResults('Player ' + obj.user + ' has won!')	
 				}	
 			}
-			self.draw_table();
 			blackjack_hand = [];
 			your_last_bet = {}
 			your_bets = [];
+			self.draw_table();
 		}, 300);
 	}
 

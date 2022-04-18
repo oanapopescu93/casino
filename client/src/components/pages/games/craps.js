@@ -107,42 +107,36 @@ class Craps extends Component {
 		}
 	}
 
-	roll(){
+	roll(point){
 		let self = this;
-		let dices_number = [];
 		return new Promise(function(resolve, reject){
-			self.getNumbers()
+			self.getNumbers(point)
 			.then(function(res){
 				$('.dice_container').addClass('jump');
 				for(let k in res){
-					let t = parseInt(k)+1;
-					let dice = $('#dice'+t);
-					let dice_number = self.getDiceNumber(dice);
-					let roll = res[k];				
-					self.animate(dice, roll, t);
-					if(roll === dice_number){
-						roll++;
-						if(roll>6){
-							roll=1;
-						}				
-						self.animate(dice, roll, t);
-					}
-					dices_number.push(dice_number)
+				 	let t = parseInt(k)+1;
+				 	let dice = $('#dice'+t);
+				 	let roll = res[k];				
+				 	self.animate(dice, roll, t);
 				}
-				self.setState({ dices_number: dices_number });
-				resolve(true);
+				self.setState({ dices_number: res });
+				resolve(res);
 			});
 		});
 	}
 
-	getNumbers(){
+	getNumbers(point){
 		let self = this;
 		return new Promise(function(resolve, reject){
-			let payload={how_many_dices:2, user_table: self.state.data.user_table}
+			let dice1 = $('#dice1');
+			let dice2 = $('#dice2');
+			let dice_number1 = self.getDiceNumber(dice1);
+			let dice_number2 = self.getDiceNumber(dice2);
+			let payload={how_many_dices:2, user_table: self.state.data.user_table, point:point, before: [dice_number1, dice_number2]}
 			self.state.data.socket.emit('craps_send', payload);
 			self.state.data.socket.on('craps_read', function(data){
 				if(data){
-					resolve(data);	
+					resolve(data);
 				}
 			});	
 		});
@@ -150,11 +144,15 @@ class Craps extends Component {
 
 	show_on_board(dices_number, sum, point){
 		if($('#craps_board')){
-			if(point){
-				$('#craps_board').append('<div class="craps_board_text"><span class="text text01">Dices:</span><span class="text text02">'+dices_number[0]+', '+dices_number[1]+'</span><span class="text text03">Sum:</span><span class="text text04">'+sum+'</span><span class="text text05">Point:</span><span class="text text06">'+point+'</span><div>');
+			if(dices_number === "Craps!!!" || dices_number === "Natural!!!"){
+				$('#craps_board').append('<div class="craps_board_text"><span class="text text01">'+dices_number+'</span><div>');
 			} else {
-				$('#craps_board').append('<div class="craps_board_text"><span class="text text01">Dices:</span><span class="text text02">'+dices_number[0]+', '+dices_number[1]+'</span><span class="text text03">Sum:</span><span class="text text04">'+sum+'</span><div>');
-			}		
+				if(point){
+					$('#craps_board').append('<div class="craps_board_text"><span class="text text01">Dices:</span><span class="text text02">'+dices_number[0]+', '+dices_number[1]+'</span><span class="text text03">Sum:</span><span class="text text04">'+sum+'</span><span class="text text05">Point:</span><span class="text text06">'+point+'</span><div>');
+				} else {
+					$('#craps_board').append('<div class="craps_board_text"><span class="text text01">Dices:</span><span class="text text02">'+dices_number[0]+', '+dices_number[1]+'</span><span class="text text03">Sum:</span><span class="text text04">'+sum+'</span><div>');
+				}		
+			}			
 			$("#craps_board").scrollTop($("#craps_board")[0].scrollHeight);
 		}
 	}
@@ -162,7 +160,11 @@ class Craps extends Component {
 	start(){
 		let self = this;
 		if($('#craps_start').attr('finished') === "yes"){
-			if($('#craps_input').val() > 0){
+			if($('#craps_board')){
+				$('#craps_board').empty();
+			}
+			let bet = $('#craps_bet').val();
+			if(bet > 0){
 				$('#craps_start').attr('finished', 'no');
 				$('#craps_start').prop('disabled', true);
 				$('#craps_start').addClass('start');
@@ -172,11 +174,14 @@ class Craps extends Component {
 				let timer = setInterval(function () {
 					switch(state) {
 						case 1:
-							self.roll().then(function(res){
+							self.roll(point).then(function(res){
 								$('.dice_container').removeClass('jump');
-								sum = self.state.dices_number[0] + self.state.dices_number[1];							
+								sum = self.state.dices_number[0] + self.state.dices_number[1];
+								console.log('aaa1 ', self.state.dices_number[0], self.state.dices_number[1], sum, point)			
 								if(sum === 7|| sum === 11){
+									//Natural
 									state = 2;
+									self.show_on_board("Natural!!!");
 								} else {
 									point = sum;
 									state = 3;
@@ -185,34 +190,39 @@ class Craps extends Component {
 							});
 							break;
 						case 2:
-							self.check_win_lose(true);
+							self.check_win_lose(true, bet);
 							clearInterval(timer);
 							break;
 						case 3:
-							self.roll().then(function(res){
+							self.roll(point).then(function(res){
 								$('.dice_container').removeClass('jump');
-								sum = self.state.dices_number[0] + self.state.dices_number[1];							
+								sum = self.state.dices_number[0] + self.state.dices_number[1];			
 								self.show_on_board(self.state.dices_number, sum, point);
+								console.log('aaa3 ', self.state.dices_number[0], self.state.dices_number[1], sum, point)	
 								if (sum == point) {
 									state = 2;
 								} else if (sum === 7) {
 									state = 4;
+								} else if (sum === 2 || sum === 3 || sum === 12) {
+									//craps
+									state = 4;
+									self.show_on_board("Craps!!!");
 								} else {
 									state = 3;
 								}
 							});
 							break;
 						case 4:
-							self.check_win_lose(false);
+							self.check_win_lose(false, bet);
 							clearInterval(timer);
 							break;
 					}
 				}, 1500);
 			} else {
-				if(self.props.lang === "ro"){
-					showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 600);
+				if(this.props.lang === "ro"){
+					showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
 				} else {
-					showResults("You don't have enough carrots!", "Go and buy some from the Market.", 600);
+					showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
 				}
 			}			
 		}
@@ -226,15 +236,15 @@ class Craps extends Component {
 		if(bet){
 			if(win){
 				if(this.props.lang === "ro"){
-					showResults("Resultate", "Ai castigat "+bet);
+					showResults("Resultate", "Ai castigat "+bet+" morcovi!");
 				} else {
-					showResults("Results", "You won "+bet);
+					showResults("Results", "You won "+bet+" carrots!");
 				}			
 			} else {
 				if(this.props.lang === "ro"){
-					showResults("Resultate", "Ai pierdut "+bet);
+					showResults("Resultate", "Ai pierdut "+bet+" morcovi!");
 				} else {
-					showResults("Results", "You lost "+bet);
+					showResults("Results", "You lost "+bet+" carrots!");
 				}
 			}
 		}
@@ -244,28 +254,71 @@ class Craps extends Component {
 		if(this.state.lang === "ro"){
 			let pay_table = `
 			<div id="craps_rules" class="craps_rules">
-				<p>When playing Craps, the most common craps bets are pass line, place bets, hard ways and craps & eleven. Below are several betting terms that you should familiarize yourself while playing craps.</p>
-				<p><b>Pass Line Bet:</b> Players are betting that on the first roll 7 or 11 rolls to win, 2, 3, or 12 loses. If a number such as: 4, 5, 6, 8, 9 or 10 rolls, the number must repeat before a seven to win.</p>			
-				<p><b>Don’t Pass Bet:</b> Player betting that on the first roll 2 or 3 rolls to win, 12 is a push, 7 or 11 loses. If a number such as: 4, 5, 6, 8, 9 or 10 rolls, a seven must roll before the number repeats.</p>				
-				<p><b>Come Bet:</b> Is just like the pass line bet, same rules apply. It’s a game within a game.</p>				
-				<p><b>Don’t Come Bet:</b> Is similar to the Don’t Pass bet, same rules apply. It’s a game within a game.</p>				
-				<p><b>Field Bet:</b> If any of the numbers that are in the field box come out, player wins. A field bet can also be referred to as a “ONE ROLL BET.”</p>			
-				<p><b>Place Bet:</b> Wagers made on the point numbers (4, 5, 6, 8, 9 or 10) that are not contract bets. A Place Bet is “off” on the come-out roll unless the player indicates otherwise.</p>			
-				<p><b>Proposition Bet:</b> One roll bet, the numbers are 2, 3, 7, 11 and 12.</p>
+				<p>
+					<b>Pass Line Bet: </b>
+					Jucatorul pariaza ca cel care arunca zarurile va obtine 7 sau 11 în prima aruncare. 
+					Daca iese 2, 3 sau 12 (Craps) pariul este pierdut. 
+					Daca rezultatul este 4, 5, 6, 8, 9 sau 10 se spune ca shooter-ul a rostogolit un punct. 
+					Pentru a castiga el trebuie sa încerce sa obţina aceeasi valoare înainte de a rostogoli un 7, indiferent cate runde sunt necesare. 
+					De ce 7? Pentru ca acesta este cel mai probabil rezultat în Craps.
+				</p>
+				<p>
+					<b>Don't Pass Line: </b>
+					Pariază că jucătorul care aruncă va obține un total de 2 sau 3. 
+					Dacă se obţine 7 sau 11 pariul este pierdut, iar dacă totalul este 12 va fi egalitate şi primeşti banii înapoi. 
+					Orice alt total va duce spre o rundă următoare, care pornește de la acel număr.
+				</p>
+				<p>
+					<b><b>Come Bet:</b>
+					Este câştigător dacă se obţine 7 sau 11, iar dacă rezultatul este 2, 3 sau 4 va fi pierzător. 
+					Dacă rezultatul este un punct (4, 5, 6, 8, 9 sau 10), 
+					pariul va acoperi acel număr devenind un Pariu Point 
+					şi este câştigător dacă numărul punct apare din nou ca rezultat înainte de obţinerea unui 7. 
+					Dacă se obţine 7 înaintea numărului punct pariul este pierdut. 
+					Pariul poate fi plasat doar după stabilirea unui punct.
+				</p>
+				<p>
+					<b><b>Don't Come:</b>
+					Acest pariu este echivalent cu cel Don’t Pass Line, 
+					unica diferenţă fiind aceea că miza nu poate fi pusă decât după ce a fost rostogolit primul punct.
+				</p>
 			</div>`;
 			let text = bigText("craps_rules", this.state.lang, pay_table);
 			showResults("Rules", text, 400);
 		} else {
 			let pay_table = `
 			<div id="craps_rules" class="craps_rules">
-				<p>When playing Craps, the most common craps bets are pass line, place bets, hard ways and craps & eleven. Below are several betting terms that you should familiarize yourself while playing craps.</p>
-				<p><b>Pass Line Bet:</b> Players are betting that on the first roll 7 or 11 rolls to win, 2, 3, or 12 loses. If a number such as: 4, 5, 6, 8, 9 or 10 rolls, the number must repeat before a seven to win.</p>			
-				<p><b>Don’t Pass Bet:</b> Player betting that on the first roll 2 or 3 rolls to win, 12 is a push, 7 or 11 loses. If a number such as: 4, 5, 6, 8, 9 or 10 rolls, a seven must roll before the number repeats.</p>				
-				<p><b>Come Bet:</b> Is just like the pass line bet, same rules apply. It’s a game within a game.</p>				
-				<p><b>Don’t Come Bet:</b> Is similar to the Don’t Pass bet, same rules apply. It’s a game within a game.</p>				
-				<p><b>Field Bet:</b> If any of the numbers that are in the field box come out, player wins. A field bet can also be referred to as a “ONE ROLL BET.”</p>			
-				<p><b>Place Bet:</b> Wagers made on the point numbers (4, 5, 6, 8, 9 or 10) that are not contract bets. A Place Bet is “off” on the come-out roll unless the player indicates otherwise.</p>			
-				<p><b>Proposition Bet:</b> One roll bet, the numbers are 2, 3, 7, 11 and 12.</p>
+				<b>Pass Line Bet:</b>
+					Players are betting that on the first roll 7 or 11 rolls to win, 2, 3, or 12 loses. 
+					If a number such as: 4, 5, 6, 8, 9 or 10 rolls, the number must repeat before a seven to win.
+				</p>			
+				<p>
+				<b>Don’t Pass Bet:</b>
+					Player betting that on the first roll 2 or 3 rolls to win, 12 is a push, 7 or 11 loses. 
+					If a number such as: 4, 5, 6, 8, 9 or 10 rolls, a seven must roll before the number repeats.
+				</p>				
+				<p>
+				<b>Come Bet:</b>
+					Is just like the pass line bet, same rules apply. It’s a game within a game.
+				</p>				
+				<p>
+				<b>Don’t Come Bet:</b>
+					Is similar to the Don’t Pass bet, same rules apply. It’s a game within a game.
+				</p>				
+				<p>
+				<b>Field Bet:</b>
+					If any of the numbers that are in the field box come out, player wins. 
+					A field bet can also be referred to as a “ONE ROLL BET.”
+				</p>			
+				<p>
+				<b>Place Bet:</b>
+					Wagers made on the point numbers (4, 5, 6, 8, 9 or 10) that are not contract bets. 
+					A Place Bet is “off” on the come-out roll unless the player indicates otherwise.
+				</p>			
+				<p>
+				<b>Proposition Bet:</b>
+					One roll bet, the numbers are 2, 3, 7, 11 and 12.
+				</p>
 			</div>`;
 			let text = bigText("craps_rules", this.state.lang, pay_table);
 			showResults("Craps rules", text, 400);

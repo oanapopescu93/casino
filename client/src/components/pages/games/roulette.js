@@ -825,6 +825,7 @@ function roulette_game(props){
 
 function roulette_bets(props){
 	var self = this;
+	var lang = props.lang;
 	this.images = [];
 	var reason = "";
 
@@ -903,8 +904,17 @@ function roulette_bets(props){
 
 	this.roulette_click = function(){			
 		$('#roulette_bets_canvas').off('click').on('click', function(event) {
-			//console.log('BET')
-			self.canvas_click(canvas_bets, event);
+			let money = user_info.money;
+			//console.log('BET', money)
+			if(money>0){
+				self.canvas_click(canvas_bets, event);
+			} else {
+				if(lang === "ro"){
+					showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
+				} else {
+					showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
+				}
+			}
 		});
 
 		$('#roulette_bets_clear').off('click').on('click', function(event) {
@@ -953,7 +963,9 @@ function roulette_bets(props){
 		
 		var img = new Image();
 		img.src = carrot_img; 
-		ctx_bets.drawImage(img, x, y, w, h);		
+		img.onload = function() {
+			ctx_bets.drawImage(img, x, y, w, h);	
+		};
 	}
 
 	this.create_roulette_bets = function(){

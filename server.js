@@ -43,6 +43,7 @@ var monkey_blackjack = false;
 var monkey_slots = false;
 var monkey_craps = false;
 var monkey_race = false;
+var monkey_craps = false;
 
 var blackjack_deck = new Array();
 var hidden_dealer = {};
@@ -113,7 +114,7 @@ io.on('connection', function(socket) {
 					}
 					let timestamp = new Date().getTime() + "";
 					database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+users_json[i].id;
-					database(database_config).then(function(result){
+					database(database_config).then(function(){
 						users_json[i].ip_address = extra_data.ip_addres;
 						users_json[i].city = extra_data.city;
 						users_json[i].country = extra_data.country;
@@ -195,13 +196,18 @@ io.on('connection', function(socket) {
 	socket.on('salon_send', function(data) {
 		let id = data;
 		let money = 0;
+		let x;	
 		for(let i in users_json){				
 			if(users_json[i].id === id){
 				money = users_json[i].money;
+				x = users_json[i];
 				break;
 			}
 		}
+		//console.log('salon_send1', data, users_json)
+		//console.log('salon_send11', x, money)
 		try{
+			//console.log('salon_send22', x, money)
 			io.emit('salon_read', {server_tables: server_tables, money: money});
 		}catch(e){
 			console.log('[error]','salon_read :', e);
@@ -642,28 +648,28 @@ io.on('connection', function(socket) {
 
 	var array_big = [];	
 	socket.on('slots_send', function(data) {
-		var this_user = data.id;
-		var reel = data.reel;
-		var items = data.items;
-		var matrix = [];
-		var reason = data.reason;
+		let this_user = data.id;
+		let reel = data.reel;
+		let items = data.items;
+		let matrix = [];
+		let reason = data.reason;
 
-		for(var i=0; i<19; i++){
+		for(let i=0; i<19; i++){
 			matrix.push(slot_matrix(i, [reel, 3]));
 		}
 
 		if(reason != "resize"){
-			for(var i=0; i<reel; i++){
-				var array_small = Array.from(Array(items).keys());
+			for(let i=0; i<reel; i++){
+				let array_small = Array.from(Array(items).keys());
 				array_small = shuffleArray(array_small);
 				array_big.push(array_small)
 			}	
 		}
 			
-		for(var i in sockets){
+		for(let i in sockets){
 		 	if(sockets[i].user_id === this_user){
-				var is_lucky = Math.floor(Math.random() * 100);
-				var how_lucky = 7;
+				let is_lucky = Math.floor(Math.random() * 100);
+				let how_lucky = 7;
 				if(is_lucky % how_lucky === 0){
 					monkey_slots = true;
 				}
@@ -686,15 +692,53 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('craps_send', function(data) {
+		let is_lucky = Math.floor(Math.random() * 100);
+		let how_lucky = 7;
+		if(is_lucky % how_lucky === 0){
+			monkey_craps = true;
+		}
+		monkey_craps = true;
 		try{
-			var room_name = data.user_table.split(' ').join('_');
+			let room_name = data.user_table.split(' ').join('_');
 			let how_many_dices = data.how_many_dices;
 			let numbers = [];
+			let point = data.point;
+			let before = data.before;
+			let array = [2, 3, 7, 12];
+
 			for(let i=0; i<how_many_dices; i++){
 				let number = Math.floor((Math.random() * 6) + 1);
+				if(number === before[i]){
+					number++;
+					if(number>6){
+						number = 1;
+					}
+				}
 				numbers.push(number);
 			}
-			io.to(room_name).emit('craps_read', numbers);	
+			if(monkey_craps){
+				// it means the player must lose
+				if(point){
+					//other rolls must be 2, 3, 7, 12
+					if(numbers[0] + numbers[1] !== 2 && numbers[0] + numbers[1] !== 3 && numbers[0] + numbers[1] !== 7 && numbers[0] + numbers[1] !== 12){
+						let t = Math.floor((Math.random() * 3) + 0);
+						let mynumber = array[t];
+						numbers[0] = Math.floor(mynumber/2);
+						numbers[1] = mynumber-numbers[0];
+					}
+				} else {
+					// first roll must not be 7
+					if(numbers[0] + numbers[1] === 7){
+						numbers[0]++
+						if(numbers[0]>6){
+							numbers[0] = 1;
+						}
+					}
+				}
+			} 
+			console.log('craps', numbers, before)
+			io.to(room_name).emit('craps_read', numbers);
+			
 		}catch(e){
 			console.log('[error]','craps :', e);
 		}	
