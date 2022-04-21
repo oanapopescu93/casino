@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.f6239987.chunk.css",
-    "main.js": "/static/js/main.3814a930.chunk.js",
-    "main.js.map": "/static/js/main.3814a930.chunk.js.map",
+    "main.css": "/static/css/main.5f80bc7a.chunk.css",
+    "main.js": "/static/js/main.0c160a7c.chunk.js",
+    "main.js.map": "/static/js/main.0c160a7c.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.83c3e0c4.js",
     "runtime-main.js.map": "/static/js/runtime-main.83c3e0c4.js.map",
-    "static/css/2.17418e0c.chunk.css": "/static/css/2.17418e0c.chunk.css",
-    "static/js/2.3b454c1b.chunk.js": "/static/js/2.3b454c1b.chunk.js",
-    "static/js/2.3b454c1b.chunk.js.map": "/static/js/2.3b454c1b.chunk.js.map",
+    "static/css/2.754e1fb8.chunk.css": "/static/css/2.754e1fb8.chunk.css",
+    "static/js/2.8d28f9c5.chunk.js": "/static/js/2.8d28f9c5.chunk.js",
+    "static/js/2.8d28f9c5.chunk.js.map": "/static/js/2.8d28f9c5.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.44f0ec471fde86311e59c78b41417b86.js": "/precache-manifest.44f0ec471fde86311e59c78b41417b86.js",
+    "precache-manifest.a78107f1f7419af101d4847853095bb3.js": "/precache-manifest.a78107f1f7419af101d4847853095bb3.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/2.17418e0c.chunk.css.map": "/static/css/2.17418e0c.chunk.css.map",
-    "static/css/main.f6239987.chunk.css.map": "/static/css/main.f6239987.chunk.css.map",
-    "static/js/2.3b454c1b.chunk.js.LICENSE.txt": "/static/js/2.3b454c1b.chunk.js.LICENSE.txt",
+    "static/css/2.754e1fb8.chunk.css.map": "/static/css/2.754e1fb8.chunk.css.map",
+    "static/css/main.5f80bc7a.chunk.css.map": "/static/css/main.5f80bc7a.chunk.css.map",
+    "static/js/2.8d28f9c5.chunk.js.LICENSE.txt": "/static/js/2.8d28f9c5.chunk.js.LICENSE.txt",
     "static/media/style.css": "/static/media/bg.572bbe97.jpg",
     "static/media/bitcoin-love-heart.896a7116.svg": "/static/media/bitcoin-love-heart.896a7116.svg",
     "static/media/carrot_icon.png": "/static/media/carrot_icon.269bad3c.png",
@@ -37,9 +37,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.83c3e0c4.js",
-    "static/css/2.17418e0c.chunk.css",
-    "static/js/2.3b454c1b.chunk.js",
-    "static/css/main.f6239987.chunk.css",
-    "static/js/main.3814a930.chunk.js"
+    "static/css/2.754e1fb8.chunk.css",
+    "static/js/2.8d28f9c5.chunk.js",
+    "static/css/main.5f80bc7a.chunk.css",
+    "static/js/main.0c160a7c.chunk.js"
   ]
 }
