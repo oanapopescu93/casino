@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.5f80bc7a.chunk.css",
-    "main.js": "/static/js/main.0c160a7c.chunk.js",
-    "main.js.map": "/static/js/main.0c160a7c.chunk.js.map",
+    "main.css": "/static/css/main.a7644a54.chunk.css",
+    "main.js": "/static/js/main.f4336d86.chunk.js",
+    "main.js.map": "/static/js/main.f4336d86.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.83c3e0c4.js",
     "runtime-main.js.map": "/static/js/runtime-main.83c3e0c4.js.map",
     "static/css/2.754e1fb8.chunk.css": "/static/css/2.754e1fb8.chunk.css",
     "static/js/2.8d28f9c5.chunk.js": "/static/js/2.8d28f9c5.chunk.js",
     "static/js/2.8d28f9c5.chunk.js.map": "/static/js/2.8d28f9c5.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.a78107f1f7419af101d4847853095bb3.js": "/precache-manifest.a78107f1f7419af101d4847853095bb3.js",
+    "precache-manifest.868f0574fe20d942cda8c26c961813de.js": "/precache-manifest.868f0574fe20d942cda8c26c961813de.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.754e1fb8.chunk.css.map": "/static/css/2.754e1fb8.chunk.css.map",
-    "static/css/main.5f80bc7a.chunk.css.map": "/static/css/main.5f80bc7a.chunk.css.map",
+    "static/css/main.a7644a54.chunk.css.map": "/static/css/main.a7644a54.chunk.css.map",
     "static/js/2.8d28f9c5.chunk.js.LICENSE.txt": "/static/js/2.8d28f9c5.chunk.js.LICENSE.txt",
     "static/media/style.css": "/static/media/bg.572bbe97.jpg",
     "static/media/bitcoin-love-heart.896a7116.svg": "/static/media/bitcoin-love-heart.896a7116.svg",
@@ -21,6 +21,7 @@
     "static/media/bootstrap.css": "/static/media/glyphicons-halflings-regular.fa277232.woff",
     "static/media/img_cards.png": "/static/media/img_cards.179336c6.png",
     "static/media/inventory_icon.png": "/static/media/inventory_icon.5c7b84a7.png",
+    "static/media/logo.png": "/static/media/logo.6555a172.png",
     "static/media/rabbit.jpg": "/static/media/rabbit.d95f8421.jpg",
     "static/media/rabbit000.png": "/static/media/rabbit000.910ee3b1.png",
     "static/media/rabbit_move_colored.png": "/static/media/rabbit_move_colored.e9893b87.png",
@@ -39,7 +40,7 @@
     "static/js/runtime-main.83c3e0c4.js",
     "static/css/2.754e1fb8.chunk.css",
     "static/js/2.8d28f9c5.chunk.js",
-    "static/css/main.5f80bc7a.chunk.css",
-    "static/js/main.0c160a7c.chunk.js"
+    "static/css/main.a7644a54.chunk.css",
+    "static/js/main.f4336d86.chunk.js"
   ]
 }

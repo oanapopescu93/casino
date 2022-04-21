@@ -697,7 +697,7 @@ io.on('connection', function(socket) {
 		if(is_lucky % how_lucky === 0){
 			monkey_craps = true;
 		}
-		monkey_craps = true;
+		//monkey_craps = true;
 		try{
 			let room_name = data.user_table.split(' ').join('_');
 			let how_many_dices = data.how_many_dices;
@@ -742,7 +742,20 @@ io.on('connection', function(socket) {
 		}catch(e){
 			console.log('[error]','craps :', e);
 		}	
-	});	
+	});
+	socket.on('craps_results_send', function(data) {
+		var money = data.money;
+		var id = parseInt(data.user_id);
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id = "+id;
+		database(database_config).then(function(result){
+			for(var i in users_json){	
+				if(data.user_id === users_json[i].id){
+					users_json[i].money = money;
+					break;
+				}
+			}
+		});
+	});
 
 	socket.on('race_board_send', function(data) {
 		var id = data.id;

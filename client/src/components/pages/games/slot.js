@@ -115,7 +115,7 @@ function slot_game(props, id){
 
 	this.start = function(reason){
 		$('body').off('click', '#slot_spin').on('click', '#slot_spin', function () {
-			if($('#user_money span').val() > 0){
+			if(parseInt($('#user_money span').text()) > 0){
 				if($('#slot_spin').attr('finished') === "yes"){
 					if($('#slot_bet').val() !== '0'){
 						game_pay = parseInt($('#slot_bet').val())
@@ -251,7 +251,7 @@ function slot_game(props, id){
 	
 	this.createCanvas = function(canvas){
 		ctx = canvas.getContext("2d");
-		slots_ctx.push(ctx)	
+		slots_ctx.push(ctx);		
 		
 		canvas.width = image_size[0];
 		canvas.height = 2 * items.length * image_size[1];
@@ -308,7 +308,7 @@ function slot_game(props, id){
 		array = sort_array(array, "i");
 		if(reason !== "resize"){
 			self.images_pos.push(array)
-		}		
+		}	
 	}
 
 	this.rotate = function(i, slot_speed){
@@ -620,24 +620,26 @@ function Slot(props) {
 				</div>
 			</div>
 			<div className="game_buttons_container">
-				<div className="game_buttons">
-					<div className="game_text_container">
-						<div className="game_buttons_box">
-							{lang === "ro" ? 
-								<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span id="money_total">{money-1}</span> morcovi</p> : 
-								<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span id="money_total">{money-1}</span> carrots</p>
-							}
+				<div className="game_box_slots">
+					<div className="game_buttons">
+						<div className="game_text_container">
+							<div className="game_buttons_box">
+								{lang === "ro" ? 
+									<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span id="money_total">{money-1}</span> morcovi</p> : 
+									<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span id="money_total">{money-1}</span> carrots</p>
+								}
+							</div>
+							<div className="game_buttons_box">
+								{lang === "ro" ? 
+									<p className="slot_buttons_box_text">PARIAZA</p> : 
+									<p className="slot_buttons_box_text">BET</p>
+								}
+								<input onChange={(e) => {handleChange(e)}} className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max={money}></input>
+							</div>
 						</div>
-						<div className="game_buttons_box">
-							{lang === "ro" ? 
-								<p className="slot_buttons_box_text">PARIAZA</p> : 
-								<p className="slot_buttons_box_text">BET</p>
-							}
-							<input onChange={(e) => {handleChange(e)}} className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max={money}></input>
+						<div className="game_start_container">
+							<button finished={"yes"} className="slot_spin shadow_convex" id="slot_spin">SPIN</button>
 						</div>
-					</div>
-					<div className="game_start_container">
-						<button finished={"yes"} className="slot_spin shadow_convex" id="slot_spin">SPIN</button>
 					</div>
 				</div>
 			</div>

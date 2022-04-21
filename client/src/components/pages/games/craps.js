@@ -50,8 +50,9 @@ class Dice extends Component {
 						<div className="dot six_4"></div>
 						<div className="dot six_5"></div>
 						<div className="dot six_6"></div>
-					</div>
+					</div>					
 				</div>
+				<div className="dice_shadow shadow_convex"></div>
 			</div>
 		);
 	}
@@ -152,8 +153,10 @@ class Craps extends Component {
 				} else {
 					$('#craps_board').append('<div class="craps_board_text"><span class="text text01">Dices:</span><span class="text text02">'+dices_number[0]+', '+dices_number[1]+'</span><span class="text text03">Sum:</span><span class="text text04">'+sum+'</span><div>');
 				}		
-			}			
-			$("#craps_board").scrollTop($("#craps_board")[0].scrollHeight);
+			}		
+			
+			var objDiv = document.getElementById("craps_board");
+			objDiv.scrollTop = objDiv.scrollHeight;
 		}
 	}
 
@@ -163,8 +166,8 @@ class Craps extends Component {
 			if($('#craps_board')){
 				$('#craps_board').empty();
 			}
-			let bet = $('#craps_bet').val();
-			if(bet > 0){
+			if(parseInt($('#user_money span').text()) > 0){
+				let bet = $('#craps_bet').val();
 				$('#craps_start').attr('finished', 'no');
 				$('#craps_start').prop('disabled', true);
 				$('#craps_start').addClass('start');
@@ -176,8 +179,7 @@ class Craps extends Component {
 						case 1:
 							self.roll(point).then(function(res){
 								$('.dice_container').removeClass('jump');
-								sum = self.state.dices_number[0] + self.state.dices_number[1];
-								console.log('aaa1 ', self.state.dices_number[0], self.state.dices_number[1], sum, point)			
+								sum = self.state.dices_number[0] + self.state.dices_number[1];		
 								if(sum === 7|| sum === 11){
 									//Natural
 									state = 2;
@@ -198,7 +200,6 @@ class Craps extends Component {
 								$('.dice_container').removeClass('jump');
 								sum = self.state.dices_number[0] + self.state.dices_number[1];			
 								self.show_on_board(self.state.dices_number, sum, point);
-								console.log('aaa3 ', self.state.dices_number[0], self.state.dices_number[1], sum, point)	
 								if (sum == point) {
 									state = 2;
 								} else if (sum === 7) {
@@ -225,6 +226,16 @@ class Craps extends Component {
 					showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
 				}
 			}			
+		}
+	}
+
+	bet(){
+		if($('.craps_bets_container').length>0){
+			$('.craps_bets_container').addClass('open');
+
+			$('.craps_bets .close').click(function() {
+				$('.craps_bets_container').removeClass('open');
+			});
 		}
 	}
 
@@ -380,11 +391,12 @@ class Craps extends Component {
 													<p className="craps_buttons_box_text">PARIAZA</p> : 
 													<p className="craps_buttons_box_text">BET</p>
 												}
-												<input onChange={(e) => {this.handleChange(e)}} className="craps_input" type="number" id="craps_bet" min="1" defaultValue="1" max={this.state.money}></input>
+												<input onChange={(e) => {this.handleChange(e)}} className="craps_input" type="number" id="craps_bet_input" min="1" defaultValue="1" max={this.state.money}></input>
 											</div>
 										</div>
 										<div className="game_start_container">
 											<button className="craps_start shadow_convex" finished={"yes"} id="craps_start" onClick={this.start}>{lang === "ro" ? <span>Incepe</span> : <span>Start</span>}</button>
+											<button className="craps_bet shadow_convex" finished={"yes"} id="craps_bet" onClick={this.bet}>{lang === "ro" ? <span>Pariaza</span> : <span>Bet</span>}</button>
 										</div>
 									</Col>
 								</Row>
@@ -401,6 +413,15 @@ class Craps extends Component {
 						</Row>
 					</>
 				}
+
+				<div class="craps_bets_container">
+					<div class="craps_bets shadow_concav">
+						<div class="close">x</div>
+						<div class="craps_bets_box">
+							Bets will come here
+						</div>
+					</div>
+				</div>
 				
 				<div className="show_results_container">
 					<div className="show_results">
