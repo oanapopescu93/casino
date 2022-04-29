@@ -7,44 +7,13 @@ import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
 import { getCookie, setCookie, showResults } from '../../utils';
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
 import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png';
+import Carousel from '../partials/carousel';
 
-var canvas;
-var ctx;
-var canvas_width = 900;
-var canvas_height = 800;
-var my_race;
-var landscape = [];
-var lanscape_config = {};
-var land_color = [
-	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
-	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
-	['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1]
-]
-var distance = 1;
-var draw_road_height;
-
-var font_title = 'bold 30px sans-serif';
-var font_counter = 'bold 40px sans-serif';
-
-var dispatch_nr = 0;
-
-var rabbit_array = [];
-var rabbit_list = [];
-var rabbit_img_sit = {src: rabbit_sit};
-var rabbit_img_move = {src: rabbit_move};
-var rabbit_img_stop = {src: rabbit_sit};
-var rabbit_size;
-
-var finish_line;
-var finish_line_x = 0;
-
-var font_bold_10 = 'bold 10px sans-serif';
-var font_bold_12 = 'bold 12px sans-serif';
-var font_bold_14 = 'bold 14px sans-serif';
-var font_bold_16 = 'bold 16px sans-serif';
+let canvas;
+let ctx;
 
 function Land(config) {
-	var self = this;
+	let self = this;
     self.layer = config.layer;
     self.x = config.x;
     self.y = config.y;
@@ -53,7 +22,9 @@ function Land(config) {
 };
 
 function Landscape(config){
-	var self = this;
+	let self = this;
+	let distance = 1;
+
 	self.x = -config.speed * distance;
 	self.y = config.y;
     self.lands = [];
@@ -137,7 +108,7 @@ function Landscape(config){
 }
 
 function Rabbit(config){
-	var self = this;
+	let self = this;
 
 	self.id = config.id;
 	self.name = config.name;
@@ -155,6 +126,9 @@ function Rabbit(config){
 	self.y = config.y;
 	self.w = config.w;
 	self.h = config.h;
+	
+	self.jump_duration = 0;
+	self.hit = false;
 
 	self.frameWidth = 672;
 	self.frameHeight = 592;
@@ -175,15 +149,76 @@ function Rabbit(config){
 			if(nr % self.speed === 0){
 				self.frame++;
 				self.x = self.x+3;				
-			}		
+			}
+
 			if(self.frame > 7){
 				self.frame = 0;
-			}
+			}			
 			
 			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 		} else {
 			ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 		}		
+	}
+	self.jump = function(ctx, nr, finish_line_x){
+		if(typeof finish_line_x === "undefined"){
+			if(self.avg_dist > canvas.width/2){
+				self.x = self.x-3;
+			}
+		} 
+		
+		if(nr % self.speed === 0){
+			self.frame++;
+			self.x = self.x+3;				
+		}
+
+		if(self.frame > 7){
+			self.frame = 0;
+		}
+		
+		self.y = self.y-50
+		if(self.id == 1){
+			console.log('xxx1', self.y)	
+		}
+		ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+		self.y = self.y+50
+		if(self.id == 1){
+			console.log('xxx2', self.y)	
+		}
+	}
+	self.collision = function(){
+		// if(self.jump_duration === 0){	
+		// 	if(Math.random() < 0.1){//probability of 10% to have a collision
+		// 		self.jump_duration++
+		// 		self.hit = true;
+		// 		//if(self.id == 1){
+		// 			//console.log('collision-JUMP0', self.jump_duration)	
+		// 		//}
+		// 	} else {
+		// 		//if(self.id == 1){
+		// 			//console.log('collision-RUN0', self.jump_duration)
+		// 		//}
+		// 	}
+		// } else {
+		// 	if(self.jump_duration < 5){	
+		// 		self.jump_duration++
+		// 		self.hit = true;
+		// 		//if(self.id == 1){
+		// 			//console.log('collision-JUMP1', self.jump_duration)	
+		// 		//}
+		// 	} else {
+		// 		self.jump_duration = 0;
+		// 		//if(self.id == 1){
+		// 			//console.log('collision-RUN1', self.jump_duration)
+		// 		//}				
+		// 	}
+		// }
+
+		// if(self.id == 1){
+		// 	console.log('collision------', self.jump_duration, self.hit)	
+		// }
+		
+		return [self.hit, self.jump_duration];
 	}
 	self.stop = function(ctx, nr){
 		if(self.frame !== 4){	
@@ -209,6 +244,67 @@ function Rabbit(config){
 			sum_dist = sum_dist + all[i].x;
 		}
 		self.avg_dist = sum_dist/all.length;
+	}
+}
+
+function Obstacle(config){
+	let self = this;
+	self.color = config.color;
+	self.border = config.border;
+	self.border_color = config.border_color;
+	self.x = config.x;
+	self.y = config.y;
+	self.w = config.w;
+	self.h = config.h;
+	self.draw = function(ctx){
+		//draw_dot(x, y, r, sAngle, eAngle, counterclockwise, 'white', 1, 'grey');  //ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
+	}
+}
+
+function Lane(config){
+	let self = this;
+	self.id = config.id;
+	self.x = config.x;
+	self.y = config.y;
+	self.w = config.w;
+	self.h = config.h;
+	self.rabbit = config.rabbit;
+	self.obstacles = [];
+	self.obstacle_size = config.obstacle_size;
+
+	self.create_obstacles = function(){
+		let chance = Math.random() < 0.3;//probability of 30%		
+		if(chance){			
+			let obstacle = new Obstacle({
+				color: 'rgba(255, 215, 0, 0.1)',
+				border: 'rgba(255, 215, 0, 0.5)',
+				border_color: 1,
+				x: canvas.width + self.obstacle_size[0],
+				y: self.y,
+				w: self.obstacle_size[0],
+				h: self.obstacle_size[1],
+			});
+			self.obstacles.push(obstacle);
+		}
+
+		console.log('create_obstacles', self.x, self.obstacles)
+	}
+
+	self.distroy_obstacles = function(){
+		console.log('distroy_obstacles', self.x, self.obstacles)
+		// for(let i in obstacles){
+		// 	console.log('lane_update', i, self.x, obstacles[i].x)
+		// }
+	}
+
+	self.lane_update = function(){
+		self.x = self.x-1;
+	}
+
+	self.move_obstacles = function(){
+		for(let i in self.obstacles){
+			self.obstacles[i].draw();
+		}
 	}
 }
 
@@ -254,7 +350,38 @@ function race_game(props){
 	let socket = props.data.socket;
 	let lang = props.lang;
 	let dispatch = props.data.dispatch;
-	dispatch_nr = 0;
+	let dispatch_nr = 0;
+	let rabbit_array = props.data.rabbit_array;
+	let rabbit_list = [];
+	let lane_list = [];
+	
+	let canvas_width = 900;
+	let canvas_height = 800;
+
+	let font_bold_10 = 'bold 10px sans-serif';
+	let font_bold_12 = 'bold 12px sans-serif';
+	let font_bold_14 = 'bold 14px sans-serif';
+	let font_bold_16 = 'bold 16px sans-serif';
+	let font_title = 'bold 30px sans-serif';
+	let font_counter = 'bold 40px sans-serif';
+
+	let landscape = [];
+	let lanscape_config = {};
+	let land_color = [
+		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
+		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
+		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1]
+	]	
+	let draw_road_height;
+
+	let rabbit_img_sit = {src: rabbit_sit};
+	let rabbit_img_move = {src: rabbit_move};
+	let rabbit_img_stop = {src: rabbit_sit};
+	let rabbit_size;
+	let obstacle_size;
+
+	let finish_line;
+	let finish_line_x = 0;
 		
 	this.ready = function(reason){
 		self.createCanvas(canvas_width, canvas_height);	
@@ -283,6 +410,7 @@ function race_game(props){
 			}
 			draw_road_height = 101;
 			rabbit_size = [5, 100, 35, 35, -5];
+			obstacle_size = [35, 35];
 			font_title = 'bold 20px sans-serif';
 			font_counter = 'bold 30px sans-serif';
 			font_bold_10 = 'bold 8px sans-serif';
@@ -308,7 +436,8 @@ function race_game(props){
 				sun: [50, 50, 30],
 			}
 			draw_road_height = canvas.height/2;
-			rabbit_size = [10, 350, 80, 80, -10];	
+			rabbit_size = [10, 350, 80, 80, -10];
+			obstacle_size = [80, 80];
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
@@ -329,7 +458,10 @@ function race_game(props){
 			promises.push(self.preaload_images(rabbit_img_move));
 			promises.push(self.preaload_images(rabbit_img_stop));
 			Promise.all(promises).then(function(result){
-				rabbit_list = self.get_rabbits(result);				
+				let list = self.get_rabbits(result);	
+				rabbit_list = list[0];	
+				lane_list = list[1];	
+				console.log('start', rabbit_list, rabbit_array, lane_list)			
 				self.background();
 				self.draw_rabbits('sit');
 				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");				
@@ -358,9 +490,10 @@ function race_game(props){
 	}
 
 	this.get_rabbits = function(img){
-		var rabbits = []
-		for(var i in rabbit_array){
-			var config = {
+		let rabbits = [];
+		let lanes = [];
+		for(let i in rabbit_array){
+			let config = {
 				id: rabbit_array[i].id, 
 				name: rabbit_array[i].name, 
 				color: rabbit_array[i].color, 
@@ -376,24 +509,70 @@ function race_game(props){
 				w: rabbit_size[2],
 				h: rabbit_size[3],
 			}
-			var rabbit = new Rabbit(config);
+			let rabbit = new Rabbit(config);
 			rabbits.push(rabbit);
+
+			let lane = new Lane({
+				id: i,
+				rabbit: rabbit,
+				x: 0,
+				y: rabbit_size[1]+i*(rabbit_size[3]+rabbit_size[4]),
+				w: canvas.width,
+				h: rabbit_size[3],
+				obstacle_size: obstacle_size,
+			})
+			lanes.push(lane);
+			lane.create_obstacles();
 		}
-		return rabbits;
+		return [rabbits, lanes];
+	}
+
+	this.test_collision_entities = function(entity01, entity02){
+		let rect01 = {
+			x: entity01.x - 10,
+			y: entity01.y - 10,
+			width: 20,
+			height: 20,
+		}
+		let rect02 = {
+			x: entity02.x - 15,
+			y: entity02.y - 15,
+			width: 30,
+			height: 30,
+		}
+		return self.collision_entities(rect01, rect02);
+	}
+	this.collision_entities = function(rect01, rect02){	
+		let cond01 = rect01.x <= rect02.x + rect02.w;
+		let cond02 = rect01.y <= rect02.y + rect02.h;
+		let cond03 = rect02.x <= rect01.x + rect01.w;
+		let cond04 = rect02.y <= rect01.y + rect01.h;		
+		return cond01 && cond02 && cond03 && cond04;
 	}
 
 	this.draw_rabbits = function(action, nr, finish_line_x){
 		if(action==="run"){
-			for(var i in rabbit_list){				
-				rabbit_list[i].change_speed();
-				rabbit_list[i].move_view(rabbit_list, nr);
-				rabbit_list[i].run(ctx, nr, finish_line_x);
+			for(let i in lane_list){				
+				lane_list[i].rabbit.change_speed();
+				lane_list[i].rabbit.move_view(rabbit_list, nr);
+
+				lane_list[i].lane_update();
+				lane_list[i].distroy_obstacles();
+				lane_list[i].create_obstacles();
+
+				let collision_results = lane_list[i].rabbit.collision();
+
+				if(collision_results[0]){
+					lane_list[i].rabbit.jump(ctx, nr, finish_line_x);
+				} else {
+					lane_list[i].rabbit.run(ctx, nr, finish_line_x);
+				}
 			}
 			rabbit_list = self.order_rabbits(rabbit_list);
 			self.post_order_rabbits(rabbit_list);
 		} else {
-			for(var i in rabbit_list){
-				rabbit_list[i].draw(ctx);
+			for(let i in lane_list){
+				lane_list[i].rabbit.draw(ctx);
 			}
 		}
 	}
@@ -541,8 +720,7 @@ function race_game(props){
 	  
 	  	function race() {			
 			var stop = false;
-			console.log(rabbit_list)			
-			var avg_dist = rabbit_list[0].avg_dist;
+			var avg_dist = lane_list[0].rabbit.avg_dist;
 
 			if (nr > time) {	
 				rabbit_list = self.order_rabbits(rabbit_list);			
@@ -558,8 +736,8 @@ function race_game(props){
 				end_rabbit = self.check_rabbits(finish_line_x);
 
 				if(end_rabbit && end_finish_line){
-					for(var i in rabbit_list){		
-						if(rabbit_list[i].frame !== 4){
+					for(var i in lane_list){		
+						if(lane_list[i].rabbit.frame !== 4){
 							sit_rabbit = false;
 							break;
 						}
@@ -570,8 +748,8 @@ function race_game(props){
 						self.draw_background();
 						finish_line.draw(ctx);
 
-						for(var i in rabbit_list){		
-							rabbit_list[i].stop(ctx, nr);
+						for(var i in lane_list){		
+							lane_list[i].rabbit.stop(ctx, nr);
 						}
 						self.win_lose();
 					} else {
@@ -580,8 +758,8 @@ function race_game(props){
 						self.draw_background();
 						finish_line.draw(ctx);
 
-						for(var i in rabbit_list){		
-							rabbit_list[i].stop(ctx, nr);
+						for(var i in lane_list){		
+							lane_list[i].rabbit.stop(ctx, nr);
 						}
 					}
 					
@@ -593,22 +771,22 @@ function race_game(props){
 					finish_line.draw(ctx);
 
 					if(end_rabbit){
-						for(var i in rabbit_list){		
-							rabbit_list[i].stop(ctx, nr, false);
+						for(var i in lane_list){		
+							lane_list[i].rabbit.stop(ctx, nr, false);
 						}
 					} else {
 						self.draw_rabbits('run', nr, finish_line_x); 
 					}
 				}			
-			} else{				
+			} else{
+				console.log('oana01')				
 				nr++; 		
 				stop = false;
 				if(!move_landscape){
 					if(avg_dist > canvas.width/2){
 						move_landscape = true;
 					}
-				}				
-				if(move_landscape){
+				} else {
 					var i = landscape.length;				
 					while (i--) {
 						landscape[i].update();
@@ -616,7 +794,7 @@ function race_game(props){
 						for(var j in my_lands){
 							my_lands[j].x = my_lands[j].x + landscape[i].x;
 						}
-					}					
+					}
 				}
 				self.draw_background();	
 				self.draw_rabbits('run', nr);
@@ -704,8 +882,8 @@ function race_game(props){
 	this.check_rabbits = function(line){
 		//check if all rabbits passed the finish line
 		var passed = true;
-		for(var i in rabbit_list){		
-			if(rabbit_list[i].x < line){
+		for(var i in lane_list){		
+			if(lane_list[i].rabbit.x < line){
 				passed = false;
 				break;
 			}
@@ -758,7 +936,7 @@ function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
 function RaceGame(props){
 	let lang = props.lang;
 	setTimeout(function(){	
-		my_race = new race_game(props);
+		let my_race = new race_game(props);
 		my_race.ready();	
 		$(window).resize(function(){
 			my_race.ready("resize");	
@@ -792,25 +970,27 @@ class RaceTables extends Component {
 			socket: props.data.socket,
 			user: props.data.user,
 			get_data: props.get_data,
+			rabbit_array: this.props.data.rabbit_array,
 		};
-		rabbit_array = this.props.data.rabbit_array;
+		
 		this.check_bets = this.check_bets.bind(this);
 		this.handleExit = this.handleExit.bind(this);
+		this.race_start = this.race_start.bind(this);
+		this.race_clear_bets = this.race_clear_bets.bind(this);
+
+		this.carousel = React.createRef();
 	}
 
 	check_bets(){
+		//check to see if at least one rabbit has a bet
 		var start = false;
-		$(".race_input").each(function(e) {
-			var elem = $(this);
-			var bet = parseInt(elem.val());			
-			if(bet !== 0){
+		let rabbit_array = this.state.rabbit_array;
+		for(let i in rabbit_array){
+			if(rabbit_array[i].bet > 0){
 				start = true;
-				var place_header = elem.closest('.rabbit_box_input').find('.place_header');
-				var place = parseInt(place_header.attr('place'));
-				rabbit_array[e].bet = bet;
-				rabbit_array[e].place = place;
+				break;
 			}
-		});
+		}
 		return start;
 	}
 
@@ -822,79 +1002,41 @@ class RaceTables extends Component {
 		window.location.href = url[0];
 	}
 
-	componentDidMount() {	
-		let self_race_tables = this;
-		let lang = self_race_tables.props.lang;	
+	race_start(){
+		let item_list_changed = this.carousel.current.item_list_changed
+		this.setState({ rabbit_array: item_list_changed })		
+		let start = this.check_bets();				
+		if(start){
+		 	this.state.get_data(this.state.rabbit_array);
+		} else {
+		 	if(this.props.lang === "ro"){
+		 		showResults("", "Pariati pe un iepure pentru a intra in joc.");	
+		 	} else {
+				showResults("", "Please place your bet before playing.");	
+		 	}							
+		}
+	}
 
-		$('body').off('click', '#race_clear_bets').on('click', '#race_clear_bets', function () {
-			$('.race_input').val('0');
-		})	
-
-		$('body').off('click', '.rabbit_box_minus').on('click', '.rabbit_box_minus', function () {
-			let input_value = parseInt($(this).parent().find('.race_input').val());
-			if(input_value > 0){
-				$(this).parent().find('.race_input').val(input_value-1);
-			}
-		})	
-
-		$('body').off('click', '.rabbit_box_plus').on('click', '.rabbit_box_plus', function () {
-			let input_value = parseInt($(this).parent().find('.race_input').val());
-			if(input_value < self_race_tables.state.money){
-				$(this).parent().find('.race_input').val(input_value+1);
-			} else {
-				if(lang === "ro"){
-					showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 600);
-				} else {
-					showResults("You don't have enough carrots!", "Go and buy some from the Market.", 600);
-				}
-			}
-		})
-
-		$('body').off('click', '.dropdown-content li').on('click', '.dropdown-content li', function () {
-			let value = parseInt($(this).attr('place'));
-			let text = '';
-			if(lang === 'ro'){
-				text = 'Locul' + value;
-			} else {
-				switch(value) {
-					case 1:
-						text = value + 'st place';
-						break;
-					case 2:
-						text = value + 'nd place';
-						break;
-					case 3:
-						text = value + 'rd place';
-						break;
-					default:
-						text = value + 'th place';
-				}
-			}
-			$(this).closest('.dropdown').find('.place_header').html(text);
-			$(this).closest('.dropdown').find('.place_header').attr('place', value);
-		})
-
-		$('body').off('click', '#race_start').on('click', '#race_start', function () {
-			let start = self_race_tables.check_bets();				
-			if(start){
-				self_race_tables.state.get_data('start')
-			} else {
-				if(lang === "ro"){
-					showResults("", "Pariati pe un iepure pentru a intra in joc.");	
-				} else {
-					showResults("", "Please place your bet before playing.");	
-				}							
-			}			
-		})
+	race_clear_bets(){
+		let rabbit_array = this.state.rabbit_array;
+		for(let i in rabbit_array){
+			rabbit_array[i].bet = 0;
+		}
+		this.setState({ rabbit_array: rabbit_array })
+		if($(".race_input").length>0){
+			$(".race_input").val(0)
+		}
 	}
 
 	render() {
-		let lang = this.props.lang;	
+		let self_race_tables = this;
+		let lang = self_race_tables.props.lang;
+		let rabbit_array = self_race_tables.state.rabbit_array;
 		return (
 			<>
 				<Row>
 					<Col sm={2}></Col>
-					<Col xs={10} sm={8} className="race_table_container spacing_small">
+					<Col xs={10} sm={8} className="race_table_container spacing_small">						
 						<Row>
 							<Col sm={12}>
 								<div className="race_table_header shadow_convex">
@@ -904,120 +1046,25 @@ class RaceTables extends Component {
 								</div>
 								<div className="race_table_body_container">
 									<div className="race_table_body shadow_convex">
-										<div>
-											{
-												rabbit_array.map(function(item, i){
-													if(i%2===0){
-														var rabbit01 = rabbit_array[i];
-														var rabbit02 = rabbit_array[i+1];
-														var rabbit_box_nr01 = "rabbit_box_nr shadow_convex " + rabbit01.color;
-														var rabbit_box_nr02 = "rabbit_box_nr shadow_convex " + rabbit02.color;
-														var t = 1;
-														if(i%2===0){
-															t=i+1;
-														}
-														var a = t;
-														var b = a+1;
-														return(
-															<div className="rabbit_box_container" key={i}>
-																<div id={"rabbit_box_"+a} className="rabbit_box">
-																	<div className="rabbit_box_left">
-																		<div className="rabbit_box_pic">																			
-																			<div className={rabbit_box_nr01}><p>{rabbit01.id}</p></div>
-																			<img className="shadow_convex" src={rabbit_img_board} alt="rabbit_img_board" />																			
-																		</div>
-																		<div className="rabbit_box_name shadow_convex"><p>{rabbit01.name}</p></div>
-																		<div className="rabbit_box_info">
-																			<p className="rabbit_info rabbit_delay">Delay: {rabbit01.delay}</p>
-																			<p className="rabbit_info rabbit_max_speed">Max speed: {rabbit01.max_speed}</p>
-																			<p className="rabbit_info rabbit_min_speed">Min speed: {rabbit01.min_speed}</p>
-																		</div>																		
-																	</div>
-																	<div className="rabbit_box_right">
-																		<div className="rabbit_box_input">
-																			{lang === "ro" ? <p>Pariaza:</p> : <p>Bet:</p>}
-																			<div>
-																				<span className="rabbit_box_minus">-</span>
-																				<input className="race_input" readOnly value="0" type="text"></input>
-																				<span className="rabbit_box_plus">+</span>
-																			</div>
-																			{lang === "ro" ? <p>Loc:</p> : <p>Place:</p>}
-																			<div className="dropdown">
-																				{lang === "ro" ? <span place="1" className="place_header">Locul 1</span> : <span place="1" className="place_header">1st place</span>}
-																				<ul className="dropdown-content shadow_convex">
-																				<li place="1">{lang === "ro" ? <span>Locul 1</span> : <span>1st place</span>}</li>
-																					<li place="2">{lang === "ro" ? <span>Locul 2</span> : <span>2nd place</span>}</li>
-																					<li place="3">{lang === "ro" ? <span>Locul 3</span> : <span>3rd place</span>}</li>
-																					<li place="4">{lang === "ro" ? <span>Locul 4</span> : <span>4th place</span>}</li>
-																					<li place="5">{lang === "ro" ? <span>Locul 5</span> : <span>5th place</span>}</li>
-																					<li place="6">{lang === "ro" ? <span>Locul 6</span> : <span>6th place</span>}</li>
-																				</ul>
-																			</div>
-																		</div>																		
-																	</div>																													
-																</div>
-																<div id={"rabbit_box_"+b} className="rabbit_box">
-																	<div className="rabbit_box_left">
-																		<div className="rabbit_box_pic">																			
-																			<div className={rabbit_box_nr02}><p>{rabbit02.id}</p></div>
-																			<img className="shadow_convex" src={rabbit_img_board} alt="rabbit_img_board" />
-																		</div>
-																		<div className="rabbit_box_name shadow_convex"><p>{rabbit02.name}</p></div>	
-																		<div className="rabbit_box_info">
-																			<p className="rabbit_info rabbit_delay">Delay: {rabbit02.delay}</p>
-																			<p className="rabbit_info rabbit_max_speed">Max speed: {rabbit02.max_speed}</p>
-																			<p className="rabbit_info rabbit_min_speed">Min speed: {rabbit02.min_speed}</p>
-																		</div>																																			
-																	</div>
-																	<div className="rabbit_box_right">
-																		<div className="rabbit_box_input">
-																			{lang === "ro" ? <p>Pariaza:</p> : <p>Bet:</p>}
-																			<div>
-																				<span className="rabbit_box_minus">-</span>
-																				<input className="race_input" readOnly value="0" type="text"></input>
-																				<span className="rabbit_box_plus">+</span>
-																			</div>
-																			{lang === "ro" ? <p>Loc:</p> : <p>Place:</p>}
-																			<div className="dropdown">
-																				{lang === "ro" ? <span place="1" className="place_header">Locul 1</span> : <span place="1" className="place_header">1st place</span>}
-																				<ul className="dropdown-content shadow_convex">
-																					<li place="1">{lang === "ro" ? <span>Locul 1</span> : <span>1st place</span>}</li>
-																					<li place="2">{lang === "ro" ? <span>Locul 2</span> : <span>2nd place</span>}</li>
-																					<li place="3">{lang === "ro" ? <span>Locul 3</span> : <span>3rd place</span>}</li>
-																					<li place="4">{lang === "ro" ? <span>Locul 4</span> : <span>4th place</span>}</li>
-																					<li place="5">{lang === "ro" ? <span>Locul 5</span> : <span>5th place</span>}</li>
-																					<li place="6">{lang === "ro" ? <span>Locul 6</span> : <span>6th place</span>}</li>
-																				</ul>
-																			</div>
-																		</div>
-																	</div>																														
-																</div>																													
-															</div>
-														)
-													}
-												})
-											}
-										</div>
+										<Carousel ref={this.carousel} template="race" lang={lang} socket={this.state.socket} user={this.state.user} item_list={rabbit_array} money={this.state.money}></Carousel>
 									</div>
 								</div>
 							</Col>
 						</Row>
 						<Row>				
-							<Col sm={12} className="race_bets_container">
-								<div className="race_buttons_box">
+							<Col sm={12} className="race_bets_container shadow_convex">
+								<div className="race_text_box">
 									{lang === "ro" ? 
 										<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{this.state.money} morcovi</span></p> : 
 										<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{this.state.money} carrots</span></p>
 									}
 								</div>
 								<div className="race_buttons_box">
-									<div className="race_clear_bets shadow_convex" id="race_clear_bets">Clear Bets</div>	
-								</div>
-								<div className="race_buttons_box">
-									<div className="race_start shadow_convex" id="race_start">START</div>
+									<div onClick={()=>{this.race_start()}} className="race_start shadow_convex" id="race_start">START</div>
+									<div onClick={()=>{this.race_clear_bets()}} className="race_clear_bets shadow_convex" id="race_clear_bets"><i className="fa fa-trash"></i></div>
 								</div>
 							</Col>
-						</Row>
+						</Row>					
 						<Row>
 							<Col sm={12}>
 								{lang === "ro" ? 
@@ -1060,19 +1107,17 @@ class Race extends Component {
 		}
 		let payload = {id: id, user: this.state.user}
 		this.state.socket.emit('race_board_send', payload);
-		this.state.socket.on('race_board_read', function(data){	
-			self.setState({ rabbit_array: data.rabbit_race })
+		this.state.socket.on('race_board_read', function(data){
+			self.setState({ rabbit_array: data.rabbit_race })		
 			self.setState({ money: data.money })
 			self.setState({ id: data.id })
 			self.setState({ ready: true })
 		});
 	}
 	
-	get_data = function(x){
-		let self = this;
-		if(x === "start"){
-			self.setState({ start_race: true })
-		}
+	get_data = function(rabbit_array){
+		this.setState({ rabbit_array: rabbit_array })
+		this.setState({ start_race: true })
 	}
 
 	render() {		

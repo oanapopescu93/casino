@@ -19,6 +19,9 @@ import Career from './other_pages/career';
 import { getCookie, setCookie } from '../utils';
 import UserRace from './userRace';
 
+// import logo from './img/rabbit_loader/rabbit_run.gif';
+import logo from '../img/rabbit_loader/rabbit_run.gif';
+
 var self;
 var casino_games = {
 	roulette_tables: [], 
@@ -115,6 +118,7 @@ class Salon extends Component {
 			open_race: false,
 			id: -1,
 			money: 0,
+			loaded: false,
 	  	};		
 		self.handleBack = self.handleBack.bind(self);
 		self.handleChange = self.handleChange.bind(self);
@@ -155,6 +159,7 @@ class Salon extends Component {
 					} else {
 						self.setState({ casino_games: casino_games });
 						self.setState({ money: res.money });
+						self.setState({ loaded: true });
 					}
 				})
 			.catch(err => console.log(err));		
@@ -202,6 +207,12 @@ class Salon extends Component {
 		} else {
 			$('.full-height').attr('id', 'salon');
 		}
+		let opened = "";
+		$('#loader_container').show();
+		if(this.state.loaded){
+			opened = " open";
+			$('#loader_container').hide();
+		}
 		return (
 			<>
 				{this.state.empty ? (
@@ -231,23 +242,30 @@ class Salon extends Component {
 							</div>
 						) : (
 							<>
-								<div className="salon_button_container">
-									<div className="salon_button_box">
-										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
-											{lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
-										</div>            
-										<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
-											{lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
-										</div>
+							<div className={"salon_button_container"+opened}>
+								<div className="salon_button_box">
+									<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
+										{lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
+									</div>            
+									<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
+										{lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
 									</div>
 								</div>
-								<Col sm={12} className="salon_page color_yellow">
-									{this.state.race ? (
-										<UserRace race={this.state.race} lang={lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
-									) : (
-										<Child lang={lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
-									)}											
-								</Col>
+							</div>
+							{this.state.loaded ? (
+									<Col sm={12} className="salon_page color_yellow">
+										{this.state.race ? (
+											<UserRace race={this.state.race} lang={lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
+										) : (
+											<Child lang={lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
+										)}											
+									</Col>
+								) : (
+									<></>
+									// <div className="color_yellow">Loading...</div>
+								)
+							}
+								
 							</>																
 						)}			
 					</Row>

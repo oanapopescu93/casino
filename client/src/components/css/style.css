@@ -4,6 +4,7 @@
 	--light_yellow:yellow;
 	--green: green;
 	--transparent_2: rgba(0, 0, 0, 0.2);
+	--transparent_5: rgba(0, 0, 0, 0.5);
 	--transparent_8: rgba(0, 0, 0, 0.8);
 	--transparent_yellow: rgba(255, 215, 0, 0.2);
 	--red: red;
@@ -77,7 +78,7 @@ body{
 	padding:1px;
 }
 .HomePage{
-	background-color: rgba(0,0,0,0.5);
+	background-color: var(--transparent_5);
 	padding: 10px;	
 }
 .HomePage .deco{
@@ -92,14 +93,14 @@ body{
 }
 
 textarea.shadow_concav, input.shadow_concav, .button_yellow.shadow_concav, .shadow_concav{
-	-moz-box-shadow:    inset 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
-   	-webkit-box-shadow: inset 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
-   	box-shadow:         inset 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+	-moz-box-shadow:    inset 4px 4px 8px 2px var(--transparent_8)!important;
+   	-webkit-box-shadow: inset 4px 4px 8px 2px var(--transparent_8)!important;
+   	box-shadow:         inset 4px 4px 8px 2px var(--transparent_8)!important;
 }
 textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .button_table.shadow_convex, .shadow_convex{
-	-moz-box-shadow:    4px 4px 8px 2px rgba(0,0,0,0.7)!important;
-   	-webkit-box-shadow: 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
-   	box-shadow:         4px 4px 8px 2px rgba(0,0,0,0.7)!important;
+	-moz-box-shadow:    4px 4px 8px 2px var(--transparent_8)!important;
+   	-webkit-box-shadow: 4px 4px 8px 2px var(--transparent_8)!important;
+   	box-shadow:         4px 4px 8px 2px var(--transparent_8)!important;
 }
 
 #logo_splash, #logo_icon{
@@ -178,7 +179,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
     bottom: 0;
     right: 0;
     left: 0;
-    background: rgba(0,0,0,0.7);
+    background: var(--transparent_8);
 }
 .minor_inside{
 	position:relative;
@@ -461,9 +462,9 @@ input:-internal-autofill-selected {
 	-moz-box-shadow:    none!important;
    	-webkit-box-shadow: none!important;
    	box-shadow:         none!important;
-	/* -moz-box-shadow:    4px 4px 8px 2px rgba(0,0,0,0.7)!important;
-   	-webkit-box-shadow: 4px 4px 8px 2px rgba(0,0,0,0.7)!important;
-   	box-shadow:         4px 4px 8px 2px rgba(0,0,0,0.7)!important; */
+	/* -moz-box-shadow:    4px 4px 8px 2px var(--transparent_8)!important;
+   	-webkit-box-shadow: 4px 4px 8px 2px var(--transparent_8)!important;
+   	box-shadow:         4px 4px 8px 2px var(--transparent_8)!important; */
 	border-radius: 100%;
     height: 55px;
     width: 55px;
@@ -478,7 +479,7 @@ input:-internal-autofill-selected {
 
 .button_green{
 	color: black;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--transparent_2);
     border: solid 1px black;
 	outline: none!important;
 	-moz-box-shadow:    none!important;
@@ -486,7 +487,7 @@ input:-internal-autofill-selected {
    	box-shadow:         none!important;
 }
 .button_green:hover, .button_green:focus, .button_green:active, .button_green:active:focus{
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--transparent_2);
 	border: solid 1px black;
 	color: black;
 }
@@ -501,7 +502,7 @@ input:-internal-autofill-selected {
 	padding:10px;
 	margin-top: 10px;
 	display:none;
-	background-color: rgba(0,0,0,0.5);
+	background-color: var(--transparent_5);
 }
 .login_link_container{
 	margin:10px 0px;
@@ -558,7 +559,7 @@ table {
 }
 .modal.show{
 	opacity:1;
-	background: rgba(0,0,0,0.7);
+	background: var(--transparent_8);
 	padding:10px;
 }
 .modal-dialog{
@@ -574,9 +575,8 @@ table {
 /* chatroom */
 #chatform button{
 	width:100%;
-	/* color: #a87b51; */
 	color: var(--yellow);
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--transparent_2);
     border: solid 1px var(--yellow);
     outline: none!important;
 	-moz-box-shadow:    none!important;
@@ -613,7 +613,7 @@ table {
 .support_container{	
 	position: relative;
 	z-index:1;
-	background-color: rgba(0,0,0,0.5);
+	background-color: var(--transparent_5);
     padding: 10px;
 	margin-top:60px;
 }
@@ -644,7 +644,7 @@ table {
 	z-index:1;
 	top:-30px;
 	right:-10px;
-	background-color: rgba(0,0,0,0.5);
+	background-color: var(--transparent_5);
 	padding: 10px;
 	width:50%;	
 }
@@ -711,8 +711,8 @@ table {
 }
 .panel_box{
 	display:none;
-	background-color: rgba(0,0,0,0.5);
-	background-image: linear-gradient(black, rgba(0,0,0,0.5) 50%);
+	background-color: var(--transparent_5);
+	background-image: linear-gradient(black, var(--transparent_5) 50%);
 	border-left:solid 1px var(--yellow);
 	padding: 20px 10px;	
 	position:absolute;
@@ -909,7 +909,7 @@ table {
 	height:150px;
 	width: 100%;
 	display:table;
-	background: rgba(0,0,0,0.2);
+	background: var(--transparent_2);
 }
 .table_box > div{
 	display:table-cell;
@@ -948,7 +948,7 @@ table {
 .profile_container .profile_right{
 	border:solid 1px var(--yellow);
 	padding:15px;
-	background: rgba(0,0,0,0.2);
+	background: var(--transparent_2);
 }
 .profile_container .profile_left{
 	border-radius:10px 0px 0px 10px;
@@ -970,9 +970,9 @@ table {
 	width:100%;
 	padding:5px 10px;
 	border-radius:5px;
-	-moz-box-shadow:    inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-   	-webkit-box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-	box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+	-moz-box-shadow:    inset 2px 2px 2px var(--transparent_5)!important;
+   	-webkit-box-shadow: inset 2px 2px 2px var(--transparent_5)!important;
+	box-shadow: inset 2px 2px 2px var(--transparent_5)!important;
 	background-color: black;
 	border:solid 1px black;
 	color:var(--yellow);
@@ -1338,8 +1338,15 @@ table {
     z-index: 9999;
     top: 0px;
 	bottom:0px;
-    left: 0px;
+    left: -50px;
     width: 50px;
+	-webkit-transition:0.7s;
+    -moz-transition:0.7s;
+	-o-transition: 0.7s;
+	transition:0.7s;
+}
+.salon_button_container.open{
+	left: 0px;
 }
 .salon_button_box{
 	position: relative;
@@ -1347,7 +1354,7 @@ table {
     transform: translate(0px, -50%);
 }
 .salon_button {
-    background: rgba(0,0,0,0.5);
+    background: var(--transparent_5);
 	border:solid 1px var(--yellow);
 	border-left:none;
     color: var(--yellow);
@@ -1499,10 +1506,10 @@ table {
 	width:100%;
 	padding:5px 10px;
 	border-radius:5px;
-	-moz-box-shadow:    inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-   	-webkit-box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-	box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-	background: rgba(0,0,0,0.5);
+	-moz-box-shadow:    inset 2px 2px 2px var(--transparent_5)!important;
+   	-webkit-box-shadow: inset 2px 2px 2px var(--transparent_5)!important;
+	box-shadow: inset 2px 2px 2px var(--transparent_5)!important;
+	background: var(--transparent_5);
 	color:var(--yellow);
 	border:solid 1px var(--yellow);
 }
@@ -1512,23 +1519,23 @@ table {
     width: 55px;
 	outline: none!important;
 	color: black;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--transparent_5);
     border: solid 1px black;
 	
 }
 #slot_spin:hover, #slot_spin:focus, #slot_spin:active, #slot_spin:active:focus{
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--transparent_2);
 	border: solid 1px var(--yellow);
 	color: var(--yellow);
 }
 #slot_spin.start{
 	color: rgba(0, 0, 0, 0.5);
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--transparent_2);
     border: solid 1px rgba(0, 0, 0, 0.5);	
 }
 
 .show_results_container{
-	background:rgba(0,0,0,0.5);
+	background:var(--transparent_5);
 	position: fixed;
 	z-index: 99999;
 	top:0px;
@@ -1613,16 +1620,14 @@ table {
 }
 .race_table_body_container{
 	padding:0px 12px;
+	position: relative;
+	z-index: 2;
 }
 .race_table_body{
 	border:solid 1px var(--yellow);
 	border-top:none;
 	border-radius:0px 0px 10px 10px;
 	padding:10px;
-}
-.race_table_body > div{
-	height:490px;
-	overflow-y: auto;
 }
 .rabbit_box_container{
 	padding:10px;
@@ -1660,8 +1665,8 @@ table {
 .rabbit_box_nr{
 	position: absolute;
 	z-index: 1;
-	top:-5px;
-	left:-5px;	
+	top:-10px;
+	left:-10px;	
 	padding:4px;
 	border-radius:100px;
 	width:30px;
@@ -1672,10 +1677,11 @@ table {
 }
 .rabbit_box_pic img{
 	height:auto;
-	width:100%;
+	width:100%!important;
 	max-width:130px;
 	border-radius:100%;
 	border:solid 1px var(--yellow);
+	display:inline-block!important;
 }
 .rabbit_box_input > div .rabbit_box_minus,
 .rabbit_box_input > div .rabbit_box_plus{
@@ -1694,9 +1700,9 @@ table {
 	padding:5px 10px;
 	border:solid 1px var(--yellow);
 	border-radius:5px;
-	-moz-box-shadow:    inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-   	-webkit-box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-	box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
+	-moz-box-shadow:    inset 2px 2px 2px var(--transparent_5)!important;
+   	-webkit-box-shadow: inset 2px 2px 2px var(--transparent_5)!important;
+	box-shadow: inset 2px 2px 2px var(--transparent_5)!important;
 	background-color: transparent;
 	height: 25px;
 	margin:0px 5px;
@@ -1710,38 +1716,42 @@ table {
     position: relative;
     z-index: 1;
 }
-#race_clear_bets{
-	position: absolute;
-	z-index:1;
-	width:50px;
-	height:50px;
-	border:solid 1px var(--yellow);
-	background-color: var(--yellow);
-	color:black;
-	padding: 10px;
-	border-radius: 100px;
-	top:-70px;
-	left:50%;
-	transform: translate(-50%, 0%);
-	font-size: 14px;
-    line-height: 14px;
-	cursor: pointer;
+
+.race_text_box{
+	display: inline-block;
+	vertical-align: middle;
+	width:40%;
+	padding-right: 5px;
 }
-#race_start{
-	position: absolute;
-	z-index:1;
+.race_buttons_box{
+	display: inline-block;
+	vertical-align: middle;
+	width:60%;
+	text-align: right;
+}
+#race_start, #race_clear_bets{
 	width:50px;
 	height:50px;
 	border:solid 1px var(--yellow);
 	background-color: var(--yellow);
-	color:black;
-	padding: 16px 8px;
+	color:black;	
 	border-radius: 100px;
+	right: 25px;
+	top:-10px;
+	left:50%;
 	font-size: 14px;
     line-height: 14px;
-	right: 25px;
-    top: -10px;
 	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	margin-left:5px;
+	padding: 17px 7px;
+}
+#race_start:hover, #race_clear_bets:hover{
+	border:solid 1px var(--yellow);
+	background-color: var(--transparent_yellow);
+	color:var(--yellow);	
 }
 
 .race_container{
@@ -1762,7 +1772,7 @@ table {
 	border:solid 1px var(--yellow);
 	border-top:solid 0px transparent;
 	border-radius:0px 0px 10px 10px;
-	background: rgba(0,0,0,0.5);
+	background: var(--transparent_5);
 	color:var(--yellow);
 	padding:10px;
 	padding-top:20px;
@@ -1830,9 +1840,9 @@ table {
 	position: absolute;
 	z-index: 999999;
 	min-width: 100%;
-	-moz-box-shadow:    0px 8px 16px 0px rgba(0,0,0,0.2);
-   -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);	
+	-moz-box-shadow:    0px 8px 16px 0px var(--transparent_2);
+   -webkit-box-shadow: 0px 8px 16px 0px var(--transparent_2);
+	box-shadow: 0px 8px 16px 0px var(--transparent_2);	
 	height:auto;
 	overflow-y: auto;
 	max-height: 100px;
@@ -1868,28 +1878,41 @@ table {
 	background-color: black;
 	padding:10px;
 }
-.place_header{
-	border:solid 1px var(--yellow);
-	border-radius: 5px;
-	display: inline-block;
-	width:100%;
+.rabbit_inside{
+	padding: 5px;
 }
-.rabbit_box_input .dropdown-content {
-    display: none;
-    position: absolute;
-	z-index: 999999;
+.rabbit_box{
+	padding: 5px;
     border: solid 1px var(--yellow);
-    border-radius: 5px;
-    background: var(--transparent_yellow);
+    border-radius: 10px;
+    height: 150px;
+    width: 100%;
+    display: table;
+    background: var(--transparent_2);
+}
+.place_box li{
+	padding: 4px;
+    border-radius: 100px;
+    width: 30px;
+    height: 30px;
+	background: transparent;
+    border: solid 1px var(--yellow);
     color: var(--yellow);
-    padding: 5px;    
+    text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 5px;
+	cursor: pointer;
 }
-.rabbit_box_input .dropdown-content li {
-    cursor: pointer;
-}
-.rabbit_box_input .dropdown-content li:hover {
-    background: var(--transparent_yellow);
+.place_box li.active{
+	background: var(--yellow);
+	border: solid 1px var(--yellow);
     color: black;
+}
+.place_box li:hover{
+	background: var(--transparent_yellow);
+	border: solid 1px var(--yellow);
+    color: var(--yellow);
 }
 
 /* donations */
@@ -1905,7 +1928,7 @@ table {
 .donation_body_crypto{
 	border: solid 1px var(--yellow);
     border-radius: 10px;
-    background: rgba(0,0,0,0.2);	
+    background: var(--transparent_2);	
 }
 .donation_body{	
     padding: 10px 15px;
@@ -2080,7 +2103,7 @@ table {
 	width: 100px;
 	height: 100px;
 	border-radius: 5px;
-	background: rgba(0,0,0,0.7)
+	background: var(--transparent_8);
 }
 .dot {
 	position: absolute;
@@ -2175,8 +2198,8 @@ table {
     width: 100%;
     padding: 5px 10px;
     border-radius: 5px;
-    box-shadow: inset 2px 2px 2px rgba(0,0,0,0.5)!important;
-	background: rgba(0,0,0,0.5);
+    box-shadow: inset 2px 2px 2px var(--transparent_5)!important;
+	background: var(--transparent_5);
 	color: var(--yellow);
     border: solid 1px var(--yellow);
 }
@@ -2270,7 +2293,7 @@ table {
 		padding:0px;
 	}
 	.rabbit_box_pic img{
-		width:70px;
+		width:70px!important;
 	}
 	.casino_games_title_container{		
 		position: absolute;
@@ -2478,18 +2501,6 @@ table {
 	}
 	#rabbit_stand_right, #rabbit_stand_left{
 		float:none;
-	}
-	#race_start, #race_clear_bets{
-		transform: initial;
-		position: static;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	.race_buttons_box{
-		display: inline-block;
-		vertical-align: middle;
-		padding: 0px 5px;
-		width:33.33%;
 	}
 
 	.button_container{

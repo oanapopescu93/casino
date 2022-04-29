@@ -64,15 +64,19 @@ var rabbit_delay = [40, 20] //max, min
 // 	});
 // });
 
-database_config.sql = "SELECT * FROM casino_users";
-database(database_config).then(function(data){
-	users_json = data;
-	//console.log('users_json--> ', users_json)
-});
+// database_config.sql = "SELECT * FROM casino_users";
+// database(database_config).then(function(data){
+// 	users_json = data;
+// 	//console.log('users_json--> ', users_json)
+// });
 
 app.use(routes);
 
 io.on('connection', function(socket) {
+	console.log('connection')
+	socket.on("error", (err) =>{
+		console.log('error', err);
+	})
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
@@ -87,7 +91,10 @@ io.on('connection', function(socket) {
 		let obj = {};
 		let pass01 = data.pass;
 		for(let i in users_json){
+			//console.log(users_json[i].pass)
 			let pass02 = decrypt(JSON.parse(users_json[i].pass));
+			//console.log(JSON.parse(users_json[i].pass))
+			//console.log(pass02)
 			if(data.user === users_json[i].user && pass01 === pass02){
 				exists = true;	
 				obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
@@ -193,26 +200,40 @@ io.on('connection', function(socket) {
 			}
 		}
 	});
-	socket.on('salon_send', function(data) {
+	socket.on('salon_send', function(data) {		
 		let id = data;
 		let money = 0;
-		let x;	
-		for(let i in users_json){				
-			if(users_json[i].id === id){
-				money = users_json[i].money;
-				x = users_json[i];
-				break;
+		if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
+			for(let i in users_json){		
+				if(users_json[i].id === id){
+					money = users_json[i].money;
+					break;
+				}
+				try{
+					io.emit('salon_read', {server_tables: server_tables, money: money});
+				}catch(e){
+					console.log('[error]','salon_read :', e);
+				}
 			}
-		}
-		//console.log('salon_send1', data, users_json)
-		//console.log('salon_send11', x, money)
-		try{
-			//console.log('salon_send22', x, money)
-			io.emit('salon_read', {server_tables: server_tables, money: money});
-		}catch(e){
-			console.log('[error]','salon_read :', e);
+		} else {
+			database_config.sql = "SELECT * FROM casino_users";
+			database(database_config).then(function(result){						
+				users_json = result;
+				for(let i in users_json){	
+					if(users_json[i].id === id){
+						money = users_json[i].money;
+						break;
+					}
+				}
+				try{
+					io.emit('salon_read', {server_tables: server_tables, money: money});
+				}catch(e){
+					console.log('[error]','salon_read :', e);
+				}	
+			});
 		}		
 	});
+
 	socket.on('user_page_send', function(data) {
 		let my_table = data[0];
 		let game = my_table.split('_')[0]
@@ -220,6 +241,7 @@ io.on('connection', function(socket) {
 		let user = data[2];
 		let money = 0;
 		let server_user = null;
+		
 		if((id !== "" && id !== "indefined") || (user !== "" && user !== "indefined")){
 			for(let i in users_json){	
 				if(id === users_json[i].id){
@@ -242,6 +264,7 @@ io.on('connection', function(socket) {
 			}
 		}		
 	});	
+
 	socket.on('username', function(payload) {
 		let username = payload.user;
 		let user_table = payload.user_table.split(' ').join('_');
@@ -774,6 +797,8 @@ io.on('connection', function(socket) {
 			rabbit_race[i].delay = random_delay;
 			rabbit_race[i].max_speed = rabbit_speed[0];
 			rabbit_race[i].min_speed = rabbit_speed[1];
+			rabbit_race[i].bet = 0;
+			rabbit_race[i].place = 1;
 		}
 		var server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
 		io.to(socket.id).emit('race_board_read', server_user);
@@ -792,7 +817,8 @@ io.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('disconnect', function(username) {		
+	socket.on('disconnect', function(reason) {
+		console.log('disconnect', reason)
 		var k = sockets.indexOf(socket); 		
 		if(k !== -1){
 			if(typeof user_join[k].user !== "undefined"){
