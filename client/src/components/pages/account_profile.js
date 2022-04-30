@@ -66,8 +66,8 @@ function Account_profile(props) {
 					</Row>
 					<Row className="profile_container">
 						<Col sm={4}>
-							<div className="profile_left shadow_concav">
-								<h3>User info: </h3>
+							<div className="profile_left shadow_concav">								
+								{lang === "ro" ? <h3>Informatii utilizator</h3> : <h3>User info</h3>}
 								<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}<span id="profile_user_text">{username}</span></p>
 								<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
 								<div id="profile_change_username" className="profile_button button_yellow" onClick={handleShow}>Change username</div>
@@ -75,8 +75,8 @@ function Account_profile(props) {
 							</div>
 						</Col>
 						<Col sm={8}>
-							<div className="profile_right shadow_concav">
-								<h3>History: </h3>
+							<div className="profile_right shadow_concav">								
+								{lang === "ro" ? <h3>Istoric</h3> : <h3>History</h3>}
 								<div className="history_box">
 									{(() => {
 										if (roulette_info === -1 && blackjack_info === -1) {

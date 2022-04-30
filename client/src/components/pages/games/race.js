@@ -974,7 +974,6 @@ class RaceTables extends Component {
 		};
 		
 		this.check_bets = this.check_bets.bind(this);
-		this.handleExit = this.handleExit.bind(this);
 		this.race_start = this.race_start.bind(this);
 		this.race_clear_bets = this.race_clear_bets.bind(this);
 
@@ -992,14 +991,6 @@ class RaceTables extends Component {
 			}
 		}
 		return start;
-	}
-
-	handleExit() {
-        setCookie("casino_user", '', 1);
-		setCookie("casino_email", '', 1);
-		var url = window.location.href;
-		url = url.split('/salon');
-		window.location.href = url[0];
 	}
 
 	race_start(){
@@ -1063,14 +1054,6 @@ class RaceTables extends Component {
 									<div onClick={()=>{this.race_start()}} className="race_start shadow_convex" id="race_start">START</div>
 									<div onClick={()=>{this.race_clear_bets()}} className="race_clear_bets shadow_convex" id="race_clear_bets"><i className="fa fa-trash"></i></div>
 								</div>
-							</Col>
-						</Row>					
-						<Row>
-							<Col sm={12}>
-								{lang === "ro" ? 
-									<p id="exit_salon" className="shadow_convex" onClick={() => this.handleExit()}>Iesi din salon</p> : 
-									<p id="exit_salon" className="shadow_convex" onClick={() => this.handleExit()}>Exit salon</p>	
-								}																			
 							</Col>
 						</Row>
 					</Col>

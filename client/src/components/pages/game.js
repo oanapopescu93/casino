@@ -47,7 +47,7 @@ class Game extends Component {
 		
 		if(this.state.user !== ""){
 			user = true;
-		} 
+		}
 		
 		return (
 			<div className="color_yellow">
@@ -82,7 +82,7 @@ class Game extends Component {
 															<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Inapoi</Button>
 														</> : 
 														<>
-															<p>Somethis went wrong</p>
+															<p>Somethig went wrong</p>
 															<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
 														</>
 													}														

@@ -964,6 +964,7 @@ table {
     border-radius: 50px;
     cursor: pointer;
 	margin:5px 0px;
+	line-height:10px;
 }
 
 .change_username_input{
@@ -1753,6 +1754,9 @@ table {
 	background-color: var(--transparent_yellow);
 	color:var(--yellow);	
 }
+#race_clear_bets i{
+	font-size: 24px;
+}
 
 .race_container{
 	position:relative;
@@ -2283,9 +2287,6 @@ table {
 		height:60px;
 		text-align: center;
 	}
-	.race_table_body > div{
-		height:220px;
-	}
 	.race_bets_container{
 		margin: 10px 0px;
 	}
@@ -2548,9 +2549,6 @@ table {
 	.rabbit_box_name{
 		padding: 0px;
 		margin:0px;
-	}
-	.rabbit_box_info{
-		display: none;
 	}
 }
 @media (max-width:600px) {	
