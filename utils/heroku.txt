@@ -1,0 +1,20 @@
+Heroku and Github : Items could not be retrieved, Internal server error
+
+1. Install the Heroku CLI if not yet installed
+Further information about installation and setup can get here
+
+2. Perform login with the heroku login command
+You will be prompted with your default browser window for completing the login at the Heroku portal.
+
+3. Assuming you already have your app set up at Heroku (if not, please follow this), you just need to add a new remote for your git repo with Heroku CLI.
+Run heroku git:remote -a example-app - substitute "example-app" with your app name.
+
+4. git remote -v to check if the remote has been set successfully
+You should see something like this appear as a response
+
+heroku  https://git.heroku.com/your-app-name.git (fetch)
+heroku  https://git.heroku.com/your-app-name.git (push)
+5. Push your branch to the new heroku remote
+git push heroku your_branch_name
+
+6. You should see the progress of your deployment being displayed in the terminal
