@@ -245,10 +245,10 @@ class Salon extends Component {
 							<div className={"salon_button_container"+opened}>
 								<div className="salon_button_box">
 									<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
-										{lang === "ro" ? <span>Jocuri</span> : <span>Games</span>}											
+										{lang === "ro" ? <span><i class="fa fa-smile-o"></i>Jocuri</span> : <span><i class="fa fa-smile-o"></i>Games</span>}											
 									</div>            
 									<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
-										{lang === "ro" ? <span>Curse</span> : <span>Race</span>}	
+										{lang === "ro" ? <span><i class="fa fa-flag-checkered"></i>Curse</span> : <span><i class="fa fa-flag-checkered"></i>Race</span>}	
 									</div>
 								</div>
 							</div>

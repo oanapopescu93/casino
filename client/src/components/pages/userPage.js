@@ -22,7 +22,7 @@ function Child(props) {
 	var user_table = props.user_table;
 	var game = props.game;
 	var socket = props.socket;
-	var lang = props.lang;	
+	var lang = props.lang;
 	return (			
 			<BrowserRouter>
 				<div className="userPage"> 
@@ -70,7 +70,7 @@ class UserPage extends Component {
   
 	componentDidMount() {
 		self.userPageData()
-			.then(res => {	
+			.then(res => {
 					if(res !== null){
 						var table = self.state.user.user_table;
 						var table_split = table.split('_');
@@ -101,7 +101,6 @@ class UserPage extends Component {
 			var user = getCookie("casino_user");
 			self.state.socket.emit('user_page_send', [table[1], id, user]);
 			self.state.socket.on('user_page_read', function(data){
-				console.log('user_page_read', data)
 				if(data !== null){
 					if(data.user === "" || data.user === "indefined"){
 						data.user = getCookie("casino_user")

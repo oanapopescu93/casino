@@ -964,6 +964,7 @@ table {
     border-radius: 50px;
     cursor: pointer;
 	margin:5px 0px;
+	line-height:10px;
 }
 
 .change_username_input{
@@ -1360,10 +1361,10 @@ table {
     color: var(--yellow);
     border-radius: 0px 10px 10px 0px;
     width: 30px;
-    height: 100px;
+    height: 130px;
     text-align: center;
     vertical-align: top;
-    padding: 10px;
+    padding: 10px 10px 10px 5px;
     cursor: pointer;
 	margin-bottom:10px;	
 }
@@ -1380,6 +1381,11 @@ table {
 	font-size: 12px;
 	line-height: 12px;
 	text-transform: uppercase;	
+}
+.salon_button i{
+	margin-bottom: 5px;
+    font-size: 16px;
+    line-height: 16px;
 }
 #exit_salon{
 	display:inline-block;
@@ -1753,6 +1759,9 @@ table {
 	background-color: var(--transparent_yellow);
 	color:var(--yellow);	
 }
+#race_clear_bets i{
+	font-size: 24px;
+}
 
 .race_container{
 	position:relative;
@@ -1984,7 +1993,6 @@ table {
 	border: solid 1px var(--yellow);
 	border-bottom: solid 0px transparent;
 	border-radius: 10px 10px 0px 0px;
-	width: 80px;
 }
 .career_header_box:hover, .career_header_box:active, .career_header_box:focus, .career_header_box.open{
 	background-color: var(--transparent_yellow);
@@ -2044,15 +2052,19 @@ table {
 
 .career_container{
 	text-align: left;
-	padding: 10px;
+	padding: 5px;
 }
 .career_scroll{
-	max-height: 400px;
+	height: 420px;
 	overflow-y: auto;
 }
 .career_box{
-	padding: 10px 0px;
+	padding: 5px 0px;
 	border-bottom: solid 1px var(--yellow);
+}
+.career_box:last-child{
+	padding: 5px 0px;
+	border-bottom: solid 0px transparent;
 }
 
 /* Questions */
@@ -2280,11 +2292,10 @@ table {
 		position: relative;
 		z-index: 2;
 		margin-top: 10px;
-		height:60px;
 		text-align: center;
 	}
-	.race_table_body > div{
-		height:220px;
+	.career_scroll {
+		height: 200px;
 	}
 	.race_bets_container{
 		margin: 10px 0px;
@@ -2538,19 +2549,12 @@ table {
 	#roulette .full-height-content{
 		margin-top: 25%;
 	}
-	.salon_button{
-		width: 35px;
-		height: 110px;
-	}
 	.salon_button span{
 		font-size: 12px;
 	}
 	.rabbit_box_name{
 		padding: 0px;
 		margin:0px;
-	}
-	.rabbit_box_info{
-		display: none;
 	}
 }
 @media (max-width:600px) {	
@@ -2621,6 +2625,9 @@ table {
 }
 
 @media (max-width: 768px) and (orientation: landscape) {
+	.salon_button i{
+		display:none;
+	}
 	#roulette .full-height-content{
 		margin-top: 0%;
 	}

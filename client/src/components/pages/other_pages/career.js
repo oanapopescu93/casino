@@ -90,7 +90,7 @@ class CareerList extends React.Component {
     }
     handleDropdown(x){
         $('.career_header_box').removeClass('open');
-        $('career_header_box_'+x).addClass('open');
+        $('#career_header_box_'+x).addClass('open');
 
         let list = this.state.list;
         if(x !== "all"){

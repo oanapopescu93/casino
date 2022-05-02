@@ -69,16 +69,19 @@ class UserAccount extends Component {
 	}	
   
 	render() {
-		$('.full-height').attr('id', 'user_account')		
+		$('.full-height').attr('id', 'user_account');
+		let lang = self.props.lang;
 		return (
 			<div className="color_yellow">	
 				<div className="account_tabs_container">
-					<div id="account_profile" className="account_tabs active" onClick={()=>this.account_choose_tab("account_profile")}><img alt="inventory_img" className="account_img" src={inventory_img} /> Profile</div>
+					<div id="account_profile" className="account_tabs active" onClick={()=>this.account_choose_tab("account_profile")}><img alt="inventory_img" className="account_img" src={inventory_img} />
+						{lang === "ro" ? <span>Profil</span> : <span>Profile</span>}
+					</div>
 					<div id="account_market" className="account_tabs" onClick={()=>this.account_choose_tab("account_market")}><img alt="market_img" className="account_img" src={market_img} /> Market</div>
 				</div>
 				
-				{ this.state.visible ? <AccountProfile lang={self.state.lang} info={self.state.account_info}></AccountProfile> : null }
-				{ !this.state.visible ? <AccountMarket lang={self.state.lang} info={self.state.account_info} market={self.state.market}></AccountMarket> : null }
+				{ this.state.visible ? <AccountProfile lang={lang} info={self.state.account_info}></AccountProfile> : null }
+				{ !this.state.visible ? <AccountMarket lang={lang} info={self.state.account_info} market={self.state.market}></AccountMarket> : null }
 			</div>
 		);
 		

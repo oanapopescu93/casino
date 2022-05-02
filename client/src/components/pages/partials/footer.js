@@ -7,6 +7,8 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import ukraine from '../../img/icons/ukraine.svg';
+
 function Footer(props){
 	var dispatch = props.dispatch;
 	var lang = props.lang;
@@ -53,6 +55,7 @@ function Footer(props){
 								<li onClick={() => handleClick('privacy')}>{lang === "ro" ? <span>Politica de confidentialitate</span> : <span>Privacy policy</span>}</li>
 								<li onClick={() => handleClick('questions')}>{lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</li>
 								<li onClick={() => handleClick('career')}>{lang === "ro" ? <span>Cariera</span> : <span>Career</span>}</li>
+								<li><img id="ukraine_icon" alt="ukraine_icon" src={ukraine} style={{"width": "20px"}}></img></li>
 							</ul>
 						</Col>
 					</Row>

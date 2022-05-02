@@ -59,6 +59,7 @@ class SalonGames extends React.Component {
     }
 	
 	render(){
+        let lang = this.props.lang;
 		return (
             <>
             <Row>
@@ -126,7 +127,7 @@ class SalonGames extends React.Component {
                                                     )
                                                 } else {
                                                     return (
-                                                        <Carousel template="salon" lang={self.state.lang} socket={self.state.socket} user={self.state.user} item_list={self.state.info.casino_games[t]}></Carousel>
+                                                        <Carousel template="salon" lang={lang} socket={self.state.socket} user={self.state.user} item_list={self.state.info.casino_games[t]}></Carousel>
                                                     )
                                                 }
                                             })()}
@@ -141,7 +142,7 @@ class SalonGames extends React.Component {
             </Row>
             <Row>
                 <Col sm={12}>
-                    {self.state.lang === "ro" ? 
+                    {lang === "ro" ? 
                         <p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Iesi din salon</p> : 
                         <p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>	
                     }																			

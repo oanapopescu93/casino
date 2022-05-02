@@ -242,10 +242,9 @@ io.on('connection', function(socket) {
 		let money = 0;
 		let server_user = null;
 		
-		if((id !== "" && id !== "indefined") || (user !== "" && user !== "indefined")){
+		if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
 			for(let i in users_json){	
 				if(id === users_json[i].id){
-					exists = true;
 					money = users_json[i].money;
 					break;
 				}
@@ -257,11 +256,22 @@ io.on('connection', function(socket) {
 				console.log('[error]','user_page_send1 :', e);
 			}
 		} else {
-			try{
-				io.to(socket.id).emit('user_page_read', server_user);
-			}catch(e){
-				console.log('[error]','user_page_send2 :', e);
-			}
+			database_config.sql = "SELECT * FROM casino_users";
+			database(database_config).then(function(result){						
+				users_json = result;
+				for(let i in users_json){	
+					if(users_json[i].id === id){
+						money = users_json[i].money;
+						break;
+					}
+				}
+				server_user = {id: id, user: user, money: money, user_table: my_table, game: game, contact: contact_details}
+				try{
+					io.emit('user_page_read', server_user);
+				}catch(e){
+					console.log('[error]','user_page_send2 :', e);
+				}	
+			});
 		}		
 	});	
 
@@ -781,34 +791,39 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('race_board_send', function(data) {
-		var id = data.id;
-		var race_user = data.user;
-		var money = 0;
+		let id = data.id;
+		let race_user = data.user;
+		let money = 0;
 		if(id != -1){
-		 	for(var i in users_json){	
+		 	for(let i in users_json){	
 				if(id === users_json[i].id){
 					money = users_json[i].money;
 					break;
 				}
 		 	}
 		}
-		for(var i in rabbit_race){
-			var random_delay = Math.floor(Math.random() * rabbit_delay[0]) + rabbit_delay[1];
-			rabbit_race[i].delay = random_delay;
+		for(let i in rabbit_race){			
 			rabbit_race[i].max_speed = rabbit_speed[0];
 			rabbit_race[i].min_speed = rabbit_speed[1];
+
+			let random_delay = Math.floor(Math.random() * (rabbit_delay[0] - rabbit_delay[1]) ) + rabbit_delay[1];
+			rabbit_race[i].delay = random_delay;
+			
+			rabbit_race[i].health_max = 5;
+			rabbit_race[i].health = Math.round(random_delay * rabbit_race[i].health_max / rabbit_delay[0] * 10) / 10;
+			
 			rabbit_race[i].bet = 0;
 			rabbit_race[i].place = 1;
 		}
-		var server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
+		let server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
 		io.to(socket.id).emit('race_board_read', server_user);
 	});
 	socket.on('race_results_send', function(data) {
-		var money = data.money;
-		var id = parseInt(data.user_id);
+		let money = data.money;
+		let id = parseInt(data.user_id);
 		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id = "+id;
 		database(database_config).then(function(result){
-			for(var i in users_json){	
+			for(let i in users_json){	
 				if(data.user_id === users_json[i].id){
 					users_json[i].money = money;
 					break;
@@ -819,15 +834,15 @@ io.on('connection', function(socket) {
 
 	socket.on('disconnect', function(reason) {
 		console.log('disconnect', reason)
-		var k = sockets.indexOf(socket); 		
+		let k = sockets.indexOf(socket); 		
 		if(k !== -1){
 			if(typeof user_join[k].user !== "undefined"){
-				var user_table = user_join[k].user_table.split(' ');		
+				let user_table = user_join[k].user_table.split(' ');		
 				user_table = user_table.join('_');				
-				var room_name = user_table;
+				let room_name = user_table;
 
 				if(typeof user_join[k].user_type !== "undefined"){
-					var user_type = user_join[k].user_type;	
+					let user_type = user_join[k].user_type;	
 					room_name = room_name + '_' + user_type;				
 				}	
 				

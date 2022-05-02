@@ -26,7 +26,7 @@ class Language extends React.Component {
                 setCookie("casino_lang", "eng", 30);
                 self.state.lang_change('eng');
                 break;				
-          }          
+        }
     }
 
     render(){
