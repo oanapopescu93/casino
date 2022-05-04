@@ -200,7 +200,7 @@ class Craps extends Component {
 								$('.dice_container').removeClass('jump');
 								sum = self.state.dices_number[0] + self.state.dices_number[1];			
 								self.show_on_board(self.state.dices_number, sum, point);
-								if (sum == point) {
+								if (sum === point) {
 									state = 2;
 								} else if (sum === 7) {
 									state = 4;

@@ -2,7 +2,10 @@ var express = require("express");
 const app = express();
 
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http,{
+    pingInterval: 10000,
+    pingTimeout: 5000,
+});
 const port = process.env.PORT || 5000;
 app.set("port", port);
 
@@ -77,6 +80,11 @@ io.on('connection', function(socket) {
 	socket.on("error", (err) =>{
 		console.log('error', err);
 	})
+
+	socket.on('heartbeat', function(data) {
+		console.log('heartbeat', data)
+	});
+
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){

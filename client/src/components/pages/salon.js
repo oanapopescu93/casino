@@ -19,10 +19,6 @@ import Career from './other_pages/career';
 import { getCookie, setCookie } from '../utils';
 import UserRace from './userRace';
 
-// import logo from './img/rabbit_loader/rabbit_run.gif';
-import logo from '../img/rabbit_loader/rabbit_run.gif';
-
-var self;
 var casino_games = {
 	roulette_tables: [], 
 	blackjack_tables: [],
@@ -94,10 +90,7 @@ function Child(props){
 						)
 					default:
 						return(
-							<>
-								<Sapou lang={lang} page="salon"></Sapou>
-								<SalonGames lang={lang} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></SalonGames>
-							</>
+							<p>Something went wrong.</p>
 						)						
 				}
 			})()}					
@@ -108,8 +101,7 @@ function Child(props){
 class Salon extends Component {	
 	constructor(props) {
 		super(props);
-		self = this;
-		self.state = {
+		this.state = {
 			socket: props.socket,
 			lang: props.lang,
 			empty: false,
@@ -120,13 +112,14 @@ class Salon extends Component {
 			money: 0,
 			loaded: false,
 	  	};		
-		self.handleBack = self.handleBack.bind(self);
-		self.handleChange = self.handleChange.bind(self);
-		self.salonData = self.salonData.bind(self);
+		this.handleBack = this.handleBack.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.salonData = this.salonData.bind(this);
 	}
   
 	componentDidMount(a) {
-		self.salonData()
+		let self = this;
+		this.salonData()
 			.then(res => {
 					for(var i in res.server_tables){
 						switch (res.server_tables[i].table_name) {
@@ -147,8 +140,8 @@ class Salon extends Component {
 						  }
 					}
 					
-					var empty = 0;
-					for(var j in casino_games_title){
+					let empty = 0;
+					for(let j in casino_games_title){
 						if(casino_games[casino_games_title[j]].length === 0){
 							empty++;
 						}
@@ -166,6 +159,7 @@ class Salon extends Component {
 	}
 	
 	salonData(){
+		let self = this;
 		return new Promise(function(resolve, reject){
 			self.setState({ user_id: parseInt(getCookie("casino_id")) });
 			self.setState({ user: getCookie("casino_user") });
@@ -179,7 +173,7 @@ class Salon extends Component {
 	};
 
 	handleBack() {
-		var url = window.location.href;
+		let url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];
 	}
@@ -187,7 +181,7 @@ class Salon extends Component {
 	handleExit(){
 		setCookie("casino_user", '', 1);
 		setCookie("casino_email", '', 1);
-		var url = window.location.href;
+		let url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];
 	}
@@ -245,10 +239,10 @@ class Salon extends Component {
 							<div className={"salon_button_container"+opened}>
 								<div className="salon_button_box">
 									<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
-										{lang === "ro" ? <span><i class="fa fa-smile-o"></i>Jocuri</span> : <span><i class="fa fa-smile-o"></i>Games</span>}											
+										{lang === "ro" ? <span><i className="fa fa-smile-o"></i>Jocuri</span> : <span><i class="fa fa-smile-o"></i>Games</span>}											
 									</div>            
 									<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
-										{lang === "ro" ? <span><i class="fa fa-flag-checkered"></i>Curse</span> : <span><i class="fa fa-flag-checkered"></i>Race</span>}	
+										{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i>Curse</span> : <span><i class="fa fa-flag-checkered"></i>Race</span>}	
 									</div>
 								</div>
 							</div>

@@ -3,10 +3,11 @@ import {race_calculate_money, race_get_history} from '../../actions/actions'
 import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
-import { getCookie, setCookie, showResults } from '../../utils';
+// import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
+import { getCookie, showResults } from '../../utils';
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
 import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png';
+import obstacle from '../../img/icons/obstacle.png';
 import Carousel from '../partials/carousel';
 
 let canvas;
@@ -122,13 +123,12 @@ function Rabbit(config){
 	self.img_sit = config.img_sit;
 	self.img_move = config.img_move;
 	self.img_stop = config.img_stop;
+
 	self.x = config.x;
 	self.y = config.y;
 	self.w = config.w;
 	self.h = config.h;
-	
-	self.jump_duration = 0;
-	self.hit = false;
+	self.y_original = config.y;	
 
 	self.frameWidth = 672;
 	self.frameHeight = 592;
@@ -153,73 +153,32 @@ function Rabbit(config){
 
 			if(self.frame > 7){
 				self.frame = 0;
-			}			
-			
+			}
+
+			// let font_obstacle = 'bold 10px sans-serif';
+			// self.add_text(self.x+'/'+self.y, self.x,  self.y, font_obstacle, "white", "center");			
 			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 		} else {
 			ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 		}		
 	}
-	self.jump = function(ctx, nr, finish_line_x){
-		if(typeof finish_line_x === "undefined"){
-			if(self.avg_dist > canvas.width/2){
-				self.x = self.x-3;
-			}
-		} 
-		
-		if(nr % self.speed === 0){
-			self.frame++;
-			self.x = self.x+3;				
-		}
 
-		if(self.frame > 7){
-			self.frame = 0;
-		}
-		
-		self.y = self.y-50
-		if(self.id == 1){
-			console.log('xxx1', self.y)	
-		}
-		ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
-		self.y = self.y+50
-		if(self.id == 1){
-			console.log('xxx2', self.y)	
+	self.add_text = function(text, x, y, font, color, text_align, stroke, line){
+		ctx.font = font;
+		if(stroke && line){
+			ctx.strokeStyle = stroke;
+    		ctx.lineWidth = line;
+			ctx.strokeText(text, x, y);
+			ctx.fillStyle = color;
+			ctx.textAlign = text_align;
+			ctx.fillText(text, x, y);
+		} else {
+			ctx.fillStyle = color;
+			ctx.textAlign = text_align;
+			ctx.fillText(text, x, y);
 		}
 	}
-	self.collision = function(){
-		// if(self.jump_duration === 0){	
-		// 	if(Math.random() < 0.1){//probability of 10% to have a collision
-		// 		self.jump_duration++
-		// 		self.hit = true;
-		// 		//if(self.id == 1){
-		// 			//console.log('collision-JUMP0', self.jump_duration)	
-		// 		//}
-		// 	} else {
-		// 		//if(self.id == 1){
-		// 			//console.log('collision-RUN0', self.jump_duration)
-		// 		//}
-		// 	}
-		// } else {
-		// 	if(self.jump_duration < 5){	
-		// 		self.jump_duration++
-		// 		self.hit = true;
-		// 		//if(self.id == 1){
-		// 			//console.log('collision-JUMP1', self.jump_duration)	
-		// 		//}
-		// 	} else {
-		// 		self.jump_duration = 0;
-		// 		//if(self.id == 1){
-		// 			//console.log('collision-RUN1', self.jump_duration)
-		// 		//}				
-		// 	}
-		// }
 
-		// if(self.id == 1){
-		// 	console.log('collision------', self.jump_duration, self.hit)	
-		// }
-		
-		return [self.hit, self.jump_duration];
-	}
 	self.stop = function(ctx, nr){
 		if(self.frame !== 4){	
 			if(nr % self.speed === 0){
@@ -234,13 +193,15 @@ function Rabbit(config){
 			ctx.drawImage(self.img_stop, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
 		}
 	}
+
 	self.change_speed = function(){
-		var random_speed = Math.floor(Math.random() * self.max_speed) + self.min_speed;
+		let random_speed = Math.floor(Math.random() * self.max_speed) + self.min_speed;
 		self.speed = random_speed;
 	}
-	self.move_view = function(all, nr){
-		var sum_dist = 0;
-		for(var i in all){
+
+	self.move_view = function(all){
+		let sum_dist = 0;
+		for(let i in all){
 			sum_dist = sum_dist + all[i].x;
 		}
 		self.avg_dist = sum_dist/all.length;
@@ -249,62 +210,163 @@ function Rabbit(config){
 
 function Obstacle(config){
 	let self = this;
+	self.id = config.id+1;
+	self.img = config.img;
 	self.color = config.color;
 	self.border = config.border;
 	self.border_color = config.border_color;
 	self.x = config.x;
-	self.y = config.y;
+	self.y = config.y + config.w;
 	self.w = config.w;
 	self.h = config.h;
+	self.frameWidth = 816;
+	self.frameHeight = 635;
+
 	self.draw = function(ctx){
-		//draw_dot(x, y, r, sAngle, eAngle, counterclockwise, 'white', 1, 'grey');  //ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
+		let y001 = self.y+self.h/2;
+		ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, y001, self.w, self.h);
+		//draw_dot(self.x, y001, self.w/2, 0, 2 * Math.PI, false, self.color, self.border, self.border_color);
+		// let font_obstacle = '10px sans-serif';
+		// self.add_text(self.x+'/'+self.y, self.x,  y001, font_obstacle, "black", "center");
+	}
+	self.add_text = function(text, x, y, font, color, text_align, stroke, line){
+		ctx.font = font;
+		if(stroke && line){
+			ctx.strokeStyle = stroke;
+    		ctx.lineWidth = line;
+			ctx.strokeText(text, x, y);
+			ctx.fillStyle = color;
+			ctx.textAlign = text_align;
+			ctx.fillText(text, x, y);
+		} else {
+			ctx.fillStyle = color;
+			ctx.textAlign = text_align;
+			ctx.fillText(text, x, y);
+		}
 	}
 }
 
 function Lane(config){
 	let self = this;
 	self.id = config.id;
+
 	self.x = config.x;
 	self.y = config.y;
 	self.w = config.w;
 	self.h = config.h;
-	self.rabbit = config.rabbit;
+	self.min_speed = 0;
+
+	self.rabbit = null;
+	self.rabbit_config = config.rabbit_config;
+
 	self.obstacles = [];
-	self.obstacle_size = config.obstacle_size;
+	self.obstacle_img = config.obstacle_img;	
+	self.obstacle_size = config.obstacle_size;	
+	
+	self.create_rabbit = function(){
+		self.rabbit = new Rabbit(self.rabbit_config);
+	}
 
-	self.create_obstacles = function(){
-		let chance = Math.random() < 0.3;//probability of 30%		
-		if(chance){			
-			let obstacle = new Obstacle({
-				color: 'rgba(255, 215, 0, 0.1)',
-				border: 'rgba(255, 215, 0, 0.5)',
-				border_color: 1,
-				x: canvas.width + self.obstacle_size[0],
-				y: self.y,
-				w: self.obstacle_size[0],
-				h: self.obstacle_size[1],
-			});
-			self.obstacles.push(obstacle);
+	self.create_obstacles = function(){		
+		let chance = Math.random() < 0.01;//probability of 1%		
+		if(chance){
+			let x = canvas.width + self.obstacle_size[0];
+			let t = self.obstacles.length+1;
+			if(self.obstacles.length>0){
+				if(x > self.obstacles[self.obstacles.length-1].x + 10*self.obstacle_size[0]){					
+					let obstacle = new Obstacle({
+						id: self.id,
+						name: "obstacle_" + self.id + '_' + t,
+						img: self.obstacle_img,
+						color: 'rgba(255, 215, 0, 0.1)',
+						border: 'rgba(255, 215, 0, 0.5)',
+						border_color: 1,
+						x: x,
+						y: self.y,
+						w: self.obstacle_size[0],
+						h: self.obstacle_size[1],
+					});
+					self.obstacles.push(obstacle);
+				}
+			} else {
+				let obstacle = new Obstacle({
+					id: self.id,
+					name: "obstacle_" + self.id + '_' + t,
+					img: self.obstacle_img,
+					color: 'rgba(255, 215, 0, 0.1)',
+					border: 'rgba(255, 215, 0, 0.5)',
+					border_color: 1,
+					x: x,
+					y: self.y,
+					w: self.obstacle_size[0],
+					h: self.obstacle_size[1],
+				});
+				self.obstacles.push(obstacle);
+			}
 		}
-
-		console.log('create_obstacles', self.x, self.obstacles)
 	}
 
-	self.distroy_obstacles = function(){
-		console.log('distroy_obstacles', self.x, self.obstacles)
-		// for(let i in obstacles){
-		// 	console.log('lane_update', i, self.x, obstacles[i].x)
-		// }
+	self.lane_update = function(obstacle){
+		obstacle.x = obstacle.x-3;	
 	}
 
-	self.lane_update = function(){
-		self.x = self.x-1;
+	self.draw_obstacle = function(ctx, obstacle){
+		obstacle.draw(ctx);
 	}
 
-	self.move_obstacles = function(){
+	self.move_obstacles = function(ctx, nr){
 		for(let i in self.obstacles){
-			self.obstacles[i].draw();
+			self.lane_update(self.obstacles[i], nr);
+			self.draw_obstacle(ctx, self.obstacles[i]);
+			if(self.obstacles[i].x < self.rabbit.x-10){
+				self.obstacles.splice(i, 1); 
+				i--;
+			}
 		}
+	}
+
+	self.collision = function(){		
+		for(let i in self.obstacles){
+			return self.collision_entities(self.rabbit, self.obstacles[i]);
+		}
+	}
+	self.collision_entities = function(rect01, rect02){	
+		let cond01 = rect01.x <= rect02.x + rect02.w;
+		let cond02 = rect01.y <= rect02.y + rect02.h;
+		let cond03 = rect02.x <= rect01.x + rect01.w;
+		let cond04 = rect02.y <= rect01.y + rect01.h;
+		console.log('collision--> ', rect01, rect02, cond01 && cond02 && cond03 && cond04)	
+		return cond01 && cond02 && cond03 && cond04;
+	}
+
+	self.action = function(rabbit_list, nr, finish_line_x){	
+		//check collision
+		self.rabbit.y = self.rabbit.y_original;			
+		if(self.collision()){					
+			self.rabbit.y_original = self.rabbit.y;
+			self.rabbit.y = self.rabbit.y - 2*self.obstacle_size[0];
+		}
+
+		//create and move obstacle
+		self.create_obstacles(nr, finish_line_x);
+		self.move_obstacles(ctx, nr);
+
+		//make rabbit run
+		self.rabbit.change_speed();
+		self.rabbit.move_view(rabbit_list, nr);
+		self.rabbit.run(ctx, nr, finish_line_x);
+
+		self.get_min_speed(rabbit_list, nr);
+	}
+
+	self.get_min_speed = function(all){
+		let min_speed = all[0].speed;
+		for(let i in all){
+			if(min_speed > all[i].speed){
+				min_speed = all[i].speed
+			}
+		}
+		self.min_speed = min_speed;
 	}
 }
 
@@ -351,17 +413,13 @@ function race_game(props){
 	let lang = props.lang;
 	let dispatch = props.data.dispatch;
 	let dispatch_nr = 0;
-	let rabbit_array = props.data.rabbit_array;
-	let rabbit_list = [];
+	let rabbit_array = props.data.rabbit_array;	
 	let lane_list = [];
+	let rabbit_list = [];
 	
 	let canvas_width = 900;
 	let canvas_height = 800;
-
-	let font_bold_10 = 'bold 10px sans-serif';
-	let font_bold_12 = 'bold 12px sans-serif';
-	let font_bold_14 = 'bold 14px sans-serif';
-	let font_bold_16 = 'bold 16px sans-serif';
+	
 	let font_title = 'bold 30px sans-serif';
 	let font_counter = 'bold 40px sans-serif';
 
@@ -377,6 +435,7 @@ function race_game(props){
 	let rabbit_img_sit = {src: rabbit_sit};
 	let rabbit_img_move = {src: rabbit_move};
 	let rabbit_img_stop = {src: rabbit_sit};
+	let obstacle_img = {src: obstacle};
 	let rabbit_size;
 	let obstacle_size;
 
@@ -410,13 +469,9 @@ function race_game(props){
 			}
 			draw_road_height = 101;
 			rabbit_size = [5, 100, 35, 35, -5];
-			obstacle_size = [35, 35];
+			obstacle_size = [10, 10];
 			font_title = 'bold 20px sans-serif';
 			font_counter = 'bold 30px sans-serif';
-			font_bold_10 = 'bold 8px sans-serif';
-			font_bold_12 = 'bold 10px sans-serif';
-			font_bold_14 = 'bold 12px sans-serif';
-			font_bold_16 = 'bold 12px sans-serif';
 		} else {
 			//big
 			canvas.width = 900;
@@ -437,11 +492,7 @@ function race_game(props){
 			}
 			draw_road_height = canvas.height/2;
 			rabbit_size = [10, 350, 80, 80, -10];
-			obstacle_size = [80, 80];
-			font_bold_10 = 'bold 10px sans-serif';
-			font_bold_12 = 'bold 12px sans-serif';
-			font_bold_14 = 'bold 14px sans-serif';
-			font_bold_16 = 'bold 16px sans-serif';		
+			obstacle_size = [20, 20];		
 		}
 		
 		canvas_width = canvas.width;
@@ -457,11 +508,10 @@ function race_game(props){
 			promises.push(self.preaload_images(rabbit_img_sit));
 			promises.push(self.preaload_images(rabbit_img_move));
 			promises.push(self.preaload_images(rabbit_img_stop));
+			promises.push(self.preaload_images(obstacle_img));
 			Promise.all(promises).then(function(result){
-				let list = self.get_rabbits(result);	
-				rabbit_list = list[0];	
-				lane_list = list[1];	
-				console.log('start', rabbit_list, rabbit_array, lane_list)			
+				lane_list = self.create_lane(result);
+				rabbit_list = self.get_rabbits(lane_list);
 				self.background();
 				self.draw_rabbits('sit');
 				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");				
@@ -479,6 +529,14 @@ function race_game(props){
 		}
 	}
 
+	self.get_rabbits = function(lane_list){
+		let rabbits = [];
+		for(let i in lane_list){
+			rabbits.push(lane_list[i].rabbit);
+		}
+		return rabbits;
+	}
+
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
 			var image = new Image();
@@ -489,11 +547,10 @@ function race_game(props){
 		});
 	}
 
-	this.get_rabbits = function(img){
-		let rabbits = [];
+	this.create_lane = function(img){
 		let lanes = [];
 		for(let i in rabbit_array){
-			let config = {
+			let rabbit_config = {
 				id: rabbit_array[i].id, 
 				name: rabbit_array[i].name, 
 				color: rabbit_array[i].color, 
@@ -509,64 +566,26 @@ function race_game(props){
 				w: rabbit_size[2],
 				h: rabbit_size[3],
 			}
-			let rabbit = new Rabbit(config);
-			rabbits.push(rabbit);
-
 			let lane = new Lane({
 				id: i,
-				rabbit: rabbit,
 				x: 0,
 				y: rabbit_size[1]+i*(rabbit_size[3]+rabbit_size[4]),
 				w: canvas.width,
 				h: rabbit_size[3],
+				rabbit_config: rabbit_config,
+				obstacle_img: img[3],
 				obstacle_size: obstacle_size,
 			})
-			lanes.push(lane);
-			lane.create_obstacles();
+			lane.create_rabbit();
+			lanes.push(lane);			
 		}
-		return [rabbits, lanes];
-	}
-
-	this.test_collision_entities = function(entity01, entity02){
-		let rect01 = {
-			x: entity01.x - 10,
-			y: entity01.y - 10,
-			width: 20,
-			height: 20,
-		}
-		let rect02 = {
-			x: entity02.x - 15,
-			y: entity02.y - 15,
-			width: 30,
-			height: 30,
-		}
-		return self.collision_entities(rect01, rect02);
-	}
-	this.collision_entities = function(rect01, rect02){	
-		let cond01 = rect01.x <= rect02.x + rect02.w;
-		let cond02 = rect01.y <= rect02.y + rect02.h;
-		let cond03 = rect02.x <= rect01.x + rect01.w;
-		let cond04 = rect02.y <= rect01.y + rect01.h;		
-		return cond01 && cond02 && cond03 && cond04;
+		return lanes;
 	}
 
 	this.draw_rabbits = function(action, nr, finish_line_x){
 		if(action==="run"){
-			for(let i in lane_list){				
-				lane_list[i].rabbit.change_speed();
-				lane_list[i].rabbit.move_view(rabbit_list, nr);
-
-				lane_list[i].lane_update();
-				lane_list[i].distroy_obstacles();
-				lane_list[i].create_obstacles();
-
-				let collision_results = lane_list[i].rabbit.collision();
-
-				if(collision_results[0]){
-					lane_list[i].rabbit.jump(ctx, nr, finish_line_x);
-				} else {
-					lane_list[i].rabbit.run(ctx, nr, finish_line_x);
-				}
+			for(let i in lane_list){
+				lane_list[i].action(rabbit_list, nr, finish_line_x);
 			}
 			rabbit_list = self.order_rabbits(rabbit_list);
 			self.post_order_rabbits(rabbit_list);
@@ -694,7 +713,7 @@ function race_game(props){
 				self.draw_background();
 				self.draw_rabbits('sit');
 				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
-				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "'rgba(255, 215, 0, 0.5)'", "center", "gold", "1");
+				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "rgba(255, 215, 0, 0.5)", "center", "gold", "1");
 			  	if(self_counter.timeRemaining <= 0){
 					clearInterval(my_counter);
 					self.start_race(1500);
@@ -706,7 +725,7 @@ function race_game(props){
 	this.start_race = function(time, monkey){
 		var nr = 0;
 		dispatch_nr++;
-		time = 100;
+		//time = 100;
 		var move_landscape = false;
 
 		window.requestAnimFrame = (function(){
@@ -722,7 +741,7 @@ function race_game(props){
 			var stop = false;
 			var avg_dist = lane_list[0].rabbit.avg_dist;
 
-			if (nr > time) {	
+			if (nr > time) {
 				rabbit_list = self.order_rabbits(rabbit_list);			
 				var end_rabbit = true;
 				var end_finish_line = true;
@@ -748,7 +767,7 @@ function race_game(props){
 						self.draw_background();
 						finish_line.draw(ctx);
 
-						for(var i in lane_list){		
+						for(let i in lane_list){		
 							lane_list[i].rabbit.stop(ctx, nr);
 						}
 						self.win_lose();
@@ -758,7 +777,7 @@ function race_game(props){
 						self.draw_background();
 						finish_line.draw(ctx);
 
-						for(var i in lane_list){		
+						for(let i in lane_list){		
 							lane_list[i].rabbit.stop(ctx, nr);
 						}
 					}
@@ -771,7 +790,7 @@ function race_game(props){
 					finish_line.draw(ctx);
 
 					if(end_rabbit){
-						for(var i in lane_list){		
+						for(let i in lane_list){		
 							lane_list[i].rabbit.stop(ctx, nr, false);
 						}
 					} else {
@@ -779,7 +798,6 @@ function race_game(props){
 					}
 				}			
 			} else{
-				console.log('oana01')				
 				nr++; 		
 				stop = false;
 				if(!move_landscape){

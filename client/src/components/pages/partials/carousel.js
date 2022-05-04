@@ -53,7 +53,7 @@ class Carousel extends Component {
 	componentDidUpdate(e) {
 		//check if language has changed
 		let self = this
-		if(e.lang != self.props.lang){
+		if(e.lang !== self.props.lang){
 			//this is the only way you can update text in Owl Carousel (only way I have found yet). Ye, I know, it sucks.			
 			let template = e.template;
 			let lang = self.props.lang

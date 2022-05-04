@@ -1754,6 +1754,9 @@ table {
 	margin-left:5px;
 	padding: 17px 7px;
 }
+#race_clear_bets{
+	padding: 12px 7px;
+}
 #race_start:hover, #race_clear_bets:hover{
 	border:solid 1px var(--yellow);
 	background-color: var(--transparent_yellow);

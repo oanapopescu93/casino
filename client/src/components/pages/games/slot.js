@@ -1,12 +1,8 @@
 import React from 'react';
-import $ from 'jquery'; 
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-
-import {slot_calculate_money, slot_get_history} from '../../actions/actions'
+import $ from 'jquery';
+import {slot_calculate_money} from '../../actions/actions'
 import {connect} from 'react-redux'
 import { bigText, showResults } from '../../utils';
-
 import item_image from '../../img/icons/vegetables_color.png'
 
 var canvas_height = 800;
@@ -52,7 +48,6 @@ function slot_game(props, id){
 	var reason = "";
 	const dispatch = props.dispatch;
 	var game_pay = 0;
-	var dispatch_nr = 0; //this prevents multiplication
 
 	user_info = {money: props.money};	
 	if(props.slot !== -1){
@@ -119,7 +114,6 @@ function slot_game(props, id){
 				if($('#slot_spin').attr('finished') === "yes"){
 					if($('#slot_bet').val() !== '0'){
 						game_pay = parseInt($('#slot_bet').val())
-						dispatch_nr = 0;
 						$('#slot_spin').addClass('start');
 						$('#slot_spin').attr('finished', 'no');
 						$('#slot_spin').prop('disabled', true);
@@ -336,7 +330,6 @@ function slot_game(props, id){
 
 	this.spin = function(){
 		self.reset();
-		dispatch_nr++
 		var same = false;	
 		var result;	
 		var matrix_result;

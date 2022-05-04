@@ -20,48 +20,50 @@ import socketIOClient from "socket.io-client/dist/socket.io";
 import Cookies from './partials/cookies_modal';
 const socket = socketIOClient("/");
 
-var self;
 class Home extends Component {
 	constructor(props) {
 		super(props);
-		self = this;
-		self.state = {
+		this.state = {
 			lang: getCookie("casino_lang"),
 			donation_show: false,
 			donation_info: null,
 			cookies:false,
 		};
-		self.lang_change = self.lang_change.bind(self);	
-		self.my_donation = self.my_donation.bind(self);
-	  	self.casino_cookies = self.casino_cookies.bind(self);
+		this.lang_change = this.lang_change.bind(this);	
+		this.my_donation = this.my_donation.bind(this);
+		this.casino_cookies = this.casino_cookies.bind(this);
 	}
 
 	componentDidMount(){
 		let casino_cookies = getCookie("casino_cookies");  
 		if(casino_cookies !== ""){
-			self.setState({ cookies: true });
+			this.setState({ cookies: true });
 		}
-		if(self.state.lang === ''){
-			self.setState({ lang: 'eng' });
-		} 
+		if(this.state.lang === ''){
+			this.setState({ lang: 'eng' });
+		}
+
+		setInterval(function () {		  
+			socket.emit('heartbeat', { data: "ping" });
+		}, 15000)
     }
 
 	lang_change(text){
-		self.setState({ lang: text });
+		this.setState({ lang: text });
 	}
 
 	my_donation(donations){
-		self.setState({ donation_show: true});
-		self.setState({ donation_info: donations});
+		this.setState({ donation_show: true});
+		this.setState({ donation_info: donations});
 	}
 	
 	back(){
-		self.setState({ donation_show: false});
+		this.setState({ donation_show: false});
 	}
 
 	casino_cookies = function(){
 		setCookie("casino_cookies", true, 30);
-		self.setState({ cookies: true });
+		this.setState({ cookies: true });
 	}
 
 	render() {
@@ -70,24 +72,24 @@ class Home extends Component {
 				<div className="full-height">
 					<div className="full-height-content">
 						{ 
-							self.state.donation_show ? <Page back={self.back} info={self.state.donation_info} lang={self.state.lang} socket={socket}></Page> : 
+							this.state.donation_show ? <Page back={this.back} info={this.state.donation_info} lang={this.state.lang} socket={socket}></Page> : 
 							<Container>				
 								<BrowserRouter>					
 									<Switch>			
 										<Route path="/table/:name">
-											<UserPage lang={self.state.lang} socket={socket}></UserPage>
+											<UserPage lang={this.state.lang} socket={socket}></UserPage>
 										</Route>
 										<Route path="/salon">
-											<Salon lang={self.state.lang} socket={socket}></Salon>
+											<Salon lang={this.state.lang} socket={socket}></Salon>
 										</Route>
 										<Route path="/recovery">
-											<SignInRecovery lang={self.state.lang} socket={socket}></SignInRecovery>
+											<SignInRecovery lang={this.state.lang} socket={socket}></SignInRecovery>
 										</Route>							
 										<Route exact path="/">
-											<HomePage lang={self.state.lang} socket={socket}></HomePage>
+											<HomePage lang={this.state.lang} socket={socket}></HomePage>
 										</Route>
 										<Route path="*">
-											<NotFound lang={self.state.lang}></NotFound>
+											<NotFound lang={this.state.lang}></NotFound>
 										</Route>
 									</Switch>			
 								</BrowserRouter>
@@ -95,10 +97,10 @@ class Home extends Component {
 						}									
 					</div>			
 				</div>
-				{!self.state.cookies ? <Cookies casino_cookies={self.casino_cookies} lang={self.state.lang}></Cookies>  : null}
-				<Language lang_change={self.lang_change}></Language>
-				<Donate my_donation={self.my_donation} info={self.state.donation_info} socket={socket}></Donate>
-				<Footer lang={self.state.lang} socket={socket}></Footer>
+				{!this.state.cookies ? <Cookies casino_cookies={this.casino_cookies} lang={this.state.lang}></Cookies>  : null}
+				<Language lang_change={this.lang_change}></Language>
+				<Donate my_donation={this.my_donation} info={this.state.donation_info} socket={socket}></Donate>
+				<Footer lang={this.state.lang} socket={socket}></Footer>
 			</>
 		);
 	}
