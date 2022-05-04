@@ -318,24 +318,28 @@ function Lane(config){
 		for(let i in self.obstacles){
 			self.lane_update(self.obstacles[i], nr);
 			self.draw_obstacle(ctx, self.obstacles[i]);
-			if(self.obstacles[i].x < self.rabbit.x-10){
+			if(self.obstacles[i].x < -50){
 				self.obstacles.splice(i, 1); 
 				i--;
 			}
 		}
 	}
 
-	self.collision = function(){		
+	self.collision = function(){
+		let collision = false;	
 		for(let i in self.obstacles){
-			return self.collision_entities(self.rabbit, self.obstacles[i]);
+			if(self.collision_entities(self.rabbit, self.obstacles[i])){
+				collision = true;
+				break;
+			}
 		}
+		return collision;
 	}
 	self.collision_entities = function(rect01, rect02){	
 		let cond01 = rect01.x <= rect02.x + rect02.w;
 		let cond02 = rect01.y <= rect02.y + rect02.h;
 		let cond03 = rect02.x <= rect01.x + rect01.w;
-		let cond04 = rect02.y <= rect01.y + rect01.h;
-		console.log('collision--> ', rect01, rect02, cond01 && cond02 && cond03 && cond04)	
+		let cond04 = rect02.y <= rect01.y + rect01.h;		
 		return cond01 && cond02 && cond03 && cond04;
 	}
 
