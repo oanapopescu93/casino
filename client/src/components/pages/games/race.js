@@ -729,7 +729,7 @@ function race_game(props){
 	this.start_race = function(time, monkey){
 		var nr = 0;
 		dispatch_nr++;
-		//time = 100;
+		time = 100;
 		var move_landscape = false;
 
 		window.requestAnimFrame = (function(){
@@ -846,20 +846,20 @@ function race_game(props){
 				let elem = {};
 				if(rabbit_list[place-1].id === rabbit_array[i].id){
 					money = money + win;
-					elem = {win: true, get:win, remaining: money, history: rabbit_array[i]}				
+					elem = {win: true, get:win, money_history: money, history: rabbit_array[i], rabbit_list: rabbit_list}				
 				} else {
 					money = money - bet;
-					elem = {win: false, get:-bet, remaining: money, history: rabbit_array[i]}							
+					elem = {win: false, get:bet, money_history: money, history: rabbit_array[i], rabbit_list: rabbit_list}							
 				}
 				win_lose.push(elem);
 			}
 		}
 		
-		var get = props.data.money - win_lose[win_lose.length-1].remaining;
-		var remaining_money = win_lose[win_lose.length-1].remaining;
+		var get = props.data.money - win_lose[win_lose.length-1].money_history;
+		var remaining_money = win_lose[win_lose.length-1].money_history;
 
-		dispatch(race_calculate_money(remaining_money))
-		dispatch(race_get_history(win_lose))
+		dispatch(race_calculate_money(remaining_money));
+		dispatch(race_get_history(win_lose));
 
 		if($('#user_money').length>0){
 			if($('#user_money span').length>0){
@@ -888,10 +888,10 @@ function race_game(props){
 	}
 
 	this.pay = function(win_lose){
-		var money = win_lose[win_lose.length-1].remaining;
-		var date = new Date();
-		var history = {where: "race", when: date, data: win_lose}			
-		var race_payload_server = {
+		let money = win_lose[win_lose.length-1].remaining;
+		let date = new Date();
+		let history = {where: "race", when: date, data: win_lose}			
+		let race_payload_server = {
 			user_id: props.data.id,
 			user: props.data.user, 
 			money: money,

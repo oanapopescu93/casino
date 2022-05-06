@@ -507,7 +507,6 @@ function blackjack_wheel(props){
 					if(start_game){
 						socket.emit('blackjack_send', ['hit', blackjack_payload_server]);	
 					} else {
-						alert("Start the game first.")
 						if(lang === "ro"){
 							showResults("Eroare", "Va rog incepeti jocul inainte de a apasa HIT.");
 						} else {
@@ -659,16 +658,39 @@ function blackjack_wheel(props){
 	}
 
 	this.pay = function(obj){
+		let payload = [];
 		for(var i in blackjack_hand[1]){
-			if(blackjack_hand[1][i].id === props.user_id){	
+			if(blackjack_hand[1][i].id === props.user_id){
+				console.log('blackjack_read', blackjack_hand)	
 				if(obj === "dealer" || obj.id !== blackjack_hand[1][i].id){
 					user_info.money = user_info.money - blackjack_hand[1][i].bets.length;
-					dispatch(blackjack_get_history(['lose', your_bets.length]))
+					payload = [
+						{
+							bet_value: your_bets.length, 
+							money_history: user_info.money,
+							win: false, 
+							blackjack_hand: {
+								dealer: blackjack_hand[2], 
+								player: blackjack_hand[1][i]
+							}
+						}
+					];			
 				} else {
 					user_info.money = user_info.money + blackjack_hand[1][i].bets.length;
-					dispatch(blackjack_get_history(['win', your_bets.length]))
+					payload = [
+						{
+							bet_value: your_bets.length, 
+							money_history: user_info.money,
+							win: true, 
+							blackjack_hand: {
+								dealer: blackjack_hand[2], 
+								player: blackjack_hand[1][i]
+							}
+						}
+					];
 				}
-				dispatch(blackjack_calculate_money(user_info.money))				
+				dispatch(blackjack_calculate_money(user_info.money));
+				dispatch(blackjack_get_history(payload));			
 			}
 			break;
 		}

@@ -53,7 +53,6 @@ var hidden_dealer = {};
 var blackjack_current_player = 0
 var blackjack_players = [];
 var blackjack_dealer = {};
-var game_start = false;
 
 var rabbit_speed = [3, 1] //max, min
 var rabbit_delay = [40, 20] //max, min
@@ -73,18 +72,19 @@ var rabbit_delay = [40, 20] //max, min
 // 	//console.log('users_json--> ', users_json)
 // });
 
+// database_config.sql = "show tables";
+// database(database_config).then(function(data){
+// 	console.log('show tables--> ', data)
+// 	// show tables--> [ 
+// 	// 	RowDataPacket { Tables_in_bunny_bet_casino: 'casino_users' },
+// 	// 	RowDataPacket { Tables_in_bunny_bet_casino: 'history_users' } 
+// 	// ]
+// });
+
 app.use(routes);
 
 io.on('connection', function(socket) {
-	console.log('connection')
-	socket.on("error", (err) =>{
-		console.log('error', err);
-	})
-
-	socket.on('heartbeat', function(data) {
-		console.log('heartbeat', data)
-	});
-
+	//console.log('connection')
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
@@ -426,9 +426,8 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('market_send', function(data) {
-		let this_user = data.id;
-		for(let i in sockets){
-			if(sockets[i].user_id === this_user){
+		for(let i in users_json){			
+			if(users_json[i].id === data.id){
 				try{
 					io.to(socket.id).emit('market_read', market);
 				}catch(e){
@@ -496,6 +495,7 @@ io.on('connection', function(socket) {
 		io.to(room_name).emit('blackjack_get_users_read', user_join);
 	});
 	socket.on('blackjack_send', function(data) {
+		var game_start = false;
 		var user_table = data[1].user_table.split(' ').join('_');
 		var room_name = user_table;
 		if(typeof data[1].user_type !== "undefined"){
@@ -534,8 +534,13 @@ io.on('connection', function(socket) {
 				break;
 			case 'hit':
 				hitMe();
-				//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-				io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
+				if(blackjack_players[blackjack_current_player].lose !== true){
+					io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
+					//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				} else {
+					io.to(room_name).emit('blackjack_read', ['hit', blackjack_dealer, blackjack_dealer, blackjack_deck.length-1]);
+					//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				}
 				break;
 			case 'stay':
 				if(blackjack_current_player != blackjack_players.length-1){
@@ -840,6 +845,14 @@ io.on('connection', function(socket) {
 		});
 	});
 
+	socket.on('history_send', function(data) {
+		try{
+			io.emit('history_read', 'oana has appleas');	
+		}catch(e){
+			console.log('[error]','history_send :', e);
+		}
+	});
+
 	socket.on('disconnect', function(reason) {
 		console.log('disconnect', reason)
 		let k = sockets.indexOf(socket); 		
@@ -865,6 +878,14 @@ io.on('connection', function(socket) {
 			}			
 		}
     });
+
+	socket.on("error", (err) =>{
+		//console.log('error', err);
+	})
+
+	socket.on('heartbeat', function(data) {
+		//console.log('heartbeat', data)
+	});
 });
 
 function chatMessage(from, text){

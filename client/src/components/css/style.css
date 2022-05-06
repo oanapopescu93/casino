@@ -866,8 +866,8 @@ table {
 }
 .casino_games_title_box{
 	border: solid 1px var(--yellow);
-	border-radius: 0px 0px 20px 20px;  
-	padding: 5px 10px; 
+	border-radius: 0px 0px 20px 20px;
+	padding: 5px; 
 	overflow: hidden;
 	background-color: var(--yellow);
 	
@@ -875,9 +875,15 @@ table {
 .casino_games_title_box div{
 	padding:5px 20px;
 	border-bottom: solid 1px black;
+	cursor: pointer;
 }
 .casino_games_title_box div:last-child{
 	border-bottom: solid 1px transparent;
+	border-radius: 0px 0px 20px 20px;
+}
+.casino_games_title_box div:hover{
+	background-color: black;
+	color:var(--yellow);
 }
 .casino_games_table_container{
 	-webkit-transition:all .5s ease-in-out;
@@ -946,6 +952,8 @@ table {
 }
 .profile_container .profile_left,
 .profile_container .profile_right{
+	position: relative;
+	z-index:1;
 	border:solid 1px var(--yellow);
 	padding:15px;
 	background: var(--transparent_2);
@@ -956,6 +964,7 @@ table {
 .profile_container .profile_right{
 	border-radius:0px 10px 10px 0px;
 	min-height: 300px;
+	margin-top:45px;
 }
 
 .profile_container .profile_button{
@@ -1006,6 +1015,30 @@ table {
 }
 .table>tbody>tr>td:last-child{
 	text-align:left;
+}
+
+.history_tabs_container{
+	position: absolute;
+	z-index:1;
+	top:-45px;
+	left: 0px;
+	right: 0px;
+	width:100%;
+	text-align: left;
+}
+.history_tabs{
+	display: inline-block;
+	vertical-align: middle;
+	width:100px;
+	border: solid 1px var(--yellow);
+	border-radius: 5px 5px 0px 0px;
+	padding: 5px 10px;
+	text-align: center;
+	margin-right: 5px;
+	cursor: pointer;
+}
+.history_tabs:hover, .history_tabs:active, .history_tabs:focus{
+	background-color: var(--transparent_yellow);
 }
 .history_container{
 	margin:0px;
@@ -2373,6 +2406,9 @@ table {
 	}
 	.history_box{
 		max-height:200px;
+	}
+	.profile_container .profile_left{
+		border-radius:10px;
 	}
 	.slot_header{
 		max-width: 200px;

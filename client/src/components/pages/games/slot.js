@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import {slot_calculate_money} from '../../actions/actions'
+import {slot_calculate_money, slot_get_history} from '../../actions/actions'
 import {connect} from 'react-redux'
 import { bigText, showResults } from '../../utils';
 import item_image from '../../img/icons/vegetables_color.png'
@@ -518,8 +518,10 @@ function slot_game(props, id){
 				showResults("Results", "Ai pierdut " + game_pay + "morcovi");
 			} else {
 				showResults("Results", "You lost " + game_pay + "carrots!");
-			}
-		}		
+			}			
+		}
+		let payload = [{bet_value: game_pay, money_history: user_info.money,win: win}];
+		dispatch(slot_get_history(payload));
 	}
 }
 

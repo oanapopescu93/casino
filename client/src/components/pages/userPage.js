@@ -12,7 +12,6 @@ import Support from './other_pages/support';
 import Panel from './panel_control';
 import { getCookie, showResults } from '../utils';
 
-var self;
 function Child(props) {
 	var visible = useSelector(state => state.visibility);
 	var user_id = props.user_id;
@@ -32,6 +31,7 @@ function Child(props) {
 								switch (visible) {
 									case "game":
 										return (
+											//<UserAccount lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
 											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
 										)
 									case "account":
@@ -44,6 +44,7 @@ function Child(props) {
 										)
 									default:
 										return(
+											//<UserAccount lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
 											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
 										)						
 								}
@@ -59,8 +60,7 @@ function Child(props) {
 class UserPage extends Component {
 	constructor(props) {
 		super(props);
-		self = this;
-		self.state = {
+		this.state = {
 			user: '',
 			user_id: -1,
 			socket: props.socket,
@@ -69,14 +69,15 @@ class UserPage extends Component {
 	}	
   
 	componentDidMount() {
-		self.userPageData()
+		let self = this;
+		this.userPageData()
 			.then(res => {
 					if(res !== null){
-						var table = self.state.user.user_table;
-						var table_split = table.split('_');
-						var table_user = table_split[0] + ' ' + table_split[1];
-						var table_type = table_split[2];					
-						var payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.props.lang}
+						let table = self.state.user.user_table;
+						let table_split = table.split('_');
+						let table_user = table_split[0] + ' ' + table_split[1];
+						let table_type = table_split[2];					
+						let payload = {id:self.state.user_id, user: self.state.user.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang:self.props.lang}
 						self.state.socket.emit('username', payload);
 						self.state.socket.on('is_online', function(data) {
 							if(typeof $('#chatmessages') !== "undefined"){
@@ -95,10 +96,11 @@ class UserPage extends Component {
 	}
 
 	userPageData(){
-		return new Promise(function(resolve, reject){
-			var table = window.location.href.split('table/')			
-			var id = parseInt(getCookie("casino_id"));
-			var user = getCookie("casino_user");
+		let self = this;
+		return new Promise(function(resolve, reject){			
+			let table = window.location.href.split('table/')			
+			let id = parseInt(getCookie("casino_id"));
+			let user = getCookie("casino_user");
 			self.state.socket.emit('user_page_send', [table[1], id, user]);
 			self.state.socket.on('user_page_read', function(data){
 				if(data !== null){
@@ -106,7 +108,7 @@ class UserPage extends Component {
 						data.user = getCookie("casino_user")
 					}
 					self.setState({ user: data});
-					self.setState({ user_id: data.id});   
+					self.setState({ user_id: data.id});
 				} 
 				resolve(data);				
 			});	
@@ -114,22 +116,22 @@ class UserPage extends Component {
 	};
   
 	render() {
-		var user_id = this.state.user_id;
+		let user_id = this.state.user_id;
 
 		if(this.state.user.user === ""){
-			var url_back = window.location.href.split('/table/');
+			let url_back = window.location.href.split('/table/');
 			window.location.href = url_back[0];
 		}
 		
-		var username = this.state.user.user;
-		var url = '/table/'+this.state.user.user_table;
-		var money = this.state.user.money;
-		var type = "";
-		var user_table = ""
-		var game = this.state.user.game;
+		let username = this.state.user.user;
+		let url = '/table/'+this.state.user.user_table;
+		let money = this.state.user.money;
+		let type = "";
+		let user_table = ""
+		let game = this.state.user.game;
 		
 		if(typeof this.state.user.user_table !== "undefined"){
-			var user_table_text = this.state.user.user_table.split('_');
+			let user_table_text = this.state.user.user_table.split('_');
 			type = user_table_text[2];
 			user_table = user_table_text[0] + ' ' + user_table_text[1]
 		}		
@@ -139,9 +141,9 @@ class UserPage extends Component {
 		}
 
 		return user_id !== -1 ? 
-			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={self.props.lang} socket={self.state.socket} url={url}></Child>
+			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={this.props.lang} socket={this.state.socket} url={url}></Child>
 			 : (
-				<span className="color_yellow">Loading...</span>
+				<span className="color_yellow">Loading...1</span>
 		  	)	
 		
 	}

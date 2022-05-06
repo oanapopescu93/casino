@@ -5,7 +5,7 @@ import './css/font_roboto.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/style.css';
 import Home from './pages/home';
-import logo from './img/rabbit_loader/rabbit_run.gif';
+import Loader from './pages/partials/loader';
 
 var my_console = function(){
     var oldConsole = null;
@@ -32,13 +32,8 @@ class App extends Component {
 	render() {
 		my_console.disable();	
 		return (
-			<div className="App">				
-				<div id="loader_container" className="loader_container">
-					<div className="loader">
-						<img alt="logo" src={logo} />
-						<h1>Loading</h1>
-					</div>
-				</div>
+			<div className="App">
+				<Loader></Loader>
 				<Home></Home>         			
 		  	</div>
 		);

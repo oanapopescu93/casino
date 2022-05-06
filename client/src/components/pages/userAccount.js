@@ -8,13 +8,10 @@ import inventory_img from '../img/icons/inventory_icon.png';
 import AccountProfile from './account_profile';
 import AccountMarket from './account_market';
 
-var self;
 class UserAccount extends Component {
 	constructor(props) {
-		super(props);	
-		self = this;
-
-		self.state = {
+		super(props);
+		this.state = {
 			visible: true,
 			market: [],
 			account_info: props,
@@ -24,15 +21,15 @@ class UserAccount extends Component {
 	}	
 
 	componentDidMount() {
+		let self = this;		
 		self.setState({ lang: self.props.lang });
-
-		var payload = {
+		let payload = {
 			id: self.state.account_info.user_id, 
 			user: self.state.account_info.user, 
 			type: self.state.account_info.type, 
 			user_table: self.state.account_info.user_table
 		}
-		self.state.socket.emit('market_send', payload);	
+		self.state.socket.emit('market_send', payload);
 		self.state.socket.on('market_read', function(data){
 			self.setState({ market: data});
 		});	
@@ -66,11 +63,11 @@ class UserAccount extends Component {
 			$('#account_profile').removeClass('active');
 			$('#account_market').addClass('active');
 		}
-	}	
+	}
   
 	render() {
 		$('.full-height').attr('id', 'user_account');
-		let lang = self.props.lang;
+		let lang = this.props.lang;
 		return (
 			<div className="color_yellow">	
 				<div className="account_tabs_container">
@@ -80,8 +77,9 @@ class UserAccount extends Component {
 					<div id="account_market" className="account_tabs" onClick={()=>this.account_choose_tab("account_market")}><img alt="market_img" className="account_img" src={market_img} /> Market</div>
 				</div>
 				
-				{ this.state.visible ? <AccountProfile lang={lang} info={self.state.account_info}></AccountProfile> : null }
-				{ !this.state.visible ? <AccountMarket lang={lang} info={self.state.account_info} market={self.state.market}></AccountMarket> : null }
+				{ this.state.visible ? <AccountProfile lang={lang} info={this.state.account_info}></AccountProfile> : 
+					<AccountMarket lang={lang} info={this.state.account_info} market={this.state.market}></AccountMarket>
+				}
 			</div>
 		);
 		
