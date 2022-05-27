@@ -61,7 +61,7 @@ function slot_game(props, id){
 		reason = r;
 		self.fit();
 		self.choose_slot_type();
-		var payload = {id: props.user_id, reel:reel.length, items:items.length, reason: reason}		
+		let payload = {id: props.user_id, reel:reel.length, items:items.length, reason: reason}		
 		socket.emit('slots_send', payload);
 		socket.on('slots_read', function(data){				
 			suffle_array = data[0];
@@ -96,7 +96,7 @@ function slot_game(props, id){
 	this.get_reel = function(t){
 		if(reason !== "resize"){
 			if($(slot_id+' .slot_machine .box').length === 0){
-				for(var i=0; i<t; i++){
+				for(let i=0; i<t; i++){
 					$(slot_id+' .slot_machine').append('<div class="box"><canvas class="slot_canvas" id="slot_canvas'+i+'"></canvas></div>');
 				}
 				reel = [];
@@ -135,7 +135,7 @@ function slot_game(props, id){
 			}					
 		})
 		$('body').off('click', '#slot_rules').on('click', '#slot_rules', function () {
-			var pay_table = `
+			let pay_table = `
 			<h1>Pay table</h1>
 			<div id="pay_table" class="rules_box">
 				<table>
@@ -148,15 +148,15 @@ function slot_game(props, id){
 					<tbody class="pay_table_info"></tbody>	
 				</table>
 			</div>`;
-			var text = bigText("slot_rules", self.lang, pay_table);
+			let text = bigText("slot_rules", self.lang, pay_table);
 			showResults("Rules", text, 400);
 			for(let i in win){
-				var my_matrix = win[i].matrix;
-				var my_prize = win[i].prize;
+				let my_matrix = win[i].matrix;
+				let my_prize = win[i].prize;
 				$('.pay_table_info').append("<tr><td id='pay_table_info_"+i+"' class='pay_table_matrix'></td><td class='pay_table_prize'>"+my_prize+"</td></tr>");
 				$('#pay_table_info_'+i).append("<div class='my_matrix'></div>");
 				
-				var x = -1;
+				let x = -1;
 				for(let j=0; j<3; j++){
 					for(let k=0; k<5; k++){
 						x++;
@@ -222,9 +222,9 @@ function slot_game(props, id){
 	}
 
 	this.create_suffle = function(i, images){
-		var images01 = [];
-		for(var j in suffle_array[i]){
-			var t = suffle_array[i][j];
+		let images01 = [];
+		for(let j in suffle_array[i]){
+			let t = suffle_array[i][j];
 			images01.push(images[t]);
 		}
 		return images01;
@@ -232,7 +232,7 @@ function slot_game(props, id){
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
-			var image = new Image();
+			let image = new Image();
 			image.id = item.id;
 			image.src = item.src;
 			image.setAttribute('coord_x', item.coord[0]);
@@ -253,19 +253,21 @@ function slot_game(props, id){
 		canvas_height = canvas.height;		
 		canvas.height = canvas_height;
 
-		var canvas_lines = $('#slot_machine_lines')[0];
-		canvas_lines.width = image_size[0] * $('.slot_machine .slot_canvas').length;
-		canvas_lines.height = 3 * image_size[1];
+		let canvas_lines = $('#slot_machine_lines')[0];
+		if(canvas_lines){
+			canvas_lines.width = image_size[0] * $('.slot_machine .slot_canvas').length;
+			canvas_lines.height = 3 * image_size[1];
+		}
     }
 
 	this.draw_reel = function(canvas, assets, reason){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#ddd';
-		var array = [];
-		var length = assets.length;
+		let array = [];
+		let length = assets.length;
 
 		for (let i = 0 ; i < length ; i++) {			
-			var img = assets[i];
+			let img = assets[i];
 			if(reason === "resize"){
 				img = assets[i].img;
 			}			
@@ -307,7 +309,7 @@ function slot_game(props, id){
 
 	this.rotate = function(i, slot_speed){
 		self.offset[i] = self.offset[i] - slot_speed;
-		var max_height = -(reel[i][0].height - items.length * image_size[1])
+		let max_height = -(reel[i][0].height - items.length * image_size[1])
 		if(self.offset[i] < max_height){
 			self.offset[i] = 0;
 		}
@@ -319,21 +321,21 @@ function slot_game(props, id){
 		self.state = 0;
 		self.stopped = [];
 		slot_speed = [];
-		for(var i in reel){
+		for(let i in reel){
 			self.stopped.push(false);
 			slot_speed.push(speed)
 		}
-		var canvas_lines = $('#slot_machine_lines')[0];
-		var ctx_lines = canvas_lines.getContext("2d");
+		let canvas_lines = $('#slot_machine_lines')[0];
+		let ctx_lines = canvas_lines.getContext("2d");
 		ctx_lines.clearRect(0, 0, canvas_lines.width, canvas_lines.height);
 	}
 
 	this.spin = function(){
 		self.reset();
-		var same = false;	
-		var result;	
-		var matrix_result;
-		var pos;
+		let same = false;	
+		let result;	
+		let matrix_result;
+		let pos;
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
@@ -404,20 +406,20 @@ function slot_game(props, id){
 	}
 
 	this.win_lose = function(results){
-		var same = true;
-		var my_matrix = [];
-		var win_results = [];
-		var t = -1;
+		let same = true;
+		let my_matrix = [];
+		let win_results = [];
+		let t = -1;
 		for(let i in win){	
 			if(win[i].matrix.length !== 0){
 				my_matrix = win[i].matrix;
 				same = true;
-				for(var j=0; j<my_matrix.length-1; j++){
-					var x1 = my_matrix[j][0];
-					var y1 = my_matrix[j][1];
-					var x2 = my_matrix[j+1][0];
-					var y2 = my_matrix[j+1][1];
-					var my_veggy = results[x1][y1].img.id === "carrot" || results[x2][y2].img.id === "carrot" || results[x1][y1].img.id === "potato" || results[x2][y2].img.id === "potato"					
+				for(let j=0; j<my_matrix.length-1; j++){
+					let x1 = my_matrix[j][0];
+					let y1 = my_matrix[j][1];
+					let x2 = my_matrix[j+1][0];
+					let y2 = my_matrix[j+1][1];
+					let my_veggy = results[x1][y1].img.id === "carrot" || results[x2][y2].img.id === "carrot" || results[x1][y1].img.id === "potato" || results[x2][y2].img.id === "potato"					
 					if(results[x1][y1].img.id === results[x2][y2].img.id || my_veggy){
 						win_results = my_matrix;
 						t = i;
@@ -434,10 +436,10 @@ function slot_game(props, id){
 	}
 
 	this.get_results_pos = function(){
-		var results = [];
-		var result_offset = self.offset
-		for(var t=0; t<3; t++){
-			var result = [];
+		let results = [];
+		let result_offset = self.offset
+		for(let t=0; t<3; t++){
+			let result = [];
 			for(let i in result_offset){
 				for(let j in self.images_pos[i]){
 					if(self.images_pos[i][j].pos === -result_offset[i]){
@@ -452,16 +454,16 @@ function slot_game(props, id){
 
 	this.createResultsArray = function(){
 		results_array = [];
-		for(var j=0; j<3; j++){
-			for(var i=0; i<reel.length; i++){
-				var elem = {i:i, j:j, x:image_size[0]*i, y:image_size[1]*j};
+		for(let j=0; j<3; j++){
+			for(let i=0; i<reel.length; i++){
+				let elem = {i:i, j:j, x:image_size[0]*i, y:image_size[1]*j};
 				results_array.push(elem)
 			}
 		}
     }
 
 	this.drawResultsArray = function(result){
-		var canvas = $('#slot_machine_lines')[0];
+		let canvas = $('#slot_machine_lines')[0];
 		ctx = canvas.getContext("2d");
 		if(result[0]){
 			ctx.beginPath();
@@ -469,13 +471,13 @@ function slot_game(props, id){
 			ctx.strokeStyle = "red";
 			ctx.lineWidth = 5;
 
-			for(var i=1; i<result[1].length; i++){				
+			for(let i=1; i<result[1].length; i++){				
 				ctx.lineTo(result[1][i][1] * image_size[1] + image_size[1]/2, result[1][i][0] * image_size[1] + image_size[1]/2);
 			}
 			ctx.stroke();
 			ctx.closePath();
 
-			for(var i=0; i<result[1].length; i++){	
+			for(let i=0; i<result[1].length; i++){	
 			 	draw_dot(canvas, result[1][i][1] * image_size[1] + image_size[1]/2, result[1][i][0] * image_size[1] + image_size[1]/2, 8, 0, 2 * Math.PI, false, 'red', 1, 'red');
 			}
 
@@ -485,7 +487,7 @@ function slot_game(props, id){
 			self.pay(game_pay, false);
 		}
 
-		var slot_payload_server = {
+		let slot_payload_server = {
 			user_id: props.user_id,
 			user: props.user, 
 			user_table: props.user_table, 

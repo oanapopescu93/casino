@@ -43,7 +43,6 @@ var bet_spot = 30;
 var font_bold_10 = 'bold 10px sans-serif';
 var font_bold_12 = 'bold 12px sans-serif';
 var font_bold_14 = 'bold 14px sans-serif';
-var font_bold_16 = 'bold 16px sans-serif';
 
 var user_info = 0;
 var user_join = [];
@@ -120,8 +119,7 @@ function blackjack_wheel(props){
 
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
-			font_bold_14 = 'bold 12px sans-serif';
-			font_bold_16 = 'bold 12px sans-serif';			
+			font_bold_14 = 'bold 12px sans-serif';		
 		} else {
 			//big
 			canvas.width = 900;
@@ -145,7 +143,6 @@ function blackjack_wheel(props){
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
-			font_bold_16 = 'bold 16px sans-serif';
 		}
 		
 		canvas_width = canvas.width;

@@ -69,7 +69,6 @@ var text_offset = 0;
 var font_bold_10 = 'bold 10px sans-serif';
 var font_bold_12 = 'bold 12px sans-serif';
 var font_bold_14 = 'bold 14px sans-serif';
-var font_bold_16 = 'bold 16px sans-serif';
 
 var user_info;
 var dispatch_nr = 0; //this prevents multiplication
@@ -185,7 +184,6 @@ function roulette_game(props){
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';
-			font_bold_16 = 'bold 12px sans-serif';
 			text_offset = 15;			
 			
 		} else {
@@ -209,7 +207,6 @@ function roulette_game(props){
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
-			font_bold_16 = 'bold 16px sans-serif';			
 			
 			button_spin  = {x: bet_x, y: roulette_radius_y+200, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: roulette_radius_x - 284, text_y: roulette_radius_y+205};
 			button_show_bets = {x: bet_x+60, y: roulette_radius_y+200, r: 25, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'BET', text_x: roulette_radius_x - 220, text_y: roulette_radius_y+205};
@@ -340,7 +337,7 @@ function roulette_game(props){
 				ctx.fillStyle = "white";
 				ctx.translate(roulette_radius_x + Math.cos(angle + arc / 2) * textRadius, roulette_radius_y + Math.sin(angle + arc / 2) * textRadius);
 				ctx.rotate(angle + arc / 2 + Math.PI / 2);
-				var text = numbers[i];
+				let text = numbers[i];
 				ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
 				roulette_pos.push({x: roulette_radius_x + Math.cos(angle + arc / 2) * (textRadius-text_offset), y: roulette_radius_y + Math.sin(angle + arc / 2) * (textRadius-text_offset), nr: text, color: colors[i]}); 
 			}
@@ -351,9 +348,9 @@ function roulette_game(props){
 	}
 	
 	function radiantLine(how_many, line, color, offset, startAngle){
-		for(var i = 0; i < how_many; i++) {
+		for(let i = 0; i < how_many; i++) {
 			arc = Math.PI / (how_many/2);
-			var angle = startAngle + i * arc;			
+			let angle = startAngle + i * arc;			
 		  
 			ctx.beginPath();
 			
@@ -393,7 +390,7 @@ function roulette_game(props){
 		});
 		
 		$('#roulette_canvas').off('mousemove').on('mousemove', function(event) {
-			var mousePos = getMousePos(canvas, event);
+			let mousePos = getMousePos(canvas, event);
 			$('#roulette_canvas').css('cursor', "default")
 			if (isInside(mousePos, spin_button_coordonates) || isInside(mousePos, show_bets_button_coordonates)) {
 				$('#roulette_canvas').css('cursor', "pointer")				
@@ -861,7 +858,6 @@ function roulette_bets(props){
 			font_bold_10 = 'bold 8px sans-serif';
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';
-			font_bold_16 = 'bold 12px sans-serif';
 			
 		} else {
 			//big
@@ -871,7 +867,6 @@ function roulette_bets(props){
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
-			font_bold_16 = 'bold 16px sans-serif';
 			
 			small_image = false;
 			roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
@@ -1151,7 +1146,7 @@ function roulette_bets(props){
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
-			var image = new Image();
+			let image = new Image();
 			image.id = item.id;
 			image.src = item.src;
 			image.addEventListener("load", function() {
@@ -1178,20 +1173,20 @@ function roulette_bets(props){
 
 	this.draw_roulette_bets = function(img){
 		ctx_bets.clearRect(0, 0, canvas.width, canvas.height);
-		var sx = roulette_bets_coord[0];
-		var sy = roulette_bets_coord[1];
-		var swidth = roulette_bets_coord[2];
-		var sheight = roulette_bets_coord[3];
-		var x = roulette_bets_coord[4];
-		var y = roulette_bets_coord[5];
-		var width = roulette_bets_coord[6];
-		var height = roulette_bets_coord[7];
+		let sx = roulette_bets_coord[0];
+		let sy = roulette_bets_coord[1];
+		let swidth = roulette_bets_coord[2];
+		let sheight = roulette_bets_coord[3];
+		let x = roulette_bets_coord[4];
+		let y = roulette_bets_coord[5];
+		let width = roulette_bets_coord[6];
+		let height = roulette_bets_coord[7];
 		ctx_bets.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
 	}
 }
 
 function getMousePos(canvas, event) {
-	var rect = canvas.getBoundingClientRect();
+	let rect = canvas.getBoundingClientRect();
 	return {
 		x: event.clientX - rect.left,
 		y: event.clientY - rect.top
@@ -1205,7 +1200,7 @@ function Roulette(props) {
 	setTimeout(function(){ 
 		$('.full-height').attr('id', 'roulette');
 
-		var title = props.user_table;
+		let title = props.user_table;
 		title = title.charAt(0).toUpperCase() + title.slice(1);
 		$('.roulette_title').empty();
 		if (window.innerWidth >= 960){

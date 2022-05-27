@@ -5,7 +5,7 @@ function Loader(){
 		<div id="loader_container" className="loader_container">
             <div className="loader">
                 <img alt="logo" src={logo} />
-                <h1>Loading111</h1>
+                <h1>Loading</h1>
             </div>
         </div>
 	);

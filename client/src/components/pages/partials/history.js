@@ -286,11 +286,11 @@ class HistoryShort extends React.Component {
 	};
 }
 
-class HistoryLong extends React.Component {
+class Transactions extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            history: this.props.history,
+            data: this.props.data,
             lang: this.props.lang,
 		};
 	}    
@@ -298,7 +298,7 @@ class HistoryLong extends React.Component {
 	render(){
         let lang = this.props.lang;
 		return ( 
-            <p>{lang === "ro" ? <span>Nu exista istoric</span> : <span>There is no history</span>}</p>
+            <p>{lang === "ro" ? <span>Nu exista tranzactii</span> : <span>There are no transactions</span>}</p>
 		);
 	};
 }
@@ -307,8 +307,8 @@ class History extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            history_short: this.props.history_short,
-            history_long: [],
+            history: this.props.history,
+            transactions: this.props.transactions,
             visible: true,
             lang: this.props.lang,
 		};
@@ -316,14 +316,14 @@ class History extends React.Component {
 	}
 
     history_choose_tab = function(link){	
-		if(link === "history_short"){			
+		if(link === "history"){			
 			this.setState({ visible: true })
-			$('#history_short').addClass('active');
-			$('#history_long').removeClass('active');
-		} else if(link === "history_long"){
+			$('#history').addClass('active');
+			$('#transactions').removeClass('active');
+		} else if(link === "transactions"){
 			this.setState({ visible: false })
-			$('#history_short').removeClass('active');
-			$('#history_long').addClass('active');
+			$('#history').removeClass('active');
+			$('#transactions').addClass('active');
 		}
 	}	
 	
@@ -332,15 +332,15 @@ class History extends React.Component {
 		return (
             <>                
                 <div className="history_tabs_container">
-					<div id="history_short" className="history_tabs shadow_convex active" onClick={()=>this.history_choose_tab("history_short")}>
+					<div id="history" className="history_tabs shadow_convex active" onClick={()=>this.history_choose_tab("history")}>
 						{lang === "ro" ? <span>Ultimul pariu</span> : <span>Last bet</span>}
 					</div>
-					<div id="history_long" className="history_tabs shadow_convex" onClick={()=>this.history_choose_tab("history_long")}>
-                        {lang === "ro" ? <span>Istoric</span> : <span>History</span>}
+					<div id="transaction" className="history_tabs shadow_convex" onClick={()=>this.history_choose_tab("transaction")}>
+                        {lang === "ro" ? <span>Tranzactii</span> : <span>Transactions</span>}
                     </div>
 				</div>
-                { this.state.visible ? <HistoryShort lang={lang} history={this.state.history_short}></HistoryShort> : 
-					<HistoryLong lang={lang} history={this.state.history_long}></HistoryLong>
+                { this.state.visible ? <HistoryShort lang={lang} history={this.state.history}></HistoryShort> : 
+					<Transactions lang={lang} data={this.state.transactions}></Transactions>
 				}
             </>
 		);

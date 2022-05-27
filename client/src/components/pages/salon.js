@@ -16,7 +16,7 @@ import Privacy from './other_pages/privacy';
 import Questions from './other_pages/questions';
 import Career from './other_pages/career';
 
-import { getCookie, setCookie } from '../utils';
+import { getCookie, setCookie, showResults } from '../utils';
 import UserRace from './userRace';
 
 var casino_games = {
@@ -28,13 +28,13 @@ var casino_games = {
 var casino_games_title = Object.getOwnPropertyNames(casino_games);
 
 function Child(props){
-	var lang = props.lang;
-	var casino_games_title = props.casino_games_title;
-	var socket = props.socket;
-	var user_id = props.user_id;
-	var user = props.user;
-	var casino_games = props.casino_games;
-	var visible = useSelector(state => state.visibility);
+	let lang = props.lang;
+	let casino_games_title = props.casino_games_title;
+	let socket = props.socket;
+	let user_id = props.user_id;
+	let user = props.user;
+	let casino_games = props.casino_games;
+	let visible = useSelector(state => state.visibility);
 	return(
 		<>	
 			{(() => {
@@ -121,7 +121,7 @@ class Salon extends Component {
 		let self = this;
 		this.salonData()
 			.then(res => {
-					for(var i in res.server_tables){
+					for(let i in res.server_tables){
 						switch (res.server_tables[i].table_name) {
 							case "roulette":
 								casino_games.roulette_tables.push(res.server_tables[i]);
@@ -145,6 +145,14 @@ class Salon extends Component {
 						if(casino_games[casino_games_title[j]].length === 0){
 							empty++;
 						}
+					}
+
+					if(res.first_enter_salon){
+						if(self.props.lang === "ro"){
+							showResults('Cadou de bun-venit', 'Ai 100 de morcovi cadou de bun-venit.');
+						} else {
+							showResults('Welcome gift', 'First time players get 100 carrots!');
+						}						
 					}
 
 					if(empty === casino_games_title.length){

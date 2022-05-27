@@ -10,15 +10,15 @@ import { setCookie } from '../utils';
 import History from './partials/history';
 
 function Account_profile(props) {
-	var username = props.info.user;
-	var lang = props.lang;
-	var socket = props.info.socket; 
+	let username = props.info.user;
+	let lang = props.lang;
+	let socket = props.info.socket; 
 
-	var roulette_info = useSelector(state => state.roulette);
-	var blackjack_info = useSelector(state => state.blackjack);
-	var slots_info = useSelector(state => state.slot);
-	var craps_info = useSelector(state => state.craps);
-	var race_info = useSelector(state => state.race);
+	let roulette_info = useSelector(state => state.roulette);
+	let blackjack_info = useSelector(state => state.blackjack);
+	let slots_info = useSelector(state => state.slot);
+	let craps_info = useSelector(state => state.craps);
+	let race_info = useSelector(state => state.race);
 
 	// console.log('roulette_info', roulette_info)
 	// console.log('blackjack_info', blackjack_info)
@@ -36,36 +36,35 @@ function Account_profile(props) {
     function handleShow(){ setShow(true) };
 	
 	let money = props.info.money;
-	let history_short = {
+	let history = {
 		roulette: null,
 		blackjack: null,
 		slots: null,
 		craps: null,
 		race: null
-	};
-	let history_long = [];	
+	};	
 	if(roulette_info !== -1){		
 		money = roulette_info[0].money;
-		history_short.roulette = roulette_info[1].history;
+		history.roulette = roulette_info[1].history;
 	}
 	if(blackjack_info !== -1){		
 		money = blackjack_info[0].money;
-		history_short.blackjack = blackjack_info[1].history;
+		history.blackjack = blackjack_info[1].history;
 	}
 	if(slots_info !== -1){		
 		money = slots_info[0].money;
-		history_short.slots = slots_info[1].history;
+		history.slots = slots_info[1].history;
 	}
 	if(craps_info !== -1){		
 		money = craps_info[0].money;
-		history_short.craps = craps_info[1].history;
+		history.craps = craps_info[1].history;
 	}
 	if(race_info !== -1){		
 		money = race_info[0].money;
-		history_short.race = race_info[1].history;
+		history.race = race_info[1].history;
 	}
 
-	//console.log('history_short000', history_short)
+	let transactions = [];
 
 	function buy_carrots(){
 		if(lang === "ro"){
@@ -75,7 +74,7 @@ function Account_profile(props) {
 		}
 	}
 	function change_username(){
-		var input = $('#change_username').val();
+		let input = $('#change_username').val();
 		if(typeof input !== "undefined" && input !== "null" && input !== null && input !== ""){
 			setCookie("casino_user", input, 1);
 			$('#profile_user_text').text(input);
@@ -104,7 +103,7 @@ function Account_profile(props) {
 						</Col>
 						<Col sm={8} className="profile_container_left hidden-xs">
 							<div className="profile_right shadow_concav">								
-								<History lang={lang} history_short={history_short} history_long={history_long}></History>
+								<History lang={lang} history={history} transactions={transactions}></History>
 							</div>
 						</Col>
 					</Row>
