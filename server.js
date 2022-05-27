@@ -18,12 +18,12 @@ var career = require('./var/career');
 var question = require('./var/questions');
 var routes = require("./routes");
 const axios = require('axios');
+const e = require("express");
 
 var users_json
 var user_join = [];
 var user_money = 100;
 var account_type = 1;
-var sign_in_up = false;
 
 var career_array = career.CAREER_ARRAY;
 var question_array = question.QUESTION_ARRAY;
@@ -57,7 +57,7 @@ var blackjack_dealer = {};
 var rabbit_speed = [3, 1] //max, min
 var rabbit_delay = [40, 20] //max, min
 
-// database_config.sql = "DELETE FROM casino_users WHERE user='0'";
+// database_config.sql = "DELETE FROM casino_users WHERE user='mysql001' OR user='mysql002' OR user='mysql003' OR user='mysql004' OR user='mysql005' OR user='mysql006' OR user='mysql007' OR user='mysql008' OR user='mysql009'";
 // database(database_config).then(function(data){
 // 	database_config.sql = "SELECT * FROM casino_users";
 // 	database(database_config).then(function(data){
@@ -87,7 +87,7 @@ var rabbit_delay = [40, 20] //max, min
 app.use(routes);
 
 io.on('connection', function(socket) {
-	//console.log('connection')
+	let sign_in_up = false;
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
@@ -98,17 +98,9 @@ io.on('connection', function(socket) {
 		device = 2;
 	}
 	socket.on('signin_send', function(data) {
-		if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
-			check_user(users_json);
-		} else {
-			database_config.sql = "SELECT * FROM casino_users";
-			database(database_config).then(function(result){
-				users_json = result;
-				check_user(users_json);
-			});
-		}
-		
-		function check_user(users_json){
+		database_config.sql = "SELECT * FROM casino_users";
+		database(database_config).then(function(result){
+			users_json = result;
 			let exists = false;	
 			let obj = {};
 			let pass01 = data.pass;
@@ -158,20 +150,12 @@ io.on('connection', function(socket) {
 					console.log('[error]','signin_read2 :', e);
 				}
 			}
-		}		
+		});	
 	});
 	socket.on('signup_send', function(data) {
-		if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
-			check_user(users_json);
-		} else {
-			database_config.sql = "SELECT * FROM casino_users";
-			database(database_config).then(function(result){
-				users_json = result;
-				check_user(users_json);
-			});
-		}
-
-		function check_user(users_json){
+		database_config.sql = "SELECT * FROM casino_users";
+		database(database_config).then(function(result){
+			users_json = result;
 			let exists = false;	
 			// let pass = md5(data.pass);
 			let pass = JSON.stringify(encrypt(data.pass));
@@ -202,31 +186,18 @@ io.on('connection', function(socket) {
 					let timestamp = new Date().getTime() + "";
 					
 					database_config.sql = "INSERT INTO casino_users (user, email, pass, account_type, money, city, country, ip_address, signup, last_signin, device) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-					//database_config.sql = "INSERT INTO casino_users (user, email, pass, account_type, money, city, country, ip_address, signup, last_signin, device) VALUES ('" + data.user + "', '" + data.email + "', '" + pass + "', '" + account_type + "', '" + user_money + "', '" + extra_data.city + "', '" + extra_data.country + "', '" + extra_data.ip_address + "', '" + timestamp + "', '" + timestamp + "', " + device + ")";
-					// let payload = {
-					// 	user: data.user,
-					// 	email: data.email,
-					// 	pass: pass,
-					// 	account_type: account_type,
-					// 	money: user_money,
-					// 	city: extra_data.city,
-					// 	country: extra_data.country,
-					// 	ip_address: extra_data.ip_address,
-					// 	signup: timestamp,
-					// 	last_signin: timestamp,
-					// 	device: device,
-					// }
 					let payload =  [data.user, data.email, pass, account_type, user_money, extra_data.city, extra_data.country, extra_data.ip_address, timestamp, timestamp, device];
-					database(database_config, payload).then(function(a){
+					
+					database(database_config, payload).then(function(){
 						database_config.sql = "SELECT * FROM casino_users";
 						database(database_config).then(function(result){										
-							users_json = result;
+							users_json = result;							
 							if(!users_json){
 								users_json = [];
 							}
 							for(let i in users_json){					
 								if(data.user === users_json[i].user && data.email === users_json[i].email){
-									obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, pass: users_json[i].pass, account_type: users_json[i].account_type, money: user_money};
+									obj = {id: users_json[i].id, user: users_json[i].user, email: users_json[i].email, account_type: users_json[i].account_type, money: user_money};
 									try{
 										io.to(socket.id).emit('signup_read', [exists, obj]);
 									}catch(e){
@@ -245,45 +216,47 @@ io.on('connection', function(socket) {
 					console.log('[error]','signup_read2 :', e);
 				}
 			}
-		}
+		});
 	});
 	socket.on('salon_send', function(data) {
 		let id = data;
 		let money = 0;
-		if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
-			for(let i in users_json){		
-				if(users_json[i].id === id){
-					money = users_json[i].money;
-					try{
-						console.log('users_json1--> ', users_json[i].id, users_json[i].user);
-						console.log('users_json1--> ', users_json[i].last_signin, users_json[i].signup, users_json[i].last_signin-users_json[i].signup)
-						io.emit('salon_read', {server_tables: server_tables, money: money, first_enter_salon: first_enter_salon});
-					}catch(e){
-						console.log('[error]','salon_read :', e);
-					}
-					break;
-				}
-			}
+		if(sign_in_up){
+			check_user(users_json, 'a');
+			sign_in_up = false;
 		} else {
 			database_config.sql = "SELECT * FROM casino_users";
 			database(database_config).then(function(data){
 				users_json = data;
-				let first_enter_salon = false;
-				for(let i in users_json){
-					if(users_json[i].id === id){
-						money = users_json[i].money;						
-						try{
-							console.log('users_json2--> ', users_json[i].id, users_json[i].user);
-							console.log('users_json2--> ', users_json[i].last_signin, users_json[i].signup, users_json[i].last_signin-users_json[i].signup)
-							io.emit('salon_read', {server_tables: server_tables, money: money, first_enter_salon: first_enter_salon});
-						}catch(e){
-							console.log('[error]','salon_read :', e);
-						}
-						break;
-					}
-				}
+				check_user(users_json, 'b')
 			});
-		}		
+		}
+		
+		function check_user(users_json, x){
+			let first_enter_salon = false;
+			let found = false;
+			let obj = {}
+			for(let i in users_json){
+				if(users_json[i].id === id){
+					money = users_json[i].money;
+					if(users_json[i].last_signin-users_json[i].signup === 0){ //has 0 milisecond since first arrived here
+						first_enter_salon = true;
+					}
+					found = true;
+					obj = {server_tables: server_tables, money: money, first_enter_salon: first_enter_salon};		
+					break;
+				}
+			}
+			if(found){
+				try{					
+					io.to(socket.id).emit('salon_read', obj);
+				}catch(e){
+					console.log('[error]','salon_read :', e);
+				}
+			} else {
+				io.to(socket.id).emit('salon_read', found);
+			}
+		}
 	});
 
 	socket.on('user_page_send', function(data) {

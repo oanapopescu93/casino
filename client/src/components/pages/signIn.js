@@ -5,17 +5,15 @@ import $ from 'jquery';
 import Modal from 'react-bootstrap/Modal'
 import { setCookie, showResults } from '../utils';
 
-var socket;
-var lang;
-function submit(){
+function submit(socket, lang){
 	$('.sign_errors').hide();
 	$('.sign_errors').empty();
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
-		loader().then(function(data) {
+		loader(socket, lang).then(function(data) {
 			if(data[0]){
 				setCookie("casino_id", data[1].id, 1);
 				setCookie("casino_user", $('#signin_user').val(), 1);
-				submit_form();
+				submit_form(socket, lang);
 			} else {
 				$('#loader_container').hide(); 
 				$('#home').show();				
@@ -64,7 +62,7 @@ function submit_recovery(){
 	}	
 }
 
-function loader(){
+function loader(socket, lang){
 	return new Promise(function(resolve, reject){
 		$('#loader_container').show(); 
 		$('#home').hide();		
@@ -75,7 +73,7 @@ function loader(){
 	});
 }
 
-function submit_form(){
+function submit_form(socket, lang){
 	return new Promise(function(resolve, reject){
 		setTimeout(function(){
 			$("#user_form").submit();
@@ -101,8 +99,8 @@ function SignIn(props) {
 	const handleClose = () => setShow(false);
   	const handleShow = () => setShow(true);
 
-	socket = props.socket;
-	lang = props.lang;
+	let socket = props.socket;
+	let lang = props.lang;
 
 	$('.full-height').attr('id', 'home');
 
@@ -111,7 +109,7 @@ function SignIn(props) {
 			<Form id="user_form" method="post" action="/registration">
 				<Form.Control id="signin_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" defaultValue=""/>				
 				<Form.Control id="signin_pass" autoComplete="off" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" defaultValue=""/>				
-				<Button className="button_yellow shadow_convex" onClick={submit}>{lang === "ro" ? <span>Logare</span> : <span>Sign In</span>}</Button>
+				<Button className="button_yellow shadow_convex" onClick={()=>submit(socket, lang)}>{lang === "ro" ? <span>Logare</span> : <span>Sign In</span>}</Button>
 				<div className="login_link_container">
 					<div onClick={handleShow} id="link_forget">{lang === "ro" ? <span>Am uitat user/parola</span> : <span>Forgot Username/Password</span>}</div>	
 				</div>

@@ -897,6 +897,17 @@ function roulette_bets(props){
 		}
 	}
 
+	this.preaload_images = function(item){
+		return new Promise(function(resolve, reject){
+			let image = new Image();
+			image.id = item.id;
+			image.src = item.src;
+			image.addEventListener("load", function() {
+				resolve(image)
+			}, false);
+		});
+	}
+
 	this.roulette_click = function(){			
 		$('#roulette_bets_canvas').off('click').on('click', function(event) {
 			let money = user_info.money;
@@ -1143,17 +1154,6 @@ function roulette_bets(props){
 			list_bets.push({x: 2 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c"});
 		}
 	}	
-
-	this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
-			let image = new Image();
-			image.id = item.id;
-			image.src = item.src;
-			image.addEventListener("load", function() {
-				resolve(image)
-			}, false);
-		});
-	}
 
 	this.choose_roulette_bets = function(){
 		if(roulette_type === "european"){

@@ -5,6 +5,127 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { bigText, showResults } from '../../utils';
 
+import craps_bets from '../../img/craps/craps.png'
+import craps_bets_small from '../../img/craps/craps.png'
+
+function roulette_bets(props){
+	var self = this;
+	var lang = props.lang;
+	this.images = [];
+	var reason = "";
+
+	var canvas_bets;
+	var ctx_bets;
+	var canvas_width_bets = 900;
+	var canvas_height_bets = 300;
+	var font_bold_10 = 'bold 10px sans-serif';
+	var font_bold_12 = 'bold 12px sans-serif';
+	var font_bold_14 = 'bold 14px sans-serif';
+	var dispatch_nr = 0; //this prevents multiplication
+	var items = [
+		{id: 'craps', src: craps_bets},
+		{id: 'craps_small', src: craps_bets_small},
+	];
+	var small_image = false;
+	var craps_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
+
+	$('.craps_bets .close').click(function() {
+		$('.craps_bets_container').removeClass('open');
+	});
+	
+	this.ready = function(r){
+		reason = r;
+		self.createCanvas(canvas_width_bets, canvas_height_bets);
+		self.getImage(reason);
+	}
+
+	this.createCanvas = function(canvas_width_bets, canvas_height_bets){		
+		canvas_bets = document.getElementById("craps_bets_canvas");		
+		ctx_bets = canvas_bets.getContext("2d");
+		
+		if (window.innerWidth < 960){
+			if(window.innerHeight < window.innerWidth){
+				//small landscape				
+				canvas_bets.width = 400;
+				canvas_bets.height = 150;
+				small_image = false;
+			} else {
+				//small portrait
+				canvas_bets.width = 150;
+				canvas_bets.height = 400;
+				small_image = true;
+			}
+
+			font_bold_10 = 'bold 8px sans-serif';
+			font_bold_12 = 'bold 10px sans-serif';
+			font_bold_14 = 'bold 12px sans-serif';
+			
+		} else {
+			//big
+			canvas_bets.width = 900;
+			canvas_bets.height = 280;
+			
+			font_bold_10 = 'bold 10px sans-serif';
+			font_bold_12 = 'bold 12px sans-serif';
+			font_bold_14 = 'bold 14px sans-serif';
+			
+			small_image = false;
+		}
+		
+		canvas_width_bets = canvas_bets.width;
+		canvas_height_bets = canvas_bets.height;		
+		canvas_bets.height = canvas_height_bets;
+	}
+
+	this.getImage = function(reason){
+		if(reason !== "resize"){
+			var promises = [];
+			for(var i in items){				
+				promises.push(self.preaload_images(items[i]));
+			}
+
+			Promise.all(promises).then(function(result){
+				self.images = result;
+				self.choose_craps_bets();
+			});	
+		} else {
+			self.choose_craps_bets();
+		}
+	}
+
+	this.preaload_images = function(item){
+		return new Promise(function(resolve, reject){
+			let image = new Image();
+			image.id = item.id;
+			image.src = item.src;
+			image.addEventListener("load", function() {
+				resolve(image)
+			}, false);
+		});
+	}
+
+	this.choose_craps_bets = function(){		
+		if(!small_image){
+			self.draw_craps_bets(self.images[0]);
+		} else {
+			self.draw_craps_bets(self.images[1]);
+		}
+	}
+
+	this.draw_craps_bets = function(img){
+		ctx_bets.clearRect(0, 0, canvas_bets.width, canvas_bets.height);
+		let sx = craps_bets_coord[0];
+		let sy = craps_bets_coord[1];
+		let swidth = craps_bets_coord[2];
+		let sheight = craps_bets_coord[3];
+		let x = craps_bets_coord[4];
+		let y = craps_bets_coord[5];
+		let width = craps_bets_coord[6];
+		let height = craps_bets_coord[7];
+		ctx_bets.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
+	}
+}
+
 class Dice extends Component {
 	constructor(props) {
 		super(props);
@@ -346,6 +467,9 @@ class Craps extends Component {
 			$('.craps_title').append(title);
 		}
 
+		let my_roulette_bets = new roulette_bets(this.props);
+		my_roulette_bets.ready();
+
 		$(window).resize(function(){
 			$('.craps_title').empty();
 			if (window.innerWidth >= 960){
@@ -365,7 +489,6 @@ class Craps extends Component {
 							<Col sm={2}></Col>
 							<Col sm={8}>
 								<h1 className="craps_title"></h1>
-								<p>Under construction</p>
 								<Row>
 									<Col className="dice_container" sm={6}>
 										<Dice number={1}></Dice>
@@ -414,14 +537,19 @@ class Craps extends Component {
 					</>
 				}
 
-				<div class="craps_bets_container">
-					<div class="craps_bets shadow_concav">
-						<div class="close">x</div>
-						<div class="craps_bets_box">
-							Bets will come here
-						</div>
+			<div class="craps_bets_container">
+				<div class="craps_bets shadow_concav">
+					<div class="close">x</div>
+					<div class="craps_bets_box">
+						{lang === "ro" ? 
+							<div><p><b>In constructie</b></p><p>Craps se joaca acum doar ca Pass Line</p></div> : 
+							<div><p><b>Under construction</b></p><p>Craps can be played now only as Pass Line</p></div>
+						}
+						<canvas id="craps_bets_canvas"></canvas>
+						<div id="craps_bets_clear" className="shadow_convex">Clear</div>
 					</div>
 				</div>
+			</div>
 				
 				<div className="show_results_container">
 					<div className="show_results">

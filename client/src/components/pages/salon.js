@@ -117,10 +117,12 @@ class Salon extends Component {
 		this.salonData = this.salonData.bind(this);
 	}
   
-	componentDidMount(a) {
+	componentDidMount() {
+		console.log('salon000')
 		let self = this;
 		this.salonData()
 			.then(res => {
+				if(res){
 					for(let i in res.server_tables){
 						switch (res.server_tables[i].table_name) {
 							case "roulette":
@@ -159,18 +161,25 @@ class Salon extends Component {
 						self.setState({ empty: true }); 
 					} else {
 						self.setState({ casino_games: casino_games });
-						self.setState({ money: res.money });
-						self.setState({ loaded: true });
+						self.setState({ money: res.money });						
 					}
-				})
-			.catch(err => console.log(err));		
+				} else {
+					setCookie("casino_user", '', 1);
+					self.setState({ user: '' });
+				}
+				self.setState({ loaded: true });
+			}).catch(err => console.log(err));	
 	}
 	
 	salonData(){
 		let self = this;
 		return new Promise(function(resolve, reject){
-			self.setState({ user_id: parseInt(getCookie("casino_id")) });
-			self.setState({ user: getCookie("casino_user") });
+			let casino_id = getCookie("casino_id");
+			let casino_user = getCookie("casino_user");
+
+			self.setState({ user_id: parseInt(casino_id) });
+			self.setState({ user: casino_user });
+
 			setTimeout(function(){
 				self.state.socket.emit('salon_send', self.state.user_id);	
 				self.state.socket.on('salon_read', function(data){
@@ -181,12 +190,7 @@ class Salon extends Component {
 	};
 
 	handleBack() {
-		let url = window.location.href;
-		url = url.split('/salon');
-		window.location.href = url[0];
-	}
-
-	handleExit(){
+		setCookie("casino_id", '', 1);
 		setCookie("casino_user", '', 1);
 		setCookie("casino_email", '', 1);
 		let url = window.location.href;
@@ -223,7 +227,7 @@ class Salon extends Component {
 					</div>
 				) : (
 					<Row>						
-						{this.state.user === '' ? (
+						{this.state.user === '' &&  this.state.loaded ? (
 							<div className="table_container color_yellow">
 								{lang === "ro" ? 
 									<>
@@ -247,10 +251,10 @@ class Salon extends Component {
 							<div className={"salon_button_container"+opened}>
 								<div className="salon_button_box">
 									<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
-										{lang === "ro" ? <span><i className="fa fa-smile-o"></i>Jocuri</span> : <span><i class="fa fa-smile-o"></i>Games</span>}											
+										{lang === "ro" ? <span><i className="fa fa-smile-o"></i>Jocuri</span> : <span><i className="fa fa-smile-o"></i>Games</span>}											
 									</div>            
 									<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
-										{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i>Curse</span> : <span><i class="fa fa-flag-checkered"></i>Race</span>}	
+										{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i>Curse</span> : <span><i className="fa fa-flag-checkered"></i>Race</span>}	
 									</div>
 								</div>
 							</div>

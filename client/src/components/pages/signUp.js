@@ -4,29 +4,28 @@ import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
 import { getCookie, setCookie, showResults } from '../utils';
 
-var self; 
 class SignUp extends Component {	
 	constructor(props) {
 		super(props);
-		self = this;
-		self.state = {
+		this.state = {
 			socket: props.socket,
 			lang: props.lang,
 			user_minor: null,
 			client_id: '',
 	  	};				
-		self.submit = self.submit.bind(self);	
-		self.loader = self.loader.bind(self);	
-		self.check_submit = self.check_submit.bind(self);	
-		self.submit_form = self.submit_form.bind(self);	
-		self.minor_check = self.minor_check.bind(self);	
+		this.submit = this.submit.bind(this);	
+		this.loader = this.loader.bind(this);	
+		this.check_submit = this.check_submit.bind(this);	
+		this.submit_form = this.submit_form.bind(this);	
+		this.minor_check = this.minor_check.bind(this);	
 	}
 
 	componentDidMount() {
-		self.setState({ user_minor: getCookie('user_minor') });
+		this.setState({ user_minor: getCookie('user_minor') });
 	}
 
 	submit = function(){
+		let self = this;
 		$('.sign_errors').hide();
 		$('.sign_errors').empty();
 		if(self.check_submit('email') && self.check_submit('pass')){
@@ -70,6 +69,7 @@ class SignUp extends Component {
 	}
 	
 	loader = function(){
+		let self = this;
 		return new Promise(function(resolve, reject){
 			$('#loader_container').show();
 			$('#home').hide();	
@@ -124,6 +124,7 @@ class SignUp extends Component {
 	}
 
 	render() {
+		let self = this;
 		return (
 			<div>
 				{(() => {
