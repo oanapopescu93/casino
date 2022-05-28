@@ -9,25 +9,35 @@ import craps_bets from '../../img/craps/craps.png'
 import craps_bets_small from '../../img/craps/craps.png'
 
 function roulette_bets(props){
-	var self = this;
-	var lang = props.lang;
+	let self = this;
+	let lang = props.lang;
 	this.images = [];
-	var reason = "";
+	let reason = "";
 
-	var canvas_bets;
-	var ctx_bets;
-	var canvas_width_bets = 900;
-	var canvas_height_bets = 300;
-	var font_bold_10 = 'bold 10px sans-serif';
-	var font_bold_12 = 'bold 12px sans-serif';
-	var font_bold_14 = 'bold 14px sans-serif';
-	var dispatch_nr = 0; //this prevents multiplication
-	var items = [
+	let canvas_bets;
+	let ctx_bets;
+	let canvas_width_bets = 900;
+	let canvas_height_bets = 450;
+	let font_bold_10 = 'bold 10px sans-serif';
+	let font_bold_12 = 'bold 12px sans-serif';
+	let font_bold_14 = 'bold 14px sans-serif';
+	let dispatch_nr = 0; //this prevents multiplication
+	let items = [
 		{id: 'craps', src: craps_bets},
 		{id: 'craps_small', src: craps_bets_small},
 	];
-	var small_image = false;
-	var craps_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
+	let small_image = false;
+	let craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450]; //sx,sy,swidth,sheight,x,y,width,height
+	
+	
+/* 	sx	Optional. The x coordinate where to start clipping	
+	sy	Optional. The y coordinate where to start clipping	
+	swidth	Optional. The width of the clipped image	
+	sheight	Optional. The height of the clipped image	
+	x	The x coordinate where to place the image on the canvas	
+	y	The y coordinate where to place the image on the canvas	
+	width	Optional. The width of the image to use (stretch or reduce the image)	
+	height	Optional. The height of the image to use (stretch or reduce the image) */
 
 	$('.craps_bets .close').click(function() {
 		$('.craps_bets_container').removeClass('open');
@@ -47,13 +57,15 @@ function roulette_bets(props){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
 				canvas_bets.width = 400;
-				canvas_bets.height = 150;
+				canvas_bets.height = 250;
 				small_image = false;
+				craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 350, 240];
 			} else {
 				//small portrait
 				canvas_bets.width = 150;
 				canvas_bets.height = 400;
 				small_image = true;
+				craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 525, 280];
 			}
 
 			font_bold_10 = 'bold 8px sans-serif';
@@ -63,13 +75,14 @@ function roulette_bets(props){
 		} else {
 			//big
 			canvas_bets.width = 900;
-			canvas_bets.height = 280;
+			canvas_bets.height = 450;
 			
 			font_bold_10 = 'bold 10px sans-serif';
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
 			
 			small_image = false;
+			craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450];
 		}
 		
 		canvas_width_bets = canvas_bets.width;
@@ -475,6 +488,7 @@ class Craps extends Component {
 			if (window.innerWidth >= 960){
 				$('.craps_title').append(title);
 			}
+			my_roulette_bets.ready("resize");
 		});
 	}
 	render() {
@@ -540,11 +554,11 @@ class Craps extends Component {
 			<div class="craps_bets_container">
 				<div class="craps_bets shadow_concav">
 					<div class="close">x</div>
-					<div class="craps_bets_box">
-						{lang === "ro" ? 
+					{lang === "ro" ? 
 							<div><p><b>In constructie</b></p><p>Craps se joaca acum doar ca Pass Line</p></div> : 
 							<div><p><b>Under construction</b></p><p>Craps can be played now only as Pass Line</p></div>
 						}
+					<div class="craps_bets_box">						
 						<canvas id="craps_bets_canvas"></canvas>
 						<div id="craps_bets_clear" className="shadow_convex">Clear</div>
 					</div>

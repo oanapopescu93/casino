@@ -2165,7 +2165,7 @@ table {
 }
 .side {
 	position: absolute;
-	background-color: var(--dark_red);
+	background-color: var(--red);
 	border-radius:5px;
 	width: 100px;
 	height: 100px;
@@ -2655,16 +2655,17 @@ table {
 		width: 10px;
 		height:5px;
 		border-radius: 10px;
-		background-color: black;
-		border: 1px solid var(--yellow);
+	}
+	
+	::-webkit-scrollbar-track {
+		border-radius: 10px;
+		background:black;
+		border:solid 4px var(--yellow)
 	}
 	
 	::-webkit-scrollbar-thumb{
 		border-radius: 10px;
-		background-color: var(--yellow);
-		border: 1px solid transparent;
-		background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, from(black), to(black), color-stop(.5,var(--yellow)));	
-		background-clip: content-box;
+		background-color: black;
 	}
 }
 
