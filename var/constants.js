@@ -42,6 +42,14 @@ module.exports = Object.freeze({
         {id: "potato", name: "potato", value:"5 carrots", price:5, quantity: 1},
         {id: "cabbage", name: "cabbage", value:"10 carrots", price:10, quantity: 1},
     ],
+    SERVER_PROFILES: [        
+        {id: 1, name_eng: "weasel", name_ro: "nevastuica"},
+        {id: 2, name_eng: "fox", name_ro: "vulpe"},
+        {id: 3, name_eng: "wolf", name_ro: "lup"},
+        {id: 4, name_eng: "lynx", name_ro: "ras"},
+        {id: 5, name_eng: "ferret", name_ro: "dihor"},
+        {id: 6, name_eng: "martin", name_ro: "jder"},
+    ],
     SLOT_PRIZE: [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3],
     SERVER_RABBITS: [
         {id: 1, name: "Rabbit01", color: "red"},

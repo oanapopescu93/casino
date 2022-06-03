@@ -123,7 +123,7 @@ class SalonGames extends React.Component {
                                             {(() => {
                                                 if (self.state.info.casino_games[t].length === 0) {
                                                     return (
-                                                        <div><p>Loading...4</p></div>
+                                                        <div><p>Loading...</p></div>
                                                     )
                                                 } else {
                                                     return (

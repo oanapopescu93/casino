@@ -644,10 +644,11 @@ function Slot(props) {
 				<p id="slot_rules">Click aici pentru a vedea regulile</p> : 
 				<p id="slot_rules">Click here to see rules</p>
 			}
-			<div className="show_results_container">
+			<div className="show_results_container">				
 				<div className="show_results">
-					<h1></h1>
-					<p></p>
+					<i className="fa fa-times show_results_close" ></i>
+					<h1 className="header"></h1>
+					<div className="message"></div>
 				</div>
 			</div>
 		</div>

@@ -117,8 +117,9 @@ function SignIn(props) {
 
 			<div className="show_results_container">
 				<div className="show_results">
-					<h1>{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
-					<p></p>
+					<i className="fa fa-times show_results_close" ></i>
+					<h1 className="header">{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
+					<div className="message"></div>
 				</div>
 			</div>
 

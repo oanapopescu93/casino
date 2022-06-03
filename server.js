@@ -31,6 +31,7 @@ var rabbit_race = constants.SERVER_RABBITS;
 var slot_prize = constants.SLOT_PRIZE;
 var server_tables = constants.SERVER_TABLES;
 var market = constants.SERVER_MARKET;
+var profiles = constants.SERVER_PROFILES;
 var donations = constants.DONATIONS;
 var contact_details = constants.CONTACT;
 var database_config = constants.DATABASE[0];
@@ -69,10 +70,11 @@ var rabbit_delay = [40, 20] //max, min
 // database_config.sql = "SELECT * FROM casino_users";
 // database(database_config).then(function(data){
 // 	users_json = data;	
-// 	for(let i in users_json){
-// 		let pass = decrypt(JSON.parse(users_json[i].pass));
-// 		console.log('users_json--> ', users_json[i].user, users_json[i].email, pass)
-// 	}
+// 	// for(let i in users_json){
+// 	// 	let pass = decrypt(JSON.parse(users_json[i].pass));
+// 	// 	console.log('users_json--> ', users_json[i].user, users_json[i].email, pass)
+// 	// }
+// 	console.log('users_json--> ', users_json)
 // });
 
 // database_config.sql = "show tables";
@@ -83,6 +85,16 @@ var rabbit_delay = [40, 20] //max, min
 // 	// 	RowDataPacket { Tables_in_bunny_bet_casino: 'history_users' } 
 // 	// ]
 // });
+
+// database_config.sql = "ALTER TABLE casino_users ADD COLUMN profile_pic VARCHAR(15) AFTER device";
+// database(database_config).then(function(data){
+// 	database_config.sql = "SELECT * FROM casino_users";
+// 	database(database_config).then(function(data){
+// 		users_json = data;
+// 		console.log('users_json--> ', users_json)
+// 	});
+// });
+
 
 app.use(routes);
 
@@ -131,8 +143,8 @@ io.on('connection', function(socket) {
 							extra_data.ip_address = data1.data.ip_address;
 						}
 						let timestamp = new Date().getTime() + "";
-						database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id=?";
-						database(database_config, [users_json[i].id]).then(function(){
+						database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+users_json[i].id;
+						database(database_config).then(function(){
 							users_json[i].ip_address = extra_data.ip_addres;
 							users_json[i].city = extra_data.city;
 							users_json[i].country = extra_data.country;
@@ -265,16 +277,18 @@ io.on('connection', function(socket) {
 		let id = data[1];
 		let user = data[2];
 		let money = 0;
+		let profile_pic = null;
 		let server_user = null;
 		
 		if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
 			for(let i in users_json){	
 				if(id === users_json[i].id){
 					money = users_json[i].money;
+					profile_pic = users_json[i].profile_pic;
 					break;
 				}
 			}
-			server_user = {id: id, user: user, money: money, user_table: my_table, game: game, contact: contact_details}
+			server_user = {id: id, user: user, money: money, profile_pic: profile_pic, user_table: my_table, game: game, contact: contact_details}
 			try{
 				io.to(socket.id).emit('user_page_read', server_user);
 			}catch(e){
@@ -287,10 +301,11 @@ io.on('connection', function(socket) {
 				for(let i in users_json){	
 					if(users_json[i].id === id){
 						money = users_json[i].money;
+						profile_pic = users_json[i].profile_pic;
 						break;
 					}
 				}
-				server_user = {id: id, user: user, money: money, user_table: my_table, game: game, contact: contact_details}
+				server_user = {id: id, user: user, money: money, profile_pic: profile_pic, user_table: my_table, game: game, contact: contact_details}
 				try{
 					io.emit('user_page_read', server_user);
 				}catch(e){
@@ -344,14 +359,14 @@ io.on('connection', function(socket) {
 								extra_data.country = data1.data.country;
 							}
 							if(typeof data1.data.ip_address !== "undefined"){
-								extra_data.ip_address = data1.data.ip_address;
+								extra_data.ip_address = data1.data.ip_address; 
 							}
 						}
 					}
 					
-					let timestamp = new Date().getTime() + "";
-					database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id=?";
-					database(database_config, [payload.id]).then(function(){
+					let timestamp = new Date().getTime() + "";					
+					database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+payload.id;
+					database(database_config).then(function(){
 						for(var i in users_json){
 							if(payload.id === users_json[i].id){
 								users_json[i].ip_address = extra_data.ip_addres;
@@ -464,9 +479,44 @@ io.on('connection', function(socket) {
 						if(id === users_json[i].id){
 							users_json[i].user = user_new;
 							try{
-								io.to(socket.id).emit('change_username_read', users_json);
+								io.to(socket.id).emit('change_username_read', users_json[i]);
 							}catch(e){
 								console.log('[error]','change_username_read :', e);
+							}
+							break;
+						}
+					}
+				});
+			} 
+		}	
+	});
+	socket.on('profile_send', function(data) {
+		let id = data.id;
+		for(var i in sockets){
+			if(sockets[i].user_id === id){
+				try{
+					io.to(socket.id).emit('profile_read', profiles);
+				}catch(e){
+					console.log('[error]','profile_read :', e);
+				}
+				break;
+			} 
+		}	
+	});
+	socket.on('change_pic_send', function(data) {
+		let id = data.id;
+		let pic = data.pic;		
+		for(var i in sockets){
+			if(sockets[i].user_id === id){
+				database_config.sql = "UPDATE casino_users SET profile_pic='"+pic+"' WHERE id="+id;
+				database(database_config).then(function(result){
+					for(var i in users_json){	
+						if(id === users_json[i].id){
+							users_json[i].profile_pic = pic;
+							try{
+								io.to(socket.id).emit('change_pic_read', users_json[i]);
+							}catch(e){
+								console.log('[error]','change_pic_read :', e);
 							}
 							break;
 						}

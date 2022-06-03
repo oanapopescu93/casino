@@ -31,12 +31,11 @@ function Child(props) {
 								switch (visible) {
 									case "game":
 										return (
-											//<UserAccount lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
 											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
 										)
 									case "account":
 										return (
-											<UserAccount lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
+											<UserAccount lang={lang} info={props} socket={socket}></UserAccount> 
 										)	
 									case "support":
 										return (
@@ -44,7 +43,6 @@ function Child(props) {
 										)
 									default:
 										return(
-											//<UserAccount lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></UserAccount> 
 											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
 										)						
 								}
@@ -141,9 +139,9 @@ class UserPage extends Component {
 		}
 
 		return user_id !== -1 ? 
-			<Child user_id={user_id} game={game} user={username} money={money} user_table={user_table} type={type} lang={this.props.lang} socket={this.state.socket} url={url}></Child>
+			<Child user_id={user_id} game={game} user={username} money={money} profile_pic={this.state.user.profile_pic} user_table={user_table} type={type} lang={this.props.lang} socket={this.state.socket} url={url}></Child>
 			 : (
-				<span className="color_yellow">Loading...1</span>
+				<span className="color_yellow">Loading...</span>
 		  	)	
 		
 	}

@@ -763,12 +763,13 @@ function Blackjack(props) {
 		<div className="blackjack_container">
 			<h1 className="blackjack_title"></h1>
 			<canvas id="blackjack_canvas"></canvas>
-			<div className="show_results_container">
+			<div className="show_results_container">				
 				<div className="show_results">
-					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
-					<p></p>
+					<i className="fa fa-times show_results_close" ></i>
+					<h1 className="header">{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
+					<div className="message"></div>
 				</div>
-			</div>	
+			</div>
 			<img style={{'display': 'none'}} id="img_cards" alt="img_cards" src={img_cards} />
 		</div>
 	);

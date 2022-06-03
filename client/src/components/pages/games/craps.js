@@ -551,24 +551,25 @@ class Craps extends Component {
 					</>
 				}
 
-			<div class="craps_bets_container">
-				<div class="craps_bets shadow_concav">
-					<div class="close">x</div>
-					{lang === "ro" ? 
-							<div><p><b>In constructie</b></p><p>Craps se joaca acum doar ca Pass Line</p></div> : 
-							<div><p><b>Under construction</b></p><p>Craps can be played now only as Pass Line</p></div>
-						}
-					<div class="craps_bets_box">						
-						<canvas id="craps_bets_canvas"></canvas>
-						<div id="craps_bets_clear" className="shadow_convex">Clear</div>
+				<div class="craps_bets_container">
+					<div class="craps_bets shadow_concav">
+						<div class="close">x</div>
+						{lang === "ro" ? 
+								<div><p><b>In constructie</b></p><p>Craps se joaca acum doar ca Pass Line</p></div> : 
+								<div><p><b>Under construction</b></p><p>Craps can be played now only as Pass Line</p></div>
+							}
+						<div class="craps_bets_box">						
+							<canvas id="craps_bets_canvas"></canvas>
+							<div id="craps_bets_clear" className="shadow_convex">Clear</div>
+						</div>
 					</div>
 				</div>
-			</div>
-				
-				<div className="show_results_container">
+					
+				<div className="show_results_container">				
 					<div className="show_results">
-						<h1></h1>
-						<p></p>
+						<i className="fa fa-times show_results_close" ></i>
+						<h1 className="header"></h1>
+						<div className="message"></div>
 					</div>
 				</div>
 			</>

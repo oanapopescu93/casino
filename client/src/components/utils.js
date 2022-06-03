@@ -33,16 +33,19 @@ export const showResults = function(title="", message="", w=200, h="auto") {
     $('.show_results_container').show();
     $('.show_results').css('max-width', w);
     $('.show_results').css('height', h);
-    if($('.show_results h1').length>0){
-      $('.show_results h1').empty();
-      $('.show_results h1').append(title);
+    if($('.show_results .header').length>0){
+      $('.show_results .header').empty();
+      $('.show_results .header').append(title);
     }  
-    if($('.show_results p').length>0){
-      $('.show_results p').empty();
-      $('.show_results p').append(message);
+    if($('.show_results .message').length>0){
+      $('.show_results .message').empty();
+      $('.show_results .message').append(message);
     }    
     $( ".show_results_container" ).click(function() {
-      $('.show_results_container').hide();
+      $(this).hide();
+    });
+    $( ".show_results_container .show_results_close" ).click(function() {
+      $(this).closest('show_results_container').hide();
     });
   }	
 }

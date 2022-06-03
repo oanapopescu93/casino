@@ -974,10 +974,11 @@ function RaceGame(props){
 					<div id="race_order"></div>
 				</div>
 			</div>
-			<div className="show_results_container">
+			<div className="show_results_container">				
 				<div className="show_results">
-					<h1>{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
-					<p></p>
+					<i className="fa fa-times show_results_close" ></i>
+					<h1 className="header"></h1>
+					<div className="message"></div>
 				</div>
 			</div>
 		</div>
@@ -1146,10 +1147,11 @@ class Race extends Component {
 						)
 					}
 				})()}
-				<div className="show_results_container">
+				<div className="show_results_container">				
 					<div className="show_results">
-						<h1></h1>
-						<p></p>
+						<i className="fa fa-times show_results_close" ></i>
+						<h1 className="header"></h1>
+						<div className="message"></div>
 					</div>
 				</div>
 			</>
