@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { useSelector} from 'react-redux'
 import $ from 'jquery'; 
 
@@ -27,7 +27,7 @@ class Picture extends Component {
 	}
 	
 	renderPreview() {
-		let pic_id = this.props.pic_id
+		let pic_id = this.props.pic_id;
 		if(pic_id !== 0 && pic_id !== '0') {
 			return(
 				<div className="profile_pic">
@@ -73,33 +73,32 @@ class Picture extends Component {
 }
 
 function Account_profile(props) {	
-	console.log(props)
 	let username = props.info.user;
 	let lang = props.lang;
 	let socket = props.info.socket;	
-	let pic = props.info.profile_pic ? props.info.profile_pic : "0";
+	let pic = props.info.profile_pic[0] ? props.info.profile_pic[0] : "0";
+	let animal = null;
+	let profiles = []	
+	if(props.info.profile_pic[1]){		
+		animal = props.info.profile_pic[1][0];
+	}
 
 	let roulette_info = useSelector(state => state.roulette);
 	let blackjack_info = useSelector(state => state.blackjack);
 	let slots_info = useSelector(state => state.slot);
 	let craps_info = useSelector(state => state.craps);
 	let race_info = useSelector(state => state.race);
-
-	let profiles = []	
+	
 	const [show1, setShow1] = useState(false);
 	const [show2, setShow2] = useState(false);
 	const [pic_id, setPicId] = useState(pic);
+	const [pic_animal, setPicAnimal] = useState(animal);
 	const [profiles_array, setProfiles_array] = useState([]);
-
-
 	
 	socket.emit('profile_send', {id: props.info.user_id});
-	socket.on('profile_read', function(data){
+	socket.on('profile_read', function(data){		
 		profiles = data;
 	});
-	// socket.on('change_username_read', function(data){
-	// 	console.log('change_username_read ', data)
-	// });
 	
 	function handleClose_pic(){ 
 		setShow1(false) 
@@ -164,13 +163,15 @@ function Account_profile(props) {
     }
 
 	function change_pic(){
-		setPicId(pic);		
+		setPicId(animal.id);	
+		setPicAnimal(animal);
 		handleClose_pic();
 		socket.emit('change_pic_send', {id: props.info.user_id, pic: pic});
 	}
 
 	function choosePic(e){
-		pic = e.target.id;		
+		pic = e.id;
+		animal = e;
 	}
 	
 	return (
@@ -187,10 +188,14 @@ function Account_profile(props) {
 								{lang === "ro" ? <h3>Informatii utilizator</h3> : <h3>User info</h3>}
 								<Row>
 									<Col lg={6}>
-										<Picture pic_id={pic_id} choice={handleShow_pic} id={props.info.user_id} socket={socket} lang={lang}></Picture>
+										<Picture profiles={profiles} pic_id={pic_id} choice={handleShow_pic} id={props.info.user_id} socket={socket} lang={lang}></Picture>
 									</Col>
 									<Col lg={6}>
 										<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}<span id="profile_user_text">{username}</span></p>
+										<p className="profile_animal">
+											{lang === "ro" ? <b>Animal: </b> : <b>Animal: </b>}
+											{lang === "ro" ? <>{pic_animal.name_ro}</> : <>{pic_animal.name_eng}</>}
+										</p>
 										<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
 									</Col>
 								</Row>								
@@ -219,7 +224,7 @@ function Account_profile(props) {
 								return(
 									<div key={i} className="crop_profile_pic_box">										
 										{lang === "ro" ? <p>{item.name_ro}</p> : <p>{item.name_eng}</p>}
-										<input type="radio" id={item.id} name="radio-group" onChange={(e) => choosePic(e)}></input>
+										<input type="radio" id={item.id} name="radio-group" onChange={() => choosePic(item)}></input>
 										<label htmlFor={item.id}>
 											<div className="crop_profile_pic shadow_convex">
 												<img alt="profile_pic" className={"profile_pic pic_"+item.id} src={profilePic}/>

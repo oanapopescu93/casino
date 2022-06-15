@@ -59,7 +59,6 @@ function Panel(props){
 
     function handleClick(link) {
         var url_back01 = window.location.href.split('/table/');
-        console.log('handleClick', link)
 		switch (link) {
 			case "account":
                 $('#user_list_user_game').removeClass('active');

@@ -288,7 +288,8 @@ io.on('connection', function(socket) {
 					break;
 				}
 			}
-			server_user = {id: id, user: user, money: money, profile_pic: profile_pic, user_table: my_table, game: game, contact: contact_details}
+			let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
+			server_user = {id: id, user: user, money: money, profile_pic: [profile_pic, profile_animal], profile_animal: profile_animal, user_table: my_table, game: game, contact: contact_details}
 			try{
 				io.to(socket.id).emit('user_page_read', server_user);
 			}catch(e){
@@ -305,7 +306,8 @@ io.on('connection', function(socket) {
 						break;
 					}
 				}
-				server_user = {id: id, user: user, money: money, profile_pic: profile_pic, user_table: my_table, game: game, contact: contact_details}
+				let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
+				server_user = {id: id, user: user, money: money, profile_pic: [profile_pic, profile_animal], user_table: my_table, game: game, contact: contact_details}
 				try{
 					io.emit('user_page_read', server_user);
 				}catch(e){

@@ -27,11 +27,14 @@ class Carousel extends Component {
 
 		this.text = {
 			"salon": {
-				"ro": {
-					"table": "Masa: ","type": "Tip: ","play": "Joaca","error": "Nu exista masa!",},
+				"ro": {"table": "Masa: ","type": "Tip: ","play": "Joaca","error": "Nu exista masa!",},
 				"eng": {"table": "Table: ","type": "Type: ","play": "Play","error": "Ups, no tabel!",}
 			},
 			"race": {
+				"ro": {"delay": "Intarziere: ","health": "Sanatate: ","bet": "Pariaza: ","place": "Loc: ",},
+				"eng": {"delay": "Delay: ","health": "Health: ","bet": "Bet: ","place": "Place: ",}
+			},
+			"market": {
 				"ro": {"delay": "Intarziere: ","health": "Sanatate: ","bet": "Pariaza: ","place": "Loc: ",},
 				"eng": {"delay": "Delay: ","health": "Health: ","bet": "Bet: ","place": "Place: ",}
 			}
@@ -250,7 +253,7 @@ class Carousel extends Component {
 													})()}    
 													<h3>{item.name}</h3>
 													<p>{lang === "ro" ? <span>Valoare: </span> : <span>Value: </span>}<b>{item.value}</b></p>
-													<p>{lang === "ro" ? <span>Cantitate: </span> : <span>Qty: </span>}<b>{item.quantity}</b></p>
+													<p>{lang === "ro" ? <span>Cantitate: </span> : <span>Quantity: </span>}<b>{item.quantity}</b></p>
 													<p>{lang === "ro" ? <span>Pret: </span> : <span>Price: </span>}<b>{item.value}</b></p>
 													{lang === "ro" ? 
 														<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => self.my_click(id)}>Click</Button> : 

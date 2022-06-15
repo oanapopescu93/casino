@@ -77,8 +77,8 @@ class UserAccount extends Component {
 					<div id="account_market" className="account_tabs" onClick={()=>this.account_choose_tab("account_market")}><img alt="market_img" className="account_img" src={market_img} /> Market</div>
 				</div>
 				
-				{ this.state.visible ? <AccountProfile info={this.state.account_info}></AccountProfile> : 
-					<AccountMarket info={this.state.account_info} market={this.state.market}></AccountMarket>
+				{ this.state.visible ? <AccountProfile info={this.state.account_info} lang={lang}></AccountProfile> : 
+					<AccountMarket info={this.state.account_info} lang={lang} market={this.state.market}></AccountMarket>
 				}
 			</div>
 		);

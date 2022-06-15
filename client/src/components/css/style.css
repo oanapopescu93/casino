@@ -1008,6 +1008,16 @@ table {
 	margin-bottom:15px;
 }
 
+.shop_shader{	
+	background-position: center;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	height:80px;
+	margin-bottom: -20px;
+	position: relative;
+	z-index:2;
+}
+
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
 	border-top: none;
 }
