@@ -42,11 +42,11 @@ function UserRace(props){
                         )
                     case "account":
                         return (
-                            <UserAccount lang={lang} user_id={user_id} game={race} user={user} money={money} user_table={user_table} socket={socket}></UserAccount> 
+                            <UserAccount lang={lang} user_id={user_id} game={race} user={user} money={money} user_table={user_table} socket={socket} dispatch={dispatch}></UserAccount> 
                         )	
                     case "support":
                         return (
-                            <Support lang={lang} user_id={user_id} game={race} user={user} money={money} user_table={user_table} socket={socket}></Support> 
+                            <Support lang={lang} user_id={user_id} game={race} user={user} money={money} user_table={user_table} socket={socket} dispatch={dispatch}></Support> 
                         )
                     default:
                         return(

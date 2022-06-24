@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import $ from 'jquery'; 
-
-// import carrot_img from '../img/icons/carrot_icon.png';
 import market_img from '../img/icons/market_icon.png';
 import inventory_img from '../img/icons/inventory_icon.png';
-
 import AccountProfile from './account_profile';
 import AccountMarket from './account_market';
+import { game_page } from '../actions/actions';
 
 class UserAccount extends Component {
 	constructor(props) {
@@ -18,10 +16,14 @@ class UserAccount extends Component {
 			socket: props.socket,
 			lang: props.lang,
 		}
+		this.account_profile = null;
+		this.account_market = null;
 	}	
 
 	componentDidMount() {
-		let self = this;		
+		let self = this;	
+		let dispatch = self.props.dispatch;
+		dispatch(game_page('user_account'));
 		self.setState({ lang: self.props.lang });
 		let payload = {
 			id: self.state.account_info.user_id, 
@@ -32,36 +34,18 @@ class UserAccount extends Component {
 		self.state.socket.emit('market_send', payload);
 		self.state.socket.on('market_read', function(data){
 			self.setState({ market: data});
-		});	
-		// fetch("/api/market", {
-		// 	headers : { 
-		// 		'Content-Type': 'application/json',
-		// 		'Accept': 'application/json'
-		// 	},
-		// 	method: "POST",
-		// 	body: JSON.stringify(payload)
-		// })
-		// .then(function(response) {
-		// 	return response.text();
-		// })
-		// .then(function(text) {
-		// 	var data = JSON.parse(text)
-		// 	self.setState({ market: data.data});
-		// })
-		// .catch(error => {
-		// 	console.error("There has been a problem with your fetch operation:", error);
-		// });    
+		});
 	}
 
 	account_choose_tab = function(link){	
 		if(link === "account_profile"){			
 			this.setState({ visible: true })
-			$('#account_profile').addClass('active');
-			$('#account_market').removeClass('active');
+			$(this.account_profile).addClass('active');
+			$(this.account_market).removeClass('active');
 		} else if(link === "account_market"){
 			this.setState({ visible: false })
-			$('#account_profile').removeClass('active');
-			$('#account_market').addClass('active');
+			$(this.account_profile).removeClass('active');
+			$(this.account_market).addClass('active');
 		}
 	}
   
@@ -71,10 +55,10 @@ class UserAccount extends Component {
 		return (
 			<div className="color_yellow">	
 				<div className="account_tabs_container">
-					<div id="account_profile" className="account_tabs active" onClick={()=>this.account_choose_tab("account_profile")}><img alt="inventory_img" className="account_img" src={inventory_img} />
+					<div ref={(e) => { this.account_profile = e; }} id="account_profile" className="account_tabs active" onClick={()=>this.account_choose_tab("account_profile")}><img alt="inventory_img" className="account_img" src={inventory_img} />
 						{lang === "ro" ? <span>Profil</span> : <span>Profile</span>}
 					</div>
-					<div id="account_market" className="account_tabs" onClick={()=>this.account_choose_tab("account_market")}><img alt="market_img" className="account_img" src={market_img} /> Market</div>
+					<div ref={(e) => { this.account_market = e; }} id="account_market" className="account_tabs" onClick={()=>this.account_choose_tab("account_market")}><img alt="market_img" className="account_img" src={market_img} /> Market</div>
 				</div>
 				
 				{ this.state.visible ? <AccountProfile info={this.state.account_info} lang={lang}></AccountProfile> : 

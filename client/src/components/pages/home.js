@@ -28,6 +28,7 @@ class Home extends Component {
 			donation_show: false,
 			donation_info: null,
 			cookies:false,
+			page: props.page,
 		};
 		this.lang_change = this.lang_change.bind(this);	
 		this.my_donation = this.my_donation.bind(this);
@@ -67,9 +68,10 @@ class Home extends Component {
 	}
 
 	render() {
+		let page = this.props.page;
 		return (
 			<>	
-				<div className="full-height">
+				<div className="full-height" id={page}>
 					<div className="full-height-content">
 						{ 
 							this.state.donation_show ? <Page back={this.back} info={this.state.donation_info} lang={this.state.lang} socket={socket}></Page> : 
@@ -77,19 +79,19 @@ class Home extends Component {
 								<BrowserRouter>					
 									<Switch>			
 										<Route path="/table/:name">
-											<UserPage lang={this.state.lang} socket={socket}></UserPage>
+											<UserPage lang={this.state.lang} socket={socket} dispatch={this.state.dispatch}></UserPage>
 										</Route>
 										<Route path="/salon">
-											<Salon lang={this.state.lang} socket={socket}></Salon>
+											<Salon lang={this.state.lang} socket={socket} page={page} dispatch={this.state.dispatch}></Salon>
 										</Route>
 										<Route path="/recovery">
-											<SignInRecovery lang={this.state.lang} socket={socket}></SignInRecovery>
+											<SignInRecovery lang={this.state.lang} socket={socket} dispatch={this.state.dispatch}></SignInRecovery>
 										</Route>							
 										<Route exact path="/">
-											<HomePage lang={this.state.lang} socket={socket}></HomePage>
+											<HomePage lang={this.state.lang} socket={socket} dispatch={this.state.dispatch}></HomePage>
 										</Route>
 										<Route path="*">
-											<NotFound lang={this.state.lang}></NotFound>
+											<NotFound lang={this.state.lang} dispatch={this.state.dispatch}></NotFound>
 										</Route>
 									</Switch>			
 								</BrowserRouter>

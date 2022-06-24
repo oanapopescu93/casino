@@ -1530,29 +1530,7 @@ table {
 .color_5 .slot_header h3, .color_3 .slot_header h3{
 	color: var(--light_yellow);
 }
-.slot_buttons_container{
-	margin:10px 0px;
-}
-.slot_buttons{
-	display: inline-block;
-    position: relative;
-	width: 100%;
-	max-width:520px;
-    text-align: center;
-    border-radius: 5px;
-	padding:10px 20px;
-	-moz-box-shadow:    2px 2px 8px 8px rgb(0 0 0 / 50%);
-   	-webkit-box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
-	box-shadow: 2px 2px 8px 8px rgb(0 0 0 / 50%);
-	background: var(--dark_yellow);
-	border-top:solid 0px var(--yellow);
-	border-right:solid 2px var(--yellow);
-	border-bottom:solid 0px var(--yellow);
-	border-left:solid 2px var(--yellow);
-	color:black;
-	
-}
-.slot_input{
+.game_input{
 	width:100%;
 	padding:5px 10px;
 	border-radius:5px;
@@ -1563,7 +1541,7 @@ table {
 	color:var(--yellow);
 	border:solid 1px var(--yellow);
 }
-#slot_spin{
+.game_button{
 	border-radius: 100%;
     height: 55px;
     width: 55px;
@@ -1573,12 +1551,12 @@ table {
     border: solid 1px black;
 	
 }
-#slot_spin:hover, #slot_spin:focus, #slot_spin:active, #slot_spin:active:focus{
+.game_button:hover, .game_button:focus, .game_button:active, .game_button:active:focus{
     background: var(--transparent_2);
 	border: solid 1px var(--yellow);
 	color: var(--yellow);
 }
-#slot_spin.start{
+.game_button.start{
 	color: rgba(0, 0, 0, 0.5);
     background: var(--transparent_2);
     border: solid 1px rgba(0, 0, 0, 0.5);	
@@ -2249,6 +2227,11 @@ table {
     border-left: solid 2px var(--yellow);
     color: black;
 }
+#slot_machine .game_buttons{
+	width: 100%;
+    display: inline-block;
+    max-width: 520px;
+}
 .game_text_container{
 	display: inline-block;
 	vertical-align: middle;
@@ -2531,11 +2514,33 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.game_buttons_container {
+		margin: 5px 0px;
+	}
+	#game_board_bet{
+		display: none;
+	}
+	.game_buttons{
+		padding: 5px 10px;
+	}
+	.game_button{
+		height: auto;
+		width: auto;
+		padding: 5px 10px;
+		border-radius: 5px;
+		margin:0px 2px;
+	}
 	.game_text_container{
 		width: 45%;
 	}
 	.game_start_container{
 		width: 55%;
+	}
+	#game_board_blackjack .game_text_container{
+		width: 60%;
+	}
+	#game_board_blackjack .game_start_container{
+		width: 40%;
 	}
 	.craps_buttons_box{
 		width: 100%;
@@ -2841,6 +2846,34 @@ table {
 	}
 }
 
+@media (max-width: 960px) and (orientation: landscape) {
+	#game_board_bet{
+		display: none;
+	}
+	.game_buttons{
+		padding: 5px 10px;
+	}
+	.game_button{
+		height: auto;
+		width: auto;
+		padding: 5px 10px;
+		border-radius: 5px;
+		margin:0px 5px;
+	}
+	.game_text_container{
+		width: 45%;
+	}
+	.game_start_container{
+		width: 55%;
+	}
+	#game_board_blackjack .game_text_container{
+		width: 60%;
+	}
+	#game_board_blackjack .game_start_container{
+		width: 40%;
+	}
+}
+
 @media (max-width: 768px) and (orientation: landscape) {
 	.salon_button i{
 		display:none;
@@ -2866,4 +2899,12 @@ table {
 	footer{
 		padding:10px;
 	}
+}
+
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+
+   opacity: 1;
+
 }

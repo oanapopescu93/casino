@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useDispatch } from 'react-redux' 
 import { useSelector} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
@@ -13,15 +14,16 @@ import Panel from './panel_control';
 import { getCookie, showResults } from '../utils';
 
 function Child(props) {
-	var visible = useSelector(state => state.visibility);
-	var user_id = props.user_id;
-	var user = props.user;
-	var money = props.money;
-	var type = props.type;
-	var user_table = props.user_table;
-	var game = props.game;
-	var socket = props.socket;
-	var lang = props.lang;
+	let visible = useSelector(state => state.visibility);
+	let dispatch = useDispatch();
+	let user_id = props.user_id;
+	let user = props.user;
+	let money = props.money;
+	let type = props.type;
+	let user_table = props.user_table;
+	let game = props.game;
+	let socket = props.socket;
+	let lang = props.lang;
 	return (			
 			<BrowserRouter>
 				<div className="userPage"> 
@@ -35,11 +37,11 @@ function Child(props) {
 										)
 									case "account":
 										return (
-											<UserAccount lang={lang} info={props} socket={socket}></UserAccount> 
+											<UserAccount lang={lang} info={props} socket={socket} dispatch={dispatch}></UserAccount> 
 										)	
 									case "support":
 										return (
-											<Support lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Support> 
+											<Support lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket} dispatch={dispatch}></Support> 
 										)
 									default:
 										return(

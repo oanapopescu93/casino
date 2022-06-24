@@ -70,11 +70,14 @@ var rabbit_delay = [40, 20] //max, min
 // database_config.sql = "SELECT * FROM casino_users";
 // database(database_config).then(function(data){
 // 	users_json = data;	
-// 	// for(let i in users_json){
-// 	// 	let pass = decrypt(JSON.parse(users_json[i].pass));
-// 	// 	console.log('users_json--> ', users_json[i].user, users_json[i].email, pass)
-// 	// }
-// 	console.log('users_json--> ', users_json)
+// 	for(let i in users_json){
+// 		//let pass = decrypt(JSON.parse(users_json[i].pass));
+// 		//console.log('users_json--> ', users_json[i].user, users_json[i].email, pass)
+// 		if( users_json[i].user === "ccc"){
+// 			console.log('users_json--> ', users_json[i])
+// 		}
+// 	}
+// 	// console.log('users_json--> ', users_json)
 // });
 
 // database_config.sql = "show tables";
@@ -335,8 +338,19 @@ io.on('connection', function(socket) {
 
 		try{
 			socket.join(room_name);
-		
-			user_join.push(payload);		
+			
+			let exists = false;
+			for (let i in user_join) {
+				if (user_join[i].id === payload.id) {
+					exists = true;
+					user_join[i] = payload;
+					break;
+				}
+			}
+			if(!exists){
+				user_join.push(payload);	
+			}
+				
 			sockets.push(socket);
 			users[socket.username] = socket;
 			
@@ -548,7 +562,7 @@ io.on('connection', function(socket) {
 	socket.on('roulette_results_send', function(data) {
 		var money = data.money;
 		var id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id=?";
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
 			for(var i in users_json){	
 				if(data.user_id === users_json[i].id){
@@ -560,27 +574,28 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('blackjack_get_users_send', function(data) {
-		var room_name = data.user_table.split(' ').join('_');
+		let room_name = data.user_table.split(' ').join('_');
 		io.to(room_name).emit('blackjack_get_users_read', user_join);
 	});
 	socket.on('blackjack_send', function(data) {
-		var game_start = false;
-		var user_table = data[1].user_table.split(' ').join('_');
-		var room_name = user_table;
+		let game_start = false;
+		let user_table = data[1].user_table.split(' ').join('_');
+		let room_name = user_table;
 		if(typeof data[1].user_type !== "undefined"){
-			var user_type = data[1].user_type;	
+			let user_type = data[1].user_type;	
 			room_name = room_name + '_' + user_type;
 		}
 		switch (data[0]) {
 			case 'start':
 				if(!game_start){
-					var suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
-					var values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+					let suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
+					let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
 					blackjack_deck = createDeck(suits, values, 10000);
-
+					blackjack_players = [];
 					blackjack_players = user_join
 					dealHands();
+					//buuu
 					
 					hidden_dealer.id = blackjack_dealer.id;
 					hidden_dealer.hand = [];
@@ -591,25 +606,15 @@ io.on('connection', function(socket) {
 				 	io.to(room_name).emit('blackjack_read', text03);
 				}				
 				break;
-			case 'pause':
-				if(!game_start){
-					io.to(room_name).emit('blackjack_read', "pause");
-				} else {					
-					hidden_dealer.id = blackjack_dealer.id;
-					hidden_dealer.hand = [];
-					hidden_dealer.hand.push(blackjack_dealer.hand[0])
-					io.to(room_name).emit('blackjack_read', ['pause', blackjack_players, hidden_dealer]);
-				}
-				break;
 			case 'hit':
 				hitMe();
 				if(blackjack_players[blackjack_current_player].lose !== true){
 					io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1]);
-					//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				 	//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
 				} else {
-					io.to(room_name).emit('blackjack_read', ['hit', blackjack_dealer, blackjack_dealer, blackjack_deck.length-1]);
-					//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-				}
+					io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, blackjack_dealer, blackjack_deck.length-1]);
+				 	//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				}				
 				break;
 			case 'stay':
 				if(blackjack_current_player != blackjack_players.length-1){
@@ -626,25 +631,26 @@ io.on('connection', function(socket) {
 		  
 		function createDeck(suits, values, turns){
 			blackjack_deck = new Array();
-			for (var i = 0 ; i < values.length; i++){
-				for(var j = 0; j < suits.length; j++){
-					var weight = parseInt(values[i]);
-					if (values[i] == "J" || values[i] == "Q" || values[i] == "K")
+			for (let i = 0 ; i < values.length; i++){
+				for(let j = 0; j < suits.length; j++){
+					let weight = parseInt(values[i]);
+					if (values[i] == "J" || values[i] == "Q" || values[i] == "K"){
 						weight = 10;
-					if (values[i] == "A")
+					}
+					if (values[i] == "A"){
 						weight = 11;
-					var card = { Value: values[i], Suit: suits[j], Weight: weight };
+					}
+					let card = { Value: values[i], Suit: suits[j], Weight: weight };
 					blackjack_deck.push(card);
 				}
 			}		
 			return shuffle(turns);
 		}		
 		function shuffle(turns){        
-			for (var i = 0; i < turns; i++){
-				var a = Math.floor((Math.random() * blackjack_deck.length));
-				var b = Math.floor((Math.random() * blackjack_deck.length));
-				var tmp = blackjack_deck[a];
-		
+			for (let i = 0; i < turns; i++){
+				let a = Math.floor((Math.random() * blackjack_deck.length));
+				let b = Math.floor((Math.random() * blackjack_deck.length));
+				let tmp = blackjack_deck[a];		
 				blackjack_deck[a] = blackjack_deck[b];
 				blackjack_deck[b] = tmp;
 			}
@@ -652,12 +658,13 @@ io.on('connection', function(socket) {
 			return blackjack_deck;
 		}		
 		function dealHands(){
+			//buuu
 			blackjack_dealer = {id: "dealer", hand: []}
-			for(var i = 0; i < 2; i++){	
-				var card = blackjack_deck.pop();	
-				blackjack_dealer.hand.push(card);		
-				for (var j = 0; j < blackjack_players.length; j++){
-					var card = blackjack_deck.pop();
+			for(let i = 0; i < 2; i++){	
+				let card = blackjack_deck.pop();
+				blackjack_dealer.hand.push(card);
+				for (let j = 0; j < blackjack_players.length; j++){
+					let card = blackjack_deck.pop();
 					if(i === 0){
 						blackjack_players[j].hand = [];
 					} else {
@@ -723,26 +730,58 @@ io.on('connection', function(socket) {
 					}	
 					break;				
 			  }		
+		}
+		function check_dealer(dealer, player){
+			//check if dealer has more points than players
+			let dealer_points = dealer.points;
+			let player_points = player.points;
+			if(dealer_points < player_points){
+				return false;
+			} else {
+				return true;
+			}
 		}		
 		function blackjack_win_lose(){
-			points('dealer');
+			let max = -1;
 
-			var winner = -1;
-			var score = 0;
-			for(var i in blackjack_players){
-				if(blackjack_players[i].points > score){
-					winner = i;
+			//ger player with max points
+			let score = 0;
+			for(let i in blackjack_players){
+				if(!blackjack_players[i].lose && blackjack_players[i].points > score){
+					max = i;
 					score = blackjack_players[i].points;
 				}
 			}
-				
-			if(winner !== -1){
-				if(blackjack_players[winner].points > blackjack_dealer.points){
-					blackjack_players[winner].win = true;
-				} else {
-					blackjack_dealer.win = true;
+
+			//check dealer points
+			points('dealer');
+			let bigger = check_dealer(blackjack_dealer, blackjack_players[max])
+			
+			//if(!monkey_blackjack){
+				while (!bigger) {
+					let card = blackjack_deck.pop();
+					blackjack_dealer.hand.push(card);
+					
+					points('dealer');
+					bigger = check_dealer(blackjack_dealer, blackjack_players[max])
+
+					if(blackjack_dealer.points > 21){				
+						blackjack_dealer.lose = true;
+					} 
 				}
-			} else {				
+			//}			
+				
+			if(max !== -1){
+				if(blackjack_players[max].points > blackjack_dealer.points){
+					blackjack_players[max].win = true;
+				} else {
+					if(!blackjack_dealer.lose){
+						blackjack_dealer.win = true;
+					} else {
+						blackjack_players[max].win = true;
+					}
+				}
+			} else {	
 				blackjack_dealer.win = true;
 			}
 		}
@@ -750,7 +789,7 @@ io.on('connection', function(socket) {
 	socket.on('blackjack_results_send', function(data) {
 		var money = data.money;
 		var id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id=?";
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
 			for(var i in users_json){	
 				if(data.user_id === users_json[i].id){
@@ -795,7 +834,7 @@ io.on('connection', function(socket) {
 	socket.on('slot_results_send', function(data) {
 		var money = data.money;
 		var id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id=?";
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
 			for(var i in users_json){	
 				if(data.user_id === users_json[i].id){
@@ -861,7 +900,7 @@ io.on('connection', function(socket) {
 	socket.on('craps_results_send', function(data) {
 		var money = data.money;
 		var id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id=?";
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
 			for(var i in users_json){	
 				if(data.user_id === users_json[i].id){
@@ -903,7 +942,7 @@ io.on('connection', function(socket) {
 	socket.on('race_results_send', function(data) {
 		let money = data.money;
 		let id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id=?";
+		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
 			for(let i in users_json){	
 				if(data.user_id === users_json[i].id){
@@ -926,23 +965,25 @@ io.on('connection', function(socket) {
 		console.log('disconnect', reason)
 		let k = sockets.indexOf(socket); 		
 		if(k !== -1){
-			if(typeof user_join[k].user !== "undefined"){
-				let user_table = user_join[k].user_table.split(' ');		
-				user_table = user_table.join('_');				
-				let room_name = user_table;
-
-				if(typeof user_join[k].user_type !== "undefined"){
-					let user_type = user_join[k].user_type;	
-					room_name = room_name + '_' + user_type;				
-				}	
-				
-				try{
-					io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
-					sockets.splice(k, 1);			
-					user_join.splice(user_join.indexOf(k), 1);	
-					socket.leave(room_name);
-				}catch(e){
-					console.log('[error]','disconnect :', e);
+			if(typeof user_join[k] !== "undefined"){
+				if(typeof user_join[k].user !== "undefined"){
+					let user_table = user_join[k].user_table.split(' ');		
+					user_table = user_table.join('_');				
+					let room_name = user_table;
+	
+					if(typeof user_join[k].user_type !== "undefined"){
+						let user_type = user_join[k].user_type;	
+						room_name = room_name + '_' + user_type;				
+					}	
+					
+					try{
+						io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
+						sockets.splice(k, 1);			
+						user_join.splice(user_join.indexOf(k), 1);	
+						socket.leave(room_name);
+					}catch(e){
+						console.log('[error]','disconnect :', e);
+					}
 				}
 			}			
 		}

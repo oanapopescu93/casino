@@ -7,14 +7,9 @@ import Slot from './games/slot'
 import Craps from './games/craps'
 
 var finish = false;
-var self;
-
 class Game extends Component {	
 	constructor(props) {
 		super(props);
-		self = this;		
-		this.handleBack = this.handleBack.bind(self);
-
 		this.state = {
 			user_id: '',
 			user: '',
@@ -22,11 +17,11 @@ class Game extends Component {
 			money: '',
 			user_table: '',
 			game: '',
-		}; 		
+		}; 
+		this.handleBack = this.handleBack.bind(this);	
 	}
 	
-	componentDidMount() {
-		self = this;
+	componentDidMount() {		
 		this.setState({ game: this.props.game });
 		this.setState({ user_id: this.props.user_id });
 		this.setState({ user: this.props.user });
@@ -37,18 +32,17 @@ class Game extends Component {
 	}
 
 	handleBack() {
-		var url = window.location.href;
+		let url = window.location.href;
 		url = url.split('/table/');
 		window.location.href = url[0];
 	}
   
 	render() {	
-		var user = false;
-		
+		let self = this;
+		let user = false;		
 		if(this.state.user !== ""){
 			user = true;
-		}
-		
+		}		
 		return (
 			<div className="color_yellow">
 				{finish ? (

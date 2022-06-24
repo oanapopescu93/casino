@@ -94,10 +94,12 @@ function Account_profile(props) {
 	const [pic_id, setPicId] = useState(pic);
 	const [pic_animal, setPicAnimal] = useState(animal);
 	const [profiles_array, setProfiles_array] = useState([]);
-	
-	socket.emit('profile_send', {id: props.info.user_id});
-	socket.on('profile_read', function(data){		
-		profiles = data;
+
+	useEffect(() => {		
+		socket.emit('profile_send', {id: props.info.user_id});
+		socket.on('profile_read', function(data){		
+			profiles = data;
+		});
 	});
 	
 	function handleClose_pic(){ 
@@ -191,10 +193,16 @@ function Account_profile(props) {
 										<Picture profiles={profiles} pic_id={pic_id} choice={handleShow_pic} id={props.info.user_id} socket={socket} lang={lang}></Picture>
 									</Col>
 									<Col lg={6}>
-										<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}<span id="profile_user_text">{username}</span></p>
+										<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}<span id="profile_user_text">{username}</span></p>										
 										<p className="profile_animal">
 											{lang === "ro" ? <b>Animal: </b> : <b>Animal: </b>}
-											{lang === "ro" ? <>{pic_animal.name_ro}</> : <>{pic_animal.name_eng}</>}
+											{(() => {
+												if(typeof pic_animal !== "undefined" && pic_animal !== "" && pic_animal !== "null" && pic_animal !== null){
+													return <>{lang === "ro" ? <>{pic_animal.name_ro}</> : <>{pic_animal.name_eng}</>}</>
+												} else {
+													return "-"
+												}
+											})()}
 										</p>
 										<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
 									</Col>

@@ -111,6 +111,7 @@ class Salon extends Component {
 			id: -1,
 			money: 0,
 			loaded: false,
+			page: props.page,
 	  	};		
 		this.handleBack = this.handleBack.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -118,7 +119,6 @@ class Salon extends Component {
 	}
   
 	componentDidMount() {
-		console.log('salon000')
 		let self = this;
 		this.salonData()
 			.then(res => {
@@ -207,11 +207,9 @@ class Salon extends Component {
 	}
   
 	render() { 
-		let lang = this.props.lang
+		let lang = this.props.lang;
 		if(this.state.race){
 			$('.full-height').attr('id', 'race');
-		} else {
-			$('.full-height').attr('id', 'salon');
 		}
 		let opened = "";
 		$('#loader_container').show();
@@ -248,30 +246,23 @@ class Salon extends Component {
 							</div>
 						) : (
 							<>
-							<div className={"salon_button_container"+opened}>
-								<div className="salon_button_box">
-									<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
-										{lang === "ro" ? <span><i className="fa fa-smile-o"></i>Jocuri</span> : <span><i className="fa fa-smile-o"></i>Games</span>}											
-									</div>            
-									<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
-										{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i>Curse</span> : <span><i className="fa fa-flag-checkered"></i>Race</span>}	
+								<div className={"salon_button_container"+opened}>
+									<div className="salon_button_box">
+										<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{this.handleChange('games')}}>
+											{lang === "ro" ? <span><i className="fa fa-smile-o"></i>Jocuri</span> : <span><i className="fa fa-smile-o"></i>Games</span>}											
+										</div>            
+										<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{this.handleChange('race')}}>
+											{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i>Curse</span> : <span><i className="fa fa-flag-checkered"></i>Race</span>}	
+										</div>
 									</div>
 								</div>
-							</div>
-							{this.state.loaded ? (
-									<Col sm={12} className="salon_page color_yellow">
-										{this.state.race ? (
-											<UserRace race={this.state.race} lang={lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
-										) : (
-											<Child lang={lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
-										)}											
-									</Col>
-								) : (
-									<></>
-									// <div className="color_yellow">Loading...</div>
-								)
-							}
-								
+								{this.state.loaded ? <Col sm={12} className="salon_page color_yellow">
+									{this.state.race ? (
+										<UserRace race={this.state.race} lang={lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
+									) : (
+										<Child lang={lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
+									)}
+								</Col> : null}
 							</>																
 						)}			
 					</Row>

@@ -1,93 +1,72 @@
-import React from 'react';
-import $ from 'jquery'; 
-
+import React, { useState}from 'react';
+import $ from 'jquery';
 import {roulette_calculate_money, roulette_get_history} from '../../actions/actions'
 import {connect} from 'react-redux'
-
-import { showResults } from '../../utils'
-
+import { get_roulette_bets, showResults } from '../../utils'
 import carrot_img from '../../img/icons/carrot_icon.png';
-import roulette_bets_european from '../../img/roulette/roulette_bets_european.png'
-import roulette_bets_american from '../../img/roulette/roulette_bets_american.png'
-import roulette_bets_european_small from '../../img/roulette/roulette_bets_european_small.png'
-import roulette_bets_american_small from '../../img/roulette/roulette_bets_american_small.png'
+import {game_page} from '../../actions/actions'
 
-var canvas, canvas_bets;
-var ctx, ctx_bets;
-var socket;
-var my_roulette;
-var my_roulette_bets;
-var canvas_width = 900;
-var canvas_height = 800;
-var canvas_width_bets = 900;
-var canvas_height_bets = 300;
-var roulette_radius_x = canvas_width/2;
-var roulette_radius_y = 250;
-
-var colors = [];
-var numbers = [];
-var startAngle = -1.65;
-var startAngle01 = 0;
-var arc = 0;
-var outsideRadius = 200;
-var textRadius = outsideRadius-20;
-var insideRadius = outsideRadius-30; 
-
-var spin_time = 0;
-var spin_click = 0;
-var my_click = -1;
-
-var roulette_pos = [];
-var roulette_type = "";
-
-var circle = {radius: textRadius*0.6, angle:0}
-var ball = {x:70, y:roulette_radius_x, speed:0.05, width:10};
-
-var bet_x = roulette_radius_x - 270;
-var bet_y = 620;
-var bet_square = 40;
-
-var list_bets = [];
-var roulette_index = 0;
-var win_nr = "";
-var your_bets = [];
-var your_last_bet = {};
-var bet_value = 1;
-
-var button_spin  = {};
-var button_show_bets = {};
-var bet_button_coordonates = {};
-var spin_button_coordonates = {};
-var show_bets_button_coordonates = {};
-var spin_clear = [0, 0];
-
-var radiantLine01 = [];
-var radiantLine02 = [];
-var radiantLine03 = [];
-var text_offset = 0;
-
-var font_bold_10 = 'bold 10px sans-serif';
-var font_bold_12 = 'bold 12px sans-serif';
-var font_bold_14 = 'bold 14px sans-serif';
-
-var user_info;
-var dispatch_nr = 0; //this prevents multiplication
-
-var items = [
-	{id: 'european', src: roulette_bets_european},
-	{id: 'european_small', src: roulette_bets_european_small},
-	{id: 'american', src: roulette_bets_american},
-	{id: 'american_small', src: roulette_bets_american_small},
-];
-var small_image = false;
-var roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
+let canvas;
+let ctx;
+let bet_x = 0;
+let bet_square = 0;
+let roulette_pos = [];
+let roulette_type = "";
+let spin_click = 0;
+let numbers = [];
+let your_bets = [];
+let your_last_bet = {};
+let bet_value = 1;
+let user_info;
+let items = get_roulette_bets();
 
 function roulette_game(props){
-	var self = this;
-	var lang = props.lang;
+	let self = this;
+	let lang = props.lang;
 	const dispatch = props.dispatch;
-	roulette_type = props.type;	
+	roulette_type = props.type;
+	let socket = props.socket;
 	
+	let canvas_width = 900;
+	let canvas_height = 800;
+	let roulette_radius_x = canvas_width/2;
+	let roulette_radius_y = 250;
+
+	let colors = [];
+
+	let startAngle = -1.65;
+	let startAngle01 = 0;
+	let arc = 0;
+	let outsideRadius = 200;
+	let textRadius = outsideRadius-20;
+	let insideRadius = outsideRadius-30; 
+
+	let circle = {radius: textRadius*0.6, angle:0}
+	let ball = {x:70, y:roulette_radius_x, speed:0.05, width:10};
+
+	let font_bold_10 = 'bold 10px sans-serif';
+	let font_bold_12 = 'bold 12px sans-serif';
+	let font_bold_14 = 'bold 14px sans-serif';
+
+	let spin_time = 0;
+	let my_click = -1;
+
+	let button_spin  = {};
+	let button_show_bets = {};
+	let bet_button_coordonates = {};
+	let spin_button_coordonates = {};
+	let show_bets_button_coordonates = {};
+	let spin_clear = [0, 0];
+
+	let radiantLine01 = [];
+	let radiantLine02 = [];
+	let radiantLine03 = [];
+	let text_offset = 0;
+
+	let roulette_index = 0;
+	let win_nr = "";
+	
+	let dispatch_nr = 0; //this prevents multiplication
 	user_info = {money: props.money};	
 	if(props.roulette !== -1){
 		user_info = props.roulette[0];			
@@ -141,7 +120,6 @@ function roulette_game(props){
 				radiantLine03 = [-105, -80];
 				
 				bet_x = 330;
-				bet_y = 130;
 				bet_square = 30;
 
 				button_spin  = {x: 100, y: roulette_radius_y+140, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 88, text_y: roulette_radius_y+144};
@@ -166,7 +144,6 @@ function roulette_game(props){
 				radiantLine03 = [-105, -85];
 				
 				bet_x = 330;
-				bet_y = 130;
 				bet_square = 30;				
 				
 				button_spin  = {x: 115, y: roulette_radius_y+180, r: 20, sAngle: 0, eAngle: 40, counterclockwise: false, fillStyle: '#eac739', lineWidth: 2, strokeStyle: '#735f0c', text: 'SPIN', text_x: 102, text_y: roulette_radius_y+184};
@@ -201,7 +178,6 @@ function roulette_game(props){
 			ball = {x:70, y:roulette_radius_x, speed:0.05, width:10};
 			
 			bet_x = canvas.width/2 - 270;
-			bet_y = 620;
 			bet_square = 40;
 			
 			font_bold_10 = 'bold 10px sans-serif';
@@ -283,9 +259,9 @@ function roulette_game(props){
 	}
 	
 	function draw_roulette_holes(outsideRadius, insideRadius, how_many, colors, text, startAngle){			
-		for(var i = 0; i < how_many; i++) {
+		for(let i = 0; i < how_many; i++) {
 			arc = Math.PI / (how_many/2);
-			var angle = startAngle + i * arc;			
+			let angle = startAngle + i * arc;			
 		  
 			ctx.beginPath();		  
 			ctx.arc(roulette_radius_x, roulette_radius_y, outsideRadius, angle, angle + arc, false);   //ctx.arc(x,y,r,sAngle,eAngle,counterclockwise);
@@ -399,7 +375,7 @@ function roulette_game(props){
 	}
 	
 	this.canvas_click = function(canvas, event){		
-		var mousePos = getMousePos(canvas, event);
+		let mousePos = getMousePos(canvas, event);
 		// ctx.beginPath();
 		// ctx.lineWidth = "1";
 		// ctx.strokeStyle = "green";
@@ -416,7 +392,7 @@ function roulette_game(props){
 		
 		if (isInside(mousePos, bet_button_coordonates)) {
 			//console.log('BET');			
-			var width = $('.roulette_container').width();
+			let width = $('.roulette_container').width();
 			$('.roulette_container').animate({
 				scrollLeft: width
 			}, 500);	
@@ -428,7 +404,7 @@ function roulette_game(props){
 			} else {
 				spin_click++;
 				my_click++;
-				var roulette_payload_server = {
+				let roulette_payload_server = {
 					spin_click: spin_click,
 					my_click: my_click,
 					user: props.user, 
@@ -449,9 +425,9 @@ function roulette_game(props){
 	}
 	
 	this.spin = function(arc, spin_time, monkey){
-		var spin_nr = 0;
-		//var spin_time = 10;
-		var monkey_wait = 200;	
+		let spin_nr = 0;
+		//let spin_time = 10;
+		let monkey_wait = 200;	
 		
 		dispatch_nr++;		
 
@@ -465,11 +441,11 @@ function roulette_game(props){
 	  })();	  
 	  
 	  function spin_roulette() {		
-		for(var i in spin_clear){
+		for(let i in spin_clear){
 			ctx.clearRect(spin_clear[i][0], spin_clear[i][1], spin_clear[i][2], spin_clear[i][3]);
 		}
 		
-		var stop = false;
+		let stop = false;
 		if (spin_nr > spin_time) {
 			if(spin_nr > spin_time + 500){								
 				self.drawRoulette();
@@ -596,10 +572,10 @@ function roulette_game(props){
 	}
 	
 	this.closest_nr = function(nr, arr, text){
-		var closest = 1000;
-		var obj = {};
-		var index = 0;
-		for(var i in arr){
+		let closest = 1000;
+		let obj = {};
+		let index = 0;
+		for(let i in arr){
 			if(closest > self.getDistance_between_entities(nr, arr[i])){
 				closest = self.getDistance_between_entities(nr, arr[i]);
 				obj = arr[i];
@@ -615,14 +591,14 @@ function roulette_game(props){
 	}
 	
 	this.getDistance_between_entities = function(entity01, entity02){
-		var distance_x = entity01.x - entity02.x;
-		var distance_y = entity01.y - entity02.y;
+		let distance_x = entity01.x - entity02.x;
+		let distance_y = entity01.y - entity02.y;
 		return Math.sqrt(distance_x * distance_x + distance_y * distance_y);
 	}
 	
 	this.check_win_lose = function(elem01, elem02){	
-		var money_history = user_info.money;
-		for(var i in elem01){	
+		let money_history = user_info.money;
+		for(let i in elem01){	
 			elem01[i].lucky_nr = elem02.nr;			
 			if(isNaN(elem01[i].text) === false){
 				if(parseInt(elem01[i].text) === parseInt(elem02.nr)){
@@ -737,8 +713,8 @@ function roulette_game(props){
 						}
 						break;
 					case "2 to 1a":						
-						for(var k=0; k<12; k++){
-							var x = 3*k+3;
+						for(let k=0; k<12; k++){
+							let x = 3*k+3;
 							//console.log('case10', x, parseInt(elem02.nr), x === parseInt(elem02.nr));
 							if(x === parseInt(elem02.nr)){
 								//console.log('case10-a', elem02);
@@ -752,8 +728,8 @@ function roulette_game(props){
 						}
 						break;
 					case "2 to 1b":
-						for(var k=0; k<12; k++){
-							var x = 3*k+2;
+						for(let k=0; k<12; k++){
+							let x = 3*k+2;
 							//console.log('case11', x, parseInt(elem02.nr), x === parseInt(elem02.nr));
 							if(x === parseInt(elem02.nr)){
 								//console.log('case11-a', elem02);
@@ -767,8 +743,8 @@ function roulette_game(props){
 						}
 						break;
 					case "2 to 1c":
-						for(var k=0; k<12; k++){
-							var x = 3*k+1;
+						for(let k=0; k<12; k++){
+							let x = 3*k+1;
 							//console.log('case12', x, parseInt(elem02.nr), x === parseInt(elem02.nr));
 							if(x === parseInt(elem02.nr)){
 								//console.log('case12-a', elem02);
@@ -793,7 +769,7 @@ function roulette_game(props){
 	
 	this.win_lose = function(arr){
 		if(Object.keys(user_info).length !== 0 || !isNaN(user_info.money)){			
-			for(var i in arr){			
+			for(let i in arr){			
 				if(arr[i].win){		
 					user_info.money = user_info.money + arr[i].bet_value;	
 				} else {
@@ -809,7 +785,7 @@ function roulette_game(props){
 			}
 		}
 
-		var roulette_payload_server = {
+		let roulette_payload_server = {
 			user_id: props.user_id,
 			user: props.user, 
 			user_table: props.user_table, 
@@ -821,10 +797,17 @@ function roulette_game(props){
 }
 
 function roulette_bets(props){
-	var self = this;
-	var lang = props.lang;
+	let self = this;
+	let lang = props.lang;
 	this.images = [];
-	var reason = "";
+	let reason = "";
+	let canvas_bets;
+	let ctx_bets;
+	let canvas_width_bets = 900;
+	let canvas_height_bets = 300;
+	var list_bets = [];
+	let small_image = false;
+	let roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
 
 	$('.roulette_bets .close').click(function() {
 		$('.roulette_bets_container').removeClass('open');
@@ -832,14 +815,15 @@ function roulette_bets(props){
 	
 	this.ready = function(r){
 		reason = r;
-		self.createCanvas(canvas_width_bets, canvas_height_bets);
-		self.getImage(reason);
+		canvas_bets = document.getElementById("roulette_bets_canvas");	
+		if(canvas_bets){
+			self.createCanvas(canvas_width_bets, canvas_height_bets);
+			self.getImage(reason);
+		}
 	}
 
-	this.createCanvas = function(canvas_width_bets, canvas_height_bets){		
-		canvas_bets = document.getElementById("roulette_bets_canvas");		
-		ctx_bets = canvas_bets.getContext("2d");
-		
+	this.createCanvas = function(canvas_width_bets, canvas_height_bets){
+		ctx_bets = canvas_bets.getContext("2d");		
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
@@ -853,25 +837,14 @@ function roulette_bets(props){
 				canvas_bets.height = 400;
 				small_image = true;
 				roulette_bets_coord = [0, 0, 382, 1136, 0, 0, 191, 568];
-			}
-
-			font_bold_10 = 'bold 8px sans-serif';
-			font_bold_12 = 'bold 10px sans-serif';
-			font_bold_14 = 'bold 12px sans-serif';
-			
+			}			
 		} else {
 			//big
 			canvas_bets.width = 900;
 			canvas_bets.height = 280;
-			
-			font_bold_10 = 'bold 10px sans-serif';
-			font_bold_12 = 'bold 12px sans-serif';
-			font_bold_14 = 'bold 14px sans-serif';
-			
 			small_image = false;
 			roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
-		}
-		
+		}		
 		canvas_width_bets = canvas_bets.width;
 		canvas_height_bets = canvas_bets.height;		
 		canvas_bets.height = canvas_height_bets;
@@ -1197,19 +1170,23 @@ function isInside(mousePos, obj){
 }
 
 function Roulette(props) {
-	setTimeout(function(){ 
-		$('.full-height').attr('id', 'roulette');
+	const dispatch = props.dispatch;
+	const [title, setTitle] = useState('');
 
-		let title = props.user_table;
-		title = title.charAt(0).toUpperCase() + title.slice(1);
-		$('.roulette_title').empty();
+	setTimeout(function(){ 
+		dispatch(game_page('roulette'));
+		
+		let user_table = props.user_table;
+		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
 		if (window.innerWidth >= 960){
-			$('.roulette_title').append(title);
+			setTitle(user_table);
+		} else {
+			setTitle('');
 		}		
 		
-		my_roulette = new roulette_game(props);
+		let my_roulette = new roulette_game(props);
 		my_roulette.ready();
-		my_roulette_bets = new roulette_bets(props);
+		let my_roulette_bets = new roulette_bets(props);
 		my_roulette_bets.ready();
 
 		$(window).resize(function(){
@@ -1220,13 +1197,12 @@ function Roulette(props) {
 				my_roulette_bets.ready('resize');
 			}
 		});
-	}, 0);	
-	socket = props.socket;
+	}, 0);
 	
 	return (
 		<>
 			<div className="roulette_container">
-				<h1 className="roulette_title"></h1>
+				<h1 className="roulette_title">{title}</h1>
 				<canvas id="roulette_canvas"></canvas>
 			</div>
 			<div className="show_results_container">				

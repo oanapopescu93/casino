@@ -1,9 +1,11 @@
 import React, { useState }from 'react';
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import $ from 'jquery'; 
-import Modal from 'react-bootstrap/Modal'
+import $ from 'jquery';
+import { useDispatch } from 'react-redux' 
+import { game_page } from '../actions/actions';
 import { setCookie, showResults } from '../utils';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 
 function submit(socket, lang){
 	$('.sign_errors').hide();
@@ -95,14 +97,15 @@ function check_submit(){
 
 function SignIn(props) {
 	const [show, setShow] = useState(false);
+	const dispatch = useDispatch();
 
 	const handleClose = () => setShow(false);
   	const handleShow = () => setShow(true);
 
 	let socket = props.socket;
 	let lang = props.lang;
-
-	$('.full-height').attr('id', 'home');
+	
+	dispatch(game_page('home'));
 
 	return (
 		<>

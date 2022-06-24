@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect }from 'react';
 import $ from 'jquery';
-import {slot_calculate_money, slot_get_history} from '../../actions/actions'
+import {slot_calculate_money, slot_get_history, game_page} from '../../actions/actions'
 import {connect} from 'react-redux'
 import { bigText, showResults } from '../../utils';
 import item_image from '../../img/icons/vegetables_color.png'
+import GameBoard from '../partials/game_board';
 
-var canvas_height = 800;
 var items = [
 	{id: 'carrot', src: item_image, coord:[0, 0]},
 	{id: 'onion', src: item_image, coord:[300, 0]},
@@ -15,39 +15,41 @@ var items = [
 	{id: 'garlic', src: item_image, coord:[600, 600]},
 	{id: 'turnip', src: item_image, coord:[900, 900]},
 ];
-var slots_canvas = [];
-var slots_ctx = [];
-var image_size = [100, 100]
-var image_size_canvas = [290, 290, 5, 5, 80, 80];
-var spin_time = 3000; // how long all slots spin before starting countdown
-var spin_time_reel = spin_time/5 // how long each slot spins at minimum
-var slot_speed = []; // how many pixels per second slots roll
-var speed = 10;
-var my_slot;
-var results_array = [];
-var slot_type = "";
 var reel = [];
 var ctx;
-var socket;
-var user_info;
 
 function slot_game(props, id){
-	var self = this;
-	var slot_id = "#"+id;
-	this.lang = props.lang;
+	let self = this;
+	let slot_id = "#"+id;
+	let socket = props.socket;
+	let lang = props.lang;
+
+	let canvas_height = 800;
+	let slots_canvas = [];
+	let slots_ctx = [];
+	let image_size = [100, 100]
+	let image_size_canvas = [290, 290, 5, 5, 80, 80];
+	let spin_time = 3000; // how long all slots spin before starting countdown
+	let spin_time_reel = spin_time/5 // how long each slot spins at minimum
+	let slot_speed = []; // how many pixels per second slots roll
+	let speed = 10;
+	let results_array = [];
+	let slot_type = "";
+	let user_info;
+	
 	this.state = 0;
 	this.images = [];
 	this.images_pos = [];
 	this.images_set = [];
     this.offset = [];
-	var suffle_array = [];
-	var win = [];
+	let suffle_array = [];
+	let win = [];
 	this.lastUpdate = new Date();
-	var now = new Date();
+	let now = new Date();
 	slot_type = props.type;	
-	var reason = "";
+	let reason = "";
 	const dispatch = props.dispatch;
-	var game_pay = 0;
+	let game_pay = 0;
 
 	user_info = {money: props.money};	
 	if(props.slot !== -1){
@@ -66,7 +68,39 @@ function slot_game(props, id){
 		socket.on('slots_read', function(data){				
 			suffle_array = data[0];
 			win = data[1];
-			self.start(reason);
+			if(reason !== "resize"){
+				let promises = [];
+				for(let i in items){				
+					promises.push(self.preaload_images(items[i]));
+				}
+	
+				Promise.all(promises).then(function(result){
+					self.images = result;	
+					slots_canvas = [];
+					$('.slot_machine .slot_canvas').css('width', image_size[0]);
+					$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
+					$('#slot_canvas_results').css('width', image_size[0]*reel.length)	
+					for(let i in reel){	
+						self.images = self.create_suffle(i, self.images);
+						self.offset.push(0);
+						slots_canvas.push(reel[i][0]);
+						self.createCanvas(slots_canvas[slots_canvas.length-1]);					
+						self.draw_reel(slots_canvas[slots_canvas.length-1], self.images, reason);
+					}
+				});	
+			} else {
+				slots_canvas = [];
+				$('.slot_machine .slot_canvas').css('width', image_size[0]);
+				$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
+				$('#slot_canvas_results').css('width', image_size[0]*reel.length)		
+				for(let i in reel){
+					slots_canvas.push(reel[i][0]);
+					self.createCanvas(slots_canvas[slots_canvas.length-1]);
+					self.draw_reel(slots_canvas[slots_canvas.length-1], self.images_pos[i], reason);
+				}
+			}
+	
+			self.createResultsArray();
 		});
 	}
 
@@ -108,102 +142,62 @@ function slot_game(props, id){
 		return reel;
 	}
 
-	this.start = function(reason){
-		$('body').off('click', '#slot_spin').on('click', '#slot_spin', function () {
-			if(parseInt($('#user_money span').text()) > 0){
-				if($('#slot_spin').attr('finished') === "yes"){
-					if($('#slot_bet').val() !== '0'){
-						game_pay = parseInt($('#slot_bet').val())
-						$('#slot_spin').addClass('start');
-						$('#slot_spin').attr('finished', 'no');
-						$('#slot_spin').prop('disabled', true);
-						self.spin(spin_time, slot_speed);
+	this.rules = function(){
+		let pay_table = `
+		<h1>Pay table</h1>
+		<div id="pay_table" class="rules_box">
+			<table>
+				<thead>
+					<tr>
+						<th>Matrix</th>
+						<th>Pay</th>
+					</tr>
+				</thead>
+				<tbody class="pay_table_info"></tbody>	
+			</table>
+		</div>`;
+		let text = bigText("slot_rules", lang, pay_table);
+		showResults("Rules", text, 400);
+		for(let i in win){
+			let my_matrix = win[i].matrix;
+			let my_prize = win[i].prize;
+			$('.pay_table_info').append("<tr><td id='pay_table_info_"+i+"' class='pay_table_matrix'></td><td class='pay_table_prize'>"+my_prize+"</td></tr>");
+			$('#pay_table_info_'+i).append("<div class='my_matrix'></div>");
+			
+			let x = -1;
+			for(let j=0; j<3; j++){
+				for(let k=0; k<5; k++){
+					x++;
+					if(x>4){ x=0 }
+					if(my_matrix[x][0] === j && my_matrix[x][1] === k){
+						$('#pay_table_info_'+i+' .my_matrix').append("<div class='color' x='"+j+"' y='"+k+"'></div>");
 					} else {
-						if(self.lang === "ro"){
-							showResults("Eroare", "Ceva s-a intamplat. Va rog restartati jocul!");
-						} else {
-							showResults("Error", "Something went wrong. Please restart the game!");
-						}
-					}
+						$('#pay_table_info_'+i+' .my_matrix').append("<div x='"+j+"' y='"+k+"'></div>");
+					}											
 				}
-			} else {
-				if(self.lang === "ro"){
-					showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
-				} else {
-					showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
-				}
-			}					
-		})
-		$('body').off('click', '#slot_rules').on('click', '#slot_rules', function () {
-			let pay_table = `
-			<h1>Pay table</h1>
-			<div id="pay_table" class="rules_box">
-				<table>
-					<thead>
-						<tr>
-							<th>Matrix</th>
-							<th>Pay</th>
-						</tr>
-					</thead>
-					<tbody class="pay_table_info"></tbody>	
-				</table>
-			</div>`;
-			let text = bigText("slot_rules", self.lang, pay_table);
-			showResults("Rules", text, 400);
-			for(let i in win){
-				let my_matrix = win[i].matrix;
-				let my_prize = win[i].prize;
-				$('.pay_table_info').append("<tr><td id='pay_table_info_"+i+"' class='pay_table_matrix'></td><td class='pay_table_prize'>"+my_prize+"</td></tr>");
-				$('#pay_table_info_'+i).append("<div class='my_matrix'></div>");
-				
-				let x = -1;
-				for(let j=0; j<3; j++){
-					for(let k=0; k<5; k++){
-						x++;
-						if(x>4){ x=0 }
-						if(my_matrix[x][0] === j && my_matrix[x][1] === k){
-							$('#pay_table_info_'+i+' .my_matrix').append("<div class='color' x='"+j+"' y='"+k+"'></div>");
-						} else {
-							$('#pay_table_info_'+i+' .my_matrix').append("<div x='"+j+"' y='"+k+"'></div>");
-						}											
-					}
-				}
-			}
-		})
-
-		if(reason !== "resize"){
-			let promises = [];
-			for(let i in items){				
-				promises.push(self.preaload_images(items[i]));
-			}
-
-			Promise.all(promises).then(function(result){
-				self.images = result;	
-				slots_canvas = [];
-				$('.slot_machine .slot_canvas').css('width', image_size[0]);
-				$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
-				$('#slot_canvas_results').css('width', image_size[0]*reel.length)	
-				for(let i in reel){	
-					self.images = self.create_suffle(i, self.images);
-					self.offset.push(0);
-					slots_canvas.push(reel[i][0]);
-					self.createCanvas(slots_canvas[slots_canvas.length-1]);					
-					self.draw_reel(slots_canvas[slots_canvas.length-1], self.images, reason);
-				}
-			});	
-		} else {
-			slots_canvas = [];
-			$('.slot_machine .slot_canvas').css('width', image_size[0]);
-			$('.slot_machine .slot_canvas').css('height', 2 * items.length * image_size[1]);
-			$('#slot_canvas_results').css('width', image_size[0]*reel.length)		
-			for(let i in reel){
-				slots_canvas.push(reel[i][0]);
-				self.createCanvas(slots_canvas[slots_canvas.length-1]);
-				self.draw_reel(slots_canvas[slots_canvas.length-1], self.images_pos[i], reason);
 			}
 		}
+	}
 
-		self.createResultsArray();
+	this.start = function(money, bet){
+		if(money > 0){			
+			if(parseInt(bet) !== 0){
+				game_pay = parseInt(bet);
+				self.spin(spin_time, slot_speed);
+			} else {
+				if(lang === "ro"){
+					showResults("Eroare", "Ceva s-a intamplat. Va rog restartati jocul!");
+				} else {
+					showResults("Error", "Something went wrong. Please restart the game!");
+				}
+			}
+		} else {
+			if(lang === "ro"){
+				showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
+			} else {
+				showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
+			}
+		}
 	}
 
 	this.fit = function(){
@@ -264,42 +258,44 @@ function slot_game(props, id){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#ddd';
 		let array = [];
-		let length = assets.length;
 
-		for (let i = 0 ; i < length ; i++) {			
-			let img = assets[i];
-			if(reason === "resize"){
-				img = assets[i].img;
-			}			
-			ctx.fillRect(0, i * canvas.width, canvas.width, 2);
-			ctx.fillRect(0, (i + length)  * canvas.width, canvas.width, 2);
+		if(typeof assets !== "undefined"){
+			let length = assets.length;
+			for (let i = 0 ; i < length ; i++) {			
+				let img = assets[i];
+				if(reason === "resize"){
+					img = assets[i].img;
+				}			
+				ctx.fillRect(0, i * canvas.width, canvas.width, 2);
+				ctx.fillRect(0, (i + length)  * canvas.width, canvas.width, 2);
 
-			let sx = img.getAttribute( "coord_x" )
-			let sy = img.getAttribute( "coord_y" )
-			let swidth = image_size_canvas[0];
-			let sheight = image_size_canvas[1];
-			let x = image_size_canvas[2];
-			let y = image_size_canvas[3]+i*image_size[1];
-			let width = image_size_canvas[4];
-			let height = image_size_canvas[5];
-			ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
-			ctx.drawImage(img, sx, sy, swidth, sheight, x, (i + length) * canvas.width, width, height);
+				let sx = img.getAttribute( "coord_x" )
+				let sy = img.getAttribute( "coord_y" )
+				let swidth = image_size_canvas[0];
+				let sheight = image_size_canvas[1];
+				let x = image_size_canvas[2];
+				let y = image_size_canvas[3]+i*image_size[1];
+				let width = image_size_canvas[4];
+				let height = image_size_canvas[5];
+				ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
+				ctx.drawImage(img, sx, sy, swidth, sheight, x, (i + length) * canvas.width, width, height);
 
-			let elem = {i:i, img:img, pos:i * canvas.width}
-			array.push(elem)	
-			elem = {i:i + length, img:img, pos:(i + length) * canvas.width}
-			array.push(elem)		
-		}
+				let elem = {i:i, img:img, pos:i * canvas.width}
+				array.push(elem)	
+				elem = {i:i + length, img:img, pos:(i + length) * canvas.width}
+				array.push(elem)		
+			}
 
-		// img - Specifies the image, canvas, or video element to use	 
-		// sx - Optional. The x coordinate where to start clipping	
-		// sy - Optional. The y coordinate where to start clipping	
-		// swidth - Optional. The width of the clipped image	
-		// sheight - Optional. The height of the clipped image	
-		// x - The x coordinate where to place the image on the canvas	
-		// y - The y coordinate where to place the image on the canvas	
-		// width - Optional. The width of the image to use (stretch or reduce the image)	
-		// height - Optional. The height of the image to use (stretch or reduce the image)
+			// img - Specifies the image, canvas, or video element to use	 
+			// sx - Optional. The x coordinate where to start clipping	
+			// sy - Optional. The y coordinate where to start clipping	
+			// swidth - Optional. The width of the clipped image	
+			// sheight - Optional. The height of the clipped image	
+			// x - The x coordinate where to place the image on the canvas	
+			// y - The y coordinate where to place the image on the canvas	
+			// width - Optional. The width of the image to use (stretch or reduce the image)	
+			// height - Optional. The height of the image to use (stretch or reduce the image)
+		}		
 
 		array = sort_array(array, "i");
 		if(reason !== "resize"){
@@ -510,16 +506,32 @@ function slot_game(props, id){
 		}
 
 		if(win){
-			if(self.lang === "ro"){
-				showResults("Results", "Ai castigat " + game_pay + "morcovi");
+			if(lang === "ro"){
+				if(game_pay === 1){
+					showResults("Results", "Ai castigat " + game_pay + " morcov");
+				} else {
+					showResults("Results", "Ai castigat " + game_pay + " morcovi");
+				}				
 			} else {
-				showResults("Results", "You won " + game_pay + "carrots!");
+				if(game_pay === 1){
+					showResults("Results", "You won " + game_pay + " carrot!");
+				} else {
+					showResults("Results", "You won " + game_pay + " carrots!");
+				}				
 			}
 		} else {
-			if(self.lang === "ro"){
-				showResults("Results", "Ai pierdut " + game_pay + "morcovi");
+			if(lang === "ro"){
+				if(game_pay === 1){
+					showResults("Results", "Ai pierdut " + game_pay + " morcov");
+				} else {
+					showResults("Results", "Ai pierdut " + game_pay + " morcovi");
+				}
 			} else {
-				showResults("Results", "You lost " + game_pay + "carrots!");
+				if(game_pay === 1){
+					showResults("Results", "You lost " + game_pay + " carrot!");
+				} else {
+					showResults("Results", "You lost " + game_pay + " carrots!");
+				}
 			}			
 		}
 		let payload = [{bet_value: game_pay, money_history: user_info.money,win: win}];
@@ -582,26 +594,47 @@ function draw_dot(canvas, x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lin
 }
 
 function Slot(props) {	
-	socket = props.socket;
-	let lang = props.lang;
-	let money = props.money;	
+	let my_slots
+	let lang = props.lang;	
+	let money = props.money;
+	let bet = 1;
+	const dispatch = props.dispatch;
+	const [title, setTitle] = useState('');
+	const [gameStart, setGameStart] = useState(false);
 
-	setTimeout(function(){ 
-		$('.full-height').attr('id', 'slots')		
-		my_slot = new slot_game(props, "slot_machine");
-		my_slot.ready();		
+	useEffect(() => {		
+		dispatch(game_page('slots'));
+
+		let user_table = props.user_table;
+		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
+		setTitle(user_table);
+		
+		my_slots = new slot_game(props, "slot_machine");
+		my_slots.ready();	
+
 		$(window).resize(function(){
-			my_slot.ready("resize");	
+			my_slots.ready("resize");	
 		});
-	}, 0);
+	});
 
-	function handleChange(e){
-		let bet = e.target.value;		
-		if($('#money_total').length>0){
-			$('#money_total').text(money-bet);
+	function choice(type, bet){
+		switch (type) {
+			case "spin":
+				// console.log('SPIN', gameStart)
+				if(!gameStart){
+					setGameStart(true);
+					if(my_slots){
+						my_slots.start(money, bet);
+						setGameStart(false);
+					}
+				}
+				break;
 		}
 	}
 	
+	function handleRules(){
+		my_slots.rules();
+	}
 	
 	return (
 		<div id="slot_machine">
@@ -616,33 +649,10 @@ function Slot(props) {
 					<canvas id="slot_machine_lines"></canvas>
 				</div>
 			</div>
-			<div className="game_buttons_container">
-				<div className="game_box_slots">
-					<div className="game_buttons">
-						<div className="game_text_container">
-							<div className="game_buttons_box">
-								{lang === "ro" ? 
-									<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span id="money_total">{money-1}</span> morcovi</p> : 
-									<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span id="money_total">{money-1}</span> carrots</p>
-								}
-							</div>
-							<div className="game_buttons_box">
-								{lang === "ro" ? 
-									<p className="slot_buttons_box_text">PARIAZA</p> : 
-									<p className="slot_buttons_box_text">BET</p>
-								}
-								<input onChange={(e) => {handleChange(e)}} className="slot_input" type="number" id="slot_bet" min="1" defaultValue="1" max={money}></input>
-							</div>
-						</div>
-						<div className="game_start_container">
-							<button finished={"yes"} className="slot_spin shadow_convex" id="slot_spin">SPIN</button>
-						</div>
-					</div>
-				</div>
-			</div>
+			<GameBoard title={"slots"} money={money} lang={lang} choice={choice}></GameBoard>			
 			{lang === "ro" ? 
-				<p id="slot_rules">Click aici pentru a vedea regulile</p> : 
-				<p id="slot_rules">Click here to see rules</p>
+				<p onClick={()=>handleRules()} id="slot_rules">Click aici pentru a vedea regulile</p> : 
+				<p onClick={()=>handleRules()} id="slot_rules">Click here to see rules</p>
 			}
 			<div className="show_results_container">				
 				<div className="show_results">

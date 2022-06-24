@@ -69,3 +69,10 @@ export const game_visible = function(data) {
 		visibility: data
 	}
 }
+
+export const game_page = function(data) {
+	return {
+		type: "game_page",
+		page: data
+	}
+}

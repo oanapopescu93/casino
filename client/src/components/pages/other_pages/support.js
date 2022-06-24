@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery'; 
-
+import {game_page} from '../../actions/actions'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -21,6 +21,8 @@ class Support extends Component {
 
     componentDidMount(){
         let self = this;
+        let dispatch = this.props.dispatch;
+        dispatch(game_page('support'));
         this.state.socket.emit('contact_send', "contact");
 		this.state.socket.on('contact_read', function(data){
             if(data){
@@ -92,8 +94,7 @@ class Support extends Component {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    render() {
-        $('.full-height').attr('id', 'support');
+    render() {        
         return (
                 <Row>
                     <Col sm={2}></Col>
