@@ -9,16 +9,13 @@ import Button from 'react-bootstrap/Button'
 import under_construction_icon from '../../img/icons/under_construction_icon.png'
 import {game_visible} from '../../actions/actions'
 
-var dispatch;
-
-function handleBack() {
+function handleBack(dispatch) {
     dispatch(game_visible("game"))
 }
 
 function Privacy(props){
-    var lang = props.lang;
-    dispatch = props.dispatch;
-
+    let lang = props.lang;
+    let dispatch = props.dispatch;
 	return (
         <Row>
             <Col sm={12}>
@@ -26,7 +23,7 @@ function Privacy(props){
                 <img className="under_construction_icon" alt="under construction" src={under_construction_icon} />
             </Col>
             <Col sm={12}>
-                <Button className="button_table shadow_convex" type="button" onClick={handleBack}>
+                <Button className="button_table shadow_convex" type="button" onClick={()=>handleBack(dispatch)}>
                     {lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
                 </Button>
             </Col>
@@ -34,8 +31,4 @@ function Privacy(props){
 	);
 }
 
-function mapStateToProps(state) {	
-	return { ...state }
-}
-
-export default connect(mapStateToProps)(Privacy)
+export default Privacy;

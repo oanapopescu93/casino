@@ -457,8 +457,6 @@ class Craps extends Component {
 
 	componentDidMount(){
 		let self = this;
-		let dispatch = this.props.dispatch;
-		dispatch(game_page('craps'));
 		let user_table = this.state.data.user_table;
 		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
 

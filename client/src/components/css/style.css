@@ -1370,6 +1370,9 @@ table {
 #donate svg{
 	fill:var(--yellow);
 }
+#donate svg path{
+	stroke:black;
+}
 #donate.open{
 	-webkit-transition: opacity 2.0s ease-in;
 	-moz-transition: opacity 2.0s ease-in;
@@ -1589,6 +1592,7 @@ table {
 }
 .show_results .header{
 	font-size: 24px;
+	line-height: 32px;
 	margin-bottom:10px;
 	padding:0px 10px;
 	border-bottom:solid 1px black;
@@ -2011,6 +2015,17 @@ table {
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
     outline: none!important;
     outline-offset: 0px!important;
+}
+
+/* about */
+.about_container{
+	text-align: center;
+}
+.about_box{
+	width:100%;
+	max-width: 200px;
+	text-align: left;
+	display: inline-block; 
 }
 
 /* Career */
@@ -2514,6 +2529,9 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.account_box_container h2{
+		display:none;
+	}
 	.game_buttons_container {
 		margin: 5px 0px;
 	}
@@ -2531,10 +2549,10 @@ table {
 		margin:0px 2px;
 	}
 	.game_text_container{
-		width: 45%;
+		width: 70%;
 	}
 	.game_start_container{
-		width: 55%;
+		width: 30%;
 	}
 	#game_board_blackjack .game_text_container{
 		width: 60%;
@@ -2572,8 +2590,8 @@ table {
 	.side:nth-child(5) {transform: rotateX(-90deg) translateZ(25px); }
 	.side:nth-child(2) {transform: rotateY(-180deg) translateZ(25px); }
 	.spacing_small{
-		padding-left:70px;
-		padding-right:70px;
+		padding-left:0px;
+		padding-right:50px;
 	}
 	.race_order_elem_container{
 		width:100%
@@ -2619,7 +2637,9 @@ table {
 		max-width: 270px;
 	}
 	#slot_spin{
-		margin-top:10px;
+		border-radius: 100%;
+		height: 55px;
+		width: 55px;
 	}
 	.button_table{
 		height: 40px;
@@ -2632,7 +2652,7 @@ table {
 		height:110px
 	}
 	.salon_page{
-		padding-left:60px;
+		padding-left:35px;
 	}
 	#sapou a{
 		display:inline-block;
@@ -2902,9 +2922,9 @@ table {
 }
 
 
-input[type=number]::-webkit-inner-spin-button, 
+/* input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {  
 
    opacity: 1;
 
-}
+} */

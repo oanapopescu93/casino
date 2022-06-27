@@ -383,7 +383,7 @@ io.on('connection', function(socket) {
 					let timestamp = new Date().getTime() + "";					
 					database_config.sql = "UPDATE casino_users SET last_signin='"+timestamp+"', device="+device+", ip_address='"+extra_data.ip_address+"', city='"+extra_data.city+"', country='"+extra_data.country+"' WHERE id="+payload.id;
 					database(database_config).then(function(){
-						for(var i in users_json){
+						for(let i in users_json){
 							if(payload.id === users_json[i].id){
 								users_json[i].ip_address = extra_data.ip_addres;
 								users_json[i].city = extra_data.city;
@@ -487,11 +487,11 @@ io.on('connection', function(socket) {
 	socket.on('change_username_send', function(data) {
 		let id = data.id;
 		let user_new = data.user_new;
-		for(var i in sockets){
+		for(let i in sockets){
 			if(sockets[i].user_id === id){
 				database_config.sql = "UPDATE casino_users SET user='"+user_new+"' WHERE id="+id;
 				database(database_config).then(function(result){
-					for(var i in users_json){	
+					for(let i in users_json){	
 						if(id === users_json[i].id){
 							users_json[i].user = user_new;
 							try{
@@ -508,7 +508,7 @@ io.on('connection', function(socket) {
 	});
 	socket.on('profile_send', function(data) {
 		let id = data.id;
-		for(var i in sockets){
+		for(let i in sockets){
 			if(sockets[i].user_id === id){
 				try{
 					io.to(socket.id).emit('profile_read', profiles);
@@ -522,11 +522,11 @@ io.on('connection', function(socket) {
 	socket.on('change_pic_send', function(data) {
 		let id = data.id;
 		let pic = data.pic;		
-		for(var i in sockets){
+		for(let i in sockets){
 			if(sockets[i].user_id === id){
 				database_config.sql = "UPDATE casino_users SET profile_pic='"+pic+"' WHERE id="+id;
 				database(database_config).then(function(result){
-					for(var i in users_json){	
+					for(let i in users_json){	
 						if(id === users_json[i].id){
 							users_json[i].profile_pic = pic;
 							try{
@@ -544,27 +544,27 @@ io.on('connection', function(socket) {
 
 	socket.on('roulette_spin_send', function(data) {
 		if(data.spin_click === 1){
-			var spin_time = Math.floor(Math.random() * (800 - 300)) + 300;
-			//var spin_time = 100;
-			var ball_speed = 0.06;
+			let spin_time = Math.floor(Math.random() * (800 - 300)) + 300;
+			//let spin_time = 100;
+			let ball_speed = 0.06;
 			
-			var user_table = data.user_table.split(' ').join('_');
-			var user_type = data.user_type;
-			var room_name = user_table + '_' + user_type;
+			let user_table = data.user_table.split(' ').join('_');
+			let user_type = data.user_type;
+			let room_name = user_table + '_' + user_type;
 			
-			var k = data.my_click;
-			var payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey_roulette[k]}
+			let k = data.my_click;
+			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey_roulette[k]}
 			
 			io.to(room_name).emit('roulette_spin_read', payload);
 			//io.emit('roulette_spin_read', payload);
 		}
 	});
 	socket.on('roulette_results_send', function(data) {
-		var money = data.money;
-		var id = parseInt(data.user_id);
+		let money = data.money;
+		let id = parseInt(data.user_id);
 		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
-			for(var i in users_json){	
+			for(let i in users_json){	
 				if(data.user_id === users_json[i].id){
 					users_json[i].money = money;
 					break;
@@ -679,17 +679,18 @@ io.on('connection', function(socket) {
 			check('blackjack');
 		}		
 		function hitMe(){
-			var card = blackjack_deck.pop();
+			let card = blackjack_deck.pop();
 			blackjack_players[blackjack_current_player].hand.push(card);
 			points('hit_me');
 			check('busted');
 		}		
 		function points(reason){
+			let points = 0;
 			switch (reason) {
 				case 'deal_hands':
-					for(var i in blackjack_players){
-						var points = 0;
-						for(var j in blackjack_players[i].hand){
+					for(let i in blackjack_players){
+						let points = 0;
+						for(let j in blackjack_players[i].hand){
 							points = points + blackjack_players[i].hand[j].Weight;
 						}
 						blackjack_players[i].points = points;
@@ -697,9 +698,8 @@ io.on('connection', function(socket) {
 						blackjack_players[i].win = false;
 					}	
 					break;
-				case 'hit_me':
-					var points = 0;
-					for(var j in blackjack_players[blackjack_current_player].hand){
+				case 'hit_me':					
+					for(let j in blackjack_players[blackjack_current_player].hand){
 						points = points + blackjack_players[blackjack_current_player].hand[j].Weight;
 					}
 					blackjack_players[blackjack_current_player].points = points;
@@ -707,8 +707,7 @@ io.on('connection', function(socket) {
 					blackjack_players[blackjack_current_player].win = false;
 					break;	
 				case 'dealer':
-					var points = 0;
-					for(var i in blackjack_dealer.hand){
+					for(let i in blackjack_dealer.hand){
 						points = points + blackjack_dealer.hand[i].Weight;
 					}
 					blackjack_dealer.points = points;
@@ -723,7 +722,7 @@ io.on('connection', function(socket) {
 					} 				
 					break;
 				case 'blackjack':
-					for(var i in blackjack_players){
+					for(let i in blackjack_players){
 						if(blackjack_players[i].points === 21){
 							blackjack_players[blackjack_current_player].win = true;
 						} 
@@ -787,11 +786,11 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('blackjack_results_send', function(data) {
-		var money = data.money;
-		var id = parseInt(data.user_id);
+		let money = data.money;
+		let id = parseInt(data.user_id);
 		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
-			for(var i in users_json){	
+			for(let i in users_json){	
 				if(data.user_id === users_json[i].id){
 					users_json[i].money = money;
 					break;
@@ -832,11 +831,11 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('slot_results_send', function(data) {
-		var money = data.money;
-		var id = parseInt(data.user_id);
+		let money = data.money;
+		let id = parseInt(data.user_id);
 		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
-			for(var i in users_json){	
+			for(let i in users_json){	
 				if(data.user_id === users_json[i].id){
 					users_json[i].money = money;
 					break;
@@ -898,11 +897,11 @@ io.on('connection', function(socket) {
 		}	
 	});
 	socket.on('craps_results_send', function(data) {
-		var money = data.money;
-		var id = parseInt(data.user_id);
+		let money = data.money;
+		let id = parseInt(data.user_id);
 		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
 		database(database_config, [id]).then(function(){
-			for(var i in users_json){	
+			for(let i in users_json){	
 				if(data.user_id === users_json[i].id){
 					users_json[i].money = money;
 					break;
@@ -1007,9 +1006,9 @@ function chatMessage(from, text){
 };
 
 function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-		var j = parseInt(Math.random() * i)
-		var tmp = array[i];
+    for (let i = array.length - 1; i > 0; i--) {
+		let j = parseInt(Math.random() * i)
+		let tmp = array[i];
 		array[i] = array[j]
 		array[j] = tmp;
     }
@@ -1017,22 +1016,22 @@ function shuffleArray(array) {
 }
 
 function slot_matrix(x, size){
-	var matrix = [];
-	var t = 0;	
-	var my_prize = slot_prize[x];
-	var length01 = size[0];
-	var length02 = size[1];
+	let matrix = [];
+	let t = 0;	
+	let my_prize = slot_prize[x];
+	let length01 = size[0];
+	let length02 = size[1];
 	switch (x) {
 		case 0:
 		case 1:
 		case 2:				
-			for(var i=0; i<length01; i++){
+			for(let i=0; i<length01; i++){
 				matrix.push([x, i]);
 			}
 			break; 
 		case 3:	
 		case 4:				
-			for(var i=0; i<length01; i++){
+			for(let i=0; i<length01; i++){
 				if(i === 2){
 					t  = Math.round((length02-1) / 2);
 				} else {
@@ -1053,7 +1052,7 @@ function slot_matrix(x, size){
 			break; 	
 		case 5:	
 		case 6:				
-			for(var i=0; i<length01; i++){
+			for(let i=0; i<length01; i++){
 				t = 0
 				if(x === 5){
 					if(i%2 !== 0){
@@ -1069,7 +1068,7 @@ function slot_matrix(x, size){
 			break; 
 		case 7:	
 		case 8:				
-			for(var i=0; i<length01; i++){
+			for(let i=0; i<length01; i++){
 				t = 0
 				if(x === 7){
 					if(i%2 !== 0){
@@ -1085,7 +1084,7 @@ function slot_matrix(x, size){
 			break; 	
 		case 9:	
 		case 10:				
-			for(var i=0; i<length01; i++){
+			for(let i=0; i<length01; i++){
 				t = 1
 				if(x === 9){
 					if(i%2 !== 0){
@@ -1102,7 +1101,7 @@ function slot_matrix(x, size){
 		case 11:	
 		case 12:	
 			t = (length01-1)/2+1; //3			
-			for(var i=0; i<length01; i++){					
+			for(let i=0; i<length01; i++){					
 				if(x === 11){
 					if(i <= (length01-1)/2){
 						t = i;
@@ -1122,7 +1121,7 @@ function slot_matrix(x, size){
 		case 11:	
 		case 12:	
 			t = (length01-1)/2+1; //3			
-			for(var i=0; i<length01; i++){					
+			for(let i=0; i<length01; i++){					
 				if(x === 11){
 					if(i <= (length01-1)/2){
 						t = i;
@@ -1141,7 +1140,7 @@ function slot_matrix(x, size){
 			break; 	
 		case 13:	
 		case 14:		
-			for(var i=0; i<length01; i++){
+			for(let i=0; i<length01; i++){
 				t = 1;	
 				if(i === (length01-1)/2){
 					if(x === 13){
@@ -1157,7 +1156,7 @@ function slot_matrix(x, size){
 		case 16:
 		case 17:
 		case 18:		
-			for(var i=0; i<length01; i++){					
+			for(let i=0; i<length01; i++){					
 				if(x === 15 || x === 16){
 					t = (length01-1)/2;
 					if(i === (length01-1)/2){

@@ -14,10 +14,11 @@ import Support from './other_pages/support';
 import Terms from './other_pages/terms';
 import Privacy from './other_pages/privacy';
 import Questions from './other_pages/questions';
-import Career from './other_pages/career';
+import Career from './other_pages/career_empty';
 
 import { getCookie, setCookie, showResults } from '../utils';
 import UserRace from './userRace';
+import { game_page } from '../actions/actions';
 
 var casino_games = {
 	roulette_tables: [], 
@@ -35,6 +36,7 @@ function Child(props){
 	let user = props.user;
 	let casino_games = props.casino_games;
 	let visible = useSelector(state => state.visibility);
+	let dispatch = props.dispatch;
 	return(
 		<>	
 			{(() => {
@@ -43,54 +45,56 @@ function Child(props){
 						return (
 							<>
 								<Sapou lang={lang} page="salon"></Sapou>
-								<SalonGames lang={lang} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></SalonGames>
+								<SalonGames lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></SalonGames>
 							</>
 						)
 					case "about":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<About lang={lang} socket={socket} user_id={user_id} user={user}></About>
+								<About lang={lang} dispatch={dispatch} socket={socket} user_id={user_id} user={user}></About>
 							</>
 						)	
 					case "support":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Support lang={lang} socket={socket} user_id={user_id} user={user}></Support>
+								<Support lang={lang} dispatch={dispatch} socket={socket} user_id={user_id} user={user}></Support>
 							</>
 						)
 					case "terms":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Terms lang={lang} casino_games_title={casino_games_title} socket={socket} user_id={user_id} user={user} casino_games={casino_games}></Terms>
+								<Terms lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={user_id} user={user} casino_games={casino_games}></Terms>
 							</>
 						)
 					case "privacy":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Privacy lang={lang} socket={socket} user_id={user_id} user={user}></Privacy>
+								<Privacy lang={lang} dispatch={dispatch} socket={socket} user_id={user_id} user={user}></Privacy>
 							</>
 						)
 					case "questions":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Questions lang={lang} socket={socket} user_id={user_id} user={user}></Questions>
+								<Questions lang={lang} dispatch={dispatch} socket={socket} user_id={user_id} user={user}></Questions>
 							</>
 						)
 					case "career":
 						return (
 							<>
 								<Sapou lang={lang} page={visible}></Sapou>
-								<Career lang={lang} socket={socket} user_id={user_id} user={user}></Career>
+								<Career lang={lang} dispatch={dispatch} socket={socket} user_id={user_id} user={user}></Career>
 							</>
 						)
 					default:
 						return(
-							<p>Something went wrong.</p>
+							<>
+								{lang === "ro" ? <p>Ceva s-a intamplat.</p> : <p>Something went wrong.</p>}
+							</>							
 						)						
 				}
 			})()}					
@@ -107,7 +111,7 @@ class Salon extends Component {
 			empty: false,
 			casino_games: '',
 			user: '',
-			open_race: false,
+			race: false,
 			id: -1,
 			money: 0,
 			loaded: false,
@@ -208,9 +212,6 @@ class Salon extends Component {
   
 	render() { 
 		let lang = this.props.lang;
-		if(this.state.race){
-			$('.full-height').attr('id', 'race');
-		}
 		let opened = "";
 		$('#loader_container').show();
 		if(this.state.loaded){
@@ -260,7 +261,7 @@ class Salon extends Component {
 									{this.state.race ? (
 										<UserRace race={this.state.race} lang={lang} user_id={this.state.user_id} user={this.state.user} money={this.state.money} user_table={"Rabbit Race"} socket={this.state.socket}></UserRace>						
 									) : (
-										<Child lang={lang} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
+										<Child lang={lang} dispatch={this.props.dispatch} casino_games_title={casino_games_title} socket={this.state.socket} user_id={this.state.user_id} user={this.state.user} casino_games={casino_games}></Child>
 									)}
 								</Col> : null}
 							</>																

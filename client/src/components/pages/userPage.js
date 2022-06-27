@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { useDispatch } from 'react-redux' 
 import { useSelector} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
@@ -15,7 +14,7 @@ import { getCookie, showResults } from '../utils';
 
 function Child(props) {
 	let visible = useSelector(state => state.visibility);
-	let dispatch = useDispatch();
+	let dispatch = props.dispatch;
 	let user_id = props.user_id;
 	let user = props.user;
 	let money = props.money;
@@ -30,10 +29,11 @@ function Child(props) {
 					<Row>
 						<Col sm={12}>	
 							{(() => {
+								console.log('visible--> ', visible)
 								switch (visible) {
 									case "game":
 										return (
-											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
+											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket} dispatch={dispatch}></Game>
 										)
 									case "account":
 										return (
@@ -45,7 +45,7 @@ function Child(props) {
 										)
 									default:
 										return(
-											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Game>
+											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket} dispatch={dispatch}></Game>
 										)						
 								}
 							})()}					
@@ -141,7 +141,7 @@ class UserPage extends Component {
 		}
 
 		return user_id !== -1 ? 
-			<Child user_id={user_id} game={game} user={username} money={money} profile_pic={this.state.user.profile_pic} user_table={user_table} type={type} lang={this.props.lang} socket={this.state.socket} url={url}></Child>
+			<Child user_id={user_id} game={game} user={username} money={money} profile_pic={this.state.user.profile_pic} user_table={user_table} type={type} lang={this.props.lang} socket={this.state.socket} dispatch={this.props.dispatch} url={url}></Child>
 			 : (
 				<span className="color_yellow">Loading...</span>
 		  	)	

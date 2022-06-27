@@ -237,7 +237,22 @@ function blackjack_game(props){
 	this.createCanvas = function(canvas_width, canvas_height){		
 		ctx = canvas.getContext("2d");
 		
-		if (window.innerWidth < 960){
+		if(window.innerWidth <= 480){
+			if(window.innerHeight < window.innerWidth){
+				//extra small landscape				
+				canvas.width = 400;
+				canvas.height = 180;
+				card_base = {x: 5, y:120, width: 46, height: 70, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:20}
+				card = {width: 33, height: 50};
+				player_nr = [12, 12];
+			} else {
+				//extra small portrait
+				canvas.width = 300;
+				canvas.height = 400;
+			}			
+			font_bold_12 = 'bold 10px sans-serif';
+			font_bold_14 = 'bold 12px sans-serif';
+		} else if (window.innerWidth <= 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
 				canvas.width = 480;
@@ -252,12 +267,21 @@ function blackjack_game(props){
 			}			
 			font_bold_12 = 'bold 10px sans-serif';
 			font_bold_14 = 'bold 12px sans-serif';	
-		} else {
+		} else if (window.innerWidth <= 1200){
 			//big
 			canvas.width = 900;
 			canvas.height = 500;
 			card_base = {x: 20, y:240, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
 			card = {width: 80, height: 120};
+			player_nr = [20, 20];
+			font_bold_12 = 'bold 12px sans-serif';
+			font_bold_14 = 'bold 14px sans-serif';
+		} else {
+			//extra big
+			canvas.width = 1200;
+			canvas.height = 600;
+			card_base = {x: 20, y:260, width: 120, height: 180, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
+			card = {width: 100, height: 150};
 			player_nr = [20, 20];
 			font_bold_12 = 'bold 12px sans-serif';
 			font_bold_14 = 'bold 14px sans-serif';
@@ -417,8 +441,7 @@ function blackjack_game(props){
 		}
 	}
 
-	this.check_win_lose = function(){
-		console.log('END GAME --> ', blackjack_hand)		
+	this.check_win_lose = function(){		
 		if(typeof blackjack_hand[2].win !== "undefined" && blackjack_hand[2].win === true){
 			self.end_game(blackjack_hand[2]);		
 		} else {
@@ -522,7 +545,6 @@ function Blackjack(props) {
 	let my_blackjack
 	let lang = props.lang;	
 	let money = props.money;
-	const dispatch = props.dispatch;
 	const [title, setTitle] = useState('');
 	const [gameStart, setGameStart] = useState(false);
 	const isInitialMount = useRef(true);
@@ -530,17 +552,14 @@ function Blackjack(props) {
 	useEffect(() => {
 		if (isInitialMount.current) {
 			isInitialMount.current = false;
-			dispatch(game_page('blackjack'));			
+			let user_table = props.user_table;
+			user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
+			if (window.innerWidth >= 960){
+				setTitle(user_table);
+			} else {
+				setTitle('');
+			}				
 		}
-
-		let user_table = props.user_table;
-		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
-		if (window.innerWidth >= 960){
-			setTitle(user_table);
-		} else {
-			setTitle('');
-		}
-
 		my_blackjack = new blackjack_game(props);
 		my_blackjack.ready(gameStart);
 	});

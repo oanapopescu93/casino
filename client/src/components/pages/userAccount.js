@@ -50,7 +50,8 @@ class UserAccount extends Component {
 	}
   
 	render() {
-		$('.full-height').attr('id', 'user_account');
+		let dispatch = this.props.dispatch;
+        dispatch(game_page('user_account'));
 		let lang = this.props.lang;
 		return (
 			<div className="color_yellow">	

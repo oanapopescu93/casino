@@ -79,19 +79,19 @@ class Home extends Component {
 								<BrowserRouter>					
 									<Switch>			
 										<Route path="/table/:name">
-											<UserPage lang={this.state.lang} socket={socket} dispatch={this.state.dispatch}></UserPage>
+											<UserPage lang={this.state.lang} socket={socket} dispatch={this.props.dispatch}></UserPage>
 										</Route>
 										<Route path="/salon">
-											<Salon lang={this.state.lang} socket={socket} page={page} dispatch={this.state.dispatch}></Salon>
+											<Salon lang={this.state.lang} socket={socket} page={page} dispatch={this.props.dispatch}></Salon>
 										</Route>
 										<Route path="/recovery">
-											<SignInRecovery lang={this.state.lang} socket={socket} dispatch={this.state.dispatch}></SignInRecovery>
+											<SignInRecovery lang={this.state.lang} socket={socket} dispatch={this.props.dispatch}></SignInRecovery>
 										</Route>							
 										<Route exact path="/">
-											<HomePage lang={this.state.lang} socket={socket} dispatch={this.state.dispatch}></HomePage>
+											<HomePage lang={this.state.lang} socket={socket} dispatch={this.props.dispatch}></HomePage>
 										</Route>
 										<Route path="*">
-											<NotFound lang={this.state.lang} dispatch={this.state.dispatch}></NotFound>
+											<NotFound lang={this.state.lang} dispatch={this.props.dispatch}></NotFound>
 										</Route>
 									</Switch>			
 								</BrowserRouter>

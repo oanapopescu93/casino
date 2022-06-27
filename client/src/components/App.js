@@ -27,7 +27,7 @@ let my_console = function(){
 }();
 
 function App(props){	
-	//my_console.disable();	
+	my_console.disable();	
 	let dispatch = useDispatch();
 	let page = useSelector(state => state.page);
 	return (

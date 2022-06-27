@@ -1170,12 +1170,9 @@ function isInside(mousePos, obj){
 }
 
 function Roulette(props) {
-	const dispatch = props.dispatch;
 	const [title, setTitle] = useState('');
 
-	setTimeout(function(){ 
-		dispatch(game_page('roulette'));
-		
+	setTimeout(function(){ 		
 		let user_table = props.user_table;
 		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
 		if (window.innerWidth >= 960){

@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col'
 import {game_visible} from '../../actions/actions'
 import under_construction_icon from '../../img/icons/under_construction_icon.png'
 
-var dispatch;
+let dispatch;
 function handleBack(text="game") {
     dispatch(game_visible(text))
 }

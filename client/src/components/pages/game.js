@@ -1,103 +1,86 @@
-import React, {Component} from 'react'
+import React, { useState, useEffect, useRef }from 'react';
 import Button from 'react-bootstrap/Button'
 
 import Roulette from './games/roulette'
 import Blackjack from './games/blackjack'
 import Slot from './games/slot'
 import Craps from './games/craps'
+import { game_page } from '../actions/actions';
 
-var finish = false;
-class Game extends Component {	
-	constructor(props) {
-		super(props);
-		this.state = {
-			user_id: '',
-			user: '',
-			type: '',
-			money: '',
-			user_table: '',
-			game: '',
-		}; 
-		this.handleBack = this.handleBack.bind(this);	
-	}
-	
-	componentDidMount() {		
-		this.setState({ game: this.props.game });
-		this.setState({ user_id: this.props.user_id });
-		this.setState({ user: this.props.user });
-		this.setState({ type: this.props.type });
-		this.setState({ money: this.props.money });
-		this.setState({ user_table: this.props.user_table });
-		finish = true;		
-	}
+function Game(props){
+	let game = props.game;
+	let user_id = props.user_id;
+	let user = props.user;
+	let type = props.type;
+	let money = props.money;
+	let user_table = props.user_table;
+	let dispatch = props.dispatch;	
 
-	handleBack() {
+	function handleBack(){
 		let url = window.location.href;
 		url = url.split('/table/');
 		window.location.href = url[0];
-	}
-  
-	render() {	
-		let self = this;
-		let user = false;		
-		if(this.state.user !== ""){
-			user = true;
-		}		
-		return (
-			<div className="color_yellow">
-				{finish ? (
-					<div>
-						{user ? (
-							<div className="casino_container color_yellow">
-								{(() => {
-									switch (this.state.game) {
-										case "roulette":
-											return (
-												<Roulette lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Roulette>
-											)
-										case "blackjack":
-											return (
-												<Blackjack lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} socket={this.props.socket} money={this.state.money}></Blackjack>
-											)	
-										case "slots":
-											return (
-												<Slot lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Slot>
-											)
-										case "craps":
-											return (
-												<Craps lang={this.props.lang} user_id={this.state.user_id} user={this.state.user} user_table={this.state.user_table} type={this.state.type} socket={this.props.socket} money={this.state.money}></Craps>
-											)
-										default:
-											return(
-												<div>
-													{self.props.lang === "ro" ? 
-														<>
-															<p>Eroare</p>
-															<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Inapoi</Button>
-														</> : 
-														<>
-															<p>Somethig went wrong</p>
-															<Button className="button_table shadow_convex" type="button" onClick={()=>self.handleBack()}>Back</Button>
-														</>
-													}														
-												</div>
-											)						
-									}
-								})()}
-							</div>
-						) : (
-							<div>
-								{self.state.lang === "ro" ? <span>Nu exista user</span> : <span>No user</span>}	
-							</div>
-						)}
-					</div>
-				) : (
-					<div>{self.state.lang === "ro" ? <span>Eroare</span> : <span>Error loading page</span>}</div>
-				)}
-			</div>
-		);
-		
-	}
+	}  
+	
+	return (
+		<div className="color_yellow">
+			{user ? (
+				<div className="casino_container color_yellow">
+					{(() => {
+						switch (game) {
+							case "roulette":
+								if(dispatch){
+									dispatch(game_page('roulette'));
+								}
+								return (
+									<Roulette lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Roulette>
+								)
+							case "blackjack":
+								if(dispatch){
+									dispatch(game_page('blackjack'));
+								}
+								return (
+									<Blackjack lang={props.lang} user_id={user_id} user={user} user_table={user_table} socket={props.socket} money={money}></Blackjack>
+								)	
+							case "slots":
+								if(dispatch){
+									dispatch(game_page('slots'));
+								}
+								return (
+									<Slot lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Slot>
+								)
+							case "craps":
+								if(dispatch){
+									dispatch(game_page('craps'));
+								}
+								return (
+									<Craps lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Craps>
+								)
+							default:
+								return(
+									<div>
+										{props.lang === "ro" ? 
+											<>
+												<p>Eroare</p>
+												<Button className="button_table shadow_convex" type="button" onClick={handleBack}>Inapoi</Button>
+											</> : 
+											<>
+												<p>Somethig went wrong</p>
+												<Button className="button_table shadow_convex" type="button" onClick={handleBack}>Back</Button>
+											</>
+										}														
+									</div>
+								)						
+						}
+					})()}
+				</div>
+			) : (
+				<div>
+					{props.lang === "ro" ? <span>Nu exista user</span> : <span>No user</span>}	
+				</div>
+			)}			
+		</div>
+	);
 }
 
 export default Game;
