@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef }from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button'
-
 import Roulette from './games/roulette'
 import Blackjack from './games/blackjack'
 import Slot from './games/slot'
@@ -27,32 +26,23 @@ function Game(props){
 			{user ? (
 				<div className="casino_container color_yellow">
 					{(() => {
+						if(dispatch){
+							dispatch(game_page(game));
+						}
 						switch (game) {
 							case "roulette":
-								if(dispatch){
-									dispatch(game_page('roulette'));
-								}
 								return (
 									<Roulette lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Roulette>
 								)
 							case "blackjack":
-								if(dispatch){
-									dispatch(game_page('blackjack'));
-								}
 								return (
 									<Blackjack lang={props.lang} user_id={user_id} user={user} user_table={user_table} socket={props.socket} money={money}></Blackjack>
 								)	
 							case "slots":
-								if(dispatch){
-									dispatch(game_page('slots'));
-								}
 								return (
 									<Slot lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Slot>
 								)
-							case "craps":
-								if(dispatch){
-									dispatch(game_page('craps'));
-								}
+							case "craps":								
 								return (
 									<Craps lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Craps>
 								)

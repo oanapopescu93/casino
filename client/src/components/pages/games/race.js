@@ -43,11 +43,11 @@ function Landscape(config){
 	self.color_stroke = config.color_stroke;
 	self.stroke = config.stroke;
 	self.populate = function (){
-		var totalWidth = 0;
-		var x = 0;
+		let totalWidth = 0;
+		let x = 0;
 		while (totalWidth <= 2*canvas.width + (10 * self.width.max)) {
-			var newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
-			var newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
+			let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
+			let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
 			if(self.lands.length !== 0){
 				x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x;
 			}
@@ -69,12 +69,12 @@ function Landscape(config){
 		ctx.save();
 		ctx.translate(self.x, 0);
 		ctx.beginPath();
-		var lands = self.lands;
+		let lands = self.lands;
 		ctx.moveTo(self.lands[0].x, self.lands[0].y);
 		
-		for(var i=0; i<lands.length-1; i++){
-			var point01 = (self.lands[i].x + self.lands[i + 1].x) / 2;
-			var point02 = (self.lands[i].y + self.lands[i + 1].y) / 2;
+		for(let i=0; i<lands.length-1; i++){
+			let point01 = (self.lands[i].x + self.lands[i + 1].x) / 2;
+			let point02 = (self.lands[i].y + self.lands[i + 1].y) / 2;
 			ctx.quadraticCurveTo(self.lands[i].x, self.lands[i].y, point01, point02);
 		}
 		ctx.lineTo(canvas.width - self.x, canvas.height);
@@ -88,9 +88,9 @@ function Landscape(config){
 		ctx.restore()
 	}
 	self.update = function(){
-		var x = 0;
-		var newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
-		var newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
+		let x = 0;
+		let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
+		let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
 		
 		if(self.lands.length !== 0){
 			x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x;
@@ -375,7 +375,7 @@ function Lane(config){
 }
 
 function FinishLine(config){
-	var self = this;
+	let self = this;
 	
 	self.fillStyle = config.fillStyle;
 	self.lineWidth = config.lineWidth;
@@ -384,15 +384,15 @@ function FinishLine(config){
 	self.y = config.y;
 	self.cube = config.cube;
 
-	var space = 2;
+	let space = 2;
 
 	self.draw = function(ctx){
 		//line01
 		draw_rect(ctx, self.x, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle);
 		
 		//cubes
-		var t = self.y-self.cube;
-		var z = 0;
+		let t = self.y-self.cube;
+		let z = 0;
 		while(t<canvas.height){
 			t = t+self.cube;
 			z++;
@@ -507,7 +507,7 @@ function race_game(props){
 	}
 
 	this.start = function(reason){
-		var promises = [];
+		let promises = [];
 		if(reason !== "resize"){
 			promises.push(self.preaload_images(rabbit_img_sit));
 			promises.push(self.preaload_images(rabbit_img_move));
@@ -543,7 +543,7 @@ function race_game(props){
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
-			var image = new Image();
+			let image = new Image();
 			image.src = item.src;
 			image.addEventListener("load", function() {
 				resolve(image)
@@ -602,8 +602,8 @@ function race_game(props){
 
 	this.post_order_rabbits = function(list){
 		$('#race_order').empty();
-		for(var i in list){
-			var x = parseInt(i)+1;
+		for(let i in list){
+			let x = parseInt(i)+1;
 			if(x === 1){
 				x = x + 'st';
 			} else if(x === 2){
@@ -640,10 +640,10 @@ function race_game(props){
 	}
 
 	this.create_background = function(){
-		var i = land_color.length;
+		let i = land_color.length;
 		landscape = [];
 		while(i--){
-			var config = {
+			let config = {
 				layer: i,
 				y: lanscape_config.y,
 				width: {
@@ -659,7 +659,7 @@ function race_game(props){
 				color_stroke: land_color[i][1],
 				stroke: land_color[i][2]
 			}
-			var my_land = new Landscape(config)
+			let my_land = new Landscape(config)
 			my_land.populate();
 			landscape.push(my_land)
 		}	
@@ -667,7 +667,7 @@ function race_game(props){
 	this.draw_background = function(){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		self.draw_sun();		
-		var i = landscape.length;
+		let i = landscape.length;
 		while (i--) {
 			landscape[i].draw();
 		}
@@ -701,10 +701,10 @@ function race_game(props){
 	}
 
 	this.counter = function(totalTime){
-		var self_counter = this;
+		let self_counter = this;
 		self_counter.totaTime = totalTime;
 		self_counter.timeRemaining = self_counter.totaTime;
-		var my_counter;
+		let my_counter;
 
 		timerGame();
 
@@ -727,10 +727,10 @@ function race_game(props){
 	}
 	
 	this.start_race = function(time, monkey){
-		var nr = 0;
+		let nr = 0;
 		dispatch_nr++;
 		time = 100;
-		var move_landscape = false;
+		let move_landscape = false;
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
@@ -742,14 +742,14 @@ function race_game(props){
 	  	})();
 	  
 	  	function race() {			
-			var stop = false;
-			var avg_dist = lane_list[0].rabbit.avg_dist;
+			let stop = false;
+			let avg_dist = lane_list[0].rabbit.avg_dist;
 
 			if (nr > time) {
 				rabbit_list = self.order_rabbits(rabbit_list);			
-				var end_rabbit = true;
-				var end_finish_line = true;
-				var sit_rabbit = true;
+				let end_rabbit = true;
+				let end_finish_line = true;
+				let sit_rabbit = true;
 				
 				if(finish_line_x > canvas.width/2){
 					finish_line_x = finish_line_x - 5;
@@ -759,7 +759,7 @@ function race_game(props){
 				end_rabbit = self.check_rabbits(finish_line_x);
 
 				if(end_rabbit && end_finish_line){
-					for(var i in lane_list){		
+					for(let i in lane_list){		
 						if(lane_list[i].rabbit.frame !== 4){
 							sit_rabbit = false;
 							break;
@@ -809,11 +809,11 @@ function race_game(props){
 						move_landscape = true;
 					}
 				} else {
-					var i = landscape.length;				
+					let i = landscape.length;				
 					while (i--) {
 						landscape[i].update();
-						var my_lands = landscape[i].lands;
-						for(var j in my_lands){
+						let my_lands = landscape[i].lands;
+						for(let j in my_lands){
 							my_lands[j].x = my_lands[j].x + landscape[i].x;
 						}
 					}
@@ -855,8 +855,8 @@ function race_game(props){
 			}
 		}
 		
-		var get = props.data.money - win_lose[win_lose.length-1].money_history;
-		var remaining_money = win_lose[win_lose.length-1].money_history;
+		let get = props.data.money - win_lose[win_lose.length-1].money_history;
+		let remaining_money = win_lose[win_lose.length-1].money_history;
 
 		dispatch(race_calculate_money(remaining_money));
 		dispatch(race_get_history(win_lose));
@@ -903,8 +903,8 @@ function race_game(props){
 
 	this.check_rabbits = function(line){
 		//check if all rabbits passed the finish line
-		var passed = true;
-		for(var i in lane_list){		
+		let passed = true;
+		for(let i in lane_list){		
 			if(lane_list[i].rabbit.x < line){
 				passed = false;
 				break;
@@ -914,13 +914,13 @@ function race_game(props){
 	}
 
 	this.order_rabbits = function(list){
-		var done = false;
+		let done = false;
 		while (!done) { //false
 			done = true;
-			for (var i = 1; i < list.length; i += 1) {
+			for (let i = 1; i < list.length; i += 1) {
 				if (list[i - 1].x < list[i].x) {
 					done = false;
-					var tmp = list[i - 1];
+					let tmp = list[i - 1];
 					list[i - 1] = list[i];
 					list[i] = tmp;
 				} 
@@ -1005,7 +1005,7 @@ class RaceTables extends Component {
 
 	check_bets(){
 		//check to see if at least one rabbit has a bet
-		var start = false;
+		let start = false;
 		let rabbit_array = this.state.rabbit_array;
 		for(let i in rabbit_array){
 			if(rabbit_array[i].bet > 0){

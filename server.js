@@ -237,17 +237,17 @@ io.on('connection', function(socket) {
 		let id = data;
 		let money = 0;
 		if(sign_in_up){
-			check_user(users_json, 'a');
+			check_user(users_json);
 			sign_in_up = false;
 		} else {
 			database_config.sql = "SELECT * FROM casino_users";
 			database(database_config).then(function(data){
 				users_json = data;
-				check_user(users_json, 'b')
+				check_user(users_json)
 			});
 		}
 		
-		function check_user(users_json, x){
+		function check_user(users_json){
 			let first_enter_salon = false;
 			let found = false;
 			let obj = {}
@@ -986,10 +986,18 @@ io.on('connection', function(socket) {
 				}
 			}			
 		}
-    });
-
-	socket.on("error", (err) =>{
-		console.log('error', err);
+    });	
+	socket.on("connect_error", function(err){
+		console.log('connect_error --> ', err);
+		socket.emit("error", "Connect error");
+	})
+	socket.on("connect_failed", function(err){
+		console.log('connect_failed --> ', err);
+		socket.emit("error", "Connect failed");
+	})
+	socket.on("error", function(err){
+		console.log('error --> ', err);
+		socket.emit("error", "Something bad happened");
 	})
 
 	socket.on('heartbeat', function(data) {

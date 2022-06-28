@@ -1,14 +1,11 @@
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import rouletteReducer from './reducers/roulette';
-import visibilityReducer from './reducers/visibility';
-
-const middleware = [thunk];
+import {composeWithDevTools} from 'redux-devtools-extension';
+import allReducers from './reducers'
 
 const store = createStore(
-    rouletteReducer,
-    visibilityReducer,
-    applyMiddleware(...middleware)
-);
+	allReducers,
+	composeWithDevTools(applyMiddleware(thunk))
+)
 
 export default store;

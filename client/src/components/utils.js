@@ -59,6 +59,8 @@ import card_49 from './img/blackjack/cards/card_49.png';
 import card_50 from './img/blackjack/cards/card_50.png';
 import card_51 from './img/blackjack/cards/card_51.png';
 
+import item_image from './img/icons/vegetables_color.png'
+
 import craps_bets from './img/craps/craps.png'
 import craps_bets_small from './img/craps/craps.png'
 
@@ -252,6 +254,18 @@ export const get_roulette_bets = function(){
     {id: 'european_small', src: roulette_bets_european_small},
     {id: 'american', src: roulette_bets_american},
     {id: 'american_small', src: roulette_bets_american_small},
+  ];
+}
+
+export const get_slots_images = function(){
+  return [
+    {id: 'carrot', src: item_image, coord:[0, 0]},
+    {id: 'onion', src: item_image, coord:[300, 0]},
+    {id: 'potato', src: item_image, coord:[600, 0]},
+    {id: 'radish', src: item_image, coord:[600, 300]},
+    {id: 'cabbage', src: item_image, coord:[300, 600]},
+    {id: 'garlic', src: item_image, coord:[600, 600]},
+    {id: 'turnip', src: item_image, coord:[900, 900]},
   ];
 }
 

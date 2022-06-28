@@ -17,8 +17,12 @@ function submit(socket, lang){
 				setCookie("casino_user", $('#signin_user').val(), 1);
 				submit_form(socket, lang);
 			} else {
-				$('#loader_container').hide(); 
-				$('#home').show();				
+				if($('#loader_container')){
+					$('#loader_container').hide(); 
+				}
+				if($('#home')){
+					$('#home').show();	
+				}		
 				if(lang === "ro"){
 					showResults("Eroare", "Nu esti integistrat SAU nu ai scris ceva corect.");
 				} else {
@@ -65,9 +69,13 @@ function submit_recovery(){
 }
 
 function loader(socket, lang){
-	return new Promise(function(resolve, reject){
-		$('#loader_container').show(); 
-		$('#home').hide();		
+	return new Promise(function(resolve, reject){		
+		if($('#loader_container')){
+			$('#loader_container').show(); 
+		}
+		if($('#home')){
+			$('#home').hide();	
+		}	
 		socket.emit('signin_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()});	
 		socket.on('signin_read', function(data){		
 			resolve(data);

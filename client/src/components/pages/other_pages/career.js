@@ -7,24 +7,27 @@ import Col from 'react-bootstrap/Col'
 import {game_visible} from '../../actions/actions'
 import { sort } from '../../utils';
 
-var dispatch;
-function handleBack(text="game") {
-    dispatch(game_visible(text))
-}
-
 function Career(props){
-    dispatch = props.dispatch;
+    let lang = props.lang;
+    let dispatch = props.dispatch;
+
+    function handleBack() {
+        if(dispatch){
+            dispatch(game_visible("game"))
+        }
+    }
+
 	return (
         <>
             <Row>
                 <Col sm={12}>
-                    <h2>{props.lang === "ro" ? <span>Cariera</span> : <span>Career</span>}</h2>
+                    <h2>{lang === "ro" ? <span>Cariera</span> : <span>Career</span>}</h2>
                 </Col>
             </Row>
             <Row>
                 <Col sm={2}></Col>
                 <Col sm={8}>
-                    <CareerList handleBack={handleBack} user_id={props.user_id} user={props.user} socket={props.socket} lang={props.lang}></CareerList>
+                    <CareerList handleBack={handleBack} user_id={props.user_id} user={props.user} socket={props.socket} lang={lang}></CareerList>
                 </Col>
                 <Col sm={2}></Col>
             </Row>

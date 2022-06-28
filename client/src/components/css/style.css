@@ -324,6 +324,9 @@ ul{
 ul li{
 	list-style: none;
 }
+ul.list_circle li{
+	list-style-type: circle;
+}
 
 textarea {
 	resize: none;
@@ -2026,6 +2029,14 @@ table {
 	max-width: 200px;
 	text-align: left;
 	display: inline-block; 
+}
+
+/* about */
+.about_container{
+
+}
+.about_box{
+
 }
 
 /* Career */

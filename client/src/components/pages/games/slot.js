@@ -1,28 +1,19 @@
 import React, { useState, useEffect }from 'react';
-import $ from 'jquery';
-import {slot_calculate_money, slot_get_history, game_page} from '../../actions/actions'
 import {connect} from 'react-redux'
-import { bigText, showResults } from '../../utils';
-import item_image from '../../img/icons/vegetables_color.png'
+import $ from 'jquery';
+import {slot_calculate_money, slot_get_history} from '../../actions/actions'
+import { bigText, get_slots_images, showResults } from '../../utils';
 import GameBoard from '../partials/game_board';
-
-var items = [
-	{id: 'carrot', src: item_image, coord:[0, 0]},
-	{id: 'onion', src: item_image, coord:[300, 0]},
-	{id: 'potato', src: item_image, coord:[600, 0]},
-	{id: 'radish', src: item_image, coord:[600, 300]},
-	{id: 'cabbage', src: item_image, coord:[300, 600]},
-	{id: 'garlic', src: item_image, coord:[600, 600]},
-	{id: 'turnip', src: item_image, coord:[900, 900]},
-];
-var reel = [];
-var ctx;
 
 function slot_game(props, id){
 	let self = this;
 	let slot_id = "#"+id;
 	let socket = props.socket;
 	let lang = props.lang;
+	let items = get_slots_images();
+
+	let reel = [];
+	let ctx;
 
 	let canvas_height = 800;
 	let slots_canvas = [];
@@ -537,78 +528,69 @@ function slot_game(props, id){
 		let payload = [{bet_value: game_pay, money_history: user_info.money,win: win}];
 		dispatch(slot_get_history(payload));
 	}
-}
 
-function sort_array(list_element, sort_by) {
-	if(typeof sort_by == "undefined"){
-		sort_by = ""
-	}
-	let tmp;
-	let done = false;
-	switch (sort_by) {
-		case "i":
-			done = false;
-			while (!done) {
-				done = true;
-				for (let i = 1; i < list_element.length; i += 1) {
-					if (list_element[i - 1].i > list_element[i].i) {
-						done = false;
-						tmp = list_element[i - 1];
-						list_element[i - 1] = list_element[i];
-						list_element[i] = tmp;
-					} 
-				}
-			}
-		  break;            
-		  case "":
-			done = false;
-			while (!done) {
-				done = true;
-				for (let i = 1; i < list_element.length; i += 1) {
-					if (parseFloat(list_element[i - 1]) > parseFloat(list_element[i])) {
-						done = false;
-						tmp = list_element[i - 1];
-						list_element[i - 1] = list_element[i];
-						list_element[i] = tmp;
+	function sort_array(list_element, sort_by) {
+		if(typeof sort_by == "undefined"){
+			sort_by = ""
+		}
+		let tmp;
+		let done = false;
+		switch (sort_by) {
+			case "i":
+				done = false;
+				while (!done) {
+					done = true;
+					for (let i = 1; i < list_element.length; i += 1) {
+						if (list_element[i - 1].i > list_element[i].i) {
+							done = false;
+							tmp = list_element[i - 1];
+							list_element[i - 1] = list_element[i];
+							list_element[i] = tmp;
+						} 
 					}
 				}
-			}                
-		  break;            
-	}        
-  
-	return list_element;
-}
-
-function draw_dot(canvas, x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
-	ctx = canvas.getContext("2d");
-	ctx.beginPath();
-	ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
-	ctx.fillStyle = fillStyle;
-	if(strokeStyle !== ""){
-		ctx.lineWidth = lineWidth;
-		ctx.strokeStyle = strokeStyle;
-		ctx.stroke();
-	}		
-	ctx.fill();
-	ctx.closePath();
+			  break;            
+			  case "":
+				done = false;
+				while (!done) {
+					done = true;
+					for (let i = 1; i < list_element.length; i += 1) {
+						if (parseFloat(list_element[i - 1]) > parseFloat(list_element[i])) {
+							done = false;
+							tmp = list_element[i - 1];
+							list_element[i - 1] = list_element[i];
+							list_element[i] = tmp;
+						}
+					}
+				}                
+			  break;            
+		}        
+	  
+		return list_element;
+	}
+	
+	function draw_dot(canvas, x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
+		ctx = canvas.getContext("2d");
+		ctx.beginPath();
+		ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
+		ctx.fillStyle = fillStyle;
+		if(strokeStyle !== ""){
+			ctx.lineWidth = lineWidth;
+			ctx.strokeStyle = strokeStyle;
+			ctx.stroke();
+		}		
+		ctx.fill();
+		ctx.closePath();
+	}
 }
 
 function Slot(props) {	
 	let my_slots
 	let lang = props.lang;	
 	let money = props.money;
-	let bet = 1;
-	const dispatch = props.dispatch;
-	const [title, setTitle] = useState('');
 	const [gameStart, setGameStart] = useState(false);
 
 	useEffect(() => {		
-		dispatch(game_page('slots'));
-
-		let user_table = props.user_table;
-		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
-		setTitle(user_table);
-		
 		my_slots = new slot_game(props, "slot_machine");
 		my_slots.ready();	
 
@@ -620,7 +602,6 @@ function Slot(props) {
 	function choice(type, bet){
 		switch (type) {
 			case "spin":
-				// console.log('SPIN', gameStart)
 				if(!gameStart){
 					setGameStart(true);
 					if(my_slots){

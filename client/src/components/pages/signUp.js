@@ -31,8 +31,12 @@ class SignUp extends Component {
 		if(self.check_submit('email') && self.check_submit('pass')){
 			self.loader().then(function(data) {
 				if(data[0]){
-					$('#loader_container').hide(); 
-					$('#home').show();
+					if($('#loader_container')){
+						$('#loader_container').hide(); 
+					}
+					if($('#home')){
+						$('#home').show();	
+					}	
 					if(self.state.lang === "ro"){
 						showResults('Alerta', 'Esti deja inregistrat.');
 					} else {
@@ -71,8 +75,12 @@ class SignUp extends Component {
 	loader = function(){
 		let self = this;
 		return new Promise(function(resolve, reject){
-			$('#loader_container').show();
-			$('#home').hide();	
+			if($('#loader_container')){
+				$('#loader_container').show(); 
+			}
+			if($('#home')){
+				$('#home').hide();	
+			}		
 			self.state.socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
 			self.state.socket.on('signup_read', function(data){
 				resolve(data);

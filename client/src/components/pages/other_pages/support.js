@@ -59,8 +59,8 @@ class Support extends Component {
     }
 
     submit_form = function(event){        
-        var target = event.target;
-        var obj = {email: $('#support_email').val(), message: $('#support_message').val(), lang:this.state.lang}
+        let target = event.target;
+        let obj = {email: $('#support_email').val(), message: $('#support_message').val(), lang:this.state.lang}
         this.state.socket.emit('support_send', obj);	
         this.state.socket.on('support_read', function(data){
             $('#support_result').empty();
@@ -75,8 +75,8 @@ class Support extends Component {
     }
     
     check_submit = function(type){
-        var signup_input = "";
-            var regex = "";
+        let signup_input = "";
+        let regex = "";
             switch(type){
                 case "email":
                     signup_input = $('#support_email').val();
@@ -84,8 +84,8 @@ class Support extends Component {
                     //letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
                     break;
             }
-            var regex_exp = new RegExp(regex);					
-            var pass_result = regex_exp.test(signup_input);
+            let regex_exp = new RegExp(regex);					
+            let pass_result = regex_exp.test(signup_input);
             //pass_result = true;
             return pass_result;
     }

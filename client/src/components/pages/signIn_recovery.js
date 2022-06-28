@@ -29,7 +29,9 @@ function submit(){
 
 function loader(){
 	return new Promise(function(resolve, reject){
-		$('#loader_container').show(); 
+		if($('#loader_container')){
+			$('#loader_container').show();
+		}
 		$('.full-height').hide();
 		resolve(true);	
 	});

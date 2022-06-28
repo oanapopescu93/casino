@@ -14,7 +14,7 @@ import Page from './money/page';
 import Language from './partials/language';
 import Footer from './partials/footer';
 
-import { getCookie, setCookie } from '../utils';
+import { getCookie, setCookie, showResults } from '../utils';
 
 import socketIOClient from "socket.io-client/dist/socket.io";
 import Cookies from './partials/cookies_modal';
@@ -47,6 +47,11 @@ class Home extends Component {
 		setInterval(function () {		  
 			socket.emit('heartbeat', { data: "ping" });
 		}, 15000)
+
+		socket.on('server_error', function (text) {
+			showResults("Error", text)
+			console.log('server_error ', text);
+		}); 
     }
 
 	lang_change(text){

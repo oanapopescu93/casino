@@ -4,7 +4,6 @@ import $ from 'jquery';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { bigText, get_craps_bets, showResults } from '../../utils';
-import {game_page} from '../../actions/actions'
 
 function craps_bets(props){
 	let self = this;
@@ -59,8 +58,8 @@ function craps_bets(props){
 
 	this.getImage = function(reason){
 		if(reason !== "resize"){
-			var promises = [];
-			for(var i in items){				
+			let promises = [];
+			for(let i in items){				
 				promises.push(self.preaload_images(items[i]));
 			}
 
@@ -106,57 +105,49 @@ function craps_bets(props){
 	}
 }
 
-class Dice extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			number: props.number,
-			x: Math.floor((Math.random() * 6) + 1)
-		}; 
-	}	
-	render() {
-		let number = this.state.number;
-		return (
-			<div className="dice_box">
-				<div id={'dice'+number} className={"dice dice_"+number+" show_"+this.state.x}>
-					<div id={"dice_"+number+"_side_one"} className='side one'>
-						<div className="dot one_1"></div>
-					</div>
-					<div id={"dice_"+number+"_side_two"} className='side two'>
-						<div className="dot two_1"></div>
-						<div className="dot two_2"></div>
-					</div>
-					<div id={"dice_"+number+"_side_three"} className='side three'>
-						<div className="dot three_1"></div>
-						<div className="dot three_2"></div>
-						<div className="dot three_3"></div>
-					</div>
-					<div id={"dice_"+number+"_side_four"} className='side four'>
-						<div className="dot four_1"></div>
-						<div className="dot four_2"></div>
-						<div className="dot four_3"></div>
-						<div className="dot four_4"></div>
-					</div>
-					<div id={"dice_"+number+"_side_five"} className='side five'>
-						<div className="dot five_1"></div>
-						<div className="dot five_2"></div>
-						<div className="dot five_3"></div>
-						<div className="dot five_4"></div>
-						<div className="dot five_5"></div>
-					</div>
-					<div id={"dice_"+number+"_side_six"} className='side six'>
-						<div className="dot six_1"></div>
-						<div className="dot six_2"></div>
-						<div className="dot six_3"></div>
-						<div className="dot six_4"></div>
-						<div className="dot six_5"></div>
-						<div className="dot six_6"></div>
-					</div>					
+function Dice(props){
+	let number = props.number;
+	let x = Math.floor((Math.random() * 6) + 1);		
+	return (
+		<div className="dice_box">
+			<div id={'dice'+number} className={"dice dice_"+number+" show_"+x}>
+				<div id={"dice_"+number+"_side_one"} className='side one'>
+					<div className="dot one_1"></div>
 				</div>
-				<div className="shadow_convex"></div>
+				<div id={"dice_"+number+"_side_two"} className='side two'>
+					<div className="dot two_1"></div>
+					<div className="dot two_2"></div>
+				</div>
+				<div id={"dice_"+number+"_side_three"} className='side three'>
+					<div className="dot three_1"></div>
+					<div className="dot three_2"></div>
+					<div className="dot three_3"></div>
+				</div>
+				<div id={"dice_"+number+"_side_four"} className='side four'>
+					<div className="dot four_1"></div>
+					<div className="dot four_2"></div>
+					<div className="dot four_3"></div>
+					<div className="dot four_4"></div>
+				</div>
+				<div id={"dice_"+number+"_side_five"} className='side five'>
+					<div className="dot five_1"></div>
+					<div className="dot five_2"></div>
+					<div className="dot five_3"></div>
+					<div className="dot five_4"></div>
+					<div className="dot five_5"></div>
+				</div>
+				<div id={"dice_"+number+"_side_six"} className='side six'>
+					<div className="dot six_1"></div>
+					<div className="dot six_2"></div>
+					<div className="dot six_3"></div>
+					<div className="dot six_4"></div>
+					<div className="dot six_5"></div>
+					<div className="dot six_6"></div>
+				</div>					
 			</div>
-		);
-	}
+			<div className="shadow_convex"></div>
+		</div>
+	);
 }
 
 function CrapsBoardText(props){	
@@ -223,7 +214,7 @@ class Craps extends Component {
 
 	getDiceNumber(dice){
 		let x;
-		var classList = dice.attr('class').split(/\s+/);
+		let classList = dice.attr('class').split(/\s+/);
 		for(let i in classList){
 			if(classList[i].indexOf("show_") > -1){
 				x = parseInt(classList[i].replace("show_", ""));
@@ -235,7 +226,7 @@ class Craps extends Component {
 
 	animate(dice, roll){
 		if(dice && roll){
-			for (var i = 1; i <= 6; i++) {
+			for (let i = 1; i <= 6; i++) {
 				dice.removeClass('show_' + i);
 				if (roll === i) {
 					dice.addClass('show_'+i);
@@ -338,7 +329,7 @@ class Craps extends Component {
 						clearInterval(timer);
 						break;
 				}
-			}, 1500);
+			}, 1000);
 		} else {
 			if(this.props.lang === "ro"){
 				showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);

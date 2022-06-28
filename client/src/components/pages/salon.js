@@ -40,6 +40,9 @@ function Child(props){
 	return(
 		<>	
 			{(() => {
+				if(dispatch){
+					dispatch(game_page(visible))
+				}
 				switch (visible) {
 					case "game":
 						return (
@@ -184,12 +187,12 @@ class Salon extends Component {
 			self.setState({ user_id: parseInt(casino_id) });
 			self.setState({ user: casino_user });
 
-			setTimeout(function(){
+			//setTimeout(function(){
 				self.state.socket.emit('salon_send', self.state.user_id);	
 				self.state.socket.on('salon_read', function(data){
 					resolve(data);	
 				});	
-			}, 1000);
+			//}, 1000);
 		});
 	};
 
@@ -213,10 +216,14 @@ class Salon extends Component {
 	render() { 
 		let lang = this.props.lang;
 		let opened = "";
-		$('#loader_container').show();
+		if($('#loader_container')){
+			$('#loader_container').show();
+		}	
 		if(this.state.loaded){
 			opened = " open";
-			$('#loader_container').hide();
+			if($('#loader_container')){
+				$('#loader_container').hide();
+			}
 		}
 		return (
 			<>

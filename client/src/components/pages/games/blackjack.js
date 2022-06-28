@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef }from 'react';
-import $ from 'jquery'; 
-
+import {connect} from 'react-redux';
+import $ from 'jquery';
 import {blackjack_calculate_money, blackjack_get_history} from '../../actions/actions'
 import { get_blackjack_cards, showResults } from '../../utils';
 import GameBoard from '../partials/game_board';
 
-import {game_page} from '../../actions/actions'
-import {connect} from 'react-redux';
-
-var items = get_blackjack_cards();
+let items = get_blackjack_cards();
 let blackjack_hand = [];
 let images = [];
 let blackjack_status = false;

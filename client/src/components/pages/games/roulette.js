@@ -4,7 +4,6 @@ import {roulette_calculate_money, roulette_get_history} from '../../actions/acti
 import {connect} from 'react-redux'
 import { get_roulette_bets, showResults } from '../../utils'
 import carrot_img from '../../img/icons/carrot_icon.png';
-import {game_page} from '../../actions/actions'
 
 let canvas;
 let ctx;
@@ -18,7 +17,6 @@ let your_bets = [];
 let your_last_bet = {};
 let bet_value = 1;
 let user_info;
-let items = get_roulette_bets();
 
 function roulette_game(props){
 	let self = this;
@@ -805,9 +803,10 @@ function roulette_bets(props){
 	let ctx_bets;
 	let canvas_width_bets = 900;
 	let canvas_height_bets = 300;
-	var list_bets = [];
+	let list_bets = [];
 	let small_image = false;
 	let roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268];
+	let items = get_roulette_bets();
 
 	$('.roulette_bets .close').click(function() {
 		$('.roulette_bets_container').removeClass('open');
@@ -852,8 +851,8 @@ function roulette_bets(props){
 
 	this.getImage = function(reason){
 		if(reason !== "resize"){
-			var promises = [];
-			for(var i in items){				
+			let promises = [];
+			for(let i in items){				
 				promises.push(self.preaload_images(items[i]));
 			}
 
@@ -906,10 +905,10 @@ function roulette_bets(props){
 		});
 		
 		$('#roulette_bets_canvas').off('mousemove').on('mousemove', function(event) {
-			var mousePos = getMousePos(canvas_bets, event);
+			let mousePos = getMousePos(canvas_bets, event);
 			$('#roulette_bets_canvas').css('cursor', "default");			
-			for(var i in list_bets){
-				var obj = list_bets[i];	
+			for(let i in list_bets){
+				let obj = list_bets[i];	
 				obj.bet_value = bet_value;				
 				if (isInside(mousePos,obj)) {
 					$('#roulette_bets_canvas').css('cursor', "pointer")
@@ -919,9 +918,9 @@ function roulette_bets(props){
 	}
 	
 	this.canvas_click = function(canvas, event){		
-		var mousePos = getMousePos(canvas, event);
-		for(var i in list_bets){
-			var obj = list_bets[i];
+		let mousePos = getMousePos(canvas, event);
+		for(let i in list_bets){
+			let obj = list_bets[i];
 			obj.bet_value = bet_value;			
 			if (isInside(mousePos,obj)) {
 				if(spin_click === 0){
@@ -935,12 +934,11 @@ function roulette_bets(props){
 	}
 
 	this.draw_tokens = function(your_last_bet){		
-		var x = your_last_bet.x + your_last_bet.width/2 - bet_square/4;
-		var y = your_last_bet.y + your_last_bet.height/2 - bet_square/4 - 5;
-		var w = bet_square/2;
-		var h = bet_square/2+10;		
-		
-		var img = new Image();
+		let x = your_last_bet.x + your_last_bet.width/2 - bet_square/4;
+		let y = your_last_bet.y + your_last_bet.height/2 - bet_square/4 - 5;
+		let w = bet_square/2;
+		let h = bet_square/2+10;
+		let img = new Image();
 		img.src = carrot_img; 
 		img.onload = function() {
 			ctx_bets.drawImage(img, x, y, w, h);	
@@ -948,9 +946,9 @@ function roulette_bets(props){
 	}
 
 	this.create_roulette_bets = function(){
-		var color = ['red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red'];
-		var k = 0;
-		var squares;
+		let color = ['red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red'];
+		let k = 0;
+		let squares;
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape					
@@ -1031,7 +1029,7 @@ function roulette_bets(props){
 	}
 	
 	function my_bets(squares, k, color, up){
-		var a = 0;
+		let a = 0;
 		list_bets = [];
 		//draw_rect(ctx_bets, squares.a.x, squares.a.y, squares.a.w, squares.a.h, 'transparent', 1, 'red');
 		list_bets.push({x: squares.a.x, y: squares.a.y, width: squares.a.w, height: squares.a.h, color:"green", text: "0"});
@@ -1044,7 +1042,7 @@ function roulette_bets(props){
 		if(!small_image){
 			//big or small landscape
 			//console.log('type001')
-			for(var i = 1; i < numbers.length-k; i++) {	
+			for(let i = 1; i < numbers.length-k; i++) {	
 				a++
 				if(a > 3){
 					squares.c.x = squares.c.x + squares.c.w;	
@@ -1086,7 +1084,7 @@ function roulette_bets(props){
 		} else {
 			//small portrait
 			//console.log('type002')
-			for(var i = 1; i < numbers.length-k; i++) {	
+			for(let i = 1; i < numbers.length-k; i++) {	
 				a++
 				if(a > 12){
 					squares.c.x = squares.c.x + squares.c.w;	

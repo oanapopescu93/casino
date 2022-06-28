@@ -6,24 +6,27 @@ import Col from 'react-bootstrap/Col'
 import {game_visible} from '../../actions/actions'
 import under_construction_icon from '../../img/icons/under_construction_icon.png'
 
-let dispatch;
-function handleBack(text="game") {
-    dispatch(game_visible(text))
-}
-
 function Questions(props){
-    dispatch = props.dispatch;
+    let lang = props.lang;
+    let dispatch = props.dispatch;
+
+    function handleBack() {
+        if(dispatch){
+            dispatch(game_visible("game"))
+        }
+    }
+
 	return (
         <>
             <Row>
                 <Col sm={12}>
-                    <h2>{props.lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</h2>
+                    <h2>{lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</h2>
                 </Col>
             </Row>
             <Row>
                 <Col sm={2}></Col>
                 <Col sm={8}>
-                    <QuestionsList handleBack={handleBack} user_id={props.user_id} user={props.user} socket={props.socket} lang={props.lang}></QuestionsList>
+                    <QuestionsList handleBack={()=>handleBack()} user_id={props.user_id} user={props.user} socket={props.socket} lang={lang}></QuestionsList>
                 </Col>
                 <Col sm={2}></Col>
             </Row>

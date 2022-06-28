@@ -4,13 +4,16 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import {game_visible} from '../../actions/actions'
 
-function handleBack(dispatch) {
-    dispatch(game_visible("game"))
-}
-
 function About(props){
-    var lang = props.lang;
+    let lang = props.lang;
     let dispatch = props.dispatch;
+
+    function handleBack() {
+        if(dispatch){
+            dispatch(game_visible("game"))
+        }
+    }
+
 	return (
         <Row>
             <Col sm={2}></Col>
@@ -34,7 +37,7 @@ function About(props){
                         <div className="about_container">
                             <p>This is a pet project</p>
                             <p>Here you will find casino type games:</p>
-                            <ul className="about_box">
+                            <ul className="about_box list_circle">
                                 <li>American and European Roulette</li>
                                 <li>Blackjack</li>
                                 <li>Slots</li>
@@ -46,7 +49,7 @@ function About(props){
                     }
                     </Col>
                     <Col sm={12}>
-                        <Button className="button_table shadow_convex" type="button" onClick={()=>handleBack(dispatch)}>
+                        <Button className="button_table shadow_convex" type="button" onClick={()=>handleBack()}>
                             {lang === "ro" ? <span>Inapoi</span> : <span>Back</span>}
                         </Button>
                     </Col>
