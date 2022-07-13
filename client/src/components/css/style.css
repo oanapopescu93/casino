@@ -224,6 +224,9 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 	right:0px;
 	width:100%;
 }
+.loader_container.open{
+	display:block;
+}
 .loader_container .loader{	
     position: relative;
 	z-index: 1;
@@ -2032,12 +2035,12 @@ table {
 }
 
 /* about */
-.about_container{
+/* .about_container{
 
 }
 .about_box{
 
-}
+} */
 
 /* Career */
 .career_header_container{

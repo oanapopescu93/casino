@@ -4,15 +4,14 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import under_construction_icon from '../../img/icons/under_construction_icon.png'
 import {game_visible} from '../../actions/actions'
+import { useDispatch } from 'react-redux'
 
 function Terms(props){
     let lang = props.lang;
-    let dispatch = props.dispatch;
-    
+    let dispatch = useDispatch();
+
     function handleBack() {
-        if(dispatch){
-            dispatch(game_visible("game"))
-        }
+        dispatch(game_visible("game"))
     }
 	
     return (

@@ -76,3 +76,10 @@ export const game_page = function(data) {
 		page: data
 	}
 }
+
+export const game_load = function(data) {
+	return {
+		type: "game_load",
+		load: data
+	}
+}

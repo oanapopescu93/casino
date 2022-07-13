@@ -7,6 +7,7 @@ import crapsReducer from './craps';
 import raceReducer from './race';
 import visibilityReducer from './visibility';
 import pageReducer from './page';
+import loadReducer from './load';
 
 const allReducers = combineReducers({
 	roulette: rouletteReducer,
@@ -16,6 +17,7 @@ const allReducers = combineReducers({
 	race: raceReducer,
 	visibility: visibilityReducer,
 	page: pageReducer,
+	load: loadReducer,
 });
 
 export default allReducers;

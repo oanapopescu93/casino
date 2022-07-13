@@ -1,12 +1,11 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { useSelector} from 'react-redux'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-
 import Sapou from './partials/sapou';
 
-function Splash(props) {
+function Splash() {
 	return (
 		<div id="splash_screen" className="full-height">
 			<div className="full-height-content">

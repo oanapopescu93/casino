@@ -253,12 +253,13 @@ io.on('connection', function(socket) {
 			let obj = {}
 			for(let i in users_json){
 				if(users_json[i].id === id){
+					user = users_json[i].user;
 					money = users_json[i].money;
 					if(users_json[i].last_signin-users_json[i].signup === 0){ //has 0 milisecond since first arrived here
 						first_enter_salon = true;
 					}
 					found = true;
-					obj = {server_tables: server_tables, money: money, first_enter_salon: first_enter_salon};		
+					obj = {server_tables: server_tables, user: user, money: money, first_enter_salon: first_enter_salon};		
 					break;
 				}
 			}

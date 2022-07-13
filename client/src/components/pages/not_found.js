@@ -8,12 +8,13 @@ import Button from 'react-bootstrap/Button'
 import rabbit_stand_right from '../img/icons/rabbit_stand_right.png';
 import rabbit_stand_left from '../img/icons/rabbit_stand_left.png';
 
-function handleBack(){
-    window.location.href = "/";
-}
-
 function Not_found(props) {
-    var lang = props.lang;
+    let lang = props.lang;
+
+    function handleBack(){
+        window.location.href = "/";
+    }
+    
 	return (
         <div id="not_found" className="full-height">
 			<div className="full-height-content">

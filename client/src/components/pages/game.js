@@ -26,9 +26,6 @@ function Game(props){
 			{user ? (
 				<div className="casino_container color_yellow">
 					{(() => {
-						if(dispatch){
-							dispatch(game_page(game));
-						}
 						switch (game) {
 							case "roulette":
 								return (

@@ -3,15 +3,14 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import {game_visible} from '../../actions/actions'
+import { useDispatch } from 'react-redux'
 
 function About(props){
     let lang = props.lang;
-    let dispatch = props.dispatch;
+    let dispatch = useDispatch();
 
     function handleBack() {
-        if(dispatch){
-            dispatch(game_visible("game"))
-        }
+        dispatch(game_visible("game"))
     }
 
 	return (

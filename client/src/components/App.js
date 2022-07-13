@@ -5,7 +5,6 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/style.css';
 import Home from './pages/home';
 import Loader from './pages/partials/loader';
-import { useDispatch } from 'react-redux' 
 import { useSelector} from 'react-redux'
 
 let my_console = function(){
@@ -27,13 +26,13 @@ let my_console = function(){
 }();
 
 function App(props){	
-	my_console.disable();	
-	let dispatch = useDispatch();
+	// my_console.disable();
 	let page = useSelector(state => state.page);
+	let show_loader = useSelector(state => state.load);
 	return (
 		<div className="App">
-			<Loader></Loader>
-			<Home page={page} dispatch={dispatch}></Home>         			
+			<Loader show={show_loader}></Loader>
+			<Home page={page} show_loader={show_loader}></Home>         			
 		</div>
 	);
 }

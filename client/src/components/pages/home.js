@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Route, Switch, BrowserRouter} from 'react-router-dom'
-
+import { useDispatch } from 'react-redux'
 import Container from 'react-bootstrap/Container'
 
 import '../css/style.css';
@@ -20,97 +20,85 @@ import socketIOClient from "socket.io-client/dist/socket.io";
 import Cookies from './partials/cookies_modal';
 const socket = socketIOClient("/");
 
-class Home extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			lang: getCookie("casino_lang"),
-			donation_show: false,
-			donation_info: null,
-			cookies:false,
-			page: props.page,
-		};
-		this.lang_change = this.lang_change.bind(this);	
-		this.my_donation = this.my_donation.bind(this);
-		this.casino_cookies = this.casino_cookies.bind(this);
-	}
+function Home(props){
+	let dispatch = useDispatch();
+	const [cookies, setCookies] = useState(false);	
+	const [lang, setLang] = useState(getCookie("casino_lang"));	
+	const [donationShow, setDonationShow] = useState(false);
+	const [donationInfo, setDonationInfo] = useState(null);
+	let page = props.page;
 
-	componentDidMount(){
-		let casino_cookies = getCookie("casino_cookies");  
+	useEffect(() => {
+		let casino_cookies = getCookie("casino_cookies"); 
 		if(casino_cookies !== ""){
-			this.setState({ cookies: true });
+			setCookies(true);
 		}
-		if(this.state.lang === ''){
-			this.setState({ lang: 'eng' });
+		if(lang === ''){
+			setLang('eng');
 		}
-
 		setInterval(function () {		  
 			socket.emit('heartbeat', { data: "ping" });
 		}, 15000)
-
 		socket.on('server_error', function (text) {
 			showResults("Error", text)
 			console.log('server_error ', text);
 		}); 
-    }
+	}, []); 
 
-	lang_change(text){
-		this.setState({ lang: text });
+	function lang_change(text){
+		setLang(text);
 	}
 
-	my_donation(donations){
-		this.setState({ donation_show: true});
-		this.setState({ donation_info: donations});
+	function my_donation(donations){
+		setDonationShow(true);
+		setDonationInfo(donations);
 	}
 	
-	back(){
-		this.setState({ donation_show: false});
+	function back(){
+		setDonationShow(false);
 	}
 
-	casino_cookies = function(){
+	function casino_cookies(){
 		setCookie("casino_cookies", true, 30);
-		this.setState({ cookies: true });
+		setCookies(true);
 	}
-
-	render() {
-		let page = this.props.page;
-		return (
-			<>	
-				<div className="full-height" id={page}>
-					<div className="full-height-content">
-						{ 
-							this.state.donation_show ? <Page back={this.back} info={this.state.donation_info} lang={this.state.lang} socket={socket}></Page> : 
-							<Container>				
-								<BrowserRouter>					
-									<Switch>			
-										<Route path="/table/:name">
-											<UserPage lang={this.state.lang} socket={socket} dispatch={this.props.dispatch}></UserPage>
-										</Route>
-										<Route path="/salon">
-											<Salon lang={this.state.lang} socket={socket} page={page} dispatch={this.props.dispatch}></Salon>
-										</Route>
-										<Route path="/recovery">
-											<SignInRecovery lang={this.state.lang} socket={socket} dispatch={this.props.dispatch}></SignInRecovery>
-										</Route>							
-										<Route exact path="/">
-											<HomePage lang={this.state.lang} socket={socket} dispatch={this.props.dispatch}></HomePage>
-										</Route>
-										<Route path="*">
-											<NotFound lang={this.state.lang} dispatch={this.props.dispatch}></NotFound>
-										</Route>
-									</Switch>			
-								</BrowserRouter>
-							</Container>
-						}									
-					</div>			
-				</div>
-				{!this.state.cookies ? <Cookies casino_cookies={this.casino_cookies} lang={this.state.lang}></Cookies>  : null}
-				<Language lang_change={this.lang_change}></Language>
-				<Donate my_donation={this.my_donation} info={this.state.donation_info} socket={socket}></Donate>
-				<Footer lang={this.state.lang} socket={socket}></Footer>
-			</>
-		);
-	}
+	
+	return (
+		<>	
+			<div className="full-height" id={page}>
+				<div className="full-height-content">
+					{ 
+						donationShow ? <Page back={back} info={donationInfo} lang={lang} socket={socket}></Page> : 
+						<Container>				
+							<BrowserRouter>					
+								<Switch>			
+									<Route path="/table/:name">
+										<UserPage lang={lang} socket={socket} dispatch={dispatch}></UserPage>
+									</Route>
+									<Route path="/salon">
+										<Salon lang={lang} socket={socket}></Salon>
+									</Route>
+									<Route path="/recovery">
+										<SignInRecovery lang={lang} socket={socket} dispatch={dispatch}></SignInRecovery>
+									</Route>							
+									<Route exact path="/">
+										<HomePage lang={lang} socket={socket}></HomePage>
+									</Route>
+									<Route path="*">
+										<NotFound lang={lang}></NotFound>
+									</Route>
+								</Switch>			
+							</BrowserRouter>
+						</Container>
+					}									
+				</div>			
+			</div>
+			{!cookies ? <Cookies casino_cookies={casino_cookies} lang={lang}></Cookies>  : null}
+			<Language lang_change={lang_change}></Language>
+			<Donate my_donation={my_donation} info={donationInfo} socket={socket}></Donate>
+			<Footer lang={lang} socket={socket}></Footer>
+		</>
+	);
 }
 
 export default Home;

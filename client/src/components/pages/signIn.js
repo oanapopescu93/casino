@@ -1,7 +1,5 @@
 import React, { useState }from 'react';
 import $ from 'jquery';
-import { useDispatch } from 'react-redux' 
-import { game_page } from '../actions/actions';
 import { setCookie, showResults } from '../utils';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
@@ -105,15 +103,10 @@ function check_submit(){
 
 function SignIn(props) {
 	const [show, setShow] = useState(false);
-	const dispatch = useDispatch();
-
 	const handleClose = () => setShow(false);
   	const handleShow = () => setShow(true);
-
 	let socket = props.socket;
 	let lang = props.lang;
-	
-	dispatch(game_page('home'));
 
 	return (
 		<>
