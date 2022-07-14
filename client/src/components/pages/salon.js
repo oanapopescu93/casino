@@ -117,6 +117,7 @@ function Salon(props){
 
 	useEffect(() => {
 		dispatch(game_page("salon"));
+		dispatch(game_load(true));
 		salonData().then(res => {
 			if(res){
 				for(let i in res.server_tables){
@@ -164,7 +165,7 @@ function Salon(props){
 				seUser('');
 			}
 			setLoaded(true);
-			dispatch(game_load(true));
+			dispatch(game_load(false));
 			setOpen("open");
 		}).catch(err => console.log(err));	
 	}, []); 

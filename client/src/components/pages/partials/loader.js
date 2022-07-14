@@ -1,9 +1,9 @@
 import React from 'react';
 import logo from '../../img/rabbit_loader/rabbit_run.gif';
 function Loader(props){
-    let open = "open";
+    let open = "";
     if(props.show){
-        open = '';
+        open = "open";
     }
 	return (
 		<div id="loader_container" className={"loader_container "+open}>

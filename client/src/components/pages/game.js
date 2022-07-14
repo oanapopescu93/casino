@@ -5,6 +5,7 @@ import Blackjack from './games/blackjack'
 import Slot from './games/slot'
 import Craps from './games/craps'
 import { game_page } from '../actions/actions';
+import { useDispatch } from 'react-redux'
 
 function Game(props){
 	let game = props.game;
@@ -13,7 +14,8 @@ function Game(props){
 	let type = props.type;
 	let money = props.money;
 	let user_table = props.user_table;
-	let dispatch = props.dispatch;	
+	let dispatch = useDispatch();
+	dispatch(game_page('game'));	
 
 	function handleBack(){
 		let url = window.location.href;

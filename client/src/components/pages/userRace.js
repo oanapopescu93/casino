@@ -16,9 +16,8 @@ function UserRace(props){
     let user_table = props.user_table;
     let race = props.race;
     const dispatch = useDispatch();
-    var visible = useSelector(state => state.visibility);
-  
-	var payload = {
+    let visible = useSelector(state => state.visibility);  
+	let payload = {
         id: user_id, 
         user: user, 
         user_table: user_table, 
@@ -30,8 +29,7 @@ function UserRace(props){
         if(typeof $('#chatmessages') !== "undefined"){
             $('#chatmessages').append(data);
         }
-    }); 
-    
+    });    
     return(
         <>
             {(() => {
