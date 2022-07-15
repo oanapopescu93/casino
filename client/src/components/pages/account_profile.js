@@ -11,77 +11,38 @@ import History from './partials/history';
 
 import profilePic from '../img/profile/predators.jpg';
 
-class Picture extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			id:props.id,
-			socket:props.socket,
-			lang: props.lang,
-			picture: false,
-		}
-		this.renderPreview = this.renderPreview.bind(this);
-		this.handlePictureSelected = this.handlePictureSelected.bind(this);		
-		this.upload = this.upload.bind(this);
-		this.choosePic = this.choosePic.bind(this);
-	}
-	
-	renderPreview() {
-		let pic_id = this.props.pic_id;
-		if(pic_id !== 0 && pic_id !== '0') {
-			return(
-				<div className="profile_pic">
-					<div className="crop_profile_pic">
-						<img alt="profile_pic" className={"profile_pic pic_"+pic_id} src={profilePic}/>
-					</div>
-				</div>
-			);
-		} else {
-			return(
-				<div className="profile_pic"><i className="fa fa-user"></i></div>
-			);
-		}
-	}
-	handlePictureSelected(event) {
-		let picture = event.target.files[0];
-		let src = URL.createObjectURL(picture);	  
-		this.setState({
-		  	picture: picture,
-		  	src: src
-		});
-		this.upload(picture);
-	}
-	upload(picture) {
-		let formData = new FormData();	  
-		formData.append("file", picture);
-		console.log(this.state.id, formData)
-		this.state.socket.emit('profile_pic_send', {id: this.state.id, pic: formData});	
-	}
-
-	choosePic(){
-		this.props.choice();
-	}
-
-	render() {
-		return (		
-			<div className="profile_pic_container" onClick={this.choosePic}>
-				<div className="profile_pic_default"><i className="fa fa-upload"></i></div>
-				{this.renderPreview()}
-			</div>
-		);
-	}
+function Picture(props){
+	let picId = props.pic_id;
+	function choosePic(){
+		props.choice();
+	}	
+	return (		
+		<div className="profile_pic_container" onClick={()=>choosePic()}>
+			<div className="profile_pic_default"><i className="fa fa-upload"></i></div>
+			{(() => {
+				if(picId !== 0 && picId !== '0') {
+					return(
+						<div className="profile_pic">
+							<div className="crop_profile_pic">
+								<img alt="profile_pic" className={"profile_pic pic_"+picId} src={profilePic}/>
+							</div>
+						</div>
+					);
+				} else {
+					return(
+						<div className="profile_pic"><i className="fa fa-user"></i></div>
+					);
+				}	
+			})()}
+		</div>
+	);
 }
 
-function Account_profile(props) {	
+function Account_profile(props) {
 	let username = props.info.user;
 	let lang = props.lang;
-	let socket = props.info.socket;	
-	let pic = props.info.profile_pic[0] ? props.info.profile_pic[0] : "0";
-	let animal = null;
-	let profiles = []	
-	if(props.info.profile_pic[1]){		
-		animal = props.info.profile_pic[1][0];
-	}
+	let socket = props.info.socket;
+	let profiles = props.profiles;	
 
 	let roulette_info = useSelector(state => state.roulette);
 	let blackjack_info = useSelector(state => state.blackjack);
@@ -91,22 +52,22 @@ function Account_profile(props) {
 	
 	const [show1, setShow1] = useState(false);
 	const [show2, setShow2] = useState(false);
-	const [pic_id, setPicId] = useState(pic);
-	const [pic_animal, setPicAnimal] = useState(animal);
-	const [profiles_array, setProfiles_array] = useState([]);
+	const [picId, setPicId] = useState("0");
+	const [animal, setAnimal] = useState(null);	
 
-	useEffect(() => {		
-		socket.emit('profile_send', {id: props.info.user_id});
-		socket.on('profile_read', function(data){		
-			profiles = data;
-		});
-	});
+	useEffect(() => {
+		if(props.info.profile_pic[0]){
+			setPicId(props.info.profile_pic[0]);
+		}		
+		if(props.info.profile_pic[0]){
+			setAnimal(props.info.profile_pic[1][0]);
+		}
+	  }, []);  
 	
 	function handleClose_pic(){ 
 		setShow1(false) 
 	};
     function handleShow_pic(){ 
-		setProfiles_array(profiles)
 		setShow1(true) 
 	};
 	function handleClose_user(){ 
@@ -165,15 +126,13 @@ function Account_profile(props) {
     }
 
 	function change_pic(){
-		setPicId(animal.id);	
-		setPicAnimal(animal);
 		handleClose_pic();
-		socket.emit('change_pic_send', {id: props.info.user_id, pic: pic});
+		socket.emit('change_pic_send', {id: props.info.user_id, pic: picId});
 	}
 
 	function choosePic(e){
-		pic = e.id;
-		animal = e;
+		setPicId(e.id);	
+		setAnimal(e);
 	}
 	
 	return (
@@ -190,15 +149,15 @@ function Account_profile(props) {
 								{lang === "ro" ? <h3>Informatii utilizator</h3> : <h3>User info</h3>}
 								<Row>
 									<Col lg={6}>
-										<Picture profiles={profiles} pic_id={pic_id} choice={handleShow_pic} id={props.info.user_id} socket={socket} lang={lang}></Picture>
+										<Picture profiles={profiles} pic_id={picId} choice={handleShow_pic} id={props.info.user_id} socket={socket}></Picture>
 									</Col>
 									<Col lg={6}>
 										<p className="profile_user">{lang === "ro" ? <b>User: </b> : <b>Username: </b>}<span id="profile_user_text">{username}</span></p>										
 										<p className="profile_animal">
 											{lang === "ro" ? <b>Animal: </b> : <b>Animal: </b>}
 											{(() => {
-												if(typeof pic_animal !== "undefined" && pic_animal !== "" && pic_animal !== "null" && pic_animal !== null){
-													return <>{lang === "ro" ? <>{pic_animal.name_ro}</> : <>{pic_animal.name_eng}</>}</>
+												if(typeof animal !== "undefined" && animal !== "" && animal !== "null" && animal !== null){
+													return <>{lang === "ro" ? <>{animal.name_ro}</> : <>{animal.name_eng}</>}</>
 												} else {
 													return "-"
 												}
@@ -207,8 +166,12 @@ function Account_profile(props) {
 										<p className="profile_money">{lang === "ro" ? <b>Morcovi: </b> : <b>Carrots: </b>}{money}</p>
 									</Col>
 								</Row>								
-								<div id="profile_change_username" className="profile_button button_yellow" onClick={handleShow_user}>Change username</div>
-								<div id="profile_buy_carrots" className="profile_button button_yellow" onClick={buy_carrots}>Buy carrots</div>
+								<div id="profile_change_username" className="profile_button button_yellow" onClick={handleShow_user}>
+									{lang === "ro" ? <b>Schimba user</b> : <b>Change username</b>}
+								</div>
+								<div id="profile_buy_carrots" className="profile_button button_yellow" onClick={buy_carrots}>
+									{lang === "ro" ? <b>Cumpara mrcovi</b> : <b>Buy carrots</b>}
+								</div>
 							</div>
 						</Col>
 						<Col sm={8} className="profile_container_left hidden-xs">
@@ -228,7 +191,7 @@ function Account_profile(props) {
 				<Modal.Body>
 					<div className="crop_profile_pic_container">
 						{							
-							profiles_array.map(function(item, i){
+							profiles.map(function(item, i){
 								return(
 									<div key={i} className="crop_profile_pic_box">										
 										{lang === "ro" ? <p>{item.name_ro}</p> : <p>{item.name_eng}</p>}

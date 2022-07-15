@@ -105,7 +105,7 @@ function SignUp(props){
 			setTimeout(function(){
 				$("#user_form").submit();
 				resolve(true);
-			}, 500);
+			}, 1000);
 		});
 	}
 	

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector} from 'react-redux'
-import {BrowserRouter} from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import $ from 'jquery'; 
@@ -9,11 +8,9 @@ import UserAccount from './userAccount';
 import Support from './other_pages/support';
 import Panel from './panel_control';
 import { getCookie, showResults } from '../utils';
-import { useDispatch } from 'react-redux'
 
 function Child(props) {
 	let visible = useSelector(state => state.visibility);
-	let dispatch = props.dispatch;
 	let user_id = props.user_id;
 	let user = props.user;
 	let money = props.money;
@@ -23,40 +20,39 @@ function Child(props) {
 	let socket = props.socket;
 	let lang = props.lang;
 	return (			
-			<BrowserRouter>
-				<div className="userPage"> 
-					<Row>
-						<Col sm={12}>	
-							{(() => {
-								switch (visible) {
-									case "game":
-										return (
-											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket} dispatch={dispatch}></Game>
-										)
-									case "account":
-										return (
-											<UserAccount lang={lang} info={props} socket={socket} dispatch={dispatch}></UserAccount> 
-										)	
-									case "support":
-										return (
-											<Support lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket} dispatch={dispatch}></Support> 
-										)
-									default:
-										return(
-											<Game lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket} dispatch={dispatch}></Game>
-										)						
-								}
-							})()}					
-						</Col>
-					</Row>	
-				</div>
-				<Panel lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Panel>
-			</BrowserRouter>
-		);
+		<>
+			<div className="userPage"> 
+				<Row>
+					<Col sm={12}>	
+						{(() => {								
+							switch (visible) {
+								case "game":
+									return (
+										<Game lang={lang} info={props} socket={socket}></Game>
+									)
+								case "account":
+									return (
+										<UserAccount lang={lang} info={props} socket={socket}></UserAccount> 
+									)	
+								case "support":
+									return (
+										<Support lang={lang} info={props} socket={socket}></Support> 
+									)
+								default:
+									return(
+										<Game lang={lang} info={props} socket={socket}></Game>
+									)						
+							}
+						})()}					
+					</Col>
+				</Row>	
+			</div>
+			<Panel lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Panel>
+		</>
+	);
 }
 
 function UserPage(props){
-	let dispatch = useDispatch();
 	let socket = props.socket;
 	let lang = props.lang;
 	
@@ -90,7 +86,7 @@ function UserPage(props){
 					showResults("Error", "Ups, something went wrong.");
 				}	
 			}							
-		}).catch(err => console.log(err));  
+		}).catch(err => console.log('userPageData--> ', err));  
 	}, []);  
 
 	function userPageData(){
@@ -128,7 +124,7 @@ function UserPage(props){
 	};		
 
 	return userId !== -1 ? 
-		<Child user_id={userId} game={game} user={username} money={money} profile_pic={user.profile_pic} user_table={userTable} type={type} lang={lang} socket={socket} dispatch={dispatch} url={url}></Child> : 
+		<Child user_id={userId} game={game} user={username} money={money} profile_pic={user.profile_pic} user_table={userTable} type={type} lang={lang} socket={socket} url={url}></Child> : 
 		<span className="color_yellow">Loading...</span>
 }
 

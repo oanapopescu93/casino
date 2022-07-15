@@ -474,14 +474,15 @@ io.on('connection', function(socket) {
 			console.log('[error]','choose_table_read :', e);
 		}
 	});
-	socket.on('market_send', function(data) {
+	socket.on('user_account_send', function(data) {
 		for(let i in users_json){			
 			if(users_json[i].id === data.id){
 				try{
-					io.to(socket.id).emit('market_read', market);
+					io.to(socket.id).emit('user_account_read', {market: market, profiles: profiles});
 				}catch(e){
-					console.log('[error]','market_read :', e);
+					console.log('[error]','user_account_read :', e);
 				}
+				break;
 			} 
 		}
 	});
@@ -504,19 +505,6 @@ io.on('connection', function(socket) {
 						}
 					}
 				});
-			} 
-		}	
-	});
-	socket.on('profile_send', function(data) {
-		let id = data.id;
-		for(let i in sockets){
-			if(sockets[i].user_id === id){
-				try{
-					io.to(socket.id).emit('profile_read', profiles);
-				}catch(e){
-					console.log('[error]','profile_read :', e);
-				}
-				break;
 			} 
 		}	
 	});
@@ -563,15 +551,17 @@ io.on('connection', function(socket) {
 	socket.on('roulette_results_send', function(data) {
 		let money = data.money;
 		let id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
-		database(database_config, [id]).then(function(){
-			for(let i in users_json){	
-				if(data.user_id === users_json[i].id){
-					users_json[i].money = money;
-					break;
+		if(id && money){
+			database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
+			database(database_config, [id]).then(function(){
+				for(let i in users_json){	
+					if(data.user_id === users_json[i].id){
+						users_json[i].money = money;
+						break;
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 
 	socket.on('blackjack_get_users_send', function(data) {
@@ -789,15 +779,17 @@ io.on('connection', function(socket) {
 	socket.on('blackjack_results_send', function(data) {
 		let money = data.money;
 		let id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
-		database(database_config, [id]).then(function(){
-			for(let i in users_json){	
-				if(data.user_id === users_json[i].id){
-					users_json[i].money = money;
-					break;
+		if(id && money){
+			database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
+			database(database_config, [id]).then(function(){
+				for(let i in users_json){	
+					if(data.user_id === users_json[i].id){
+						users_json[i].money = money;
+						break;
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 	
 	socket.on('slots_send', function(data) {
@@ -834,15 +826,17 @@ io.on('connection', function(socket) {
 	socket.on('slot_results_send', function(data) {
 		let money = data.money;
 		let id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
-		database(database_config, [id]).then(function(){
-			for(let i in users_json){	
-				if(data.user_id === users_json[i].id){
-					users_json[i].money = money;
-					break;
+		if(id && money){
+			database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
+			database(database_config, [id]).then(function(){
+				for(let i in users_json){	
+					if(data.user_id === users_json[i].id){
+						users_json[i].money = money;
+						break;
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 
 	socket.on('craps_send', function(data) {
@@ -900,15 +894,17 @@ io.on('connection', function(socket) {
 	socket.on('craps_results_send', function(data) {
 		let money = data.money;
 		let id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
-		database(database_config, [id]).then(function(){
-			for(let i in users_json){	
-				if(data.user_id === users_json[i].id){
-					users_json[i].money = money;
-					break;
+		if(id && money){
+			database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
+			database(database_config, [id]).then(function(){
+				for(let i in users_json){	
+					if(data.user_id === users_json[i].id){
+						users_json[i].money = money;
+						break;
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 
 	socket.on('race_board_send', function(data) {
@@ -942,15 +938,17 @@ io.on('connection', function(socket) {
 	socket.on('race_results_send', function(data) {
 		let money = data.money;
 		let id = parseInt(data.user_id);
-		database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
-		database(database_config, [id]).then(function(){
-			for(let i in users_json){	
-				if(data.user_id === users_json[i].id){
-					users_json[i].money = money;
-					break;
+		if(id && money){
+			database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
+			database(database_config, [id]).then(function(){
+				for(let i in users_json){	
+					if(data.user_id === users_json[i].id){
+						users_json[i].money = money;
+						break;
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 
 	socket.on('history_send', function(data) {

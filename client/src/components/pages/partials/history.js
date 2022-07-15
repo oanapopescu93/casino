@@ -1,5 +1,4 @@
-import React from 'react';
-import $ from 'jquery';
+import React, {useState} from 'react';
 import Table from 'react-bootstrap/Table'
 
 function HistoryTable(props){    
@@ -8,8 +7,6 @@ function HistoryTable(props){
     let lang = props.lang;
     let rowspan = 0;
     var title = template.charAt(0).toUpperCase() + template.slice(1);
-    console.log('HistoryShort ', title, template, history)
-
     switch(template){
         case "roulette":
             rowspan = history.length.toString();
@@ -249,102 +246,86 @@ function HistoryTable(props){
     }
 }
 
-class HistoryShort extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-            history: this.props.history,
-            lang: this.props.lang,
-		};
-	}    
-	
-	render(){
-        let lang = this.props.lang;
-		return (            
-            <>
-                <div className="history_box">
-                    {(() => {
-                        if (this.state.history.roulette === null && this.state.history.blackjack === null && this.state.history.slots === null && this.state.history.craps === null && this.state.history.race === null) {
-                            return (
-                                <p>{lang === "ro" ? <span>Nu ai niciun pariu recent</span> : <span>You don't have e recent bet</span>}</p>
-                            )
-                        } else {
-                            return (
-                                <>
-                                    { this.state.history.roulette && this.state.history.roulette.length>0 ? <HistoryTable template="roulette" lang={lang} history={this.state.history.roulette}></HistoryTable> : null}                                    
-                                    { this.state.history.blackjack && this.state.history.blackjack.length>0 ? <HistoryTable template="blackjack" lang={lang} history={this.state.history.blackjack}></HistoryTable> : null}
-                                    { this.state.history.slots && this.state.history.slots.length>0 ? <HistoryTable template="slots" lang={lang} history={this.state.history.slots}></HistoryTable> : null}
-                                    { this.state.history.craps && this.state.history.craps.length>0 ? <HistoryTable template="craps" lang={lang} history={this.state.history.craps}></HistoryTable> : null}
-                                    { this.state.history.race && this.state.history.race.length>0 ? <HistoryTable template="race" lang={lang} history={this.state.history.race}></HistoryTable> : null}
-                                </>
-                            );
-                        }
-                    })()}
-                </div>
-            </>
-		);
-	};
+function HistoryShort(props){
+	let history = props.history;
+    let lang = props.lang;	
+    return (
+        <div className="history_box">
+            {(() => {
+                if (history.roulette === null && history.blackjack === null && history.slots === null && history.craps === null && history.race === null) {
+                    return (
+                        <p>{lang === "ro" ? <span>Nu ai niciun pariu recent</span> : <span>You don't have recent bet</span>}</p>
+                    )
+                } else {
+                    return (
+                        <>
+                            { history.roulette && history.roulette.length>0 ? <HistoryTable template="roulette" lang={lang} history={history.roulette}></HistoryTable> : null}                                    
+                            { history.blackjack && history.blackjack.length>0 ? <HistoryTable template="blackjack" lang={lang} history={history.blackjack}></HistoryTable> : null}
+                            { history.slots && history.slots.length>0 ? <HistoryTable template="slots" lang={lang} history={history.slots}></HistoryTable> : null}
+                            { history.craps && history.craps.length>0 ? <HistoryTable template="craps" lang={lang} history={history.craps}></HistoryTable> : null}
+                            { history.race && history.race.length>0 ? <HistoryTable template="race" lang={lang} history={history.race}></HistoryTable> : null}
+                        </>
+                    );
+                }
+            })()}
+        </div>
+    );
 }
 
-class Transactions extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-            data: this.props.data,
-            lang: this.props.lang,
-		};
-	}    
-	
-	render(){
-        let lang = this.props.lang;
-		return ( 
-            <p>{lang === "ro" ? <span>Nu exista tranzactii</span> : <span>There are no transactions</span>}</p>
-		);
-	};
+function Transactions(props){
+    let data = props.data;
+    let lang = props.lang;
+    return ( 
+        <div className="transactions_box">
+            {(() => {
+                if (data && data.length>0) {
+                    return (
+                        <p>{lang === "ro" ? <span>Nu exista metoda de plata inca.</span> : <span>No payment methods yet.</span>}</p>
+                    )
+                } else {
+                    return (
+                        <p>{lang === "ro" ? <span>Nu exista tranzactii</span> : <span>There are no transactions</span>}</p>
+                    );
+                }
+            })()}
+        </div>
+    );
 }
 
-class History extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-            history: this.props.history,
-            transactions: this.props.transactions,
-            visible: true,
-            lang: this.props.lang,
-		};
-        this.history_choose_tab = this.history_choose_tab.bind(this);
-	}
+function History(props){
+	let history = props.history;
+    let transactions = props.transactions;    
+    let lang = props.lang;
+    const [visible, setVisible] = useState("history");
+    const [tab1, setTab1] = useState("active");
+    const [tab2, setTab2] = useState("");
 
-    history_choose_tab = function(link){	
-		if(link === "history"){			
-			this.setState({ visible: true })
-			$('#history').addClass('active');
-			$('#transactions').removeClass('active');
+    function history_choose_tab(link){
+		setVisible(link);
+        if(link === "history"){
+            setTab1("active");
+            setTab2("");
 		} else if(link === "transactions"){
-			this.setState({ visible: false })
-			$('#history').removeClass('active');
-			$('#transactions').addClass('active');
+            setTab1("");
+            setTab2("active");
 		}
-	}	
+	}
 	
-	render(){
-        let lang = this.props.lang;
-		return (
-            <>                
-                <div className="history_tabs_container">
-					<div id="history" className="history_tabs shadow_convex active" onClick={()=>this.history_choose_tab("history")}>
-						{lang === "ro" ? <span>Ultimul pariu</span> : <span>Last bet</span>}
-					</div>
-					<div id="transaction" className="history_tabs shadow_convex" onClick={()=>this.history_choose_tab("transaction")}>
-                        {lang === "ro" ? <span>Tranzactii</span> : <span>Transactions</span>}
-                    </div>
-				</div>
-                { this.state.visible ? <HistoryShort lang={lang} history={this.state.history}></HistoryShort> : 
-					<Transactions lang={lang} data={this.state.transactions}></Transactions>
-				}
-            </>
-		);
-	};
+    return (
+        <>                
+            <div className="history_tabs_container">
+                <div id="history" className={"history_tabs shadow_convex "+tab1} onClick={()=>history_choose_tab("history")}>
+                    {lang === "ro" ? <span>Ultimul pariu</span> : <span>Last bet</span>}
+                </div>
+                <div id="transaction" className={"history_tabs shadow_convex "+tab2} onClick={()=>history_choose_tab("transaction")}>
+                    {lang === "ro" ? <span>Tranzactii</span> : <span>Transactions</span>}
+                </div>
+            </div>
+            { visible == "history" ? <HistoryShort lang={lang} history={history}></HistoryShort> : 
+                <Transactions lang={lang} data={transactions}></Transactions>
+            }
+        </>
+    );
 }
 
 export default History;

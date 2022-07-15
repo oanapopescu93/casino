@@ -43,7 +43,7 @@ function Home(props){
 			showResults("Error", text)
 			console.log('server_error ', text);
 		}); 
-	}, []); 
+	}); 
 
 	function lang_change(text){
 		setLang(text);

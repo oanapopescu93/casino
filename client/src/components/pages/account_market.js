@@ -5,6 +5,7 @@ import Carousel from './partials/carousel'
 import shop from '../img/other/shop.png';
 
 function Account_market(props) {
+	console.log('Account_market', props)
 	let market = props.market;
 	let socket = props.info.socket;	
 	let lang = props.lang;

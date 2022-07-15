@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {race_calculate_money, race_get_history} from '../../actions/actions'
+import {game_page, race_calculate_money, race_get_history} from '../../actions/actions'
 import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -888,16 +888,15 @@ function race_game(props){
 	}
 
 	this.pay = function(win_lose){
-		let money = win_lose[win_lose.length-1].remaining;
-		let date = new Date();
-		let history = {where: "race", when: date, data: win_lose}			
+		let money = win_lose[win_lose.length-1].money_history;
+		//let date = new Date();
+		//let history = {where: "race", when: date, data: win_lose}			
 		let race_payload_server = {
 			user_id: props.data.id,
-			user: props.data.user, 
+			//user: props.data.user, 
 			money: money,
-			history: JSON.stringify(history)
+			//history: JSON.stringify(history)
 		}
-		//console.log('race_payload_server', props, money, race_payload_server)
 		socket.emit('race_results_send', race_payload_server);
 	}
 
@@ -972,13 +971,6 @@ function RaceGame(props){
 				<div id="race_order_box">
 					<h3>{lang === "ro" ? <span>Ordine</span> : <span>Order</span>}</h3>
 					<div id="race_order"></div>
-				</div>
-			</div>
-			<div className="show_results_container">				
-				<div className="show_results">
-					<i className="fa fa-times show_results_close" ></i>
-					<h1 className="header"></h1>
-					<div className="message"></div>
 				</div>
 			</div>
 		</div>
@@ -1107,6 +1099,7 @@ class Race extends Component {
 
 	componentDidMount() {
 		let self = this;
+		self.state.dispatch(game_page("race"));
 		let id = parseInt(getCookie("casino_id"));
 		if(id === "" || id === "indefined"){
 			id = -1;

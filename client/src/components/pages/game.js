@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from 'react-bootstrap/Button'
 import Roulette from './games/roulette'
 import Blackjack from './games/blackjack'
@@ -8,14 +8,21 @@ import { game_page } from '../actions/actions';
 import { useDispatch } from 'react-redux'
 
 function Game(props){
-	let game = props.game;
-	let user_id = props.user_id;
-	let user = props.user;
-	let type = props.type;
-	let money = props.money;
-	let user_table = props.user_table;
-	let dispatch = useDispatch();
-	dispatch(game_page('game'));	
+	console.log('game ', props)
+	let game = props.info.game;
+	let user_id = props.info.user_id;
+	let user = props.info.user;
+	let type = props.info.type;
+	let money = props.info.money;
+	let user_table = props.info.user_table;
+	let dispatch = useDispatch();	
+
+	useEffect(() => {
+		dispatch(game_page('game'));
+		return () => {
+		  //console.log('useEffect2 ')
+		};
+	}, []); 
 
 	function handleBack(){
 		let url = window.location.href;
