@@ -24,7 +24,8 @@ function Child(props) {
 			<div className="userPage"> 
 				<Row>
 					<Col sm={12}>	
-						{(() => {								
+						{(() => {	
+							console.log('userPage', user_table)							
 							switch (visible) {
 								case "game":
 									return (
@@ -64,10 +65,11 @@ function UserPage(props){
 	const [game, setGame] = useState('');
 	const [type, setType] = useState('');
 	const [userTable, setUserTable] = useState('');
+	const [loaded, setLoaded] = useState(false);
 
 	useEffect(() => {
 		userPageData().then(res => {
-			if(res !== null){
+			if(res !== null){				
 				let table = res.user_table;
 				let table_split = table.split('_');
 				let table_user = table_split[0] + ' ' + table_split[1];
@@ -75,6 +77,7 @@ function UserPage(props){
 				let payload = {id: userId, user: user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang: lang}
 				socket.emit('username', payload);
 				socket.on('is_online', function(data) {
+					setLoaded(true);
 					if(typeof $('#chatmessages') !== "undefined"){
 						$('#chatmessages').append(data);
 					}
@@ -123,7 +126,7 @@ function UserPage(props){
 		});
 	};		
 
-	return userId !== -1 ? 
+	return loaded !== -1 ? 
 		<Child user_id={userId} game={game} user={username} money={money} profile_pic={user.profile_pic} user_table={userTable} type={type} lang={lang} socket={socket} url={url}></Child> : 
 		<span className="color_yellow">Loading...</span>
 }

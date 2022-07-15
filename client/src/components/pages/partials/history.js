@@ -321,7 +321,7 @@ function History(props){
                     {lang === "ro" ? <span>Tranzactii</span> : <span>Transactions</span>}
                 </div>
             </div>
-            { visible == "history" ? <HistoryShort lang={lang} history={history}></HistoryShort> : 
+            { visible === "history" ? <HistoryShort lang={lang} history={history}></HistoryShort> : 
                 <Transactions lang={lang} data={transactions}></Transactions>
             }
         </>

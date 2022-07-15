@@ -8,7 +8,6 @@ import { game_page } from '../actions/actions';
 import { useDispatch } from 'react-redux'
 
 function Game(props){
-	console.log('game ', props)
 	let game = props.info.game;
 	let user_id = props.info.user_id;
 	let user = props.info.user;
@@ -19,9 +18,6 @@ function Game(props){
 
 	useEffect(() => {
 		dispatch(game_page('game'));
-		return () => {
-		  //console.log('useEffect2 ')
-		};
 	}, []); 
 
 	function handleBack(){
@@ -35,6 +31,7 @@ function Game(props){
 			{user ? (
 				<div className="casino_container color_yellow">
 					{(() => {
+						console.log('game', user_table)
 						switch (game) {
 							case "roulette":
 								return (

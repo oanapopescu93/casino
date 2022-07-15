@@ -6,6 +6,51 @@ import { bigText, get_craps_bets, showResults } from '../../utils';
 
 let items = get_craps_bets();
 
+function Dice(props){
+	let number = props.number;
+	let x = props.x;
+	return (
+		<div className="dice_box">
+			<div id={'dice'+number} className={"dice dice_"+number+" show_"+x}>
+				<div id={"dice_"+number+"_side_one"} className='side one'>
+					<div className="dot one_1"></div>
+				</div>
+				<div id={"dice_"+number+"_side_two"} className='side two'>
+					<div className="dot two_1"></div>
+					<div className="dot two_2"></div>
+				</div>
+				<div id={"dice_"+number+"_side_three"} className='side three'>
+					<div className="dot three_1"></div>
+					<div className="dot three_2"></div>
+					<div className="dot three_3"></div>
+				</div>
+				<div id={"dice_"+number+"_side_four"} className='side four'>
+					<div className="dot four_1"></div>
+					<div className="dot four_2"></div>
+					<div className="dot four_3"></div>
+					<div className="dot four_4"></div>
+				</div>
+				<div id={"dice_"+number+"_side_five"} className='side five'>
+					<div className="dot five_1"></div>
+					<div className="dot five_2"></div>
+					<div className="dot five_3"></div>
+					<div className="dot five_4"></div>
+					<div className="dot five_5"></div>
+				</div>
+				<div id={"dice_"+number+"_side_six"} className='side six'>
+					<div className="dot six_1"></div>
+					<div className="dot six_2"></div>
+					<div className="dot six_3"></div>
+					<div className="dot six_4"></div>
+					<div className="dot six_5"></div>
+					<div className="dot six_6"></div>
+				</div>					
+			</div>
+			<div className="shadow_convex"></div>
+		</div>
+	);
+}
+
 function Craps(props){
 	let lang = props.lang;
 	let socket = props.socket;
@@ -14,98 +59,17 @@ function Craps(props){
 	const [open, setOpen] = useState("");
 	const [title, setTitle] = useState("");
 	const [crapsBoardText, setCrapsBoardText] = useState([]);
-	const [moneyTotal, setMoneyTotal] = useState(0);
+	const [moneyTotal, setMoneyTotal] = useState(money-1);
 	const [bet, setBet] = useState(1);
 	const [jump, setJump] = useState("");
+	const [x01, setX01] = useState(Math.floor((Math.random() * 6) + 1));
+	const [x02, setX02] = useState(Math.floor((Math.random() * 6) + 1));
 	let list_board_text = [];
 	let craps_board = null;
 
 	function handleChange(e){
-		let bet = e.target.value;
-		setMoneyTotal(money-bet);
-	}
-
-	function getDiceNumber(dice){
-		let x;
-		let classList = dice.attr('class').split(/\s+/);
-		for(let i in classList){
-			if(classList[i].indexOf("show_") > -1){
-				x = parseInt(classList[i].replace("show_", ""));
-				break;
-			}
-		}
-		return x;
-	}
-
-	function animate(dice, roll){
-		if(dice && roll){
-			for (let i = 1; i <= 6; i++) {
-				dice.removeClass('show_' + i);
-				if (roll === i) {
-					dice.addClass('show_'+i);
-				}
-			}
-		}
-	}
-
-	function roll(point){
-		return new Promise(function(resolve, reject){
-			getNumbers(point).then(function(res){
-				setJump("jump");
-				for(let k in res){
-				 	let t = parseInt(k)+1;
-				 	let dice = $('#dice'+t);
-				 	let roll = res[k];				
-				 	animate(dice, roll, t);
-				}
-				setDicesNumber(res);
-				resolve(res);
-			}).catch(function(err){console.log('roll-error--> ', err)});
-		});
-	}
-
-	function getNumbers(point){
-		return new Promise(function(resolve, reject){
-			let dice1 = $('#dice1');
-			let dice2 = $('#dice2');
-			let dice_number1 = getDiceNumber(dice1);
-			let dice_number2 = getDiceNumber(dice2);
-			let payload={how_many_dices:2, user_table: props.user_table, point:point, before: [dice_number1, dice_number2]}
-			socket.emit('craps_send', payload);
-			socket.on('craps_read', function(data){
-				if(data){
-					resolve(data);
-				}
-			});	
-		});
-	};
-
-	function show_on_board(dices_number, sum, point){
-		list_board_text.push({dices_number: dices_number, sum: sum, point: point})
-		setCrapsBoardText(list_board_text);	
-	}	
-
-	function scrollToBottom(){		
-		// this.craps_board.scrollTop = this.craps_board.scrollHeight;
-		//$(this.craps_board).animate({scrollTop: this.craps_board.scrollHeight},"fast");
-	}
-
-	function check_win_lose(win, bet){
-		if(bet){
-			if(win){
-				if(lang === "ro"){
-					showResults("Resultate", "Ai castigat "+bet+" morcovi!");
-				} else {
-					showResults("Results", "You won "+bet+" carrots!");
-				}			
-			} else {
-				if(lang === "ro"){
-					showResults("Resultate", "Ai pierdut "+bet+" morcovi!");
-				} else {
-					showResults("Results", "You lost "+bet+" carrots!");
-				}
-			}
-		}
+		setBet(e.target.value);
+		setMoneyTotal(money-e.target.value);
 	}
 
 	function game_craps_rules(){
@@ -184,51 +148,39 @@ function Craps(props){
 		
 	}
 
+	function check_win_lose(win, bet){
+		if(bet){
+			if(win){
+				if(lang === "ro"){
+					showResults("Resultate", "Ai castigat "+bet+" morcovi!");
+				} else {
+					showResults("Results", "You won "+bet+" carrots!");
+				}			
+			} else {
+				if(lang === "ro"){
+					showResults("Resultate", "Ai pierdut "+bet+" morcovi!");
+				} else {
+					showResults("Results", "You lost "+bet+" carrots!");
+				}
+			}
+		}
+	}
+
 	function game_start(){
-		list_board_text = [];
-		setCrapsBoardText(list_board_text);	
-		if(money > 0){
+		if(moneyTotal >= 0){
 			let state = 1;
 			let point;
-			let sum;			
+			let sum;
 			let timer = setInterval(function () {
 				switch(state) {
 					case 1:
-						roll(point).then(function(res){
-							setJump("");
-							sum = dicesNumber[0] + dicesNumber[1];		
-							if(sum === 7|| sum === 11){
-								//Natural
-								state = 2;
-								show_on_board("Natural!!!");
-							} else {
-								point = sum;
-								state = 3;
-							}
-							show_on_board(dicesNumber, sum, point);
-						});
+						state = 2;
 						break;
 					case 2:
 						check_win_lose(true, bet);
 						clearInterval(timer);
 						break;
 					case 3:
-						roll(point).then(function(res){
-							setJump("");
-							sum = dicesNumber[0] + dicesNumber[1];			
-							show_on_board(dicesNumber, sum, point);
-							if (sum === point) {
-								state = 2;
-							} else if (sum === 7) {
-								state = 4;
-							} else if (sum === 2 || sum === 3 || sum === 12) {
-								//craps
-								state = 4;
-								show_on_board("Craps!!!");
-							} else {
-								state = 3;
-							}
-						});
 						break;
 					case 4:
 						check_win_lose(false, bet);
@@ -254,16 +206,14 @@ function Craps(props){
 	}
 
 	useEffect(() => {
-		//console.log('useEffect1 ', props)
+		console.log(props)
 		let user_table = props.user_table;
 		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
-
 		if (window.innerWidth >= 960){
 			setTitle(user_table);		
 		} else {
 			setTitle("");
 		}
-
 		$(window).resize(function(){
 			if (window.innerWidth >= 960){
 				setTitle(user_table);		
@@ -271,10 +221,6 @@ function Craps(props){
 				setTitle("");
 			}
 		});
-		scrollToBottom();
-		return () => {
-		  console.log('useEffect2 ')
-		};
 	}, []); 
 	
 	return (
@@ -286,7 +232,8 @@ function Craps(props){
 					<h1 className="craps_title">{title}</h1>
 					<Row>
 						<Col className="dice_container" sm={6}>
-							dices
+							<Dice number={1} x={x01}></Dice>
+							<Dice number={2} x={x02}></Dice>
 						</Col>
 						<Col sm={6}>
 							<div className="craps_board_container">
@@ -301,8 +248,8 @@ function Craps(props){
 							<div className="game_text_container">
 								<div className="game_buttons_box">
 									{lang === "ro" ? 
-										<p className="craps_buttons_box_cell craps_buttons_box_text">Ai: <span id="money_total">{money-1}</span> morcovi</p> : 
-										<p className="craps_buttons_box_cell craps_buttons_box_text">You have: <span id="money_total">{money-1}</span> carrots</p>
+										<p className="craps_buttons_box_cell craps_buttons_box_text">Ai: <span id="money_total">{moneyTotal}</span> morcovi</p> : 
+										<p className="craps_buttons_box_cell craps_buttons_box_text">You have: <span id="money_total">{moneyTotal}</span> carrots</p>
 									}
 								</div>
 								<div className="game_buttons_box">
