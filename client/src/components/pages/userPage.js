@@ -19,31 +19,46 @@ function Child(props) {
 	let game = props.game;
 	let socket = props.socket;
 	let lang = props.lang;
+	const [id, setId] = useState(null);
+
+	useEffect(() => {
+		console.log('userPage--> ', props)	
+	}, []); 
+
 	return (			
 		<>
 			<div className="userPage"> 
 				<Row>
 					<Col sm={12}>	
 						{(() => {	
-							console.log('userPage', user_table)							
-							switch (visible) {
-								case "game":
-									return (
-										<Game lang={lang} info={props} socket={socket}></Game>
-									)
-								case "account":
-									return (
-										<UserAccount lang={lang} info={props} socket={socket}></UserAccount> 
-									)	
-								case "support":
-									return (
-										<Support lang={lang} info={props} socket={socket}></Support> 
-									)
-								default:
-									return(
-										<Game lang={lang} info={props} socket={socket}></Game>
-									)						
-							}
+							
+							if(user_id === -1){
+								console.log('userPage111', user_id, id)	
+								return (
+									<span className="color_yellow">Loading...</span>
+								)
+							} else {
+								console.log('userPage222', props)	
+								switch (visible) {
+									case "game":
+										return (
+											<Game lang={lang} info={props} socket={socket}></Game>
+										)
+									case "account":
+										return (
+											<UserAccount lang={lang} info={props} socket={socket}></UserAccount> 
+										)	
+									case "support":
+										return (
+											<Support lang={lang} info={props} socket={socket}></Support> 
+										)
+									default:
+										return(
+											<Game lang={lang} info={props} socket={socket}></Game>
+										)						
+								}
+							}					
+							
 						})()}					
 					</Col>
 				</Row>	
@@ -100,6 +115,7 @@ function UserPage(props){
 			socket.emit('user_page_send', [table[1], casino_id, casino_user]);
 			socket.on('user_page_read', function(data){
 				if(data !== null){
+					console.log('user_page_read', data)
 					if(data.user === "" || data.user === "indefined"){
 						data.user = getCookie("casino_user")
 					}
@@ -127,7 +143,7 @@ function UserPage(props){
 	};		
 
 	return loaded !== -1 ? 
-		<Child user_id={userId} game={game} user={username} money={money} profile_pic={user.profile_pic} user_table={userTable} type={type} lang={lang} socket={socket} url={url}></Child> : 
+		<Child data={user} user_id={userId} game={game} user={username} money={money} profile_pic={user.profile_pic} user_table={userTable} type={type} lang={lang} socket={socket} url={url}></Child> : 
 		<span className="color_yellow">Loading...</span>
 }
 

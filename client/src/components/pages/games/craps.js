@@ -52,9 +52,11 @@ function Dice(props){
 }
 
 function Craps(props){
+	console.log('craps--> ', props)
 	let lang = props.lang;
 	let socket = props.socket;
 	let money = props.money;
+
 	const [dicesNumber, setDicesNumber] = useState([]);
 	const [open, setOpen] = useState("");
 	const [title, setTitle] = useState("");
@@ -64,6 +66,10 @@ function Craps(props){
 	const [jump, setJump] = useState("");
 	const [x01, setX01] = useState(Math.floor((Math.random() * 6) + 1));
 	const [x02, setX02] = useState(Math.floor((Math.random() * 6) + 1));
+
+	const dice1 = useRef(null);
+	const dice2 = useRef(null);
+
 	let list_board_text = [];
 	let craps_board = null;
 
@@ -175,12 +181,14 @@ function Craps(props){
 				switch(state) {
 					case 1:
 						state = 2;
+						roll();
 						break;
 					case 2:
 						check_win_lose(true, bet);
 						clearInterval(timer);
 						break;
 					case 3:
+						roll();
 						break;
 					case 4:
 						check_win_lose(false, bet);
@@ -195,6 +203,16 @@ function Craps(props){
 				showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
 			}
 		}
+	}
+
+	function roll(){
+		let dice_number1 = getDiceNumber(dice1);
+		let dice_number2 = getDiceNumber(dice2);
+		//let payload={how_many_dices:2, user_table: self.state.data.user_table, point:point, before: [dice_number1, dice_number2]}
+	}
+
+	function getDiceNumber(dice){
+		console.log(dice)
 	}
 	
 	function game_bet(){
@@ -224,16 +242,15 @@ function Craps(props){
 	}, []); 
 	
 	return (
-		<>				
-			
+		<>
 			<Row className="craps_container">
 				<Col sm={2}></Col>
 				<Col sm={8}>
 					<h1 className="craps_title">{title}</h1>
 					<Row>
 						<Col className="dice_container" sm={6}>
-							<Dice number={1} x={x01}></Dice>
-							<Dice number={2} x={x02}></Dice>
+							<Dice ref={dice1} number={1} x={x01}></Dice>
+							<Dice ref={dice2} number={2} x={x02}></Dice>
 						</Col>
 						<Col sm={6}>
 							<div className="craps_board_container">
@@ -282,8 +299,8 @@ function Craps(props){
 				<div className="craps_bets shadow_concav">
 					<div className="close" onClick={()=>game_close()}>x</div>
 					{lang === "ro" ? 
-							<div><p><b>In constructie</b></p><p>Craps se joaca acum doar ca Pass Line</p></div> : 
-							<div><p><b>Under construction</b></p><p>Craps can be played now only as Pass Line</p></div>
+							<div><p><b>In constructie</b></p></div> : 
+							<div><p><b>Under construction</b></p></div>
 						}
 					<div className="craps_bets_box">						
 						<canvas id="craps_bets_canvas"></canvas>

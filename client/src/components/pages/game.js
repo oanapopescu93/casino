@@ -17,6 +17,7 @@ function Game(props){
 	let dispatch = useDispatch();	
 
 	useEffect(() => {
+		console.log('game--> ', props)	
 		dispatch(game_page('game'));
 	}, []); 
 
@@ -31,7 +32,6 @@ function Game(props){
 			{user ? (
 				<div className="casino_container color_yellow">
 					{(() => {
-						console.log('game', user_table)
 						switch (game) {
 							case "roulette":
 								return (
