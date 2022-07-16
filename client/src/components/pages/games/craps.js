@@ -55,7 +55,7 @@ function Craps(props){
 	console.log('craps--> ', props)
 	let lang = props.lang;
 	let socket = props.socket;
-	let money = props.money;
+	let money = props.info.money;
 
 	const [dicesNumber, setDicesNumber] = useState([]);
 	const [open, setOpen] = useState("");
@@ -225,16 +225,16 @@ function Craps(props){
 
 	useEffect(() => {
 		console.log(props)
-		let user_table = props.user_table;
-		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
+		let table = props.info.table;
+		table = table.charAt(0).toUpperCase() + table.slice(1);
 		if (window.innerWidth >= 960){
-			setTitle(user_table);		
+			setTitle(table);		
 		} else {
 			setTitle("");
 		}
 		$(window).resize(function(){
 			if (window.innerWidth >= 960){
-				setTitle(user_table);		
+				setTitle(table);		
 			} else {
 				setTitle("");
 			}

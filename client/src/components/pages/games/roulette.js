@@ -21,9 +21,9 @@ let user_info;
 function roulette_game(props){
 	let self = this;
 	let lang = props.lang;
-	const dispatch = props.dispatch;
-	roulette_type = props.type;
 	let socket = props.socket;
+	const dispatch = props.dispatch;
+	roulette_type = props.info.type;	
 	
 	let canvas_width = 900;
 	let canvas_height = 800;
@@ -65,7 +65,7 @@ function roulette_game(props){
 	let win_nr = "";
 	
 	let dispatch_nr = 0; //this prevents multiplication
-	user_info = {money: props.money};	
+	user_info = {money: props.info.money};	
 	if(props.roulette !== -1){
 		user_info = props.roulette[0];			
 	}
@@ -247,12 +247,12 @@ function roulette_game(props){
 		ctx.font = font_bold_14; 
 		draw_roulette_holes(insideRadius-1, insideRadius*0.7, numbers.length, "dark", false, startAngle)
 		
-		radiantLine(numbers.length, 1, "yellow", radiantLine01, startAngle);		
+		radiantLine(numbers.length, 1, "gold", radiantLine01, startAngle);		
 		
 		draw_roulette_holes(insideRadius*0.7-1, 0, 12, "grey", false, startAngle01)
 		radiantLine(12, 1, "#4d4d4d", radiantLine02, startAngle01);	
 
-		draw_roulette_holes(20, 0, 8, "yellow", false, startAngle01)	
+		draw_roulette_holes(20, 0, 8, "gold", false, startAngle01)	
 		radiantLine(8, 1, "#b99813", radiantLine03, startAngle01);
 	}
 	
@@ -271,7 +271,7 @@ function roulette_game(props){
 				} else {
 					ctx.fillStyle = "#999";
 				}
-			} else if(colors === "yellow"){
+			} else if(colors === "gold"){
 				if(i%2 === 0){
 					ctx.fillStyle = "#f0d875";
 				} else {
@@ -389,13 +389,13 @@ function roulette_game(props){
 		// ctx.stroke();
 		
 		if (isInside(mousePos, bet_button_coordonates)) {
-			//console.log('BET');			
+			console.log('BET');			
 			let width = $('.roulette_container').width();
 			$('.roulette_container').animate({
 				scrollLeft: width
 			}, 500);	
 		} else if (isInside(mousePos, spin_button_coordonates)) {
-			//console.log('SPIN', your_bets);
+			console.log('SPIN', your_bets);
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
 				showResults("", "Please place your bet before playing.");			
@@ -405,9 +405,9 @@ function roulette_game(props){
 				let roulette_payload_server = {
 					spin_click: spin_click,
 					my_click: my_click,
-					user: props.user, 
-					user_table: props.user_table, 
-					user_type: props.type
+					user: props.info.user, 
+					user_table: props.info.user_table, 
+					user_type: props.info.type
 				}
 				socket.emit('roulette_spin_send', roulette_payload_server);
 				$('.roulette_container').animate({
@@ -415,7 +415,7 @@ function roulette_game(props){
 				}, 500);
 			}				
 		} else if (isInside(mousePos, show_bets_button_coordonates)) {
-			//console.log('SHOW')
+			console.log('SHOW')
 			if($('.roulette_bets_container').length>0){
 				$('.roulette_bets_container').addClass('open');
 			}
@@ -784,10 +784,10 @@ function roulette_game(props){
 		}
 
 		let roulette_payload_server = {
-			user_id: props.user_id,
-			user: props.user, 
-			user_table: props.user_table, 
-			user_type: props.type,
+			user_id: props.info.id,
+			user: props.info.user, 
+			user_table: props.info.user_table, 
+			user_type: props.info.type,
 			money: user_info.money
 		}
 		socket.emit('roulette_results_send', roulette_payload_server);
@@ -1170,14 +1170,14 @@ function isInside(mousePos, obj){
 function Roulette(props) {
 	const [title, setTitle] = useState('');
 
-	setTimeout(function(){ 		
-		let user_table = props.user_table;
-		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
+	setTimeout(function(){
+		let table = props.info.table;
+		table = table.charAt(0).toUpperCase() + table.slice(1);
 		if (window.innerWidth >= 960){
-			setTitle(user_table);
+			setTitle(table);
 		} else {
 			setTitle('');
-		}		
+		}
 		
 		let my_roulette = new roulette_game(props);
 		my_roulette.ready();

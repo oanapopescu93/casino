@@ -26,10 +26,9 @@ let my_console = function(){
 }();
 
 function App(props){	
-	// my_console.disable();
+	my_console.disable();
 	let page = useSelector(state => state.page);
 	let show_loader = useSelector(state => state.load);
-	console.log(page, show_loader)
 	return (
 		<div className="App">
 			<Loader show={show_loader}></Loader>

@@ -5,14 +5,14 @@ import {slot_calculate_money, slot_get_history} from '../../actions/actions'
 import { bigText, get_slots_images, showResults } from '../../utils';
 import GameBoard from '../partials/game_board';
 
+let reel = [];
 function slot_game(props, id){
 	let self = this;
 	let slot_id = "#"+id;
 	let socket = props.socket;
 	let lang = props.lang;
 	let items = get_slots_images();
-
-	let reel = [];
+	
 	let ctx;
 
 	let canvas_height = 800;
@@ -37,12 +37,12 @@ function slot_game(props, id){
 	let win = [];
 	this.lastUpdate = new Date();
 	let now = new Date();
-	slot_type = props.type;	
+	slot_type = props.info.type;	
 	let reason = "";
 	const dispatch = props.dispatch;
 	let game_pay = 0;
 
-	user_info = {money: props.money};	
+	user_info = {money: props.info.money};	
 	if(props.slot !== -1){
 		user_info = props.slot[0];			
 	}
@@ -54,7 +54,7 @@ function slot_game(props, id){
 		reason = r;
 		self.fit();
 		self.choose_slot_type();
-		let payload = {id: props.user_id, reel:reel.length, items:items.length, reason: reason}		
+		let payload = {id: props.info.id, reel:reel.length, items:items.length, reason: reason}	
 		socket.emit('slots_send', payload);
 		socket.on('slots_read', function(data){				
 			suffle_array = data[0];
@@ -475,10 +475,10 @@ function slot_game(props, id){
 		}
 
 		let slot_payload_server = {
-			user_id: props.user_id,
-			user: props.user, 
-			user_table: props.user_table, 
-			user_type: props.type,
+			user_id: props.info.id,
+			user: props.info.user, 
+			user_table: props.info.user_table, 
+			user_type: props.info.type,
 			money: user_info.money
 		}		
 		socket.emit('slot_results_send', slot_payload_server);
@@ -587,7 +587,7 @@ function slot_game(props, id){
 function Slot(props) {	
 	let my_slots
 	let lang = props.lang;	
-	let money = props.money;
+	let money = props.info.money;
 	const [gameStart, setGameStart] = useState(false);
 
 	useEffect(() => {		

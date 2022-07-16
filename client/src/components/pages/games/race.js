@@ -729,7 +729,7 @@ function race_game(props){
 	this.start_race = function(time, monkey){
 		let nr = 0;
 		dispatch_nr++;
-		time = 100;
+		// time = 100;
 		let move_landscape = false;
 
 		window.requestAnimFrame = (function(){
@@ -1087,7 +1087,7 @@ class Race extends Component {
 			rabbit_array: [],
 			ready: false,
 			start_race: false,
-			user: props.user,
+			user: props.info,
 			id: -1,
 			money:0,
 			lang: props.lang,

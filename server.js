@@ -531,21 +531,15 @@ io.on('connection', function(socket) {
 		}	
 	});
 
-	socket.on('roulette_spin_send', function(data) {
+	socket.on('roulette_spin_send', function(data) {		
 		if(data.spin_click === 1){
 			let spin_time = Math.floor(Math.random() * (800 - 300)) + 300;
 			//let spin_time = 100;
 			let ball_speed = 0.06;
-			
-			let user_table = data.user_table.split(' ').join('_');
-			let user_type = data.user_type;
-			let room_name = user_table + '_' + user_type;
-			
+			let room_name = data.user_table;			
 			let k = data.my_click;
-			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey_roulette[k]}
-			
+			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey_roulette[k]}			
 			io.to(room_name).emit('roulette_spin_read', payload);
-			//io.emit('roulette_spin_read', payload);
 		}
 	});
 	socket.on('roulette_results_send', function(data) {
@@ -570,12 +564,7 @@ io.on('connection', function(socket) {
 	});
 	socket.on('blackjack_send', function(data) {
 		let game_start = false;
-		let user_table = data[1].user_table.split(' ').join('_');
-		let room_name = user_table;
-		if(typeof data[1].user_type !== "undefined"){
-			let user_type = data[1].user_type;	
-			room_name = room_name + '_' + user_type;
-		}
+		let room_name = data[1].user_table;
 		switch (data[0]) {
 			case 'start':
 				if(!game_start){

@@ -175,7 +175,6 @@ function blackjack_game(props){
 	let socket = props.socket;
 	let lang = props.lang;
 	let dispatch = props.dispatch;
-	
 
 	let canvas;
 	let ctx;
@@ -192,7 +191,7 @@ function blackjack_game(props){
 
 	let user_info = 0;
 	let user_join = [];
-	user_info = {money: props.money};
+	user_info = {money: props.info.money};
 	if(props.blackjack !== -1){
 		user_info = props.blackjack[0];		
 	}
@@ -206,10 +205,10 @@ function blackjack_game(props){
 			if(reason !== "resize" && !game_start){
 				//first time entering
 				let blackjack_payload_server = {
-					user_id: props.user_id, 
-					user: props.user, 
-					user_table: props.user_table, 
-				}	
+					user_id: props.info.id, 
+					user: props.info.user, 
+					user_table: props.info.user_table, 
+				}
 				socket.emit('blackjack_get_users_send', blackjack_payload_server);
 				socket.on('blackjack_get_users_read', function(data){
 					user_join = data;
@@ -380,9 +379,9 @@ function blackjack_game(props){
 			blackjack_status = true;
 			your_bets = bet;
 			let blackjack_payload_server = {
-				user_id: props.user_id, 
-				user: props.user, 
-				user_table: props.user_table, 
+				user_id: props.info.id, 
+				user: props.info.user, 
+				user_table: props.info.user_table, 
 				bets: your_bets
 			}
 			socket.emit('blackjack_send', ["start", blackjack_payload_server]);
@@ -400,9 +399,9 @@ function blackjack_game(props){
 	this.hit = function(){
 		if(canvas && blackjack_status){
 			let blackjack_payload_server = {
-				user_id: props.user_id, 
-				user: props.user, 
-				user_table: props.user_table, 
+				user_id: props.info.id, 
+				user: props.info.user, 
+				user_table: props.info.user_table, 
 				bets: your_bets
 			}
 			socket.emit('blackjack_send', ['hit', blackjack_payload_server]);
@@ -420,9 +419,9 @@ function blackjack_game(props){
 	this.stay = function(){
 		if(canvas && blackjack_status){
 			let blackjack_payload_server = {
-				user_id: props.user_id, 
-				user: props.user, 
-				user_table: props.user_table, 
+				user_id: props.info.id, 
+				user: props.info.user, 
+				user_table: props.info.user_table, 
 				bets: your_bets
 			}
 			socket.emit('blackjack_send', ["stay", blackjack_payload_server]);
@@ -480,7 +479,7 @@ function blackjack_game(props){
 	this.pay = function(obj){
 		let payload = [];
 		for(let i in blackjack_hand[1]){
-			if(blackjack_hand[1][i].id === props.user_id){				
+			if(blackjack_hand[1][i].id === props.info.id){				
 				if(obj === "dealer" || obj.id !== blackjack_hand[1][i].id){
 					user_info.money = user_info.money - blackjack_hand[1][i].bets;
 					payload = [
@@ -516,10 +515,10 @@ function blackjack_game(props){
 		}
 
 		let blackjack_payload_server = {
-			user_id: props.user_id,
-			user: props.user, 
-			user_table: props.user_table, 
-			user_type: props.type,
+			user_id: props.info.id, 
+			user: props.info.user, 
+			user_table: props.info.user_table, 
+			user_type: props.info.type,
 			money: user_info.money
 		}
 		socket.emit('blackjack_results_send', blackjack_payload_server);
@@ -541,7 +540,7 @@ function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
 function Blackjack(props) {
 	let my_blackjack
 	let lang = props.lang;	
-	let money = props.money;
+	let money = props.info.money;
 	const [title, setTitle] = useState('');
 	const [gameStart, setGameStart] = useState(false);
 	const isInitialMount = useRef(true);
@@ -549,10 +548,10 @@ function Blackjack(props) {
 	useEffect(() => {
 		if (isInitialMount.current) {
 			isInitialMount.current = false;
-			let user_table = props.user_table;
-			user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
+			let table = props.info.table;
+			table = table.charAt(0).toUpperCase() + table.slice(1);
 			if (window.innerWidth >= 960){
-				setTitle(user_table);
+				setTitle(table);
 			} else {
 				setTitle('');
 			}				

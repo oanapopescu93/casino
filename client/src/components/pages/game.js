@@ -8,16 +8,10 @@ import { game_page } from '../actions/actions';
 import { useDispatch } from 'react-redux'
 
 function Game(props){
-	let game = props.info.game;
-	let user_id = props.info.user_id;
-	let user = props.info.user;
-	let type = props.info.type;
-	let money = props.info.money;
-	let user_table = props.info.user_table;
+	let info = props.info;
 	let dispatch = useDispatch();	
 
 	useEffect(() => {
-		console.log('game--> ', props)	
 		dispatch(game_page('game'));
 	}, []); 
 
@@ -25,29 +19,29 @@ function Game(props){
 		let url = window.location.href;
 		url = url.split('/table/');
 		window.location.href = url[0];
-	}  
+	}
 	
 	return (
 		<div className="color_yellow">
-			{user ? (
+			{props.info.user ? (
 				<div className="casino_container color_yellow">
 					{(() => {
-						switch (game) {
+						switch (props.info.game) {
 							case "roulette":
 								return (
-									<Roulette lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Roulette>
+									<Roulette lang={props.lang} info={info} socket={props.socket}></Roulette>
 								)
 							case "blackjack":
 								return (
-									<Blackjack lang={props.lang} user_id={user_id} user={user} user_table={user_table} socket={props.socket} money={money}></Blackjack>
+									<Blackjack lang={props.lang} info={info} socket={props.socket}></Blackjack>
 								)	
 							case "slots":
 								return (
-									<Slot lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Slot>
+									<Slot lang={props.lang} info={info} socket={props.socket}></Slot>
 								)
 							case "craps":								
 								return (
-									<Craps lang={props.lang} user_id={user_id} user={user} user_table={user_table} type={type} socket={props.socket} money={money}></Craps>
+									<Craps lang={props.lang} info={info} socket={props.socket}></Craps>
 								)
 							default:
 								return(
