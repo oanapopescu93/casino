@@ -363,10 +363,13 @@ textarea {
 
 .full-height {
     position: relative;
-	z-index: 1;
-    display: table;
+	z-index: 123;    
     height: 100%;
     width: 100%;
+	display:none;
+}
+.full-height.open, .full-height#splash_screen{
+	display: table;
 }
 .full-height-content{
 	display: table-cell;
@@ -982,7 +985,7 @@ table {
 	line-height:10px;
 }
 
-.change_username_input{
+.change_input{
 	width:100%;
 	padding:5px 10px;
 	border-radius:5px;
@@ -993,13 +996,14 @@ table {
 	border:solid 1px black;
 	color:var(--yellow);
 }
-.change_username_button, .change_pic_button{
+.change_username_button, .change_password_button, .change_pic_button{
 	background-color: black;
 	border:solid 1px black;
 	margin:5px;
 	color: var(--yellow);
 }
 .change_username_button:hover, .change_username_button:active, .change_username_button:focus,
+.change_password_button:hover, .change_password_button:active, .change_password_button:focus, 
 .change_pic_button:hover, .change_pic_button:active, .change_pic_button:focus{
 	background-color: transparent;
 	border:solid 1px black;

@@ -1,14 +1,13 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Carousel from './partials/carousel'
-import shop from '../img/other/shop.png';
+import Carousel from '../partials/carousel'
+import shop from '../../img/other/shop.png';
 
 function Account_market(props) {
-	console.log('Account_market', props)
-	let market = props.market;
+	let market = props.info.market;
 	let socket = props.info.socket;	
-	let lang = props.lang;
+	let lang = props.info.lang;
 	let shader_style = {
 		backgroundImage: `url(${shop})`,
 	};

@@ -6,10 +6,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import { setCookie} from '../utils';
-import History from './partials/history';
+import { setCookie} from '../../utils';
+import History from '../partials/history';
 
-import profilePic from '../img/profile/predators.jpg';
+import profilePic from '../../img/profile/predators.jpg';
 
 function Picture(props){
 	let picId = props.pic_id;
@@ -40,9 +40,9 @@ function Picture(props){
 
 function Account_profile(props) {
 	let username = props.info.user;
-	let lang = props.lang;
+	let lang = props.info.lang;
 	let socket = props.info.socket;
-	let profiles = props.profiles;	
+	let profiles = props.info.profiles;	
 
 	let roulette_info = useSelector(state => state.roulette);
 	let blackjack_info = useSelector(state => state.blackjack);
@@ -52,6 +52,7 @@ function Account_profile(props) {
 	
 	const [show1, setShow1] = useState(false);
 	const [show2, setShow2] = useState(false);
+	const [show3, setShow3] = useState(false);
 	const [picId, setPicId] = useState("0");
 	const [animal, setAnimal] = useState(null);	
 
@@ -75,6 +76,12 @@ function Account_profile(props) {
 	};
     function handleShow_user(){ 
 		setShow2(true) 
+	};
+	function handleClose_pass(){ 
+		setShow3(false) 
+	};
+    function handleShow_pass(){ 
+		setShow3(true) 
 	};
 	
 	let money = props.info.money;
@@ -125,6 +132,39 @@ function Account_profile(props) {
 		}
     }
 
+	function change_password(){
+		let input_old = $('#change_password_old').val();
+		let input_new = $('#change_password_old').val();
+		if(typeof input_old !== "undefined" && input_old !== "null" && input_old !== null && input_old !== "" && 
+		typeof input_new !== "undefined" && input_new !== "null" && input_new !== null && input_new !== ""){
+			if(!check_password(input_new)){
+				$('.pass_errors').show();
+				$('.pass_errors').append('<h6 id="pass_errors_red" class="text_red"></h6>');
+				if(lang === "ro"){
+					$('#pass_errors_red').append('<p><b>Parola invalida</b></p><p>Minim o litera mare, o litera mica, o cifra, un caracter special si lungimea totala minima de opt caractere</p>')
+				} else {
+					$('#pass_errors_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
+				}
+			} else {
+				socket.emit('change_password_send', {id: props.info.user_id, pass_old: input_old, pass_new: input_new});
+				handleClose_pass();
+			}
+		}
+    }
+
+	function check_password(input){	
+		let regex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';	
+		// At least one upper case English letter, (?=.*?[A-Z])
+		// At least one lower case English letter, (?=.*?[a-z])
+		// At least one digit, (?=.*?[0-9])
+		// At least one special character, (?=.*?[#?!@$%^&*-])
+		// Minimum eight in length .{8,}
+		let regex_exp = new RegExp(regex);					
+		let pass_result = regex_exp.test(input);
+		//pass_result = true;
+		return pass_result;
+	}
+
 	function change_pic(){
 		handleClose_pic();
 		socket.emit('change_pic_send', {id: props.info.user_id, pic: picId});
@@ -168,6 +208,9 @@ function Account_profile(props) {
 								</Row>								
 								<div id="profile_change_username" className="profile_button button_yellow" onClick={handleShow_user}>
 									{lang === "ro" ? <b>Schimba user</b> : <b>Change username</b>}
+								</div>
+								<div id="profile_change_password" className="profile_button button_yellow" onClick={handleShow_pass}>
+									{lang === "ro" ? <b>Schimba parola</b> : <b>Change password</b>}
 								</div>
 								<div id="profile_buy_carrots" className="profile_button button_yellow" onClick={buy_carrots}>
 									{lang === "ro" ? <b>Cumpara mrcovi</b> : <b>Buy carrots</b>}
@@ -217,8 +260,22 @@ function Account_profile(props) {
 					<Modal.Title>{lang === "ro" ? <span>Schimba nume user</span> : <span>Change username</span>}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<input className="change_username_input" type="text" id="change_username"></input>
+					<input className="change_input" type="text" id="change_username"></input>
 					<Button className="change_username_button shadow_convex" type="button" onClick={() => change_username()}>
+						{lang === "ro" ? <span>Schimba</span> : <span>Change</span>}
+					</Button>
+				</Modal.Body>				
+			</Modal>
+
+			<Modal className="casino_modal" id="change_password_modal" show={show3} onHide={handleClose_pass} size="sm">
+				<Modal.Header closeButton>
+					<Modal.Title>{lang === "ro" ? <span>Schimba parola</span> : <span>Change password</span>}</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<input className="change_input" type="text" id="change_password_old"></input>
+					<input className="change_input" type="text" id="change_password_new"></input> 
+					<div id="pass_errors"></div>
+					<Button className="change_password_button shadow_convex" type="button" onClick={() => change_password()}>
 						{lang === "ro" ? <span>Schimba</span> : <span>Change</span>}
 					</Button>
 				</Modal.Body>				

@@ -76,8 +76,8 @@ function SignUp(props){
 	}
 	
 	function check_submit(type){
-		var signup_input = "";
-		var regex = "";
+		let signup_input = "";
+		let regex = "";
 		switch(type){
 			case "email":
 				signup_input = $('#signup_email').val();
@@ -94,8 +94,8 @@ function SignUp(props){
 				// Minimum eight in length .{8,}
 				break;
 		}
-		var regex_exp = new RegExp(regex);					
-		var pass_result = regex_exp.test(signup_input);
+		let regex_exp = new RegExp(regex);					
+		let pass_result = regex_exp.test(signup_input);
 		//pass_result = true;
 		return pass_result;
 	}

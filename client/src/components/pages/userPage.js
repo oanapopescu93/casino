@@ -4,16 +4,16 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import $ from 'jquery'; 
 import Game from './game';
-import UserAccount from './userAccount';
+import UserAccount from './account/userAccount';
 import Support from './other_pages/support';
 import Panel from './panel_control';
 import { getCookie, showResults } from '../utils';
 
-function Child(props) {
+function Child(props) {	
 	let visible = useSelector(state => state.visibility);
 	let socket = props.socket;
 	let lang = props.lang;
-	let data = props.data;	
+	let data = props.data;
 	return (
 		<div className="userPage"> 
 			<Row>
@@ -65,7 +65,6 @@ function Child(props) {
 					})()}					
 				</Col>
 			</Row>
-			{/* <Panel lang={lang} user_id={user_id} game={game} user={user} money={money} user_table={user_table} type={type} socket={socket}></Panel> */}	
 		</div>
 	);
 }

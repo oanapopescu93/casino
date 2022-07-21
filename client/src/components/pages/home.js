@@ -27,6 +27,11 @@ function Home(props){
 	const [donationShow, setDonationShow] = useState(false);
 	const [donationInfo, setDonationInfo] = useState(null);
 	let page = props.page;
+	let show_loader = props.show;
+	let open = "open";
+    if(show_loader){
+        open = "";
+    }
 
 	useEffect(() => {
 		let casino_cookies = getCookie("casino_cookies"); 
@@ -65,7 +70,7 @@ function Home(props){
 	
 	return (
 		<>	
-			<div className="full-height" id={page}>
+			<div className={"full-height "+open} id={page}>
 				<div className="full-height-content">
 					{ 
 						donationShow ? <Page back={back} info={donationInfo} lang={lang} socket={socket}></Page> : 

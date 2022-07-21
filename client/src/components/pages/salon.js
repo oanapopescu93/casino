@@ -119,7 +119,7 @@ function Salon(props){
 		dispatch(game_page("salon"));
 		dispatch(game_load(true));
 		salonData().then(res => {
-			if(res){
+			if(res){				
 				for(let i in res.server_tables){
 					switch (res.server_tables[i].table_name) {
 						case "roulette":
@@ -148,9 +148,9 @@ function Salon(props){
 
 				if(res.first_enter_salon){
 					if(lang === "ro"){
-						showResults('Cadou de bun-venit', 'Ai 100 de morcovi cadou de bun-venit.');
+						showResults('Cadou de bun-venit', 'Ai 100 de morcovi cadou de bun-venit.', 300);
 					} else {
-						showResults('Welcome gift', 'First time players get 100 carrots!');
+						showResults('Welcome gift', 'First time players get 100 carrots!', 300);
 					}						
 				}
 
@@ -248,6 +248,13 @@ function Salon(props){
 									<Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
 								)}
 							</Col> : null}
+							<div className="show_results_container">
+								<div className="show_results">
+									<i className="fa fa-times show_results_close" ></i>
+									<h1 className="header">{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
+									<div className="message"></div>
+								</div>
+							</div>
 						</>																
 					)}			
 				</Row>

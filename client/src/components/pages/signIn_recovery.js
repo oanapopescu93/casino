@@ -47,7 +47,7 @@ function submit_form(){
 }
 
 function SignInRecovery(props) {
-	var lang = props.lang;
+	let lang = props.lang;
 	return (
         <Row>
 			<Col sm={4} md={4} lg={4}></Col>

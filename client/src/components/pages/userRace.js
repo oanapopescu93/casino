@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import $ from 'jquery'; 
 import Race from './games/race';
-import UserAccount from './userAccount';
+import UserAccount from './account/userAccount';
 import Support from './other_pages/support';
 import Panel from './panel_control';
 import { getCookie, showResults } from '../utils';

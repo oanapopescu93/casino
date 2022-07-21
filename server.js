@@ -70,11 +70,11 @@ var rabbit_delay = [40, 20] //max, min
 // database_config.sql = "SELECT * FROM casino_users";
 // database(database_config).then(function(data){
 // 	users_json = data;	
-// 	for(let i in users_json){
-// 		//let pass = decrypt(JSON.parse(users_json[i].pass));
+// 	for(let i in users_json){		
 // 		//console.log('users_json--> ', users_json[i].user, users_json[i].email, pass)
-// 		if( users_json[i].user === "ccc"){
-// 			console.log('users_json--> ', users_json[i])
+// 		if( users_json[i].user === "pig001"){
+// 			let pass = decrypt(JSON.parse(users_json[i].pass));
+// 			console.log('users_json--> ', users_json[i], pass)
 // 		}
 // 	}
 // 	// console.log('users_json--> ', users_json)
@@ -98,11 +98,10 @@ var rabbit_delay = [40, 20] //max, min
 // 	});
 // });
 
-
+let sign_in_up = false;
 app.use(routes);
 
 io.on('connection', function(socket) {
-	let sign_in_up = false;
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
@@ -113,6 +112,7 @@ io.on('connection', function(socket) {
 		device = 2;
 	}
 	socket.on('signin_send', function(data) {
+		sign_in_up = false;
 		database_config.sql = "SELECT * FROM casino_users";
 		database(database_config).then(function(result){
 			users_json = result;
@@ -130,6 +130,7 @@ io.on('connection', function(socket) {
 						console.log('[error]','signin_read1 :', e);
 					}
 					sign_in_up = true;
+
 					get_extra_data().then(function(data1) {				
 						let extra_data = {
 							city: "",
@@ -156,18 +157,19 @@ io.on('connection', function(socket) {
 						});
 					});
 					break;
+				} else if(data.user === users_json[i].user && pass01 !== pass02){
+					exists = true;
 				}
-			}
-			if(!exists){
-				try{
-					io.to(socket.id).emit('signin_read', [exists, obj]);	
-				}catch(e){
-					console.log('[error]','signin_read2 :', e);
-				}
+			}			
+			try{
+				io.to(socket.id).emit('signin_read', [exists, obj]);	
+			}catch(e){
+				console.log('[error]','signin_read2 :', e);
 			}
 		});	
 	});
 	socket.on('signup_send', function(data) {
+		sign_in_up = false;
 		database_config.sql = "SELECT * FROM casino_users";
 		database(database_config).then(function(result){
 			users_json = result;
@@ -202,7 +204,6 @@ io.on('connection', function(socket) {
 					
 					database_config.sql = "INSERT INTO casino_users (user, email, pass, account_type, money, city, country, ip_address, signup, last_signin, device) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					let payload =  [data.user, data.email, pass, account_type, user_money, extra_data.city, extra_data.country, extra_data.ip_address, timestamp, timestamp, device];
-					
 					database(database_config, payload).then(function(){
 						database_config.sql = "SELECT * FROM casino_users";
 						database(database_config).then(function(result){										
@@ -224,7 +225,7 @@ io.on('connection', function(socket) {
 						});
 					});
 				});
-			} else {
+			} else {				
 				try{
 					io.to(socket.id).emit('signup_read', [exists, obj]);
 				}catch(e){
@@ -238,12 +239,11 @@ io.on('connection', function(socket) {
 		let money = 0;
 		if(sign_in_up){
 			check_user(users_json);
-			sign_in_up = false;
 		} else {
 			database_config.sql = "SELECT * FROM casino_users";
 			database(database_config).then(function(data){
 				users_json = data;
-				check_user(users_json)
+				check_user(users_json);
 			});
 		}
 		
@@ -255,11 +255,16 @@ io.on('connection', function(socket) {
 				if(users_json[i].id === id){
 					user = users_json[i].user;
 					money = users_json[i].money;
-					if(users_json[i].last_signin-users_json[i].signup === 0){ //has 0 milisecond since first arrived here
+
+					let timestamp = new Date().getTime();
+					console.log('first_enter_salon-->', (timestamp - parseInt(users_json[i].last_signin))/60000, (timestamp - parseInt(users_json[i].last_signin))/60000 < 0.25)
+					if(users_json[i].last_signin === users_json[i].signup && (timestamp - parseInt(users_json[i].last_signin))/60000 < 0.25){ //first time player
 						first_enter_salon = true;
 					}
+
 					found = true;
-					obj = {server_tables: server_tables, user: user, money: money, first_enter_salon: first_enter_salon};		
+					obj = {server_tables: server_tables, user: user, money: money, first_enter_salon: first_enter_salon};
+					sign_in_up = false;	
 					break;
 				}
 			}
@@ -293,7 +298,7 @@ io.on('connection', function(socket) {
 				}
 			}
 			let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
-			server_user = {id: id, user: user, money: money, profile_pic: [profile_pic, profile_animal], profile_animal: profile_animal, user_table: my_table, game: game, contact: contact_details}
+			server_user = {id: id, user: user, money: money, profile_pic: [profile_pic, profile_animal], market:market, profiles: profiles, user_table: my_table, game: game, contact: contact_details}
 			try{
 				io.to(socket.id).emit('user_page_read', server_user);
 			}catch(e){
@@ -311,7 +316,7 @@ io.on('connection', function(socket) {
 					}
 				}
 				let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
-				server_user = {id: id, user: user, money: money, profile_pic: [profile_pic, profile_animal], user_table: my_table, game: game, contact: contact_details}
+				server_user = {id: id, user: user, money: money, profile_pic: [profile_pic, profile_animal], market: market, profiles: profiles, user_table: my_table, game: game, contact: contact_details}
 				try{
 					io.emit('user_page_read', server_user);
 				}catch(e){
@@ -474,18 +479,6 @@ io.on('connection', function(socket) {
 			console.log('[error]','choose_table_read :', e);
 		}
 	});
-	socket.on('user_account_send', function(data) {
-		for(let i in users_json){			
-			if(users_json[i].id === data.id){
-				try{
-					io.to(socket.id).emit('user_account_read', {market: market, profiles: profiles});
-				}catch(e){
-					console.log('[error]','user_account_read :', e);
-				}
-				break;
-			} 
-		}
-	});
 	socket.on('change_username_send', function(data) {
 		let id = data.id;
 		let user_new = data.user_new;
@@ -497,15 +490,47 @@ io.on('connection', function(socket) {
 						if(id === users_json[i].id){
 							users_json[i].user = user_new;
 							try{
-								io.to(socket.id).emit('change_username_read', users_json[i]);
+								io.to(socket.id).emit('change_username_read', "success");
 							}catch(e){
-								console.log('[error]','change_username_read :', e);
+								console.log('[error]','change_username_read1 :', e);
 							}
 							break;
 						}
 					}
 				});
-			} 
+			} else {
+				try{
+					io.to(socket.id).emit('change_username_read', 'error');
+				}catch(e){
+					console.log('[error]','change_username_read2 :', e);
+				}
+			}
+		}	
+	});
+	socket.on('change_password_send', function(data) {
+		let id = data.id;
+		let pass_old = data.pass_old;
+		let pass_new = data.pass_new;
+		for(let i in users_json){
+			if(id === users_json[i].id){
+				if(pass_old === users_json[i].pass){
+					database_config.sql = "UPDATE casino_users SET pass='"+pass_new+"' WHERE id="+id;
+					database(database_config).then(function(result){
+						users_json[i].pass = pass_new;
+						try{
+							io.to(socket.id).emit('change_password_read', "success");
+						}catch(e){
+							console.log('[error]','change_password_read2 :', e);
+						}
+					});
+				} else {
+					try{
+						io.to(socket.id).emit('change_password_read', 'error');
+					}catch(e){
+						console.log('[error]','change_password_read2 :', e);
+					}
+				}
+			}
 		}	
 	});
 	socket.on('change_pic_send', function(data) {
