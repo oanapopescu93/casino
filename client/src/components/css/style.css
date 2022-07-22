@@ -302,7 +302,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p, address {
 h1 {
 	font-size: 30px;
 	line-height: 30px;
-	font-family: monospace;
+	font-family: Arial, sans-serif;
 }
 
 h2 {
@@ -2175,7 +2175,7 @@ table {
 	width: 100px;
 	height: 100px;
 	transform-style: preserve-3d;
-	transition: transform 1s; 
+	transition: transform 2s; 
 }
 .dice_shadow{
 	position: absolute;

@@ -260,7 +260,7 @@ class Craps extends Component {
 			let dice2 = $('#dice2');
 			let dice_number1 = self.getDiceNumber(dice1);
 			let dice_number2 = self.getDiceNumber(dice2);
-			let payload={how_many_dices:2, user_table: self.state.data.user_table, point:point, before: [dice_number1, dice_number2]}
+			let payload={how_many_dices:2, user_table: self.state.data.info.user_table, point:point, before: [dice_number1, dice_number2]}
 			self.state.data.socket.emit('craps_send', payload);
 			self.state.data.socket.on('craps_read', function(data){
 				if(data){
@@ -447,8 +447,9 @@ class Craps extends Component {
 	}
 
 	componentDidMount(){
+		console.log(this.state)
 		let self = this;
-		let user_table = this.state.data.user_table;
+		let user_table = this.state.data.info.user_table;
 		user_table = user_table.charAt(0).toUpperCase() + user_table.slice(1);
 
 		if (window.innerWidth >= 960){			
@@ -477,6 +478,7 @@ class Craps extends Component {
 	render() {
 		let self = this;
 		let lang = self.props.lang;
+		console.log('aaa', self.state.data.info.money)
 		return (
 			<>
 				{
@@ -504,8 +506,8 @@ class Craps extends Component {
 										<div className="game_text_container">
 											<div className="game_buttons_box">
 												{lang === "ro" ? 
-													<p className="craps_buttons_box_cell craps_buttons_box_text">Ai: <span id="money_total">{this.state.data.money-1}</span> morcovi</p> : 
-													<p className="craps_buttons_box_cell craps_buttons_box_text">You have: <span id="money_total">{this.state.data.money-1}</span> carrots</p>
+													<p className="craps_buttons_box_cell craps_buttons_box_text">Ai: <span id="money_total">{self.state.data.info.money-1}</span> morcovi</p> : 
+													<p className="craps_buttons_box_cell craps_buttons_box_text">You have: <span id="money_total">{self.state.data.info.money-1}</span> carrots</p>
 												}
 											</div>
 											<div className="game_buttons_box">
@@ -513,7 +515,7 @@ class Craps extends Component {
 													<p className="craps_buttons_box_text">PARIAZA</p> : 
 													<p className="craps_buttons_box_text">BET</p>
 												}
-												<input onChange={(e) => {this.handleChange(e)}} className="craps_input" type="number" id="craps_bet_input" min="1" defaultValue="1" max={this.state.money}></input>
+												<input onChange={(e) => {this.handleChange(e)}} className="craps_input" type="number" id="craps_bet_input" min="1" defaultValue="1" max={self.state.data.info.money}></input>
 											</div>
 										</div>
 										<div className="game_start_container">
@@ -562,8 +564,4 @@ class Craps extends Component {
 	}
 }
 
-function mapStateToProps(state) {	
-	return { ...state }
-}
-
-export default connect(mapStateToProps)(Craps)
+export default Craps;

@@ -51,6 +51,32 @@ function Dice(props){
 	);
 }
 
+function CrapsBoardText(props){	
+	if(props.craps_board_text && props.craps_board_text.length>0){		
+		let craps_board_text = props.craps_board_text;
+		return(
+			<>
+				{
+					craps_board_text.map(function(item, i){
+						let dices_number = item.dices_number;
+						let point = item.point;
+						let sum = item.sum;
+						if(dices_number === "Craps!!!" || dices_number === "Natural!!!"){
+							return <div key={i} className="craps_board_text"><span className="text text01">{dices_number}</span></div>
+						} else if(point){
+							return <div key={i} className="craps_board_text"><span className="text text01">Dices:</span><span className="text text02">{dices_number[0]}, {dices_number[1]}</span><span className="text text03">Sum:</span><span className="text text04">{sum}</span><span className="text text05">Point:</span><span className="text text06">{point}</span></div>
+						} else {
+							return <div key={i} className="craps_board_text"><span className="text text01">Dices:</span><span className="text text02">{dices_number[0]}, {dices_number[1]}</span><span className="text text03">Sum:</span><span className="text text04">{sum}</span></div>	
+						}
+					})
+				}
+			</>
+		)
+	} else {
+		return '';
+	}		
+}
+
 function Craps(props){
 	let lang = props.lang;
 	let socket = props.socket;
@@ -230,7 +256,7 @@ function Craps(props){
 						clearInterval(timer);
 						break;
 				}
-			}, 1000);
+			}, 3000);
 		} else {
 			if(lang === "ro"){
 				showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
@@ -334,8 +360,7 @@ function Craps(props){
 	}, []); 
 	
 	return (
-		<>	
-		<div>{dicesNumber[0]}, {dicesNumber[1]}</div>	
+		<>
 			<Row className="craps_container">
 				<Col sm={2}></Col>
 				<Col sm={8}>
@@ -348,7 +373,7 @@ function Craps(props){
 						<Col sm={6}>
 							<div className="craps_board_container">
 								<div readOnly id="craps_board" className="craps_board" ref={(e) => { craps_board = e; }}>
-									craps_board
+									<CrapsBoardText dicesNumber={dicesNumber}></CrapsBoardText>
 								</div>
 							</div>
 						</Col>
@@ -383,18 +408,14 @@ function Craps(props){
 				<Col sm={12}>
 					{lang === "ro" ? 
 						<p id="craps_rules_button" onClick={()=>{game_craps_rules()}}>Click aici pentru a vedea regulile</p> : 
-						<p id="craps_rules_button" onClick={()=>{game_craps_rules()}}>Click here to see rules</p>
-					}
+						<p id="craps_rules_button" onClick={()=>{game_craps_rules()}}>Click here to see rules</p>}
 				</Col>
 			</Row>
 
 			<div className={"craps_bets_container "+open}>
 				<div className="craps_bets shadow_concav">
 					<div className="close" onClick={()=>game_close()}>x</div>
-					{lang === "ro" ? 
-							<div><p><b>In constructie</b></p></div> : 
-							<div><p><b>Under construction</b></p></div>
-						}
+					{lang === "ro" ? <div><p><b>In constructie</b></p></div> : <div><p><b>Under construction</b></p></div>}
 					<div className="craps_bets_box">						
 						<canvas id="craps_bets_canvas"></canvas>
 						<div id="craps_bets_clear" className="shadow_convex">Clear</div>
