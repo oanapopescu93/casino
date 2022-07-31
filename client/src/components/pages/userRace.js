@@ -9,6 +9,7 @@ import Support from './other_pages/support';
 import Panel from './panel_control';
 import { getCookie, showResults } from '../utils';
 import { useDispatch } from 'react-redux'
+import race_loading_icon from '../img/icons_other/icons/yellow/race.png'
 
 function Child(props) {
 	let visible = useSelector(state => state.visibility);
@@ -126,7 +127,11 @@ function UserRace(props){
 		});
 	};		
 
-	return loaded ? <Child data={data} lang={lang} socket={socket} race={race}></Child> : <span className="color_yellow">Loading...</span>
+	return loaded ? <Child data={data} lang={lang} socket={socket} race={race}></Child> : 
+			<div>
+				<img className="loading_icon" alt="loading_icon" src={race_loading_icon} />
+				<p className="color_yellow">Loading</p>
+			</div>
 }
 
 export default UserRace;

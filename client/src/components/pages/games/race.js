@@ -1134,11 +1134,7 @@ class Race extends Component {
 						} else {
 							return <RaceTables lang={lang} data={this.state} get_data={this.get_data}></RaceTables>
 						}						
-					} else {
-						return (
-							<div>Loading...</div>
-						)
-					}
+					} else {return null}
 				})()}
 				<div className="show_results_container">				
 					<div className="show_results">

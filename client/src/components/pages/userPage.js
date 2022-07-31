@@ -8,6 +8,10 @@ import UserAccount from './account/userAccount';
 import Support from './other_pages/support';
 import Panel from './panel_control';
 import { getCookie, showResults } from '../utils';
+import roulette_loading_icon from '../img/icons_other/icons/yellow/roulette_yellow.png'
+import blackjack_loading_icon from '../img/icons_other/icons/yellow/blackjack_yellow.png'
+import slots_loading_icon from '../img/icons_other/icons/yellow/slots_yellow.png'
+import craps_loading_icon from '../img/icons_other/icons/yellow/craps_yellow.png'
 
 function Child(props) {	
 	let visible = useSelector(state => state.visibility);
@@ -121,7 +125,51 @@ function UserPage(props){
 		});
 	};		
 
-	return loaded ? <Child data={data} lang={lang} socket={socket}></Child> : <span className="color_yellow">Loading...</span>
+	return loaded ? <Child data={data} lang={lang} socket={socket}></Child> : 
+		<div style={{'textAlign': 'center'}}>
+			{(() => {
+				let table = window.location.href.split('table/')
+				let game = table[1];
+				let type = game.split('_')[0];
+
+				switch(type){
+					case "roulette":
+						return (
+							<>
+								<img className="loading_icon" alt="loading_icon" src={roulette_loading_icon} />
+								<p className="color_yellow">Loading</p>
+							</>
+						);
+					case "blackjack":
+						return (
+							<>
+								<img className="loading_icon" alt="loading_icon" src={blackjack_loading_icon} />
+								<p className="color_yellow">Loading</p>
+							</>
+						);
+					case "slots":
+						return (
+							<>
+								<img className="loading_icon" alt="loading_icon" src={slots_loading_icon} />
+								<p className="color_yellow">Loading</p>
+							</>
+						);
+					case "craps":
+						return (
+							<>
+								<img className="loading_icon" alt="loading_icon" src={craps_loading_icon} />
+								<p className="color_yellow">Loading</p>
+							</>
+						);
+					default: 
+						return (
+							<>							
+								<span className="color_yellow">Loading...</span>
+							</>
+						);
+				}			
+			})()}
+		</div>
 }
 
 export default UserPage;

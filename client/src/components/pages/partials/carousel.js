@@ -279,8 +279,14 @@ class Carousel extends Component {
 								0:{
 									items:1
 								},
-								1024:{
+								960:{
+									items:2
+								},
+								1400:{
 									items:3
+								},
+								1800:{
+									items:4
 								},
 							}
 						};
@@ -293,7 +299,7 @@ class Carousel extends Component {
 											return(
 												<div className="rabbit_box_container" key={i}>
 													<div id={"rabbit_box_"+i} className="rabbit_inside">
-														<div className="rabbit_box">
+														<div className="rabbit_box shadow_concav">
 															<div className="rabbit_box_left">
 																<div className="rabbit_box_pic">																			
 																	<div className={rabbit_box_style}><p>{item.id}</p></div>

@@ -242,6 +242,14 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 	font-size:20px;
 	text-transform:uppercase;
 }
+.loading_icon{
+	width:200px;
+}
+@media (max-width:600px) {
+	.loading_icon{
+		width:150px;
+	}
+}
 
 .navbar{
 	z-index:9999;
@@ -403,9 +411,6 @@ textarea {
 #race .full-height-content{
 	padding: 10px 0px;	
 	display: block;
-}
-#race .salon_page{
-	padding:0px;
 }
 
 a, a:hover, a:focus, a:active{
@@ -1682,11 +1687,10 @@ table {
 	padding:10px;
 }
 .rabbit_box_container{
-	padding:10px;
-	border-bottom:solid 1px var(--yellow);
-}
-.rabbit_box_container:last-child{
-	border-bottom:none;
+	padding: 5px;
+    width: 100%;
+    max-width: 320px;
+    display: inline-block;
 }
 .rabbit_box{
 	display:inline-block;
@@ -1696,7 +1700,7 @@ table {
 .rabbit_box_left, .rabbit_box_right{
 	display:inline-block;
 	width:50%;
-	padding:10px;	
+	padding:5px;	
 	vertical-align: top;
 }
 .rabbit_box_pic{
@@ -1745,6 +1749,12 @@ table {
 	color:var(--yellow);
 	display: inline-block;
 	cursor: pointer;
+}
+.rabbit_box_input > div .rabbit_box_minus:hover,
+.rabbit_box_input > div .rabbit_box_plus:hover{
+	border: solid 1px var(--yellow);
+    background-color: var(--transparent_yellow);
+    color: var(--yellow);
 }
 .race_input{
 	color:var(--yellow);
@@ -1934,10 +1944,7 @@ table {
 
 #settings_container .dropdown-content{
 	background-color: black;
-	padding:10px;
-}
-.rabbit_inside{
-	padding: 5px;
+	padding:5px;
 }
 .rabbit_box{
 	padding: 5px;
@@ -2525,9 +2532,6 @@ table {
 	.race_bets_container{
 		margin: 10px 0px;
 	}
-	.rabbit_box_container{
-		padding:0px;
-	}
 	.rabbit_box_pic img{
 		width:70px!important;
 	}
@@ -2539,11 +2543,6 @@ table {
 	}
 	.casino_games_table_container.open{
 		margin-top: 40px;
-	}
-	.rabbit_box_input > div .rabbit_box_minus, .rabbit_box_input > div .rabbit_box_plus{
-		padding:0px;
-		width:22px;
-		height: 22px;
 	}
 }
 @media (max-width: 767px) {
@@ -2619,7 +2618,6 @@ table {
 		padding:0px;
 	}
 	.rabbit_box_left, .rabbit_box_right{
-		padding: 5px;
 		width:100%;
 	}
 	.history_box{
