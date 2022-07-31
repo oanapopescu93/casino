@@ -6,12 +6,17 @@ import { bigText, get_craps_bets, showResults } from '../../utils';
 
 let items = get_craps_bets();
 
-function Dice(props){
+function Dice(props){	
 	let number = props.number;
-	let x = props.x;
+	const [x, setX] = useState(Math.floor((Math.random() * 6) + 1));
+
+	useEffect(() => {
+		console.log('dices--> ', number, x)
+	}, []); 
+
 	return (
 		<div ref={props.innerRef} className="dice_box">
-			<div id={'dice'+number} className={"dice dice_"+number+" show_"+x}>
+			<div id={'dice'+number} className={"dice dice_" + number + " show_" + x}>
 				<div id={"dice_"+number+"_side_one"} className='side one'>
 					<div className="dot one_1"></div>
 				</div>
@@ -52,21 +57,22 @@ function Dice(props){
 }
 
 function CrapsBoardText(props){	
-	if(props.craps_board_text && props.craps_board_text.length>0){		
-		let craps_board_text = props.craps_board_text;
+	console.log('show_on_board--> ', props);
+	if(props.info && props.info.length>0){		
+		let info = props.info;
 		return(
 			<>
 				{
-					craps_board_text.map(function(item, i){
-						let dices_number = item.dices_number;
+					info.map(function(item, i){
+						let dices = item.dices;
 						let point = item.point;
 						let sum = item.sum;
-						if(dices_number === "Craps!!!" || dices_number === "Natural!!!"){
-							return <div key={i} className="craps_board_text"><span className="text text01">{dices_number}</span></div>
+						if(dices === "Craps!!!" || dices === "Natural!!!"){
+							return <div key={i} className="craps_board_text"><span className="text text01">{dices}</span></div>
 						} else if(point){
-							return <div key={i} className="craps_board_text"><span className="text text01">Dices:</span><span className="text text02">{dices_number[0]}, {dices_number[1]}</span><span className="text text03">Sum:</span><span className="text text04">{sum}</span><span className="text text05">Point:</span><span className="text text06">{point}</span></div>
+							return <div key={i} className="craps_board_text"><span className="text text01">Dices:</span><span className="text text02">{dices[0]}, {dices[1]}</span><span className="text text03">Sum:</span><span className="text text04">{sum}</span><span className="text text05">Point:</span><span className="text text06">{point}</span></div>
 						} else {
-							return <div key={i} className="craps_board_text"><span className="text text01">Dices:</span><span className="text text02">{dices_number[0]}, {dices_number[1]}</span><span className="text text03">Sum:</span><span className="text text04">{sum}</span></div>	
+							return <div key={i} className="craps_board_text"><span className="text text01">Dices:</span><span className="text text02">{dices[0]}, {dices[1]}</span><span className="text text03">Sum:</span><span className="text text04">{sum}</span></div>	
 						}
 					})
 				}
@@ -89,8 +95,6 @@ function Craps(props){
 	const [moneyTotal, setMoneyTotal] = useState(money-1);
 	const [bet, setBet] = useState(1);
 	const [jump, setJump] = useState("");
-	const [x01, setX01] = useState(Math.floor((Math.random() * 6) + 1));
-	const [x02, setX02] = useState(Math.floor((Math.random() * 6) + 1));
 
 	const dice1 = useRef(null);
 	const dice2 = useRef(null);
@@ -202,56 +206,46 @@ function Craps(props){
 	function game_start(){
 		if(moneyTotal >= 0){
 			let state = 1;
-			let point;
+			let point = 0;
 			let sum;
 			let timer = setInterval(function () {
 				switch(state) {
 					case 1:
-						console.log('sum1', state)
 						roll(point).then(function(res){
 							sum = dices_number[0] + dices_number[1];		
 							if(sum === 7|| sum === 11){
 								//Natural
 								state = 2;
-								console.log('sum1a', dices_number, sum)
 								show_on_board("Natural!!!");
 							} else {
 								point = sum;
 								state = 3;
-								console.log('sum1b', dices_number, sum)
+								show_on_board(dices_number, sum, point);
 							}
-							show_on_board(dices_number, sum, point);
 						});
 						break;
 					case 2:
-						console.log('sum2', state)
 						check_win_lose(true, bet);
 						clearInterval(timer);
 						break;
 					case 3:
-						console.log('sum3', state)
 						roll(point).then(function(res){
 							sum = dices_number[0] + dices_number[1];			
 							show_on_board(dices_number, sum, point);
 							if (sum === point) {
 								state = 2;
-								console.log('sum3a', dices_number, sum)
 							} else if (sum === 7) {
 								state = 4;
-								console.log('sum3b', dices_number, sum)
 							} else if (sum === 2 || sum === 3 || sum === 12) {
 								//craps
 								state = 4;
-								console.log('sum3c', dices_number, sum)
 								show_on_board("Craps!!!");
 							} else {
 								state = 3;
-								console.log('sum3d', dices_number, sum)
 							}
 						});
 						break;
 					case 4:
-						console.log('sum4', state)
 						check_win_lose(false, bet);
 						clearInterval(timer);
 						break;
@@ -266,8 +260,9 @@ function Craps(props){
 		}
 	}
 
-	function show_on_board(){
-
+	function show_on_board(dices_number, sum, point){
+		let elem = {dices: dices_number, sum: sum, point}
+		setCrapsBoardText(elem);		
 	}
 
 	function animate(dice, roll){
@@ -367,13 +362,13 @@ function Craps(props){
 					<h1 className="craps_title">{title}</h1>
 					<Row>
 						<Col className="dice_container" sm={6}>
-							<Dice innerRef={dice1} number={1} x={x01}></Dice>
-							<Dice innerRef={dice2} number={2} x={x02}></Dice>
+							<Dice innerRef={dice1} number={1}></Dice>
+							<Dice innerRef={dice2} number={2}></Dice>
 						</Col>
 						<Col sm={6}>
 							<div className="craps_board_container">
 								<div readOnly id="craps_board" className="craps_board" ref={(e) => { craps_board = e; }}>
-									<CrapsBoardText dicesNumber={dicesNumber}></CrapsBoardText>
+									<CrapsBoardText info={crapsBoardText}></CrapsBoardText>
 								</div>
 							</div>
 						</Col>
