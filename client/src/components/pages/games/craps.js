@@ -8,10 +8,10 @@ let items = get_craps_bets();
 
 function Dice(props){	
 	let number = props.number;
-	const [x, setX] = useState(Math.floor((Math.random() * 6) + 1));
+	const [x, setX] = useState(1);
 
 	useEffect(() => {
-		console.log('dices--> ', number, x)
+		setX(Math.floor((Math.random() * 6) + 1));
 	}, []); 
 
 	return (
@@ -56,10 +56,10 @@ function Dice(props){
 	);
 }
 
-function CrapsBoardText(props){	
-	console.log('show_on_board--> ', props);
+function CrapsBoardText(props){		
 	if(props.info && props.info.length>0){		
 		let info = props.info;
+		console.log('show_on_board--> ', info);
 		return(
 			<>
 				{
@@ -261,8 +261,11 @@ function Craps(props){
 	}
 
 	function show_on_board(dices_number, sum, point){
+		let array = crapsBoardText;
 		let elem = {dices: dices_number, sum: sum, point}
-		setCrapsBoardText(elem);		
+		array.push(elem);
+		setCrapsBoardText(array);	
+		console.log('show-->  ', elem, array)	
 	}
 
 	function animate(dice, roll){
