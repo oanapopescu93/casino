@@ -4,7 +4,86 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { bigText, get_craps_bets, showResults } from '../../utils';
 
-let items = get_craps_bets();
+let move = 0;
+let prev_move = 0;
+let move_array = [];
+
+function craps_bets(props){
+	let self = this;
+	this.images = [];
+	let reason = "";
+	let canvas_bets;
+	let ctx_bets;
+	let canvas_width_bets = 900;
+	let canvas_height_bets = 450;
+	let items = get_craps_bets();
+	let craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450]; //sx,sy,swidth,sheight,x,y,width,height		
+	
+	this.ready = function(r){
+		canvas_bets = document.getElementById("craps_bets_canvas");	
+		if(canvas_bets){
+			reason = r;
+			self.createCanvas(canvas_width_bets, canvas_height_bets);
+			self.getImage(reason);
+		}
+	}
+
+	this.createCanvas = function(canvas_width_bets, canvas_height_bets){
+		ctx_bets = canvas_bets.getContext("2d");
+		
+		canvas_bets.width = 900;
+		canvas_bets.height = 450;
+		craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450];
+		
+		canvas_width_bets = canvas_bets.width;
+		canvas_height_bets = canvas_bets.height;		
+		canvas_bets.height = canvas_height_bets;
+	}
+
+	this.getImage = function(reason){
+		if(reason !== "resize"){
+			let promises = [];
+			for(let i in items){				
+				promises.push(self.preaload_images(items[i]));
+			}
+
+			Promise.all(promises).then(function(result){
+				self.images = result;
+				self.choose_craps_bets();
+			});	
+		} else {
+			self.choose_craps_bets();
+		}
+	}
+
+	this.preaload_images = function(item){
+		return new Promise(function(resolve, reject){
+			let image = new Image();
+			image.id = item.id;
+			image.src = item.src;
+			image.addEventListener("load", function() {
+				resolve(image)
+			}, false);
+		});
+	}
+
+	this.choose_craps_bets = function(){		
+		self.draw_craps_bets(self.images[0]);
+	}
+
+	this.draw_craps_bets = function(img){
+		ctx_bets.clearRect(0, 0, canvas_bets.width, canvas_bets.height);
+		let sx = craps_bets_coord[0];
+		let sy = craps_bets_coord[1];
+		let swidth = craps_bets_coord[2];
+		let sheight = craps_bets_coord[3];
+		let x = craps_bets_coord[4];
+		let y = craps_bets_coord[5];
+		let width = craps_bets_coord[6];
+		let height = craps_bets_coord[7];
+		ctx_bets.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
+	}
+}
 
 function Dice(props){	
 	let number = props.number;
@@ -56,14 +135,14 @@ function Dice(props){
 	);
 }
 
-function CrapsBoardText(props){		
-	if(props.info && props.info.length>0){		
-		let info = props.info;
-		console.log('show_on_board--> ', info);
+function CrapsBoardText(props){	
+	if(props.info && move != prev_move){ //fix re-rendering
+		move_array.push(props.info);
+		prev_move = move;
 		return(
 			<>
 				{
-					info.map(function(item, i){
+					move_array.map(function(item, i){
 						let dices = item.dices;
 						let point = item.point;
 						let sum = item.sum;
@@ -91,7 +170,7 @@ function Craps(props){
 	const [dicesNumber, setDicesNumber] = useState([]);
 	const [open, setOpen] = useState("");
 	const [title, setTitle] = useState("");
-	const [crapsBoardText, setCrapsBoardText] = useState([]);
+	const [crapsBoardText, setCrapsBoardText] = useState(null);
 	const [moneyTotal, setMoneyTotal] = useState(money-1);
 	const [bet, setBet] = useState(1);
 	const [jump, setJump] = useState("");
@@ -208,7 +287,8 @@ function Craps(props){
 			let state = 1;
 			let point = 0;
 			let sum;
-			let timer = setInterval(function () {
+			setCrapsBoardText(null);
+			let timer = setInterval(function () {				
 				switch(state) {
 					case 1:
 						roll(point).then(function(res){
@@ -216,7 +296,7 @@ function Craps(props){
 							if(sum === 7|| sum === 11){
 								//Natural
 								state = 2;
-								show_on_board("Natural!!!");
+								show_on_board("Natural!!!", sum);
 							} else {
 								point = sum;
 								state = 3;
@@ -230,7 +310,7 @@ function Craps(props){
 						break;
 					case 3:
 						roll(point).then(function(res){
-							sum = dices_number[0] + dices_number[1];			
+							sum = dices_number[0] + dices_number[1];
 							show_on_board(dices_number, sum, point);
 							if (sum === point) {
 								state = 2;
@@ -239,7 +319,7 @@ function Craps(props){
 							} else if (sum === 2 || sum === 3 || sum === 12) {
 								//craps
 								state = 4;
-								show_on_board("Craps!!!");
+								show_on_board("Craps!!!", sum);
 							} else {
 								state = 3;
 							}
@@ -261,24 +341,19 @@ function Craps(props){
 	}
 
 	function show_on_board(dices_number, sum, point){
-		let array = crapsBoardText;
-		let elem = {dices: dices_number, sum: sum, point}
-		array.push(elem);
-		setCrapsBoardText(array);	
-		console.log('show-->  ', elem, array)	
+		move++
+		setCrapsBoardText({dices: dices_number, sum: sum, point: point});	
 	}
 
 	function animate(dice, roll){
-		setTimeout(function(){
-			if(dice && roll){			
-				for (let i = 1; i <= 6; i++) {
-					$(dice).removeClass('show_' + i);
-					if (roll === i) {
-						$(dice).addClass('show_' + i);
-					}
+		if(dice && roll){			
+			for (let i = 1; i <= 6; i++) {
+				$(dice).removeClass('show_' + i);
+				if (roll === i) {
+					$(dice).addClass('show_' + i);
 				}
 			}
-		}, 1000);
+		}
 	}
 
 	function roll(point){
@@ -348,12 +423,17 @@ function Craps(props){
 		} else {
 			setTitle("");
 		}
+		
+		let my_craps_bets = new craps_bets(props);
+		my_craps_bets.ready();
+		
 		$(window).resize(function(){
 			if (window.innerWidth >= 960){
 				setTitle(table);		
 			} else {
 				setTitle("");
 			}
+			my_craps_bets.ready("resize");
 		});
 	}, []); 
 	
@@ -364,17 +444,17 @@ function Craps(props){
 				<Col sm={8}>
 					<h1 className="craps_title">{title}</h1>
 					<Row>
-						<Col className="dice_container" sm={6}>
+						<div className={"dice_container"+jump}>
 							<Dice innerRef={dice1} number={1}></Dice>
 							<Dice innerRef={dice2} number={2}></Dice>
-						</Col>
-						<Col sm={6}>
-							<div className="craps_board_container">
+						</div>						
+						<div className="craps_board_container">
+							<div className="craps_board_box">
 								<div readOnly id="craps_board" className="craps_board" ref={(e) => { craps_board = e; }}>
 									<CrapsBoardText info={crapsBoardText}></CrapsBoardText>
 								</div>
 							</div>
-						</Col>
+						</div>
 					</Row>
 					<Row className="game_buttons_container">
 						<Col sm={12} className="game_buttons">
@@ -413,7 +493,6 @@ function Craps(props){
 			<div className={"craps_bets_container "+open}>
 				<div className="craps_bets shadow_concav">
 					<div className="close" onClick={()=>game_close()}>x</div>
-					{lang === "ro" ? <div><p><b>In constructie</b></p></div> : <div><p><b>Under construction</b></p></div>}
 					<div className="craps_bets_box">						
 						<canvas id="craps_bets_canvas"></canvas>
 						<div id="craps_bets_clear" className="shadow_convex">Clear</div>

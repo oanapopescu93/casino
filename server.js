@@ -102,6 +102,7 @@ let sign_in_up = false;
 app.use(routes);
 
 io.on('connection', function(socket) {
+	//console.log('connect');
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
@@ -162,6 +163,7 @@ io.on('connection', function(socket) {
 				}
 			}			
 			try{
+				//console.log('signin', [exists, obj]);
 				io.to(socket.id).emit('signin_read', [exists, obj]);	
 			}catch(e){
 				console.log('[error]','signin_read2 :', e);
@@ -227,6 +229,7 @@ io.on('connection', function(socket) {
 				});
 			} else {				
 				try{
+					//console.log('signup', [exists, obj]);
 					io.to(socket.id).emit('signup_read', [exists, obj]);
 				}catch(e){
 					console.log('[error]','signup_read2 :', e);
@@ -257,7 +260,7 @@ io.on('connection', function(socket) {
 					money = users_json[i].money;
 
 					let timestamp = new Date().getTime();
-					console.log('first_enter_salon-->', (timestamp - parseInt(users_json[i].last_signin))/60000, (timestamp - parseInt(users_json[i].last_signin))/60000 < 0.25)
+					//console.log('first_enter_salon-->', (timestamp - parseInt(users_json[i].last_signin))/60000, (timestamp - parseInt(users_json[i].last_signin))/60000 < 0.25)
 					if(users_json[i].last_signin === users_json[i].signup && (timestamp - parseInt(users_json[i].last_signin))/60000 < 0.25){ //first time player
 						first_enter_salon = true;
 					}
@@ -269,7 +272,8 @@ io.on('connection', function(socket) {
 				}
 			}
 			if(found){
-				try{					
+				try{	
+					//console.log('salon', obj);				
 					io.to(socket.id).emit('salon_read', obj);
 				}catch(e){
 					console.log('[error]','salon_read :', e);
@@ -860,44 +864,51 @@ io.on('connection', function(socket) {
 			monkey_craps = true;
 		}
 		//monkey_craps = true;
-		try{
-			let room_name = data.user_table.split(' ').join('_');
-			let how_many_dices = data.how_many_dices;
-			let numbers = [];
-			let point = data.point;
-			let before = data.before;
-			let array = [2, 3, 7, 12];
+		
+		let room_name = data.user_table.split(' ').join('_');
+		let how_many_dices = data.how_many_dices;
+		let numbers = [];
+		let point = data.point;
+		let before = data.before;
+		let array = [2, 3, 7, 12];
 
+		function set_numbers(){
+			let my_numbers = [];
 			for(let i=0; i<how_many_dices; i++){
-				let number = Math.floor((Math.random() * 6) + 1);
-				if(number === before[i]){
-					number++;
-					if(number>6){
-						number = 1;
-					}
-				}
-				numbers.push(number);
+				let number = Math.floor((Math.random() * 6) + 1);				
+				my_numbers.push(number);
 			}
-			if(monkey_craps){
-				// it means the player must lose
-				if(point){
-					//other rolls must be 2, 3, 7, 12
-					if(numbers[0] + numbers[1] !== 2 && numbers[0] + numbers[1] !== 3 && numbers[0] + numbers[1] !== 7 && numbers[0] + numbers[1] !== 12){
-						let t = Math.floor((Math.random() * 3) + 0);
-						let mynumber = array[t];
-						numbers[0] = Math.floor(mynumber/2);
-						numbers[1] = mynumber-numbers[0];
-					}
-				} else {
-					// first roll must not be 7
-					if(numbers[0] + numbers[1] === 7){
-						numbers[0]++
-						if(numbers[0]>6){
-							numbers[0] = 1;
-						}
+			return my_numbers;
+		}
+		
+		numbers = set_numbers();
+		
+		while(numbers[0] == before[0] && numbers[1] == before[1]){
+			numbers = set_numbers();
+		}
+		
+		if(monkey_craps){
+			// it means the player must lose
+			if(point){
+				//other rolls must be 2, 3, 7, 12
+				if(numbers[0] + numbers[1] !== 2 && numbers[0] + numbers[1] !== 3 && numbers[0] + numbers[1] !== 7 && numbers[0] + numbers[1] !== 12){
+					let t = Math.floor((Math.random() * 3) + 0);
+					let mynumber = array[t];
+					numbers[0] = Math.floor(mynumber/2);
+					numbers[1] = mynumber-numbers[0];
+				}
+			} else {
+				// first roll must not be 7
+				if(numbers[0] + numbers[1] === 7){
+					numbers[0]++
+					if(numbers[0]>6){
+						numbers[0] = 1;
 					}
 				}
-			} 
+			}
+		} 
+			
+		try{
 			console.log('craps', numbers, before)
 			io.to(room_name).emit('craps_read', numbers);
 			

@@ -1337,6 +1337,7 @@ table {
 }
 .roulette_bets_box, .craps_bets_box{
 	overflow: hidden;
+	cursor: pointer;
 }
 .roulette_bets, .craps_bets{
 	position: relative;
@@ -2239,8 +2240,13 @@ table {
 	border:solid 1px var(--game_button_border);
 	color:var(--game_button_border);
 }
+
+/* buuuu */
 .dice_container{
-	margin: 20px 0px 10px 0px;
+	display:inline-block;
+	vertical-align:middle;
+	padding:10px;
+	width:50%;
 }
 .dice_container.jump{
 	margin-top: 10px;
@@ -2342,10 +2348,15 @@ table {
 	text-align: left;
 }
 
-
-  .craps_board_container{
+/* buuuu */
+.craps_board_container{
+	display:inline-block;
+	vertical-align:middle;
 	padding:10px;
-	margin:10px 0px;
+	width:50%;
+}
+ .craps_board_box{
+	padding:10px;
 	border:solid 1px var(--yellow);
 	border-radius: 10px;
 	color:var(--yellow);
@@ -2546,6 +2557,10 @@ table {
 	}
 }
 @media (max-width: 767px) {
+	.roulette_bets_box, .craps_bets_box{
+		width: 250px;
+		height: 450px;
+	}
 	.account_box_container h2{
 		display:none;
 	}
@@ -2581,15 +2596,15 @@ table {
 		width: 100%;
 	}
 	#craps_board{
-		height: 114px;
+		/* height: 114px; */
 	}
 	.dice {
-		width: 50px;
-		height: 50px;
+		width: 60px;
+		height: 60px;
 	}
 	.dice_shadow{
-		width: 50px;
-		height: 50px;
+		width: 60px;
+		height: 60px;
 	}
 	.dot {
 		width: 10px;
@@ -2597,15 +2612,15 @@ table {
 		margin: -5px 2px 2px -5px;
 	}
 	.side {
-		width: 50px;
-		height: 50px;
+		width: 60px;
+		height: 60px;
 	}
-	.side:nth-child(1) {transform: translateZ(25px); }
-	.side:nth-child(6) {transform: rotateY(90deg) translateZ(25px); }
-	.side:nth-child(3) {transform: rotateY(-90deg) translateZ(25px); }
-	.side:nth-child(4) {transform: rotateX(90deg) translateZ(25px); }
-	.side:nth-child(5) {transform: rotateX(-90deg) translateZ(25px); }
-	.side:nth-child(2) {transform: rotateY(-180deg) translateZ(25px); }
+	.side:nth-child(1) {transform: translateZ(30px); }
+	.side:nth-child(6) {transform: rotateY(90deg) translateZ(30px); }
+	.side:nth-child(3) {transform: rotateY(-90deg) translateZ(30px); }
+	.side:nth-child(4) {transform: rotateX(90deg) translateZ(30px); }
+	.side:nth-child(5) {transform: rotateX(-90deg) translateZ(30px); }
+	.side:nth-child(2) {transform: rotateY(-180deg) translateZ(30px); }
 	.spacing_small{
 		padding-left:0px;
 		padding-right:50px;
@@ -2851,7 +2866,7 @@ table {
 		padding: 5px 10px;
 	}
 }
-@media (max-width: 480px) {  
+@media (max-width: 480px) {
 	.table_inside {
 		width: 100%;
 	}	
@@ -2883,6 +2898,10 @@ table {
 }
 
 @media (max-width: 960px) and (orientation: landscape) {
+	.roulette_bets_box, .craps_bets_box{
+		width: 520px;
+		height: 280px;
+	}
 	#game_board_bet{
 		display: none;
 	}
@@ -2910,7 +2929,7 @@ table {
 	}
 }
 
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 768px) and (orientation: landscape){
 	.salon_button i{
 		display:none;
 	}
