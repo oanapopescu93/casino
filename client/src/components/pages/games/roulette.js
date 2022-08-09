@@ -389,13 +389,13 @@ function roulette_game(props){
 		// ctx.stroke();
 		
 		if (isInside(mousePos, bet_button_coordonates)) {
-			console.log('BET');			
+			//console.log('BET');			
 			let width = $('.roulette_container').width();
 			$('.roulette_container').animate({
 				scrollLeft: width
 			}, 500);	
 		} else if (isInside(mousePos, spin_button_coordonates)) {
-			console.log('SPIN', your_bets);
+			//console.log('SPIN', your_bets);
 			dispatch_nr = 0;	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
 				showResults("", "Please place your bet before playing.");			
@@ -415,7 +415,7 @@ function roulette_game(props){
 				}, 500);
 			}				
 		} else if (isInside(mousePos, show_bets_button_coordonates)) {
-			console.log('SHOW')
+			//console.log('SHOW')
 			if($('.roulette_bets_container').length>0){
 				$('.roulette_bets_container').addClass('open');
 			}
