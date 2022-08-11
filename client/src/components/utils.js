@@ -62,7 +62,35 @@ import card_51 from './img/blackjack/cards/card_51.png';
 import item_image from './img/icons/vegetables_color.png'
 
 import craps_bets from './img/craps/craps.png'
-import craps_bets_small from './img/craps/craps.png'
+
+import 	craps_pass_line from './img/craps/hover/craps_pass_line.png'
+import 	craps_dont_pass_line from './img/craps/hover/craps_dont_pass_line.png'
+import 	craps_come from './img/craps/hover/craps_come.png'
+import 	craps_dont_come from './img/craps/hover/craps_dont_come.png'
+import 	craps_place_4 from './img/craps/hover/craps_place_4.png'
+import 	craps_place_5 from './img/craps/hover/craps_place_5.png'
+import 	craps_place_6 from './img/craps/hover/craps_place_6.png'
+import 	craps_place_8 from './img/craps/hover/craps_place_8.png'
+import 	craps_place_9 from './img/craps/hover/craps_place_9.png'
+import 	craps_place_10 from './img/craps/hover/craps_place_10.png'
+import 	craps_field_2 from './img/craps/hover/craps_field_2.png'
+import 	craps_field_3 from './img/craps/hover/craps_field_3.png'
+import 	craps_field_4 from './img/craps/hover/craps_field_4.png'
+import 	craps_field_9 from './img/craps/hover/craps_field_9.png'
+import 	craps_field_10 from './img/craps/hover/craps_field_10.png'
+import 	craps_field_11 from './img/craps/hover/craps_field_11.png'
+import 	craps_field_12 from './img/craps/hover/craps_field_12.png'
+import 	craps_6_big_8 from './img/craps/hover/craps_6_big_8.png'
+import 	craps_seven from './img/craps/hover/craps_seven.png'
+import 	craps_hardway_1 from './img/craps/hover/craps_hardway_1.png'
+import 	craps_hardway_2 from './img/craps/hover/craps_hardway_2.png'
+import 	craps_hardway_3 from './img/craps/hover/craps_hardway_3.png'
+import 	craps_hardway_4 from './img/craps/hover/craps_hardway_4.png'
+import 	craps_one_roll_1 from './img/craps/hover/craps_one_roll_1.png'
+import 	craps_one_roll_2 from './img/craps/hover/craps_one_roll_2.png'
+import 	craps_one_roll_3 from './img/craps/hover/craps_one_roll_3.png'
+import 	craps_one_roll_4 from './img/craps/hover/craps_one_roll_4.png'
+import 	craps_any_craps from './img/craps/hover/craps_any_craps.png'
 
 export const setCookie = function (cname,cvalue,exdays=30) {
   let d = new Date();
@@ -111,7 +139,7 @@ export const showResults = function(title="", message="", w=200, h="auto") {
     $( ".show_results_container .show_results_close" ).click(function() {
       $(this).closest('show_results_container').hide();
     });
-  }	
+  }
 }
 
 export const bigText = function(type, lang, payload) {
@@ -271,7 +299,37 @@ export const get_slots_images = function(){
 
 export const get_craps_bets = function(){
   return [
-		{id: 'craps', src: craps_bets},
-		{id: 'craps_small', src: craps_bets_small},
-	];
+    {id: 'craps', src: craps_bets},
+    {x: 5, y: 5, width:40, height:400, text: "pass line", id: "pass_line", src: craps_pass_line},
+    {x: 5, y: 400, width:650, height:40, text: "pass line", id: "pass_line", src: craps_pass_line},
+    {x: 50, y: 5, width:50, height:300, text: "don't pass line", id: "dont_pass_line", src: craps_dont_pass_line},
+    {x: 150, y: 350, width:510, height:50, text: "don't pass line", id: "dont_pass_line", src: craps_dont_pass_line},
+    {x: 110, y: 140, width:550, height:115, text: "come", id: "come", src: craps_come},
+    {x: 110, y: 5, width:84, height:125, text: "don't come", id: "dont_come", src: craps_dont_come},
+    {x: 200, y: 5, width:84, height:125, text: "place bet 4", id: "place_bet_4", src: craps_place_4},
+    {x: 290, y: 5, width:84, height:125, text: "place bet 5", id: "place_bet_5", src: craps_place_5},
+    {x: 385, y: 5, width:84, height:125, text: "place bet 6", id: "place_bet_6", src: craps_place_6},
+    {x: 480, y: 5, width:84, height:125, text: "place bet 8", id: "place_bet_8", src: craps_place_8},
+    {x: 570, y: 5, width:84, height:125, text: "place bet 9", id: "place_bet_9", src: craps_place_9},
+    {x: 665, y: 5, width:84, height:125, text: "place bet 10", id: "place_bet_10", src: craps_place_10},
+    {x: 180, y: 265, width:65, height:80, text: "field bet 2", id: "field_bet_2", src: craps_field_2},
+    {x: 245, y: 265, width:55, height:80, text: "field bet 3", id: "field_bet_3", src: craps_field_3},
+    {x: 300, y: 265, width:55, height:80, text: "field bet 4", id: "field_bet_4", src: craps_field_4},
+    {x: 355, y: 265, width:55, height:80, text: "field bet 9", id: "field_bet_9", src: craps_field_9},
+    {x: 410, y: 265, width:60, height:80, text: "field bet 10", id: "field_bet_10", src: craps_field_10},
+    {x: 470, y: 265, width:60, height:80, text: "field bet 11", id: "field_bet_11", src: craps_field_11},
+    {x: 530, y: 265, width:65, height:80, text: "field bet 12", id: "field_bet_12", src: craps_field_12},
+    {x: 50, y: 310, width:50, height:40, text: "6 big 8", id: "6_big_8_01", src: craps_6_big_8},
+    {x: 50, y: 350, width:100, height:50, text: "6 big 8", id: "6_big_8_02", src: craps_6_big_8},
+    {x: 690, y: 155, width:200, height:50, text: "any 7", id: "any_7", src: craps_seven},
+    {x: 690, y: 205, width:100, height:45, text: "hardway 1", id: "hardway_1", src: craps_hardway_1},
+    {x: 790, y: 205, width:100, height:45, text: "hardway 2", id: "hardway_2", src: craps_hardway_2},
+    {x: 690, y: 250, width:100, height:45, text: "hardway 3", id: "hardway_3", src: craps_hardway_3},
+    {x: 790, y: 250, width:100, height:45, text: "hardway 4", id: "hardway_4", src: craps_hardway_4},
+    {x: 690, y: 295, width:100, height:45, text: "one roll 1", id: "one_roll_1", src: craps_one_roll_1},
+    {x: 790, y: 295, width:100, height:45, text: "one roll 2", id: "one_roll_2", src: craps_one_roll_2},
+    {x: 690, y: 340, width:100, height:45, text: "one roll 3", id: "one_roll_3", src: craps_one_roll_3},
+    {x: 790, y: 340, width:100, height:45, text: "one roll 4", id: "one_roll_4", src: craps_one_roll_4},
+    {x: 690, y: 385, width:200, height:50, text: "any craps", id: "any_craps", src: craps_any_craps},
+  ];
 }

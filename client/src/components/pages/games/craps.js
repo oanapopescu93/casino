@@ -19,41 +19,8 @@ function craps_bets(props){
 	let canvas_height_bets = 450;
 	let items = get_craps_bets();
 	let craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450]; //sx,sy,swidth,sheight,x,y,width,height	
-	let game_type = "pass line" //"don't pass line", "come"	
-	let coordonates = [
-		{x: 5, y: 5, width:40, height:400, text: "pass line"},
-		{x: 5, y: 400, width:650, height:40, text: "pass line"},
-		{x: 50, y: 5, width:50, height:300, text: "don't pass line"},
-		{x: 150, y: 350, width:510, height:50, text: "don't pass line"},
-		{x: 110, y: 140, width:550, height:115, text: "come"},
-		{x: 110, y: 5, width:84, height:125, text: "don't come"},
-		{x: 200, y: 5, width:84, height:125, text: "place bet 4"},
-		{x: 290, y: 5, width:84, height:125, text: "place bet 5"},
-		{x: 385, y: 5, width:84, height:125, text: "place bet 6"},
-		{x: 480, y: 5, width:84, height:125, text: "place bet 8"},
-		{x: 570, y: 5, width:84, height:125, text: "place bet 9"},
-		{x: 665, y: 5, width:84, height:125, text: "place bet 10"},
-		{x: 180, y: 265, width:65, height:80, text: "field bet 2"},
-		{x: 245, y: 265, width:55, height:80, text: "field bet 3"},
-		{x: 300, y: 265, width:55, height:80, text: "field bet 4"},
-		{x: 355, y: 265, width:55, height:80, text: "field bet 9"},
-		{x: 410, y: 265, width:60, height:80, text: "field bet 10"},
-		{x: 470, y: 265, width:60, height:80, text: "field bet 11"},
-		{x: 530, y: 265, width:65, height:80, text: "field bet 12"},
-		{x: 50, y: 310, width:50, height:40, text: "6 big 8"},
-		{x: 50, y: 350, width:100, height:50, text: "6 big 8"},
-		{x: 690, y: 155, width:200, height:50, text: "any 7"},
-		{x: 690, y: 205, width:100, height:45, text: "hardway 4"},
-		{x: 790, y: 205, width:100, height:45, text: "hardway 10"},
-		{x: 690, y: 250, width:100, height:45, text: "hardway 6"},
-		{x: 790, y: 250, width:100, height:45, text: "hardway 8"},
-		{x: 690, y: 295, width:100, height:45, text: "one roll 3"},
-		{x: 790, y: 295, width:100, height:45, text: "one roll 11"},
-		{x: 690, y: 340, width:100, height:45, text: "one roll 2"},
-		{x: 790, y: 340, width:100, height:45, text: "one roll 12"},
-		{x: 690, y: 385, width:200, height:50, text: "any craps"},
-	];
-	
+	let game_type = "pass line";
+
 	this.ready = function(r){
 		canvas = document.getElementById("craps_bets_canvas");	
 		if(canvas){
@@ -124,25 +91,41 @@ function craps_bets(props){
 		$('#craps_bets_canvas').off('click').on('click', function(event) {
 			self.canvas_click(event);
 		});
+
+		$('#craps_bets_canvas').off('mousemove').on('mousemove', function(event) {
+			let mousePos = getMousePos(event);
+			self.draw_craps_bets(self.images[0]);	
+			for(let i in items){
+				if (items[i].id !== "craps" && isInside(mousePos, items[i])) {
+					self.draw_craps_bets(self.images[i]);
+					break;
+				}
+			}
+		});
 	}
 	
 	this.canvas_click = function(event){		
 		let mousePos = getMousePos(event);
-		for(let i in coordonates){
-			if (isInside(mousePos, coordonates[i])) {
-				game_type = coordonates[i].text;
+		for(let i in items){
+			if (items[i].id !== "craps" && isInside(mousePos, items[i])) {
+				game_type = items[i].text;
+				self.draw_craps_bets(self.images[i]);
 				break;
 			}
 			// ctx.beginPath();
 			// ctx.lineWidth = "1";
 			// ctx.strokeStyle = "blue";
-			// ctx.rect(coordonates[i].x, coordonates[i].y, coordonates[i].width, coordonates[i].height);
+			// ctx.rect(items[i].x, items[i].y, items[i].width, items[i].height);
 			// ctx.stroke();
 		}
 	}
 
 	this.get_game_type = function(){
 		return game_type;
+	}
+
+	this.reset = function(){
+		self.draw_craps_bets(self.images[0]);
 	}
 
 	function getMousePos(event) {
@@ -451,6 +434,9 @@ function Craps(props){
 
 	function canvas_clear(){
 		setGameType("pass line");
+		if(typeof my_craps_bets !== "undefined"){
+			my_craps_bets.reset();
+		}
 	}
 
 	function game_start(){
@@ -642,6 +628,10 @@ function Craps(props){
 			<div className={"craps_bets_container "+open}>
 				<div className="craps_bets shadow_concav">
 					<div className="close" onClick={()=>game_close()}>x</div>
+					{lang === "ro" ? 
+						<h2 className="craps_subtitle"><span>Tip pariu: </span>{gameType}</h2> : 
+						<h2 className="craps_subtitle"><span>Bet type: </span>{gameType}</h2>
+					}	
 					<div className="craps_bets_box">						
 						<canvas id="craps_bets_canvas" onClick={()=>{canvas_click()}}></canvas>						
 					</div>
