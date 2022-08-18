@@ -20,6 +20,7 @@ function SignIn(props) {
 		$('.sign_errors').empty();
 		if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 			loader(socket, lang).then(function(data) {
+				console.log('data', data)
 				if(data[0]){
 					if(data[1] && Object.keys(data[1]).length > 0){
 						setCookie("casino_id", data[1].id, 1);

@@ -234,10 +234,10 @@ function Salon(props){
 							<div className={"salon_button_container "+open}>
 								<div className="salon_button_box">
 									<div id="salon_buton_games" className="salon_button shadow_convex" onClick={()=>{handleChange('games')}}>
-										{lang === "ro" ? <span><i className="fa fa-smile-o"></i>Jocuri</span> : <span><i className="fa fa-smile-o"></i>Games</span>}											
+										{lang === "ro" ? <span><i className="fa fa-smile-o"></i><span className="salon_button_text">Jocuri</span></span> : <span><i className="fa fa-smile-o"></i><span className="salon_button_text">Games</span></span>}											
 									</div>            
 									<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{handleChange('race')}}>
-										{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i>Curse</span> : <span><i className="fa fa-flag-checkered"></i>Race</span>}	
+										{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i><span className="salon_button_text">Curse</span></span> : <span><i className="fa fa-flag-checkered"></i><span className="salon_button_text">Race</span></span>}	
 									</div>
 								</div>
 							</div>

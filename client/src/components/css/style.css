@@ -2865,6 +2865,12 @@ table {
 @media (max-width: 480px) {
 	.table_inside {
 		width: 100%;
+	}
+	.salon_button{
+		height: 40px
+	}
+	.salon_button_text{
+		display:none;
 	}	
 }
 
@@ -2914,9 +2920,6 @@ table {
 		width: 420px;
     	height: 200px;
 	}
-	.salon_button i{
-		display:none;
-	}
 	#roulette .full-height-content{
 		margin-top: 0%;
 	}
@@ -2940,6 +2943,15 @@ table {
 	}
 }
 
+
+@media (max-height: 500px){
+	.salon_button{
+		height: 40px
+	}
+	.salon_button_text{
+		display:none;
+	}	
+}
 
 ::-webkit-scrollbar{
 	width: 10px;
