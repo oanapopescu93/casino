@@ -298,7 +298,7 @@ export const get_slots_images = function(){
 }
 
 export const get_craps_bets = function(){
-  return [
+  return [ 
     {id: 'craps', src: craps_bets},
     {x: 5, y: 5, width:40, height:400, text: "pass line", id: "pass_line", src: craps_pass_line, odds: 2},
     {x: 5, y: 400, width:650, height:40, text: "pass line", id: "pass_line", src: craps_pass_line, odds: 2},

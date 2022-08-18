@@ -61,11 +61,6 @@ var rabbit_delay = [40, 20] //max, min
 let sign_in_up = false;
 app.use(routes);
 
-// database_config.sql = "SELECT * FROM history_users"; //casino_users, history_users, login_history
-// database(database_config).then(function(data){
-// 	console.log('users_json--> ', data)
-// });
-
 io.on('connection', function(socket) {
 	//console.log('connect');
 	let headers = socket.request.headers

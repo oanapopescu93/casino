@@ -720,7 +720,7 @@ function race_game(props){
 				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "rgba(255, 215, 0, 0.5)", "center", "gold", "1");
 			  	if(self_counter.timeRemaining <= 0){
 					clearInterval(my_counter);
-					self.start_race(1500);
+					self.start_race(800);
 			  	}
 			}, 1000);
 		}
@@ -1091,7 +1091,6 @@ class Race extends Component {
 			id: -1,
 			money:0,
 			lang: props.lang,
-			open_race: props.open_race,
 			dispatch: props.dispatch,
 	  	};
 		this.get_data = this.get_data.bind(this);
@@ -1122,9 +1121,6 @@ class Race extends Component {
 	render() {		
 		let lang = this.props.lang
 		let start_race = this.state.start_race; 
-		if(this.state.open_race && this.state.start_race){
-			start_race = true;
-		}
 		return (
 			<>
 				{(() => {
@@ -1136,13 +1132,6 @@ class Race extends Component {
 						}						
 					} else {return null}
 				})()}
-				<div className="show_results_container">				
-					<div className="show_results">
-						<i className="fa fa-times show_results_close" ></i>
-						<h1 className="header"></h1>
-						<div className="message"></div>
-					</div>
-				</div>
 			</>
 	  	)
 	}

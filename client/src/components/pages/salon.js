@@ -98,7 +98,7 @@ function Salon(props){
 	let socket = props.socket;
 	let lang = props.lang;	
 	
-	const [race, setRace] = useState(false);
+	const [change, setChange] = useState('games'); //games, race, keno
 	const [empty, setEmpty] = useState(false);
 	const [user, seUser] = useState("");
 	const [id, setId] = useState(-1);
@@ -195,11 +195,7 @@ function Salon(props){
 	}
 
 	function handleChange(type){
-		if(type === "games"){
-			setRace(false);
-		} else if(type === "race"){
-			setRace(true);
-		}
+		setChange(type);
 	}
 		
 	return (
@@ -239,14 +235,24 @@ function Salon(props){
 									<div id="salon_buton_race" className="salon_button shadow_convex" onClick={()=>{handleChange('race')}}>
 										{lang === "ro" ? <span><i className="fa fa-flag-checkered"></i><span className="salon_button_text">Curse</span></span> : <span><i className="fa fa-flag-checkered"></i><span className="salon_button_text">Race</span></span>}	
 									</div>
+									<div id="salon_buton_keno" className="salon_button shadow_convex" onClick={()=>{handleChange('keno')}}>
+										<span><i className="fa fa-ticket "></i><span className="salon_button_text">Keno</span></span>	
+									</div>
 								</div>
 							</div>
-							{loaded ? <Col sm={12} className="salon_page color_yellow">
-								{race ? (
-									<UserRace race={race} lang={lang} user_id={id} user={user} money={money} user_table={"Rabbit Race"} socket={socket}></UserRace>						
-								) : (
-									<Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
-								)}
+							{loaded ? <Col sm={12} className="salon_page color_yellow">	
+								{(() => {
+									switch(change){
+										case "game":
+											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
+										case "race":
+											return <UserRace lang={lang} user_id={id} user={user} money={money} user_table={"Rabbit Race"} socket={socket}></UserRace>
+										case "keno":
+											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
+										default: 
+											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
+									}	
+								})()}
 							</Col> : null}
 							<div className="show_results_container">
 								<div className="show_results">

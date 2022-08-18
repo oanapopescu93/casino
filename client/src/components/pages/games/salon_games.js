@@ -1,47 +1,47 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import $ from 'jquery';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from '../partials/carousel'
 import { setCookie } from '../../utils';
+import { useDispatch } from 'react-redux'
+import { game_page } from '../../actions/actions';
 
-var self;
-class SalonGames extends React.Component {
-	constructor(props) {
-		super(props);
-		self = this;		
-		self.state = {
-              info: props,
-              width: window.innerWidth,
-              socket: props.socket,	
-              lang: props.lang,	
-		};
-        self.handleExit = self.handleExit.bind(self);
-        self.handleDropdown = self.handleDropdown.bind(self);
-        self.handleDropdown_small = self.handleDropdown_small.bind(self);
-	}
+function SalonGames(props){
+	let info = props;
+    const [width, setWidth] = useState(window.innerWidth);
+    let socket = props.socket;
+    let lang = props.lang;
+    let dispatch = useDispatch();		
 
-    handleExit() {
+    useEffect(() => {
+		dispatch(game_page('salon'));
+        $(window).resize(function(){            
+			setWidth(window.innerWidth);
+		});
+	}, []); 
+
+    function handleExit(){
         setCookie("casino_user", '', 1);
 		setCookie("casino_email", '', 1);
-		var url = window.location.href;
+		let url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];
 	}
 
-    handleDropdown(t) {
+    function handleDropdown(t) {
 		$('.casino_games_table_container').removeClass('open')
 		$('.casino_games_table_container').each(function() {
 			if($(this).attr('box') === t){
 				$(this).addClass('open');
-                var title = t.split('_').join(' ');
+                let title = t.split('_').join(' ');
                 $('.casino_games_title span').text(title);
                 $('.casino_games_title_box_container').removeClass('open')
 			}
 		});
 	}
 
-    handleDropdown_small() {
+    function handleDropdown_small() {
 		$('.casino_games_title_box_container').toggleClass('open');
         if($('.casino_games_title_box_container').hasClass('open')){
             $('.casino_games_title i').removeClass('fa-angle-down');
@@ -51,27 +51,19 @@ class SalonGames extends React.Component {
             $('.casino_games_title i').removeClass('fa-angle-up');
         }
 	}
-
-    componentDidMount(){
-        $(window).resize(function(){            
-			self.setState({ width: window.innerWidth });
-		});        
-    }
 	
-	render(){
-        let lang = this.props.lang;
-		return (
-            <>
+	return (
+        <>
             <Row>
                 <Col sm={2}></Col>
                 <Col sm={8}>
                 {(() => {
-                    if (self.state.width < 960) {
+                    if (width < 960) {
                         $('.casino_games_table_container').removeClass('open');
                         $('.casino_games_table_container').eq(0).addClass('open')
                         return (
                             <div id="casino_games_title_dropdown_container">
-                                <div onClick={()=>self.handleDropdown_small()} className="casino_games_title_container">
+                                <div onClick={()=>handleDropdown_small()} className="casino_games_title_container">
                                     <div className="capitalize casino_games_title shadow_convex">
                                         <span className="capitalize">roulette tables</span>
                                         <i className="fa fa-angle-down"></i>
@@ -80,10 +72,10 @@ class SalonGames extends React.Component {
                                 <div className="casino_games_title_box_container">
                                     <div className="casino_games_title_box">
                                         {
-                                            self.state.info.casino_games_title.map(function(t, i){
+                                            info.casino_games_title.map(function(t, i){
                                                 var title = t.split('_').join(' ');
                                                 return(
-                                                    <div key={i} className="capitalize" onClick={()=>self.handleDropdown(t)}>{title}</div>
+                                                    <div key={i} className="capitalize" onClick={()=>handleDropdown(t)}>{title}</div>
                                                 );
                                             })
                                         }
@@ -100,7 +92,7 @@ class SalonGames extends React.Component {
                 <Col sm={2}></Col>
                 <Col sm={8}>
                     {
-                        self.state.info.casino_games_title.map(function(t, i){
+                        info.casino_games_title.map(function(t, i){
                             var title = t.split('_')[0];
                             var box = "casino_games_table_container";
                             if(i === 0){
@@ -110,10 +102,10 @@ class SalonGames extends React.Component {
                             return(
                                 <div key={i}>
                                     {(() => {
-                                        if (self.state.width > 960) {
+                                        if (width > 960) {
                                             return (
                                                 <div className="casino_games_title_container">
-                                                    <div className="capitalize casino_games_title shadow_convex" onClick={()=>self.handleDropdown(t)}>{title}</div>
+                                                    <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleDropdown(t)}>{title}</div>
                                                 </div>
                                             )
                                         }
@@ -121,13 +113,13 @@ class SalonGames extends React.Component {
                                     <div box={t} className={box}>
                                         <div className="casino_games_table">
                                             {(() => {
-                                                if (self.state.info.casino_games[t].length === 0) {
+                                                if (info.casino_games[t].length === 0) {
                                                     return (
                                                         <div><p>Loading...</p></div>
                                                     )
                                                 } else {
                                                     return (
-                                                        <Carousel template="salon" lang={lang} socket={self.state.socket} user={self.state.user} item_list={self.state.info.casino_games[t]}></Carousel>
+                                                        <Carousel template="salon" lang={lang} socket={socket} item_list={info.casino_games[t]}></Carousel>
                                                     )
                                                 }
                                             })()}
@@ -143,14 +135,13 @@ class SalonGames extends React.Component {
             <Row>
                 <Col sm={12}>
                     {lang === "ro" ? 
-                        <p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Iesi din salon</p> : 
-                        <p id="exit_salon" className="shadow_convex" onClick={() => self.handleExit()}>Exit salon</p>	
+                        <p id="exit_salon" className="shadow_convex" onClick={() => handleExit()}>Iesi din salon</p> : 
+                        <p id="exit_salon" className="shadow_convex" onClick={() => handleExit()}>Exit salon</p>	
                     }																			
                 </Col>
             </Row>	
         </>
-		);
-	};
+	);
 }
 
 export default SalonGames;

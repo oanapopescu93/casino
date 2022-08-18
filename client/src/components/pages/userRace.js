@@ -15,7 +15,6 @@ function Child(props) {
 	let visible = useSelector(state => state.visibility);
 	let socket = props.socket;
 	let lang = props.lang;
-    let race = props.race;
 	let data = props.data;
     let dispatch = useDispatch();
 	return (
@@ -39,7 +38,7 @@ function Child(props) {
 									case "game":
 										return (
 											<>
-												<Race open_race={race} lang={lang} socket={socket} info={data} dispatch={dispatch}></Race>
+												<Race lang={lang} socket={socket} info={data} dispatch={dispatch}></Race>
 												<Panel lang={lang} info={data} socket={socket}></Panel>
 											</>
 										)
@@ -60,7 +59,7 @@ function Child(props) {
 									default:
 										return(
 											<>
-												<Race open_race={race} lang={lang} socket={socket} info={data} dispatch={dispatch}></Race>
+												<Race lang={lang} socket={socket} info={data} dispatch={dispatch}></Race>
 												<Panel lang={lang} info={data} socket={socket}></Panel>
 											</>
 										)						
@@ -77,7 +76,6 @@ function Child(props) {
 function UserRace(props){
 	let socket = props.socket;
 	let lang = props.lang;
-    let race = props.race;
 	const [data, setData] = useState(null);
 	const [loaded, setLoaded] = useState(false);
 
@@ -127,7 +125,7 @@ function UserRace(props){
 		});
 	};		
 
-	return loaded ? <Child data={data} lang={lang} socket={socket} race={race}></Child> : 
+	return loaded ? <Child data={data} lang={lang} socket={socket}></Child> : 
 			<div>
 				<img className="loading_icon" alt="loading_icon" src={race_loading_icon} />
 				<p className="color_yellow">Loading</p>
