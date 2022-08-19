@@ -324,7 +324,7 @@ io.on('connection', function(socket) {
 			}
 				
 			sockets.push(socket);
-			users[socket.username] = socket;
+			users[socket.username] = socket;			
 			
 			if(typeof username !== "undefined" && username !== ""){
 				io.to(room_name).emit('is_online', '<p class="user_join">' + username + ' join the chat...</p>');
@@ -417,16 +417,11 @@ io.on('connection', function(socket) {
 		}	
 	});		
 	
-	socket.on('chat_message_send', function(data) {
-		let user_table = data.user_table.split(' ').join('_');
-		user_table = user_table.toLowerCase();
-		if(data.user_table === "rabbit_race"){
-			user_table = "salon";
-		}
-		let room_name = user_table;		
-		if(typeof data.user_type !== "undefined"){
-			let user_type = data.user_type;	
-			room_name = room_name + '_' + user_type;
+	socket.on('chat_message_send', function(data) {		
+		let room_name = data.user_table;
+		if(room_name === "race" || room_name === "keno"){
+			room_name = "salon";
+			socket.join(room_name);
 		}
 		try{
 			io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));
@@ -550,7 +545,7 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('blackjack_get_users_send', function(data) {
-		let room_name = data.user_table.split(' ').join('_');
+		let room_name = data.user_table;
 		io.to(room_name).emit('blackjack_get_users_read', user_join);
 	});
 	socket.on('blackjack_send', function(data) {
@@ -827,7 +822,7 @@ io.on('connection', function(socket) {
 		}
 		//monkey_craps = true;
 		
-		let room_name = data.user_table.split(' ').join('_');
+		let room_name = data.user_table;
 		let how_many_dices = data.how_many_dices;
 		let numbers = [];
 		let point = data.point;
@@ -871,7 +866,7 @@ io.on('connection', function(socket) {
 		} 
 			
 		try{
-			console.log('craps', numbers, before)
+			//console.log('craps', numbers, before)
 			io.to(room_name).emit('craps_read', numbers);
 			
 		}catch(e){
