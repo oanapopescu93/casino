@@ -54,7 +54,9 @@ function Page(props){
                                                         } else {
                                                             return null;
                                                         }
-                                                    }                                                                                                                    
+                                                    } else {
+                                                        return null;
+                                                    }                                                                                                                  
                                                 }) 
                                             } 
                                         </ul>

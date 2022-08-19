@@ -3,6 +3,8 @@ import $ from 'jquery';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { bigText, get_craps_bets, showResults } from '../../utils';
+import { craps_calculate_money, craps_get_history } from '../../actions/actions';
+import { useDispatch } from 'react-redux'
 
 let move = 0;
 let prev_move = 0;
@@ -217,6 +219,7 @@ function Craps(props){
 	let lang = props.lang;
 	let socket = props.socket;
 	let money = props.info.money;
+	let dispatch = useDispatch();
 	
 	const [open, setOpen] = useState("");
 	const [title, setTitle] = useState("");
@@ -321,13 +324,17 @@ function Craps(props){
 
 	function check_win_lose(win, bet){		
 		if(bet){
+			let win_lose_money = moneyTotal;
+			let win_lose_history = {type: gameType, odds: gameOdds};
+
 			if(win === 'win'){
-				let pay = gameOdds * bet;
+				let pay = gameOdds + bet;
 				if(lang === "ro"){
 					showResults("Resultate", "Ai castigat " + pay + " morcovi!");
 				} else {
 					showResults("Results", "You won " + pay + " carrots!");
-				}			
+				}	
+				setMoneyTotal(win_lose_money + pay);		
 			} else if(win === 'push'){
 				if(lang === "ro"){
 					showResults("Push", "Iti iei morcovii inapoi!");
@@ -340,9 +347,26 @@ function Craps(props){
 				} else {
 					showResults("Results", "You lost " + bet + " carrots!");
 				}
+				setMoneyTotal(win_lose_money - bet);		
 			}
+
+			pay(win_lose_money, win_lose_history)			
 		}
-	}	
+	}
+	
+	function pay(money, history){
+		dispatch(craps_calculate_money(money));
+		dispatch(craps_get_history(history));
+
+		let craps_payload_server = {
+			user_id: props.info.id, 
+			user: props.info.user, 
+			user_table: props.info.user_table, 
+			user_type: props.info.type,
+			money: money
+		}
+		//socket.emit('craps_results_send', craps_payload_server);
+	}
 
 	function show_on_board(dicesNumber, sum, point){
 		move++
@@ -504,12 +528,11 @@ function Craps(props){
 					});
 					break;
 				case "place bet 4":
-				case "place bet 4":
-				case "place bet 4":
-				case "place bet 4":
-				case "place bet 4":
-				case "place bet 4":
-				case "place bet 4":
+				case "place bet 5":
+				case "place bet 6":
+				case "place bet 8":
+				case "place bet 9":
+				case "place bet 10":
 					myArray = gameType.split("place bet ");
 					value = parseInt(myArray[1]);
 					timer = setInterval(function () {				

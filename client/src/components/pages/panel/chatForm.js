@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-function ChatForm(props) {	
+function ChatForm(props) {
+	const lang = props.lang;
 	const socket = props.socket;
 	let user = props.user;
 	const [list, setList] = useState([]);
@@ -48,7 +49,9 @@ function ChatForm(props) {
 						<Form.Control type="text" name="chattext" id="chattext" placeholder="type here" />
 					</Col>
 					<Col sm={4}>
-						<Button className="button_green" id="chatsend" onClick={(e)=>{e.preventDefault(); my_click()}}>Send</Button>
+						<Button className="button_green" id="chatsend" onClick={(e)=>{e.preventDefault(); my_click()}}>
+							{lang === "ro" ? <span>Trimite</span> : <span>Send</span>}
+						</Button>
 					</Col>
 				</Row>
 			</Form>

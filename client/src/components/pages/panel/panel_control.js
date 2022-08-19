@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux'
-import $ from 'jquery'; 
 import {game_visible} from '../../actions/actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle, faComments, faHome, faCog, faPowerOff } from '@fortawesome/free-solid-svg-icons'
@@ -17,6 +16,7 @@ function Panel(props){
     let type = props.info.type;
     let user_table = props.info.user_table;
     let money = props.info.money;
+    let steak = props.info.steak ? props.info.steak : 1;
     let dispatch = useDispatch();    
 
     const [show, setShow] = useState(false);
@@ -107,14 +107,30 @@ function Panel(props){
 
                 <div id="user_panel_box" className={"panel_box " + panelUser}>                                    
                     <h4 id="user_title">{user_table}</h4>
-                    <p id="user_subtitle">
-                        <span id="user_name">{user}</span>
-                        <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
-                    </p>
-                    <p id="user_list_user">
-                        <span id="user_list_user_game" className={"user_list_button "+userGame} onClick={() => handleClick('casino')}>{lang === "ro" ? <span>Joc</span> : <span>Game</span>}</span>
-                        <span id="user_list_user_account" className={"user_list_button "+userAccount} onClick={() => handleClick('account')}>{lang === "ro" ? <span>Contul meu</span> : <span>My account</span>}</span>
-                    </p>
+                    <div id="user_subtitle">
+                        <div className="user_subtitle_left">
+                            <span id="user_name">{user}</span>
+                        </div>
+                        <div className="user_subtitle_right">
+                            <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
+                            <span id="user_streak">
+                                <span>{steak}</span>
+                                <div class="my_tooltip">
+                                    <i className="fa fa-calendar-o" aria-hidden="true"></i>
+                                    {lang === "ro" ? <span class="my_tooltiptext">
+                                        <p>Cate zile la rand ai jucat</p>
+                                    </span> : <span class="my_tooltiptext">
+                                        <p><b>Your steak</b></p>
+                                        <p>How many days in a row you have played</p>
+                                    </span>}
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="user_list_user">
+                        <div id="user_list_user_game" className={"user_list_button "+userGame} onClick={() => handleClick('casino')}>{lang === "ro" ? <span>Joc</span> : <span>Game</span>}</div>
+                        <div id="user_list_user_account" className={"user_list_button "+userAccount} onClick={() => handleClick('account')}>{lang === "ro" ? <span>Contul meu</span> : <span>My account</span>}</div>
+                    </div>
                     <ul className="user_list">
                         <li id="user_list_salon" className="user_list_item" onClick={() => handleClick('salon')}>{lang === "ro" ? <span><FontAwesomeIcon icon={faHome} /> Salon</span> : <span><FontAwesomeIcon icon={faHome} /> Salon</span>}</li>
                         <li id="user_list_settings" className="user_list_item" onClick={() => handleClick('settings')}>{lang === "ro" ? <span><FontAwesomeIcon icon={faCog} /> Setari</span> : <span><FontAwesomeIcon icon={faCog} /> Settings</span>}</li>
@@ -124,7 +140,7 @@ function Panel(props){
                 </div>
 
                 <div id="chat_panel_box" className={"panel_box " + panelChat}>
-                    <ChatForm user={user} type={type} user_table={user_table} socket={socket}></ChatForm>
+                    <ChatForm user={user} type={type} user_table={user_table} lang={lang} socket={socket}></ChatForm>
                 </div>	
 
             </div>

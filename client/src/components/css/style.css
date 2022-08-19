@@ -630,9 +630,9 @@ table {
 #support_button{
 	position: absolute;
 	z-index: 1;
-    bottom: 10px;
+    bottom: 5px;
     cursor: pointer;
-    right: 10px;
+    left: 5;
     padding: 5px 10px;
 }
 
@@ -811,14 +811,28 @@ table {
 #user_list_user{
 	color:var(--yellow);
 }
-#user_name, #user_money{
+.user_subtitle_left, .user_subtitle_right{
 	display:inline-block;
 	vertical-align: middle;
 	width:50%;
 }
-#user_money{
+.user_subtitle_right{
 	text-align:right;
-	cursor: auto;
+}
+#user_subtitle i{
+	display:inline-block;
+	padding: 0px 5px;
+}
+#user_money, #user_streak{
+	padding-left: 5px;
+}
+#user_panel_box .user_list{
+	margin-top: 5px;
+}
+#user_panel_box .user_list li{
+	border-bottom: solid 1px var(--yellow);
+	padding:10px;
+	cursor: pointer;
 }
 
 .casino_games_title{
@@ -1600,6 +1614,7 @@ table {
 	background: var(--yellow);
 	border-radius: 10px;
 	color: black;
+	border: solid 1px black;
 }
 .show_results .header{
 	font-size: 24px;
@@ -1615,11 +1630,19 @@ table {
 }
 .show_results i{
 	position: absolute;
-    top: 5px;
-    right: 10px;
+    top: -10px;
+    right: -10px;
     z-index: 1;
     font-size: 20px;
-	cursor: pointer;
+    cursor: pointer;
+    background: var(--yellow);
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    border: solid 1px black;
+}
+.show_results i:hover{
+    background: var(--dark_yellow);
 }
 #slot_rules{
 	cursor: pointer;
@@ -2505,6 +2528,43 @@ table {
 }
 [type="radio"]:checked + label:after {
 	opacity: 1;
+}
+
+/* tooltip */
+.my_tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+}
+
+.my_tooltip .my_tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: var(--yellow);
+	color: black;
+	text-align: center;
+    font-size: 12px;
+    line-height: 14px;
+    border-radius: 10px;
+	padding: 5px;
+	position: absolute;
+	z-index: 1;
+	top: 150%;
+    left: -95px;
+}
+
+.my_tooltip .my_tooltiptext::after {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	right: 8px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent var(--yellow) transparent;
+}
+
+.my_tooltip:hover .my_tooltiptext {
+	visibility: visible;
 }
   
 /* media */
