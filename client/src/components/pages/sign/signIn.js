@@ -1,11 +1,11 @@
 import React, { useState }from 'react';
 import { useDispatch } from 'react-redux'
 import $ from 'jquery';
-import { setCookie, showResults } from '../utils';
+import { setCookie, showResults } from '../../utils';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import { game_load } from '../actions/actions';
+import { game_load } from '../../actions/actions';
 
 function SignIn(props) {
 	const [show, setShow] = useState(false);
@@ -121,13 +121,6 @@ function SignIn(props) {
 					<div onClick={handleShow} id="link_forget">{lang === "ro" ? <span>Am uitat user/parola</span> : <span>Forgot Username/Password</span>}</div>	
 				</div>
 			</Form>
-			<div className="show_results_container">
-				<div className="show_results">
-					<i className="fa fa-times show_results_close" ></i>
-					<h1 className="header">{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
-					<div className="message"></div>
-				</div>
-			</div>
 			<Modal className="casino_modal" id="casino_modal" show={show} onHide={handleClose} size="sm">
 				<Modal.Header closeButton>
 					<Modal.Title>

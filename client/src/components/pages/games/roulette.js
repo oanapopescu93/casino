@@ -1200,13 +1200,6 @@ function Roulette(props) {
 				<h1 className="roulette_title">{title}</h1>
 				<canvas id="roulette_canvas"></canvas>
 			</div>
-			<div className="show_results_container">				
-				<div className="show_results">
-					<i className="fa fa-times show_results_close" ></i>
-					<h1 className="header"></h1>
-					<div className="message"></div>
-				</div>
-			</div>
 			<div className="roulette_bets_container">
 				<div className="roulette_bets shadow_concav">
 					<div className="close">x</div>

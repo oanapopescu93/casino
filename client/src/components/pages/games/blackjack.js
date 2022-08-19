@@ -591,13 +591,6 @@ function Blackjack(props) {
 			<h1 className="blackjack_title">{title}</h1>
 			<canvas id="blackjack_canvas"></canvas>
 			<GameBoard title={"blackjack"} money={money} lang={lang} choice={choice}></GameBoard>
-			<div className="show_results_container">				
-				<div className="show_results">
-					<i className="fa fa-times show_results_close" ></i>
-					<h1 className="header">{lang === "ro" ? <span>Rezultate</span> : <span>Results</span>}</h1>
-					<div className="message"></div>
-				</div>
-			</div>
 		</div>
 	);
 }

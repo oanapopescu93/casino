@@ -635,13 +635,6 @@ function Slot(props) {
 				<p onClick={()=>handleRules()} id="slot_rules">Click aici pentru a vedea regulile</p> : 
 				<p onClick={()=>handleRules()} id="slot_rules">Click here to see rules</p>
 			}
-			<div className="show_results_container">				
-				<div className="show_results">
-					<i className="fa fa-times show_results_close" ></i>
-					<h1 className="header"></h1>
-					<div className="message"></div>
-				</div>
-			</div>
 		</div>
 	);
 }

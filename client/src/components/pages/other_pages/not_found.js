@@ -5,8 +5,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
-import rabbit_stand_right from '../img/icons/rabbit_stand_right.png';
-import rabbit_stand_left from '../img/icons/rabbit_stand_left.png';
+import rabbit_stand_right from '../../img/icons/rabbit_stand_right.png';
+import rabbit_stand_left from '../../img/icons/rabbit_stand_left.png';
 
 function Not_found(props) {
     let lang = props.lang;

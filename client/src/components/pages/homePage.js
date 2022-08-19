@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import $ from 'jquery';
-import SignIn from './signIn';
-import SignUp from './signUp';
+import SignIn from './sign/signIn';
+import SignUp from './sign/signUp';
 import Splash from './splash_screen';
 import Sapou from './partials/sapou';
 import { getCookie} from '../utils';

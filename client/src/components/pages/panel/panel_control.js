@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'; 
-import {game_visible} from '../actions/actions'
+import {game_visible} from '../../actions/actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle, faComments, faHome, faCog, faPowerOff } from '@fortawesome/free-solid-svg-icons'
-import { setCookie } from '../utils';
+import { setCookie } from '../../utils';
 import Modal from 'react-bootstrap/Modal'
 import Settings from './control_settings'
 import ChatForm from './chatForm'
-import carrot_img from '../img/icons/carrot_icon.png';
+import carrot_img from '../../img/icons/carrot_icon.png';
 
 function Panel(props){
     let lang = props.lang;
@@ -20,44 +20,16 @@ function Panel(props){
     let dispatch = useDispatch();    
 
     const [show, setShow] = useState(false);
-    const [open, setOpen] = useState("");
+    const [open, setOpen] = useState('');
     const [userGame, setUserGame] = useState("active");
     const [userAccount, setUserAccount] = useState("");
 
+    const [panel, setPanel] = useState("user_panel_box");
+    const [panelUser, setPanelUser] = useState("active");
+    const [panelChat, setPanelChat] = useState("");
+
 	function handleClose(){ setShow(false) };
     function handleShow(){ setShow(true) };
-
-    setTimeout(function(){ 	
-        let prev_click = "";
-
-        $('body').off('click').on('click', function(event) {
-            if($(event.target).closest(".panel_container").length === 0){
-                setOpen("");
-            }
-        });
-
-		function open_panel(){
-			if(open === "open"){
-                setOpen("");
-            } else {
-                setOpen("open");
-            }
-		}
-
-        $('.button_container').off('click').on('click', function(event) {
-			let next_click = $(this).attr('panel');     
-
-            if(prev_click === next_click || prev_click === ""){        
-                open_panel();
-            } else if(open !== "open"){
-                setOpen("open");
-            }            
-            
-            $('.panel_box').hide();
-            $('#'+next_click).show();
-            prev_click = next_click;
-		});
-	}, 0);
 
     function handleClick(link) {
         let url_back01 = window.location.href.split('/table/');
@@ -91,23 +63,49 @@ function Panel(props){
 				window.location.href = url_back02[0];
 		  }
 	}
+
+    function handleToggle(type){
+        if(panel === type){
+            if(open === ''){
+                setOpen('open');
+            } else {
+                setOpen('');
+            }
+        } else {
+            setOpen('open');
+            setPanel(type);
+        }
+
+        switch (type) {
+			case "user_panel_box":
+                setPanelUser("active");
+                setPanelChat("");
+			  	break;
+			case "chat_panel_box":
+                setPanelUser("");
+                setPanelChat("active");
+				break;
+		}
+    }
     
 	return (
         <>
             <div className={"panel_container "+open}>
-                <div id="user_button" panel="user_panel_box" className="button_container">            
+
+                <div id="user_button" className="button_container" onClick={()=>handleToggle("user_panel_box")}>            
                     <div>
                         <FontAwesomeIcon icon={faUserCircle} />
                         <h4>User</h4>
                     </div>
                 </div>
-                <div id="chat_button" panel="chat_panel_box" className="button_container">
+                <div id="chat_button" className="button_container" onClick={()=>handleToggle("chat_panel_box")}>
                     <div>
                         <FontAwesomeIcon icon={faComments} />
                         <h4>Chat</h4>
                     </div>
                 </div>
-                <div id="user_panel_box" className="panel_box">
+
+                <div id="user_panel_box" className={"panel_box " + panelUser}>                                    
                     <h4 id="user_title">{user_table}</h4>
                     <p id="user_subtitle">
                         <span id="user_name">{user}</span>
@@ -124,9 +122,11 @@ function Panel(props){
                     </ul>
                     <div id="support_button" onClick={() => handleClick('support')}>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</div>
                 </div>
-                <div id="chat_panel_box" className="panel_box">
+
+                <div id="chat_panel_box" className={"panel_box " + panelChat}>
                     <ChatForm user={user} type={type} user_table={user_table} socket={socket}></ChatForm>
-                </div>
+                </div>	
+
             </div>
 
             <Modal className="casino_modal" id="settings_modal" show={show} onHide={handleClose} size="sm">

@@ -3,7 +3,6 @@ import {game_page, race_calculate_money, race_get_history} from '../../actions/a
 import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
 import { getCookie, showResults } from '../../utils';
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
 import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png';

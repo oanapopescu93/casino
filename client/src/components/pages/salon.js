@@ -16,8 +16,9 @@ import Questions from './other_pages/questions';
 import Career from './other_pages/career_empty';
 
 import { getCookie, setCookie, showResults } from '../utils';
-import UserRace from './userRace';
+import UserRace from './user/userRace';
 import { game_load, game_page } from '../actions/actions';
+import UserKeno from './user/userKeno';
 
 function Child(props){
 	let lang = props.lang;
@@ -248,19 +249,12 @@ function Salon(props){
 										case "race":
 											return <UserRace lang={lang} user_id={id} user={user} money={money} user_table={"Rabbit Race"} socket={socket}></UserRace>
 										case "keno":
-											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
+											return <UserKeno lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></UserKeno>
 										default: 
 											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
 									}	
 								})()}
 							</Col> : null}
-							<div className="show_results_container">
-								<div className="show_results">
-									<i className="fa fa-times show_results_close" ></i>
-									<h1 className="header">{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
-									<div className="message"></div>
-								</div>
-							</div>
 						</>																
 					)}			
 				</Row>

@@ -6,7 +6,7 @@ import $ from 'jquery';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import Sapou from './partials/sapou';
+import Sapou from '../partials/sapou';
 
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){

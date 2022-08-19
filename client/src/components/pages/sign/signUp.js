@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import $ from 'jquery'; 
-import { getCookie, setCookie, showResults } from '../utils';
+import { getCookie, setCookie, showResults } from '../../utils';
 
 function SignUp(props){
 	let lang = props.lang;
@@ -137,14 +137,7 @@ function SignUp(props){
 								<Form.Control id="signup_user" className="input_yellow shadow_convex" type="text" name="user" placeholder="Username" />									
 								<Form.Control id="signup_pass" className="input_yellow shadow_convex" type="password" name="pass" placeholder="Password" />									
 								<Button className="button_yellow shadow_convex" onClick={() => submit()}>{lang === "ro" ? <span>Inregistrare</span> : <span>Sign Up</span>}</Button>
-							</Form>																
-							<div className="show_results_container">
-								<div className="show_results">
-									<i className="fa fa-times show_results_close" ></i>
-									<h1 className="header">{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
-									<div className="message"></div>
-								</div>
-							</div>
+							</Form>	
 						</>
 					)
 				} else {

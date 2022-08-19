@@ -602,19 +602,31 @@ table {
 #user_list{
 	max-height: 400px;
     overflow: auto;
+	margin:0px;
+	padding:0px;
 }
-#user_list table tr td{
+#user_list li{
 	vertical-align:top;
 	border-bottom: solid 1px var(--yellow);
 	color:var(--yellow);
+	list-style-type: none;
+	border-bottom: solid 1px var(--yellow);	
 }
-#user_list table tr td:first-child{
-	width:65%;
+#user_list li .left{
+	display:inline-block;
+	vertical-align: middle;
+	width:40%;
+	padding: 5px;
 	text-align:left;
 }
-#user_list table tr td:last-child{
+#user_list li .right{
+	display:inline-block;
+	vertical-align: middle;
+	width:60%;
+	padding: 5px;
 	text-align:right;
 }
+
 #support_button{
 	position: absolute;
 	z-index: 1;
@@ -738,18 +750,19 @@ table {
 	text-align: left;
 	color:var(--yellow);
 }
+.panel_box.active{
+	display:block;
+}
 .button_container{
 	position: absolute;
-	z-index:1;
+	z-index:2;
     left: 1px;
     width: 50px;
 }
 #user_button{
-	z-index:2;
     top: 40px;
 }
 #chat_button{
-	z-index:1;
     top: 150px;
 }
 .button_container > div{
@@ -770,28 +783,6 @@ table {
 }
 .button_container div h4{
 	font-size: 12px;
-}
-.user_list{
-	margin:0px;
-	padding:0px;
-}
-.user_list li{
-	list-style-type: none;
-	border-bottom: solid 1px var(--yellow);	
-}
-.user_list li:first-child{	
-	overflow: auto;
-}
-.user_list li > span{
-	display:block;
-	padding:10px 5px;
-	cursor: pointer;
-}
-.user_list li:first-child{
-	margin-top:5px;
-}
-.user_list li:hover, .user_list li:focus{
-	background: var(--transparent_yellow);
 }
 #user_list_user{
 	margin-top:15px;

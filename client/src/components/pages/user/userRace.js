@@ -3,13 +3,13 @@ import { useSelector} from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import $ from 'jquery'; 
-import Race from './games/race';
-import UserAccount from './account/userAccount';
-import Support from './other_pages/support';
-import Panel from './panel_control';
-import { getCookie, showResults } from '../utils';
+import Race from '../games/race';
+import UserAccount from '../account/userAccount';
+import Support from '../other_pages/support';
+import Panel from '../panel/panel_control';
+import { getCookie, showResults } from '../../utils';
 import { useDispatch } from 'react-redux'
-import race_loading_icon from '../img/icons_other/icons/yellow/race.png'
+import race_loading_icon from '../../img/icons_other/icons/yellow/race.png'
 
 function Child(props) {
 	let visible = useSelector(state => state.visibility);
@@ -32,8 +32,7 @@ function Child(props) {
 									<span className="color_yellow">No user</span>
 								)
 							} else {
-								data.url = "/table/"+data.user_table;	
-								console.log(visible)
+								data.url = "/table/"+data.user_table;
 								switch (visible) {
 									case "game":
 										return (
@@ -81,12 +80,9 @@ function UserRace(props){
 
 	useEffect(() => {
 		userPageData().then(res => {
-			if(res !== null){
-				let table = res.user_table;
-				let table_split = table.split('_');
-				let table_user = table_split[0] + ' ' + table_split[1];
-				let table_type = table_split[2];					
-				let payload = {id: res.id, user: res.user, user_table: table_user, user_type: table_type, time: new Date().getTime(), lang: lang}
+			if(res !== null){	
+				setData(res);				
+				let payload = {id: res.id, user: res.user, user_table: 'salon', time: new Date().getTime(), lang: lang}
 				socket.emit('username', payload);
 				socket.on('is_online', function(data) {
 					setLoaded(true);
@@ -110,16 +106,6 @@ function UserRace(props){
 			let casino_user = getCookie("casino_user");
 			socket.emit('user_page_send', ["race", casino_id, casino_user]);
 			socket.on('user_page_read', function(data){
-				if(data !== null){
-					setData(data);
-					if(data.user === "" || data.user === "indefined"){
-						data.user = getCookie("casino_user")
-					}					
-					if(data.id === ""){
-						let url_back = window.location.href.split('/table/');
-						window.location.href = url_back[0];
-					}
-				} 
 				resolve(data);				
 			});	
 		});

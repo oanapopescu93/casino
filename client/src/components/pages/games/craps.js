@@ -880,14 +880,6 @@ function Craps(props){
 					<div id="craps_bets_clear" className="shadow_convex" onClick={()=>{canvas_clear()}}>Clear</div>
 				</div>
 			</div>
-				
-			<div className="show_results_container">				
-				<div className="show_results">
-					<i className="fa fa-times show_results_close" ></i>
-					<h1 className="header"></h1>
-					<div className="message"></div>
-				</div>
-			</div>
 		</>
 	);
 }

@@ -26,13 +26,13 @@ let my_console = function(){
 }();
 
 function App(props){	
-	// my_console.disable();
+	my_console.disable();
 	let page = useSelector(state => state.page);
 	let show_loader = useSelector(state => state.load);
 	return (
 		<div className="App">
 			<Loader show={show_loader}></Loader>
-			<Home page={page} show={show_loader}></Home>         			
+			<Home page={page} show={show_loader}></Home>
 		</div>
 	);
 }

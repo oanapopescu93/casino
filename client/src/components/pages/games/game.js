@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import Button from 'react-bootstrap/Button'
-import Roulette from './games/roulette'
-import Blackjack from './games/blackjack'
-import Slot from './games/slot'
-import Craps from './games/craps'
-import { game_page } from '../actions/actions';
+import Roulette from './roulette'
+import Blackjack from './blackjack'
+import Slot from './slot'
+import Craps from './craps'
+import { game_page } from '../../actions/actions';
 import { useDispatch } from 'react-redux'
 
 function Game(props){

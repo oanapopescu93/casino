@@ -6,9 +6,9 @@ import Container from 'react-bootstrap/Container'
 import '../css/style.css';
 import HomePage from './homePage';
 import Salon from './salon';
-import SignInRecovery from './signIn_recovery';
-import NotFound from './not_found';
-import UserPage from './userPage';
+import SignInRecovery from './sign/signIn_recovery';
+import NotFound from './other_pages/not_found';
+import UserPage from './user/userPage';
 import Donate from './money/donate';
 import Page from './money/page';
 import Language from './partials/language';
@@ -18,6 +18,7 @@ import { getCookie, setCookie, showResults } from '../utils';
 
 import socketIOClient from "socket.io-client/dist/socket.io";
 import Cookies from './partials/cookies_modal';
+import ShowResults from './partials/show_results';
 const socket = socketIOClient("/");
 
 function Home(props){
@@ -101,6 +102,7 @@ function Home(props){
 			{!cookies ? <Cookies casino_cookies={casino_cookies} lang={lang}></Cookies>  : null}
 			<Language lang_change={lang_change}></Language>
 			<Donate my_donation={my_donation} info={donationInfo} socket={socket}></Donate>
+			<ShowResults lang={lang}></ShowResults>
 			<Footer lang={lang} socket={socket}></Footer>
 		</>
 	);
