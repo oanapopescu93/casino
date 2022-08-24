@@ -1,12 +1,13 @@
 module.exports = function database(database_config, params){
-	var mysql = require('mysql');
-	var con = mysql.createConnection({
+	let mysql = require('mysql');
+	let con = mysql.createConnection({
 		host: database_config.host,
 		user: database_config.user,
 		password: database_config.password,
-		database: database_config.database
+		database: database_config.database,
+		multipleStatements: true
 	});
-	var sql_result	
+	let sql_result	
 	return new Promise(function(resolve, reject){
 		try{
 			con.connect(function(err) {

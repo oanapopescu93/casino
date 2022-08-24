@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import { useDispatch } from 'react-redux'
 
 function Career(props){
-    let lang = props.lang;
+    let lang = props.info.lang;
     let dispatch = useDispatch();
 
     function handleBack() {

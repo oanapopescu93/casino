@@ -8,10 +8,10 @@ import { useDispatch } from 'react-redux'
 import { game_page } from '../../actions/actions';
 
 function SalonGames(props){
-	let info = props;
+	let info = props.info;
+    let socket = info.socket;
+    let lang = info.lang;
     const [width, setWidth] = useState(window.innerWidth);
-    let socket = props.socket;
-    let lang = props.lang;
     let dispatch = useDispatch();		
 
     useEffect(() => {
@@ -22,8 +22,8 @@ function SalonGames(props){
 	}, []); 
 
     function handleExit(){
-        setCookie("casino_user", '', 1);
-		setCookie("casino_email", '', 1);
+        setCookie("casino_user", '');
+		setCookie("casino_email", '');
 		let url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];
@@ -73,7 +73,7 @@ function SalonGames(props){
                                     <div className="casino_games_title_box">
                                         {
                                             info.casino_games_title.map(function(t, i){
-                                                var title = t.split('_').join(' ');
+                                                let title = t.split('_').join(' ');
                                                 return(
                                                     <div key={i} className="capitalize" onClick={()=>handleDropdown(t)}>{title}</div>
                                                 );

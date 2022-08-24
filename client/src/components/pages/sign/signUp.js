@@ -31,9 +31,10 @@ function SignUp(props){
 						showResults('Alert', 'You are already registered.');
 					}					
 				} else {
-					setCookie("casino_id", data[1].id, 1);
-					setCookie("casino_email", $('#signup_email').val(), 1);
-					setCookie("casino_user", $('#signup_user').val(), 1);
+					setCookie("casino_id", data[1].id);
+					setCookie("casino_uuid", data[1].uuid);
+					setCookie("casino_email", $('#signup_email').val());
+					setCookie("casino_user", $('#signup_user').val());
 					submit_form();
 				}
 			});
@@ -80,7 +81,7 @@ function SignUp(props){
 		let regex = "";
 		switch(type){
 			case "email":
-				signup_input = $('#signup_email').val();
+				signup_input = $('#signup_email').val();				
 				regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$'
 				//letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
 			   	break;
@@ -93,7 +94,7 @@ function SignUp(props){
 				// At least one special character, (?=.*?[#?!@$%^&*-])
 				// Minimum eight in length .{8,}
 				break;
-		}
+		}		
 		let regex_exp = new RegExp(regex);					
 		let pass_result = regex_exp.test(signup_input);
 		//pass_result = true;
@@ -112,9 +113,9 @@ function SignUp(props){
 	function minor_check(check){
 		$('#minor_container').remove();	
 		if(check){
-			setCookie("user_minor", true, 1);
+			setCookie("user_minor", true, 336); //will expire after 14 days
 		} else {		
-			setCookie("user_minor", false, 1);
+			setCookie("user_minor", false, 336); //will expire after 14 days
 		}
 	}
 	

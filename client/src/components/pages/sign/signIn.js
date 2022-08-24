@@ -23,8 +23,9 @@ function SignIn(props) {
 				console.log('data', data)
 				if(data[0]){
 					if(data[1] && Object.keys(data[1]).length > 0){
-						setCookie("casino_id", data[1].id, 1);
-						setCookie("casino_user", $('#signin_user').val(), 1);
+						setCookie("casino_id", data[1].id);
+						setCookie("casino_uuid", data[1].uuid);
+						setCookie("casino_user", $('#signin_user').val());
 						submit_form(socket, lang);
 					} else {
 						dispatch(game_load(false));

@@ -28,7 +28,7 @@ function Child(props) {
 								<span className="color_yellow">Loading...</span>
 							)
 						} else {
-							if(data.id === -1){
+							if(data.uuid === -1){
 								return (
 									<span className="color_yellow">No user</span>
 								)
@@ -73,7 +73,7 @@ function Child(props) {
 	);
 }
 
-function UserPage(props){
+function UserPage(props){	
 	let socket = props.socket;
 	let lang = props.lang;
 	const [data, setData] = useState(null);
@@ -81,13 +81,17 @@ function UserPage(props){
 
 	useEffect(() => {
 		userPageData().then(res => {
-			if(res !== null){			
-				let payload = {id: res.id, user: res.user, user_table: res.table, user_type: res.type, time: new Date().getTime(), lang: lang}
+			if(res !== null){		
+				let payload = {id: res.id, uuid: res.uuid, user: res.user, user_table: res.table, user_type: res.type, time: new Date().getTime(), lang: lang}
 				socket.emit('username', payload);
-				socket.on('is_online', function(data) {
+				socket.on('is_online', function(user) {
 					setLoaded(true);
-					if(typeof $('#chatmessages') !== "undefined"){
-						$('#chatmessages').append(data);
+					if(user && typeof $('#chatmessages') !== "undefined"){
+						if(lang === "ro"){
+							$('#chatmessages').append('<p class="user_join">' + user + ' e online</p>');
+						} else {
+							$('#chatmessages').append('<p class="user_join">' + user + ' join the chat</p>');
+						}
 					}
 				});	
 			} else {
@@ -98,14 +102,15 @@ function UserPage(props){
 				}	
 			}							
 		}).catch(err => console.log('userPageData--> ', err));  
-	}, []);  
+	}, [props]);  
 
 	function userPageData(){
 		return new Promise(function(resolve, reject){			
 			let table = window.location.href.split('table/')			
 			let casino_id = parseInt(getCookie("casino_id"));
+			let casino_uuid = getCookie("casino_uuid");
 			let casino_user = getCookie("casino_user");
-			socket.emit('user_page_send', [table[1], casino_id, casino_user]);
+			socket.emit('user_page_send', [table[1], casino_id, casino_uuid, casino_user]);
 			socket.on('user_page_read', function(data){
 				if(data !== null){
 					let table_split = data.user_table.split('_');
@@ -137,28 +142,28 @@ function UserPage(props){
 						return (
 							<>
 								<img className="loading_icon" alt="loading_icon" src={roulette_loading_icon} />
-								<p className="color_yellow">Loading</p>
+								<p className="color_yellow">Loading Roulette</p>
 							</>
 						);
 					case "blackjack":
 						return (
 							<>
 								<img className="loading_icon" alt="loading_icon" src={blackjack_loading_icon} />
-								<p className="color_yellow">Loading</p>
+								<p className="color_yellow">Loading Blackjack</p>
 							</>
 						);
 					case "slots":
 						return (
 							<>
 								<img className="loading_icon" alt="loading_icon" src={slots_loading_icon} />
-								<p className="color_yellow">Loading</p>
+								<p className="color_yellow">Loading Slots</p>
 							</>
 						);
 					case "craps":
 						return (
 							<>
 								<img className="loading_icon" alt="loading_icon" src={craps_loading_icon} />
-								<p className="color_yellow">Loading</p>
+								<p className="color_yellow">Loading Craps</p>
 							</>
 						);
 					default: 

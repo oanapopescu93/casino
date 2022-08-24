@@ -65,7 +65,7 @@ function Home(props){
 	}
 
 	function casino_cookies(){
-		setCookie("casino_cookies", true, 30);
+		setCookie("casino_cookies", true);
 		setCookies(true);
 	}
 	

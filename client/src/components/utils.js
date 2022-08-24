@@ -92,19 +92,19 @@ import 	craps_one_roll_3 from './img/craps/hover/craps_one_roll_3.png'
 import 	craps_one_roll_4 from './img/craps/hover/craps_one_roll_4.png'
 import 	craps_any_craps from './img/craps/hover/craps_any_craps.png'
 
-export const setCookie = function (cname,cvalue,exdays=30) {
+export const setCookie = function (cname, cvalue, hours=12){
   let d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  d.setTime(d.getTime() + (hours * 60 * 60 * 1000));
   let expires = "expires=" + d.toGMTString();
   if(getCookie("casino_cookies") === "true"){
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   } else {
-    if(cname === "casino_id" || cname === "casino_user" || cname === "casino_cookies"){
+    if(cname === "casino_id" || cname === "casino_uuid" || cname === "casino_user" || cname === "casino_cookies"){
       document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
   }
 }
-export const getCookie = function (cname) {
+export const getCookie = function (cname){
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
   let ca = decodedCookie.split(';');

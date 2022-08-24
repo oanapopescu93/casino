@@ -8,8 +8,8 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 function Support(props){
-    let lang = props.lang;
-	let socket = props.socket;
+    let lang = props.info.lang;
+	let socket = props.info.socket;
 	const [contact, setContact] = useState(true);
     let dispatch = useDispatch();
     const support_email_red = useRef();

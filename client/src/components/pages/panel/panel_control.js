@@ -51,8 +51,8 @@ function Panel(props){
                 handleShow();
                 break;
 			case "logout":				
-				setCookie("casino_user", '', 1);
-				setCookie("casino_email", '', 1);
+				setCookie("casino_user", '');
+				setCookie("casino_email", '');
 				window.location.href = url_back01[0];
 			 	break;
             case "support":
@@ -115,11 +115,11 @@ function Panel(props){
                             <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
                             <span id="user_streak">
                                 <span>{steak}</span>
-                                <div class="my_tooltip">
+                                <div className="my_tooltip">
                                     <i className="fa fa-calendar-o" aria-hidden="true"></i>
-                                    {lang === "ro" ? <span class="my_tooltiptext">
+                                    {lang === "ro" ? <span className="my_tooltiptext">
                                         <p>Cate zile la rand ai jucat</p>
-                                    </span> : <span class="my_tooltiptext">
+                                    </span> : <span className="my_tooltiptext">
                                         <p><b>Your steak</b></p>
                                         <p>How many days in a row you have played</p>
                                     </span>}

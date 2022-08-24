@@ -14,6 +14,9 @@ module.exports = Object.freeze({
         },
     ],
 
+    SECRET_KEY: 'vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3',
+    SECRET_KEY_JWT: "hello friend",
+
     SERVER_TABLES: [
         {table_id: '001', table_name: "roulette", table_type: "european"},
         {table_id: '002', table_name: "roulette", table_type: "american"},

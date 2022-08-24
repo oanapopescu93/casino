@@ -1099,10 +1099,11 @@ class Race extends Component {
 		let self = this;
 		self.state.dispatch(game_page("race"));
 		let id = parseInt(getCookie("casino_id"));
+		let uuid = parseInt(getCookie("casino_uuid"));
 		if(id === "" || id === "indefined"){
 			id = -1;
 		}
-		let payload = {id: id, user: this.state.user}
+		let payload = {id: id, uuid: uuid, user: this.state.user}
 		this.state.socket.emit('race_board_send', payload);
 		this.state.socket.on('race_board_read', function(data){
 			self.setState({ rabbit_array: data.rabbit_race })		

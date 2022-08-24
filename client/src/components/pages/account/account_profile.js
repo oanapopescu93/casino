@@ -39,9 +39,10 @@ function Picture(props){
 }
 
 function Account_profile(props) {
+	console.log('account--> ', props)
 	let username = props.info.user;
-	let lang = props.info.lang;
-	let socket = props.info.socket;
+	let lang = props.lang;
+	let socket = props.socket;
 	let profiles = props.info.profiles;	
 
 	let roulette_info = useSelector(state => state.roulette);
@@ -125,9 +126,9 @@ function Account_profile(props) {
 	function change_username(){
 		let input = $('#change_username').val();
 		if(typeof input !== "undefined" && input !== "null" && input !== null && input !== ""){
-			setCookie("casino_user", input, 1);
+			setCookie("casino_user", input);
 			$('#profile_user_text').text(input);
-			socket.emit('change_username_send', {id: props.info.user_id, user_new: input});
+			socket.emit('change_username_send', {id: props.info.id, uuid: props.info.uuid, user_new: input});
 			handleClose_user();
 		}
     }
@@ -146,7 +147,7 @@ function Account_profile(props) {
 					$('#pass_errors_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
 				}
 			} else {
-				socket.emit('change_password_send', {id: props.info.user_id, pass_old: input_old, pass_new: input_new});
+				socket.emit('change_password_send', {id: props.info.id, uuid: props.info.uuid, pass_old: input_old, pass_new: input_new});
 				handleClose_pass();
 			}
 		}
@@ -167,7 +168,7 @@ function Account_profile(props) {
 
 	function change_pic(){
 		handleClose_pic();
-		socket.emit('change_pic_send', {id: props.info.user_id, pic: picId});
+		socket.emit('change_pic_send', {id: props.info.id, uuid: props.info.uuid, pic: picId});
 	}
 
 	function choosePic(e){

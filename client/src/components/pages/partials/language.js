@@ -15,15 +15,15 @@ class Language extends React.Component {
     click_lang(lang){
         switch (lang) {
             case 'eng':
-                setCookie("casino_lang", "eng", 30);
+                setCookie("casino_lang", "eng", 336); //will expire after 14 days
                 self.state.lang_change('eng');
                 break;
             case 'ro':
-                setCookie("casino_lang", "ro", 30);
+                setCookie("casino_lang", "ro", 336); //will expire after 14 days
                 self.state.lang_change('ro');
                 break;	
             default:
-                setCookie("casino_lang", "eng", 30);
+                setCookie("casino_lang", "eng", 336); //will expire after 14 days
                 self.state.lang_change('eng');
                 break;				
         }

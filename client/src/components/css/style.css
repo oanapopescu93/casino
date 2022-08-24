@@ -1906,13 +1906,14 @@ table {
 /* dropdown */
 .dropdown_group{
 	padding:10px;
+	position: relative;
 }
 .dropbtn {
 	background-color: black;
 	color: var(--yellow);
 	border:solid 1px var(--yellow);
 	border-radius:5px;
-	padding: 15px;
+	padding: 5px;
 	font-size: 15px;
 	cursor: pointer;
 	width:100%;

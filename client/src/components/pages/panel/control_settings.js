@@ -15,16 +15,15 @@ class Settings extends React.Component {
     handleChoose(e, type, choose){  
         if(typeof type !== "undefined" && type !== ""){
             if(typeof choose !== "undefined" && choose !== ""){
-                var target = e.target;
-                var parent = target.parentElement.parentElement;
+                let target = e.target;
+                let parent = target.parentElement.parentElement;
                 $(parent).find('.dropbtn').text(choose);
-
                 switch(type){
                     case "date":
-                        setCookie("casino_date", choose, 1);
+                        setCookie("casino_date", choose, 336); //will expire after 14 days
                        break;
                     case "currency":
-                        setCookie("casino_currency", choose, 1);
+                        setCookie("casino_currency", choose, 336); //will expire after 14 days
                         break;		
                     default: 
                         break;
@@ -45,7 +44,7 @@ class Settings extends React.Component {
 	render(){
 		return (
             <div id="settings_container">
-                <div className="dropdown_group">
+                <div className="dropdown_group" style={{'z-index': '2'}}>
                     <p>Date</p>
                     <div className="dropdown">
                         <div className="dropbtn">{this.state.date}</div>
@@ -55,7 +54,8 @@ class Settings extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="dropdown_group">
+                <div className="dropdown_group" style={{'z-index': '1'}}>
+                    <p>Currency</p>
                     <div className="dropdown">
                         <div className="dropbtn">{this.state.currency}</div>
                         <div className="dropdown-content">

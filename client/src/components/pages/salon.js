@@ -21,14 +21,8 @@ import { game_load, game_page } from '../actions/actions';
 import UserKeno from './user/userKeno';
 
 function Child(props){
-	let lang = props.lang;
-	let casino_games_title = props.casino_games_title;
-	let socket = props.socket;
-	let user_id = props.user_id;
-	let user = props.user;
-	let casino_games = props.casino_games;
 	let visible = useSelector(state => state.visibility);
-	let dispatch = props.dispatch;
+	console.log('salon-child ', props)
 	return(
 		<>	
 			{(() => {
@@ -36,56 +30,56 @@ function Child(props){
 					case "game":
 						return (
 							<>
-								<Sapou lang={lang} page="salon"></Sapou>
-								<SalonGames lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user={user} casino_games={casino_games}></SalonGames>
+								<Sapou lang={props.lang} page="salon"></Sapou>
+								<SalonGames info={props}></SalonGames>
 							</>
 						)
 					case "about":
 						return (
 							<>
-								<Sapou lang={lang} page={visible}></Sapou>
-								<About lang={lang} socket={socket} user_id={user_id} user={user}></About>
+								<Sapou lang={props.lang} page={visible}></Sapou>
+								<About info={props}></About>
 							</>
 						)	
 					case "support":
 						return (
 							<>
-								<Sapou lang={lang} page={visible}></Sapou>
-								<Support lang={lang} socket={socket} user_id={user_id} user={user}></Support>
+								<Sapou lang={props.lang} page={visible}></Sapou>
+								<Support info={props}></Support>
 							</>
 						)
 					case "terms":
 						return (
 							<>
-								<Sapou lang={lang} page={visible}></Sapou>
-								<Terms lang={lang} casino_games_title={casino_games_title} socket={socket} user_id={user_id} user={user} casino_games={casino_games}></Terms>
+								<Sapou lang={props.lang} page={visible}></Sapou>
+								<Terms info={props}></Terms>
 							</>
 						)
 					case "privacy":
 						return (
 							<>
-								<Sapou lang={lang} page={visible}></Sapou>
-								<Privacy lang={lang} socket={socket} user_id={user_id} user={user}></Privacy>
+								<Sapou lang={props.lang} page={visible}></Sapou>
+								<Privacy info={props}></Privacy>
 							</>
 						)
 					case "questions":
 						return (
 							<>
-								<Sapou lang={lang} page={visible}></Sapou>
-								<Questions lang={lang} socket={socket} dispatch={dispatch} user_id={user_id} user={user}></Questions>
+								<Sapou lang={props.lang} page={visible}></Sapou>
+								<Questions info={props}></Questions>
 							</>
 						)
 					case "career":
 						return (
 							<>
-								<Sapou lang={lang} page={visible}></Sapou>
-								<Career lang={lang} socket={socket} user_id={user_id} user={user}></Career>
+								<Sapou lang={props.lang} page={visible}></Sapou>
+								<Career info={props}></Career>
 							</>
 						)
 					default:
 						return(
 							<>
-								{lang === "ro" ? <p>Ceva s-a intamplat.</p> : <p>Something went wrong.</p>}
+								{props.lang === "ro" ? <p>Ceva s-a intamplat.</p> : <p>Something went wrong.</p>}
 							</>							
 						)						
 				}
@@ -103,6 +97,7 @@ function Salon(props){
 	const [empty, setEmpty] = useState(false);
 	const [user, seUser] = useState("");
 	const [id, setId] = useState(-1);
+	const [uuid, setUuid] = useState(-1);
 	const [money, setMoney] = useState(0);
 	const [loaded, setLoaded] = useState(false);
 	const [open, setOpen] = useState('');
@@ -119,8 +114,11 @@ function Salon(props){
 	useEffect(() => {
 		dispatch(game_page("salon"));
 		dispatch(game_load(true));
-		salonData().then(res => {
-			if(res){				
+		salonData().then(res => {		
+			if(res){
+				if(user === ''){
+					seUser(res.user);
+				}
 				for(let i in res.server_tables){
 					switch (res.server_tables[i].table_name) {
 						case "roulette":
@@ -162,7 +160,7 @@ function Salon(props){
 					setMoney(res.money);						
 				}
 			} else {
-				setCookie("casino_user", '', 1);
+				setCookie("casino_user", '');
 				seUser('');
 			}
 			setLoaded(true);
@@ -174,11 +172,13 @@ function Salon(props){
 	function salonData(){
 		return new Promise(function(resolve, reject){
 			let casino_id = getCookie("casino_id");
+			let casino_uuid = getCookie("casino_uuid");
 			let casino_user = getCookie("casino_user");
 			setId(parseInt(casino_id));
+			setUuid(casino_uuid);
 			seUser(casino_user);
 			setTimeout(function(){
-				socket.emit('salon_send', parseInt(casino_id));	
+				socket.emit('salon_send', [parseInt(casino_id), casino_uuid]);	
 				socket.on('salon_read', function(data){
 					resolve(data);	
 				});
@@ -187,9 +187,10 @@ function Salon(props){
 	};
 
 	function handleBack(){
-		setCookie("casino_id", '', 1);
-		setCookie("casino_user", '', 1);
-		setCookie("casino_email", '', 1);
+		setCookie("casino_id", '');
+		setCookie("casino_uuid", '');
+		setCookie("casino_user", '');
+		setCookie("casino_email", '');
 		let url = window.location.href;
 		url = url.split('/salon');
 		window.location.href = url[0];
@@ -207,7 +208,7 @@ function Salon(props){
 				</div>
 			) : (
 				<Row>						
-					{user === '' &&  loaded ? (
+					{uuid === '' &&  loaded ? (
 						<div className="table_container color_yellow">
 							{lang === "ro" ? 
 								<>
@@ -245,13 +246,13 @@ function Salon(props){
 								{(() => {
 									switch(change){
 										case "game":
-											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
+											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user_uuid={uuid} user={user} casino_games={casinoGames}></Child>
 										case "race":
-											return <UserRace lang={lang} user_id={id} user={user} money={money} user_table={"Rabbit Race"} socket={socket}></UserRace>
+											return <UserRace lang={lang} user_id={id}  user_uuid={uuid} user={user} money={money} user_table={"Rabbit Race"} socket={socket}></UserRace>
 										case "keno":
-											return <UserKeno lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></UserKeno>
+											return <UserKeno lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id}  user_uuid={uuid} user={user} casino_games={casinoGames}></UserKeno>
 										default: 
-											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id} user={user} casino_games={casinoGames}></Child>
+											return <Child lang={lang} dispatch={dispatch} casino_games_title={casino_games_title} socket={socket} user_id={id}  user_uuid={uuid} user={user} casino_games={casinoGames}></Child>
 									}	
 								})()}
 							</Col> : null}

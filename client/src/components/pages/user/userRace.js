@@ -17,6 +17,7 @@ function Child(props) {
 	let lang = props.lang;
 	let data = props.data;
     let dispatch = useDispatch();
+	console.log('userRace-child ', props)
 	return (
 		<div className="userRace"> 
 			<Row>
@@ -27,7 +28,7 @@ function Child(props) {
 								<span className="color_yellow">Loading...</span>
 							)
 						} else {
-							if(data.id === -1){
+							if(data.uuid === -1){
 								return (
 									<span className="color_yellow">No user</span>
 								)
@@ -81,13 +82,16 @@ function UserRace(props){
 	useEffect(() => {
 		userPageData().then(res => {
 			if(res !== null){	
-				setData(res);				
-				let payload = {id: res.id, user: res.user, user_table: 'salon', time: new Date().getTime(), lang: lang}
+				let payload = {id: res.id, uuid: res.uuid, user: res.user, user_table: 'salon', time: new Date().getTime(), lang: lang}
 				socket.emit('username', payload);
-				socket.on('is_online', function(data) {
+				socket.on('is_online', function(user) {
 					setLoaded(true);
-					if(typeof $('#chatmessages') !== "undefined"){
-						$('#chatmessages').append(data);
+					if(user && typeof $('#chatmessages') !== "undefined"){
+						if(lang === "ro"){
+							$('#chatmessages').append('<p class="user_join">' + user + ' e online</p>');
+						} else {
+							$('#chatmessages').append('<p class="user_join">' + user + ' join the chat</p>');
+						}
 					}
 				});	
 			} else {
@@ -103,9 +107,11 @@ function UserRace(props){
 	function userPageData(){
 		return new Promise(function(resolve, reject){		
 			let casino_id = parseInt(getCookie("casino_id"));
+			let casino_uuid = getCookie("casino_uuid");
 			let casino_user = getCookie("casino_user");
-			socket.emit('user_page_send', ["race", casino_id, casino_user]);
+			socket.emit('user_page_send', ["race", casino_id, casino_uuid, casino_user]);
 			socket.on('user_page_read', function(data){
+				setData(data);	
 				resolve(data);				
 			});	
 		});

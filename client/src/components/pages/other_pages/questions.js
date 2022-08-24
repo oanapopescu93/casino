@@ -38,13 +38,14 @@ class QuestionsList extends React.Component {
     constructor(props) {
 		super(props);
 		this.state = {
-            user_id: props.user_id,
-            user: props.user,
-            lang: props.lang,
+            user_id: props.info.user_id,
+            user_uuid: props.info.user_uuid,
+            user: props.info.user,
+            lang: props.info.lang,
             list: [],
             header: [],
             loaded: false,
-            socket: props.socket,
+            socket: props.info.socket,
             width: window.innerWidth,
             handleBack: props.handleBack,
 		};
@@ -54,11 +55,9 @@ class QuestionsList extends React.Component {
 	}
     componentDidMount(){
         let self = this
-        self.questionsData()
-			.then(res => {
+        self.questionsData().then(res => {
                 self.setState({ loaded: true }); 
-			})
-			.catch(err => console.log(err));
+		}).catch(err => console.log(err));
     }
 
     questionsData(){

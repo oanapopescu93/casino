@@ -6,7 +6,7 @@ import {game_visible} from '../../actions/actions'
 import { useDispatch } from 'react-redux'
 
 function About(props){
-    let lang = props.lang;
+    let lang = props.info.lang;
     let dispatch = useDispatch();
 
     function handleBack() {
