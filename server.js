@@ -77,7 +77,6 @@ function getData(choice=null, id=null){
 			database_config.sql = "SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id AND casino_users.id = " + id + " "
 		} else {
 			database_config.sql = "SELECT casino_users.*, login_history.* FROM casino_users, login_history ";
-			database_config.sql += "Group by casino_users.id";
 		}
 		database(database_config).then(function(result){
 			resolve(result);			
