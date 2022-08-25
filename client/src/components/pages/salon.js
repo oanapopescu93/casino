@@ -15,73 +15,89 @@ import Privacy from './other_pages/privacy';
 import Questions from './other_pages/questions';
 import Career from './other_pages/career_empty';
 
-import { getCookie, setCookie, showResults } from '../utils';
+import { getCookie, setCookie, showResults, isEmpty } from '../utils';
 import UserRace from './user/userRace';
 import { game_load, game_page } from '../actions/actions';
 import UserKeno from './user/userKeno';
 
 function Child(props){
 	let visible = useSelector(state => state.visibility);
-	console.log('salon-child ', props)
 	return(
 		<>	
 			{(() => {
-				switch (visible) {
-					case "game":
+				if(!props){
+					return (
+						<>
+							{props.lang === "ro" ? <span className="color_yellow">Ceva s-a intamplat</span> : <span className="color_yellow">Something went wrong</span>}
+						</>
+					)
+				} else {
+					if(isEmpty(props.user_uuid)){
 						return (
 							<>
-								<Sapou lang={props.lang} page="salon"></Sapou>
-								<SalonGames info={props}></SalonGames>
+								{props.lang === "ro" ? <span className="color_yellow">Nu exista utilizator</span> : <span className="color_yellow">No user</span>}
 							</>
 						)
-					case "about":
-						return (
-							<>
-								<Sapou lang={props.lang} page={visible}></Sapou>
-								<About info={props}></About>
-							</>
-						)	
-					case "support":
-						return (
-							<>
-								<Sapou lang={props.lang} page={visible}></Sapou>
-								<Support info={props}></Support>
-							</>
-						)
-					case "terms":
-						return (
-							<>
-								<Sapou lang={props.lang} page={visible}></Sapou>
-								<Terms info={props}></Terms>
-							</>
-						)
-					case "privacy":
-						return (
-							<>
-								<Sapou lang={props.lang} page={visible}></Sapou>
-								<Privacy info={props}></Privacy>
-							</>
-						)
-					case "questions":
-						return (
-							<>
-								<Sapou lang={props.lang} page={visible}></Sapou>
-								<Questions info={props}></Questions>
-							</>
-						)
-					case "career":
-						return (
-							<>
-								<Sapou lang={props.lang} page={visible}></Sapou>
-								<Career info={props}></Career>
-							</>
-						)
-					default:
-						return(
-							<>
-								{props.lang === "ro" ? <p>Ceva s-a intamplat.</p> : <p>Something went wrong.</p>}
-							</>							
-						)						
+					} else {
+						switch (visible) {
+							case "game":
+								return (
+									<>
+										<Sapou lang={props.lang} page="salon"></Sapou>
+										<SalonGames info={props}></SalonGames>
+									</>
+								)
+							case "about":
+								return (
+									<>
+										<Sapou lang={props.lang} page={visible}></Sapou>
+										<About info={props}></About>
+									</>
+								)	
+							case "support":
+								return (
+									<>
+										<Sapou lang={props.lang} page={visible}></Sapou>
+										<Support info={props}></Support>
+									</>
+								)
+							case "terms":
+								return (
+									<>
+										<Sapou lang={props.lang} page={visible}></Sapou>
+										<Terms info={props}></Terms>
+									</>
+								)
+							case "privacy":
+								return (
+									<>
+										<Sapou lang={props.lang} page={visible}></Sapou>
+										<Privacy info={props}></Privacy>
+									</>
+								)
+							case "questions":
+								return (
+									<>
+										<Sapou lang={props.lang} page={visible}></Sapou>
+										<Questions info={props}></Questions>
+									</>
+								)
+							case "career":
+								return (
+									<>
+										<Sapou lang={props.lang} page={visible}></Sapou>
+										<Career info={props}></Career>
+									</>
+								)
+							default:
+								return(
+									<>
+										<Sapou lang={props.lang} page="salon"></Sapou>
+										<SalonGames info={props}></SalonGames>
+									</>						
+								)						
+						}
+					}
 				}
 			})()}					
 		</>		
@@ -208,7 +224,7 @@ function Salon(props){
 				</div>
 			) : (
 				<Row>						
-					{uuid === '' &&  loaded ? (
+					{isEmpty(uuid) === '' &&  loaded ? (
 						<div className="table_container color_yellow">
 							{lang === "ro" ? 
 								<>

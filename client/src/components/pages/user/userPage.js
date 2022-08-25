@@ -7,7 +7,7 @@ import Game from '../games/game';
 import UserAccount from '../account/userAccount';
 import Support from '../other_pages/support';
 import Panel from '../panel/panel_control';
-import { getCookie, showResults } from '../../utils';
+import { getCookie, isEmpty, showResults } from '../../utils';
 import roulette_loading_icon from '../../img/icons_other/icons/yellow/roulette.png'
 import blackjack_loading_icon from '../../img/icons_other/icons/yellow/blackjack.png'
 import slots_loading_icon from '../../img/icons_other/icons/yellow/slots.png'
@@ -25,12 +25,16 @@ function Child(props) {
 					{(() => {
 						if(!data){
 							return (
-								<span className="color_yellow">Loading...</span>
+								<>
+									{lang === "ro" ? <span className="color_yellow">Ceva s-a intamplat</span> : <span className="color_yellow">Something went wrong</span>}
+								</>
 							)
 						} else {
-							if(data.uuid === -1){
+							if(isEmpty(data.uuid)){
 								return (
-									<span className="color_yellow">No user</span>
+									<>
+										{lang === "ro" ? <span className="color_yellow">Nu exista utilizator</span> : <span className="color_yellow">No user</span>}
+									</>
 								)
 							} else {
 								data.url = "/table/"+data.user_table;	

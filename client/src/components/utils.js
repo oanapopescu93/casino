@@ -92,6 +92,14 @@ import 	craps_one_roll_3 from './img/craps/hover/craps_one_roll_3.png'
 import 	craps_one_roll_4 from './img/craps/hover/craps_one_roll_4.png'
 import 	craps_any_craps from './img/craps/hover/craps_any_craps.png'
 
+export const isEmpty = function (element){
+  let empty = true;
+  if(typeof element !== "undefined" && element !== 'null' && element !== null && element !== ''){
+    empty = false;
+  }
+  return empty;
+}
+
 export const setCookie = function (cname, cvalue, hours=12){
   let d = new Date();
   d.setTime(d.getTime() + (hours * 60 * 60 * 1000));

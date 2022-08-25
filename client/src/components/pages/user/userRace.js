@@ -7,7 +7,7 @@ import Race from '../games/race';
 import UserAccount from '../account/userAccount';
 import Support from '../other_pages/support';
 import Panel from '../panel/panel_control';
-import { getCookie, showResults } from '../../utils';
+import { getCookie, showResults, isEmpty } from '../../utils';
 import { useDispatch } from 'react-redux'
 import race_loading_icon from '../../img/icons_other/icons/yellow/race.png'
 
@@ -17,7 +17,6 @@ function Child(props) {
 	let lang = props.lang;
 	let data = props.data;
     let dispatch = useDispatch();
-	console.log('userRace-child ', props)
 	return (
 		<div className="userRace"> 
 			<Row>
@@ -25,12 +24,16 @@ function Child(props) {
 					{(() => {
 						if(!data){
 							return (
-								<span className="color_yellow">Loading...</span>
+								<>
+									{lang === "ro" ? <span className="color_yellow">Ceva s-a intamplat</span> : <span className="color_yellow">Something went wrong</span>}
+								</>
 							)
 						} else {
-							if(data.uuid === -1){
+							if(isEmpty(data.uuid)){
 								return (
-									<span className="color_yellow">No user</span>
+									<>
+										{lang === "ro" ? <span className="color_yellow">Nu exista utilizator</span> : <span className="color_yellow">No user</span>}
+									</>
 								)
 							} else {
 								data.url = "/table/"+data.user_table;
