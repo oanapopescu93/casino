@@ -39,7 +39,6 @@ function Picture(props){
 }
 
 function Account_profile(props) {
-	console.log('account--> ', props)
 	let username = props.info.user;
 	let lang = props.lang;
 	let socket = props.socket;

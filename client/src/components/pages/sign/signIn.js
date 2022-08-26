@@ -20,7 +20,6 @@ function SignIn(props) {
 		$('.sign_errors').empty();
 		if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 			loader(socket, lang).then(function(data) {
-				console.log('data', data)
 				if(data[0]){
 					if(data[1] && Object.keys(data[1]).length > 0){
 						setCookie("casino_id", data[1].id);
@@ -102,13 +101,9 @@ function SignIn(props) {
 	}
 	
 	function check_submit(){
-		let email = $('#signin_email').val();
-		
+		let email = $('#signin_email').val();		
 		let regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$';
-		//letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
 		let pass_result = regex.test(email);
-		
-		//console.log('pass_result', email, regex_pass, pass_result);
 		return pass_result;
 	}
 

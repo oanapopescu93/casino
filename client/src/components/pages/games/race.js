@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch } from 'react-redux'
 import {game_page, race_calculate_money, race_get_history} from '../../actions/actions'
 import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { getCookie, showResults } from '../../utils';
+import { showResults } from '../../utils';
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
 import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png';
 import obstacle from '../../img/icons/obstacle.png';
@@ -411,12 +412,13 @@ function FinishLine(config){
 }
 
 function race_game(props){
+	console.log(props)
 	let self = this;
 	let socket = props.data.socket;
-	let lang = props.lang;
-	let dispatch = props.data.dispatch;
+	let lang = props.data.lang;
+	let dispatch = props.dispatch;
 	let dispatch_nr = 0;
-	let rabbit_array = props.data.rabbit_array;	
+	let rabbit_array = props.rabbitArray;	
 	let lane_list = [];
 	let rabbit_list = [];
 	
@@ -517,7 +519,7 @@ function race_game(props){
 				rabbit_list = self.get_rabbits(lane_list);
 				self.background();
 				self.draw_rabbits('sit');
-				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");				
+				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
 				setTimeout(function(){
 					self.counter(3);
 				}, 500);
@@ -954,21 +956,19 @@ function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
 }
 
 function RaceGame(props){
-	let lang = props.lang;
-	setTimeout(function(){	
+	useEffect(() => {
 		let my_race = new race_game(props);
 		my_race.ready();	
 		$(window).resize(function(){
 			my_race.ready("resize");	
 		});
-	}, 0);	
-
+	}, []); 
 	return (
 		<div className="race_container">
 			<canvas className="shadow_convex" id="race_canvas"></canvas>
 			<div id="race_order_container" className="shadow_convex">
 				<div id="race_order_box">
-					<h3>{lang === "ro" ? <span>Ordine</span> : <span>Order</span>}</h3>
+					<h3>{props.lang === "ro" ? <span>Ordine</span> : <span>Order</span>}</h3>
 					<div id="race_order"></div>
 				</div>
 			</div>
@@ -976,30 +976,17 @@ function RaceGame(props){
 	)
 }
 
-class RaceTables extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			money: props.data.money,
-			socket: props.data.socket,
-			user: props.data.user,
-			get_data: props.get_data,
-			rabbit_array: this.props.data.rabbit_array,
-		};
-		
-		this.check_bets = this.check_bets.bind(this);
-		this.race_start = this.race_start.bind(this);
-		this.race_clear_bets = this.race_clear_bets.bind(this);
+function RaceTables(props){
+	let lang = props.data.lang;
+	let socket = props.data.socket;
+	const [rabbitArray, setRabbitArray] = useState(props.rabbitArray);
+	const carousel = useRef(null);
 
-		this.carousel = React.createRef();
-	}
-
-	check_bets(){
+	function check_bets(){
 		//check to see if at least one rabbit has a bet
 		let start = false;
-		let rabbit_array = this.state.rabbit_array;
-		for(let i in rabbit_array){
-			if(rabbit_array[i].bet > 0){
+		for(let i in rabbitArray){
+			if(rabbitArray[i].bet > 0){
 				start = true;
 				break;
 			}
@@ -1007,14 +994,14 @@ class RaceTables extends Component {
 		return start;
 	}
 
-	race_start(){
-		let item_list_changed = this.carousel.current.item_list_changed
-		this.setState({ rabbit_array: item_list_changed })		
-		let start = this.check_bets();				
+	function race_start(){
+		let item_list_changed = carousel.current.item_list_changed
+		setRabbitArray(item_list_changed);
+		let start = check_bets();				
 		if(start){
-		 	this.state.get_data(this.state.rabbit_array);
+		 	props.get_data(rabbitArray);
 		} else {
-		 	if(this.props.lang === "ro"){
+		 	if(props.lang === "ro"){
 		 		showResults("", "Pariati pe un iepure pentru a intra in joc.");	
 		 	} else {
 				showResults("", "Please place your bet before playing.");	
@@ -1022,119 +1009,92 @@ class RaceTables extends Component {
 		}
 	}
 
-	race_clear_bets(){
-		let rabbit_array = this.state.rabbit_array;
-		for(let i in rabbit_array){
-			rabbit_array[i].bet = 0;
+	function race_clear_bets(){
+		let array = rabbitArray;
+		for(let i in array){
+			array[i].bet = 0;
 		}
-		this.setState({ rabbit_array: rabbit_array })
+		setRabbitArray(array);
 		if($(".race_input").length>0){
 			$(".race_input").val(0)
 		}
 	}
-
-	render() {
-		let self_race_tables = this;
-		let lang = self_race_tables.props.lang;
-		let rabbit_array = self_race_tables.state.rabbit_array;
-		return (
-			<>
-				<Row>
-					<Col sm={2}></Col>
-					<Col xs={10} sm={8} className="race_table_container spacing_small">						
-						<Row>
-							<Col sm={12}>
-								<div className="race_table_header shadow_convex">
-									<h3>
-										{lang === "ro" ? <p>Lista iepuri</p> : <p>Rabbit list</p>}
-									</h3>
+	
+	return (
+		<>
+			<Row>
+				<Col sm={2}></Col>
+				<Col xs={10} sm={8} className="race_table_container spacing_small">						
+					<Row>
+						<Col sm={12}>
+							<div className="race_table_header shadow_convex">
+								<h3>
+									{lang === "ro" ? <p>Lista iepuri</p> : <p>Rabbit list</p>}
+								</h3>
+							</div>
+							<div className="race_table_body_container">
+								<div className="race_table_body shadow_convex">
+									<Carousel ref={carousel} template="race" lang={lang} socket={socket} user={props.data.user} item_list={rabbitArray} money={props.data.money}></Carousel>
 								</div>
-								<div className="race_table_body_container">
-									<div className="race_table_body shadow_convex">
-										<Carousel ref={this.carousel} template="race" lang={lang} socket={this.state.socket} user={this.state.user} item_list={rabbit_array} money={this.state.money}></Carousel>
-									</div>
-								</div>
-							</Col>
-						</Row>
-						<Row>				
-							<Col sm={12} className="race_bets_container shadow_convex">
-								<div className="race_text_box">
-									{lang === "ro" ? 
-										<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{this.state.money} morcovi</span></p> : 
-										<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{this.state.money} carrots</span></p>
-									}
-								</div>
-								<div className="race_buttons_box">
-									<div onClick={()=>{this.race_start()}} className="race_start shadow_convex" id="race_start">START</div>
-									<div onClick={()=>{this.race_clear_bets()}} className="race_clear_bets shadow_convex" id="race_clear_bets"><i className="fa fa-trash"></i></div>
-								</div>
-							</Col>
-						</Row>
-					</Col>
-					<Col sm={2}></Col>
-				</Row>
-			</>
-		)
-	}
+							</div>
+						</Col>
+					</Row>
+					<Row>				
+						<Col sm={12} className="race_bets_container shadow_convex">
+							<div className="race_text_box">
+								{lang === "ro" ? 
+									<p className="slot_buttons_box_cell slot_buttons_box_text">Ai: <span>{props.data.money} morcovi</span></p> : 
+									<p className="slot_buttons_box_cell slot_buttons_box_text">You have: <span>{props.data.money} carrots</span></p>
+								}
+							</div>
+							<div className="race_buttons_box">
+								<div onClick={()=>{race_start()}} className="race_start shadow_convex" id="race_start">START</div>
+								<div onClick={()=>{race_clear_bets()}} className="race_clear_bets shadow_convex" id="race_clear_bets"><i className="fa fa-trash"></i></div>
+							</div>
+						</Col>
+					</Row>
+				</Col>
+				<Col sm={2}></Col>
+			</Row>
+		</>
+	)
 }
 
-class Race extends Component {	
-	constructor(props) {
-		super(props);
-		this.state = {
-			socket: props.socket,
-			rabbit_array: [],
-			ready: false,
-			start_race: false,
-			user: props.info,
-			id: -1,
-			money:0,
-			lang: props.lang,
-			dispatch: props.dispatch,
-	  	};
-		this.get_data = this.get_data.bind(this);
-	}	
-
-	componentDidMount() {
-		let self = this;
-		self.state.dispatch(game_page("race"));
-		let id = parseInt(getCookie("casino_id"));
-		let uuid = parseInt(getCookie("casino_uuid"));
-		if(id === "" || id === "indefined"){
-			id = -1;
-		}
-		let payload = {id: id, uuid: uuid, user: this.state.user}
-		this.state.socket.emit('race_board_send', payload);
-		this.state.socket.on('race_board_read', function(data){
-			self.setState({ rabbit_array: data.rabbit_race })		
-			self.setState({ money: data.money })
-			self.setState({ id: data.id })
-			self.setState({ ready: true })
+function Race(props){
+	let dispatch = useDispatch();
+	const [rabbitArray, setRabbitArray] = useState([]);	
+	const [ready, setReady] = useState(false);	
+	const [startRace, setStartRace] = useState(false);
+	let socket = props.info.socket;
+	
+	useEffect(() => {
+		dispatch(game_page("race"));
+		socket.emit('race_board_send', {id: props.info.id, uuid: props.info.uuid});
+		socket.on('race_board_read', function(data){
+			if(data && data.rabbit_race){
+				setRabbitArray(data.rabbit_race);
+			}
+			setReady(true);
 		});
+	}, []);  
+	
+	function get_data(){
+		setStartRace(true);
 	}
 	
-	get_data = function(rabbit_array){
-		this.setState({ rabbit_array: rabbit_array })
-		this.setState({ start_race: true })
-	}
-
-	render() {		
-		let lang = this.props.lang
-		let start_race = this.state.start_race; 
-		return (
-			<>
-				{(() => {
-					if (this.state.ready) {
-						if (start_race) {
-							return <RaceGame lang={lang} data={this.state}></RaceGame>
-						} else {
-							return <RaceTables lang={lang} data={this.state} get_data={this.get_data}></RaceTables>
-						}						
-					} else {return null}
-				})()}
-			</>
-	  	)
-	}
+	return (
+		<>
+			{(() => {
+				if (ready) {
+					if (startRace) {
+						return <RaceGame data={props.info} rabbitArray={rabbitArray} dispatch={dispatch}></RaceGame>
+					} else {
+						return <RaceTables data={props.info} rabbitArray={rabbitArray} get_data={get_data} dispatch={dispatch}></RaceTables>
+					}						
+				} else {return null}
+			})()}
+		</>
+	)
 }
 
 export default Race;

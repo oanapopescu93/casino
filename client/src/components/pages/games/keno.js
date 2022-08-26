@@ -15,7 +15,18 @@ function Keno(props){
 	const [title, setTitle] = useState("");
 
 	useEffect(() => {
-		
+		if (window.innerWidth >= 960){
+			setTitle("Keno");		
+		} else {
+			setTitle("");
+		}
+		$(window).resize(function(){
+			if (window.innerWidth >= 960){
+				setTitle("Keno");		
+			} else {
+				setTitle("");
+			}
+		});
 	}, []); 
 
 	return (

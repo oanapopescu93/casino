@@ -87,7 +87,7 @@ class Carousel extends Component {
 		}
 	}
 
-	decrease(t, e){
+	decrease(t, e){		
 		let target = $(e.target);
 		let item_list = this.state.item_list;
 		let input = target.closest('.bet_container').find('.race_input');

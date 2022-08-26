@@ -28,10 +28,12 @@ function About(props){
                                 <li>Ruleta americana si europeana</li>
                                 <li>Blackjack</li>
                                 <li>Pacanele</li>
-                                <li>Craps</li>
+                                <li>Craps (un fel de Barbut)</li>
                                 <li>Curse</li>
+                                <li>Keno</li>
                             </ul>
                             <p>Totul este facut cu Javascript, HTML Canvas, ReactJS, NodeJS, MySQL</p>
+                            <p>Sper ca va place proiectul</p>
                         </div> : 
                         <div className="about_container">
                             <p>This is a pet project</p>
@@ -42,8 +44,10 @@ function About(props){
                                 <li>Slots</li>
                                 <li>Craps</li>
                                 <li>Race</li>
+                                <li>Keno</li>
                             </ul>
                             <p>Everything is made with Javascript, HTML Canvas, ReactJS, NodeJS, MySQL</p>
+                            <p>I hope you like the project</p>
                         </div>
                     }
                     </Col>

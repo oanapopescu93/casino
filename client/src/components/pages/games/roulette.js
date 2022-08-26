@@ -1,7 +1,7 @@
-import React, { useState}from 'react';
+import React, { useEffect, useState }from 'react';
+import {connect, useDispatch} from 'react-redux'
 import $ from 'jquery';
 import {roulette_calculate_money, roulette_get_history} from '../../actions/actions'
-import {connect} from 'react-redux'
 import { get_roulette_bets, showResults } from '../../utils'
 import carrot_img from '../../img/icons/carrot_icon.png';
 
@@ -98,7 +98,7 @@ function roulette_game(props){
 	}
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
-		canvas = document.getElementById("roulette_canvas");		
+		canvas = document.getElementById("roulette_canvas");	
 		ctx = canvas.getContext("2d");
 		
 		if (window.innerWidth < 960){
@@ -1170,7 +1170,7 @@ function isInside(mousePos, obj){
 function Roulette(props) {
 	const [title, setTitle] = useState('');
 
-	setTimeout(function(){
+	useEffect(() => {
 		let table = props.info.table;
 		table = table.charAt(0).toUpperCase() + table.slice(1);
 		if (window.innerWidth >= 960){
@@ -1192,7 +1192,7 @@ function Roulette(props) {
 				my_roulette_bets.ready('resize');
 			}
 		});
-	}, 0);
+	}, []);
 	
 	return (
 		<>

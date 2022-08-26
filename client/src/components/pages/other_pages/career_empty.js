@@ -8,11 +8,9 @@ import { useDispatch } from 'react-redux'
 function Career(props){
     let lang = props.info.lang;
     let dispatch = useDispatch();
-
     function handleBack() {
         dispatch(game_visible("game"))
     }
-
 	return (
         <>
             <Row>

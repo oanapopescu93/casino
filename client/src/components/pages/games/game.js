@@ -29,24 +29,24 @@ function Game(props){
 						switch (props.info.game) {
 							case "roulette":
 								return (
-									<Roulette lang={props.lang} info={info} socket={props.socket}></Roulette>
+									<Roulette lang={props.info.lang} info={info} socket={props.info.socket}></Roulette>
 								)
 							case "blackjack":
 								return (
-									<Blackjack lang={props.lang} info={info} socket={props.socket}></Blackjack>
+									<Blackjack lang={props.info.lang} info={info} socket={props.info.socket}></Blackjack>
 								)	
 							case "slots":
 								return (
-									<Slot lang={props.lang} info={info} socket={props.socket}></Slot>
+									<Slot lang={props.info.lang} info={info} socket={props.info.socket}></Slot>
 								)
 							case "craps":								
 								return (
-									<Craps lang={props.lang} info={info} socket={props.socket}></Craps>
+									<Craps lang={props.info.lang} info={info} socket={props.info.socket}></Craps>
 								)
 							default:
 								return(
 									<div>
-										{props.lang === "ro" ? 
+										{props.info.lang === "ro" ? 
 											<>
 												<p>Eroare</p>
 												<Button className="button_table shadow_convex" type="button" onClick={handleBack}>Inapoi</Button>
@@ -63,7 +63,7 @@ function Game(props){
 				</div>
 			) : (
 				<div>
-					{props.lang === "ro" ? <span>Nu exista user</span> : <span>No user</span>}	
+					{props.info.lang === "ro" ? <span>Nu exista user</span> : <span>No user</span>}	
 				</div>
 			)}			
 		</div>

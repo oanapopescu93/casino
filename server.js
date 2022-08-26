@@ -60,6 +60,11 @@ var rabbit_delay = [40, 20] //max, min
 let sign_in_up = false;
 app.use(routes);
 
+// database_config.sql = "SELECT login_history.*, casino_users.user FROM login_history, casino_users";
+// database(database_config).then(function(data){	
+// 	console.log('data--> ', data)
+// });
+
 function getData(choice=null, id=null){
 	return new Promise(function(resolve, reject){
 		if(choice == 'user' && id){
@@ -231,11 +236,13 @@ io.on('connection', function(socket) {
 
 	socket.on('username', function(payload) {
 		let id = payload.id;
+		let uuid = payload.uuid;
 		let user = payload.user;
 		let user_table = payload.user_table.split(' ').join('_');
 		user_table = user_table.toLowerCase();
 		
 		socket.user_id = id;
+		socket.user_uuid = id;
 		socket.user = user;
 		socket.user_table = user_table;
 	
@@ -264,8 +271,7 @@ io.on('connection', function(socket) {
 			sockets.push(socket);
 			users[socket.user] = socket;			
 			
-			if(typeof user !== "undefined" && user !== ""){
-				io.to(room_name).emit('is_online', user);
+			if(typeof uuid !== "undefined" && typeof uuid !== "null" && typeof uuid !== null && uuid !== ""){
 				io.to(room_name).emit('chatlist', user_join);
 			}			
 		}catch(e){
@@ -906,7 +912,7 @@ io.on('connection', function(socket) {
 					first_enter_salon = true;
 				}
 
-				let obj = {server_tables: server_tables, uuid: uuid, user: user, money: money, first_enter_salon: first_enter_salon};
+				let obj = {server_tables: server_tables, uuid: uuid, user: user, money: money, first_enter_salon: first_enter_salon, contact: contact_details };
 				sign_in_up = false;	
 
 				try{				
@@ -925,18 +931,25 @@ io.on('connection', function(socket) {
 	}
 
 	function check_streak(result){
-		const ONE_DAYS_MILLIS = 1000 * 60 * 60 * 24;
+		const DAYS = 2;
+		const DAY_SPAN = DAYS * 24;
 		let streak = 1;
+
 		for(let i = 0; i < result.length-1; i++){
 			let date01 = new Date(parseInt(result[i].login_date));
 			var day01 = date01.getDate();			
 			let date02 = new Date(parseInt(result[i+1].login_date));
 			var day02 = date02.getDate();
 			let period = parseInt(result[i+1].login_date)-parseInt(result[i].login_date);
+			let hours = period / 3600000
 
-			if(period < 2 * ONE_DAYS_MILLIS && day01 != day02){ // less then two days span, but not the same day
+			if(hours < DAY_SPAN && day01 != day02){
+				// less then two days span, but not the same day
 				streak++;
+			} else if(hours < DAY_SPAN && day01 == day02){
+				// he logged again in the same day
 			} else {
+				// he missed a day or more
 				streak = 1;
 			}
 		}
@@ -951,6 +964,7 @@ io.on('connection', function(socket) {
 			let money = latest.money ? latest.money : 0;
 			let profile_pic = latest.profile_pic;
 			let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
+			let streak = 1;
 
 			if(result && result.length>0){
 				streak = check_streak(result);

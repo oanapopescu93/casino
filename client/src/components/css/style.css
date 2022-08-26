@@ -18,7 +18,7 @@ html{
 }
 body{
 	background:var(--green);
-	color:black;
+	color:var(--yellow);
 	font-family: 'Roboto Condensed';
 	min-height: 100% !important;
     position: relative;
@@ -2062,7 +2062,10 @@ table {
 	width:100%;
 	max-width: 200px;
 	text-align: left;
-	display: inline-block; 
+	display: inline-block; 	
+}
+.about_box li{
+	list-style-type: circle;
 }
 
 /* Career */

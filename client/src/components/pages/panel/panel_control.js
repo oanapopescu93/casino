@@ -10,13 +10,13 @@ import ChatForm from './chatForm'
 import carrot_img from '../../img/icons/carrot_icon.png';
 
 function Panel(props){
-    let lang = props.lang;
-    let socket = props.socket;
+    let lang = props.info.lang;
+    let socket = props.info.socket;
     let user = props.info.user;
     let type = props.info.type;
     let user_table = props.info.user_table;
     let money = props.info.money;
-    let steak = props.info.steak ? props.info.steak : 1;
+    let steak = props.info.streak ? props.info.streak : 1;
     let dispatch = useDispatch();    
 
     const [show, setShow] = useState(false);

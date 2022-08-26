@@ -7,8 +7,8 @@ import { game_page } from '../../actions/actions';
 import { useDispatch } from 'react-redux'
 
 function UserAccount(props){
-	let lang = props.lang;
-	let socket = props.socket;
+	let lang = props.info.lang;
+	let socket = props.info.socket;
 	const [visible, setVisible] = useState(true);
 	const [profileActive, setProfileActive] = useState("active");
 	const [marketActive, setMarketActive] = useState("");

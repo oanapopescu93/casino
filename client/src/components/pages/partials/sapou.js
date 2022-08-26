@@ -4,23 +4,17 @@ import Col from 'react-bootstrap/Col'
 import logo_icon from '../../img/logo.png';
 
 function Sapou(props){
-    var page = props.page; 
-    var lang = props.lang;		
-	if(lang === ''){
-		lang = "eng";
-	} 
-
 	return (
         <>
             {(() => {
-                switch (page) {
+                switch (props.page) {
                     case "home":
                         return (
                             <Row>
                                 <Col sm={12}>
                                     <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                                     <h1>BunnyBet</h1>
-                                    {lang === "ro" ? <h4>Indrazneste sa prinzi iepurele</h4> : <h4>Dare catch the rabbit</h4>} 
+                                    {props.lang === "ro" ? <h4>Indrazneste sa prinzi iepurele</h4> : <h4>Dare catch the rabbit</h4>} 
                                 </Col>
                             </Row>
                         ) 
@@ -30,7 +24,7 @@ function Sapou(props){
                                 <Col sm={12} className="color_yellow">
                                     <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                                     <h1>BunnyBet</h1>
-                                    {lang === "ro" ? <h4>Donatii</h4> : <h4>Donations</h4>} 
+                                    {props.lang === "ro" ? <h4>Donatii</h4> : <h4>Donations</h4>} 
                                 </Col>
                             </Row>
                         ) 
@@ -40,7 +34,7 @@ function Sapou(props){
                                 <Col sm={12}>
                                     <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                                     <h1>BunnyBet</h1>
-                                    {lang === "ro" ? <h4>Recuperare</h4> : <h4>Recovery</h4>}                                    
+                                    {props.lang === "ro" ? <h4>Recuperare</h4> : <h4>Recovery</h4>}                                    
                                 </Col>
                             </Row>
                         ); 
@@ -51,7 +45,7 @@ function Sapou(props){
                                     <a href="/">
                                         <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                                         <h1>BunnyBet</h1>
-                                        {lang === "ro" ? <h3>Salon</h3> : <h3>Welcome to the salon</h3>}                                        
+                                        {props.lang === "ro" ? <h3>Salon</h3> : <h3>Welcome to the salon</h3>}                                        
                                     </a>								
                                 </Col>
                             </Row>      

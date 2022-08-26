@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button'
 function Support(props){
     let lang = props.info.lang;
 	let socket = props.info.socket;
-	const [contact, setContact] = useState(true);
+	let contact = props.info.contact;
     let dispatch = useDispatch();
     const support_email_red = useRef();
     const support_message_red = useRef();
@@ -18,15 +18,6 @@ function Support(props){
 
 	useEffect(() => {
 		dispatch(game_page('user_account'));	
-		socket.emit('contact_send', "contact");
-		socket.on('contact_read', function(data){
-            if(data){
-                setContact(data)
-            }
-		});	
-		return () => {
-		  //console.log('useEffect2 ')
-		};
 	}, []); 
 
     function submit(event){

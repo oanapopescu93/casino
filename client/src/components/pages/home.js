@@ -79,7 +79,7 @@ function Home(props){
 							<BrowserRouter>					
 								<Switch>			
 									<Route path="/table/:name">
-										<UserPage lang={lang} socket={socket} dispatch={dispatch}></UserPage>
+										<UserPage choice="game" lang={lang} socket={socket} dispatch={dispatch}></UserPage>
 									</Route>
 									<Route path="/salon">
 										<Salon lang={lang} socket={socket}></Salon>
