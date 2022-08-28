@@ -19,8 +19,8 @@ function UserPage(props){
 
 	useEffect(() => {
 		userPageData().then(res => {
-			if(res !== null && !isEmpty(res.uuid)){	
-				let payload = {id: res.id, uuid: res.uuid, user: res.user, user_table: res.table, user_type: res.type, time: new Date().getTime(), lang: lang}
+			if(res !== null && !isEmpty(res.uuid)){
+				let payload = {id: res.id, uuid: res.uuid, user: res.user, user_table: res.user_table, user_type: res.type, time: new Date().getTime(), lang: lang}
 				socket.emit('username', payload);
 				if(res.uuid && typeof $('#chatmessages') !== "undefined"){
 					if(lang === "ro"){
@@ -56,7 +56,7 @@ function UserPage(props){
 							let table_split = data.user_table.split('_');
 							data.table = table_split[0] + ' ' + table_split[1];
 							data.type = table_split[2];	
-						}			
+						}
 						setData(data);
 						resolve(data);	
 					} else {

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import $ from 'jquery'; 
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {game_visible} from '../../actions/actions'
 
 import Container from 'react-bootstrap/Container'
@@ -10,14 +10,14 @@ import Col from 'react-bootstrap/Col'
 import ukraine from '../../img/icons/ukraine.svg';
 
 function Footer(props){
-	var dispatch = props.dispatch;
-	var lang = props.lang;
+	let dispatch = useDispatch();	
+	let lang = props.lang;
 
-	var date = new Date();
+	let date = new Date();
 	date = date.getFullYear();
-
-	setTimeout(function(){ 	
-		var existCondition = setInterval(function () {		
+	
+	useEffect(() => {
+		let existCondition = setInterval(function () {		
 			if ($('#salon').length > 0) {
 				clearInterval(existCondition);
 				$('.footer_container').show();
@@ -33,7 +33,7 @@ function Footer(props){
         $('.footer_button').off('click').on('click', function(event) {
 			$('.footer_container').toggleClass('open');
 		});
-	}, 0);
+	}, []); 
 
 	function handleClick(link) {
 		dispatch(game_visible(link))
@@ -55,7 +55,7 @@ function Footer(props){
 								<li onClick={() => handleClick('privacy')}>{lang === "ro" ? <span>Politica de confidentialitate</span> : <span>Privacy policy</span>}</li>
 								<li onClick={() => handleClick('questions')}>{lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</li>
 								<li onClick={() => handleClick('career')}>{lang === "ro" ? <span>Cariera</span> : <span>Career</span>}</li>
-								<li><img id="ukraine_icon" alt="ukraine_icon" src={ukraine} style={{"width": "20px"}}></img></li>
+								<li><a target="_blank" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine"><img id="ukraine_icon" alt="ukraine_icon" src={ukraine} style={{"width": "20px"}}></img></a></li>
 							</ul>
 						</Col>
 					</Row>
@@ -70,8 +70,4 @@ function Footer(props){
 	);
 }
 
-function mapStateToProps(state) {	
-	return { ...state }
-}
-
-export default connect(mapStateToProps)(Footer)
+export default Footer;

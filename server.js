@@ -234,6 +234,7 @@ io.on('connection', function(socket) {
 		let id = payload.id;
 		let uuid = payload.uuid;
 		let user = payload.user;
+		console.log('payload ', payload)
 		let user_table = payload.user_table.split(' ').join('_');
 		user_table = user_table.toLowerCase();
 		

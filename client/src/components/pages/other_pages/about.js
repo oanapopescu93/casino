@@ -47,6 +47,7 @@ function About(props){
                                 <li>Keno</li>
                             </ul>
                             <p>Everything is made with Javascript, HTML Canvas, ReactJS, NodeJS, MySQL</p>
+							<p>I used Heroku and db4free.net</p>
                             <p>I hope you like the project</p>
                         </div>
                     }
