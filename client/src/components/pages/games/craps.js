@@ -275,7 +275,7 @@ function Craps(props){
 				</p>
 			</div>`;
 			let text = bigText("craps_rules", lang, pay_table);
-			showResults("Rules", text, 400);
+			showResults("Reguli", text, 400);
 		} else {
 			let pay_table = `
 			<div id="craps_rules" class="craps_rules">
@@ -317,9 +317,8 @@ function Craps(props){
 				</p>
 			</div>`;
 			let text = bigText("craps_rules", lang, pay_table);
-			showResults("Craps rules", text, 400);
+			showResults("Rules", text, 400);
 		}
-		
 	}
 
 	function check_win_lose(win, bet){		

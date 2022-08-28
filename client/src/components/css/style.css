@@ -2255,7 +2255,6 @@ table {
 	color:var(--game_button_border);
 }
 
-/* buuuu */
 .dice_container{
 	display:inline-block;
 	vertical-align:middle;
@@ -2359,7 +2358,6 @@ table {
 	text-align: left;
 }
 
-/* buuuu */
 .craps_board_container{
 	display:inline-block;
 	vertical-align:middle;
@@ -2381,6 +2379,17 @@ table {
 	padding:10px;
 	cursor: default;
 	overflow-y:auto;
+}
+#craps_rules_button{
+	cursor: pointer;
+}
+
+/* KENO */
+#keno_canvas{
+	cursor: pointer;
+}
+#keno_rules_button{
+	cursor: pointer;
 }
 
 /* Profile pics */
