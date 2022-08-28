@@ -35,8 +35,8 @@ class Carousel extends Component {
 				"eng": {"delay": "Delay: ","health": "Health: ","bet": "Bet: ","place": "Place: ",}
 			},
 			"market": {
-				"ro": {"delay": "Intarziere: ","health": "Sanatate: ","bet": "Pariaza: ","place": "Loc: ",},
-				"eng": {"delay": "Delay: ","health": "Health: ","bet": "Bet: ","place": "Place: ",}
+				"ro": {"value": "Valoare","quantity": "Cantitate","price": "Pret","buy": "Click",},
+				"eng": {"value": "Value","quantity": "Quantity","price": "Price","buy": "Buy",},
 			}
 		}
 
@@ -65,6 +65,7 @@ class Carousel extends Component {
 				rabbit_box_text.each(function() {
 					let type = $(this).attr('type');
 					let text = self.text[template][lang][type];
+					console.log('xxx ', $(this), template, lang, type, self.text[template][lang][type])
 					$(this).text(text);
 				  });
 			}		
@@ -252,13 +253,12 @@ class Carousel extends Component {
 														)
 													})()}    
 													<h3>{item.name}</h3>
-													<p>{lang === "ro" ? <span>Valoare: </span> : <span>Value: </span>}<b>{item.value}</b></p>
-													<p>{lang === "ro" ? <span>Cantitate: </span> : <span>Quantity: </span>}<b>{item.quantity}</b></p>
-													<p>{lang === "ro" ? <span>Pret: </span> : <span>Price: </span>}<b>{item.value}</b></p>
-													{lang === "ro" ? 
-														<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => self.my_click(id)}>Click</Button> : 
-														<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => self.my_click(id)}>Buy</Button>
-													}										
+													<p>{lang === "ro" ? <span className="rabbit_box_text" type="value">Valoare</span> : <span className="rabbit_box_text" type="value">Value</span>} : <b>{item.value}</b></p>
+													<p>{lang === "ro" ? <span className="rabbit_box_text" type="quantity">Cantitate</span> : <span className="rabbit_box_text" type="quantity">Quantity</span>}<b>{item.quantity}</b></p>
+													<p>{lang === "ro" ? <span className="rabbit_box_text" type="price">Pret</span> : <span className="rabbit_box_text" type="price">Price</span>}<b>{item.value}</b></p>
+													<Button className="button_table shadow_convex" id="item01" type="button" onClick={() => self.my_click(id)}>
+														{lang === "ro" ? <span className="rabbit_box_text" type="buy">Click</span> : <span className="rabbit_box_text" type="buy">Buy</span>}
+													</Button>								
 												</div>
 											</div>												
 										)

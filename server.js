@@ -60,11 +60,6 @@ var rabbit_delay = [40, 20] //max, min
 let sign_in_up = false;
 app.use(routes);
 
-// database_config.sql = "SELECT login_history.*, casino_users.user FROM login_history, casino_users";
-// database(database_config).then(function(data){	
-// 	console.log('data--> ', data)
-// });
-
 function getData(choice=null, id=null){
 	return new Promise(function(resolve, reject){
 		if(choice == 'user' && id){
@@ -101,7 +96,8 @@ io.on('connection', function(socket) {
 	}
 	socket.on('signin_send', function(data) {
 		sign_in_up = false;
-		let uuid = crypto.randomUUID();
+		let uuid = crypto.randomBytes(20).toString('hex');
+		
 		database_config.sql = "SELECT * FROM casino_users";
 		database(database_config).then(function(result){
 			users_json = result;
@@ -160,7 +156,7 @@ io.on('connection', function(socket) {
 			if(result && result.length == 0){
 				sign_in_up = true;	
 				let pass = JSON.stringify(encrypt(data.pass));
-				let uuid = crypto.randomUUID();
+				let uuid = crypto.randomBytes(20).toString('hex');
 
 				get_extra_data().then(function(data1) {				
 					let extra_data = {

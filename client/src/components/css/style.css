@@ -1032,7 +1032,7 @@ table {
 	background-position: center;
 	background-size: 100% auto;
 	background-repeat: no-repeat;
-	height:80px;
+	height:115px;
 	margin-bottom: -20px;
 	position: relative;
 	z-index:2;
@@ -2576,6 +2576,9 @@ table {
 	.rabbit_box_info, .rabbit_box_input{
 		width:100%;
 		min-height:auto;
+	}
+	.shop_shader{
+		height:80px;
 	}
 }
 @media (max-width: 960px){
