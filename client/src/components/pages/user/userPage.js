@@ -21,7 +21,7 @@ function UserPage(props){
 		userPageData().then(res => {
 			if(res !== null && !isEmpty(res.uuid)){
 				let payload = {id: res.id, uuid: res.uuid, user: res.user, user_table: res.user_table, user_type: res.type, time: new Date().getTime(), lang: lang}
-				socket.emit('username', payload);
+				socket.emit('join_room', payload);
 				if(res.uuid && typeof $('#chatmessages') !== "undefined"){
 					if(lang === "ro"){
 						$('#chatmessages').append('<p class="user_join">' + res.user + ' e online</p>');

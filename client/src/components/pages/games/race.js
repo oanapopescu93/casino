@@ -890,15 +890,14 @@ function race_game(props){
 
 	this.pay = function(win_lose){
 		let money = win_lose[win_lose.length-1].money_history;
-		//let date = new Date();
-		//let history = {where: "race", when: date, data: win_lose}			
 		let race_payload_server = {
-			user_id: props.data.id,
-			//user: props.data.user, 
-			money: money,
-			//history: JSON.stringify(history)
+			user_id: props.data.id, 
+			user_uuid: props.data.uuid, 
+			user_table: props.data.user_table, 
+			money: money
 		}
 		socket.emit('race_results_send', race_payload_server);
+		socket.emit('results_send', race_payload_server);
 	}
 
 	this.check_rabbits = function(line){

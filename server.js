@@ -60,18 +60,25 @@ var rabbit_delay = [40, 20] //max, min
 let sign_in_up = false;
 app.use(routes);
 
-function getData(choice=null, id=null){
+function getData(choice=null, id=null, uuid=null){
 	return new Promise(function(resolve, reject){
-		if(choice == 'user' && id){
-			//get specific user and it's latest login
-			database_config.sql = "SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id AND casino_users.id = " + id + " "
-			database_config.sql += "AND login_history.id = (";
-			database_config.sql += "SELECT login_history.id ";
-			database_config.sql += "FROM login_history ";
-			database_config.sql += "WHERE login_history.user_id = " + id + " ";
-			database_config.sql += "ORDER BY login_history.login_date DESC ";
-			database_config.sql += "LIMIT 1 ";
-			database_config.sql += ")";
+		if(choice == 'user'){
+			if(id){
+				//get specific user and it's latest login
+				database_config.sql = "SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id AND casino_users.id = " + id + " "
+				database_config.sql += "AND login_history.id = (";
+				database_config.sql += "SELECT login_history.id ";
+				database_config.sql += "FROM login_history ";
+				database_config.sql += "WHERE login_history.user_id = " + id + " ";
+				database_config.sql += "ORDER BY login_history.login_date DESC ";
+				database_config.sql += "LIMIT 1 ";
+				database_config.sql += ")";
+			} else if(uuid){
+				//get specific user and it's latest login
+				database_config.sql = 'SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id where casino_users.uuid = "' + uuid + '" ';
+				database_config.sql += "ORDER BY login_history.login_date DESC ";
+				database_config.sql += "LIMIT 1 ";
+			}
 		} else if(choice == 'latest' && id){
 			//get specific user all latest login
 			database_config.sql = "SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id AND casino_users.id = " + id + " "
@@ -230,7 +237,7 @@ io.on('connection', function(socket) {
 		}		
 	});	
 
-	socket.on('username', function(payload) {
+	socket.on('join_room', function(payload) {
 		let id = payload.id;
 		let uuid = payload.uuid;
 		let user = payload.user;
@@ -242,13 +249,7 @@ io.on('connection', function(socket) {
 		socket.user = user;
 		socket.user_table = user_table;
 	
-		let room_name = user_table;
-		if(typeof payload.user_type !== "undefined"){
-			let user_type = payload.user_type;	
-			socket.user_type = user_type;
-			room_name = room_name + '_' + user_type;
-		}
-	
+		let room_name = user_table;	
 		try{
 			socket.join(room_name);
 			
@@ -840,6 +841,17 @@ io.on('connection', function(socket) {
 		}
 	});
 
+	socket.on('results_send', function(data) {
+		let money = data.money;
+		let id = parseInt(data.user_id);
+		let uuid = data.user_uuid;
+		console.log('results_send-->  ', data)
+		if(uuid){
+			getData('user', null, uuid).then(function(data){
+				console.log('getData ', data)
+			});
+		}
+	});
 	socket.on('history_send', function(data) {
 		try{
 			io.emit('history_read', 'oana has appleas');	

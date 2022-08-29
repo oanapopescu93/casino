@@ -476,12 +476,12 @@ function slot_game(props, id){
 
 		let slot_payload_server = {
 			user_id: props.info.id,
-			user: props.info.user, 
+			user_uuid: props.info.uuid,
 			user_table: props.info.user_table, 
-			user_type: props.info.type,
 			money: user_info.money
 		}		
 		socket.emit('slot_results_send', slot_payload_server);
+		socket.emit('results_send', slot_payload_server);
     }
 
 	this.pay = function(pay, win){

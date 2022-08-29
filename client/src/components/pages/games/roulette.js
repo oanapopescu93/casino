@@ -785,12 +785,12 @@ function roulette_game(props){
 
 		let roulette_payload_server = {
 			user_id: props.info.id,
-			user: props.info.user, 
+			user_uuid: props.info.uuid,
 			user_table: props.info.user_table, 
-			user_type: props.info.type,
 			money: user_info.money
 		}
 		socket.emit('roulette_results_send', roulette_payload_server);
+		socket.emit('results_send', roulette_payload_server);
 	}	
 }
 
