@@ -5,19 +5,19 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
-import SalonGames from './games/salon_games'
-import Sapou from './partials/sapou';
+import SalonGames from './salon_games'
+import Sapou from '../partials/sapou';
 
-import About from './other_pages/about';
-import Support from './other_pages/support';
-import Terms from './other_pages/terms';
-import Privacy from './other_pages/privacy';
-import Questions from './other_pages/questions';
-import Career from './other_pages/career_empty';
+import About from '../other_pages/about';
+import Support from '../other_pages/support';
+import Terms from '../other_pages/terms';
+import Privacy from '../other_pages/privacy';
+import Questions from '../other_pages/questions';
+import Career from '../other_pages/career_empty';
 
-import { getCookie, setCookie, showResults, isEmpty } from '../utils';
-import { game_load, game_page } from '../actions/actions';
-import UserPage from './user/userPage';
+import { getCookie, setCookie, showResults, isEmpty } from '../../utils';
+import { game_load, game_page } from '../../actions/actions';
+import UserPage from '../user/userPage';
 
 function Child(props){
 	let visible = useSelector(state => state.visibility);

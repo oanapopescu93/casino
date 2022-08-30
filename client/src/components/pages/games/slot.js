@@ -473,21 +473,14 @@ function slot_game(props, id){
 		} else {
 			self.pay(game_pay, false);
 		}
-
-		let slot_payload_server = {
-			user_id: props.info.id,
-			user_uuid: props.info.uuid,
-			user_table: props.info.user_table, 
-			money: user_info.money
-		}		
-		socket.emit('slot_results_send', slot_payload_server);
-		socket.emit('results_send', slot_payload_server);
     }
 
 	this.pay = function(pay, win){
+		let status = 'win';
 		if(win){
 			user_info.money = user_info.money + pay;
 		} else {
+			status = 'lost';
 			user_info.money = user_info.money - pay;
 		}
 		
@@ -527,6 +520,16 @@ function slot_game(props, id){
 		}
 		let payload = [{bet_value: game_pay, money_history: user_info.money,win: win}];
 		dispatch(slot_get_history(payload));
+
+		let slot_payload_server = {
+			user_id: props.info.id,
+			user_uuid: props.info.uuid,
+			user_table: props.info.user_table, 
+			money: user_info.money,
+			bet: game_pay,
+			status: status,
+		}
+		socket.emit('results_send', slot_payload_server);
 	}
 
 	function sort_array(list_element, sort_by) {

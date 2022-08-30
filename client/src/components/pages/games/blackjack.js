@@ -477,7 +477,9 @@ function blackjack_game(props){
 	}
 
 	this.pay = function(obj){
+		let status = 'win';
 		let payload = [];
+		let money_original = user_info.money;
 		for(let i in blackjack_hand[1]){
 			if(blackjack_hand[1][i].id === props.info.id){				
 				if(obj === "dealer" || obj.id !== blackjack_hand[1][i].id){
@@ -514,13 +516,17 @@ function blackjack_game(props){
 			break;
 		}
 
+		if(money_original > user_info.money){
+			status = "lose"
+		}
 		let blackjack_payload_server = {
 			user_id: props.info.id, 
 			user_uuid: props.info.uuid, 
 			user_table: props.info.user_table, 
-			money: user_info.money
+			money: user_info.money,
+			bet: money_original - user_info.money,
+			status: status,
 		}
-		socket.emit('blackjack_results_send', blackjack_payload_server);
 		socket.emit('results_send', blackjack_payload_server);
 	}
 }

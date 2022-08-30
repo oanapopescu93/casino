@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container'
 
 import '../css/style.css';
 import HomePage from './homePage';
-import Salon from './salon';
+import Salon from './salon/salon';
 import SignInRecovery from './sign/signIn_recovery';
 import NotFound from './other_pages/not_found';
 import UserPage from './user/userPage';

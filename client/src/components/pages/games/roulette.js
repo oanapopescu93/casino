@@ -766,6 +766,8 @@ function roulette_game(props){
 	}
 	
 	this.win_lose = function(arr){
+		let status = 'win';
+		let money_original = user_info.money;
 		if(Object.keys(user_info).length !== 0 || !isNaN(user_info.money)){			
 			for(let i in arr){			
 				if(arr[i].win){		
@@ -783,13 +785,18 @@ function roulette_game(props){
 			}
 		}
 
+		if(money_original > user_info.money){
+			status = "lose"
+		}
+
 		let roulette_payload_server = {
 			user_id: props.info.id,
 			user_uuid: props.info.uuid,
-			user_table: props.info.user_table, 
-			money: user_info.money
+			user_table: props.info.user_table,
+			money: user_info.money,
+			bet: money_original - user_info.money,
+			status: status,
 		}
-		socket.emit('roulette_results_send', roulette_payload_server);
 		socket.emit('results_send', roulette_payload_server);
 	}	
 }

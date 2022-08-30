@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux'
 import {game_page, race_calculate_money, race_get_history} from '../../actions/actions'
-import $ from 'jquery'; 
+import $, { get } from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { showResults } from '../../utils';
@@ -858,6 +858,7 @@ function race_game(props){
 		
 		let get = props.data.money - win_lose[win_lose.length-1].money_history;
 		let remaining_money = win_lose[win_lose.length-1].money_history;
+		let status = 'win';
 
 		dispatch(race_calculate_money(remaining_money));
 		dispatch(race_get_history(win_lose));
@@ -873,6 +874,7 @@ function race_game(props){
 				showResults("Rezultate", "Ai castigat " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
 			} else if(get>0){
 				showResults("Rezultate", "Ai pierdut " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
+				status = "lose"
 			} else {
 				showResults("Rezultate", "Ai " + remaining_money + " morcovi!");
 			}			
@@ -881,22 +883,24 @@ function race_game(props){
 				showResults("Results", "you won " + get + " carrots. You have " + remaining_money + " carrots!");
 			} else if(get>0){
 				showResults("Results", "You lost " + get + " carrots. You have " + remaining_money + " carrots!");
+				status = "lose"
 			} else {
 				showResults("Results", "You have " + remaining_money + " carrots!");
 			}
 		}
-		self.pay(win_lose);	
+		self.pay(win_lose, get, status);	
 	}
 
-	this.pay = function(win_lose){
+	this.pay = function(win_lose, get, status){
 		let money = win_lose[win_lose.length-1].money_history;
 		let race_payload_server = {
 			user_id: props.data.id, 
 			user_uuid: props.data.uuid, 
 			user_table: props.data.user_table, 
-			money: money
+			money: money,
+			bet: get,
+			status: status,
 		}
-		socket.emit('race_results_send', race_payload_server);
 		socket.emit('results_send', race_payload_server);
 	}
 

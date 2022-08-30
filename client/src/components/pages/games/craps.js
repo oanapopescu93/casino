@@ -347,23 +347,21 @@ function Craps(props){
 				setMoneyTotal(win_lose_money - bet);		
 			}
 
-			let win_lose_history = {type: gameType, odds: gameOdds};
+			let win_lose_history = {type: gameType, odds: gameOdds, bet: bet};
 
-			pay(win_lose_money, win_lose_history)			
+			dispatch(craps_calculate_money(win_lose_money));
+			dispatch(craps_get_history(win_lose_history));
+			
+			let craps_payload_server = {
+				user_id: props.info.id, 
+				user_uuid: props.info.uuid, 
+				user_table: props.info.user_table, 
+				money: win_lose_money,
+				bet: bet,
+				status: win,
+			}
+			socket.emit('results_send', craps_payload_server);
 		}
-	}
-	
-	function pay(money, history){
-		dispatch(craps_calculate_money(money));
-		dispatch(craps_get_history(history));
-		let craps_payload_server = {
-			user_id: props.info.id, 
-			user_uuid: props.info.uuid, 
-			user_table: props.info.user_table, 
-			money: money,
-		}
-		socket.emit('craps_results_send', craps_payload_server);
-		socket.emit('results_send', craps_payload_server);
 	}
 
 	function show_on_board(dicesNumber, sum, point){
