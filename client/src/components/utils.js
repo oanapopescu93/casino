@@ -92,6 +92,8 @@ import 	craps_one_roll_3 from './img/craps/hover/craps_one_roll_3.png'
 import 	craps_one_roll_4 from './img/craps/hover/craps_one_roll_4.png'
 import 	craps_any_craps from './img/craps/hover/craps_any_craps.png'
 
+import keno_dirt_01 from './img/keno/keno_dirt_01.png'
+
 export const isEmpty = function (element){
   let empty = true;
   if(typeof element !== "undefined" && element !== 'null' && element !== null && element !== ''){
@@ -339,5 +341,11 @@ export const get_craps_bets = function(){
     {x: 690, y: 340, width:100, height:45, text: "one roll 3", id: "one_roll_3", src: craps_one_roll_3, odds: 2},
     {x: 790, y: 340, width:100, height:45, text: "one roll 4", id: "one_roll_4", src: craps_one_roll_4, odds: 2},
     {x: 690, y: 385, width:200, height:50, text: "any craps", id: "any_craps", src: craps_any_craps, odds: 2},
+  ];
+}
+
+export const get_keno_images = function(){
+  return [
+    {id: 1, src: keno_dirt_01},
   ];
 }

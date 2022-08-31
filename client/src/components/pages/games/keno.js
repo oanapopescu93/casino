@@ -1,7 +1,12 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import $ from 'jquery';
-import { useDispatch } from 'react-redux'
-import { bigText, showResults } from '../../utils';
+import { bigText, get_keno_images, showResults } from '../../utils';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+let my_keno;
+let my_keno_circle;
+let kenoSpotArraySelected = [];
 
 function kenoSpot(config){
 	let self = this;
@@ -11,52 +16,88 @@ function kenoSpot(config){
 	self.space = 5;
 	self.w = config.w - self.space;
 	self.h = config.h - self.space;
+	self.x = config.j * config.w;
+	self.y = config.i * config.h;
+
 	self.color = config.color;
 	self.border = config.border;
 	self.border_color = config.border_color;
 	self.font = config.font;
-	
 
-	self.x = config.j * config.w;
-	self.y = config.i * config.h;
+	self.img = config.img;
+	self.status = config.status;
+	self.selected = config.selected;
+	let image_sise = 245;
 
 	self.draw = function(ctx){
+		ctx.clearRect(self.x-1, self.y-1, self.w+2, self.h+2);
+		ctx.drawImage(self.img, 0, 0, image_sise, image_sise, self.x, self.y, self.w, self.h);
+		if(self.selected){
+			ctx.beginPath();
+			ctx.rect(self.x, self.y, self.w, self.h);
+			ctx.fillStyle = self.color;
+			if(self.border){
+				ctx.lineWidth = self.border;
+				ctx.strokeStyle = self.border_color;
+				ctx.stroke();
+			}		
+			ctx.fill();
+		}
 		ctx.beginPath();
-		ctx.rect(self.x, self.y, self.w, self.h);
-		ctx.fillStyle = self.color;
-		if(self.border){
-			ctx.lineWidth = self.border;
-			ctx.strokeStyle = self.border_color;
-			ctx.stroke();
-		}		
-		ctx.fill();
 		ctx.textAlign="center"; 
 		ctx.textBaseline = "middle";
 		ctx.fillStyle = self.border_color;
 		ctx.font = self.font;
 		ctx.fillText(self.id, self.x + (config.w / 2), self.y + (config.h / 2));
 	}
+
+	self.changeStatus = function(new_status){
+		self.status = new_status;
+	}
+
+	self.changeSelection = function(){
+		if(self.selected){
+			self.selected = false;
+		} else {
+			self.selected = true;
+		}
+	}
 }
 
-function roulette_game(props){
+function keno_game(props){
 	let self = this;
-	let lang = props.lang;
-	let socket = props.socket;
-	const dispatch = props.dispatch;
 	let canvas, ctx;
 	let canvas_width = 900;
 	let canvas_height = 800;
 	let font = 'bold 14px sans-serif';
-	let kenoSpotArray = [];
+	let kenoSpotArray = [];		
 	let how_many_rows = 10;
 	let how_many_columns = 8;
+	this.images = [];
+	let items = get_keno_images();
+	let reason = "";
 	
-	this.ready = function(){
+	this.ready = function(r){
+		reason = r;
 		self.createCanvas(canvas_width, canvas_height);
-		self.KenoBoardCreate();
-		self.KenoBoardDraw();
-		self.keno_click();
-	}
+		if(reason !== "resize"){
+			let promises = [];
+			for(let i in items){				
+				promises.push(self.preaload_images(items[i]));
+			}
+
+			Promise.all(promises).then(function(result){
+				self.images = result;
+				self.KenoBoardCreate();
+				self.KenoBoardDraw();
+				self.KenoBoardClick();
+			});
+		} else {
+			self.KenoBoardCreate();
+			self.KenoBoardDraw();
+			self.KenoBoardClick();
+		}
+	}	
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
 		canvas = document.getElementById("keno_canvas");	
@@ -86,8 +127,19 @@ function roulette_game(props){
 		canvas.height = canvas_height;
 	}
 
+	this.preaload_images = function(item){
+		return new Promise(function(resolve, reject){
+			let image = new Image();
+			image.id = item.id;
+			image.src = item.src;
+			image.addEventListener("load", function() {
+				resolve(image)
+			}, false);
+		});
+	}
+
 	this.KenoBoardCreate = function(){
-		kenoSpotArray = [];
+		let kenoSpotArray_new = [];
 		let number = 0;		
 		for(let i=0; i < how_many_columns; i++){
 			for(let j=0; j < how_many_rows; j++){
@@ -97,16 +149,25 @@ function roulette_game(props){
 					i: i,
 					j: j,
 					w: canvas.width / how_many_rows,
-					h:canvas.height / how_many_columns,
+					h: canvas.height / how_many_columns,
 					color: 'rgba(255, 255, 0, 0.1)',
 					border: 1,
 					border_color: '#ffd700',
 					font: font,
+					img: self.images[0],
+					status: "earth",
+					selected: false,
 				}
+
+				if(kenoSpotArraySelected[number-1]){
+					config.selected = kenoSpotArraySelected[number-1].selected
+				}
+				
 				let box = new kenoSpot(config);
-				kenoSpotArray.push(box);				
+				kenoSpotArray_new.push(box);				
 			}
-		}		
+		}
+		kenoSpotArray = kenoSpotArray_new;
 	}
 
 	this.KenoBoardDraw = function(){
@@ -114,32 +175,54 @@ function roulette_game(props){
 		for(let i in kenoSpotArray){
 			kenoSpotArray[i].draw(ctx);
 		}
-	}
+	}	
 
-	this.keno_click = function(){			
+	this.KenoBoardClick = function(){
 		$('#keno_canvas').off('click').on('click', function(event) {
-			let money = props.info.data.money;
-			if(money>0){
-				self.canvas_click(canvas, event);
-			} else {
-				if(lang === "ro"){
-					showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
-				} else {
-					showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
-				}
-			}
+			self.handleClick(event);
 		});
 	}
 
-	this.canvas_click = function(canvas, event){		
+	this.handleClick = function(event){	
 		let mousePos = getMousePos(canvas, event);
 		for(let i in kenoSpotArray){
-			let obj = kenoSpotArray[i];	
-			if (isInside(mousePos,obj)) {
-				console.log('CLICK--> ', obj)
+			if (isInside(mousePos, kenoSpotArray[i])) {
+				kenoSpotArray[i].changeSelection();
+				kenoSpotArray[i].draw(ctx);
+				if(kenoSpotArray[i].selected){
+					kenoSpotArraySelected.push(kenoSpotArray[i]);
+				} else {
+					for(let j = 0; j < kenoSpotArraySelected.length; j++){                                   
+						if (kenoSpotArraySelected[j].id === kenoSpotArray[i].id) { 
+							kenoSpotArraySelected.splice(j, 1); 
+							j--; 
+						}
+					}
+				}
 				break;
 			} 
-		}	
+		}
+		self.showSelected();
+	}
+
+	this.handleclear = function(){
+		kenoSpotArraySelected = []
+		self.KenoBoardCreate();
+		self.KenoBoardDraw();
+		self.KenoBoardClick();
+	}
+
+	this.showSelected = function(){
+		if($("#keno_your_selected") !== null){
+			$("#keno_your_selected").empty();
+			for(let i in kenoSpotArraySelected){
+				let comma = ', ';
+				if(parseInt(i) === kenoSpotArraySelected.length-1){
+					comma = '';
+				}
+				$("#keno_your_selected").append('<span class="keno_box">' + kenoSpotArraySelected[i].id + comma + '</span>');
+			}
+		}
 	}
 
 	function getMousePos(canvas, event) {
@@ -154,11 +237,104 @@ function roulette_game(props){
 	}
 }
 
+function keno_game_circle(props){
+	let self = this;
+	let canvas, ctx;
+	let canvas_width = 300;
+	let canvas_height = 300;
+	let reason = "";
+	let lang = props.lang;
+	
+	this.ready = function(r){
+		reason = r;
+		self.createCanvas(canvas_width, canvas_height);
+		if(reason !== "resize"){
+			self.drawBigCircle();
+			self.createBalls();
+			self.drawBalls();
+		} else {
+			self.drawBigCircle();
+			self.createBalls();
+			self.drawBalls();
+		}
+	}	
+	
+	this.createCanvas = function(canvas_width, canvas_height){		
+		canvas = document.getElementById("keno_canvas_circle");	
+		ctx = canvas.getContext("2d");
+		
+		if (window.innerWidth < 960){
+			if(window.innerHeight < window.innerWidth){
+				//small landscape				
+				canvas.width = 101;
+				canvas.height = 101;
+			} else {
+				//small portrait
+				canvas.width = 102;
+				canvas.height = 102;
+			}			
+		} else if (window.innerWidth < 1200){
+			//big
+			canvas.width = 300;
+			canvas.height = 300;			
+		} else {
+			//big
+			canvas.width = 500;
+			canvas.height = 500;	
+		}
+		
+		canvas_width = canvas.width;
+		canvas_height = canvas.height;		
+		canvas.height = canvas_height;
+	}
+
+	this.drawBigCircle = function(){
+		let centerX = canvas.width / 2 - 1;
+		let centerY = canvas.height / 2 - 1;
+		let radiusBig = canvas.width / 2 - 1;
+		draw_dot(centerX, centerY, radiusBig, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, '#ffd700');
+	}
+
+	this.createBalls = function(){
+		
+	}
+
+	this.drawBalls = function(){
+		
+	}
+
+	this.start = function(){		
+		if(kenoSpotArraySelected && kenoSpotArraySelected.length>0){
+			self.spin();
+		} else {
+			if(lang === "ro"){
+				showResults("", "Please place your bet before playing.");	
+			} else {
+				showResults("", "Please place your bet before playing.");	
+			}
+		}
+	}
+
+	this.spin = function(){
+		console.log('SPIN', kenoSpotArraySelected)
+	}
+
+	function draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
+		ctx.beginPath();
+		ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
+		ctx.fillStyle = fillStyle;
+		if(strokeStyle !== ""){
+			ctx.lineWidth = lineWidth;
+			ctx.strokeStyle = strokeStyle;
+			ctx.stroke();
+		}		
+		ctx.fill();
+		ctx.closePath();
+	}
+}
+
 function Keno(props){
 	let lang = props.lang;
-	let socket = props.socket;
-	let dispatch = useDispatch();
-
 	const [title, setTitle] = useState("");
 
 	useEffect(() => {
@@ -167,9 +343,11 @@ function Keno(props){
 		} else {
 			setTitle("");
 		}
-
-		let my_keno = new roulette_game(props);
+		
+		my_keno = new keno_game(props);
 		my_keno.ready();
+		my_keno_circle = new keno_game_circle(props);
+		my_keno_circle.ready();
 
 		$(window).resize(function(){
 			if (window.innerWidth >= 960){
@@ -179,6 +357,9 @@ function Keno(props){
 			}
 			if(document.getElementById("keno_canvas") !== null){
 				my_keno.ready('resize');
+			}
+			if(document.getElementById("keno_canvas_circle") !== null){
+				my_keno_circle.ready('resize');
 			}
 		});
 	}, []); 
@@ -201,17 +382,36 @@ function Keno(props){
 		}
 	}
 
+	function game_keno_start(){
+		if(my_keno_circle){
+			my_keno_circle.start();
+		}
+	}
+	function game_keno_clear(){
+		if(my_keno){
+			my_keno.handleclear();
+		}
+	}
+
 	return (
-		<>
-			<div className="keno_container">
-				<h1 className="keno_title">{title}</h1>
-				<p>Under construction</p>
-				<canvas id="keno_canvas"></canvas>
-				{lang === "ro" ? 
-					<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click aici pentru a vedea regulile</p> : 
-					<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click here to see rules</p>}
-			</div>
-		</>
+		<div className="keno_container">
+			<h1 className="keno_title">{title}</h1>
+			<p>Under construction</p>
+			
+			<Row>
+				<Col sm={12}><div id="keno_your_selected"></div></Col>
+			</Row>	
+			<Row>
+				<Col sm={4} className="keno_canvas_circle_container"><canvas id="keno_canvas_circle"></canvas></Col>
+				<Col sm={8} className="keno_canvas_container"><canvas id="keno_canvas"></canvas></Col>
+			</Row>
+			<div id="keno_start" onClick={()=>{game_keno_start()}}>Start</div>		
+			<div id="keno_start" onClick={()=>{game_keno_clear()}}>Clear</div>		
+			
+			{lang === "ro" ? 
+				<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click aici pentru a vedea regulile</p> : 
+				<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click here to see rules</p>}
+		</div>
 	)
 }
 

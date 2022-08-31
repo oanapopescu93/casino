@@ -155,9 +155,9 @@ function Salon(props){
 				setCasinoGames(casino_games)
 				if(res.first_enter_salon){
 					if(lang === "ro"){
-						showResults('Cadou de bun-venit', 'Ai 100 de morcovi cadou de bun-venit.', 300);
+						showResults('Cadou de bun-venit', 'Ai 100 de morcovi cadou de bun-venit.', 600);
 					} else {
-						showResults('Welcome gift', 'First time players get 100 carrots!', 300);
+						showResults('Welcome gift', 'First time players get 100 carrots!', 600);
 					}						
 				}
 			}
