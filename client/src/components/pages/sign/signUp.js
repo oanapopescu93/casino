@@ -102,12 +102,11 @@ function SignUp(props){
 	}
 
 	function submit_form(){
-		return new Promise(function(resolve, reject){
-			setTimeout(function(){
+		setTimeout(function(){
+			if($("#user_form")){
 				$("#user_form").submit();
-				resolve(true);
-			}, 1000);
-		});
+			}
+		}, 1000);
 	}
 	
 	function minor_check(check){

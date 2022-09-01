@@ -92,12 +92,11 @@ function SignIn(props) {
 	}
 	
 	function submit_form(socket, lang){
-		return new Promise(function(resolve, reject){
-			setTimeout(function(){
+		setTimeout(function(){
+			if($("#user_form")){
 				$("#user_form").submit();
-				resolve(true);
-			}, 500);
-		});
+			}
+		}, 1000);
 	}
 	
 	function check_submit(){

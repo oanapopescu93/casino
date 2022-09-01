@@ -25,7 +25,7 @@ function UserPage(props){
 		if(choice === "game"){
 			let table_array = window.location.href.split('table/')
 			table = table_array[1];	
-		}
+		}		
 		if(!isEmpty(casino_uuid)){
 			socket.emit('user_page_send', {table: table, uuid: casino_uuid, lang: lang});
 			socket.on('user_page_read', function(data){
@@ -43,7 +43,7 @@ function UserPage(props){
 							$('#chatmessages').append('<p class="user_join">' + data.user + ' join the chat</p>');
 						}
 					}	
-				} else {
+				} else {					
 					setEmpty(true);
 				}		
 			});	

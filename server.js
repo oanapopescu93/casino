@@ -60,37 +60,6 @@ var rabbit_delay = [40, 20] //max, min
 let sign_in_up = false;
 app.use(routes);
 
-function getData(choice=null, id=null, uuid=null){
-	return new Promise(function(resolve, reject){
-		if(choice == 'user'){
-			if(id){
-				//get specific user and it's latest login
-				database_config.sql = "SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id AND casino_users.id = " + id + " "
-				database_config.sql += "AND login_history.id = (";
-				database_config.sql += "SELECT login_history.id ";
-				database_config.sql += "FROM login_history ";
-				database_config.sql += "WHERE login_history.user_id = " + id + " ";
-				database_config.sql += "ORDER BY login_history.login_date DESC ";
-				database_config.sql += "LIMIT 1 ";
-				database_config.sql += ")";
-			} else if(uuid){
-				//get specific user and it's latest login
-				database_config.sql = 'SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id where casino_users.uuid = "' + uuid + '" ';
-				database_config.sql += "ORDER BY login_history.login_date DESC ";
-				database_config.sql += "LIMIT 1 ";
-			}
-		} else if(choice == 'latest' && id){
-			//get specific user all latest login
-			database_config.sql = "SELECT * FROM casino_users INNER JOIN login_history ON casino_users.id = login_history.user_id AND casino_users.id = " + id + " "
-		} else {
-			database_config.sql = "SELECT casino_users.*, login_history.* FROM casino_users, login_history ";
-		}
-		database(database_config).then(function(result){
-			resolve(result);			
-		});		
-	});	
-}
-
 io.on('connection', function(socket) {
 	let headers = socket.request.headers
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
@@ -201,17 +170,15 @@ io.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('salon_send', function(data) {
-		let id = data[0];
-		let uuid = data[1];
-		if(id && uuid){
+	socket.on('salon_send', function(uuid) {
+		if(uuid){
 			if(sign_in_up){
-				check_user_salon(id, uuid);
+				check_user_salon(uuid);
 			} else {
 				database_config.sql = "SELECT * FROM casino_users; "
 				database(database_config).then(function(data){
 					users_json = data;
-					check_user_salon(id, uuid);
+					check_user_salon(uuid);
 				});
 			}
 		} else {
@@ -221,19 +188,33 @@ io.on('connection', function(socket) {
 				console.log('[error]','salon_read0 :', e);
 			}
 		}		
-	});	
-	function check_user_salon(id, uuid){	
-		getData('latest', id).then(function(result){
-			if(result && result.length>0){ // the user actually exists
-				let latest = result[result.length-1];
-				let first_enter_salon = false;				
-				let login_date = parseInt(latest.login_date);
-				let timestamp = new Date().getTime();
-				let money = latest.money ? latest.money : 0;
-				user = latest.user;
+	});
+	function check_user_salon(uuid){
+		for(let i in users_json){
+			if(users_json[i].uuid == uuid){
+				user_found = users_json[i];											
+				break;
+			}
+		}
+		if(user_found){
+			let first_enter_salon = false;		
+			let id = user_found.id;
+			let user = user_found.user;
+			let money = user_found.money;
+			let signup = user_found.signup;
+			let timestamp = new Date().getTime();
+			
+			database_config.sql = "SELECT * FROM login_history";
+			database(database_config).then(function(data){
+				let latest =[];
+				for(let i in data){
+					if(data[i].user_id == id){
+						latest = data[i];
+					}
+				}
 
 				//check first time player
-				if(login_date === parseInt(latest.signup) && (timestamp - login_date)/60000 < 0.25){ 
+				if(latest.login_date === signup && (timestamp - parseInt(latest.login_date)/60000 < 0.25)){ 
 					first_enter_salon = true;
 				}
 
@@ -245,88 +226,92 @@ io.on('connection', function(socket) {
 				}catch(e){
 					console.log('[error]','salon_read1 :', e);
 				}
-			} else {
-				try{				
-					io.to(socket.id).emit('salon_read', false);
-				}catch(e){
-					console.log('[error]','salon_read2 :', e);
-				}
+			});
+		} else {
+			try{
+				io.to(socket.id).emit('user_page_read', null);
+			}catch(e){
+				console.log('[error]','user_page_send1 :', e);
 			}
-		});
+		}
 	}
 
 	socket.on('user_page_send', function(data) {
-		let table = data.table;
-		let uuid = data.uuid;	
-		if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
-			check_user_page(uuid, table);
-		} else {
-			database_config.sql = "SELECT * FROM casino_users";
-			database(database_config).then(function(result){						
-				users_json = result;
+		if(data.uuid){
+			let table = data.table;
+			let uuid = data.uuid;	
+			if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
 				check_user_page(uuid, table);
-			});
-		}		
-	});		
-	function check_user_page(uuid, table, lang="eng"){
-		if(uuid){
-			getData('user', null, uuid).then(function(data){	
-				if(data && data.length>0){	
-					let user_found = data[0];
-					let id = user_found.user_id;
-					let user = user_found.user;
-					let money = user_found.money;
-					let game = table.split('_')[0];
-					let type = table.split('_')[2];
-					let profile_pic = user_found.profile_pic;
-					let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
-					let server_user = {id: id, uuid: uuid, user: user, money: money, profile_pic: [profile_pic, profile_animal], market:market, profiles: profiles, user_table: table, game: game, contact: contact_details}		
-					
-					socket.user_id = id;
-					socket.user_uuid = uuid;
-					socket.user = user;
-					socket.user_table = table;	
+			} else {
+				database_config.sql = "SELECT * FROM casino_users";
+				database(database_config).then(function(result){						
+					users_json = result;
+					check_user_page(uuid, table);
+				});
+			}	
+		} else {
+			try{
+				io.to(socket.id).emit('user_page_read', null);
+			}catch(e){
+				console.log('[error]','user_page_send1 :', e);
+			}
+		}
+			
+	});	
+	function check_user_page(uuid, table){
+		for(let i in users_json){
+			if(users_json[i].uuid == uuid){
+				user_found = users_json[i];											
+				break;
+			}
+		}
+		if(user_found){
+			let id = user_found.id;
+			let user = user_found.user;
+			let money = user_found.money;
+			let game = table.split('_')[0];
+			let type = table.split('_')[2];
+			let profile_pic = user_found.profile_pic;
+			let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
+			let server_user = {id: id, uuid: uuid, user: user, money: money, profile_pic: [profile_pic, profile_animal], market:market, profiles: profiles, user_table: table, game: game, contact: contact_details}		
+			
+			socket.user_id = id;
+			socket.user_uuid = uuid;
+			socket.user = user;
+			socket.user_table = table;				
 
-					let room_name = table;	
-					try{
-						socket.join(room_name);
-						
-						let exists = false;
-						for (let i in user_join) {
-							if (user_join[i].id === id) {
-								exists = true;
-								user_join[i] = {id: id, uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()};
-								break;
-							}
-						}
-						if(!exists){
-							user_join.push({id: id, uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()});	
-						}
-							
-						sockets.push(socket);
-						users[socket.user] = socket;			
-						
-						io.to(room_name).emit('chatlist', user_join);			
-					}catch(e){
-						console.log('[error]','join room :',e);
+			database_config.sql = "SELECT * FROM login_history";
+			database(database_config).then(function(data){
+				let logs =[];
+				for(let i in data){
+					if(data[i].user_id == id){
+						logs.push(data[i]);							
 					}
+				}
+				server_user.streak = check_streak(logs);
+				let room_name = table;	
+				try{
+					socket.join(room_name);
 					
-					getData('latest', id).then(function(result){
-						if(result && result.length>0){							
-							server_user.streak = check_streak(result);							
-							try{
-								io.to(socket.id).emit('user_page_read', server_user);
-							}catch(e){
-								console.log('[error]','user_page_send1 :', e);
-							}
+					let exists = false;
+					for (let i in user_join) {
+						if (user_join[i].id === id) {
+							exists = true;
+							user_join[i] = {id: id, uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()};
+							break;
 						}
-					});
-				} else {
-					try{
-						io.to(socket.id).emit('user_page_read', null);
-					}catch(e){
-						console.log('[error]','user_page_send1 :', e);
 					}
+					if(!exists){
+						user_join.push({id: id, uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()});	
+					}
+						
+					sockets.push(socket);
+					users[socket.user] = socket;			
+					
+					io.to(socket.id).emit('user_page_read', server_user);
+					io.to(room_name).emit('chatlist', user_join);			
+				}catch(e){
+					console.log('[error]','join room :',e);
 				}
 			});
 		} else {
@@ -632,37 +617,40 @@ io.on('connection', function(socket) {
 		let game_id = user_table[1] ? user_table[1] : game_name;
 		let game_type = user_table[2] ? user_table[2] : game_name;
 		let money = data.money;
+		let status = data.status;	
 		let bet = Math.abs(data.bet);
-		let status = data.status;		
 		if(uuid){
-			getData('user', null, uuid).then(function(data){	
-				if(data && data.length>0){	
-					let user_found = data[0];
-					let id = user_found.user_id;			
-					database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
-						database(database_config).then(function(data){
-							let timestamp = new Date().getTime();
-							database_config.sql = 'INSERT INTO history_users (user_id, game_name, game_id, game_type, date, status, sum) ';
-							database_config.sql += ' VALUES (';
-							database_config.sql += id + ', ';
-							database_config.sql += '"' + game_name + '", ';
-							database_config.sql += '"' + game_id + '", ';
-							database_config.sql += '"' + game_type + '", ';
-							database_config.sql += '"' + timestamp + '", ';
-							database_config.sql += '"' + status + '", ';
-							database_config.sql += bet;
-							database_config.sql += ')';				
-							database(database_config).then(function(result){
-								for(let i in users_json){	
-									if(id === users_json[i].id){
-										users_json[i].money = money;
-										break;
-									}
-								}
-							});
-						});
+			for(let i in users_json){
+				if(users_json[i].uuid == uuid){
+					user_found = users_json[i];											
+					break;
 				}
-			});
+			}
+			if(user_found){
+				let id = user_found.id;
+				database_config.sql = "UPDATE casino_users SET money="+money+" WHERE id="+id;
+				database(database_config).then(function(data){
+					let timestamp = new Date().getTime();
+					database_config.sql = 'INSERT INTO history_users (user_id, game_name, game_id, game_type, date, status, sum) ';
+					database_config.sql += ' VALUES (';
+					database_config.sql += id + ', ';
+					database_config.sql += '"' + game_name + '", ';
+					database_config.sql += '"' + game_id + '", ';
+					database_config.sql += '"' + game_type + '", ';
+					database_config.sql += '"' + timestamp + '", ';
+					database_config.sql += '"' + status + '", ';
+					database_config.sql += bet;
+					database_config.sql += ')';				
+					database(database_config).then(function(result){
+						for(let i in users_json){	
+							if(id === users_json[i].id){
+								users_json[i].money = money;
+								break;
+							}
+						}
+					});
+				});
+			}
 		}
 	});
 

@@ -21,11 +21,6 @@ import UserPage from '../user/userPage';
 
 function Child(props){
 	let visible = useSelector(state => state.visibility);
-	let data = props.info;
-	data.lang = props.lang;
-	data.socket = props.socket;
-	data.casino_games_title = props.casino_games_title;
-	data.casino_games = props.casino_games;
 	return(
 		<>	
 			{(() => {
@@ -43,6 +38,11 @@ function Child(props){
 							</>
 						)
 					} else {
+						let data = props.info;
+						data.lang = props.lang;
+						data.socket = props.socket;
+						data.casino_games_title = props.casino_games_title;
+						data.casino_games = props.casino_games;
 						switch (visible) {
 							case "game":
 								return (
@@ -174,7 +174,7 @@ function Salon(props){
 			setId(parseInt(casino_id));
 			setUuid(casino_uuid);
 			setTimeout(function(){
-				socket.emit('salon_send', [parseInt(casino_id), casino_uuid]);	
+				socket.emit('salon_send', casino_uuid);	
 				socket.on('salon_read', function(result){
 					setData(result);
 					resolve(result);	

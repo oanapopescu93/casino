@@ -58,6 +58,19 @@ export const race_calculate_money = function(money_sum) {
 }
 export const race_get_history = function(history) {
 	return {
+		type: "keno_get_history",
+		history: history
+	}
+}
+
+export const keno_calculate_money = function(money_sum) {
+	return {
+		type: "keno_calculate_money",
+		money: money_sum
+	}
+}
+export const keno_get_history = function(history) {
+	return {
 		type: "race_get_history",
 		history: history
 	}

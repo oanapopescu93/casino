@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux'
 import {game_page, race_calculate_money, race_get_history} from '../../actions/actions'
-import $, { get } from 'jquery'; 
+import $ from 'jquery'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { showResults } from '../../utils';

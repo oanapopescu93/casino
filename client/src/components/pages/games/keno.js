@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import { useDispatch } from 'react-redux'
+import {game_page, keno_calculate_money, keno_get_history} from '../../actions/actions'
 import $ from 'jquery';
 import { bigText, get_keno_images, showResults } from '../../utils';
 import Row from 'react-bootstrap/Row'
@@ -64,7 +66,69 @@ function kenoSpot(config){
 	}
 }
 
-function keno_game(props){
+function Ball(config){
+	let self = this
+	self.id = config.id
+	self.x = config.x
+	self.y = config.y
+	self.dir_x = config.dir_x
+	self.dir_y = config.dir_y
+	self.r = config.r
+	self.color = config.color
+	self.border = config.border
+	self.border_color = config.border_color
+	self.speed = config.speed
+	self.env = config.env
+
+	self.draw = function(ctx){
+		ctx.beginPath()
+		ctx.arc(self.x, self.y, self.r, 0, 2 * Math.PI, false)
+		ctx.fillStyle = self.color
+		if(self.border_color !== ""){
+			ctx.lineWidth = self.border
+			ctx.strokeStyle = self.border_color
+			ctx.stroke()
+		}		
+		ctx.fill()
+		ctx.closePath()
+	}
+
+	self.move = function(ctx, nr){	
+		self.color = "green"	
+		if(nr % self.speed === 0){
+			self.x = self.x + self.dir_x
+			self.y = self.y + self.dir_y
+			if(self.check_collision()){
+				self.color = "red"
+				self.dir_x = -self.dir_x
+				self.dir_y = -self.dir_y
+			}
+		}
+		self.draw(ctx, self.color)
+	}
+
+	self.check_collision = function(){
+		let collision = false
+		let entity01 = {x: self.x, y: self.y}
+		let entity02 = self.env
+		if(self.env.r - self.r < getDistance_between_entities(entity01, entity02)){
+			collision = true
+			console.log('move-collision ', getDistance_between_entities({x: self.x, y: self.y}, self.env), self.env.r + self.r)
+		} else {
+			console.log('move ', getDistance_between_entities({x: self.x, y: self.y}, self.env), self.env.r + self.r)
+		}
+		return collision
+	}
+
+	function getDistance_between_entities(entity01, entity02){
+        var distance_x = entity01.x - entity02.x
+        var distance_y = entity01.y - entity02.y
+        var result = Math.sqrt(distance_x * distance_x + distance_y * distance_y)
+        return result
+    }
+}
+
+function keno_board(props){
 	let self = this;
 	let canvas, ctx;
 	let canvas_width = 900;
@@ -237,86 +301,144 @@ function keno_game(props){
 	}
 }
 
-function keno_game_circle(props){
-	let self = this;
-	let canvas, ctx;
-	let canvas_width = 300;
-	let canvas_height = 300;
-	let reason = "";
-	let lang = props.lang;
+function keno_circle(props){
+	let self = this
+	let canvas, ctx
+	let canvas_width = 300
+	let canvas_height = 300
+	let reason = ""
+	let lang = props.lang
+	let balls_number = 1
+	let ballArray = []
+	let ball_info = {x: 0, y: 0, r: 0}
+	let big_circle_info = {x: 0, y: 0, r: 0}
+	let dispatch_nr = 0 //this prevents multiplication
 	
 	this.ready = function(r){
-		reason = r;
+		reason = r
 		self.createCanvas(canvas_width, canvas_height);
 		if(reason !== "resize"){
-			self.drawBigCircle();
-			self.createBalls();
-			self.drawBalls();
+			self.drawBigCircle()
+			self.createBalls()
 		} else {
-			self.drawBigCircle();
-			self.createBalls();
-			self.drawBalls();
+			self.drawBigCircle()
+			self.createBalls()
 		}
 	}	
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
-		canvas = document.getElementById("keno_canvas_circle");	
-		ctx = canvas.getContext("2d");
+		canvas = document.getElementById("keno_canvas_circle")
+		ctx = canvas.getContext("2d")
 		
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 101;
-				canvas.height = 101;
+				canvas.width = 101
+				canvas.height = 101
 			} else {
 				//small portrait
-				canvas.width = 102;
-				canvas.height = 102;
+				canvas.width = 102
+				canvas.height = 102
 			}			
 		} else if (window.innerWidth < 1200){
 			//big
-			canvas.width = 300;
-			canvas.height = 300;			
+			canvas.width = 300
+			canvas.height = 300			
 		} else {
-			//big
-			canvas.width = 500;
-			canvas.height = 500;	
+			//extra big
+			canvas.width = 500
+			canvas.height = 500	
 		}
 		
-		canvas_width = canvas.width;
-		canvas_height = canvas.height;		
-		canvas.height = canvas_height;
+		canvas_width = canvas.width
+		canvas_height = canvas.height		
+		canvas.height = canvas_height
+
+		let ball_size = 5
+		ball_info = {x: canvas.width/2 + 2, y: canvas.height - ball_size - 2, r: ball_size}
+		big_circle_info = {x: canvas.width / 2 - 1, y: canvas.height / 2 - 1, r: canvas.width / 2 - 1}
 	}
 
 	this.drawBigCircle = function(){
-		let centerX = canvas.width / 2 - 1;
-		let centerY = canvas.height / 2 - 1;
-		let radiusBig = canvas.width / 2 - 1;
-		draw_dot(centerX, centerY, radiusBig, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, '#ffd700');
-	}
-
-	this.createBalls = function(){
-		
-	}
-
-	this.drawBalls = function(){
-		
+		ctx.clearRect(0,0, canvas_width, canvas_height);
+		draw_dot(big_circle_info.x, big_circle_info.y, big_circle_info.r, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, '#ffd700')
 	}
 
 	this.start = function(){		
 		if(kenoSpotArraySelected && kenoSpotArraySelected.length>0){
-			self.spin();
+			dispatch_nr = 0
+			self.spin(200)
 		} else {
 			if(lang === "ro"){
-				showResults("", "Please place your bet before playing.");	
+				showResults("", "Please place your bet before playing.")
 			} else {
-				showResults("", "Please place your bet before playing.");	
+				showResults("", "Please place your bet before playing.")
 			}
 		}
 	}
 
-	this.spin = function(){
-		console.log('SPIN', kenoSpotArraySelected)
+	this.createBalls = function(){		
+		for(let i=0; i < balls_number; i++){			
+			let config = {
+				id: i,
+				x: ball_info.x,
+				y: ball_info.y,				
+				r: ball_info.r,
+				color: 'rgba(255, 255, 0, 0.1)',
+				border: 1,
+				border_color: '#ffd700',
+				dir_x: -5,
+				dir_y: -5,
+				speed: 10,
+				env: big_circle_info,
+			}
+			let ball = new Ball(config)
+			ballArray.push(ball)
+		}
+	}	
+
+	this.moveBalls = function(spin_nr){
+		if(ballArray && ballArray.length>0){
+			for(let i in ballArray){
+				ballArray[i].move(ctx, spin_nr);
+			}
+		}
+	}
+
+	this.spin = function(spin_time, monkey){
+		let spin_nr = 0		
+		dispatch_nr++		
+
+		window.requestAnimFrame = (function(){
+			return  window.requestAnimationFrame       ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame    ||
+			function( callback ){
+			  window.setTimeout(callback, 1000 / 60);
+			};
+	  	})();	  
+	  
+	  	function spin_keno() {			
+			let stop = false
+			spin_nr++;
+			
+			if (spin_nr > spin_time) {
+				stop = true
+			} else {
+				self.drawBigCircle()
+				self.moveBalls(spin_nr)
+			}
+			
+			if(!stop){
+				window.requestAnimFrame(spin_keno)
+			} else {
+				window.cancelAnimationFrame(spin_keno)
+			}
+	  	};
+
+	  	if(dispatch_nr === 1){
+			spin_keno()
+	  	}	  
 	}
 
 	function draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
@@ -336,17 +458,19 @@ function keno_game_circle(props){
 function Keno(props){
 	let lang = props.lang;
 	const [title, setTitle] = useState("");
+	let dispatch = useDispatch();
 
 	useEffect(() => {
+		dispatch(game_page("keno"));
 		if (window.innerWidth >= 960){
 			setTitle("Keno");		
 		} else {
 			setTitle("");
 		}
 		
-		my_keno = new keno_game(props);
+		my_keno = new keno_board(props);
 		my_keno.ready();
-		my_keno_circle = new keno_game_circle(props);
+		my_keno_circle = new keno_circle(props);
 		my_keno_circle.ready();
 
 		$(window).resize(function(){

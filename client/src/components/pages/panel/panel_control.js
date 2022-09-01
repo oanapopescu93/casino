@@ -51,7 +51,9 @@ function Panel(props){
                 handleShow();
                 break;
 			case "logout":				
-				setCookie("casino_user", '');
+                setCookie("casino_id", '');
+                setCookie("casino_uuid", '');
+                setCookie("casino_user", '');
 				setCookie("casino_email", '');
 				window.location.href = url_back01[0];
 			 	break;
