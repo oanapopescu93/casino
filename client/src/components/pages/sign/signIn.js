@@ -21,7 +21,9 @@ function SignIn(props) {
 		if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 			loader(socket, lang).then(function(data) {
 				if(data[0]){
+					console.log('signin_read2 ', data)	
 					if(data[1] && Object.keys(data[1]).length > 0){
+						console.log('signin_read3 ', data)	
 						setCookie("casino_id", data[1].id);
 						setCookie("casino_uuid", data[1].uuid);
 						setCookie("casino_user", $('#signin_user').val());
@@ -85,7 +87,8 @@ function SignIn(props) {
 		return new Promise(function(resolve, reject){		
 			dispatch(game_load(true));	
 			socket.emit('signin_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()});	
-			socket.on('signin_read', function(data){		
+			socket.on('signin_read', function(data){	
+				console.log('signin_read1 ', data)	
 				resolve(data);
 			});
 		});
@@ -93,6 +96,7 @@ function SignIn(props) {
 	
 	function submit_form(socket, lang){
 		setTimeout(function(){
+			console.log('signin_read4 ')	
 			if($("#user_form")){
 				$("#user_form").submit();
 			}

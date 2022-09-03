@@ -85,15 +85,8 @@ io.on('connection', function(socket) {
 				if((data.user === users_json[i].user || data.user === users_json[i].email) && pass01 === pass02){
 					//the user exists and the password was correct
 					exists = true;	
-					sign_in_up = true;					
-					obj = {id: users_json[i].id, uuid: uuid, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
-					try{
-						io.to(socket.id).emit('signin_read', [exists, obj]);
-					}catch(e){
-						console.log('[error]','signin_read1 :', e);
-					}					
-
-					get_extra_data().then(function(data1) {				
+					sign_in_up = true;
+					get_extra_data().then(function(data1) {	
 						let extra_data = {
 							city: data1.data.city ? data1.data.city : "",
 							country: data1.data.country ? data1.data.country : "",
@@ -109,6 +102,13 @@ io.on('connection', function(socket) {
 							users_json[i].city = extra_data.city;
 							users_json[i].country = extra_data.country;
 							users_json[i].device = device;
+							users_json[i].uuid = uuid;
+							obj = {id: users_json[i].id, uuid: uuid, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
+							try{
+								io.to(socket.id).emit('signin_read', [exists, obj]);
+							}catch(e){
+								console.log('[error]','signin_read1 :', e); 
+							}
 						});
 					});
 					break;
@@ -117,11 +117,14 @@ io.on('connection', function(socket) {
 					exists = true;
 					break;
 				}
-			}			
-			try{
-				io.to(socket.id).emit('signin_read', [exists, obj]);	
-			}catch(e){
-				console.log('[error]','signin_read2 :', e);
+				if(i == users_json.length-1){
+					//the user doesn't exist
+					try{
+						io.to(socket.id).emit('signin_read', [exists, obj]);	
+					}catch(e){
+						console.log('[error]','signin_read2 :', e);
+					}
+				}
 			}
 		});	
 	});
@@ -190,13 +193,14 @@ io.on('connection', function(socket) {
 		}		
 	});
 	function check_user_salon(uuid){
+		let user_found;
 		for(let i in users_json){
 			if(users_json[i].uuid == uuid){
 				user_found = users_json[i];											
 				break;
 			}
 		}
-		if(user_found){
+		if(user_found){				
 			let first_enter_salon = false;		
 			let id = user_found.id;
 			let user = user_found.user;

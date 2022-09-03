@@ -1471,6 +1471,9 @@ table {
 #exit_salon:hover, #exit_salon:active, #exit_salon:focus{
 	background: var(--transparent_yellow);
 }
+.gift_img{
+	width:280px;
+}
 
 .slot_header{
 	display: inline-block;

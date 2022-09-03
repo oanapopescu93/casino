@@ -15,9 +15,11 @@ import Privacy from '../other_pages/privacy';
 import Questions from '../other_pages/questions';
 import Career from '../other_pages/career_empty';
 
-import { getCookie, setCookie, showResults, isEmpty } from '../../utils';
+import { getCookie, setCookie, showResults, isEmpty, bigText } from '../../utils';
 import { game_load, game_page } from '../../actions/actions';
 import UserPage from '../user/userPage';
+
+import giftPic from '../../img/chest/chest.gif';
 
 function Child(props){
 	let visible = useSelector(state => state.visibility);
@@ -154,12 +156,20 @@ function Salon(props){
 				}
 				setCasinoGames(casino_games)
 				if(res.first_enter_salon){
+					let gift_title = 'Welcome gift';
+					let gift_text = 'First time players get 100 carrots!';
 					if(lang === "ro"){
-						showResults('Cadou de bun-venit', 'Ai 100 de morcovi cadou de bun-venit.', 600);
-					} else {
-						showResults('Welcome gift', 'First time players get 100 carrots!', 600);
-					}						
-				}
+						gift_title = 'Cadou de bun-venit';
+						gift_text = 'Ai 100 de morcovi cadou de bun-venit.';
+					}
+
+					let pay_table = `<div id="first_enter_salon" class="first_enter_salon">
+						<img alt="gift_img" class="gift_img" src="` + giftPic + `"/>
+						<p><b>` + gift_text + `</b></p>
+					</div>`;
+					let text = bigText("first_enter_salon", lang, pay_table); 
+					showResults(gift_title, text, 600);					
+				}				
 			}
 			setLoaded(true);
 			dispatch(game_load(false));
@@ -169,9 +179,7 @@ function Salon(props){
 	
 	function salonData(){
 		return new Promise(function(resolve, reject){
-			let casino_id = getCookie("casino_id");
 			let casino_uuid = getCookie("casino_uuid");
-			setId(parseInt(casino_id));
 			setUuid(casino_uuid);
 			setTimeout(function(){
 				socket.emit('salon_send', casino_uuid);	
