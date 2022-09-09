@@ -73,11 +73,14 @@ function Ball(config){
 	self.y = config.y
 	self.dir_x = config.dir_x
 	self.dir_y = config.dir_y
+	self.dir_x = -5
+	self.dir_y = -5
 	self.r = config.r
 	self.color = config.color
 	self.border = config.border
 	self.border_color = config.border_color
-	self.speed = config.speed
+	// self.speed = config.speed
+	self.speed = 10
 	self.env = config.env
 
 	self.draw = function(ctx){
@@ -94,28 +97,46 @@ function Ball(config){
 	}
 
 	self.move = function(ctx, nr){	
-		self.color = "green"	
-		if(nr % self.speed === 0){
-			self.x = self.x + self.dir_x
-			self.y = self.y + self.dir_y
-			if(self.check_collision()){
-				self.color = "red"
-				self.dir_x = -self.dir_x
-				self.dir_y = -self.dir_y
+		if(nr % self.speed === 0){	
+			let x = self.x
+			let y = self.y
+			let next_x = self.x + self.dir_x
+			let next_y = self.y + self.dir_y
+
+			if(self.check_collision(next_x, next_y)){
+				let angle = angle360(x, y, next_x, next_y)
+				
+				if(angle >=0 && angle <=90){					
+					self.dir_x = -self.dir_x
+					console.log('dir-AAA ', angle, self.dir_x, self.dir_y)
+				} else if(angle >90 && angle <=180){
+					self.dir_x = -self.dir_x
+					console.log('dir-BBB ', angle, self.dir_x, self.dir_y)
+				} else if(angle >180 && angle <=270){					
+					self.dir_y = -self.dir_y
+					console.log('dir-CCC ', angle, self.dir_x, self.dir_y)
+				} else if(angle >270 && angle <=360){
+					self.dir_y = -self.dir_y
+					console.log('dir-DDD ', angle, self.dir_x, self.dir_y)
+				}				
 			}
+
+			self.x = self.x + self.dir_x
+			self.y = self.y + self.dir_y	
+			console.log('dir--- ', self.dir_x, self.dir_y, self.x, self.y)
 		}
 		self.draw(ctx, self.color)
 	}
 
-	self.check_collision = function(){
+	self.check_collision = function(x, y){
 		let collision = false
-		let entity01 = {x: self.x, y: self.y}
+		let entity01 = {x: x, y: y}
 		let entity02 = self.env
 		if(self.env.r - self.r < getDistance_between_entities(entity01, entity02)){
 			collision = true
-			console.log('move-collision ', getDistance_between_entities({x: self.x, y: self.y}, self.env), self.env.r + self.r)
+			console.log('dir-move-collision ', self.env.r - self.r, getDistance_between_entities(entity01, entity02))
 		} else {
-			console.log('move ', getDistance_between_entities({x: self.x, y: self.y}, self.env), self.env.r + self.r)
+			console.log('dir-move ', self.env.r - self.r, getDistance_between_entities(entity01, entity02))
 		}
 		return collision
 	}
@@ -126,85 +147,94 @@ function Ball(config){
         var result = Math.sqrt(distance_x * distance_x + distance_y * distance_y)
         return result
     }
+	function getAngle(x1, x2, y1, y2) {
+		let angle = Math.atan2( y2 - y1, x2 - x1 ) * ( 180 / Math.PI )
+		return angle
+	}
+	function angle360(cx, cy, ex, ey) {
+		var theta = getAngle(cx, cy, ex, ey); // range (-180, 180]
+		if (theta < 0) theta = 360 + theta; // range [0, 360)
+		return theta
+	}
 }
 
 function keno_board(props){
-	let self = this;
-	let canvas, ctx;
-	let canvas_width = 900;
-	let canvas_height = 800;
-	let font = 'bold 14px sans-serif';
-	let kenoSpotArray = [];		
-	let how_many_rows = 10;
-	let how_many_columns = 8;
-	this.images = [];
-	let items = get_keno_images();
-	let reason = "";
+	let self = this
+	let canvas, ctx
+	let canvas_width = 900
+	let canvas_height = 800
+	let font = 'bold 14px sans-serif'
+	let kenoSpotArray = []
+	let how_many_rows = 10
+	let how_many_columns = 8
+	this.images = []
+	let items = get_keno_images()
+	let reason = ""
 	
 	this.ready = function(r){
-		reason = r;
+		reason = r
 		self.createCanvas(canvas_width, canvas_height);
 		if(reason !== "resize"){
-			let promises = [];
+			let promises = []
 			for(let i in items){				
-				promises.push(self.preaload_images(items[i]));
+				promises.push(self.preaload_images(items[i]))
 			}
 
 			Promise.all(promises).then(function(result){
-				self.images = result;
-				self.KenoBoardCreate();
-				self.KenoBoardDraw();
-				self.KenoBoardClick();
+				self.images = result
+				self.KenoBoardCreate()
+				self.KenoBoardDraw()
+				self.KenoBoardClick()
 			});
 		} else {
-			self.KenoBoardCreate();
-			self.KenoBoardDraw();
-			self.KenoBoardClick();
+			self.KenoBoardCreate()
+			self.KenoBoardDraw()
+			self.KenoBoardClick()
 		}
 	}	
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
-		canvas = document.getElementById("keno_canvas");	
-		ctx = canvas.getContext("2d");
+		canvas = document.getElementById("keno_canvas")	
+		ctx = canvas.getContext("2d")
 		
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 260;
-				canvas.height = 300;
+				canvas.width = 320
+				canvas.height = 300
 			} else {
 				//small portrait
-				canvas.width = 290;
-				canvas.height = 400;
+				canvas.width = 280
+				canvas.height = 300
 			}
-			font = 'bold 12px sans-serif';
+			font = 'bold 10px sans-serif'
 			
 		} else {
 			//big
-			canvas.width = 900;
-			canvas.height = 500;
-			font = 'bold 14px sans-serif';
+			canvas.width = 900
+			canvas.height = 500
+			font = 'bold 14px sans-serif'
 		}
 		
-		canvas_width = canvas.width;
-		canvas_height = canvas.height;		
-		canvas.height = canvas_height;
+		canvas_width = canvas.width
+		canvas_height = canvas.height	
+		canvas.height = canvas_height
 	}
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
-			let image = new Image();
-			image.id = item.id;
-			image.src = item.src;
+			let image = new Image()
+			image.id = item.id
+			image.src = item.src
 			image.addEventListener("load", function() {
 				resolve(image)
-			}, false);
-		});
+			}, false)
+		})
 	}
 
 	this.KenoBoardCreate = function(){
-		let kenoSpotArray_new = [];
-		let number = 0;		
+		let kenoSpotArray_new = []
+		let number = 0	
 		for(let i=0; i < how_many_columns; i++){
 			for(let j=0; j < how_many_rows; j++){
 				number++
@@ -227,23 +257,23 @@ function keno_board(props){
 					config.selected = kenoSpotArraySelected[number-1].selected
 				}
 				
-				let box = new kenoSpot(config);
-				kenoSpotArray_new.push(box);				
+				let box = new kenoSpot(config)
+				kenoSpotArray_new.push(box)				
 			}
 		}
-		kenoSpotArray = kenoSpotArray_new;
+		kenoSpotArray = kenoSpotArray_new
 	}
 
 	this.KenoBoardDraw = function(){
-		ctx.clearRect(0,0, canvas_width, canvas_height);
+		ctx.clearRect(0,0, canvas.width, canvas.height)
 		for(let i in kenoSpotArray){
-			kenoSpotArray[i].draw(ctx);
+			kenoSpotArray[i].draw(ctx)
 		}
 	}	
 
 	this.KenoBoardClick = function(){
 		$('#keno_canvas').off('click').on('click', function(event) {
-			self.handleClick(event);
+			self.handleClick(event)
 		});
 	}
 
@@ -251,40 +281,45 @@ function keno_board(props){
 		let mousePos = getMousePos(canvas, event);
 		for(let i in kenoSpotArray){
 			if (isInside(mousePos, kenoSpotArray[i])) {
-				kenoSpotArray[i].changeSelection();
-				kenoSpotArray[i].draw(ctx);
+				kenoSpotArray[i].changeSelection()
+				kenoSpotArray[i].draw(ctx)
 				if(kenoSpotArray[i].selected){
 					kenoSpotArraySelected.push(kenoSpotArray[i]);
 				} else {
 					for(let j = 0; j < kenoSpotArraySelected.length; j++){                                   
 						if (kenoSpotArraySelected[j].id === kenoSpotArray[i].id) { 
-							kenoSpotArraySelected.splice(j, 1); 
-							j--; 
+							kenoSpotArraySelected.splice(j, 1)
+							j--
 						}
 					}
 				}
 				break;
 			} 
 		}
-		self.showSelected();
+		self.showSelected()
 	}
 
 	this.handleclear = function(){
 		kenoSpotArraySelected = []
-		self.KenoBoardCreate();
-		self.KenoBoardDraw();
-		self.KenoBoardClick();
+		self.KenoBoardCreate()
+		self.KenoBoardDraw()
+		self.KenoBoardClick()
+		self.showSelected()
 	}
 
 	this.showSelected = function(){
-		if($("#keno_your_selected") !== null){
-			$("#keno_your_selected").empty();
-			for(let i in kenoSpotArraySelected){
-				let comma = ', ';
-				if(parseInt(i) === kenoSpotArraySelected.length-1){
-					comma = '';
+		if($("#keno_selected01") !== null){
+			$("#keno_selected01").empty()
+			if(kenoSpotArraySelected && kenoSpotArraySelected.length>0){
+				for(let i in kenoSpotArraySelected){
+					let comma = ', '
+					if(parseInt(i) === kenoSpotArraySelected.length-1){
+						comma = ''
+					}
+					$("#keno_selected01").append('<span class="keno_box">' + kenoSpotArraySelected[i].id + comma + '</span>')
 				}
-				$("#keno_your_selected").append('<span class="keno_box">' + kenoSpotArraySelected[i].id + comma + '</span>');
+			} else {
+				$("#keno_selected01").append('-')
 			}
 		}
 	}
@@ -306,24 +341,20 @@ function keno_circle(props){
 	let canvas, ctx
 	let canvas_width = 300
 	let canvas_height = 300
-	let reason = ""
 	let lang = props.lang
-	let balls_number = 1
+	let balls_number = 80
 	let ballArray = []
 	let ball_info = {x: 0, y: 0, r: 0}
 	let big_circle_info = {x: 0, y: 0, r: 0}
 	let dispatch_nr = 0 //this prevents multiplication
 	
-	this.ready = function(r){
-		reason = r
+	this.ready = function(reason){
 		self.createCanvas(canvas_width, canvas_height);
-		if(reason !== "resize"){
-			self.drawBigCircle()
-			self.createBalls()
-		} else {
-			self.drawBigCircle()
-			self.createBalls()
-		}
+		self.drawBigCircle()
+		self.createBalls()
+		setTimeout(function(){
+			self.start()
+		}, 1000);
 	}	
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
@@ -349,35 +380,25 @@ function keno_circle(props){
 			canvas.width = 500
 			canvas.height = 500	
 		}
-		
-		canvas_width = canvas.width
-		canvas_height = canvas.height		
-		canvas.height = canvas_height
 
 		let ball_size = 5
-		ball_info = {x: canvas.width/2 + 2, y: canvas.height - ball_size - 2, r: ball_size}
+		ball_info = {x: canvas.width/2 + 2, y: canvas.height - ball_size - 4, r: ball_size}
 		big_circle_info = {x: canvas.width / 2 - 1, y: canvas.height / 2 - 1, r: canvas.width / 2 - 1}
 	}
 
 	this.drawBigCircle = function(){
-		ctx.clearRect(0,0, canvas_width, canvas_height);
+		ctx.clearRect(0,0, canvas.width, canvas.height);
 		draw_dot(big_circle_info.x, big_circle_info.y, big_circle_info.r, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, '#ffd700')
 	}
 
-	this.start = function(){		
-		if(kenoSpotArraySelected && kenoSpotArraySelected.length>0){
-			dispatch_nr = 0
-			self.spin(200)
-		} else {
-			if(lang === "ro"){
-				showResults("", "Please place your bet before playing.")
-			} else {
-				showResults("", "Please place your bet before playing.")
-			}
-		}
+	this.start = function(){	
+		dispatch_nr = 0
+		self.spin(2000)
 	}
 
-	this.createBalls = function(){		
+	this.createBalls = function(){
+		balls_number = 1	
+		ballArray = []	
 		for(let i=0; i < balls_number; i++){			
 			let config = {
 				id: i,
@@ -387,9 +408,9 @@ function keno_circle(props){
 				color: 'rgba(255, 255, 0, 0.1)',
 				border: 1,
 				border_color: '#ffd700',
-				dir_x: -5,
-				dir_y: -5,
-				speed: 10,
+				dir_x: -Math.floor((Math.random() * 8) + 3),
+				dir_y: -Math.floor((Math.random() * 8) + 3),
+				speed: Math.floor((Math.random() * 5) + 1),
 				env: big_circle_info,
 			}
 			let ball = new Ball(config)
@@ -458,6 +479,7 @@ function keno_circle(props){
 function Keno(props){
 	let lang = props.lang;
 	const [title, setTitle] = useState("");
+	const [start, setStart] = useState(false);
 	let dispatch = useDispatch();
 
 	useEffect(() => {
@@ -466,27 +488,15 @@ function Keno(props){
 			setTitle("Keno");		
 		} else {
 			setTitle("");
-		}
-		
-		my_keno = new keno_board(props);
-		my_keno.ready();
-		my_keno_circle = new keno_circle(props);
-		my_keno_circle.ready();
-
+		}		
 		$(window).resize(function(){
 			if (window.innerWidth >= 960){
 				setTitle("Keno");		
 			} else {
 				setTitle("");
 			}
-			if(document.getElementById("keno_canvas") !== null){
-				my_keno.ready('resize');
-			}
-			if(document.getElementById("keno_canvas_circle") !== null){
-				my_keno_circle.ready('resize');
-			}
 		});
-	}, []); 
+	}, [props]); 
 
 	function game_keno_rules(){
 		if(lang === "ro"){
@@ -507,9 +517,15 @@ function Keno(props){
 	}
 
 	function game_keno_start(){
-		if(my_keno_circle){
-			my_keno_circle.start();
-		}
+		if(kenoSpotArraySelected && kenoSpotArraySelected.length>0){
+			setStart(true);
+		} else {
+			if(lang === "ro"){
+				showResults("", "Please place your bet before playing.")
+			} else {
+				showResults("", "Please place your bet before playing.")
+			}
+		}		
 	}
 	function game_keno_clear(){
 		if(my_keno){
@@ -523,20 +539,60 @@ function Keno(props){
 			<p>Under construction</p>
 			
 			<Row>
-				<Col sm={12}><div id="keno_your_selected"></div></Col>
+				<Col sm={12} className="keno_info_container">
+					<div className="keno_info">
+						<div className="keno_info_box">
+							<span>Your Numbers: </span><span id="keno_selected01">-</span>
+						</div>
+						<div className="keno_info_box">
+							<span>Winning Numbers: </span><span id="keno_selected02">-</span>
+						</div>
+					</div>
+				</Col>
 			</Row>	
 			<Row>
-				<Col sm={4} className="keno_canvas_circle_container"><canvas id="keno_canvas_circle"></canvas></Col>
-				<Col sm={8} className="keno_canvas_container"><canvas id="keno_canvas"></canvas></Col>
+				<Col sm={12}>
+					{start ? <KenoGameCircle info={props}></KenoGameCircle> : <KenoGame info={props}></KenoGame>}		
+				</Col>
 			</Row>
-			<div id="keno_start" onClick={()=>{game_keno_start()}}>Start</div>		
-			<div id="keno_start" onClick={()=>{game_keno_clear()}}>Clear</div>		
+			<div id="keno_start" className="keno_button shadow_convex" onClick={()=>{game_keno_start()}}>Start</div>		
+			<div id="keno_start" className="keno_button shadow_convex" onClick={()=>{game_keno_clear()}}>Clear</div>		
 			
 			{lang === "ro" ? 
 				<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click aici pentru a vedea regulile</p> : 
 				<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click here to see rules</p>}
 		</div>
 	)
+}
+
+function KenoGame(props){
+	useEffect(() => {
+		my_keno = new keno_board(props);
+		my_keno.ready();		
+		$(window).resize(function(){
+			if(document.getElementById("keno_canvas") !== null){
+				my_keno.ready('resize');
+			}
+		});
+	}, [props, my_keno]); 
+	return(
+		<canvas id="keno_canvas" className="shadow_convex"></canvas>
+	);
+}
+
+function KenoGameCircle(props){
+	useEffect(() => {
+		my_keno_circle = new keno_circle(props);
+		my_keno_circle.ready();
+		$(window).resize(function(){
+			if(document.getElementById("keno_canvas_circle") !== null){
+				my_keno_circle.ready('resize');
+			}
+		});
+	}, [props, my_keno_circle]);
+	return(
+		<canvas id="keno_canvas_circle"></canvas>
+	);
 }
 
 export default Keno;

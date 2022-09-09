@@ -2390,9 +2390,43 @@ table {
 /* KENO */
 #keno_canvas{
 	cursor: pointer;
+	background-color: #2a1800;
+	border-radius: 3px;
+	border: solid #2a1800;
+	border-width: 5px 0px 0px 5px;
 }
 #keno_rules_button{
 	cursor: pointer;
+}
+.keno_info{
+	display: inline-block;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+    max-width: 280px;
+	border: solid 1px var(--yellow);
+	border-radius:5px;
+	margin: 10px 0px;
+}
+.keno_info_box > span{
+	display: block;
+}
+.keno_button{
+	color: var(--yellow);
+    background: transparent;
+    border: solid 1px var(--yellow);
+	border-radius: 100%;
+    height: 55px;
+    width: 55px;
+	padding: 16px 5px;
+    margin: 5px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.button_table:hover, .button_table:focus, .button_table:active, .button_table:active:focus{
+    background: var(--transparent_yellow);
+	color: var(--yellow);
+	border: solid 1px var(--yellow);
 }
 
 /* Profile pics */
