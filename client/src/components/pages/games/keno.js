@@ -73,8 +73,6 @@ function Ball(config){
 	self.y = config.y
 	self.dir_x = config.dir_x
 	self.dir_y = config.dir_y
-	self.dir_x = -5
-	self.dir_y = -5
 	self.r = config.r
 	self.color = config.color
 	self.border = config.border
@@ -82,6 +80,12 @@ function Ball(config){
 	// self.speed = config.speed
 	self.speed = 10
 	self.env = config.env
+
+	this.dampen = 0.4;
+	this.gravity = 3;
+	this.bounce = -0.6;
+	this.vector = {x: self.dir_x, y: self.dir_x};
+	this.point = {x: self.x, y: self.y};
 
 	self.draw = function(ctx){
 		ctx.beginPath()
@@ -98,45 +102,91 @@ function Ball(config){
 
 	self.move = function(ctx, nr){	
 		if(nr % self.speed === 0){	
-			let x = self.x
-			let y = self.y
-			let next_x = self.x + self.dir_x
-			let next_y = self.y + self.dir_y
-
-			if(self.check_collision(next_x, next_y)){
-				let angle = angle360(x, y, next_x, next_y)
-				
-				if(angle >=0 && angle <=90){					
-					self.dir_x = -self.dir_x
-					console.log('dir-AAA ', angle, self.dir_x, self.dir_y)
-				} else if(angle >90 && angle <=180){
-					self.dir_x = -self.dir_x
-					console.log('dir-BBB ', angle, self.dir_x, self.dir_y)
-				} else if(angle >180 && angle <=270){					
-					self.dir_y = -self.dir_y
-					console.log('dir-CCC ', angle, self.dir_x, self.dir_y)
-				} else if(angle >270 && angle <=360){
-					self.dir_y = -self.dir_y
-					console.log('dir-DDD ', angle, self.dir_x, self.dir_y)
-				}				
-			}
-
+			let prev = {x: self.x + self.dir_x, y: self.y + self.dir_y}
+			self.check_collision(prev)
 			self.x = self.x + self.dir_x
-			self.y = self.y + self.dir_y	
-			console.log('dir--- ', self.dir_x, self.dir_y, self.x, self.y)
+			self.y = self.y + self.dir_y
+			console.log('coord--> ', self.x, self.y, self.env.r) 
 		}
 		self.draw(ctx, self.color)
 	}
 
-	self.check_collision = function(x, y){
+	self.check_collision = function(prev){
+		let height = 2 * (self.env.r+1) //diametru
+		let width = 2 * (self.env.r+1) //diametru
+
+		if (prev.y > height - 2*self.r) {
+			self.dir_y = -self.dir_y
+			console.log('top ')
+		  }
+		
+		  if (prev.y < self.r) {
+			self.dir_y = -self.dir_y
+			console.log('bottom ')
+		  }
+		
+		  if (prev.x > width - 2*self.r) {
+			self.dir_x =  -self.dir_x
+			console.log('right ')
+		  }
+		
+		  if (prev.x < self.r) {
+			self.dir_x =  -self.dir_x
+			console.log('left ')
+		  }
+
+
+		  if(self.env.r - self.r < getDistance_between_entities(prev, self.env)){
+			console.log('too big')
+		  }
+	}
+
+	self.move00 = function(ctx, nr){	
+		if(nr % self.speed === 0){	
+			let x = self.x
+			let y = self.y
+			let next_x = self.x + self.dir_x
+			let next_y = self.y + self.dir_y
+			let angle = angle360(x, y, next_x, next_y)
+
+			if(self.check_collision(next_x, next_y, angle)){				
+				if(angle >=0 && angle <=90){					
+					//self.dir_x = -self.dir_x
+					self.dir_x = 5
+					self.dir_y = -5
+					console.log('dir-AAA-b ')
+				} else if(angle >90 && angle <=180){
+					//self.dir_x = -self.dir_x
+					self.dir_x = -5
+					self.dir_y = -5
+					console.log('dir-BBB-A ')
+				} else if(angle >180 && angle <=270){					
+					// self.dir_y = -self.dir_y
+					self.dir_x = 5
+					self.dir_y = 5
+					console.log('dir-CCC-D ')
+				} else if(angle >270 && angle <=360){
+					//self.dir_y = -self.dir_y
+					self.dir_x = -5
+					self.dir_y = 5
+					console.log('dir-DDD-C ')
+				}				
+			} 
+			self.x = self.x + self.dir_x
+			self.y = self.y + self.dir_y
+		}
+		self.draw(ctx, self.color)
+	}
+
+	self.check_collision00 = function(x, y, angle){
 		let collision = false
 		let entity01 = {x: x, y: y}
 		let entity02 = self.env
 		if(self.env.r - self.r < getDistance_between_entities(entity01, entity02)){
 			collision = true
-			console.log('dir-move-collision ', self.env.r - self.r, getDistance_between_entities(entity01, entity02))
+			console.log('dir-move-collision ', angle)
 		} else {
-			console.log('dir-move ', self.env.r - self.r, getDistance_between_entities(entity01, entity02))
+			console.log('dir-move ', angle)
 		}
 		return collision
 	}
@@ -364,12 +414,12 @@ function keno_circle(props){
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 101
-				canvas.height = 101
+				canvas.width = 200
+				canvas.height = 200
 			} else {
 				//small portrait
-				canvas.width = 102
-				canvas.height = 102
+				canvas.width = 200
+				canvas.height = 200
 			}			
 		} else if (window.innerWidth < 1200){
 			//big
