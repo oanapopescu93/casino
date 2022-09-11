@@ -104,9 +104,6 @@ function Ball(config){
 		if(nr % self.speed === 0){	
 			let prev = {x: self.x + self.dir_x, y: self.y + self.dir_y}
 			self.check_collision(prev)
-			self.x = self.x + self.dir_x
-			self.y = self.y + self.dir_y
-			console.log('coord--> ', self.x, self.y, self.env.r) 
 		}
 		self.draw(ctx, self.color)
 	}
@@ -114,31 +111,90 @@ function Ball(config){
 	self.check_collision = function(prev){
 		let height = 2 * (self.env.r+1) //diametru
 		let width = 2 * (self.env.r+1) //diametru
+		let angle = angle360(self.x, self.y, prev.x, prev.y)		
 
-		if (prev.y > height - 2*self.r) {
-			self.dir_y = -self.dir_y
-			console.log('top ')
-		  }
+		// if (prev.y > height - 2*self.r) {
+		// 	self.dir_y = -self.dir_y
+		// 	console.log('top ')
+		//   }
 		
-		  if (prev.y < self.r) {
-			self.dir_y = -self.dir_y
-			console.log('bottom ')
-		  }
+		//   if (prev.y < self.r) {
+		// 	self.dir_y = -self.dir_y
+		// 	console.log('bottom ')
+		//   }
 		
-		  if (prev.x > width - 2*self.r) {
-			self.dir_x =  -self.dir_x
-			console.log('right ')
-		  }
+		//   if (prev.x > width - 2*self.r) {
+		// 	self.dir_x =  -self.dir_x
+		// 	console.log('right ')
+		//   }
 		
-		  if (prev.x < self.r) {
-			self.dir_x =  -self.dir_x
-			console.log('left ')
-		  }
+		//   if (prev.x < self.r) {
+		// 	self.dir_x =  -self.dir_x
+		// 	console.log('left ')
+		//   }
 
+		if(self.env.r - self.r <= getDistance_between_entities(prev, self.env)){
+			let quadrant = 1;
+			let alpha
+			if (angle >= 0 && angle < 90) { 
+				quadrant = 1; 
+				alpha = (90 - angle); 
+			}
+			else if (angle >= 90 && angle < 180) { 
+				quadrant = 4; 
+				alpha = (angle-90);  
+			}
+			else if (angle >= 180 && angle < 270) {
+				 quadrant = 3; 
+				 alpha = (270-angle);  
+				}
+			else if (angle >= 270 && angle <= 360) { 
+				quadrant = 2; 
+				alpha = (angle-270);  
+			}
 
-		  if(self.env.r - self.r < getDistance_between_entities(prev, self.env)){
-			console.log('too big')
-		  }
+			var m = Math.cos(alpha * Math.PI / 180);
+			var n = Math.sin(alpha * Math.PI / 180);
+
+			switch (quadrant){
+				case 1:  
+					if (m >= n){
+						angle = 270+alpha; 
+					} else{
+						angle = 180-angle;
+					}
+					break
+				case 2:
+					if (m >= n){
+						angle = 90-alpha;
+					} else{
+						angle = 270-alpha;
+					}
+					break
+				case 3:
+					if (m >= n){
+						angle = 90+alpha;   
+					} else{
+						angle = 270+alpha; 
+					} 
+					break;
+				case 4:
+					if (m >= n){
+						angle = 270-alpha;
+					} else{
+						angle = 90-alpha;
+					}
+					break
+    		}
+
+			self.x = Math.sin(angle) + self.x
+			self.y = Math.cos(angle) + self.y
+
+			console.log(self.x, self.y)
+		} else {
+			self.x = self.x + self.dir_x
+			self.y = self.y + self.dir_y
+		}
 	}
 
 	self.move00 = function(ctx, nr){	
@@ -646,3 +702,142 @@ function KenoGameCircle(props){
 }
 
 export default Keno;
+
+
+
+
+
+
+
+// var width = 500;
+// var height = 200;
+// var extra = 0;
+// var a;
+// var b;
+// var x;
+// var y;
+// var angle;
+// var n;
+// var m;
+// var quadrant;
+// var horizontal;
+// var vertical;
+// var alpha;
+// var side;
+// var topbottom;
+// var sides;
+// var i = 1;
+
+//   var txt=document.getElementById("info");
+//   txt.innerHTML="x: "+a+"<br>y: "+b+"<br>angle: "+angle+"<br>quadrant: "+quadrant;
+
+// function buttonClick()
+// {
+//   if (i == 1)
+//   {
+//     a = 75;
+//     b = 75;
+//     //determine first angle randonmly
+//     angle = Math.floor((Math.random()*360)+1);;
+//   } else
+//   {
+//     a = xcoord();
+//     b = ycoord();
+//   }
+//   var oldAngle = angle;  
+//   angle = findNewCoordinate(a, b, angle);
+
+//   sides = hitWhere();
+
+//   var txt=document.getElementById("info");
+//     txt.innerHTML="x: "+a+"<br>y: "+b+"<br>horizontal: "+horizontal+"<br>vertical: "+vertical+"<br>n: "+n+"<br>m: "+m+"<br>angle: "+oldAngle+"<br>alpha: "+alpha+"<br>quadrant: "+quadrant+"<br>side: "+topbottom+side+"<br>"+sides+"<br>"+i;
+//     i++;
+// }
+
+// function findNewCoordinate(a, b, angle)
+// {
+//     if (angle >= 0 && angle < 90) { quadrant = 1; horizontal = width-a; vertical = b; alpha = (90 - angle); }
+//     else if (angle >= 90 && angle < 180) { quadrant = 4; horizontal = width-a; vertical = height-b; alpha = (angle-90);  }
+//     else if (angle >= 180 && angle < 270) { quadrant = 3; horizontal = a; vertical = height-b; alpha = (270-angle);  }
+//     else if (angle >= 270 && angle <= 360) { quadrant = 2; horizontal = a; vertical = b; alpha = (angle-270);  }
+
+
+//        var cosa = Math.cos(alpha * Math.PI / 180);
+//        var sina = Math.sin(alpha * Math.PI / 180);
+//        var tana = Math.tan(alpha * Math.PI / 180);
+
+//        var tant = Math.tan(angle * Math.PI / 180);
+
+//        n = horizontal/cosa;
+//        m = vertical/sina;
+
+
+//     switch (quadrant)
+//     {
+//         case 1:  
+//             if (m >= n) //hit at side
+//             {
+//                 y = b - horizontal*tana; 
+//                 x = width;               
+//                 angle = 270+alpha;       
+//             } else
+//             {
+//                 y = 0;                  
+//                 x = a + vertical*tant;   
+//                 angle = 180-angle;       
+//             } 
+//             side = "right side"; topbottom = "top";
+//             break;
+//         case 2:
+//             if (m >= n)  //hit at side
+//             {
+//                 y = b-horizontal*tana;   
+//                 x = 0;                   
+//                 angle = 90-alpha;        
+//             } else
+//             {
+//                 y = 0;                   
+//                 x = a - vertical/tana;   
+//                 angle = 270-alpha;       
+//             } 
+//             side = "left side"; topbottom = "top";
+//             break;
+//         case 3: side = "left side"; topbottom = "bottom";
+//             if (m >= n)  //hit at side
+//             {
+//                 x = 0;                   
+//                 y = b + tana*horizontal; 
+//                 angle = 90+alpha;        
+//             } else
+//             {
+//                 y = height;              
+//                 x = a - vertical/tana;   
+//                 angle = 270+alpha;       
+//             } break;
+//         case 4: side = "right side"; topbottom = "bottom";
+//             if (m >= n)  //hit at side
+//             {
+//                 y = b+horizontal*tana; 
+//                 x = width;             
+//                 angle = 270-alpha;     
+//             } else
+//             {
+//                 y = height;            
+//                 x = a + vertical/tana; 
+//                 angle = 90-alpha;      
+//             } break;
+//     }
+
+//     //add extra degrees to the angle (optional)
+//     angle += extra;
+
+//     context.beginPath();
+//     context.arc(a, b, 5, 0, Math.PI*2, true); 
+//     context.stroke();
+//     context.closePath();
+//     context.fill();
+
+//     drawLine(a,b,x,y);
+
+//     return angle;
+// }
