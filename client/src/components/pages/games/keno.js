@@ -104,35 +104,14 @@ function Ball(config){
 		if(nr % self.speed === 0){	
 			let prev = {x: self.x + self.dir_x, y: self.y + self.dir_y}
 			self.check_collision(prev)
+			self.x = self.x + self.dir_x
+			self.y = self.y + self.dir_y
 		}
 		self.draw(ctx, self.color)
 	}
 
 	self.check_collision = function(prev){
-		let height = 2 * (self.env.r+1) //diametru
-		let width = 2 * (self.env.r+1) //diametru
-		let angle = angle360(self.x, self.y, prev.x, prev.y)		
-
-		// if (prev.y > height - 2*self.r) {
-		// 	self.dir_y = -self.dir_y
-		// 	console.log('top ')
-		//   }
-		
-		//   if (prev.y < self.r) {
-		// 	self.dir_y = -self.dir_y
-		// 	console.log('bottom ')
-		//   }
-		
-		//   if (prev.x > width - 2*self.r) {
-		// 	self.dir_x =  -self.dir_x
-		// 	console.log('right ')
-		//   }
-		
-		//   if (prev.x < self.r) {
-		// 	self.dir_x =  -self.dir_x
-		// 	console.log('left ')
-		//   }
-
+		let angle = angle360(self.x, self.y, prev.x, prev.y)	
 		if(self.env.r - self.r <= getDistance_between_entities(prev, self.env)){
 			let quadrant = 1;
 			let alpha
@@ -160,40 +139,58 @@ function Ball(config){
 				case 1:  
 					if (m >= n){
 						angle = 270+alpha; 
+						self.dir_x = 8
+						self.dir_y = -3
+						console.log('xxx01a ', angle)
 					} else{
 						angle = 180-angle;
+						self.dir_x = self.dir_x
+						self.dir_y = -self.dir_y
+						console.log('xxx01b ', angle)
 					}
 					break
 				case 2:
 					if (m >= n){
 						angle = 90-alpha;
+						self.dir_x = 5
+						self.dir_y = 5
+						console.log('xxx02a ', angle)
 					} else{
 						angle = 270-alpha;
+						self.dir_x = 5
+						self.dir_y = 5
+						console.log('xxx02b ', angle)
 					}
 					break
 				case 3:
 					if (m >= n){
-						angle = 90+alpha;   
+						angle = 90+alpha; 
+						self.dir_x = -5
+						self.dir_y = -5
+						console.log('xxx03a ', angle) 
 					} else{
 						angle = 270+alpha; 
+						self.dir_x = -5
+						self.dir_y = -5
+						console.log('xxx03b ', angle)
 					} 
 					break;
 				case 4:
 					if (m >= n){
 						angle = 270-alpha;
+						self.dir_x = 5
+						self.dir_y = 5
+						console.log('xxx04a ', angle)
 					} else{
 						angle = 90-alpha;
+						self.dir_x = 5
+						self.dir_y = 5
+						console.log('xxx04b ', angle)
 					}
 					break
     		}
 
-			self.x = Math.sin(angle) + self.x
-			self.y = Math.cos(angle) + self.y
-
-			console.log(self.x, self.y)
-		} else {
-			self.x = self.x + self.dir_x
-			self.y = self.y + self.dir_y
+			console.log(self.dir_x, self.dir_y)
 		}
 	}
 
