@@ -10,9 +10,9 @@ const port = process.env.PORT || 5000
 app.set("port", port)
 
 const fs = require('fs');
-let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
-let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
-let history_user = JSON.parse(fs.readFileSync('./json/history_user.json', 'utf8'))
+// let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+// let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
+// let history_user = JSON.parse(fs.readFileSync('./json/history_user.json', 'utf8'))
 
 const { encrypt, decrypt, encrypt_jwt, decrypt_jwt } = require('./utils/crypto')
 var constants = require('./var/constants')
@@ -77,7 +77,10 @@ io.on('connection', function(socket) {
 		
 	})
 	socket.on('signup_send', function(data) {
+        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+        let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
 		sign_in_up = false
+        
         if(users_json){
             let id = 0
             let user_found = false
