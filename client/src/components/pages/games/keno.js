@@ -74,8 +74,10 @@ function Ball(config){
 	self.dir_x = config.dir_x
 	self.dir_y = config.dir_y
 	self.r = config.r
-	self.color = config.color
-	self.border = config.border
+	// self.color = config.color
+	// self.border = config.border
+	self.dir_x = -8
+	self.dir_y = -3
 	self.border_color = config.border_color
 	// self.speed = config.speed
 	self.speed = 10

@@ -134,7 +134,7 @@ function Salon(props){
 	useEffect(() => {
 		dispatch(game_page("salon"));
 		dispatch(game_load(true));
-		salonData().then(res => {		
+		salonData().then(res => {
 			if(res){				
 				for(let i in res.server_tables){
 					switch (res.server_tables[i].table_name) {
@@ -187,7 +187,7 @@ function Salon(props){
 					setData(result);
 					resolve(result);	
 				});
-			}, 1000);
+			}, 500);
 		});
 	};
 

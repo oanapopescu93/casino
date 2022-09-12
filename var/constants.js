@@ -11,6 +11,12 @@ module.exports = Object.freeze({
             password: 'Qazwsxedc123rfv123!',
             database: 'bunny_bet_casino',
             sql: "SELECT * FROM casino_users",
+
+            // host: 'sql104.epizy.com', 
+            // user: 'epiz_32574901', 
+            // password: 'Qazwsxedc123rfv123',
+            // database: 'epiz_32574901_bunny_bet_casino',
+            // sql: "SELECT * FROM casino_users",
         },
     ],
 

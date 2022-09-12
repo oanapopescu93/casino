@@ -71,6 +71,7 @@ function SignUp(props){
 			}		
 			socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
 			socket.on('signup_read', function(data){
+				console.log('signup_read ', data)
 				resolve(data);
 			});	
 		});
