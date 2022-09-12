@@ -135,7 +135,7 @@ function Salon(props){
 		dispatch(game_page("salon"));
 		dispatch(game_load(true));
 		salonData().then(res => {
-			if(res){				
+			if(res){	
 				for(let i in res.server_tables){
 					switch (res.server_tables[i].table_name) {
 						case "roulette":
@@ -170,7 +170,7 @@ function Salon(props){
 					let text = bigText("first_enter_salon", lang, pay_table); 
 					showResults(gift_title, text, 600);					
 				}				
-			}
+			} 
 			setLoaded(true);
 			dispatch(game_load(false));
 			setOpen("open");

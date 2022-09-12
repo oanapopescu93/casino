@@ -64,23 +64,96 @@ let sign_in_up = false
 app.use(routes)
 
 io.on('connection', function(socket) {
-	let headers = socket.request.headers
-	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
-	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
-		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
-			device = 1
-		}
-	} else {
-		device = 2
-	}
+    function get_device(headers){
+        let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
+        if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
+                device = 1
+            }
+        } else {
+            device = 2
+        }
+        return device
+    }
+
 	socket.on('signin_send', function(data) {
-		
+		let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+        let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
+        sign_in_up = false;
+        let uuid = crypto.randomBytes(20).toString('hex');
+        let pass01 = data.pass;
+
+        let headers = socket.request.headers
+        let device = get_device(headers)
+
+        let exists = false
+        let obj = {}
+
+        for(let i in users_json){
+            let pass02 = decrypt(JSON.parse(users_json[i].pass));
+            if((data.user === users_json[i].user || data.user === users_json[i].email) && pass01 === pass02){
+                //the user exists and the password was correct
+                exists = true;	
+                sign_in_up = true;
+                obj = {id: users_json[i].id, uuid: uuid, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
+                get_extra_data().then(function(data1) {	
+                    let extra_data = {
+                        city: data1.data.city ? data1.data.city : "",
+                        country: data1.data.country ? data1.data.country : "",
+                        ip_address: data1.data.ip_address? data1.data.ip_address : "",
+                    }
+                    let timestamp = new Date().getTime() + ""
+
+                    //update uuid
+                    users_json[i].uuid = uuid
+
+                    let payload = JSON.stringify(users_json)
+                    fs.writeFileSync('./json/casino_user.json', payload)
+
+                    if(login_user){
+                        let login_id = 0
+                        if(login_user.length > 0){
+                            login_id = login_user.length-1
+                        }                     
+                        
+                        let new_login = {
+                            id: login_id,
+                            user_id: users_json[i].id,
+                            login_date: timestamp,
+                            device: device,
+                            ip_address: extra_data.ip_address,
+                            city: extra_data.city,
+                            country: extra_data.city,
+                        }
+                        login_user.push(new_login)
+                            
+                        let payload = JSON.stringify(login_user)
+                        fs.writeFileSync('./json/login_user.json', payload)
+                        login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))                        
+                    }
+                })
+                break
+            } else if((data.user === users_json[i].user || data.user === users_json[i].email) && pass01 !== pass02){
+                //the user exists but the password was not correct
+                exists = true
+                break
+            }
+        }
+
+        try{
+            io.to(socket.id).emit('signin_read', [exists, obj]);	
+        }catch(e){
+            console.log('[error]','signin_read2 :', e);
+        }
 	})
 	socket.on('signup_send', function(data) {
         let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
         let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
 		sign_in_up = false
-        
+
+        let headers = socket.request.headers
+        let device = get_device(headers)
+
         if(users_json){
             let id = 0
             let user_found = false
@@ -144,7 +217,7 @@ io.on('connection', function(socket) {
                         fs.writeFileSync('./json/login_user.json', payload)
                         login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
 
-                        let obj = {id: id, uuid:uuid, user: data.user, email: data.email, account_type: account_type, money: user_money};
+                        let obj = {id: id, uuid:uuid, user: data.user, email: data.email, account_type: account_type, money: default_money};
                         try{
                             io.to(socket.id).emit('signup_read', [false, obj]);
                         }catch(e){
@@ -162,12 +235,137 @@ io.on('connection', function(socket) {
             }
         }
 	})
-
 	socket.on('salon_send', function(uuid) {
-			
-	})
+        if(uuid){
+			let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))  
 
+            let user_found;
+            for(let i in users_json){
+                if(users_json[i].uuid == uuid){
+                    user_found = users_json[i];											
+                    break;
+                }
+            }
+
+            if(user_found){				
+                let first_enter_salon = false;		
+                let id = user_found.id;
+                let user = user_found.user;
+                let money = user_found.money;
+                let signup = user_found.signup;
+                let timestamp = new Date().getTime();
+                
+                let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))                
+                let latest = null;
+                for(let i in login_user){
+                    if(login_user[i].user_id == id){
+                        latest = login_user[i];
+                    }
+                }
+                if(latest){
+                    //check first time player
+                    if(latest.login_date === signup && (timestamp - parseInt(latest.login_date))/60000 < 0.25){ 
+                        first_enter_salon = true;
+                    }
+                }
+
+                let obj = {server_tables: server_tables, uuid: uuid, user: user, money: money, first_enter_salon: first_enter_salon, contact: contact_details }
+				try{				
+					io.to(socket.id).emit('salon_read', obj);
+				}catch(e){
+					console.log('[error]','salon_read1 :', e);
+				}
+            } else {
+                try{				
+                    io.to(socket.id).emit('salon_read', {});
+                }catch(e){
+                    console.log('[error]','salon_read0 :', e);
+                }
+            }
+		} else {
+			try{				
+				io.to(socket.id).emit('salon_read', false);
+			}catch(e){
+				console.log('[error]','salon_read0 :', e);
+			}
+		}
+	})
 	socket.on('user_page_send', function(data) {
+        if(data.uuid){
+            let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8')) 
+			let table = data.table;
+			let uuid = data.uuid;	
+			
+            let user_found;
+            for(let i in users_json){
+                if(users_json[i].uuid == uuid){
+                    user_found = users_json[i];											
+                    break;
+                }
+            }
+
+            if(user_found){	
+                let id = user_found.id;
+                let user = user_found.user;
+                let money = user_found.money;
+                let game = table.split('_')[0];
+                let type = table.split('_')[2];
+                let profile_pic = user_found.profile_pic;
+                let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic));
+                let server_user = {id: id, uuid: uuid, user: user, money: money, profile_pic: [profile_pic, profile_animal], market:market, profiles: profiles, user_table: table, game: game, contact: contact_details}		
+                
+                socket.user_id = id;
+                socket.user_uuid = uuid;
+                socket.user = user;
+                socket.user_table = table;	
+
+                let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))           
+                let logs =[];
+				for(let i in login_user){
+					if(login_user[i].user_id == id){
+						logs.push(login_user[i]);							
+					}
+				}
+                server_user.streak = check_streak(logs);
+				let room_name = table;	
+                
+                try{
+					socket.join(room_name);
+					
+					let exists = false;
+					for (let i in user_join) { // list of user who join a room
+						if (user_join[i].id === id) {
+							exists = true;
+							user_join[i] = {id: id, uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()};
+							break;
+						}
+					}
+					if(!exists){
+						user_join.push({id: id, uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()});	
+					}
+						
+					sockets.push(socket);
+					users[socket.user] = socket;			
+					
+					io.to(socket.id).emit('user_page_read', server_user);
+					io.to(room_name).emit('chatlist', user_join);			
+				}catch(e){
+					console.log('[error]','join room :',e);
+				}
+            } else {
+                try{
+                    io.to(socket.id).emit('user_page_read', null);
+                }catch(e){
+                    console.log('[error]','user_page_send1 :', e);
+                }
+            }
+		} else {
+			try{
+				io.to(socket.id).emit('user_page_read', null);
+			}catch(e){
+				console.log('[error]','user_page_send1 :', e);
+			}
+		}
     })
 
 	socket.on('donate_send', function(data) {
@@ -239,14 +437,42 @@ io.on('connection', function(socket) {
 	})
 
 	socket.on('change_username_send', function(data) {
-		
+		let uuid = data.uuid;
+		let user_new = data.user_new;
+        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+        
+        for(let i in users_json){
+            if(users_json[i].uuid == uuid){
+                users_json[i].user = user_new;										
+                break;
+            }
+        }
+        let payload = JSON.stringify(users_json)
+        fs.writeFileSync('./json/casino_user.json', payload)
 	})
 	socket.on('change_password_send', function(data) {
-		
-	});
+		let uuid = data.uuid;
+		let pass_old = data.pass_old;
+		let pass_new = data.pass_new;
+        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+
+        for(let i in users_json){
+            
+        }
+        let payload = JSON.stringify(users_json)
+        fs.writeFileSync('./json/casino_user.json', payload)
+	})
 	socket.on('change_pic_send', function(data) {
-		
-	});
+		let uuid = data.uuid;
+		let pic = data.pic;		
+        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+
+        for(let i in users_json){
+            
+        }
+        let payload = JSON.stringify(users_json)
+        fs.writeFileSync('./json/casino_user.json', payload)
+	})
 
 	socket.on('roulette_spin_send', function(data) {		
 		if(data.spin_click === 1){
@@ -388,7 +614,7 @@ io.on('connection', function(socket) {
 
 	socket.on('results_send', function(data) {
 		
-	});
+	})
 
 	socket.on('disconnect', function(reason) {
 		console.log('disconnect', reason)
