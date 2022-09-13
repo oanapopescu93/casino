@@ -30,19 +30,29 @@ function UserPage(props){
 			socket.emit('user_page_send', {table: table, uuid: casino_uuid, lang: lang});
 			socket.on('user_page_read', function(data){
 				if(data !== null){
-					if(choice === "game"){
-						let table_split = data.user_table.split('_');
-						data.table = table_split[0] + ' ' + table_split[1];
-						data.type = table_split[2];	
-					}
-					setData(data);
-					if(typeof $('#chatmessages') !== "undefined"){
-						if(lang === "ro"){
-							$('#chatmessages').append('<p class="user_join">' + data.user + ' e online</p>');
-						} else {
-							$('#chatmessages').append('<p class="user_join">' + data.user + ' join the chat</p>');
+					if(data.event && data.event === "disconnect"){
+						if(typeof $('#chatmessages') !== "undefined"){
+							if(lang === "ro"){
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' e offline</p>');
+							} else {
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' left the chat</p>');
+							}
+						}	
+					} else {
+						if(choice === "game"){
+							let table_split = data.user_table.split('_');
+							data.table = table_split[0] + ' ' + table_split[1];
+							data.type = table_split[2];	
 						}
-					}	
+						setData(data);
+						if(typeof $('#chatmessages') !== "undefined"){
+							if(lang === "ro"){
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' e online</p>');
+							} else {
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' join the chat</p>');
+							}
+						}
+					}
 				} else {					
 					setEmpty(true);
 				}		

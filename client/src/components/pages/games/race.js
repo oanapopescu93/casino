@@ -1072,7 +1072,7 @@ function Race(props){
 	
 	useEffect(() => {
 		dispatch(game_page("race"));
-		socket.emit('race_board_send', {id: props.info.id, uuid: props.info.uuid});
+		socket.emit('race_board_send', {uuid: props.info.uuid});
 		socket.on('race_board_read', function(data){
 			if(data && data.rabbit_race){
 				setRabbitArray(data.rabbit_race);

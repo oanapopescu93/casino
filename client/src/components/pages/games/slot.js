@@ -54,7 +54,8 @@ function slot_game(props, id){
 		reason = r;
 		self.fit();
 		self.choose_slot_type();
-		let payload = {id: props.info.id, reel:reel.length, items:items.length, reason: reason}	
+		console.log(props)
+		let payload = {uuid: props.info.uuid, reel:reel.length, items:items.length, reason: reason}	
 		socket.emit('slots_send', payload);
 		socket.on('slots_read', function(data){				
 			suffle_array = data[0];

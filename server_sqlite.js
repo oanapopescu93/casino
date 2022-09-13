@@ -58,19 +58,7 @@ var blackjack_dealer = {}
 var rabbit_speed = [3, 1] //max, min
 var rabbit_delay = [40, 20] //max, min
 
-let sign_in_up = false
 app.use(routes)
-
-// sql = 'DELETE FROM casino_user'
-// database(sql, [], '3').then(function(data){
-// 	console.log('casino_user ', data)
-// })
-// sql = 'SELECT * FROM casino_user'
-// database(sql, [], '3').then(function(data){
-// 	console.log('casino_user ', data)
-// })
-
-
 
 function get_user_from_UUID(uuid){
 	return new Promise(function(resolve, reject){
@@ -86,18 +74,12 @@ function get_user_from_UUID(uuid){
 }
 
 io.on('connection', function(socket) {
-	let headers = socket.request.headers
-	let device = 0 // 0 = computer, 1 = mobile, 2 = something went wrong
-	if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
-		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
-			device = 1
-		}
-	} else {
-		device = 2
-	}
 	socket.on('signin_send', function(data) {
 		sign_in_up = false
 		let uuid = crypto.randomBytes(20).toString('hex')
+
+		let headers = socket.request.headers
+        let device = get_device(headers)
 
 		sql = 'select * from casino_user'
 		database(sql, [], '1').then(function(result){
@@ -173,6 +155,9 @@ io.on('connection', function(socket) {
 				sign_in_up = true
 				let pass = JSON.stringify(encrypt(data.pass))
 				let uuid = crypto.randomBytes(20).toString('hex')
+
+				let headers = socket.request.headers
+        		let device = get_device(headers)
 
 				get_extra_data().then(function(data1) {				
 					let extra_data = {
@@ -395,8 +380,7 @@ io.on('connection', function(socket) {
 		}catch(e){
 			console.log('[error]','question :', e)
 		}	
-	})		
-	
+	})
 	socket.on('chat_message_send', function(data){		
 		let room_name = data.user_table
 		if(room_name === "race" || room_name === "keno"){
@@ -421,6 +405,7 @@ io.on('connection', function(socket) {
 		}
 	})
 
+	// changes in dashboard
 	socket.on('change_username_send', function(data){
 		let uuid = data.uuid
 		let user_new = data.user_new
@@ -507,83 +492,316 @@ io.on('connection', function(socket) {
 		})
 	})
 
-	socket.on('roulette_spin_send', function(data){		
+	// games
+	socket.on('roulette_spin_send', function(data) {		
 		if(data.spin_click === 1){
-			let spin_time = Math.floor(Math.random() * (800 - 300)) + 300;
-			//let spin_time = 100;
-			let ball_speed = 0.06;
-			let room_name = data.user_table;			
-			let k = data.my_click;
+			let spin_time = Math.floor(Math.random() * (800 - 300)) + 300
+			//let spin_time = 100
+			let ball_speed = 0.06
+			let room_name = data.user_table		
+			let k = data.my_click
 			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey_roulette[k]}			
-			io.to(room_name).emit('roulette_spin_read', payload);
+			io.to(room_name).emit('roulette_spin_read', payload)
 		}
 	})
-
-	socket.on('blackjack_get_users_send', function(data){
-		let room_name = data.user_table;
-		io.to(room_name).emit('blackjack_get_users_read', user_join);
-	})
-	
-	socket.on('slots_send', function(data){
-		let array_big = [];
-		let this_user = data.id;
-		let reel = data.reel;
-		let items = data.items;
-		let matrix = [];
-		let reason = data.reason;
-
-		for(let i=0; i<19; i++){
-			matrix.push(slot_matrix(i, [reel, 3]));
+	socket.on('blackjack_get_users_send', function(data) {
+		let room_name = data.user_table
+		io.to(room_name).emit('blackjack_get_users_read', user_join)
+	})	
+	socket.on('blackjack_send', function(data) {
+		let game_start = false
+		let user_table = data[1].user_table.split(' ').join('_')
+		let room_name = user_table
+		if(typeof data[1].user_type !== "undefined"){
+			let user_type = data[1].user_type
+			room_name = room_name + '_' + user_type
 		}
+		switch (data[0]) {
+			case 'start':
+				if(!game_start){
+					let suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
+					let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
-		if(reason != "resize"){
-			for(let i=0; i<reel; i++){
-				let array_small = Array.from(Array(items).keys());
-				array_small = shuffleArray(array_small);
-				array_big.push(array_small)
-			}	
-		}
-			
-		for(let i in sockets){
-		 	if(sockets[i].user_id === this_user){
-				let is_lucky = Math.floor(Math.random() * 100);
-				let how_lucky = 7;
-				if(is_lucky % how_lucky === 0){
-					monkey_slots = true;
+					blackjack_deck = createDeck(suits, values, 10000)
+
+					blackjack_players = []
+					blackjack_players = user_join
+					dealHands()
+
+					hidden_dealer.id = blackjack_dealer.id
+					hidden_dealer.hand = []
+					hidden_dealer.hand.push(blackjack_dealer.hand[0])
+					io.to(room_name).emit('blackjack_read', ['start', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+					game_start = true
+				} else {
+				 	io.to(room_name).emit('blackjack_read', text03)
+				}				
+				break
+			case 'pause':
+				if(!game_start){
+					io.to(room_name).emit('blackjack_read', "pause")
+				} else {					
+					hidden_dealer.id = blackjack_dealer.id
+					hidden_dealer.hand = []
+					hidden_dealer.hand.push(blackjack_dealer.hand[0])
+					io.to(room_name).emit('blackjack_read', ['pause', blackjack_players, hidden_dealer])
 				}
-		 		io.to(socket.id).emit('slots_read', [array_big, matrix, monkey_slots]);
-		 	} 
+				break
+			case 'hit':
+				hitMe()
+				if(blackjack_players[blackjack_current_player].lose !== true){
+					io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				 	//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				} else {
+					io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
+				 	//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				}
+				break
+			case 'stay':
+				if(blackjack_current_player != blackjack_players.length-1){
+					blackjack_current_player++
+					io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+					//console.log('stay--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+				} else {
+					blackjack_win_lose();
+					io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
+					//console.log('stay--> ', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
+				}				
+				break
+		}	
+
+		function createDeck(suits, values, turns){
+			blackjack_deck = new Array()
+			for (let i = 0 ; i < values.length; i++){
+				for(let j = 0; j < suits.length; j++){
+					let weight = parseInt(values[i])
+					if (values[i] == "J" || values[i] == "Q" || values[i] == "K"){
+						weight = 10		
+					}
+					if (values[i] == "A"){
+						weight = 11				
+					}
+					let card = { Value: values[i], Suit: suits[j], Weight: weight }
+					blackjack_deck.push(card)
+				}
+			}		
+			return shuffle(turns)
+		}		
+		function shuffle(turns){ 
+			for (let i = 0; i < turns; i++){
+				let a = Math.floor((Math.random() * blackjack_deck.length))
+				let b = Math.floor((Math.random() * blackjack_deck.length))
+				let tmp = blackjack_deck[a]		
+				blackjack_deck[a] = blackjack_deck[b]
+				blackjack_deck[b] = tmp
+			}
+			return blackjack_deck
+		}		
+		function dealHands(){
+			blackjack_dealer = {id: "dealer", hand: []}			
+			for(let i = 0; i < 2; i++){	
+				let card = blackjack_deck.pop()
+				blackjack_dealer.hand.push(card)
+				for (let j = 0; j < blackjack_players.length; j++){
+					let card = blackjack_deck.pop()
+					if(i === 0){
+						blackjack_players[j].hand = []
+					} else {
+						if(data[1].user_id == blackjack_players[j].id){
+							blackjack_players[j].bets = data[1].bets
+						}	
+					}	
+					blackjack_players[j].hand.push(card)
+				}
+			}
+			points('deal_hands')
+			check('blackjack')
+		}		
+		function hitMe(){
+			let card = blackjack_deck.pop()
+			blackjack_players[blackjack_current_player].hand.push(card)
+			points('hit_me')
+			check('busted')
+		}		
+		function points(reason){
+			switch (reason) {
+				case 'deal_hands':
+					for(let i in blackjack_players){
+						let points = 0
+						for(let j in blackjack_players[i].hand){
+							points = points + blackjack_players[i].hand[j].Weight
+						}
+						blackjack_players[i].points = points
+						blackjack_players[i].lose = false
+						blackjack_players[i].win = false
+					}	
+					break
+				case 'hit_me':
+					let points_hit_me = 0
+					for(let j in blackjack_players[blackjack_current_player].hand){
+						points_hit_me = points_hit_me + blackjack_players[blackjack_current_player].hand[j].Weight
+					}
+					blackjack_players[blackjack_current_player].points = points_hit_me
+					blackjack_players[blackjack_current_player].lose = false
+					blackjack_players[blackjack_current_player].win = false
+					break;	
+				case 'dealer':
+					let points_dealer = 0
+					for(let i in blackjack_dealer.hand){
+						points_dealer = points_dealer + blackjack_dealer.hand[i].Weight
+					}
+					blackjack_dealer.points = points_dealer
+					break		
+			  }	
+		}		
+		function check(reason){
+			switch (reason) {
+				case 'busted':
+					if(blackjack_players[blackjack_current_player].points > 21){				
+						blackjack_players[blackjack_current_player].lose = true
+					} 				
+					break
+				case 'blackjack':
+					for(let i in blackjack_players){
+						if(blackjack_players[i].points === 21){
+							blackjack_players[blackjack_current_player].win = true
+						} 
+					}	
+					break			
+			  }		
+		}
+		function check_dealer(dealer, player){
+			//check if dealer has more points than players
+			let dealer_points = dealer.points
+			let player_points = player.points
+			if(dealer_points < player_points){
+				return false
+			} else {
+				return true
+			}
+		}		
+		function blackjack_win_lose(){
+			let max = -1;
+			let winner = -1;
+			
+			//ger player with max points
+			let score = 0
+			for(let i in blackjack_players){
+				if(!blackjack_players[i].lose && blackjack_players[i].points > score){
+					max = i
+					score = blackjack_players[i].points
+				}
+			}
+
+			//check dealer points
+			points('dealer')
+			let bigger = check_dealer(blackjack_dealer, blackjack_players[max])
+
+			//if(!monkey_blackjack){
+				while (!bigger) {
+					let card = blackjack_deck.pop()
+					blackjack_dealer.hand.push(card)
+
+					points('dealer')
+					bigger = check_dealer(blackjack_dealer, blackjack_players[max])
+
+					if(blackjack_dealer.points > 21){				
+						blackjack_dealer.lose = true
+					} 
+				}
+			//}
+			
+			if(max !== -1){
+				if(blackjack_players[max].points > blackjack_dealer.points){
+					blackjack_players[max].win = true
+				} else {
+					blackjack_dealer.win = true
+					if(!blackjack_dealer.lose){
+						blackjack_dealer.win = true
+					} else {
+						blackjack_players[max].win = true
+					}
+				}	
+			} else {	
+				blackjack_dealer.win = true;
+			}
 		}
 	})
+	socket.on('slots_send', function(data) {
+		if(data.uuid){
+			let uuid = data.uuid
+			let array_big = []
+			let reel = data.reel
+			let items = data.items
+			let matrix = []
+			let reason = data.reason
+			let user_found
 
-	socket.on('craps_send', function(data){
-		let is_lucky = Math.floor(Math.random() * 100);
-		let how_lucky = 7;
-		if(is_lucky % how_lucky === 0){
-			monkey_craps = true;
+			for(let i in users_json){
+				if(users_json[i].uuid == uuid){
+					users_json[i].money = money
+					user_found = users_json[i]										
+					break
+				}
+			}
+
+			if(user_found){
+				let id = user_found.id
+
+				for(let i=0; i<19; i++){
+					matrix.push(slot_matrix(i, [reel, 3]))
+				}
+	
+				if(reason != "resize"){
+					for(let i=0; i<reel; i++){
+						let array_small = Array.from(Array(items).keys())
+						array_small = shuffleArray(array_small)
+						array_big.push(array_small)
+					}	
+				}
+					
+				for(let i in sockets){
+					if(sockets[i].user_id === id){
+						let is_lucky = Math.floor(Math.random() * 100)
+						let how_lucky = 7
+						if(is_lucky % how_lucky === 0){
+							monkey_slots = true
+						}
+						io.to(socket.id).emit('slots_read', [array_big, matrix, monkey_slots])
+						break
+					} 
+				}
+			}			
 		}
-		//monkey_craps = true;
+	})
+	socket.on('craps_send', function(data) {
+		let is_lucky = Math.floor(Math.random() * 100)
+		let how_lucky = 7
+		if(is_lucky % how_lucky === 0){
+			monkey_craps = true
+		}
+		//monkey_craps = true
 		
-		let room_name = data.user_table;
-		let how_many_dices = data.how_many_dices;
-		let numbers = [];
-		let point = data.point;
-		let before = data.before;
-		let array = [2, 3, 7, 12];
+		let room_name = data.user_table
+		let how_many_dices = data.how_many_dices
+		let numbers = []
+		let point = data.point
+		let before = data.before
+		let array = [2, 3, 7, 12]
 
 		function set_numbers(){
-			let my_numbers = [];
+			let my_numbers = []
 			for(let i=0; i<how_many_dices; i++){
-				let number = Math.floor((Math.random() * 6) + 1);				
-				my_numbers.push(number);
+				let number = Math.floor((Math.random() * 6) + 1)			
+				my_numbers.push(number)
 			}
-			return my_numbers;
+			return my_numbers
 		}
 		
-		numbers = set_numbers();
+		numbers = set_numbers()
 		
 		while(numbers[0] == before[0] && numbers[1] == before[1]){
-			numbers = set_numbers();
+			numbers = set_numbers()
 		}
 		
 		if(monkey_craps){
@@ -591,17 +809,17 @@ io.on('connection', function(socket) {
 			if(point){
 				//other rolls must be 2, 3, 7, 12
 				if(numbers[0] + numbers[1] !== 2 && numbers[0] + numbers[1] !== 3 && numbers[0] + numbers[1] !== 7 && numbers[0] + numbers[1] !== 12){
-					let t = Math.floor((Math.random() * 3) + 0);
-					let mynumber = array[t];
-					numbers[0] = Math.floor(mynumber/2);
-					numbers[1] = mynumber-numbers[0];
+					let t = Math.floor((Math.random() * 3) + 0)
+					let mynumber = array[t]
+					numbers[0] = Math.floor(mynumber/2)
+					numbers[1] = mynumber-numbers[0]
 				}
 			} else {
 				// first roll must not be 7
 				if(numbers[0] + numbers[1] === 7){
 					numbers[0]++
 					if(numbers[0]>6){
-						numbers[0] = 1;
+						numbers[0] = 1
 					}
 				}
 			}
@@ -609,42 +827,54 @@ io.on('connection', function(socket) {
 			
 		try{
 			//console.log('craps', numbers, before)
-			io.to(room_name).emit('craps_read', numbers);
+			io.to(room_name).emit('craps_read', numbers)
 			
 		}catch(e){
-			console.log('[error]','craps :', e);
+			console.log('[error]','craps :', e)
 		}	
 	})
+	socket.on('race_board_send', function(data) {
+		if(data.uuid){
+			let uuid = data.uuid
+			let user_found
 
-	socket.on('race_board_send', function(data){
-		let id = data.id;
-		let race_user = data.user;
-		let money = 0;
-		if(id != -1){
-		 	for(let i in users_json){	
-				if(id === users_json[i].id){
-					money = users_json[i].money;
-					break;
+			for(let i in users_json){
+				if(users_json[i].uuid == uuid){
+					users_json[i].money = money
+					user_found = users_json[i]										
+					break
 				}
-		 	}
-		}
-		for(let i in rabbit_race){			
-			rabbit_race[i].max_speed = rabbit_speed[0];
-			rabbit_race[i].min_speed = rabbit_speed[1];
+			}
 
-			let random_delay = Math.floor(Math.random() * (rabbit_delay[0] - rabbit_delay[1]) ) + rabbit_delay[1];
-			rabbit_race[i].delay = random_delay;
-			
-			rabbit_race[i].health_max = 5;
-			rabbit_race[i].health = Math.round(random_delay * rabbit_race[i].health_max / rabbit_delay[0] * 10) / 10;
-			
-			rabbit_race[i].bet = 0;
-			rabbit_race[i].place = 1;
+			if(user_found){
+				let id = user_found.id
+
+				for(let i in rabbit_race){			
+					rabbit_race[i].max_speed = rabbit_speed[0]
+					rabbit_race[i].min_speed = rabbit_speed[1]
+		
+					let random_delay = Math.floor(Math.random() * (rabbit_delay[0] - rabbit_delay[1]) ) + rabbit_delay[1]
+					rabbit_race[i].delay = random_delay
+					
+					rabbit_race[i].health_max = 5
+					rabbit_race[i].health = Math.round(random_delay * rabbit_race[i].health_max / rabbit_delay[0] * 10) / 10
+					
+					rabbit_race[i].bet = 0
+					rabbit_race[i].place = 1
+				}
+
+				for(let i in sockets){
+					if(sockets[i].user_id === id){
+						let server_user = {rabbit_race: rabbit_race}
+						io.to(socket.id).emit('race_board_read', server_user)
+						break
+					} 
+			   	}
+			}
 		}
-		let server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
-		io.to(socket.id).emit('race_board_read', server_user);
 	})
 
+	// result infos after a game
 	socket.on('results_send', function(data){
 		let uuid = data.user_uuid
 		let user_table = data.user_table.split('_')	
@@ -689,6 +919,7 @@ io.on('connection', function(socket) {
 		}
 	})
 
+	// other
 	socket.on('disconnect', function(reason){
 		console.log('disconnect', reason)
 		let k = sockets.indexOf(socket)		
@@ -705,7 +936,7 @@ io.on('connection', function(socket) {
 					}	
 					
 					try{
-						io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>')
+						io.to(room_name).emit('user_page_read', {event: "disconnect", user: user_join[k].user})
 						sockets.splice(k, 1)		
 						user_join.splice(user_join.indexOf(k), 1)
 						socket.leave(room_name)
@@ -733,6 +964,20 @@ io.on('connection', function(socket) {
 		console.log('heartbeat', data)
 	})
 })
+
+function get_device(headers){
+	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
+	if(headers){
+		if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
+				device = 1
+			}
+		} else {
+			device = 2
+		}
+	}
+	return device
+}
 
 function check_streak(result){
 	const DAYS = 2
