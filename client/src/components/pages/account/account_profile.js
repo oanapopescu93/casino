@@ -10,6 +10,8 @@ import { setCookie} from '../../utils';
 import History from '../partials/history';
 
 import profilePic from '../../img/profile/predators.jpg';
+import eye_opened from '../../img/icons_other/eye/eye_opened_black.png';
+import eye_closed from '../../img/icons_other/eye/eye_closed_black.png';
 
 function Picture(props){
 	let picId = props.pic_id;
@@ -55,6 +57,8 @@ function Account_profile(props) {
 	const [show3, setShow3] = useState(false);
 	const [picId, setPicId] = useState("0");
 	const [animal, setAnimal] = useState(null);	
+	const [eyeOpenedOld, setEyeOpenedOld] = useState(false);	
+	const [eyeOpenedNew, setEyeOpenedNew] = useState(false);	
 
 	useEffect(() => {
 		if(props.info.profile_pic[0]){
@@ -127,14 +131,14 @@ function Account_profile(props) {
 		if(typeof input !== "undefined" && input !== "null" && input !== null && input !== ""){
 			setCookie("casino_user", input);
 			$('#profile_user_text').text(input);
-			socket.emit('change_username_send', {id: props.info.id, uuid: props.info.uuid, user_new: input});
+			socket.emit('change_username_send', {uuid: props.info.uuid, user_new: input});
 			handleClose_user();
 		}
     }
 
 	function change_password(){
 		let input_old = $('#change_password_old').val();
-		let input_new = $('#change_password_old').val();
+		let input_new = $('#change_password_new').val();
 		if(typeof input_old !== "undefined" && input_old !== "null" && input_old !== null && input_old !== "" && 
 		typeof input_new !== "undefined" && input_new !== "null" && input_new !== null && input_new !== ""){
 			if(!check_password(input_new)){
@@ -146,7 +150,7 @@ function Account_profile(props) {
 					$('#pass_errors_red').append('<p><b>Invalid password</b></p><p>At least one upper case, one lower case, one digit, one special character and minimum eight in length</p>')
 				}
 			} else {
-				socket.emit('change_password_send', {id: props.info.id, uuid: props.info.uuid, pass_old: input_old, pass_new: input_new});
+				socket.emit('change_password_send', {uuid: props.info.uuid, pass_old: input_old, pass_new: input_new});
 				handleClose_pass();
 			}
 		}
@@ -167,12 +171,33 @@ function Account_profile(props) {
 
 	function change_pic(){
 		handleClose_pic();
-		socket.emit('change_pic_send', {id: props.info.id, uuid: props.info.uuid, pic: picId});
+		socket.emit('change_pic_send', {uuid: props.info.uuid, pic: picId});
 	}
 
 	function choosePic(e){
 		setPicId(e.id);	
 		setAnimal(e);
+	}
+
+	function handle_eye(x){
+		switch(x) {
+			case 'old':
+				setEyeOpenedOld(!eyeOpenedOld)
+				if(eyeOpenedOld){
+					document.getElementById('change_password_old').type = 'password'
+				} else {
+					document.getElementById('change_password_old').type = 'text'
+				}
+			  	break
+			case 'new':
+				setEyeOpenedNew(!eyeOpenedNew)
+				if(eyeOpenedOld){
+					document.getElementById('change_password_new').type = 'password'
+				} else {
+					document.getElementById('change_password_new').type = 'text'
+				}
+			  	break
+		}
 	}
 	
 	return (
@@ -272,8 +297,22 @@ function Account_profile(props) {
 					<Modal.Title>{lang === "ro" ? <span>Schimba parola</span> : <span>Change password</span>}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<input className="change_input" type="text" id="change_password_old"></input>
-					<input className="change_input" type="text" id="change_password_new"></input> 
+					<p className="change_text">{lang === "ro" ? <span>Parola veche</span> : <span>Old password</span>}</p>
+					<div className="change_box">
+						<input className="change_input" type="password" id="change_password_old"></input>
+						{
+							eyeOpenedOld ? <img id="icon_eye_old" className="change_pic" alt="change_pic" src={eye_opened} onClick={()=>handle_eye('old')}></img> : 
+							<img id="icon_eye_old" className="change_pic" alt="change_pic" src={eye_closed} onClick={()=>handle_eye('old')}></img>
+						}
+					</div>
+					<p className="change_text">{lang === "ro" ? <span>Parola noua</span> : <span>New password</span>}</p>
+					<div className="change_box">
+						<input className="change_input" type="password" id="change_password_new"></input> 
+						{ 
+							eyeOpenedNew ? <img id="icon_eye_new" className="change_pic" alt="change_pic" src={eye_opened} onClick={()=>handle_eye('new')}></img> : 
+							<img id="icon_eye_new" className="change_pic" alt="change_pic" src={eye_closed} onClick={()=>handle_eye('new')}></img>
+						}
+					</div>
 					<div id="pass_errors"></div>
 					<Button className="change_password_button shadow_convex" type="button" onClick={() => change_password()}>
 						{lang === "ro" ? <span>Schimba</span> : <span>Change</span>}

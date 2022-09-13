@@ -996,7 +996,7 @@ table {
 }
 
 .change_input{
-	width:100%;
+	width:90%;
 	padding:5px 10px;
 	border-radius:5px;
 	-moz-box-shadow:    inset 2px 2px 2px var(--transparent_5)!important;
@@ -1005,6 +1005,11 @@ table {
 	background-color: black;
 	border:solid 1px black;
 	color:var(--yellow);
+	margin: 5px 0px;
+}
+.change_pic{
+	max-width:10%;
+	width:20px;
 }
 .change_username_button, .change_password_button, .change_pic_button{
 	background-color: black;
@@ -1094,6 +1099,7 @@ table {
 	top: 50%;
     left: 50%;
 	transform: translate(-50%, -50%)!important;
+	color:black;
 	
 }
 .casino_modal .modal-content{
@@ -1131,6 +1137,7 @@ table {
 
 #link_forget{
 	cursor: pointer;
+	font-size: 12px;
 }
 
 #crop_language_container{
