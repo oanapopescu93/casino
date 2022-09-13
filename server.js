@@ -60,28 +60,14 @@ var blackjack_dealer = {}
 var rabbit_speed = [3, 1] //max, min
 var rabbit_delay = [40, 20] //max, min
 
-let sign_in_up = false
 app.use(routes)
 
 io.on('connection', function(socket) {
-    function get_device(headers){
-        let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
-        if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
-            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
-                device = 1
-            }
-        } else {
-            device = 2
-        }
-        return device
-    }
-
 	socket.on('signin_send', function(data) {
 		let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
         let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
-        sign_in_up = false;
-        let uuid = crypto.randomBytes(20).toString('hex');
-        let pass01 = data.pass;
+        let uuid = crypto.randomBytes(20).toString('hex')
+        let pass01 = data.pass
 
         let headers = socket.request.headers
         let device = get_device(headers)
@@ -90,11 +76,10 @@ io.on('connection', function(socket) {
         let obj = {}
 
         for(let i in users_json){
-            let pass02 = decrypt(JSON.parse(users_json[i].pass));
+            let pass02 = decrypt(JSON.parse(users_json[i].pass))
             if((data.user === users_json[i].user || data.user === users_json[i].email) && pass01 === pass02){
                 //the user exists and the password was correct
-                exists = true;	
-                sign_in_up = true;
+                exists = true
                 obj = {id: users_json[i].id, uuid: uuid, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
                 get_extra_data().then(function(data1) {	
                     let extra_data = {
@@ -149,8 +134,6 @@ io.on('connection', function(socket) {
 	socket.on('signup_send', function(data) {
         let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
         let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
-		sign_in_up = false
-
         let headers = socket.request.headers
         let device = get_device(headers)
 
@@ -168,7 +151,6 @@ io.on('connection', function(socket) {
             }
 
             if(!user_found){
-                sign_in_up = true
                 let pass = JSON.stringify(encrypt(data.pass))
                 let uuid = crypto.randomBytes(20).toString('hex')
 
@@ -237,15 +219,8 @@ io.on('connection', function(socket) {
 	})
 	socket.on('salon_send', function(uuid) {
         if(uuid){
-			let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))  
-
-            let user_found;
-            for(let i in users_json){
-                if(users_json[i].uuid == uuid){
-                    user_found = users_json[i];											
-                    break;
-                }
-            }
+			let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8')) 
+            let user_found = get_user_from_uuid(uuid, users_json)
 
             if(user_found){				
                 let first_enter_salon = false;		
@@ -293,16 +268,9 @@ io.on('connection', function(socket) {
 	socket.on('user_page_send', function(data) {
         if(data.uuid){
             let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8')) 
-			let table = data.table;
-			let uuid = data.uuid;	
-			
-            let user_found;
-            for(let i in users_json){
-                if(users_json[i].uuid == uuid){
-                    user_found = users_json[i];											
-                    break;
-                }
-            }
+			let table = data.table
+			let uuid = data.uuid
+            let user_found = get_user_from_uuid(uuid, users_json)
 
             if(user_found){	
                 let id = user_found.id;
@@ -368,6 +336,58 @@ io.on('connection', function(socket) {
 		}
     })
 
+	socket.on('change_username_send', function(data) {
+		let uuid = data.uuid;
+		let user_new = data.user_new;
+        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+        
+        for(let i in users_json){
+            if(users_json[i].uuid == uuid){
+                users_json[i].user = user_new
+                break
+            }
+        }			
+
+        let payload = JSON.stringify(users_json)
+        fs.writeFileSync('./json/casino_user.json', payload)
+	})
+	socket.on('change_password_send', function(data) {
+		let uuid = data.uuid;
+		let pass_old = data.pass_old;
+		let pass_new = data.pass_new;
+        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+
+        for(let i in users_json){
+            if(users_json[i].uuid == uuid){
+				let pass = decrypt(JSON.parse(users_json[i].pass))
+				console.log(pass, pass_old)
+				if(pass_old == pass){
+					console.log('FOUND')
+				}
+			}
+        }
+        let payload = JSON.stringify(users_json)
+        fs.writeFileSync('./json/casino_user.json', payload)
+	})
+	socket.on('change_pic_send', function(data) {
+		let uuid = data.uuid;
+		let pic = data.pic;		
+        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
+
+        for(let i in users_json){
+            if(users_json[i].uuid == uuid){
+				users_json[i].profile_pic = pic
+				break
+			}
+        }
+        let payload = JSON.stringify(users_json)
+        fs.writeFileSync('./json/casino_user.json', payload)
+	})
+
+	socket.on('results_send', function(data) {
+		
+	})
+
 	socket.on('donate_send', function(data) {
 		try{
 			io.to(socket.id).emit('donate_read', donations);	
@@ -411,7 +431,6 @@ io.on('connection', function(socket) {
 			console.log('[error]','question :', e);
 		}	
 	})	
-	
 	socket.on('chat_message_send', function(data) {		
 		let room_name = data.user_table;
 		if(room_name === "race" || room_name === "keno"){
@@ -434,44 +453,6 @@ io.on('connection', function(socket) {
 		}catch(e){
 			console.log('[error]','choose_table_read :', e);
 		}
-	})
-
-	socket.on('change_username_send', function(data) {
-		let uuid = data.uuid;
-		let user_new = data.user_new;
-        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
-        
-        for(let i in users_json){
-            if(users_json[i].uuid == uuid){
-                users_json[i].user = user_new;										
-                break;
-            }
-        }
-        let payload = JSON.stringify(users_json)
-        fs.writeFileSync('./json/casino_user.json', payload)
-	})
-	socket.on('change_password_send', function(data) {
-		let uuid = data.uuid;
-		let pass_old = data.pass_old;
-		let pass_new = data.pass_new;
-        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
-
-        for(let i in users_json){
-            
-        }
-        let payload = JSON.stringify(users_json)
-        fs.writeFileSync('./json/casino_user.json', payload)
-	})
-	socket.on('change_pic_send', function(data) {
-		let uuid = data.uuid;
-		let pic = data.pic;		
-        let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
-
-        for(let i in users_json){
-            
-        }
-        let payload = JSON.stringify(users_json)
-        fs.writeFileSync('./json/casino_user.json', payload)
 	})
 
 	socket.on('roulette_spin_send', function(data) {		
@@ -610,11 +591,7 @@ io.on('connection', function(socket) {
 		}
 		let server_user = {id: id, user: race_user, money: money, rabbit_race: rabbit_race}
 		io.to(socket.id).emit('race_board_read', server_user);
-	})
-
-	socket.on('results_send', function(data) {
-		
-	})
+	})	
 
 	socket.on('disconnect', function(reason) {
 		console.log('disconnect', reason)
@@ -622,82 +599,108 @@ io.on('connection', function(socket) {
 		if(k !== -1){
 			if(typeof user_join[k] !== "undefined"){
 				if(typeof user_join[k].user !== "undefined"){
-					let user_table = user_join[k].user_table.split(' ');		
-					user_table = user_table.join('_');				
-					let room_name = user_table;
+					let user_table = user_join[k].user_table.split(' ')	
+					user_table = user_table.join('_')		
+					let room_name = user_table
 	
 					if(typeof user_join[k].user_type !== "undefined"){
-						let user_type = user_join[k].user_type;	
-						room_name = room_name + '_' + user_type;				
+						let user_type = user_join[k].user_type
+						room_name = room_name + '_' + user_type			
 					}	
 					
 					try{
-						io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>');
+						io.to(room_name).emit('is_online', '<p class="user_join">' + user_join[k].user + ' left the chat...</p>')
 						sockets.splice(k, 1);			
-						user_join.splice(user_join.indexOf(k), 1);	
-						socket.leave(room_name);
+						user_join.splice(user_join.indexOf(k), 1)
+						socket.leave(room_name)
 					}catch(e){
-						console.log('[error]','disconnect :', e);
+						console.log('[error]','disconnect :', e)
 					}
 				}
 			}			
 		}
     })
 	socket.on("connect_error", function(err){
-		console.log('connect_error --> ', err);
-		socket.emit("error", "Connect error");
+		console.log('connect_error --> ', err)
+		socket.emit("error", "Connect error")
 	})
 	socket.on("connect_failed", function(err){
-		console.log('connect_failed --> ', err);
-		socket.emit("error", "Connect failed");
+		console.log('connect_failed --> ', err)
+		socket.emit("error", "Connect failed")
 	})
 	socket.on("error", function(err){
-		console.log('error --> ', err);
-		socket.emit("error", "Something bad happened");
+		console.log('error --> ', err)
+		socket.emit("error", "Something bad happened")
 	})
 	socket.on('heartbeat', function(data) {
 		console.log('heartbeat', data)
 	})
-});
+})
+
+function get_device(headers){
+	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
+	if(headers){
+		if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
+				device = 1
+			}
+		} else {
+			device = 2
+		}
+	}
+	return device
+}
+
+function get_user_from_uuid(uuid, users_json){
+	if(uuid){
+		for(let i in users_json){
+			if(users_json[i].uuid == uuid){
+				return users_json[i]
+			}
+		}
+	} else {
+		return null
+	}
+}
 
 function check_streak(result){
-	const DAYS = 2;
-	const DAY_SPAN = DAYS * 24;
-	let streak = 1;
+	const DAYS = 2
+	const DAY_SPAN = DAYS * 24
+	let streak = 1
 
 	for(let i = 0; i < result.length-1; i++){
-		let date01 = new Date(parseInt(result[i].login_date));
-		var day01 = date01.getDate();			
-		let date02 = new Date(parseInt(result[i+1].login_date));
-		var day02 = date02.getDate();
-		let period = parseInt(result[i+1].login_date)-parseInt(result[i].login_date);
+		let date01 = new Date(parseInt(result[i].login_date))
+		var day01 = date01.getDate()
+		let date02 = new Date(parseInt(result[i+1].login_date))
+		var day02 = date02.getDate()
+		let period = parseInt(result[i+1].login_date)-parseInt(result[i].login_date)
 		let hours = period / 3600000
 
 		if(hours < DAY_SPAN && day01 != day02){
 			// less then two days span, but not the same day
-			streak++;
+			streak++
 		} else if(hours < DAY_SPAN && day01 == day02){
 			// he logged again in the same day
 		} else {
 			// he missed a day or more
-			streak = 1;
+			streak = 1
 		}
 	}
-	return streak;
+	return streak
 }
 
 function chatMessage(from, text){
 	if(text === text01 || text === text02){
-		return {from, text};
+		return {from, text}
 	} else {
-		return {from: from, text:text, time: new Date().getTime()};
+		return {from: from, text:text, time: new Date().getTime()}
 	}    
 };
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
 		let j = parseInt(Math.random() * i)
-		let tmp = array[i];
+		let tmp = array[i]
 		array[i] = array[j]
 		array[j] = tmp;
     }
@@ -705,123 +708,122 @@ function shuffleArray(array) {
 }
 
 function slot_matrix(x, size){
-	let matrix = [];
-	let t = 0;	
-	let my_prize = slot_prize[x];
-	let length01 = size[0];
-	let length02 = size[1];
+	let matrix = []
+	let t = 0
+	let my_prize = slot_prize[x]
+	let length01 = size[0]
+	let length02 = size[1]
 	switch (x) {
 		case 0:
 		case 1:
 		case 2:				
-			for(let i=0; i<length01; i++){
-				matrix.push([x, i]);
+			for(let i=0; i < length01; i++){
+				matrix.push([x, i])
 			}
-			break; 
+			break
 		case 3:	
 		case 4:				
-			for(let i=0; i<length01; i++){
+			for(let i=0; i < length01; i++){
 				if(i === 2){
-					t  = Math.round((length02-1) / 2);
+					t  = Math.round((length02-1) / 2)
 				} else {
 					if(x===3){
 						if(i===3 || i===4){
-							t = length02-1;
+							t = length02-1
 						}
 					} else {
-						t=length02-1;
+						t = length02-1
 						if(i === 3 || i === 4){
-							t=0;
+							t=0
 						}
 					}
-				}					
-				
-				matrix.push([t, i]);
+				}
+				matrix.push([t, i])
 			}
-			break; 	
+			break
 		case 5:	
 		case 6:				
-			for(let i=0; i<length01; i++){
+			for(let i=0; i < length01; i++){
 				t = 0
 				if(x === 5){
 					if(i%2 !== 0){
-						t = length02-1;
+						t = length02 - 1
 					}
 				} else {
 					if(i%2 === 0){
-						t = length02-1;
+						t = length02 - 1
 					}
 				}
-				matrix.push([t, i]);
+				matrix.push([t, i])
 			}
-			break; 
+			break
 		case 7:	
 		case 8:				
-			for(let i=0; i<length01; i++){
+			for(let i=0; i < length01; i++){
 				t = 0
 				if(x === 7){
 					if(i%2 !== 0){
-						t  = Math.round((length02-1) / 2);
+						t  = Math.round((length02-1) / 2)
 					}
 				} else{
 					if(i%2 === 0){
-						t  = Math.round((length02-1) / 2);
+						t  = Math.round((length02-1) / 2)
 					}
 				}
-				matrix.push([t, i]);
+				matrix.push([t, i])
 			}
 			break; 	
 		case 9:	
 		case 10:				
-			for(let i=0; i<length01; i++){
+			for(let i=0; i < length01; i++){
 				t = 1
 				if(x === 9){
 					if(i%2 !== 0){
-						t = 2;
+						t = 2
 					}
 				} else{
 					if(i%2 === 0){
-						t  = 0;
+						t  = 0
 					}
 				}
-				matrix.push([t, i]);
+				matrix.push([t, i])
 			}
-			break; 	
+			break
 		case 11:	
 		case 12:	
-			t = (length01-1)/2+1; //3			
-			for(let i=0; i<length01; i++){					
+			t = (length01 - 1) / 2 + 1		
+			for(let i=0; i < length01; i++){					
 				if(x === 11){
 					if(i <= (length01-1)/2){
-						t = i;
+						t = i
 					} else {
-						t--;
+						t--
 					}						
 				} else{
 					if(i > (length01-1)/2){
-						t++;
+						t++
 					} else {
-						t--;
+						t--
 					}
 				}
-				matrix.push([t, i]);
+				matrix.push([t, i])
 			}
-			break; 	
+			break
 		case 11:	
 		case 12:	
-			t = (length01-1)/2+1; //3			
-			for(let i=0; i<length01; i++){					
+			t = (length01 - 1) / 2 + 1			
+			for(let i=0; i < length01; i++){					
 				if(x === 11){
 					if(i <= (length01-1)/2){
-						t = i;
+						t = i
 					} else {
-						t--;
+						t--
 					}						
 				} else{
-					if(i > (length01-1)/2){
-						t++;
+					if(i > (length01 - 1) / 2){
+						t++
 					} else {
-						t--;
+						t--
 					}
 				}
 				matrix.push([t, i]);
@@ -829,44 +831,43 @@ function slot_matrix(x, size){
 			break; 	
 		case 13:	
 		case 14:		
-			for(let i=0; i<length01; i++){
-				t = 1;	
-				if(i === (length01-1)/2){
+			for(let i=0; i < length01; i++){
+				t = 1
+				if(i === (length01 - 1) / 2){
 					if(x === 13){
-						t = 0;		
+						t = 0
 					} else{
-						t = (length01-1)/2;	
+						t = (length01-1)/2
 					}	
 				}
-				matrix.push([t, i]);
+				matrix.push([t, i])
 			}
-			break; 	
+			break	
 		case 15:	
 		case 16:
 		case 17:
 		case 18:		
-			for(let i=0; i<length01; i++){					
+			for(let i=0; i < length01; i++){					
 				if(x === 15 || x === 16){
-					t = (length01-1)/2;
-					if(i === (length01-1)/2){
-						t = 0;
+					t = (length01 - 1) / 2
+					if(i === (length01 - 1) / 2){
+						t = 0
 						if(x === 16){
 							t = 1
 						}
 					}			
 				} else{
-					t = 0;
+					t = 0
 					if(i === (length01-1)/2){
-						t = 1;
+						t = 1
 						if(x === 18){
 							t = (length01-1)/2
 						}
 					}		
-				}
-				
-				matrix.push([t, i]);
+				}				
+				matrix.push([t, i])
 			}
-			break; 	
+			break
 	} 
 	return {matrix_id: x, matrix:matrix, prize:my_prize};
 }
@@ -875,12 +876,11 @@ function get_extra_data(){
 	return new Promise(function(resolve, reject){
 		axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=2813994f865540fe848c8bcb293ec74c')
 		.then(response => {
-			resolve(response);	
-		})
-		.catch(error => {
-			resolve(error);
+			resolve(response)
+		}).catch(error => {
+			resolve(error)
 		});
 	});
 }
 
-http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname));
+http.listen(port, () => console.log("Server started on port " + app.get("port") + " on dirname " + __dirname))
