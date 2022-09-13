@@ -459,7 +459,6 @@ io.on('connection', function(socket) {
 			if(sockets[i].user_id === id){
 				database_config.sql = "UPDATE casino_users SET profile_pic='"+pic+"' WHERE id="+id;
 				database(database_config).then(function(result){
-					console.log('pic001 ', result, result.profile_pic)
 					for(let i in users_json){	
 						if(id === users_json[i].id){
 							users_json[i].profile_pic = pic;
