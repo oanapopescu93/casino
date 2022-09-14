@@ -504,237 +504,309 @@ io.on('connection', function(socket) {
 	})
 
 	// games
-	socket.on('roulette_spin_send', function(data) {		
-		if(data.spin_click === 1){
+	socket.on('roulette_spin_send', function(data) {
+		if(data.uuid && data.spin_click === 1){
+			let monkey = []
+			let is_lucky = Math.floor(Math.random() * 100)
+			let how_lucky = 7
+			if(is_lucky % how_lucky === 0){
+				monkey_roulette = true
+			}
+			
+			if(monkey_roulette && data.my_click > 5){
+				// it means the player must lose
+				monkey = get_monkey_for_roulette(data.bet)
+			}
+			
 			let spin_time = Math.floor(Math.random() * (800 - 300)) + 300
 			//let spin_time = 100
 			let ball_speed = 0.06
-			let room_name = data.user_table		
-			let k = data.my_click
-			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey_roulette[k]}			
+			let room_name = data.user_table
+			// let k = data.my_click
+			let k = Math.floor(Math.random() * (monkey.length-1 - 0)) + 0
+			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}			
 			io.to(room_name).emit('roulette_spin_read', payload)
+
+			function get_monkey_for_roulette(bets){
+				let array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+				let subarray = []
+				for(let i in bets){
+					if(isNaN(bets[i].text) === false){ // he bet on a number
+						subarray.push(parseInt(bets[i].text)) //0 and 00 will be treated the same
+					}
+					if(bets[i].text == "1st 12"){
+						subarray = subarray.concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+					}
+					if(bets[i].text == "2st 12"){
+						subarray = subarray.concat([13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24])
+					}
+					if(bets[i].text == "3st 12"){
+						subarray = subarray.concat([25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36])
+					}
+					if(bets[i].text == "1-18"){
+						subarray = subarray.concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
+					}
+					if(bets[i].text == "Even"){
+						subarray = subarray.concat([2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36])
+					}
+					if(bets[i].text == "reds"){
+						subarray = subarray.concat([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36])
+					}
+					if(bets[i].text == "blacks"){
+						subarray = subarray.concat([2, 4, 6, 8, 10, 11, 12, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35])
+					}
+					if(bets[i].text == "Odd"){
+						subarray = subarray.concat([1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35])
+					}
+					if(bets[i].text == "19-36"){
+						subarray = subarray.concat([19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36])
+					}
+					if(bets[i].text == "2 to 1a"){
+						subarray = subarray.concat([3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36])
+					}
+					if(bets[i].text == "2 to 1b"){
+						subarray = subarray.concat([2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35])
+					}
+					if(bets[i].text == "2 to 1c"){
+						subarray = subarray.concat([1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34])
+					}
+				}
+		
+				const difference = array.filter(function(el){
+					return subarray.indexOf(el) < 0
+				})
+				return difference
+			}
 		}
-	})
+	})	
 	socket.on('blackjack_get_users_send', function(data) {
 		let room_name = data.user_table
 		io.to(room_name).emit('blackjack_get_users_read', user_join)
 	})	
 	socket.on('blackjack_send', function(data) {
-		let game_start = false
-		let user_table = data[1].user_table.split(' ').join('_')
-		let room_name = user_table
-		if(typeof data[1].user_type !== "undefined"){
-			let user_type = data[1].user_type
-			room_name = room_name + '_' + user_type
-		}
-		switch (data[0]) {
-			case 'start':
-				if(!game_start){
-					let suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
-					let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
-
-					blackjack_deck = createDeck(suits, values, 10000)
-
-					blackjack_players = []
-					blackjack_players = user_join
-					dealHands()
-
-					hidden_dealer.id = blackjack_dealer.id
-					hidden_dealer.hand = []
-					hidden_dealer.hand.push(blackjack_dealer.hand[0])
-					io.to(room_name).emit('blackjack_read', ['start', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-					game_start = true
-				} else {
-				 	io.to(room_name).emit('blackjack_read', text03)
-				}				
-				break
-			case 'pause':
-				if(!game_start){
-					io.to(room_name).emit('blackjack_read', "pause")
-				} else {					
-					hidden_dealer.id = blackjack_dealer.id
-					hidden_dealer.hand = []
-					hidden_dealer.hand.push(blackjack_dealer.hand[0])
-					io.to(room_name).emit('blackjack_read', ['pause', blackjack_players, hidden_dealer])
-				}
-				break
-			case 'hit':
-				hitMe()
-				if(blackjack_players[blackjack_current_player].lose !== true){
-					io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-				 	//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-				} else {
-					io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
-				 	//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-				}
-				break
-			case 'stay':
-				if(blackjack_current_player != blackjack_players.length-1){
-					blackjack_current_player++
-					io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-					//console.log('stay--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
-				} else {
-					blackjack_win_lose();
-					io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
-					//console.log('stay--> ', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
-				}				
-				break
-		}	
-
-		function createDeck(suits, values, turns){
-			blackjack_deck = new Array()
-			for (let i = 0 ; i < values.length; i++){
-				for(let j = 0; j < suits.length; j++){
-					let weight = parseInt(values[i])
-					if (values[i] == "J" || values[i] == "Q" || values[i] == "K"){
-						weight = 10		
-					}
-					if (values[i] == "A"){
-						weight = 11				
-					}
-					let card = { Value: values[i], Suit: suits[j], Weight: weight }
-					blackjack_deck.push(card)
-				}
-			}		
-			return shuffle(turns)
-		}		
-		function shuffle(turns){ 
-			for (let i = 0; i < turns; i++){
-				let a = Math.floor((Math.random() * blackjack_deck.length))
-				let b = Math.floor((Math.random() * blackjack_deck.length))
-				let tmp = blackjack_deck[a]		
-				blackjack_deck[a] = blackjack_deck[b]
-				blackjack_deck[b] = tmp
+		if(data[1].uuid){
+			let is_lucky = Math.floor(Math.random() * 100)
+			let how_lucky = 7
+			if(is_lucky % how_lucky === 0){
+				monkey_blackjack = true
 			}
-			return blackjack_deck
-		}		
-		function dealHands(){
-			blackjack_dealer = {id: "dealer", hand: []}			
-			for(let i = 0; i < 2; i++){	
-				let card = blackjack_deck.pop()
-				blackjack_dealer.hand.push(card)
-				for (let j = 0; j < blackjack_players.length; j++){
-					let card = blackjack_deck.pop()
-					if(i === 0){
-						blackjack_players[j].hand = []
+
+			let game_start = false
+			let user_table = data[1].user_table.split(' ').join('_')
+			let room_name = user_table
+			if(typeof data[1].user_type !== "undefined"){
+				let user_type = data[1].user_type
+				room_name = room_name + '_' + user_type
+			}
+			switch (data[0]) {
+				case 'start':
+					if(!game_start){
+						let suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
+						let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+
+						blackjack_deck = createDeck(suits, values, 10000)
+
+						blackjack_players = []
+						blackjack_players = user_join
+						dealHands()
+
+						hidden_dealer.id = blackjack_dealer.id
+						hidden_dealer.hand = []
+						hidden_dealer.hand.push(blackjack_dealer.hand[0])
+						io.to(room_name).emit('blackjack_read', ['start', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+						game_start = true
 					} else {
-						if(data[1].user_id == blackjack_players[j].id){
-							blackjack_players[j].bets = data[1].bets
-						}	
-					}	
-					blackjack_players[j].hand.push(card)
-				}
-			}
-			points('deal_hands')
-			check('blackjack')
-		}		
-		function hitMe(){
-			let card = blackjack_deck.pop()
-			blackjack_players[blackjack_current_player].hand.push(card)
-			points('hit_me')
-			check('busted')
-		}		
-		function points(reason){
-			switch (reason) {
-				case 'deal_hands':
-					for(let i in blackjack_players){
-						let points = 0
-						for(let j in blackjack_players[i].hand){
-							points = points + blackjack_players[i].hand[j].Weight
+						io.to(room_name).emit('blackjack_read', text03)
+					}				
+					break
+				case 'pause':
+					if(!game_start){
+						io.to(room_name).emit('blackjack_read', "pause")
+					} else {					
+						hidden_dealer.id = blackjack_dealer.id
+						hidden_dealer.hand = []
+						hidden_dealer.hand.push(blackjack_dealer.hand[0])
+						io.to(room_name).emit('blackjack_read', ['pause', blackjack_players, hidden_dealer])
+					}
+					break
+				case 'hit':
+					hitMe()
+					if(blackjack_players[blackjack_current_player].lose !== true){
+						io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+						//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+					} else {
+						io.to(room_name).emit('blackjack_read', ['hit', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
+						//console.log('hit--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+					}
+					break
+				case 'stay':
+					if(blackjack_current_player != blackjack_players.length-1){
+						blackjack_current_player++
+						io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+						//console.log('stay--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
+					} else {
+						blackjack_win_lose();
+						io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
+						//console.log('stay--> ', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
+					}				
+					break
+			}	
+
+			function createDeck(suits, values, turns){
+				blackjack_deck = new Array()
+				for (let i = 0 ; i < values.length; i++){
+					for(let j = 0; j < suits.length; j++){
+						let weight = parseInt(values[i])
+						if (values[i] == "J" || values[i] == "Q" || values[i] == "K"){
+							weight = 10		
 						}
-						blackjack_players[i].points = points
-						blackjack_players[i].lose = false
-						blackjack_players[i].win = false
-					}	
-					break
-				case 'hit_me':
-					let points_hit_me = 0
-					for(let j in blackjack_players[blackjack_current_player].hand){
-						points_hit_me = points_hit_me + blackjack_players[blackjack_current_player].hand[j].Weight
+						if (values[i] == "A"){
+							weight = 11				
+						}
+						let card = { Value: values[i], Suit: suits[j], Weight: weight }
+						blackjack_deck.push(card)
 					}
-					blackjack_players[blackjack_current_player].points = points_hit_me
-					blackjack_players[blackjack_current_player].lose = false
-					blackjack_players[blackjack_current_player].win = false
-					break;	
-				case 'dealer':
-					let points_dealer = 0
-					for(let i in blackjack_dealer.hand){
-						points_dealer = points_dealer + blackjack_dealer.hand[i].Weight
-					}
-					blackjack_dealer.points = points_dealer
-					break		
-			  }	
-		}		
-		function check(reason){
-			switch (reason) {
-				case 'busted':
-					if(blackjack_players[blackjack_current_player].points > 21){				
-						blackjack_players[blackjack_current_player].lose = true
-					} 				
-					break
-				case 'blackjack':
-					for(let i in blackjack_players){
-						if(blackjack_players[i].points === 21){
-							blackjack_players[blackjack_current_player].win = true
-						} 
-					}	
-					break			
-			  }		
-		}
-		function check_dealer(dealer, player){
-			//check if dealer has more points than players
-			let dealer_points = dealer.points
-			let player_points = player.points
-			if(dealer_points < player_points){
-				return false
-			} else {
-				return true
-			}
-		}		
-		function blackjack_win_lose(){
-			let max = -1;
-			let winner = -1;
-			
-			//ger player with max points
-			let score = 0
-			for(let i in blackjack_players){
-				if(!blackjack_players[i].lose && blackjack_players[i].points > score){
-					max = i
-					score = blackjack_players[i].points
+				}		
+				return shuffle(turns)
+			}		
+			function shuffle(turns){ 
+				for (let i = 0; i < turns; i++){
+					let a = Math.floor((Math.random() * blackjack_deck.length))
+					let b = Math.floor((Math.random() * blackjack_deck.length))
+					let tmp = blackjack_deck[a]		
+					blackjack_deck[a] = blackjack_deck[b]
+					blackjack_deck[b] = tmp
 				}
-			}
-
-			//check dealer points
-			points('dealer')
-			let bigger = check_dealer(blackjack_dealer, blackjack_players[max])
-
-			//if(!monkey_blackjack){
-				while (!bigger) {
+				return blackjack_deck
+			}		
+			function dealHands(){
+				blackjack_dealer = {id: "dealer", hand: []}			
+				for(let i = 0; i < 2; i++){	
 					let card = blackjack_deck.pop()
 					blackjack_dealer.hand.push(card)
-
-					points('dealer')
-					bigger = check_dealer(blackjack_dealer, blackjack_players[max])
-
-					if(blackjack_dealer.points > 21){				
-						blackjack_dealer.lose = true
-					} 
-				}
-			//}
-			
-			if(max !== -1){
-				if(blackjack_players[max].points > blackjack_dealer.points){
-					blackjack_players[max].win = true
-				} else {
-					blackjack_dealer.win = true
-					if(!blackjack_dealer.lose){
-						blackjack_dealer.win = true
-					} else {
-						blackjack_players[max].win = true
+					for (let j = 0; j < blackjack_players.length; j++){
+						let card = blackjack_deck.pop()
+						if(i === 0){
+							blackjack_players[j].hand = []
+						} else {
+							if(data[1].uuid == blackjack_players[j].uuid){
+								blackjack_players[j].bets = data[1].bets
+							}	
+						}	
+						blackjack_players[j].hand.push(card)
 					}
+				}
+				points('deal_hands')
+				check('blackjack')
+			}		
+			function hitMe(){
+				let card = blackjack_deck.pop()
+				blackjack_players[blackjack_current_player].hand.push(card)
+				points('hit_me')
+				check('busted')
+			}		
+			function points(reason){
+				switch (reason) {
+					case 'deal_hands':
+						for(let i in blackjack_players){
+							let points = 0
+							for(let j in blackjack_players[i].hand){
+								points = points + blackjack_players[i].hand[j].Weight
+							}
+							blackjack_players[i].points = points
+							blackjack_players[i].lose = false
+							blackjack_players[i].win = false
+						}	
+						break
+					case 'hit_me':
+						let points_hit_me = 0
+						for(let j in blackjack_players[blackjack_current_player].hand){
+							points_hit_me = points_hit_me + blackjack_players[blackjack_current_player].hand[j].Weight
+						}
+						blackjack_players[blackjack_current_player].points = points_hit_me
+						blackjack_players[blackjack_current_player].lose = false
+						blackjack_players[blackjack_current_player].win = false
+						break;	
+					case 'dealer':
+						let points_dealer = 0
+						for(let i in blackjack_dealer.hand){
+							points_dealer = points_dealer + blackjack_dealer.hand[i].Weight
+						}
+						blackjack_dealer.points = points_dealer
+						break		
 				}	
-			} else {	
-				blackjack_dealer.win = true;
+			}		
+			function check(reason){
+				switch (reason) {
+					case 'busted':
+						if(blackjack_players[blackjack_current_player].points > 21){				
+							blackjack_players[blackjack_current_player].lose = true
+						} 				
+						break
+					case 'blackjack':
+						for(let i in blackjack_players){
+							if(blackjack_players[i].points === 21){
+								blackjack_players[blackjack_current_player].win = true
+							} 
+						}	
+						break			
+				}		
+			}
+			function check_dealer(dealer, player){
+				//check if dealer has more points than players
+				let dealer_points = dealer.points
+				let player_points = player.points
+				if(dealer_points < player_points){
+					return false
+				} else {
+					return true
+				}
+			}		
+			function blackjack_win_lose(){
+				let max = -1;
+				let winner = -1;
+				
+				//ger player with max points
+				let score = 0
+				for(let i in blackjack_players){
+					if(!blackjack_players[i].lose && blackjack_players[i].points > score){
+						max = i
+						score = blackjack_players[i].points
+					}
+				}
+
+				//check dealer points
+				points('dealer')
+				let bigger = check_dealer(blackjack_dealer, blackjack_players[max])
+
+				if(!monkey_blackjack){
+					while (!bigger) {
+						let card = blackjack_deck.pop()
+						blackjack_dealer.hand.push(card)
+
+						points('dealer')
+						bigger = check_dealer(blackjack_dealer, blackjack_players[max])
+
+						if(blackjack_dealer.points > 21){				
+							blackjack_dealer.lose = true
+						} 
+					}
+				}
+				
+				if(max !== -1){
+					if(blackjack_players[max].points > blackjack_dealer.points){
+						blackjack_players[max].win = true
+					} else {
+						blackjack_dealer.win = true
+						if(!blackjack_dealer.lose){
+							blackjack_dealer.win = true
+						} else {
+							blackjack_players[max].win = true
+						}
+					}	
+				} else {	
+					blackjack_dealer.win = true;
+				}
 			}
 		}
 	})
@@ -786,63 +858,64 @@ io.on('connection', function(socket) {
 		}
 	})
 	socket.on('craps_send', function(data) {
-		let is_lucky = Math.floor(Math.random() * 100)
-		let how_lucky = 7
-		if(is_lucky % how_lucky === 0){
-			monkey_craps = true
-		}
-		//monkey_craps = true
-		
-		let room_name = data.user_table
-		let how_many_dices = data.how_many_dices
-		let numbers = []
-		let point = data.point
-		let before = data.before
-		let array = [2, 3, 7, 12]
-
-		function set_numbers(){
-			let my_numbers = []
-			for(let i=0; i<how_many_dices; i++){
-				let number = Math.floor((Math.random() * 6) + 1)			
-				my_numbers.push(number)
+		if(data.uuid){
+			let is_lucky = Math.floor(Math.random() * 100)
+			let how_lucky = 7
+			if(is_lucky % how_lucky === 0){
+				monkey_craps = true
 			}
-			return my_numbers
-		}
-		
-		numbers = set_numbers()
-		
-		while(numbers[0] == before[0] && numbers[1] == before[1]){
-			numbers = set_numbers()
-		}
-		
-		if(monkey_craps){
-			// it means the player must lose
-			if(point){
-				//other rolls must be 2, 3, 7, 12
-				if(numbers[0] + numbers[1] !== 2 && numbers[0] + numbers[1] !== 3 && numbers[0] + numbers[1] !== 7 && numbers[0] + numbers[1] !== 12){
-					let t = Math.floor((Math.random() * 3) + 0)
-					let mynumber = array[t]
-					numbers[0] = Math.floor(mynumber/2)
-					numbers[1] = mynumber-numbers[0]
+
+			let room_name = data.user_table
+			let how_many_dices = data.how_many_dices
+			let numbers = []
+			let point = data.point
+			let before = data.before
+			let array = [2, 3, 7, 12]
+
+			function set_numbers(){
+				let my_numbers = []
+				for(let i=0; i<how_many_dices; i++){
+					let number = Math.floor((Math.random() * 6) + 1)			
+					my_numbers.push(number)
 				}
-			} else {
-				// first roll must not be 7
-				if(numbers[0] + numbers[1] === 7){
-					numbers[0]++
-					if(numbers[0]>6){
-						numbers[0] = 1
+				return my_numbers
+			}
+			
+			numbers = set_numbers()
+			
+			while(numbers[0] == before[0] && numbers[1] == before[1]){
+				numbers = set_numbers()
+			}
+		
+			if(monkey_craps){
+				// it means the player must lose
+				if(point){
+					//other rolls must be 2, 3, 7, 12
+					if(numbers[0] + numbers[1] !== 2 && numbers[0] + numbers[1] !== 3 && numbers[0] + numbers[1] !== 7 && numbers[0] + numbers[1] !== 12){
+						let t = Math.floor((Math.random() * 3) + 0)
+						let mynumber = array[t]
+						numbers[0] = Math.floor(mynumber/2)
+						numbers[1] = mynumber-numbers[0]
+					}
+				} else {
+					// first roll must not be 7
+					if(numbers[0] + numbers[1] === 7){
+						numbers[0]++
+						if(numbers[0]>6){
+							numbers[0] = 1
+						}
 					}
 				}
+			} 
+			
+			try{
+				//console.log('craps', numbers, before)
+				io.to(room_name).emit('craps_read', numbers)
+				
+			}catch(e){
+				console.log('[error]','craps :', e)
 			}
-		} 
-			
-		try{
-			//console.log('craps', numbers, before)
-			io.to(room_name).emit('craps_read', numbers)
-			
-		}catch(e){
-			console.log('[error]','craps :', e)
-		}	
+		}
 	})
 	socket.on('race_board_send', function(data) {
 		if(data.uuid){

@@ -405,7 +405,7 @@ function Craps(props){
 		return new Promise(function(resolve, reject){
 			let dice_number1 = getDiceNumber(dice_array[0]);
 			let dice_number2 = getDiceNumber(dice_array[1]);
-			let payload={how_many_dices:2, user_table: props.info.user_table, point:point, before: [dice_number1, dice_number2]}
+			let payload={uuid:props.info.uuid, how_many_dices:2, user_table: props.info.user_table, point:point, before: [dice_number1, dice_number2]}
 			socket.emit('craps_send', payload);
 			socket.on('craps_read', function(data){
 				if(data){

@@ -403,11 +403,13 @@ function roulette_game(props){
 				spin_click++;
 				my_click++;
 				let roulette_payload_server = {
+					uuid: props.info.uuid,
 					spin_click: spin_click,
 					my_click: my_click,
 					user: props.info.user, 
 					user_table: props.info.user_table, 
-					user_type: props.info.type
+					user_type: props.info.type,
+					bet: your_bets,
 				}
 				socket.emit('roulette_spin_send', roulette_payload_server);
 				$('.roulette_container').animate({
@@ -425,7 +427,7 @@ function roulette_game(props){
 	this.spin = function(arc, spin_time, monkey){
 		let spin_nr = 0;
 		//let spin_time = 10;
-		let monkey_wait = 200;	
+		let monkey_wait = 500;	
 		
 		dispatch_nr++;		
 
@@ -513,8 +515,8 @@ function roulette_game(props){
 				default:
 					break;
 			}
-
-			if(typeof monkey !== "undefined" || monkey !== []){							
+			
+			if(typeof monkey !== "undefined"){							
 				roulette_index = parseInt(self.closest_nr(ball, roulette_pos, "nr"));
 				win_nr = roulette_pos[roulette_index];
 				

@@ -205,7 +205,7 @@ function blackjack_game(props){
 			if(reason !== "resize" && !game_start){
 				//first time entering
 				let blackjack_payload_server = {
-					user_id: props.info.id, 
+					uuid: props.info.uuid,
 					user: props.info.user, 
 					user_table: props.info.user_table, 
 				}
@@ -379,7 +379,7 @@ function blackjack_game(props){
 			blackjack_status = true;
 			your_bets = bet;
 			let blackjack_payload_server = {
-				user_id: props.info.id, 
+				uuid: props.info.uuid,
 				user: props.info.user, 
 				user_table: props.info.user_table, 
 				bets: your_bets

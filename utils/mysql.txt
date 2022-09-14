@@ -31,10 +31,11 @@
 // database_config.sql = "show tables";
 // database(database_config).then(function(data){
 // 	console.log('show tables--> ', data)
-// 	// show tables--> [ 
-// 	// 	RowDataPacket { Tables_in_bunny_bet_casino: 'casino_users' },
-// 	// 	RowDataPacket { Tables_in_bunny_bet_casino: 'history_users' } 
-// 	// ]
+// 	show tables-->  [
+//   RowDataPacket { Tables_in_bunny_bet_casino: 'casino_users' }, 
+//   RowDataPacket { Tables_in_bunny_bet_casino: 'history_users' },
+//  RowDataPacket { Tables_in_bunny_bet_casino: 'login_history' } 
+// ]
 // });
 
 // database_config.sql = "SHOW COLUMNS FROM history_users";
