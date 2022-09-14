@@ -141,6 +141,7 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 	float:left;
 }
 
+/* PROGRESS BARS */
 #myProgress {
 	width: 100%;
 	border-radius:50px;
@@ -149,22 +150,61 @@ textarea.shadow_convex, input.shadow_convex, .button_yellow.shadow_convex, .butt
 	margin-top:20px;
 	height: 10px;
 	overflow: hidden;
-  }
-  
-  #myBar {
+}  
+#myBar {
 	width: 0%;
 	height: 8px;
 	background-color: var(--transparent_yellow);
 	line-height: 8px;
 	border-radius:50px;
-  }
-  #myBar_text{
+}
+#myBar_text{
 	text-align: right;
-  }
-  #myBar_text_container{
+}
+#myBar_text_container{
 	width: 20px;
 	margin-bottom:-20px;
-  } 
+}
+.progress_bubble_container{
+	position: relative;
+    z-index: 1;
+    width: 428px;
+    display: inline-block;
+}
+.progress_bubble_container::before {
+    content: "";
+    background: black;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 4px;
+    width: 100%;
+    z-index: -1;
+}
+.bubble{
+    background: var(--yellow);
+    color: black;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    align-items: center;
+    border: 3px solid black;
+    transition: .4s ease;
+    padding: 12px 0px;
+	margin: 10px 5px;
+}
+.bubble.bubble_1{
+	margin: 10px 5px 10px 0px;
+}
+.bubble.bubble_7{
+	margin: 10px 0px 10px 5px;
+}
+.bubble.active{
+    background: black;
+    color: var(--yellow);
+}
 
 .fa-user-circle{
 	width:25px;
@@ -1479,7 +1519,7 @@ table {
 	background: var(--transparent_yellow);
 }
 .gift_img{
-	width:280px;
+	width:200px;
 }
 
 .slot_header{

@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
-import rabbit_stand_right from '../../img/icons/rabbit_stand_right.png';
-import rabbit_stand_left from '../../img/icons/rabbit_stand_left.png';
+import rabbit_stand_right from '../../img/icons/rabbit_stand_right.png'
+import rabbit_stand_left from '../../img/icons/rabbit_stand_left.png'
 
 function Not_found(props) {
-    let lang = props.lang;
+    let lang = props.lang
 
     function handleBack(){
-        window.location.href = "/";
+        window.location.href = "/"
     }
     
 	return (
@@ -54,4 +54,4 @@ function Not_found(props) {
 	);
 }
 
-export default Not_found;
+export default Not_found

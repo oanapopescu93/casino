@@ -1,63 +1,63 @@
-import $ from 'jquery'; 
+import $ from 'jquery'
 
 import roulette_bets_european from './img/roulette/roulette_bets_european.png'
 import roulette_bets_american from './img/roulette/roulette_bets_american.png'
 import roulette_bets_european_small from './img/roulette/roulette_bets_european_small.png'
 import roulette_bets_american_small from './img/roulette/roulette_bets_american_small.png'
 
-import card_back from './img/blackjack/cards/back.png';
-import card_0 from './img/blackjack/cards/card_0.png';
-import card_1 from './img/blackjack/cards/card_1.png';
-import card_2 from './img/blackjack/cards/card_2.png';
-import card_3 from './img/blackjack/cards/card_3.png';
-import card_4 from './img/blackjack/cards/card_4.png';
-import card_5 from './img/blackjack/cards/card_5.png';
-import card_6 from './img/blackjack/cards/card_6.png';
-import card_7 from './img/blackjack/cards/card_7.png';
-import card_8 from './img/blackjack/cards/card_8.png';
-import card_9 from './img/blackjack/cards/card_9.png';
-import card_10 from './img/blackjack/cards/card_10.png';
-import card_11 from './img/blackjack/cards/card_11.png';
-import card_12 from './img/blackjack/cards/card_12.png';
-import card_13 from './img/blackjack/cards/card_13.png';
-import card_14 from './img/blackjack/cards/card_14.png';
-import card_15 from './img/blackjack/cards/card_15.png';
-import card_16 from './img/blackjack/cards/card_16.png';
-import card_17 from './img/blackjack/cards/card_17.png';
-import card_18 from './img/blackjack/cards/card_18.png';
-import card_19 from './img/blackjack/cards/card_19.png';
-import card_20 from './img/blackjack/cards/card_20.png';
-import card_21 from './img/blackjack/cards/card_21.png';
-import card_22 from './img/blackjack/cards/card_22.png';
-import card_23 from './img/blackjack/cards/card_23.png';
-import card_24 from './img/blackjack/cards/card_24.png';
-import card_25 from './img/blackjack/cards/card_25.png';
-import card_26 from './img/blackjack/cards/card_26.png';
-import card_27 from './img/blackjack/cards/card_27.png';
-import card_28 from './img/blackjack/cards/card_28.png';
-import card_29 from './img/blackjack/cards/card_29.png';
-import card_30 from './img/blackjack/cards/card_30.png';
-import card_31 from './img/blackjack/cards/card_31.png';
-import card_32 from './img/blackjack/cards/card_32.png';
-import card_33 from './img/blackjack/cards/card_33.png';
-import card_34 from './img/blackjack/cards/card_34.png';
-import card_35 from './img/blackjack/cards/card_35.png';
-import card_36 from './img/blackjack/cards/card_36.png';
-import card_37 from './img/blackjack/cards/card_37.png';
-import card_38 from './img/blackjack/cards/card_38.png';
-import card_39 from './img/blackjack/cards/card_39.png';
-import card_40 from './img/blackjack/cards/card_0.png';
-import card_41 from './img/blackjack/cards/card_41.png';
-import card_42 from './img/blackjack/cards/card_42.png';
-import card_43 from './img/blackjack/cards/card_43.png';
-import card_44 from './img/blackjack/cards/card_44.png';
-import card_45 from './img/blackjack/cards/card_45.png';
-import card_46 from './img/blackjack/cards/card_46.png';
-import card_47 from './img/blackjack/cards/card_47.png';
-import card_48 from './img/blackjack/cards/card_48.png';
-import card_49 from './img/blackjack/cards/card_49.png';
-import card_50 from './img/blackjack/cards/card_50.png';
-import card_51 from './img/blackjack/cards/card_51.png';
+import card_back from './img/blackjack/cards/back.png'
+import card_0 from './img/blackjack/cards/card_0.png'
+import card_1 from './img/blackjack/cards/card_1.png'
+import card_2 from './img/blackjack/cards/card_2.png'
+import card_3 from './img/blackjack/cards/card_3.png'
+import card_4 from './img/blackjack/cards/card_4.png'
+import card_5 from './img/blackjack/cards/card_5.png'
+import card_6 from './img/blackjack/cards/card_6.png'
+import card_7 from './img/blackjack/cards/card_7.png'
+import card_8 from './img/blackjack/cards/card_8.png'
+import card_9 from './img/blackjack/cards/card_9.png'
+import card_10 from './img/blackjack/cards/card_10.png'
+import card_11 from './img/blackjack/cards/card_11.png'
+import card_12 from './img/blackjack/cards/card_12.png'
+import card_13 from './img/blackjack/cards/card_13.png'
+import card_14 from './img/blackjack/cards/card_14.png'
+import card_15 from './img/blackjack/cards/card_15.png'
+import card_16 from './img/blackjack/cards/card_16.png'
+import card_17 from './img/blackjack/cards/card_17.png'
+import card_18 from './img/blackjack/cards/card_18.png'
+import card_19 from './img/blackjack/cards/card_19.png'
+import card_20 from './img/blackjack/cards/card_20.png'
+import card_21 from './img/blackjack/cards/card_21.png'
+import card_22 from './img/blackjack/cards/card_22.png'
+import card_23 from './img/blackjack/cards/card_23.png'
+import card_24 from './img/blackjack/cards/card_24.png'
+import card_25 from './img/blackjack/cards/card_25.png'
+import card_26 from './img/blackjack/cards/card_26.png'
+import card_27 from './img/blackjack/cards/card_27.png'
+import card_28 from './img/blackjack/cards/card_28.png'
+import card_29 from './img/blackjack/cards/card_29.png'
+import card_30 from './img/blackjack/cards/card_30.png'
+import card_31 from './img/blackjack/cards/card_31.png'
+import card_32 from './img/blackjack/cards/card_32.png'
+import card_33 from './img/blackjack/cards/card_33.png'
+import card_34 from './img/blackjack/cards/card_34.png'
+import card_35 from './img/blackjack/cards/card_35.png'
+import card_36 from './img/blackjack/cards/card_36.png'
+import card_37 from './img/blackjack/cards/card_37.png'
+import card_38 from './img/blackjack/cards/card_38.png'
+import card_39 from './img/blackjack/cards/card_39.png'
+import card_40 from './img/blackjack/cards/card_0.png'
+import card_41 from './img/blackjack/cards/card_41.png'
+import card_42 from './img/blackjack/cards/card_42.png'
+import card_43 from './img/blackjack/cards/card_43.png'
+import card_44 from './img/blackjack/cards/card_44.png'
+import card_45 from './img/blackjack/cards/card_45.png'
+import card_46 from './img/blackjack/cards/card_46.png'
+import card_47 from './img/blackjack/cards/card_47.png'
+import card_48 from './img/blackjack/cards/card_48.png'
+import card_49 from './img/blackjack/cards/card_49.png'
+import card_50 from './img/blackjack/cards/card_50.png'
+import card_51 from './img/blackjack/cards/card_51.png'
 
 import item_image from './img/icons/vegetables_color.png'
 
@@ -95,73 +95,73 @@ import 	craps_any_craps from './img/craps/hover/craps_any_craps.png'
 import keno_dirt_01 from './img/keno/keno_dirt_01.png'
 
 export const isEmpty = function (element){
-  let empty = true;
+  let empty = true
   if(typeof element !== "undefined" && element !== 'null' && element !== null && element !== ''){
-    empty = false;
+    empty = false
   }
-  return empty;
+  return empty
 }
 
 export const setCookie = function (cname, cvalue, hours=12){
-  let d = new Date();
-  d.setTime(d.getTime() + (hours * 60 * 60 * 1000));
-  let expires = "expires=" + d.toGMTString();
+  let d = new Date()
+  d.setTime(d.getTime() + (hours * 60 * 60 * 1000))
+  let expires = "expires=" + d.toGMTString()
   if(getCookie("casino_cookies") === "true"){
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/"
   } else {
-    if(cname === "casino_id" || cname === "casino_uuid" || cname === "casino_user" || cname === "casino_cookies"){
-      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    if(cname === "casino_uuid" || cname === "casino_cookies" || cname === "casino_streak"){
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/"
     }
   }
 }
 export const getCookie = function (cname){
-  let name = cname + "=";
+  let name = cname + "="
   let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
+  let ca = decodedCookie.split(';')
   for(let i = 0; i < ca.length; i++) {
-    let c = ca[i];
+    let c = ca[i]
     while (c.charAt(0) === ' ') {
-      c = c.substring(1);
+      c = c.substring(1)
     }
     if (c.indexOf(name) === 0) {
       return c.substring(name.length, c.length);
     }
   }
-  return "";
+  return ""
 }
 
 export const showResults = function(title="", message="", w=200, h="auto") {
   if($('.show_results_container').length>0){
-    $('.show_results_container').show();
+    $('.show_results_container').show()
     $('.show_results').css('max-width', w);
-    $('.show_results').css('height', h);
+    $('.show_results').css('height', h)
     if($('.show_results .header').length>0){
-      $('.show_results .header').empty();
-      $('.show_results .header').append(title);
+      $('.show_results .header').empty()
+      $('.show_results .header').append(title)
     }  
     if($('.show_results .message').length>0){
-      $('.show_results .message').empty();
-      $('.show_results .message').append(message);
+      $('.show_results .message').empty()
+      $('.show_results .message').append(message)
     }    
     $( ".show_results_container" ).click(function() {
-      $(this).hide();
-    });
+      $(this).hide()
+    })
     $( ".show_results_container .show_results_close" ).click(function() {
-      $(this).closest('show_results_container').hide();
-    });
+      $(this).closest('show_results_container').hide()
+    })
   }
 }
 
-export const bigText = function(type, lang, payload) {
-  let text = ``;
+export const bigText = function(lang, payload) {
+  let text = ``
   if(lang === "ro"){
     text = `<div class="big_text_container">
       <div class="big_text">${payload}</div>
-    </div>`;
+    </div>`
   } else {
     text = `<div class="big_text_container">
       <div class="big_text">${payload}</div>
-    </div>`;
+    </div>`
   }
   return text;
 }
@@ -169,28 +169,28 @@ export const bigText = function(type, lang, payload) {
 export const sort = function(list=[], sort_by="", asc=true) {
   if(list && list.length>0){
     if(sort_by === ""){
-      let done = false;
+      let done = false
       if(asc){
         while (!done) {
-          done = true;
+          done = true
           for (let i = 1; i < list.length; i += 1) {
               if (list[i - 1] > list[i]){
-                  done = false;
-                  let tmp = list[i - 1];
-                  list[i - 1] = list[i];
-                  list[i] = tmp;
+                  done = false
+                  let tmp = list[i - 1]
+                  list[i - 1] = list[i]
+                  list[i] = tmp
               }
           }
         }
       } else {
         while (!done) {
-          done = true;
+          done = true
           for (let i = 1; i < list.length; i += 1) {
               if (list[i - 1] < list[i]){
-                  done = false;
-                  let tmp = list[i - 1];
-                  list[i - 1] = list[i];
-                  list[i] = tmp;
+                  done = false
+                  let tmp = list[i - 1]
+                  list[i - 1] = list[i]
+                  list[i] = tmp
               }
           }
         }
@@ -202,30 +202,29 @@ export const sort = function(list=[], sort_by="", asc=true) {
           done = true;
           for (let i = 1; i < list.length; i += 1) {
               if (list[i - 1][sort_by] > list[i][sort_by]){
-                  done = false;
-                  let tmp = list[i - 1];
-                  list[i - 1] = list[i];
-                  list[i] = tmp;
+                  done = false
+                  let tmp = list[i - 1]
+                  list[i - 1] = list[i]
+                  list[i] = tmp
               }
           }
         }
       } else {
         while (!done) {
-          done = true;
+          done = true
           for (let i = 1; i < list.length; i += 1) {
               if (list[i - 1][sort_by] < list[i][sort_by]){
-                  done = false;
-                  let tmp = list[i - 1];
-                  list[i - 1] = list[i];
-                  list[i] = tmp;
+                  done = false
+                  let tmp = list[i - 1]
+                  list[i - 1] = list[i]
+                  list[i] = tmp
               }
           }
         }
       }
     }
-  }   
-
-  return list;
+  }
+  return list
 }
 
 export const get_blackjack_cards = function() {
@@ -283,7 +282,7 @@ export const get_blackjack_cards = function() {
     {suit: 'Clubs', value: 'J', src: card_49}, 
     {suit: 'Clubs', value: 'Q', src: card_50}, 
     {suit: 'Clubs', value: 'K', src: card_51}, 
-  ];
+  ]
 }
 
 export const get_roulette_bets = function(){
@@ -292,7 +291,7 @@ export const get_roulette_bets = function(){
     {id: 'european_small', src: roulette_bets_european_small},
     {id: 'american', src: roulette_bets_american},
     {id: 'american_small', src: roulette_bets_american_small},
-  ];
+  ]
 }
 
 export const get_slots_images = function(){
@@ -304,7 +303,7 @@ export const get_slots_images = function(){
     {id: 'cabbage', src: item_image, coord:[300, 600]},
     {id: 'garlic', src: item_image, coord:[600, 600]},
     {id: 'turnip', src: item_image, coord:[900, 900]},
-  ];
+  ]
 }
 
 export const get_craps_bets = function(){
@@ -341,11 +340,11 @@ export const get_craps_bets = function(){
     {x: 690, y: 340, width:100, height:45, text: "one roll 3", id: "one_roll_3", src: craps_one_roll_3, odds: 2},
     {x: 790, y: 340, width:100, height:45, text: "one roll 4", id: "one_roll_4", src: craps_one_roll_4, odds: 2},
     {x: 690, y: 385, width:200, height:50, text: "any craps", id: "any_craps", src: craps_any_craps, odds: 2},
-  ];
+  ]
 }
 
 export const get_keno_images = function(){
   return [
     {id: 1, src: keno_dirt_01},
-  ];
+  ]
 }

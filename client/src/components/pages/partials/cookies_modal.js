@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 function Cookies(props) {
-    var lang = props.lang;
+    let lang = props.lang
 	return (
 		<div className="cookies_msg_container" id ="cookies_msg">
             <div className="cookies_msg">
@@ -35,7 +35,7 @@ function Cookies(props) {
                 </div>
             </div>
         </div>
-	);
+	)
 }
 
-export default Cookies;
+export default Cookies

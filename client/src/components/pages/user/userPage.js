@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import $ from 'jquery'; 
+import React, { useEffect, useState } from 'react'
+import $ from 'jquery'
 import Button from 'react-bootstrap/Button'
-import { getCookie, isEmpty, setCookie } from '../../utils';
+import { bigText, getCookie, isEmpty, setCookie, showResults } from '../../utils'
 
 import roulette_loading_icon from '../../img/icons_other/icons/yellow/roulette.png'
 import blackjack_loading_icon from '../../img/icons_other/icons/yellow/blackjack.png'
@@ -10,66 +10,104 @@ import craps_loading_icon from '../../img/icons_other/icons/yellow/craps.png'
 import race_loading_icon from '../../img/icons_other/icons/yellow/race.png'
 import keno_loading_icon from '../../img/icons_other/icons/yellow/keno.png'
 
-import UserChoice from './userChoice';
+import UserChoice from './userChoice'
 
 function UserPage(props){	
-	let socket = props.socket;
-	let lang = props.lang;
-	let choice = props.choice;
-	const [data, setData] = useState(null);
-	const [empty, setEmpty] = useState(false);
+	let socket = props.socket
+	let lang = props.lang
+	let choice = props.choice
+	const [data, setData] = useState(null)
+	const [empty, setEmpty] = useState(false)
 
 	useEffect(() => {
-		let casino_uuid = getCookie("casino_uuid");
+		let casino_uuid = getCookie("casino_uuid")
 		let table = choice;
 		if(choice === "game"){
 			let table_array = window.location.href.split('table/')
-			table = table_array[1];	
+			table = table_array[1]
 		}		
 		if(!isEmpty(casino_uuid)){
-			socket.emit('user_page_send', {table: table, uuid: casino_uuid, lang: lang});
+			socket.emit('user_page_send', {table: table, uuid: casino_uuid, lang: lang})
 			socket.on('user_page_read', function(data){
 				if(data !== null){
 					if(data.event && data.event === "disconnect"){
 						if(typeof $('#chatmessages') !== "undefined"){
 							if(lang === "ro"){
-								$('#chatmessages').append('<p class="user_join">' + data.user + ' e offline</p>');
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' e offline</p>')
 							} else {
-								$('#chatmessages').append('<p class="user_join">' + data.user + ' left the chat</p>');
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' left the chat</p>')
 							}
 						}	
 					} else {
 						if(choice === "game"){
-							let table_split = data.user_table.split('_');
-							data.table = table_split[0] + ' ' + table_split[1];
-							data.type = table_split[2];	
+							let table_split = data.user_table.split('_')
+							data.table = table_split[0] + ' ' + table_split[1]
+							data.type = table_split[2]
 						}
-						setData(data);
+						setData(data)
 						if(typeof $('#chatmessages') !== "undefined"){
 							if(lang === "ro"){
-								$('#chatmessages').append('<p class="user_join">' + data.user + ' e online</p>');
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' e online</p>')
 							} else {
-								$('#chatmessages').append('<p class="user_join">' + data.user + ' join the chat</p>');
+								$('#chatmessages').append('<p class="user_join">' + data.user + ' join the chat</p>')
 							}
+						}
+						// popup for streak
+						let streak = data.streak
+						let showed_streak = getCookie("casino_streak") // check if opup streak was already shown
+						if(typeof showed_streak === "undefined" || showed_streak === "null" || showed_streak === null || showed_streak === ""){
+							setCookie("casino_streak", true)							
+							
+							let streak_days = 'day'
+							if(streak>1){
+								streak_days = 'days'
+							}
+							if(lang === "ro"){
+								streak_days = 'zi'
+								if(streak>1){
+									streak_days = 'zile'
+								}
+							}
+
+							let streak_table = `<div id="streak" class="streak">
+								<div class="progress_bubble_container">
+									<div class="progress_bubble"></div>
+									<div class="bubble bubble_1">1</div>
+									<div class="bubble bubble_2">2</div>
+									<div class="bubble bubble_3">3</div>
+									<div class="bubble bubble_4">4</div>
+									<div class="bubble bubble_5">5</div>
+									<div class="bubble bubble_6">6</div>
+									<div class="bubble bubble_7">7</div>
+							  	</div>
+							</div>`							
+							
+							let text = bigText(lang, streak_table)
+							showResults(streak + ' ' + streak_days, text, 600) 
+
+							$( "#streak .bubble" ).each(function(i) {
+								if(i < streak){
+									$(this).addClass('active')
+								}
+							})
 						}
 					}
 				} else {					
-					setEmpty(true);
+					setEmpty(true)
 				}		
 			});	
 		} else {
-			setEmpty(true);
+			setEmpty(true)
 		}
-	}, []);  
+	}, [])
 
 	function handleBack(){
-		setCookie("casino_id", '');
-		setCookie("casino_uuid", '');
-		setCookie("casino_user", '');
-		setCookie("casino_email", '');
-		let url = window.location.href;
-		url = url.split('/table/');
-		window.location.href = url[0];
+		setCookie("casino_uuid", '')
+		setCookie("casino_user", '')
+		setCookie("casino_email", '')
+		let url = window.location.href
+		url = url.split('/table/')
+		window.location.href = url[0]
 	}
 	
 	return(
@@ -106,8 +144,8 @@ function UserPage(props){
 									switch (choice) { 					
 										case "game":
 											let table = window.location.href.split('table/')
-											let game = table[1];
-											let type = game.split('_')[0];
+											let game = table[1]
+											let type = game.split('_')[0]
 											switch(type){
 												case "roulette":
 													return (
@@ -115,34 +153,34 @@ function UserPage(props){
 															<img className="loading_icon" alt="loading_icon" src={roulette_loading_icon} />
 															<p className="color_yellow">Loading Roulette</p>
 														</>
-													);
+													)
 												case "blackjack":
 													return (
 														<>
 															<img className="loading_icon" alt="loading_icon" src={blackjack_loading_icon} />
 															<p className="color_yellow">Loading Blackjack</p>
 														</>
-													);
+													)
 												case "slots":
 													return (
 														<>
 															<img className="loading_icon" alt="loading_icon" src={slots_loading_icon} />
 															<p className="color_yellow">Loading Slots</p>
 														</>
-													);
+													)
 												case "craps":
 													return (
 														<>
 															<img className="loading_icon" alt="loading_icon" src={craps_loading_icon} />
 															<p className="color_yellow">Loading Craps</p>
 														</>
-													);
+													)
 												default: 
 													return (
 														<>
 															<span className="color_yellow">Loading...</span>
 														</>
-													);
+													)
 											}					
 										case "race":
 											return(
@@ -150,29 +188,29 @@ function UserPage(props){
 													<img className="loading_icon" alt="loading_icon" src={race_loading_icon} />
 													<p className="color_yellow">Loading Race</p>
 												</>
-											);
+											)
 										case "keno":
 											return(
 												<>
 													<img className="loading_icon" alt="loading_icon" src={keno_loading_icon} />
 													<p className="color_yellow">Loading Keno</p>
 												</>
-											);
+											)
 										default: 
 												return (
 													<>
 														<span className="color_yellow">Loading...</span>
 													</>
-												);
+												)
 									}	
 								})()}
 							</div>
-						);
+						)
 					}
 				}
 			})()}
 		</>
-	);
+	)
 }
 
-export default UserPage;
+export default UserPage

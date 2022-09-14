@@ -219,8 +219,17 @@ io.on('connection', function(socket) {
 				if(latest.login_date === signup && (timestamp - parseInt(latest.login_date)/60000 < 0.25)){ 
 					first_enter_salon = true
 				}
-
-				let obj = {server_tables: server_tables, uuid: uuid, user: user, money: money, first_enter_salon: first_enter_salon, contact: contact_details }
+				
+				let obj = {
+					server_tables: server_tables, 
+					uuid: uuid, 
+					user: user, 
+					money: money, 
+					first_enter_salon: first_enter_salon, 
+					contact: contact_details,
+					questions: question_array,
+					career: career_array,
+				}
 				sign_in_up = false	
 
 				try{				
@@ -276,7 +285,20 @@ io.on('connection', function(socket) {
 			let type = table.split('_')[2]
 			let profile_pic = user_found.profile_pic
 			let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic))
-			let server_user = {uuid: uuid, user: user, money: money, profile_pic: [profile_pic, profile_animal], market:market, profiles: profiles, user_table: table, game: game, contact: contact_details}		
+			
+			let server_user = {
+				uuid: uuid, 
+				user: user, 
+				money: money, 
+				profile_pic: [profile_pic, profile_animal],
+				market:market, 
+				profiles: profiles, 
+				user_table: table, 
+				game: game, 
+				contact: contact_details,
+				questions: question_array,
+				career: career_array,
+			}		
 			
 			socket.user_id = id
 			socket.user_uuid = uuid
@@ -355,20 +377,6 @@ io.on('connection', function(socket) {
 				console.log('[error]','support_send2 :', e)
 			}
 		}			
-	})
-	socket.on('career_send', function(data){
-		try{
-			io.to(socket.id).emit('career_read', career_array)	
-		}catch(e){
-			console.log('[error]','career :', e)
-		}	
-	})	
-	socket.on('questions_send', function(data){
-		try{
-			io.to(socket.id).emit('questions_read', question_array)
-		}catch(e){
-			console.log('[error]','question :', e)
-		}	
 	})
 	socket.on('chat_message_send', function(data){		
 		let room_name = data.user_table;

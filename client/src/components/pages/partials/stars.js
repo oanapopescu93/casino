@@ -1,19 +1,19 @@
 import React from 'react';
 
 function Stars(props){
-    let score = parseInt(props.score);
-    let max = parseInt(props.max);
-    let stars = [];
+    let score = parseInt(props.score)
+    let max = parseInt(props.max)
+    let stars = []
     for(let i =1; i<=max; i++){
-        let x = parseInt(i);
-        let t = Math.floor(score);   
+        let x = parseInt(i)
+        let t = Math.floor(score)  
         if(x<score){
-            stars.push("fa-star");
+            stars.push("fa-star")
         } else {
             if(x<=t){
-                stars.push("fa-star-half-o");
+                stars.push("fa-star-half-o")
             } else {
-                stars.push("fa-star-o");
+                stars.push("fa-star-o")
             }
         }        
     }
@@ -27,7 +27,7 @@ function Stars(props){
                 })
             }
 		</div>
-	);
+	)
 }
 
-export default Stars;
+export default Stars

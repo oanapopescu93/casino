@@ -1,72 +1,72 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {Route, Switch, BrowserRouter} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Container from 'react-bootstrap/Container'
 
-import '../css/style.css';
-import HomePage from './homePage';
-import Salon from './salon/salon';
-import SignInRecovery from './sign/signIn_recovery';
-import NotFound from './other_pages/not_found';
-import UserPage from './user/userPage';
-import Donate from './money/donate';
-import Page from './money/page';
-import Language from './partials/language';
-import Footer from './partials/footer';
+import '../css/style.css'
+import HomePage from './homePage'
+import Salon from './salon/salon'
+import SignInRecovery from './sign/signIn_recovery'
+import NotFound from './other_pages/not_found'
+import UserPage from './user/userPage'
+import Donate from './money/donate'
+import Page from './money/page'
+import Language from './partials/language'
+import Footer from './partials/footer'
 
-import { getCookie, setCookie, showResults } from '../utils';
+import { getCookie, setCookie, showResults } from '../utils'
 
-import socketIOClient from "socket.io-client/dist/socket.io";
-import Cookies from './partials/cookies_modal';
-import ShowResults from './partials/show_results';
-const socket = socketIOClient("/");
+import socketIOClient from "socket.io-client/dist/socket.io"
+import Cookies from './partials/cookies_modal'
+import ShowResults from './partials/show_results'
+const socket = socketIOClient("/")
 
 function Home(props){
-	let dispatch = useDispatch();
-	const [cookies, setCookies] = useState(false);	
-	const [lang, setLang] = useState(getCookie("casino_lang"));	
-	const [donationShow, setDonationShow] = useState(false);
-	const [donationInfo, setDonationInfo] = useState(null);
-	let page = props.page;
-	let show_loader = props.show;
-	let open = "open";
+	let dispatch = useDispatch()
+	const [cookies, setCookies] = useState(false)
+	const [lang, setLang] = useState(getCookie("casino_lang"))
+	const [donationShow, setDonationShow] = useState(false)
+	const [donationInfo, setDonationInfo] = useState(null)
+	let page = props.page
+	let show_loader = props.show
+	let open = "open"
     if(show_loader){
-        open = "";
+        open = ""
     }
 
 	useEffect(() => {
-		let casino_cookies = getCookie("casino_cookies"); 
+		let casino_cookies = getCookie("casino_cookies")
 		if(casino_cookies !== ""){
-			setCookies(true);
+			setCookies(true)
 		}
 		if(lang === ''){
-			setLang('eng');
+			setLang('eng')
 		}
 		setInterval(function () {		  
-			socket.emit('heartbeat', { data: "ping" });
+			socket.emit('heartbeat', { data: "ping" })
 		}, 15000)
 		socket.on('server_error', function (text) {
 			showResults("Error", text)
-			console.log('server_error ', text);
-		}); 
-	}); 
+			console.log('server_error ', text)
+		})
+	})
 
 	function lang_change(text){
-		setLang(text);
+		setLang(text)
 	}
 
 	function my_donation(donations){
-		setDonationShow(true);
-		setDonationInfo(donations);
+		setDonationShow(true)
+		setDonationInfo(donations)
 	}
 	
 	function back(){
-		setDonationShow(false);
+		setDonationShow(false)
 	}
 
 	function casino_cookies(){
-		setCookie("casino_cookies", true);
-		setCookies(true);
+		setCookie("casino_cookies", true)
+		setCookies(true)
 	}
 	
 	return (
@@ -105,7 +105,7 @@ function Home(props){
 			<ShowResults lang={lang}></ShowResults>
 			<Footer lang={lang} socket={socket}></Footer>
 		</>
-	);
+	)
 }
 
-export default Home;
+export default Home

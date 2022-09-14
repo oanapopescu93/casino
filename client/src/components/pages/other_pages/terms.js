@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
@@ -7,8 +7,8 @@ import {game_visible} from '../../actions/actions'
 import { useDispatch } from 'react-redux'
 
 function Terms(props){
-    let lang = props.info.lang;
-    let dispatch = useDispatch();
+    let lang = props.info.lang
+    let dispatch = useDispatch()
 
     function handleBack() {
         dispatch(game_visible("game"))
@@ -26,7 +26,7 @@ function Terms(props){
                 </Button>
             </Col>
         </Row>
-	);
+	)
 }
 
-export default Terms;
+export default Terms

@@ -1,53 +1,51 @@
-import React, { useState }from 'react';
+import React, { useState }from 'react'
 import { useDispatch } from 'react-redux'
-import $ from 'jquery';
-import { setCookie, showResults } from '../../utils';
-import Form from 'react-bootstrap/Form';
+import $ from 'jquery'
+import { setCookie, showResults } from '../../utils'
+import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import { game_load } from '../../actions/actions';
+import { game_load } from '../../actions/actions'
 
 function SignIn(props) {
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-  	const handleShow = () => setShow(true);
-	let socket = props.socket;
-	let lang = props.lang;
-	let dispatch = useDispatch();
+	const [show, setShow] = useState(false)
+	const handleClose = () => setShow(false)
+  	const handleShow = () => setShow(true)
+	let socket = props.socket
+	let lang = props.lang
+	let dispatch = useDispatch()
 
 	function submit(socket, lang){
-		$('.sign_errors').hide();
-		$('.sign_errors').empty();
+		$('.sign_errors').hide()
+		$('.sign_errors').empty()
 		if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
-			loader(socket, lang).then(function(data) {
+			loader(socket, lang).then(function(data){
 				if(data[0]){
 					if(data[1] && Object.keys(data[1]).length > 0){
-						setCookie("casino_id", data[1].id);
-						setCookie("casino_uuid", data[1].uuid);
-						setCookie("casino_user", $('#signin_user').val());
-						submit_form(socket, lang);
+						setCookie("casino_uuid", data[1].uuid)
+						setCookie("casino_user", $('#signin_user').val())
+						submit_form(socket, lang)
 					} else {
-						dispatch(game_load(false));
+						dispatch(game_load(false))
 						if(lang === "ro"){
-							showResults("Eroare", "Parola gresita.");
+							showResults("Eroare", "Parola gresita.")
 						} else {
-							showResults("Error", "Incorrect password.");
+							showResults("Error", "Incorrect password.")
 						}
 					}
 				} else {
-					dispatch(game_load(false));			
+					dispatch(game_load(false));		
 					if(lang === "ro"){
-						showResults("Eroare", "Nu esti integistrat SAU nu ai scris ceva corect.");
+						showResults("Eroare", "Nu esti integistrat SAU nu ai scris ceva corect.")
 					} else {
-						showResults("Error", "You are not registered OR you have a typo somewhere.");
+						showResults("Error", "You are not registered OR you have a typo somewhere.")
 					}
 				}
-			});
+			})
 		} else {
-			$('.sign_errors').show();
-			if($('#signin_user').val() === ""){
-				//$('#signin_user_red').show();			
-				$('.sign_errors').append('<h6 id="signin_user_red" class="text_red"></h6>');
+			$('.sign_errors').show()
+			if($('#signin_user').val() === ""){	
+				$('.sign_errors').append('<h6 id="signin_user_red" class="text_red"></h6>')
 				if(lang === "ro"){
 					$('#signin_user_red').append("<p>Nu ai scris nume utilizator</p>")
 				} else {
@@ -55,7 +53,7 @@ function SignIn(props) {
 				}	
 			} 
 			if($('#signin_pass').val() === ""){
-				$('.sign_errors').append('<h6 id="signin_pass_red" class="text_red"></h6>');
+				$('.sign_errors').append('<h6 id="signin_pass_red" class="text_red"></h6>')
 				if(lang === "ro"){
 					$('#signin_pass_red').append("<p>Nu ai scris parola</p>")
 				} else {
@@ -67,43 +65,43 @@ function SignIn(props) {
 	
 	function submit_recovery(){
 		if($('#signin_email').val() !== "" && check_submit()){
-			$("#recovery_form").submit();
+			$("#recovery_form").submit()
 		} else {
 			if($('#signin_email').val() === ""){
-				$('#signin_email_red').show();
+				$('#signin_email_red').show()
 				$('#signin_email_red').text("Please provide an email address")
 			} else if(!check_submit()){
-				$('#signin_email_red').show();
+				$('#signin_email_red').show()
 				$('#signin_email_red').text("Please provide a valid email")
 			} else {
-				$('#signin_email_red').hide();
+				$('#signin_email_red').hide()
 			}
 		}	
 	}
 	
 	function loader(socket, lang){
 		return new Promise(function(resolve, reject){		
-			dispatch(game_load(true));	
-			socket.emit('signin_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()});	
+			dispatch(game_load(true))
+			socket.emit('signin_send', {user: $('#signin_user').val(), pass: $('#signin_pass').val()})	
 			socket.on('signin_read', function(data){	
-				resolve(data);
-			});
-		});
+				resolve(data)
+			})
+		})
 	}
 	
 	function submit_form(socket, lang){
 		setTimeout(function(){
 			if($("#user_form")){
-				$("#user_form").submit();
+				$("#user_form").submit()
 			}
-		}, 500);
+		}, 500)
 	}
 	
 	function check_submit(){
-		let email = $('#signin_email').val();		
-		let regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$';
-		let pass_result = regex.test(email);
-		return pass_result;
+		let email = $('#signin_email').val()
+		let regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$'
+		let pass_result = regex.test(email)
+		return pass_result
 	}
 
 	return (
@@ -136,4 +134,4 @@ function SignIn(props) {
 	);
 }
 
-export default SignIn;
+export default SignIn

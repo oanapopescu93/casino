@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { PayPalButton } from "react-paypal-button-v2";
+import React, {Component} from 'react'
+import { PayPalButton } from "react-paypal-button-v2"
 
 class Paypal extends Component {	
 	render() {
@@ -36,8 +36,8 @@ class Paypal extends Component {
                     }}
                 />	
 		  	</>
-		);
+		)
 	}
 }
 
-export default Paypal;
+export default Paypal

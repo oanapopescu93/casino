@@ -6,8 +6,8 @@ import {game_visible} from '../../actions/actions'
 import { useDispatch } from 'react-redux'
 
 function About(props){
-    let lang = props.info.lang;
-    let dispatch = useDispatch();
+    let lang = props.info.lang
+    let dispatch = useDispatch()
 
     function handleBack() {
         dispatch(game_visible("game"))
@@ -61,7 +61,7 @@ function About(props){
             </Col>
             <Col sm={2}></Col>            
         </Row>
-	);
+	)
 }
 
-export default About;
+export default About

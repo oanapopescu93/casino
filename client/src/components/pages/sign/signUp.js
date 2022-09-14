@@ -1,47 +1,46 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import $ from 'jquery'; 
-import { getCookie, setCookie, showResults } from '../../utils';
+import $ from 'jquery'
+import { getCookie, setCookie, showResults } from '../../utils'
 
 function SignUp(props){
-	let lang = props.lang;
-	let socket = props.socket;
-	const [minor, setMinor] = useState(true);
+	let lang = props.lang
+	let socket = props.socket
+	const [minor, setMinor] = useState(true)
 
 	useEffect(() => {
-		setMinor(getCookie('user_minor'));
-	}, []); 
+		setMinor(getCookie('user_minor'))
+	}, [])
 
 	function submit(){
-		$('.sign_errors').hide();
-		$('.sign_errors').empty();
+		$('.sign_errors').hide()
+		$('.sign_errors').empty()
 		if(check_submit('email') && check_submit('pass')){
-			loader().then(function(data) {
+			loader().then(function(data){
 				if(data[0]){
 					if($('#loader_container')){
-						$('#loader_container').hide(); 
+						$('#loader_container').hide()
 					}
 					if($('#home')){
-						$('#home').show();	
+						$('#home').show()
 					}	
 					if(lang === "ro"){
-						showResults('Alerta', 'Esti deja inregistrat.');
+						showResults('Alerta', 'Esti deja inregistrat.')
 					} else {
-						showResults('Alert', 'You are already registered.');
+						showResults('Alert', 'You are already registered.')
 					}					
 				} else {
-					setCookie("casino_id", data[1].id);
 					setCookie("casino_uuid", data[1].uuid);
-					setCookie("casino_email", $('#signup_email').val());
-					setCookie("casino_user", $('#signup_user').val());
+					setCookie("casino_email", $('#signup_email').val())
+					setCookie("casino_user", $('#signup_user').val())
 					submit_form();
 				}
-			});
+			})
 		} else {
 			if(!check_submit('email')){
 				$('.sign_errors').show();
-				$('.sign_errors').append('<h6 id="signup_email_red" class="text_red"></h6>');
+				$('.sign_errors').append('<h6 id="signup_email_red" class="text_red"></h6>')
 				if(lang === "ro"){
 					$('#signup_email_red').append('<p><b>Email invalid</b></p><p>exemplu@mail.com</p>')
 				} else {
@@ -50,8 +49,8 @@ function SignUp(props){
 			}	
 
 			if(!check_submit('pass')){
-				$('.sign_errors').show();
-				$('.sign_errors').append('<h6 id="signup_pass_red" class="text_red"></h6>');
+				$('.sign_errors').show()
+				$('.sign_errors').append('<h6 id="signup_pass_red" class="text_red"></h6>')
 				if(lang === "ro"){
 					$('#signup_pass_red').append('<p><b>Parola invalida</b></p><p>Minim o litera mare, o litera mica, o cifra, un caracter special si lungimea totala minima de opt caractere</p>')
 				} else {
@@ -64,58 +63,58 @@ function SignUp(props){
 	function loader(){
 		return new Promise(function(resolve, reject){
 			if($('#loader_container')){
-				$('#loader_container').show(); 
+				$('#loader_container').show()
 			}
 			if($('#home')){
-				$('#home').hide();	
+				$('#home').hide()	
 			}		
-			socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()});	
+			socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()})	
 			socket.on('signup_read', function(data){
 				console.log('signup_read ', data)
-				resolve(data);
-			});	
-		});
+				resolve(data)
+			})
+		})
 	}
 	
 	function check_submit(type){
-		let signup_input = "";
-		let regex = "";
+		let signup_input = ""
+		let regex = ""
 		switch(type){
 			case "email":
-				signup_input = $('#signup_email').val();				
+				signup_input = $('#signup_email').val()			
 				regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$'
 				//letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
-			   	break;
+			   	break
 			case "pass":
-				signup_input = $('#signup_pass').val();		
-				regex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';	
+				signup_input = $('#signup_pass').val()
+				regex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
 				// At least one upper case English letter, (?=.*?[A-Z])
 				// At least one lower case English letter, (?=.*?[a-z])
 				// At least one digit, (?=.*?[0-9])
 				// At least one special character, (?=.*?[#?!@$%^&*-])
 				// Minimum eight in length .{8,}
-				break;
+				break
 		}		
-		let regex_exp = new RegExp(regex);					
-		let pass_result = regex_exp.test(signup_input);
-		//pass_result = true;
-		return pass_result;
+		let regex_exp = new RegExp(regex)			
+		let pass_result = regex_exp.test(signup_input)
+		//pass_result = true
+		return pass_result
 	}
 
 	function submit_form(){
 		setTimeout(function(){
 			if($("#user_form")){
-				$("#user_form").submit();
+				$("#user_form").submit()
 			}
-		}, 1000);
+		}, 500)
 	}
 	
 	function minor_check(check){
 		$('#minor_container').remove();	
 		if(check){
-			setCookie("user_minor", true, 336); //will expire after 14 days
+			setCookie("user_minor", true, 336) //will expire after 14 days
 		} else {		
-			setCookie("user_minor", false, 336); //will expire after 14 days
+			setCookie("user_minor", false, 336) //will expire after 14 days
 		}
 	}
 	
@@ -123,8 +122,8 @@ function SignUp(props){
 		<>
 			{(() => {
 				if (minor === "true") {
-					$('.user_form_container').css('height', 'auto');
-					$('.login_link_container').remove();
+					$('.user_form_container').css('height', 'auto')
+					$('.login_link_container').remove()
 					return (
 						<div className="color_yellow">
 							{lang === "ro" ? <p>Esti prea tanar ca sa intri.</p> : <p>You are too young to enter.</p>}
@@ -188,4 +187,4 @@ function SignUp(props){
 	)
 }
 
-export default SignUp;
+export default SignUp

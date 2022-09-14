@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import logo_icon from '../../img/logo.png';
+import logo_icon from '../../img/logo.png'
 
 function Sapou(props){
 	return (
@@ -70,7 +70,7 @@ function Sapou(props){
                 }
             })()}
         </>
-	);
+	)
 }
 
-export default Sapou;
+export default Sapou

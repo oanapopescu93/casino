@@ -1,16 +1,14 @@
-import React from 'react';
+import React from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from '../partials/carousel'
-import shop from '../../img/other/shop.png';
+import shop from '../../img/other/shop.png'
 
 function Account_market(props) {
-	let market = props.info.market;
-	let socket = props.info.socket;	
-	let lang = props.info.lang;
-	let shader_style = {
-		backgroundImage: `url(${shop})`,
-	};
+	let market = props.info.market
+	let socket = props.info.socket;
+	let lang = props.info.lang
+	let shader_style = {backgroundImage: `url(${shop})`}
 	return (
 		<div className="account_box_container">
 			<Row>
@@ -29,7 +27,7 @@ function Account_market(props) {
 				<Col sm={2}></Col>
 			</Row>
 		</div>
-	);
+	)
 }
 
-export default Account_market;
+export default Account_market

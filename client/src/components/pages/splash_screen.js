@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Sapou from './partials/sapou';
+import Sapou from './partials/sapou'
 
 function Splash() {
 	return (
@@ -29,7 +29,7 @@ function Splash() {
                 </Container>
 		    </div>	
         </div>	
-	);
+	)
 }
 
-export default Splash;
+export default Splash

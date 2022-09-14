@@ -1,16 +1,16 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button'
 
-import $ from 'jquery'; 
+import $ from 'jquery'
 
-import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
+import OwlCarousel from 'react-owl-carousel'
+import 'owl.carousel/dist/assets/owl.carousel.css'
+import 'owl.carousel/dist/assets/owl.theme.default.css'
 
-import vegetables_yellow from '../../img/icons/vegetables_yellow.png';
-import rabbit_img_board from '../../img/race_imgs/rabbit.jpg';
-import { showResults } from '../../utils';
-import Stars from './stars';
+import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
+import rabbit_img_board from '../../img/race_imgs/rabbit.jpg'
+import { showResults } from '../../utils'
+import Stars from './stars'
 
 class Carousel extends Component {	
 	constructor(props) {
@@ -23,7 +23,7 @@ class Carousel extends Component {
 			user: props.user,
 			money: props.money,
 			get_list: props.get_list,			
-		};		
+		}
 
 		this.text = {
 			"salon": {
@@ -40,13 +40,13 @@ class Carousel extends Component {
 			}
 		}
 
-		this.item_list_changed = props.item_list;
+		this.item_list_changed = props.item_list
 
-		this.handleClick = this.handleClick.bind(this);
-		this.my_click = this.my_click.bind(this);
-		this.decrease = this.decrease.bind(this);
-		this.increase = this.increase.bind(this);
-		this.dropdown = this.dropdown.bind(this);
+		this.handleClick = this.handleClick.bind(this)
+		this.my_click = this.my_click.bind(this)
+		this.decrease = this.decrease.bind(this)
+		this.increase = this.increase.bind(this)
+		this.dropdown = this.dropdown.bind(this)
 	}
 
 	componentDidMount(){
@@ -58,26 +58,25 @@ class Carousel extends Component {
 		let self = this
 		if(e.lang !== self.props.lang){
 			//this is the only way you can update text in Owl Carousel (only way I have found yet). Ye, I know, it sucks.			
-			let template = e.template;
+			let template = e.template
 			let lang = self.props.lang
 			let rabbit_box_text = $('.rabbit_box_text')
 			if(rabbit_box_text.length>0){
 				rabbit_box_text.each(function() {
-					let type = $(this).attr('type');
-					let text = self.text[template][lang][type];
-					console.log('xxx ', $(this), template, lang, type, self.text[template][lang][type])
-					$(this).text(text);
-				  });
+					let type = $(this).attr('type')
+					let text = self.text[template][lang][type]
+					$(this).text(text)
+				})
 			}		
 		}
 	}
 	
 	handleClick(table_name, table_id, table_type="", user) {
-		var payload = {table_name, table_id, table_type, user}
-		this.state.socket.emit('choose_table_send', payload);	
+		let payload = {table_name, table_id, table_type, user}
+		this.state.socket.emit('choose_table_send', payload)
 		this.state.socket.on('choose_table_read', function(data){
-			window.location.href = '/table/' + data;
-		});	
+			window.location.href = '/table/' + data
+		})
 	}
 
 	my_click(id){
@@ -89,14 +88,14 @@ class Carousel extends Component {
 	}
 
 	decrease(t, e){		
-		let target = $(e.target);
-		let item_list = this.state.item_list;
-		let input = target.closest('.bet_container').find('.race_input');
+		let target = $(e.target)
+		let item_list = this.state.item_list
+		let input = target.closest('.bet_container').find('.race_input')
 		if(item_list && item_list.length>0){
 			if(item_list[t]){
 				if(item_list[t].bet-1 >= 0){
 					item_list[t].bet--					
-					input.val(item_list[t].bet);
+					input.val(item_list[t].bet)
 					this.item_list_changed = item_list
 				}
 			}
@@ -104,21 +103,21 @@ class Carousel extends Component {
 	}
 
 	increase(t, e){
-		let target = $(e.target);	
-		let item_list = this.state.item_list;
-		let money = this.props.money;
-		let input = target.closest('.bet_container').find('.race_input');
+		let target = $(e.target)	
+		let item_list = this.state.item_list
+		let money = this.props.money
+		let input = target.closest('.bet_container').find('.race_input')
 		if(item_list && item_list.length>0){
 			if(item_list[t]){
 				if(item_list[t].bet+1 > money){
 					if(this.props.lang === "ro"){
-						showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 600);
+						showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 300)
 					} else {
-						showResults("You don't have enough carrots!", "Go and buy some from the Market.", 600);
+						showResults("You don't have enough carrots!", "Go and buy some from the Market.", 300)
 					}
 				} else {
 					item_list[t].bet++					
-					input.val(item_list[t].bet);
+					input.val(item_list[t].bet)
 					this.item_list_changed = item_list
 				}		
 			}
@@ -126,13 +125,13 @@ class Carousel extends Component {
 	}
 
 	dropdown(t, value, e){
-		let target = $(e.target);
-		let place_box = target.closest('.place_box');
-		place_box.find('li').removeClass('active');
-		target.closest('li').addClass('active');
-		let input = target.closest('.bet_container').find('.race_input');
+		let target = $(e.target)
+		let place_box = target.closest('.place_box')
+		place_box.find('li').removeClass('active')
+		target.closest('li').addClass('active')
+		let input = target.closest('.bet_container').find('.race_input')
 
-		let item_list = this.state.item_list;
+		let item_list = this.state.item_list
 		if(item_list && item_list.length>0){
 			if(item_list[t]){
 				item_list[t].place = value;
@@ -143,11 +142,11 @@ class Carousel extends Component {
 	}	
 
 	render() {
-		let self = this;
-		let lang = this.props.lang;
-		let user = this.props.user;
-		let template = this.props.template;
-		let item_list = this.state.item_list;
+		let self = this
+		let lang = this.props.lang
+		let user = this.props.user
+		let template = this.props.template
+		let item_list = this.state.item_list
 		return (
 			<div className="Owl_container">
 				{(() => {
@@ -176,7 +175,7 @@ class Carousel extends Component {
 							<OwlCarousel {...options}>
 								{
 									item_list.map(function(item, i){
-										let button_id = "button_"+i;
+										let button_id = "button_"+i
 										switch (item.table_name) {
 											case "roulette":
 											case "slots":
@@ -241,7 +240,7 @@ class Carousel extends Component {
 							<OwlCarousel {...options}>
 								{
 									item_list.map(function(item, i){
-										let id = item.id;
+										let id = item.id
 										return(
 											<div key={i} className="table_inside">
 												<div className="table_box shadow_concav">
@@ -295,7 +294,7 @@ class Carousel extends Component {
 								<OwlCarousel {...options}>									
 									{
 										item_list.map(function(item, i){
-											let rabbit_box_style = "rabbit_box_nr shadow_convex " + item.color;
+											let rabbit_box_style = "rabbit_box_nr shadow_convex " + item.color
 											return(
 												<div className="rabbit_box_container" key={i}>
 													<div id={"rabbit_box_"+i} className="rabbit_inside">
@@ -314,8 +313,6 @@ class Carousel extends Component {
 																		{lang === "ro" ? <span className="rabbit_box_text" type="health">Sanatate:</span> : <span className="rabbit_box_text" type="place">Health:</span>}
 																	</p>
 																	<Stars score={item.health} max={item.health_max}></Stars>
-																	{/* <p className="rabbit_info rabbit_max_speed">Max speed: {item.max_speed}</p>
-																	<p className="rabbit_info rabbit_min_speed">Min speed: {item.min_speed}</p> */}
 																</div>									
 															</div>
 															<div className="rabbit_box_right">
@@ -347,7 +344,7 @@ class Carousel extends Component {
 									}
 								</OwlCarousel>
 							</>
-						);
+						)
 					}	
 				})()}
 			</div>
@@ -355,4 +352,4 @@ class Carousel extends Component {
 	}
 }
 
-export default Carousel;
+export default Carousel

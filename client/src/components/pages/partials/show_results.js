@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 function ShowResults(props){
-    let lang = props.lang;
+    let lang = props.lang
 	return (
 		<div className="show_results_container">
             <div className="show_results">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector} from 'react-redux'
 
 import Row from 'react-bootstrap/Row'
@@ -6,23 +6,23 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 import SalonGames from './salon_games'
-import Sapou from '../partials/sapou';
+import Sapou from '../partials/sapou'
 
-import About from '../other_pages/about';
-import Support from '../other_pages/support';
-import Terms from '../other_pages/terms';
-import Privacy from '../other_pages/privacy';
-import Questions from '../other_pages/questions';
-import Career from '../other_pages/career_empty';
+import About from '../other_pages/about'
+import Support from '../other_pages/support'
+import Terms from '../other_pages/terms'
+import Privacy from '../other_pages/privacy'
+import Questions from '../other_pages/questions'
+import Career from '../other_pages/career'
 
-import { getCookie, setCookie, showResults, isEmpty, bigText } from '../../utils';
-import { game_load, game_page } from '../../actions/actions';
-import UserPage from '../user/userPage';
+import { getCookie, setCookie, showResults, isEmpty, bigText } from '../../utils'
+import { game_load, game_page } from '../../actions/actions'
+import UserPage from '../user/userPage'
 
-import giftPic from '../../img/chest/chest.gif';
+import giftPic from '../../img/chest/chest.gif'
 
 function Child(props){
-	let visible = useSelector(state => state.visibility);
+	let visible = useSelector(state => state.visibility)
 	return(
 		<>	
 			{(() => {
@@ -40,11 +40,11 @@ function Child(props){
 							</>
 						)
 					} else {
-						let data = props.info;
-						data.lang = props.lang;
-						data.socket = props.socket;
-						data.casino_games_title = props.casino_games_title;
-						data.casino_games = props.casino_games;
+						let data = props.info
+						data.lang = props.lang
+						data.socket = props.socket
+						data.casino_games_title = props.casino_games_title
+						data.casino_games = props.casino_games
 						switch (visible) {
 							case "game":
 								return (
@@ -107,21 +107,21 @@ function Child(props){
 				}
 			})()}					
 		</>		
-	);
+	)
 }
 
 function Salon(props){	
-	let dispatch = useDispatch();
-	let socket = props.socket;
-	let lang = props.lang;
+	let dispatch = useDispatch()
+	let socket = props.socket
+	let lang = props.lang
 	
-	const [change, setChange] = useState('games'); //games, race, keno
-	const [id, setId] = useState(-1);
-	const [uuid, setUuid] = useState(-1);
-	const [loaded, setLoaded] = useState(false);
-	const [open, setOpen] = useState('');
-	const [casinoGames, setCasinoGames] = useState('');
-	const [data, setData] = useState(null);
+	const [change, setChange] = useState('games') //games, race, keno
+	const [id, setId] = useState(-1)
+	const [uuid, setUuid] = useState(-1)
+	const [loaded, setLoaded] = useState(false)
+	const [open, setOpen] = useState('')
+	const [casinoGames, setCasinoGames] = useState('')
+	const [data, setData] = useState(null)
 
 	let casino_games = {
 		roulette_tables: [], 
@@ -129,80 +129,81 @@ function Salon(props){
 		slots_tables: [],
 		craps_tables: []
 	}
-	let casino_games_title = Object.getOwnPropertyNames(casino_games);
+	let casino_games_title = Object.getOwnPropertyNames(casino_games)
 
 	useEffect(() => {
-		dispatch(game_page("salon"));
-		dispatch(game_load(true));
+		dispatch(game_page("salon"))
+		dispatch(game_load(true))
 		salonData().then(res => {
 			if(res){	
 				for(let i in res.server_tables){
 					switch (res.server_tables[i].table_name) {
 						case "roulette":
-							casino_games.roulette_tables.push(res.server_tables[i]);
+							casino_games.roulette_tables.push(res.server_tables[i])
 							break;
 						case "blackjack":
-							casino_games.blackjack_tables.push(res.server_tables[i]);
+							casino_games.blackjack_tables.push(res.server_tables[i])
 							break;
 						case "slots":
-							casino_games.slots_tables.push(res.server_tables[i]);
+							casino_games.slots_tables.push(res.server_tables[i])
 							break;
 						case "craps":
-							casino_games.craps_tables.push(res.server_tables[i]);
+							casino_games.craps_tables.push(res.server_tables[i])
 							break;	
 						default:
 							break;						
 						}
 				}
 				setCasinoGames(casino_games)
+
+				// popup for first time user - 100 carrots
 				if(res.first_enter_salon){
-					let gift_title = 'Welcome gift';
-					let gift_text = 'First time players get 100 carrots!';
+					let gift_title = 'Welcome gift'
+					let gift_text = 'First time players get 100 carrots!'
 					if(lang === "ro"){
-						gift_title = 'Cadou de bun-venit';
-						gift_text = 'Ai 100 de morcovi cadou de bun-venit.';
+						gift_title = 'Cadou de bun-venit'
+						gift_text = 'Ai 100 de morcovi cadou de bun-venit.'
 					}
 
-					let pay_table = `<div id="first_enter_salon" class="first_enter_salon">
+					let gift_table = `<div id="first_enter_salon" class="first_enter_salon">
 						<img alt="gift_img" class="gift_img" src="` + giftPic + `"/>
 						<p><b>` + gift_text + `</b></p>
-					</div>`;
-					let text = bigText("first_enter_salon", lang, pay_table); 
-					showResults(gift_title, text, 600);					
-				}				
+					</div>`
+					let text = bigText(lang, gift_table)
+					showResults(gift_title, text, 300)			
+				}
 			} 
 			setLoaded(true);
-			dispatch(game_load(false));
-			setOpen("open");
-		}).catch(err => console.log(err));	
-	}, []); 
+			dispatch(game_load(false))
+			setOpen("open")
+		}).catch(err => console.log(err))
+	}, [])
 	
 	function salonData(){
 		return new Promise(function(resolve, reject){
-			let casino_uuid = getCookie("casino_uuid");
-			setUuid(casino_uuid);
+			let casino_uuid = getCookie("casino_uuid")
+			setUuid(casino_uuid)
 			setTimeout(function(){
-				socket.emit('salon_send', casino_uuid);	
+				socket.emit('salon_send', casino_uuid)
 				socket.on('salon_read', function(result){
-					setData(result);
-					resolve(result);	
+					setData(result)
+					resolve(result)
 				});
 			}, 500);
-		});
-	};
+		})
+	}
 
 	function handleBack(){
-		setCookie("casino_id", '');
-		setCookie("casino_uuid", '');
-		setCookie("casino_user", '');
-		setCookie("casino_email", '');
-		let url = window.location.href;
-		url = url.split('/salon');
-		window.location.href = url[0];
+		setCookie("casino_uuid", '')
+		setCookie("casino_user", '')
+		setCookie("casino_email", '')
+		let url = window.location.href
+		url = url.split('/salon')
+		window.location.href = url[0]
 	}
 
 	function handleChange(type){
-		setChange(type);
+		setChange(type)
 	}
 		
 	return (
@@ -262,7 +263,7 @@ function Salon(props){
 				</Row>
 			) : null }
 		</>
-	);
+	)
 }
 
-export default Salon;
+export default Salon

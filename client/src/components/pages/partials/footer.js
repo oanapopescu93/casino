@@ -1,39 +1,39 @@
-import React, {useEffect} from 'react';
-import $ from 'jquery'; 
-import { useDispatch } from 'react-redux';
+import React, {useEffect} from 'react'
+import $ from 'jquery'
+import { useDispatch } from 'react-redux'
 import {game_visible} from '../../actions/actions'
 
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import ukraine from '../../img/icons/ukraine.svg';
+import ukraine from '../../img/icons/ukraine.svg'
 
 function Footer(props){
-	let dispatch = useDispatch();	
-	let lang = props.lang;
+	let dispatch = useDispatch()	
+	let lang = props.lang
 
-	let date = new Date();
-	date = date.getFullYear();
+	let date = new Date()
+	date = date.getFullYear()
 	
 	useEffect(() => {
 		let existCondition = setInterval(function () {		
 			if ($('#salon').length > 0) {
-				clearInterval(existCondition);
-				$('.footer_container').show();
+				clearInterval(existCondition)
+				$('.footer_container').show()
 			}
-		}, 100);
+		}, 100)
 
         $('body').off('click').on('click', function(event) {
             if($(event.target).closest(".footer_container").length === 0){
                 $('.footer_container').removeClass('open');
             }
-        });
+        })
 
         $('.footer_button').off('click').on('click', function(event) {
 			$('.footer_container').toggleClass('open');
-		});
-	}, []); 
+		})
+	}, [])
 
 	function handleClick(link) {
 		dispatch(game_visible(link))
@@ -67,7 +67,7 @@ function Footer(props){
 					</Container>				
 			</div>
 		</div>
-	);
+	)
 }
 
-export default Footer;
+export default Footer

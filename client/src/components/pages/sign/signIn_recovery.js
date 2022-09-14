@@ -1,28 +1,28 @@
-import React from 'react';
+import React from 'react'
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import $ from 'jquery'; 
+import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import Sapou from '../partials/sapou';
+import Sapou from '../partials/sapou'
 
 function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
-		loader().then(function(data) {
-			submit_form();
+		loader().then(function(data){
+			submit_form()
 		});
 	} else {
 		if($('#signin_user').val() === ""){
-			$('#signin_user_red').show();
+			$('#signin_user_red').show()
 		} else {
-			$('#signin_user_red').hide();
+			$('#signin_user_red').hide()
 		}
 		if($('#signin_pass').val() === ""){
-			$('#signin_pass_red').show();
+			$('#signin_pass_red').show()
 		} else {
-			$('#signin_pass_red').hide();
+			$('#signin_pass_red').hide()
 		}
 	}	
 }
@@ -30,20 +30,20 @@ function submit(){
 function loader(){
 	return new Promise(function(resolve, reject){
 		if($('#loader_container')){
-			$('#loader_container').show();
+			$('#loader_container').show()
 		}
-		$('.full-height').hide();
-		resolve(true);	
-	});
+		$('.full-height').hide()
+		resolve(true)
+	})
 }
 
 function submit_form(){
 	return new Promise(function(resolve, reject){
 		setTimeout(function(){
-			$("#user_form").submit();
+			$("#user_form").submit()
 			resolve(true);
-		}, 1500);
-	});
+		}, 500);
+	})
 }
 
 function SignInRecovery(props) {
@@ -74,4 +74,4 @@ function SignInRecovery(props) {
 	);
 }
 
-export default SignInRecovery;
+export default SignInRecovery

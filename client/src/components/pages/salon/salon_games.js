@@ -1,54 +1,54 @@
-import React, {useEffect, useState } from 'react';
-import $ from 'jquery';
+import React, {useEffect, useState } from 'react'
+import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from '../partials/carousel'
-import { setCookie } from '../../utils';
+import { setCookie } from '../../utils'
 import { useDispatch } from 'react-redux'
-import { game_page } from '../../actions/actions';
+import { game_page } from '../../actions/actions'
 
 function SalonGames(props){
-	let info = props.info;
-    let socket = info.socket;
-    let lang = info.lang;
-    const [width, setWidth] = useState(window.innerWidth);
-    let dispatch = useDispatch();		
+	let info = props.info
+    let socket = info.socket
+    let lang = info.lang
+    const [width, setWidth] = useState(window.innerWidth)
+    let dispatch = useDispatch()	
 
     useEffect(() => {
-		dispatch(game_page('salon'));
+		dispatch(game_page('salon'))
         $(window).resize(function(){            
-			setWidth(window.innerWidth);
-		});
-	}, []); 
+			setWidth(window.innerWidth)
+		})
+	}, [])
 
     function handleExit(){
-        setCookie("casino_user", '');
-		setCookie("casino_email", '');
-		let url = window.location.href;
-		url = url.split('/salon');
-		window.location.href = url[0];
+        setCookie("casino_user", '')
+		setCookie("casino_email", '')
+		let url = window.location.href
+		url = url.split('/salon')
+		window.location.href = url[0]
 	}
 
     function handleDropdown(t) {
 		$('.casino_games_table_container').removeClass('open')
 		$('.casino_games_table_container').each(function() {
 			if($(this).attr('box') === t){
-				$(this).addClass('open');
-                let title = t.split('_').join(' ');
-                $('.casino_games_title span').text(title);
+				$(this).addClass('open')
+                let title = t.split('_').join(' ')
+                $('.casino_games_title span').text(title)
                 $('.casino_games_title_box_container').removeClass('open')
 			}
-		});
+		})
 	}
 
     function handleDropdown_small() {
-		$('.casino_games_title_box_container').toggleClass('open');
+		$('.casino_games_title_box_container').toggleClass('open')
         if($('.casino_games_title_box_container').hasClass('open')){
-            $('.casino_games_title i').removeClass('fa-angle-down');
-            $('.casino_games_title i').addClass('fa-angle-up');
+            $('.casino_games_title i').removeClass('fa-angle-down')
+            $('.casino_games_title i').addClass('fa-angle-up')
         } else {
-            $('.casino_games_title i').addClass('fa-angle-down');
-            $('.casino_games_title i').removeClass('fa-angle-up');
+            $('.casino_games_title i').addClass('fa-angle-down')
+            $('.casino_games_title i').removeClass('fa-angle-up')
         }
 	}
 	
@@ -93,8 +93,8 @@ function SalonGames(props){
                 <Col sm={8}>
                     {
                         info.casino_games_title.map(function(t, i){
-                            var title = t.split('_')[0];
-                            var box = "casino_games_table_container";
+                            let title = t.split('_')[0]
+                            let box = "casino_games_table_container"
                             if(i === 0){
                                 box = box + " open"
                             }
@@ -141,7 +141,7 @@ function SalonGames(props){
                 </Col>
             </Row>	
         </>
-	);
+	)
 }
 
-export default SalonGames;
+export default SalonGames

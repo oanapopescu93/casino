@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useRef } from 'react';
+import React, {useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import $ from 'jquery'; 
+import $ from 'jquery'
 import {game_page} from '../../actions/actions'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -8,33 +8,33 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 function Support(props){
-    let lang = props.info.lang;
-	let socket = props.info.socket;
-	let contact = props.info.contact;
-    let dispatch = useDispatch();
-    const support_email_red = useRef();
-    const support_message_red = useRef();
-    const support_result = useRef();
+    let lang = props.info.lang
+	let socket = props.info.socket
+	let contact = props.info.contact
+    let dispatch = useDispatch()
+    const support_email_red = useRef()
+    const support_message_red = useRef()
+    const support_result = useRef()
 
 	useEffect(() => {
-		dispatch(game_page('user_account'));	
-	}, []); 
+		dispatch(game_page('user_account'))	
+	}, [])
 
     function submit(event){
         if(support_email_red){
             if(support_email_red.current){
-                support_email_red.empty();
+                support_email_red.empty()
             }
         }
         if(support_message_red){
             if(support_message_red.current){
-                support_message_red.empty();
+                support_message_red.empty()
             }
         }       
 
         if(check_submit('email') && $('#support_message').val() !== ""){
             if(event.target.getAttribute("finished") === "yes"){
-                event.target.setAttribute("finished", "no");
+                event.target.setAttribute("finished", "no")
                 submit_form(event);
             } 
         } else {
@@ -73,51 +73,51 @@ function Support(props){
     }
 
     function submit_form(event){        
-        let target = event.target;
+        let target = event.target
         let obj = {email: $('#support_email').val(), message: $('#support_message').val(), lang: lang}
-        socket.emit('support_send', obj);	
+        socket.emit('support_send', obj)
         socket.on('support_read', function(data){
             if(support_result){
                 if(support_result.current){
-                    support_result.empty();
-                    support_result.append(data);
+                    support_result.empty()
+                    support_result.append(data)
                 }
             }
             setTimeout(function(){ 	
                 if(support_email_red){
                     if(support_email_red.current){
-                        support_email_red.empty();
+                        support_email_red.empty()
                     }
                 }
                 if(support_message_red){
                     if(support_message_red.current){
-                        support_message_red.empty();
+                        support_message_red.empty()
                     }
                 } 
                 if(support_result){
                     if(support_result.current){
-                        support_result.empty();
+                        support_result.empty()
                     }
                 }
-                target.setAttribute("finished", "yes");
-            }, 1000);
-        });	
+                target.setAttribute("finished", "yes")
+            }, 1000)
+        })	
     }
     
     function check_submit(type){
-        let signup_input = "";
-        let regex = "";
+        let signup_input = ""
+        let regex = ""
             switch(type){
                 case "email":
-                    signup_input = $('#support_email').val();
+                    signup_input = $('#support_email').val()
                     regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$'
                     //letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
-                    break;
+                    break
             }
-            let regex_exp = new RegExp(regex);					
-            let pass_result = regex_exp.test(signup_input);
-            //pass_result = true;
-            return pass_result;
+            let regex_exp = new RegExp(regex)				
+            let pass_result = regex_exp.test(signup_input)
+            //pass_result = true
+            return pass_result
     }
        
     return (
@@ -174,7 +174,7 @@ function Support(props){
                                         } else {
                                             return(
                                                 <div>Loading...</div>
-                                            );
+                                            )
                                         }
                                     })()}
                                 </div>
@@ -197,7 +197,7 @@ function Support(props){
                 </Col>
                 <Col sm={2}></Col>
             </Row>
-    );
+    )
 }
 
-export default Support;
+export default Support

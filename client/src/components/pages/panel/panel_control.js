@@ -1,92 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {game_visible} from '../../actions/actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle, faComments, faHome, faCog, faPowerOff } from '@fortawesome/free-solid-svg-icons'
-import { setCookie } from '../../utils';
+import { setCookie } from '../../utils'
 import Modal from 'react-bootstrap/Modal'
 import Settings from './control_settings'
 import ChatForm from './chatForm'
-import carrot_img from '../../img/icons/carrot_icon.png';
+import carrot_img from '../../img/icons/carrot_icon.png'
 
 function Panel(props){
-    let lang = props.info.lang;
-    let socket = props.info.socket;
-    let user = props.info.user;
-    let type = props.info.type;
-    let user_table = props.info.user_table;
-    let money = props.info.money;
-    let steak = props.info.streak ? props.info.streak : 1;
-    let dispatch = useDispatch();    
+    let lang = props.info.lang
+    let socket = props.info.socket
+    let user = props.info.user
+    let type = props.info.type
+    let user_table = props.info.user_table
+    let money = props.info.money
+    let streak = props.info.streak ? props.info.streak : 1
+    let dispatch = useDispatch()
 
-    const [show, setShow] = useState(false);
-    const [open, setOpen] = useState('');
-    const [userGame, setUserGame] = useState("active");
-    const [userAccount, setUserAccount] = useState("");
+    const [show, setShow] = useState(false)
+    const [open, setOpen] = useState('')
+    const [userGame, setUserGame] = useState("active")
+    const [userAccount, setUserAccount] = useState("")
 
-    const [panel, setPanel] = useState("user_panel_box");
-    const [panelUser, setPanelUser] = useState("active");
-    const [panelChat, setPanelChat] = useState("");
+    const [panel, setPanel] = useState("user_panel_box")
+    const [panelUser, setPanelUser] = useState("active")
+    const [panelChat, setPanelChat] = useState("")
 
-	function handleClose(){ setShow(false) };
-    function handleShow(){ setShow(true) };
+	function handleClose(){ setShow(false) }
+    function handleShow(){ setShow(true) }
 
     function handleClick(link) {
         let url_back01 = window.location.href.split('/table/');
 		switch (link) {
 			case "account":
-                setUserGame("active");
-                setUserAccount("");
+                setUserGame("active")
+                setUserAccount("")
                 dispatch(game_visible('account'))
-			  	break;
+			  	break
 			case "casino":
                 setUserGame("");
                 setUserAccount("active");
 				dispatch(game_visible('game'))
-				break;
+				break
             case "salon":					
-				window.location.href = url_back01[0]+"/salon";
-			 	break;
+				window.location.href = url_back01[0]+"/salon"
+			 	break
             case "settings":	
-                handleShow();
-                break;
-			case "logout":				
-                setCookie("casino_id", '');
-                setCookie("casino_uuid", '');
-                setCookie("casino_user", '');
-				setCookie("casino_email", '');
-				window.location.href = url_back01[0];
-			 	break;
+                handleShow()
+                break
+			case "logout":
+                setCookie("casino_uuid", '')
+                setCookie("casino_user", '')
+				setCookie("casino_email", '')
+				window.location.href = url_back01[0]
+			 	break
             case "support":
                 dispatch(game_visible('support'))
-                break;
+                break
 			default:
-				let url_back02 = window.location.href.split('/table/');
-				window.location.href = url_back02[0];
+				let url_back02 = window.location.href.split('/table/')
+				window.location.href = url_back02[0]
 		  }
 	}
 
     function handleToggle(type){
         if(panel === type){
             if(open === ''){
-                setOpen('open');
+                setOpen('open')
             } else {
-                setOpen('');
+                setOpen('')
             }
         } else {
-            setOpen('open');
-            setPanel(type);
+            setOpen('open')
+            setPanel(type)
         }
 
         switch (type) {
 			case "user_panel_box":
-                setPanelUser("active");
-                setPanelChat("");
-			  	break;
+                setPanelUser("active")
+                setPanelChat("")
+			  	break
 			case "chat_panel_box":
-                setPanelUser("");
-                setPanelChat("active");
-				break;
+                setPanelUser("")
+                setPanelChat("active")
+				break
 		}
     }
     
@@ -116,13 +115,13 @@ function Panel(props){
                         <div className="user_subtitle_right">
                             <span id="user_money"><span>{money}</span><img alt="carrot_img" className="currency_img" src={carrot_img} /></span>
                             <span id="user_streak">
-                                <span>{steak}</span>
+                                <span>{streak}</span>
                                 <div className="my_tooltip">
                                     <i className="fa fa-calendar-o" aria-hidden="true"></i>
                                     {lang === "ro" ? <span className="my_tooltiptext">
                                         <p>Cate zile la rand ai jucat</p>
                                     </span> : <span className="my_tooltiptext">
-                                        <p><b>Your steak</b></p>
+                                        <p><b>Your streak</b></p>
                                         <p>How many days in a row you have played</p>
                                     </span>}
                                 </div>
@@ -156,7 +155,7 @@ function Panel(props){
                 </Modal.Body>				
             </Modal>
         </>	
-	);
+	)
 }
 
-export default Panel;
+export default Panel

@@ -1,79 +1,79 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import $ from 'jquery';
-import SignIn from './sign/signIn';
-import SignUp from './sign/signUp';
-import Splash from './splash_screen';
-import Sapou from './partials/sapou';
-import { getCookie} from '../utils';
-import { game_page } from '../actions/actions';
+import $ from 'jquery'
+import SignIn from './sign/signIn'
+import SignUp from './sign/signUp'
+import Splash from './splash_screen'
+import Sapou from './partials/sapou'
+import { getCookie} from '../utils'
+import { game_page } from '../actions/actions'
 
 function HomePage(props){
-	let lang = props.lang;
-	let socket = props.socket;
-	const [visible, setVisible] = useState(true);	
-	const [splash, setSplash] = useState(true);
-	const dispatch = useDispatch();
-	dispatch(game_page('home'));
+	let lang = props.lang
+	let socket = props.socket
+	const [visible, setVisible] = useState(true)
+	const [splash, setSplash] = useState(true)
+	const dispatch = useDispatch()
+	dispatch(game_page('home'))
 
 	useEffect(() => {
-		checkCookie();
-	}); 
+		checkCookie()
+	})
 
 	function randomIntFromInterval(min, max) { // min and max included 
-		return Math.floor(Math.random() * (max - min + 1) + min);
+		return Math.floor(Math.random() * (max - min + 1) + min)
 	}
 
 	function checkCookie(){
-		let user = getCookie("casino_user");
+		let user = getCookie("casino_user")
 		if(user === ""){
-			splash_screen();
+			splash_screen()
 		} else {
-			window.location.href = '/salon';
+			window.location.href = '/salon'
 		}
 	}
 	
 	function casino_log(link){
-		$('.sign_errors').hide();
-		$('.sign_errors').empty();	
+		$('.sign_errors').hide()
+		$('.sign_errors').empty()	
 		if(link === "sign_in"){			
 			setVisible(true);
-			$('#link_login').addClass('active');
-			$('#link_sign').removeClass('active');
+			$('#link_login').addClass('active')
+			$('#link_sign').removeClass('active')
 		} else if(link === "sign_up"){
-			setVisible(false);
-			$('#link_login').removeClass('active');
-			$('#link_sign').addClass('active');
+			setVisible(false)
+			$('#link_login').removeClass('active')
+			$('#link_sign').addClass('active')
 		}
 	}
 
 	function splash_screen(){	
 		setTimeout(function(){
-			progress_move(100, 2000);
-		}, 1000);
+			progress_move(100, 2000)
+		}, 1000)
 	}	
 
 	function progress_move(progress_frame, progress_timeout){	
 		if(typeof $('#myBar') != "undefined"){
-			var width = 0;
-			var id = setInterval(frame, progress_frame);
+			let width = 0
+			let id = setInterval(frame, progress_frame)
 			function frame() {
-				var random = randomIntFromInterval(1, 20)	
-				width = width + random;
-				if (width >= 100) {
-					$('#myBar').width("100%");
-					$('#myBar_text_container').width("100%");	
-					$('#myBar_text').text("100%");
-					clearInterval(id);
+				let random = randomIntFromInterval(1, 20)	
+				width = width + random
+				if (width >= 100){
+					$('#myBar').width("100%")
+					$('#myBar_text_container').width("100%")
+					$('#myBar_text').text("100%")
+					clearInterval(id)
 					setTimeout(function(){
-						setSplash(false);
-					}, progress_timeout);
+						setSplash(false)
+					}, progress_timeout)
 				} else {
-					$('#myBar').width( width + "%");
-					$('#myBar_text_container').width( width + "%");	
-					$('#myBar_text').text( width + "%");	
+					$('#myBar').width( width + "%")
+					$('#myBar_text_container').width( width + "%")	
+					$('#myBar_text').text( width + "%")	
 				}
 			}
 		}
@@ -120,7 +120,7 @@ function HomePage(props){
 				</Row> 
 			}			
 		</>
-	);
+	)
 }
 
-export default HomePage;
+export default HomePage

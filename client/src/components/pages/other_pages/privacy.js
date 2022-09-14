@@ -7,8 +7,8 @@ import {game_visible} from '../../actions/actions'
 import { useDispatch } from 'react-redux'
 
 function Privacy(props){
-    let lang = props.info.lang;
-    let dispatch = useDispatch();
+    let lang = props.info.lang
+    let dispatch = useDispatch()
 
     function handleBack() {
         dispatch(game_visible("game"))
@@ -26,7 +26,7 @@ function Privacy(props){
                 </Button>
             </Col>
         </Row>
-	);
+	)
 }
 
-export default Privacy;
+export default Privacy

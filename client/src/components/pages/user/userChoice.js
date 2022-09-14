@@ -1,30 +1,30 @@
-import React from 'react';
+import React from 'react'
 import { useSelector} from 'react-redux'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col';
+import Col from 'react-bootstrap/Col'
 
-import Game from '../games/game';
-import Keno from '../games/keno';
-import Race from '../games/race';
+import Game from '../games/game'
+import Keno from '../games/keno'
+import Race from '../games/race'
 
-import Sapou from '../partials/sapou';
-import UserAccount from '../account/userAccount';
-import Panel from '../panel/panel_control';
-import About from '../other_pages/about';
-import Support from '../other_pages/support';
-import Terms from '../other_pages/terms';
-import Privacy from '../other_pages/privacy';
-import Questions from '../other_pages/questions';
-import Career from '../other_pages/career_empty';
+import Sapou from '../partials/sapou'
+import UserAccount from '../account/userAccount'
+import Panel from '../panel/panel_control'
+import About from '../other_pages/about'
+import Support from '../other_pages/support'
+import Terms from '../other_pages/terms'
+import Privacy from '../other_pages/privacy'
+import Questions from '../other_pages/questions'
+import Career from '../other_pages/career'
 
 function UserChoice(props) {
-	let visible = useSelector(state => state.visibility);
-    let socket = props.socket;
-	let lang = props.lang;
-	let data = props.data;	
-	data.lang = props.lang;
-	data.socket = props.socket;
-    let choice = props.choice;
+	let visible = useSelector(state => state.visibility)
+    let socket = props.socket
+	let lang = props.lang
+	let data = props.data
+	data.lang = props.lang
+	data.socket = props.socket
+    let choice = props.choice
 	return (
 		<div className="userPage"> 
 			<Row>
@@ -136,7 +136,7 @@ function UserChoice(props) {
 				</Col>
 			</Row>
 		</div>
-	);
+	)
 }
 
-export default UserChoice;
+export default UserChoice
