@@ -399,7 +399,7 @@ function blackjack_game(props){
 	this.hit = function(){
 		if(canvas && blackjack_status){
 			let blackjack_payload_server = {
-				user_id: props.info.id, 
+				uuid: props.info.uuid,
 				user: props.info.user, 
 				user_table: props.info.user_table, 
 				bets: your_bets
@@ -419,7 +419,7 @@ function blackjack_game(props){
 	this.stay = function(){
 		if(canvas && blackjack_status){
 			let blackjack_payload_server = {
-				user_id: props.info.id, 
+				uuid: props.info.uuid,
 				user: props.info.user, 
 				user_table: props.info.user_table, 
 				bets: your_bets
