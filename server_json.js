@@ -436,70 +436,56 @@ io.on('connection', function(socket) {
 	})
 
 	// other pages
-	socket.on('donate_send', function(data) {
+	socket.on('donate_send', function(data){
 		try{
-			io.to(socket.id).emit('donate_read', donations);	
+			io.to(socket.id).emit('donate_read', donations)	
 		}catch(e){
-			console.log('[error]','donate_read :', e);
+			console.log('[error]','donate_read :', e)
 		}	
 	})
-	socket.on('contact_send', function(data) {
+	socket.on('contact_send', function(data){
 		try{
-			io.emit('contact_read', contact_details);	
+			io.emit('contact_read', contact_details)
 		}catch(e){
-			console.log('[error]','contact_read :', e);
+			console.log('[error]','contact_read :', e)
 		}
 	})
-	socket.on('support_send', function(data) {
+	socket.on('support_send', function(data){
 		if(data.lang === "ro"){
 			try{
-				io.to(socket.id).emit('support_read', "Mesajul a fost trimis");
+				io.to(socket.id).emit('support_read', "Mesajul a fost trimis")
 			}catch(e){
-				console.log('[error]','support_send1 :', e);
+				console.log('[error]','support_send1 :', e)
 			}
 		} else {
 			try{
-				io.to(socket.id).emit('support_read', "Message has been sent");	
+				io.to(socket.id).emit('support_read', "Message has been sent")
 			}catch(e){
-				console.log('[error]','support_send2 :', e);
+				console.log('[error]','support_send2 :', e)
 			}
 		}			
 	})
-	socket.on('career_send', function(data) {
-		try{
-			io.to(socket.id).emit('career_read', career_array);	
-		}catch(e){
-			console.log('[error]','career :', e);
-		}	
-	})
-	socket.on('questions_send', function(data) {
-		try{
-			io.to(socket.id).emit('questions_read', question_array);	
-		}catch(e){
-			console.log('[error]','question :', e);
-		}	
-	})	
-	socket.on('chat_message_send', function(data) {		
+	socket.on('chat_message_send', function(data){		
 		let room_name = data.user_table;
 		if(room_name === "race" || room_name === "keno"){
-			room_name = "salon";
-			socket.join(room_name);
+			room_name = "salon"
+			socket.join(room_name)
 		}
 		try{
-			io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message));
+			io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message))
 		}catch(e){
-			console.log('[error]','chat_message_read :', e);
+			console.log('[error]','chat_message_read :', e)
 		}
 	})
-	socket.on('choose_table_send', function(data) {
-		let my_table = data.table_name + '_' +data.table_id;
+	socket.on('choose_table_send', function(data){
+		let my_table = data.table_name + '_' +data.table_id
 		if(data.table_type !== "" && typeof data.table_type !== "undefined" && data.table_type !== null){
-			my_table = my_table + '_' + data.table_type;
+			my_table = my_table + '_' + data.table_type
 		} 
 		try{
-			io.emit('choose_table_read', my_table);
+			io.emit('choose_table_read', my_table)
 		}catch(e){
-			console.log('[error]','choose_table_read :', e);
+			console.log('[error]','choose_table_read :', e)
 		}
 	})
 
