@@ -223,8 +223,6 @@ io.on('connection', function(socket) {
 				let obj = {
 					server_tables: server_tables, 
 					uuid: uuid, 
-					user: user, 
-					money: money, 
 					first_enter_salon: first_enter_salon, 
 					contact: contact_details,
 					questions: question_array,
@@ -1008,21 +1006,6 @@ io.on('connection', function(socket) {
 		console.log('heartbeat', data)
 	})
 })
-
-function get_user_from_uuid(uuid){
-	return new Promise(function(resolve, reject){
-		if(uuid){
-			for(let i in sockets){
-				if(sockets[i].user_uuid == uuid){
-					re
-				}
-				console.log(sockets[i].user_uuid, uuid, sockets[i].user_uuid == uuid)
-			}
-		} else {
-			resolve(null)
-		}
-	});
-}
 
 function get_device(headers){
 	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong

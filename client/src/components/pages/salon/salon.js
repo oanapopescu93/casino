@@ -116,7 +116,6 @@ function Salon(props){
 	let lang = props.lang
 	
 	const [change, setChange] = useState('games') //games, race, keno
-	const [id, setId] = useState(-1)
 	const [uuid, setUuid] = useState(-1)
 	const [loaded, setLoaded] = useState(false)
 	const [open, setOpen] = useState('')
@@ -134,50 +133,65 @@ function Salon(props){
 	useEffect(() => {
 		dispatch(game_page("salon"))
 		dispatch(game_load(true))
-		salonData().then(res => {
-			if(res){	
-				for(let i in res.server_tables){
-					switch (res.server_tables[i].table_name) {
-						case "roulette":
-							casino_games.roulette_tables.push(res.server_tables[i])
-							break;
-						case "blackjack":
-							casino_games.blackjack_tables.push(res.server_tables[i])
-							break;
-						case "slots":
-							casino_games.slots_tables.push(res.server_tables[i])
-							break;
-						case "craps":
-							casino_games.craps_tables.push(res.server_tables[i])
-							break;	
-						default:
-							break;						
+		let user_info = getCookie('casino_user_info')
+		if(user_info === ""){
+			salonData().then(res => {
+				if(res){	
+					setCookie("casino_user_info", JSON.stringify(res))
+					create_casino_games(res)
+	
+					// popup for first time user - 100 carrots
+					if(res.first_enter_salon){
+						let gift_title = 'Welcome gift'
+						let gift_text = 'First time players get 100 carrots!'
+						if(lang === "ro"){
+							gift_title = 'Cadou de bun-venit'
+							gift_text = 'Ai 100 de morcovi cadou de bun-venit.'
 						}
-				}
-				setCasinoGames(casino_games)
-
-				// popup for first time user - 100 carrots
-				if(res.first_enter_salon){
-					let gift_title = 'Welcome gift'
-					let gift_text = 'First time players get 100 carrots!'
-					if(lang === "ro"){
-						gift_title = 'Cadou de bun-venit'
-						gift_text = 'Ai 100 de morcovi cadou de bun-venit.'
+	
+						let gift_table = `<div id="first_enter_salon" class="first_enter_salon">
+							<img alt="gift_img" class="gift_img" src="` + giftPic + `"/>
+							<p><b>` + gift_text + `</b></p>
+						</div>`
+						let text = bigText(lang, gift_table)
+						showResults(gift_title, text, 300)			
 					}
-
-					let gift_table = `<div id="first_enter_salon" class="first_enter_salon">
-						<img alt="gift_img" class="gift_img" src="` + giftPic + `"/>
-						<p><b>` + gift_text + `</b></p>
-					</div>`
-					let text = bigText(lang, gift_table)
-					showResults(gift_title, text, 300)			
-				}
-			} 
+				} 
+				setLoaded(true);
+				dispatch(game_load(false))
+				setOpen("open")
+			}).catch(err => console.log(err))
+		} else {
+			let res = JSON.parse(user_info)
+			create_casino_games(res)
 			setLoaded(true);
 			dispatch(game_load(false))
 			setOpen("open")
-		}).catch(err => console.log(err))
+		}
 	}, [])
+
+	function create_casino_games(res){
+		setData(res)
+		for(let i in res.server_tables){
+			switch (res.server_tables[i].table_name) {
+				case "roulette":
+					casino_games.roulette_tables.push(res.server_tables[i])
+					break;
+				case "blackjack":
+					casino_games.blackjack_tables.push(res.server_tables[i])
+					break;
+				case "slots":
+					casino_games.slots_tables.push(res.server_tables[i])
+					break;
+				case "craps":
+					casino_games.craps_tables.push(res.server_tables[i])
+					break;	
+				default:
+					break;						
+				}
+		}
+		setCasinoGames(casino_games)
+	}
 	
 	function salonData(){
 		return new Promise(function(resolve, reject){
@@ -186,7 +200,6 @@ function Salon(props){
 			setTimeout(function(){
 				socket.emit('salon_send', casino_uuid)
 				socket.on('salon_read', function(result){
-					setData(result)
 					resolve(result)
 				});
 			}, 500);
@@ -250,9 +263,9 @@ function Salon(props){
 										case "game":
 											return <Child info={data} lang={lang} socket={socket} casino_games_title={casino_games_title} casino_games={casinoGames}></Child>
 										case "race":
-											return <UserPage choice="race" info={data} lang={lang} socket={socket} user_id={id} user_uuid={uuid} user_table={"Rabbit Race"}></UserPage>
+											return <UserPage choice="race" info={data} lang={lang} socket={socket} user_uuid={uuid} user_table={"Rabbit Race"}></UserPage>
 										case "keno":
-											return <UserPage choice="keno" info={data} lang={lang} socket={socket} user_id={id} user_uuid={uuid} user_table={"Keno"}></UserPage>
+											return <UserPage choice="keno" info={data} lang={lang} socket={socket} user_uuid={uuid} user_table={"Keno"}></UserPage>
 										default: 
 											return <Child info={data} lang={lang} socket={socket} casino_games_title={casino_games_title} casino_games={casinoGames}></Child>
 									}	
