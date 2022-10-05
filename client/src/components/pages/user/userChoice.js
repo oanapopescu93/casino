@@ -1,85 +1,92 @@
-import React from 'react'
-import { useSelector} from 'react-redux'
+import React, {useState } from 'react'
+import { useSelector, useDispatch} from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-
 import Game from '../games/game'
-import Keno from '../games/keno'
-import Race from '../games/race'
-
 import Sapou from '../partials/sapou'
-import UserAccount from '../account/userAccount'
-import Panel from '../panel/panel_control'
 import About from '../other_pages/about'
 import Support from '../other_pages/support'
 import Terms from '../other_pages/terms'
 import Privacy from '../other_pages/privacy'
 import Questions from '../other_pages/questions'
 import Career from '../other_pages/career'
+import SalonGames from '../salon/salon_games'
+import Page from '../money/page'
+import { game_page, game_visible } from '../../actions/actions'
+import UserAccount from '../account/userAccount'
+import Panel from '../panel/panel_control'
 
 function UserChoice(props) {
+    let dispatch = useDispatch()
 	let visible = useSelector(state => state.visibility)
-    let socket = props.socket
-	let lang = props.lang
+    let page = useSelector(state => state.page)
+    const [game, setGame] = useState(null)
 	let data = props.data
-	data.lang = props.lang
-	data.socket = props.socket
     let choice = props.choice
+
+    function gameChoice(x){
+        dispatch(game_visible('game'))
+        setGame(x)
+    }
+
+    function back(){
+        dispatch(game_page("salon"))
+    }
+
 	return (
 		<div className="userPage"> 
 			<Row>
 				<Col sm={12}>	
-					{(() => {
+                    {(() => {
+                        //console.log('userPage--> ', visible, choice, page)
                         switch (visible) {
                             case "game":
                                 return (
                                     <>
                                         {(() => {
                                             switch (choice) {
-                                                case "game":
-                                                    return (
-                                                        <>
-                                                            <Game lang={lang} info={data} socket={socket}></Game>
-										                    <Panel lang={lang} info={data} socket={socket}></Panel>
-                                                        </>
-                                                    )
+                                                case "games":
+                                                    switch (page) {
+                                                        case "current_game":
+                                                        case "roulette":                                                            
+                                                        case "blackjack":
+                                                        case "slots":
+                                                        case "craps":
+                                                            return <Game lang={props.lang} socket={props.socket} data={data} game_choice={game}></Game>
+                                                        case "donation":
+                                                            return <Page lang={props.lang} socket={props.socket} back={back}></Page>
+                                                        default:
+                                                            return (
+                                                                <>
+                                                                    <Sapou lang={props.lang} page="salon"></Sapou>
+                                                                    <SalonGames gameChoice={gameChoice} lang={props.lang} socket={props.socket} data={data}></SalonGames>
+                                                                </>
+                                                            )
+                                                    }
                                                 case "race":
-                                                    return (
-                                                        <>
-                                                            <Race info={data}></Race>
-										                    <Panel lang={lang} info={data} socket={socket}></Panel>
-                                                        </>
-                                                    )
                                                 case "keno":
-                                                    return (
-                                                        <>
-                                                            <Keno info={props}></Keno>
-                                                            <Panel lang={lang} info={data} socket={socket}></Panel>
-                                                        </>
-                                                    )
+                                                    if(page === "donation"){
+                                                        return <Page lang={props.lang} socket={props.socket} back={back}></Page>
+                                                    } else {
+                                                        return <Game lang={props.lang} socket={props.socket} data={data} game_choice={choice}></Game>
+                                                    }
+                                                    
                                                 default:
                                                     return(
                                                         <>
-                                                            <Game lang={lang} info={data} socket={socket}></Game>
-										                    <Panel lang={lang} info={data} socket={socket}></Panel>
+                                                            <Sapou lang={props.lang} page="salon"></Sapou>
+                                                            <SalonGames gameChoice={gameChoice} lang={props.lang} socket={props.socket} data={data}></SalonGames>
                                                         </>
                                                     )						
                                             }
                                         })()}
                                     </>
                                 )
-                            case "about":
-                                return (
-                                    <>
-                                        <Sapou lang={props.lang} page={visible}></Sapou>
-                                        <About info={props}></About>
-                                    </>
-                                )	
                             case "account":
                                 return (
                                     <>
-                                        <UserAccount info={data}></UserAccount> 
-                                        <Panel info={data}></Panel>
+                                        <UserAccount lang={props.lang} socket={props.socket} info={data}></UserAccount>
+                                        <Panel lang={props.lang} socket={props.socket} data={props.data} game_choice={'account'}></Panel>
                                     </>												
                                 )
                             case "about":
@@ -127,12 +134,12 @@ function UserChoice(props) {
                             default:
                                 return(
                                     <>
-                                        <Game lang={lang} info={data} socket={socket}></Game>
-                                        <Panel lang={lang} info={data} socket={socket}></Panel>
+                                        <Sapou lang={props.lang} page="salon"></Sapou>
+                                        <SalonGames gameChoice={gameChoice} lang={props.lang} socket={props.socket} data={data}></SalonGames>
                                     </>
                                 )						
                         }
-					})()}			
+					})()}		
 				</Col>
 			</Row>
 		</div>

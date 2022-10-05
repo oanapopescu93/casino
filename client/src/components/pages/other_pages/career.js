@@ -4,11 +4,11 @@ import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import {game_visible} from '../../actions/actions'
-import { sort } from '../../utils';
+import { sort } from '../../utils'
 
 function Career(props){
-    let lang = props.lang;
-    let dispatch = props.dispatch;
+    let lang = props.lang
+    let dispatch = props.dispatch
 
     function handleBack() {
         if(dispatch){
@@ -80,7 +80,7 @@ function CareerList(props){
         $('#career_header_box_'+x).addClass('open')
         
         if(x !== "all"){
-            list = sort(list, "type");
+            list = sort(list, "type")
             list = list.filter(function(elem){
                 return elem.type === x
             })
@@ -133,7 +133,7 @@ function CareerList(props){
                                                                     if(t === 0){
                                                                         return(
                                                                             <div key={t} id={'career_header_box_'+item0} className="capitalize career_header_box open"  onClick={()=>handleDropdown(item0)}>{item0}</div>
-                                                                        );
+                                                                        )
                                                                     } else {
                                                                         return(
                                                                             <div key={t} id={'career_header_box_'+item0} className="capitalize career_header_box"  onClick={()=>handleDropdown(item0)}>{item0}</div>
@@ -168,7 +168,7 @@ function CareerList(props){
                                                                                         requirements.map(function(item1, j){
                                                                                             return(
                                                                                                 <li key={j}>{item1}</li>
-                                                                                            );
+                                                                                            )
                                                                                         })
                                                                                     }
                                                                                 </ul>

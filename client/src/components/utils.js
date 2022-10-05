@@ -116,7 +116,7 @@ export const setCookie = function (cname, cvalue, hours=12){
 }
 export const getCookie = function (cname){
   let name = cname + "="
-  let decodedCookie = decodeURIComponent(document.cookie);
+  let decodedCookie = decodeURIComponent(document.cookie)
   let ca = decodedCookie.split(';')
   for(let i = 0; i < ca.length; i++) {
     let c = ca[i]
@@ -124,17 +124,17 @@ export const getCookie = function (cname){
       c = c.substring(1)
     }
     if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length);
+      return c.substring(name.length, c.length)
     }
   }
   return ""
 }
 
-export const showResults = function(title="", message="", w=200, h="auto") {
+export const showResults = function(title="", message="", w=200, showFireworks=false) {
   if($('.show_results_container').length>0){
     $('.show_results_container').show()
-    $('.show_results').css('max-width', w);
-    $('.show_results').css('height', h)
+    $('.show_results').css('max-width', w)
+    $('.show_results').css('height', 'auto')
     if($('.show_results .header').length>0){
       $('.show_results .header').empty()
       $('.show_results .header').append(title)
@@ -148,22 +148,23 @@ export const showResults = function(title="", message="", w=200, h="auto") {
     })
     $( ".show_results_container .show_results_close" ).click(function() {
       $(this).closest('show_results_container').hide()
+      if($('.firework')){
+        $('.firework').removeClass('show')
+      }
     })
+    if(showFireworks){
+      if($('.firework')){
+        $('.firework').addClass('show')
+      }
+    }
   }
 }
 
-export const bigText = function(lang, payload) {
-  let text = ``
-  if(lang === "ro"){
-    text = `<div class="big_text_container">
-      <div class="big_text">${payload}</div>
-    </div>`
-  } else {
-    text = `<div class="big_text_container">
-      <div class="big_text">${payload}</div>
-    </div>`
-  }
-  return text;
+export const bigText = function(payload) {
+  let text = `<div class="big_text_container">
+    <div class="big_text">${payload}</div>
+  </div>`
+  return text
 }
 
 export const sort = function(list=[], sort_by="", asc=true) {
@@ -196,10 +197,10 @@ export const sort = function(list=[], sort_by="", asc=true) {
         }
       }
     } else {
-      let done = false;
+      let done = false
       if(asc){
         while (!done) {
-          done = true;
+          done = true
           for (let i = 1; i < list.length; i += 1) {
               if (list[i - 1][sort_by] > list[i][sort_by]){
                   done = false
@@ -344,7 +345,47 @@ export const get_craps_bets = function(){
 }
 
 export const get_keno_images = function(){
-  return [
-    {id: 1, src: keno_dirt_01},
-  ]
+  return [{id: 1, src: keno_dirt_01},]
+}
+
+export const showStreak = function(streak, lang){
+  if(streak > 1){
+    let showed_streak = getCookie("casino_streak") // check if opup streak was already shown
+    if(typeof showed_streak === "undefined" || showed_streak === "null" || showed_streak === null || showed_streak === ""){
+      setCookie("casino_streak", true)							
+      
+      let streak_days = 'day'
+      if(streak>1){
+        streak_days = 'days'
+      }
+      if(lang === "ro"){
+        streak_days = 'zi'
+        if(streak>1){
+          streak_days = 'zile'
+        }
+      }
+
+      let streak_table = `<div id="streak" class="streak">
+        <div class="progress_bubble_container">
+          <div class="progress_bubble"></div>
+          <div class="bubble bubble_1">1</div>
+          <div class="bubble bubble_2">2</div>
+          <div class="bubble bubble_3">3</div>
+          <div class="bubble bubble_4">4</div>
+          <div class="bubble bubble_5">5</div>
+          <div class="bubble bubble_6">6</div>
+          <div class="bubble bubble_7">7</div>
+          </div>
+      </div>`							
+      
+      let text = bigText(streak_table)
+      showResults(streak + ' ' + streak_days, text, 600) 
+
+      $( "#streak .bubble" ).each(function(i) {
+        if(i < streak){
+          $(this).addClass('active')
+        }
+      })
+    }
+  }
 }

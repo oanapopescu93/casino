@@ -1,32 +1,32 @@
-import React from 'react';
-import $ from 'jquery'; 
-import { getCookie, setCookie } from '../../utils';
+import React from 'react'
+import $ from 'jquery'
+import { getCookie, setCookie } from '../../utils'
 
 class Settings extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
               date: "DD/MM/YYYY H:M",
               currency: "carrot"
-		};
-        this.handleChoose = this.handleChoose.bind(this);
+		}
+        this.handleChoose = this.handleChoose.bind(this)
 	}
 
     handleChoose(e, type, choose){  
         if(typeof type !== "undefined" && type !== ""){
             if(typeof choose !== "undefined" && choose !== ""){
-                let target = e.target;
-                let parent = target.parentElement.parentElement;
-                $(parent).find('.dropbtn').text(choose);
+                let target = e.target
+                let parent = target.parentElement.parentElement
+                $(parent).find('.dropbtn').text(choose)
                 switch(type){
                     case "date":
-                        setCookie("casino_date", choose, 336); //will expire after 14 days
-                       break;
+                        setCookie("casino_date", choose, 336) //will expire after 14 days
+                        break
                     case "currency":
-                        setCookie("casino_currency", choose, 336); //will expire after 14 days
-                        break;		
+                        setCookie("casino_currency", choose, 336) //will expire after 14 days
+                        break		
                     default: 
-                        break;
+                        break
                 }
             }
         }
@@ -34,10 +34,10 @@ class Settings extends React.Component {
 
     componentDidMount(){
         if(getCookie("casino_date") !== ""){
-            this.setState({ date: getCookie("casino_date") }); 
+            this.setState({ date: getCookie("casino_date") })
         }
         if(getCookie("casino_currency") !== ""){
-            getCookie({ currency: getCookie("casino_currency") }); 
+            getCookie({ currency: getCookie("casino_currency") }) 
         }
     }
 	
@@ -70,8 +70,8 @@ class Settings extends React.Component {
                     </div>
                 </div>				
             </div>
-		);
-	};
+		)
+	}
 }
 
-export default Settings;
+export default Settings

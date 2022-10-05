@@ -9,11 +9,9 @@ import { useDispatch } from 'react-redux'
 function Terms(props){
     let lang = props.info.lang
     let dispatch = useDispatch()
-
     function handleBack() {
         dispatch(game_visible("game"))
-    }
-	
+    }	
     return (
         <Row>
             <Col sm={12}>

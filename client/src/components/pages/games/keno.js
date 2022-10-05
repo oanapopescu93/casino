@@ -1,270 +1,108 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux'
 import {game_page, keno_calculate_money, keno_get_history} from '../../actions/actions'
-import $ from 'jquery';
-import { bigText, get_keno_images, showResults } from '../../utils';
+import $ from 'jquery'
+import { bigText, get_keno_images, showResults } from '../../utils'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/esm/Button'
 
-let my_keno;
-let my_keno_circle;
-let kenoSpotArraySelected = [];
+let my_keno
+let kenoSpotArraySelected = []
+let kenoSpotWin = []
+let winnings = []
 
 function kenoSpot(config){
-	let self = this;
-	self.id = config.id;	
-	self.i = config.i;
-	self.j = config.j;	
-	self.space = 5;
-	self.w = config.w - self.space;
-	self.h = config.h - self.space;
-	self.x = config.j * config.w;
-	self.y = config.i * config.h;
+	let self = this
+	self.id = config.id	
+	self.i = config.i
+	self.j = config.j
+	self.space = 5
+	self.w = config.w - self.space
+	self.h = config.h - self.space
+	self.x = config.j * config.w
+	self.y = config.i * config.h
 
-	self.color = config.color;
-	self.border = config.border;
-	self.border_color = config.border_color;
-	self.font = config.font;
+	self.color = config.color
+	self.border = config.border
+	self.border_color = config.border_color
+	self.font = config.font
+	self.font_color = config.border_color
 
-	self.img = config.img;
-	self.status = config.status;
-	self.selected = config.selected;
-	let image_sise = 245;
+	self.img = config.img
+	self.status = 0
+	self.selected = false
+	let image_sise = 245
 
 	self.draw = function(ctx){
-		ctx.clearRect(self.x-1, self.y-1, self.w+2, self.h+2);
-		ctx.drawImage(self.img, 0, 0, image_sise, image_sise, self.x, self.y, self.w, self.h);
-		if(self.selected){
-			ctx.beginPath();
-			ctx.rect(self.x, self.y, self.w, self.h);
-			ctx.fillStyle = self.color;
-			if(self.border){
-				ctx.lineWidth = self.border;
-				ctx.strokeStyle = self.border_color;
-				ctx.stroke();
-			}		
-			ctx.fill();
+		if(ctx){
+			ctx.clearRect(self.x-1, self.y-1, self.w+2, self.h+2)
+			//ctx.drawImage(self.img, 0, 0, image_sise, image_sise, self.x, self.y, self.w, self.h)
+			if(self.selected || self.status === 1){
+				if(self.selected && self.status === 1){
+					self.color = 'rgba(0, 128, 0, 0.2)'
+					self.border_color = 'green'
+					self.font_color = 'white'
+					kenoSpotWin.push(self.id)
+				} else if(!self.selected && self.status === 1){
+					self.color = 'rgba(255, 0, 0, 0.2)'
+					self.border_color = 'red'
+					self.font_color = 'white'
+				}
+
+				ctx.beginPath()
+				ctx.rect(self.x, self.y, self.w, self.h)
+				ctx.fillStyle = self.color
+				ctx.strokeStyle = self.border_color
+				if(self.border){
+					ctx.lineWidth = self.border
+					ctx.strokeStyle = self.border_color
+					ctx.stroke()
+				}
+				ctx.fill()
+			} else {
+				ctx.beginPath()
+				ctx.rect(self.x, self.y, self.w, self.h)
+				ctx.fillStyle = self.color
+				ctx.strokeStyle = self.border_color
+				if(self.border){
+					ctx.lineWidth = self.border
+					ctx.strokeStyle = self.border_color
+					ctx.stroke()
+				}
+			}
+
+			//text
+			ctx.beginPath()
+			ctx.textAlign="center" 
+			ctx.textBaseline = "middle"
+			ctx.fillStyle = self.font_color
+			ctx.font = self.font
+			ctx.fillText(self.id, self.x + (config.w / 2), self.y + (config.h / 2))
 		}
-		ctx.beginPath();
-		ctx.textAlign="center"; 
-		ctx.textBaseline = "middle";
-		ctx.fillStyle = self.border_color;
-		ctx.font = self.font;
-		ctx.fillText(self.id, self.x + (config.w / 2), self.y + (config.h / 2));
 	}
 
 	self.changeStatus = function(new_status){
-		self.status = new_status;
+		self.status = 1
 	}
 
 	self.changeSelection = function(){
 		if(self.selected){
-			self.selected = false;
+			self.selected = false
 		} else {
-			self.selected = true;
+			self.selected = true
 		}
-	}
+	}	
 }
 
-function Ball(config){
+function keno_board(props, dispatch){
 	let self = this
-	self.id = config.id
-	self.x = config.x
-	self.y = config.y
-	self.dir_x = config.dir_x
-	self.dir_y = config.dir_y
-	self.r = config.r
-	// self.color = config.color
-	// self.border = config.border
-	self.dir_x = -8
-	self.dir_y = -3
-	self.border_color = config.border_color
-	// self.speed = config.speed
-	self.speed = 10
-	self.env = config.env
-
-	this.dampen = 0.4;
-	this.gravity = 3;
-	this.bounce = -0.6;
-	this.vector = {x: self.dir_x, y: self.dir_x};
-	this.point = {x: self.x, y: self.y};
-
-	self.draw = function(ctx){
-		ctx.beginPath()
-		ctx.arc(self.x, self.y, self.r, 0, 2 * Math.PI, false)
-		ctx.fillStyle = self.color
-		if(self.border_color !== ""){
-			ctx.lineWidth = self.border
-			ctx.strokeStyle = self.border_color
-			ctx.stroke()
-		}		
-		ctx.fill()
-		ctx.closePath()
-	}
-
-	self.move = function(ctx, nr){	
-		if(nr % self.speed === 0){	
-			let prev = {x: self.x + self.dir_x, y: self.y + self.dir_y}
-			self.check_collision(prev)
-			self.x = self.x + self.dir_x
-			self.y = self.y + self.dir_y
-		}
-		self.draw(ctx, self.color)
-	}
-
-	self.check_collision = function(prev){
-		let angle = angle360(self.x, self.y, prev.x, prev.y)	
-		if(self.env.r - self.r <= getDistance_between_entities(prev, self.env)){
-			let quadrant = 1;
-			let alpha
-			if (angle >= 0 && angle < 90) { 
-				quadrant = 1; 
-				alpha = (90 - angle); 
-			}
-			else if (angle >= 90 && angle < 180) { 
-				quadrant = 4; 
-				alpha = (angle-90);  
-			}
-			else if (angle >= 180 && angle < 270) {
-				 quadrant = 3; 
-				 alpha = (270-angle);  
-				}
-			else if (angle >= 270 && angle <= 360) { 
-				quadrant = 2; 
-				alpha = (angle-270);  
-			}
-
-			var m = Math.cos(alpha * Math.PI / 180);
-			var n = Math.sin(alpha * Math.PI / 180);
-
-			switch (quadrant){
-				case 1:  
-					if (m >= n){
-						angle = 270+alpha; 
-						self.dir_x = 8
-						self.dir_y = -3
-						console.log('xxx01a ', angle)
-					} else{
-						angle = 180-angle;
-						self.dir_x = self.dir_x
-						self.dir_y = -self.dir_y
-						console.log('xxx01b ', angle)
-					}
-					break
-				case 2:
-					if (m >= n){
-						angle = 90-alpha;
-						self.dir_x = 5
-						self.dir_y = 5
-						console.log('xxx02a ', angle)
-					} else{
-						angle = 270-alpha;
-						self.dir_x = 5
-						self.dir_y = 5
-						console.log('xxx02b ', angle)
-					}
-					break
-				case 3:
-					if (m >= n){
-						angle = 90+alpha; 
-						self.dir_x = -5
-						self.dir_y = -5
-						console.log('xxx03a ', angle) 
-					} else{
-						angle = 270+alpha; 
-						self.dir_x = -5
-						self.dir_y = -5
-						console.log('xxx03b ', angle)
-					} 
-					break;
-				case 4:
-					if (m >= n){
-						angle = 270-alpha;
-						self.dir_x = 5
-						self.dir_y = 5
-						console.log('xxx04a ', angle)
-					} else{
-						angle = 90-alpha;
-						self.dir_x = 5
-						self.dir_y = 5
-						console.log('xxx04b ', angle)
-					}
-					break
-    		}
-
-			console.log(self.dir_x, self.dir_y)
-		}
-	}
-
-	self.move00 = function(ctx, nr){	
-		if(nr % self.speed === 0){	
-			let x = self.x
-			let y = self.y
-			let next_x = self.x + self.dir_x
-			let next_y = self.y + self.dir_y
-			let angle = angle360(x, y, next_x, next_y)
-
-			if(self.check_collision(next_x, next_y, angle)){				
-				if(angle >=0 && angle <=90){					
-					//self.dir_x = -self.dir_x
-					self.dir_x = 5
-					self.dir_y = -5
-					console.log('dir-AAA-b ')
-				} else if(angle >90 && angle <=180){
-					//self.dir_x = -self.dir_x
-					self.dir_x = -5
-					self.dir_y = -5
-					console.log('dir-BBB-A ')
-				} else if(angle >180 && angle <=270){					
-					// self.dir_y = -self.dir_y
-					self.dir_x = 5
-					self.dir_y = 5
-					console.log('dir-CCC-D ')
-				} else if(angle >270 && angle <=360){
-					//self.dir_y = -self.dir_y
-					self.dir_x = -5
-					self.dir_y = 5
-					console.log('dir-DDD-C ')
-				}				
-			} 
-			self.x = self.x + self.dir_x
-			self.y = self.y + self.dir_y
-		}
-		self.draw(ctx, self.color)
-	}
-
-	self.check_collision00 = function(x, y, angle){
-		let collision = false
-		let entity01 = {x: x, y: y}
-		let entity02 = self.env
-		if(self.env.r - self.r < getDistance_between_entities(entity01, entity02)){
-			collision = true
-			console.log('dir-move-collision ', angle)
-		} else {
-			console.log('dir-move ', angle)
-		}
-		return collision
-	}
-
-	function getDistance_between_entities(entity01, entity02){
-        var distance_x = entity01.x - entity02.x
-        var distance_y = entity01.y - entity02.y
-        var result = Math.sqrt(distance_x * distance_x + distance_y * distance_y)
-        return result
-    }
-	function getAngle(x1, x2, y1, y2) {
-		let angle = Math.atan2( y2 - y1, x2 - x1 ) * ( 180 / Math.PI )
-		return angle
-	}
-	function angle360(cx, cy, ex, ey) {
-		var theta = getAngle(cx, cy, ex, ey); // range (-180, 180]
-		if (theta < 0) theta = 360 + theta; // range [0, 360)
-		return theta
-	}
-}
-
-function keno_board(props){
-	let self = this
+	let info = props.info
+	let data = props.info.data
+	let lang = info.lang
+	let money = data.money
+	let game_choice = info.game_choice
+	let socket = info.socket
 	let canvas, ctx
 	let canvas_width = 900
 	let canvas_height = 800
@@ -272,13 +110,18 @@ function keno_board(props){
 	let kenoSpotArray = []
 	let how_many_rows = 10
 	let how_many_columns = 8
+	let how_many = how_many_rows * how_many_columns
 	this.images = []
 	let items = get_keno_images()
 	let reason = ""
+	let start_game = false
+	let bet = 1
+	let numbers = 10
+	let win = 0
 	
 	this.ready = function(r){
 		reason = r
-		self.createCanvas(canvas_width, canvas_height);
+		self.createCanvas(canvas_width, canvas_height)
 		if(reason !== "resize"){
 			let promises = []
 			for(let i in items){				
@@ -290,13 +133,30 @@ function keno_board(props){
 				self.KenoBoardCreate()
 				self.KenoBoardDraw()
 				self.KenoBoardClick()
-			});
+			})
+
+			self.getWinnings().then(function(res){
+				winnings = res
+			})
 		} else {
 			self.KenoBoardCreate()
 			self.KenoBoardDraw()
 			self.KenoBoardClick()
 		}
-	}	
+	}
+
+	this.getWinnings = function(){
+		return new Promise(function(resolve, reject){
+			socket.emit('keno_send', 'winnings')
+			socket.on('keno_read', function(data){
+				if(data){
+					resolve(data)
+				} else {
+					resolve([])
+				}
+			})
+		})
+	}
 	
 	this.createCanvas = function(canvas_width, canvas_height){		
 		canvas = document.getElementById("keno_canvas")	
@@ -354,8 +214,6 @@ function keno_board(props){
 					border_color: '#ffd700',
 					font: font,
 					img: self.images[0],
-					status: "earth",
-					selected: false,
 				}
 
 				if(kenoSpotArraySelected[number-1]){
@@ -379,43 +237,166 @@ function keno_board(props){
 	this.KenoBoardClick = function(){
 		$('#keno_canvas').off('click').on('click', function(event) {
 			self.handleClick(event)
-		});
+		})
 	}
 
 	this.handleClick = function(event){	
-		let mousePos = getMousePos(canvas, event);
-		for(let i in kenoSpotArray){
-			if (isInside(mousePos, kenoSpotArray[i])) {
-				kenoSpotArray[i].changeSelection()
-				kenoSpotArray[i].draw(ctx)
-				if(kenoSpotArray[i].selected){
-					kenoSpotArraySelected.push(kenoSpotArray[i]);
-				} else {
-					for(let j = 0; j < kenoSpotArraySelected.length; j++){                                   
-						if (kenoSpotArraySelected[j].id === kenoSpotArray[i].id) { 
-							kenoSpotArraySelected.splice(j, 1)
-							j--
+		if(!start_game){
+			let mousePos = getMousePos(canvas, event)
+			for(let i in kenoSpotArray){
+				if (isInside(mousePos, kenoSpotArray[i])) {
+					if(kenoSpotArraySelected.length < 10){
+						kenoSpotArray[i].changeSelection()
+						kenoSpotArray[i].draw(ctx)
+						if(kenoSpotArray[i].selected){
+							kenoSpotArraySelected.push(kenoSpotArray[i])
+						} else {
+							for(let j = 0; j < kenoSpotArraySelected.length; j++){
+								if (kenoSpotArraySelected[j].id === kenoSpotArray[i].id) { 
+									kenoSpotArraySelected.splice(j, 1)
+									j--
+								}
+							}
+						}
+						break
+					} else {
+						if(lang === "ro"){
+							showResults("", "Maxim 10 casutele Keno!", 300, false)
+						} else {
+							showResults("", "Max 10 Keno spots!", 300, false)
 						}
 					}
-				}
-				break;
-			} 
+				} 
+			}
 		}
-		self.showSelected()
 	}
 
-	this.handleclear = function(){
-		kenoSpotArraySelected = []
-		self.KenoBoardCreate()
-		self.KenoBoardDraw()
-		self.KenoBoardClick()
-		self.showSelected()
+	this.handleClear = function(){
+		if(!start_game){
+			kenoSpotArraySelected = []
+			self.KenoBoardCreate()
+			self.KenoBoardDraw()
+			self.KenoBoardClick()
+			self.deselectAll()
+		}
 	}
 
-	this.showSelected = function(){
-		if($("#keno_selected01") !== null){
-			$("#keno_selected01").empty()
+	this.deselectAll = function(){
+		for(let i in kenoSpotArray){
+			kenoSpotArray[i].selected = false
+		}
+	}
+
+	this.quickPick = function(my_numbers){
+		self.handleClear()
+		generatePick(my_numbers, how_many).then(function(data){
+			let quick_pick = data
+			for(let i in kenoSpotArray){
+				for(let j in quick_pick){
+					if(kenoSpotArray[i].id === quick_pick[j]){
+						kenoSpotArray[i].changeSelection()
+						kenoSpotArray[i].draw(ctx)
+						if(kenoSpotArray[i].selected){
+							kenoSpotArraySelected.push(kenoSpotArray[i])
+						}
+						break
+					}
+				}
+			}
+		})
+	}
+
+	this.handleStart = function(my_bet, my_numbers){
+		bet = my_bet
+		numbers = my_numbers
+		if(!start_game){
+			start_game = true
+			self.KenoBoardCreate()
+			self.KenoBoardDraw()
+			self.deselectAll()
+			generatePick(numbers, how_many).then(function(data){
+				self.play(data)			
+			})
+		}
+	}
+
+	this.play = function(data){
+		let picks = data 
+		kenoSpotWin = []
+		for(let i in kenoSpotArray){
+			for(let j in kenoSpotArraySelected){
+				if(kenoSpotArray[i].id === kenoSpotArraySelected[j].id){
+					kenoSpotArray[i].changeSelection()
+					break
+				}
+			}
+			for(let j in picks){
+				if(kenoSpotArray[i].id === picks[j]){
+					kenoSpotArray[i].changeStatus()
+					break
+				}
+			}
+			kenoSpotArray[i].draw(ctx)
+		}
+		self.win_lose(picks)
+	}
+
+	this.win_lose = function(picks){
+		start_game = false
+		let title
+		let keno_info
+		let text
+		if(lang === "ro"){
+			title = "Rezultat"
+			keno_info = `
+			<div class="keno_info">
+				<div class="keno_info_box">
+					<span>Numerele tale: </span>
+					<span id="keno_selected01">-</span>
+				</div>
+				<div class="keno_info_box">
+					<span>Numerele alese: </span>
+					<span id="keno_selected02">-</span>
+				</div>
+				<div class="keno_info_box">
+					<span>Numerele castigatoare: </span>
+					<span id="keno_selected03">-</span>
+				</div>
+				<div class="keno_info_box">
+					<span>Castigul tau: </span>
+					<span id="keno_selected04">-</span>
+				</div>
+			</div>`
+			text = bigText(keno_info)	
+		} else {
+			title = "Results"
+			keno_info = `
+			<div class="keno_info">
+				<div class="keno_info_box">
+					<span>Your numbers: </span>
+					<span id="keno_selected01">-</span>
+				</div>
+				<div class="keno_info_box">
+					<span>Chosen numbers: </span>
+					<span id="keno_selected02">-</span>
+				</div>
+				<div class="keno_info_box">
+					<span>Winning Numbers: </span>
+					<span id="keno_selected03">-</span>
+				</div>
+				<div class="keno_info_box">
+					<span>Your win: </span>
+					<span id="keno_selected04">-</span>
+				</div>
+			</div>`
+			text = bigText(keno_info)	
+		}
+
+		win = self.calculateWin()
+
+		setTimeout(function(){			
 			if(kenoSpotArraySelected && kenoSpotArraySelected.length>0){
+				$("#keno_selected01").empty()
 				for(let i in kenoSpotArraySelected){
 					let comma = ', '
 					if(parseInt(i) === kenoSpotArraySelected.length-1){
@@ -425,418 +406,313 @@ function keno_board(props){
 				}
 			} else {
 				$("#keno_selected01").append('-')
+			}	
+			if(picks && picks.length > 0){
+				$("#keno_selected02").empty()
+				for(let i in picks){
+					let comma = ', '
+					if(parseInt(i) === picks.length-1){
+						comma = ''
+					}
+					$("#keno_selected02").append('<span class="keno_box">' + picks[i] + comma + '</span>')
+				}
+			} else {
+				$("#keno_selected02").append('-')
+			}
+				
+			$("#keno_selected03").empty()
+			for(let i in kenoSpotWin){
+				let comma = ', '
+				if(parseInt(i) === kenoSpotWin.length-1){
+					comma = ''
+				}
+				$("#keno_selected03").append('<span class="keno_box">' + kenoSpotWin[i] + comma + '</span>')
+			}
+			
+			if(win > 0){
+				$("#keno_selected03").empty()
+				$("#keno_selected03").append('<span class="keno_box">' + win + '</span>')
+			}
+
+			$('.keno_info').show()
+		}, 1000)
+		
+		let fireworks_show = false
+		if(win > 0){
+			fireworks_show = true
+		}		
+		showResults(title, text, 300, fireworks_show)
+		self.pay(picks, win)
+	}
+
+	this.calculateWin = function(){
+		let my_win = 0
+		let numbers_played = numbers
+		let numbers_matched = kenoSpotWin.length
+		for(let i in winnings){
+			if(winnings[i][0] === numbers_played && winnings[i][1] === numbers_matched){
+				my_win = winnings[i][2]
+				break
 			}
 		}
+		return my_win
+	}
+
+	this.pay = function(picks, win){
+		let status = 'lose'
+		if(win>0){
+			status = 'win'
+		}		
+		let payload = {
+			bet_value: bet, 
+			money_history: money,
+			win: status, 
+			kenoSpotArraySelected: kenoSpotArraySelected,
+			picks: picks,
+			kenoSpotWin: kenoSpotWin,
+		}
+		dispatch(keno_calculate_money(money))
+		dispatch(keno_get_history(payload))
+		
+		let keno_payload_server = {
+			uuid: data.uuid,
+			game_choice: game_choice,
+			money: money,
+			bet: bet,
+			status: status,
+		}
+		// socket.emit('results_send', keno_payload_server)
+	}
+	
+	function generatePick(length, max){
+		return new Promise(function(resolve, reject){
+			let keno_payload_server = {
+				uuid: data.uuid,
+				length: length, 
+				max: max,
+				kenoSpotArraySelected: kenoSpotArraySelected
+			}
+			socket.emit('keno_send', keno_payload_server)
+			socket.on('keno_read', function(data){
+				if(data){
+					resolve(data)
+				} else {
+					resolve([])
+				}
+			})
+		})
 	}
 
 	function getMousePos(canvas, event) {
-		let rect = canvas.getBoundingClientRect();
+		let rect = canvas.getBoundingClientRect()
 		return {
 			x: event.clientX - rect.left,
 			y: event.clientY - rect.top
-		};
+		}
 	}	
 	function isInside(mousePos, obj){
 		return mousePos.x > obj.x && mousePos.x < obj.x + obj.w && mousePos.y < obj.y + obj.h && mousePos.y > obj.y
 	}
 }
 
-function keno_circle(props){
-	let self = this
-	let canvas, ctx
-	let canvas_width = 300
-	let canvas_height = 300
-	let lang = props.lang
-	let balls_number = 80
-	let ballArray = []
-	let ball_info = {x: 0, y: 0, r: 0}
-	let big_circle_info = {x: 0, y: 0, r: 0}
-	let dispatch_nr = 0 //this prevents multiplication
-	
-	this.ready = function(reason){
-		self.createCanvas(canvas_width, canvas_height);
-		self.drawBigCircle()
-		self.createBalls()
-		setTimeout(function(){
-			self.start()
-		}, 1000);
-	}	
-	
-	this.createCanvas = function(canvas_width, canvas_height){		
-		canvas = document.getElementById("keno_canvas_circle")
-		ctx = canvas.getContext("2d")
-		
-		if (window.innerWidth < 960){
-			if(window.innerHeight < window.innerWidth){
-				//small landscape				
-				canvas.width = 200
-				canvas.height = 200
-			} else {
-				//small portrait
-				canvas.width = 200
-				canvas.height = 200
-			}			
-		} else if (window.innerWidth < 1200){
-			//big
-			canvas.width = 300
-			canvas.height = 300			
-		} else {
-			//extra big
-			canvas.width = 500
-			canvas.height = 500	
-		}
-
-		let ball_size = 5
-		ball_info = {x: canvas.width/2 + 2, y: canvas.height - ball_size - 4, r: ball_size}
-		big_circle_info = {x: canvas.width / 2 - 1, y: canvas.height / 2 - 1, r: canvas.width / 2 - 1}
-	}
-
-	this.drawBigCircle = function(){
-		ctx.clearRect(0,0, canvas.width, canvas.height);
-		draw_dot(big_circle_info.x, big_circle_info.y, big_circle_info.r, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, '#ffd700')
-	}
-
-	this.start = function(){	
-		dispatch_nr = 0
-		self.spin(2000)
-	}
-
-	this.createBalls = function(){
-		balls_number = 1	
-		ballArray = []	
-		for(let i=0; i < balls_number; i++){			
-			let config = {
-				id: i,
-				x: ball_info.x,
-				y: ball_info.y,				
-				r: ball_info.r,
-				color: 'rgba(255, 255, 0, 0.1)',
-				border: 1,
-				border_color: '#ffd700',
-				dir_x: -Math.floor((Math.random() * 8) + 3),
-				dir_y: -Math.floor((Math.random() * 8) + 3),
-				speed: Math.floor((Math.random() * 5) + 1),
-				env: big_circle_info,
+function KenoGame(props){
+	let dispatch = useDispatch()
+	useEffect(() => {
+		my_keno = new keno_board(props, dispatch)
+		my_keno.ready()		
+		$(window).resize(function(){
+			if(document.getElementById("keno_canvas")){
+				my_keno.ready('resize')
 			}
-			let ball = new Ball(config)
-			ballArray.push(ball)
-		}
-	}	
-
-	this.moveBalls = function(spin_nr){
-		if(ballArray && ballArray.length>0){
-			for(let i in ballArray){
-				ballArray[i].move(ctx, spin_nr);
-			}
-		}
-	}
-
-	this.spin = function(spin_time, monkey){
-		let spin_nr = 0		
-		dispatch_nr++		
-
-		window.requestAnimFrame = (function(){
-			return  window.requestAnimationFrame       ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame    ||
-			function( callback ){
-			  window.setTimeout(callback, 1000 / 60);
-			};
-	  	})();	  
-	  
-	  	function spin_keno() {			
-			let stop = false
-			spin_nr++;
-			
-			if (spin_nr > spin_time) {
-				stop = true
-			} else {
-				self.drawBigCircle()
-				self.moveBalls(spin_nr)
-			}
-			
-			if(!stop){
-				window.requestAnimFrame(spin_keno)
-			} else {
-				window.cancelAnimationFrame(spin_keno)
-			}
-	  	};
-
-	  	if(dispatch_nr === 1){
-			spin_keno()
-	  	}	  
-	}
-
-	function draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
-		ctx.beginPath();
-		ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
-		ctx.fillStyle = fillStyle;
-		if(strokeStyle !== ""){
-			ctx.lineWidth = lineWidth;
-			ctx.strokeStyle = strokeStyle;
-			ctx.stroke();
-		}		
-		ctx.fill();
-		ctx.closePath();
-	}
+		})
+	}, []) 
+	return(
+		<canvas id="keno_canvas" className="shadow_convex"></canvas>
+	)
 }
 
 function Keno(props){
-	let lang = props.lang;
-	const [title, setTitle] = useState("");
-	const [start, setStart] = useState(false);
-	let dispatch = useDispatch();
+	let lang = props.lang
+	let money = props.data.money
+	const [bet, setBet] = useState(1)
+	const [numbers, setNumbers] = useState(10)
+	const [saveChanges, setSaveChanges] = useState(false)
+	const [title, setTitle] = useState("")
+	let dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(game_page("keno"));
+		dispatch(game_page("keno"))
 		if (window.innerWidth >= 960){
-			setTitle("Keno");		
+			setTitle("Keno")		
 		} else {
-			setTitle("");
+			setTitle("")
 		}		
 		$(window).resize(function(){
 			if (window.innerWidth >= 960){
-				setTitle("Keno");		
+				setTitle("Keno")		
 			} else {
-				setTitle("");
+				setTitle("")
 			}
-		});
-	}, [props]); 
-
-	function game_keno_rules(){
-		if(lang === "ro"){
-			let pay_table = `
-			<div id="keno_rules" class="keno_rules">
-				<p>Da click pe casutele Keno si alege pana la 10 casute sau alege Quick Pick (va alege 10 casute aleator).</p>
-			</div>`;
-			let text = bigText("craps_rules", lang, pay_table);
-			showResults("Reguli", text, 400);
-		} else {
-			let pay_table = `
-			<div id="keno_rules" class="keno_rules">
-				<p>Pick up to 10 Keno spots or choose Quik Pik (defaults to 10 numbers) by clicking on the number in the Keno card.</p>
-			</div>`;
-			let text = bigText("craps_rules", lang, pay_table);
-			showResults("Rules", text, 400);
-		}
-	}
+		})
+	}, []) 	
 
 	function game_keno_start(){
 		if(kenoSpotArraySelected && kenoSpotArraySelected.length>0){
-			setStart(true);
+			if(my_keno){
+				my_keno.handleStart(bet, numbers)
+			}
 		} else {
-			if(lang === "ro"){
-				showResults("", "Please place your bet before playing.")
+			if(saveChanges){
+				game_keno_quick_pick()
+				if(my_keno){
+					my_keno.handleStart(bet, numbers)
+				}
 			} else {
-				showResults("", "Please place your bet before playing.")
+				if(lang === "ro"){
+					showResults("", "Please place your bet before playing.", 300, false)
+				} else {
+					showResults("", "Please place your bet before playing.", 300, false)
+				}
 			}
 		}		
 	}
 	function game_keno_clear(){
 		if(my_keno){
-			my_keno.handleclear();
+			my_keno.handleClear()
+		}
+	}
+	function game_keno_quick_pick(){
+		if(my_keno){
+			my_keno.quickPick(numbers)
 		}
 	}
 
+	function handleChangeNumbersPlayed(e){
+		let my_numbers = parseInt(e.target.value)
+		setNumbers(my_numbers)
+	}
+	function handleChangeMoney(e){
+		let my_bet = parseInt(e.target.value)
+		setBet(my_bet)
+	}
+
+	function game_keno_settings(){
+		if($('.keno_bets_container')){
+			$('.keno_bets_container').addClass('open')
+		}
+	}
+
+	function closeSettings(){
+		if($('.keno_bets_container')){
+			$('.keno_bets_container').removeClass('open')
+		}
+	}
+
+	function game_keno_rules(){
+		let pay_table
+		let text
+		let title
+		if(lang === "ro"){
+			pay_table = `
+			<div id="keno_rules" class="keno_rules">
+				<p>Da click pe casutele Keno si alege pana la 10 casute sau da click pe Alegere aleatoare (va alege aleator 10 casute pentru tine).</p>
+				<div id="keno_winnings">
+				<table>
+					<thead>
+						<tr>
+							<th>Numere jucate</th>
+							<th>Numere potrivite</th>
+							<th>Castig</th>
+						</tr>
+					</thead>
+					<tbody class="pay_table_info"></tbody>	
+				</table>
+				</div>
+			</div>`
+			text = bigText(pay_table)
+			title = "Reguli"
+		} else {
+			pay_table = `
+			<div id="keno_rules" class="keno_rules">
+				<p>Pick up to 10 Keno spots or choose Quik Pik (defaults to 10 numbers) by clicking on the number in the Keno card.</p>
+				<div id="keno_winnings">
+				<table>
+					<thead>
+						<tr>
+							<th>Numbers Played</th>
+							<th>Numbers Matched</th>
+							<th>Prize Amount</th>
+						</tr>
+					</thead>
+					<tbody class="pay_table_info"></tbody>	
+				</table>
+				</div>
+			</div>`
+			text = bigText(pay_table)
+			title = "Rules"
+		}
+		showResults(title, text, 400, false)
+		for(let i in winnings){
+			let numbers_played = winnings[i][0]
+			let numbers_matched = winnings[i][1]
+			let prize = winnings[i][2]
+			$('.pay_table_info').append("<tr><td class='numbers_played'>"+numbers_played+"</td><td class='numbers_matched'>"+numbers_matched+"</td><td class='prize'>"+prize+"</td></tr>")
+		}
+	}
+
+	function handleSaveChanges(){
+		setSaveChanges(true)
+	}
+
 	return (
-		<div className="keno_container">
-			<h1 className="keno_title">{title}</h1>
-			<p>Under construction</p>
-			
-			<Row>
-				<Col sm={12} className="keno_info_container">
-					<div className="keno_info">
-						<div className="keno_info_box">
-							<span>Your Numbers: </span><span id="keno_selected01">-</span>
+		<Row className="keno_container">
+			<Col sm={12}>
+				<h1 className="keno_title">{title}</h1>	
+			</Col>
+			<Col sm={12}>
+				<KenoGame info={props}></KenoGame>
+			</Col>
+			<div className="keno_bets_container">
+				<div className="keno_bets shadow_concav">
+					<div className="close" onClick={()=>{closeSettings()}}>x</div>
+					<div className="keno_bets_box">
+						<div className="game_buttons_box">
+							{lang === "ro" ? 
+								<p className="game_box_text">Cate numere vrei sa joci?</p> : 
+								<p className="game_box_text">How many numbers do you want to play?</p>
+							}
+							<input onChange={(e) => {handleChangeNumbersPlayed(e)}} className="game_input" type="number" min="1" defaultValue="10" max="10"></input>
 						</div>
-						<div className="keno_info_box">
-							<span>Winning Numbers: </span><span id="keno_selected02">-</span>
+						<div className="game_buttons_box">
+							{lang === "ro" ? 
+								<p className="game_box_text">Cati morcovi?</p> : 
+								<p className="game_box_text">How many carrots?</p>
+							}
+							<input onChange={(e) => {handleChangeMoney(e)}} className="game_input" type="number" min="1" defaultValue="1" max={money}></input>
 						</div>
+						<Button className="button_table shadow_convex" type="button" onClick={()=>handleSaveChanges()}>
+                			{lang === "ro" ? <span>Salveaza</span> : <span>Save</span>}
+            			</Button>
 					</div>
-				</Col>
-			</Row>	
-			<Row>
-				<Col sm={12}>
-					{start ? <KenoGameCircle info={props}></KenoGameCircle> : <KenoGame info={props}></KenoGame>}		
-				</Col>
-			</Row>
-			<div id="keno_start" className="keno_button shadow_convex" onClick={()=>{game_keno_start()}}>Start</div>		
-			<div id="keno_start" className="keno_button shadow_convex" onClick={()=>{game_keno_clear()}}>Clear</div>		
-			
-			{lang === "ro" ? 
-				<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click aici pentru a vedea regulile</p> : 
-				<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click here to see rules</p>}
-		</div>
+				</div>
+			</div>
+			<Col sm={12}>
+				<div id="keno_start" className="keno_button shadow_convex" onClick={()=>{game_keno_start()}}>Start</div>
+				<div id="keno_clear" className="keno_button shadow_convex" onClick={()=>{game_keno_clear()}}><i className="fa fa-trash"></i></div>
+				<div id="keno_quick_settings" className="keno_button shadow_convex" onClick={()=>{game_keno_settings()}}>
+					{lang === "ro" ? <span>Schimba setarile</span> : <span>Change settings</span>}
+				</div>
+				<div id="keno_quick_pick" className="keno_button shadow_convex" onClick={()=>{game_keno_quick_pick()}}>
+					{lang === "ro" ? <span>Alegere aleatoare</span> : <span>Random pick</span>}
+				</div>
+			</Col>
+			<Col sm={12}>
+				{lang === "ro" ? 
+					<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click aici pentru a vedea regulile</p> : 
+					<p id="keno_rules_button" onClick={()=>{game_keno_rules()}}>Click here to see rules</p>}
+			</Col>
+		</Row>
 	)
 }
 
-function KenoGame(props){
-	useEffect(() => {
-		my_keno = new keno_board(props);
-		my_keno.ready();		
-		$(window).resize(function(){
-			if(document.getElementById("keno_canvas") !== null){
-				my_keno.ready('resize');
-			}
-		});
-	}, [props, my_keno]); 
-	return(
-		<canvas id="keno_canvas" className="shadow_convex"></canvas>
-	);
-}
-
-function KenoGameCircle(props){
-	useEffect(() => {
-		my_keno_circle = new keno_circle(props);
-		my_keno_circle.ready();
-		$(window).resize(function(){
-			if(document.getElementById("keno_canvas_circle") !== null){
-				my_keno_circle.ready('resize');
-			}
-		});
-	}, [props, my_keno_circle]);
-	return(
-		<canvas id="keno_canvas_circle"></canvas>
-	);
-}
-
-export default Keno;
-
-
-
-
-
-
-
-// var width = 500;
-// var height = 200;
-// var extra = 0;
-// var a;
-// var b;
-// var x;
-// var y;
-// var angle;
-// var n;
-// var m;
-// var quadrant;
-// var horizontal;
-// var vertical;
-// var alpha;
-// var side;
-// var topbottom;
-// var sides;
-// var i = 1;
-
-//   var txt=document.getElementById("info");
-//   txt.innerHTML="x: "+a+"<br>y: "+b+"<br>angle: "+angle+"<br>quadrant: "+quadrant;
-
-// function buttonClick()
-// {
-//   if (i == 1)
-//   {
-//     a = 75;
-//     b = 75;
-//     //determine first angle randonmly
-//     angle = Math.floor((Math.random()*360)+1);;
-//   } else
-//   {
-//     a = xcoord();
-//     b = ycoord();
-//   }
-//   var oldAngle = angle;  
-//   angle = findNewCoordinate(a, b, angle);
-
-//   sides = hitWhere();
-
-//   var txt=document.getElementById("info");
-//     txt.innerHTML="x: "+a+"<br>y: "+b+"<br>horizontal: "+horizontal+"<br>vertical: "+vertical+"<br>n: "+n+"<br>m: "+m+"<br>angle: "+oldAngle+"<br>alpha: "+alpha+"<br>quadrant: "+quadrant+"<br>side: "+topbottom+side+"<br>"+sides+"<br>"+i;
-//     i++;
-// }
-
-// function findNewCoordinate(a, b, angle)
-// {
-//     if (angle >= 0 && angle < 90) { quadrant = 1; horizontal = width-a; vertical = b; alpha = (90 - angle); }
-//     else if (angle >= 90 && angle < 180) { quadrant = 4; horizontal = width-a; vertical = height-b; alpha = (angle-90);  }
-//     else if (angle >= 180 && angle < 270) { quadrant = 3; horizontal = a; vertical = height-b; alpha = (270-angle);  }
-//     else if (angle >= 270 && angle <= 360) { quadrant = 2; horizontal = a; vertical = b; alpha = (angle-270);  }
-
-
-//        var cosa = Math.cos(alpha * Math.PI / 180);
-//        var sina = Math.sin(alpha * Math.PI / 180);
-//        var tana = Math.tan(alpha * Math.PI / 180);
-
-//        var tant = Math.tan(angle * Math.PI / 180);
-
-//        n = horizontal/cosa;
-//        m = vertical/sina;
-
-
-//     switch (quadrant)
-//     {
-//         case 1:  
-//             if (m >= n) //hit at side
-//             {
-//                 y = b - horizontal*tana; 
-//                 x = width;               
-//                 angle = 270+alpha;       
-//             } else
-//             {
-//                 y = 0;                  
-//                 x = a + vertical*tant;   
-//                 angle = 180-angle;       
-//             } 
-//             side = "right side"; topbottom = "top";
-//             break;
-//         case 2:
-//             if (m >= n)  //hit at side
-//             {
-//                 y = b-horizontal*tana;   
-//                 x = 0;                   
-//                 angle = 90-alpha;        
-//             } else
-//             {
-//                 y = 0;                   
-//                 x = a - vertical/tana;   
-//                 angle = 270-alpha;       
-//             } 
-//             side = "left side"; topbottom = "top";
-//             break;
-//         case 3: side = "left side"; topbottom = "bottom";
-//             if (m >= n)  //hit at side
-//             {
-//                 x = 0;                   
-//                 y = b + tana*horizontal; 
-//                 angle = 90+alpha;        
-//             } else
-//             {
-//                 y = height;              
-//                 x = a - vertical/tana;   
-//                 angle = 270+alpha;       
-//             } break;
-//         case 4: side = "right side"; topbottom = "bottom";
-//             if (m >= n)  //hit at side
-//             {
-//                 y = b+horizontal*tana; 
-//                 x = width;             
-//                 angle = 270-alpha;     
-//             } else
-//             {
-//                 y = height;            
-//                 x = a + vertical/tana; 
-//                 angle = 90-alpha;      
-//             } break;
-//     }
-
-//     //add extra degrees to the angle (optional)
-//     angle += extra;
-
-//     context.beginPath();
-//     context.arc(a, b, 5, 0, Math.PI*2, true); 
-//     context.stroke();
-//     context.closePath();
-//     context.fill();
-
-//     drawLine(a,b,x,y);
-
-//     return angle;
-// }
+export default Keno

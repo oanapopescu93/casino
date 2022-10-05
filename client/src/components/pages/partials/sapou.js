@@ -37,7 +37,7 @@ function Sapou(props){
                                     {props.lang === "ro" ? <h4>Recuperare</h4> : <h4>Recovery</h4>}                                    
                                 </Col>
                             </Row>
-                        ); 
+                        )
                     case "salon":
                         return(
                             <Row>
@@ -49,7 +49,7 @@ function Sapou(props){
                                     </a>								
                                 </Col>
                             </Row>      
-                        ); 
+                        )
                     case "splash_screen":
                     case "about":
                     case "support":

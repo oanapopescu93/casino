@@ -26,20 +26,20 @@ function SignUp(props){
 						$('#home').show()
 					}	
 					if(lang === "ro"){
-						showResults('Alerta', 'Esti deja inregistrat.')
+						showResults('Alerta', 'Esti deja inregistrat.', 300, false)
 					} else {
-						showResults('Alert', 'You are already registered.')
+						showResults('Alert', 'You are already registered.', 300, false)
 					}					
 				} else {
-					setCookie("casino_uuid", data[1].uuid);
+					setCookie("casino_uuid", data[1].uuid)
 					setCookie("casino_email", $('#signup_email').val())
 					setCookie("casino_user", $('#signup_user').val())
-					submit_form();
+					submit_form()
 				}
 			})
 		} else {
 			if(!check_submit('email')){
-				$('.sign_errors').show();
+				$('.sign_errors').show()
 				$('.sign_errors').append('<h6 id="signup_email_red" class="text_red"></h6>')
 				if(lang === "ro"){
 					$('#signup_email_red').append('<p><b>Email invalid</b></p><p>exemplu@mail.com</p>')
@@ -70,7 +70,6 @@ function SignUp(props){
 			}		
 			socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()})	
 			socket.on('signup_read', function(data){
-				console.log('signup_read ', data)
 				resolve(data)
 			})
 		})
@@ -94,6 +93,7 @@ function SignUp(props){
 				// At least one special character, (?=.*?[#?!@$%^&*-])
 				// Minimum eight in length .{8,}
 				break
+			default: 
 		}		
 		let regex_exp = new RegExp(regex)			
 		let pass_result = regex_exp.test(signup_input)
@@ -102,15 +102,11 @@ function SignUp(props){
 	}
 
 	function submit_form(){
-		setTimeout(function(){
-			if($("#user_form")){
-				$("#user_form").submit()
-			}
-		}, 500)
+		props.submit()
 	}
 	
 	function minor_check(check){
-		$('#minor_container').remove();	
+		$('#minor_container').remove()
 		if(check){
 			setCookie("user_minor", true, 336) //will expire after 14 days
 		} else {		

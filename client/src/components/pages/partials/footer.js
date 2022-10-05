@@ -26,12 +26,12 @@ function Footer(props){
 
         $('body').off('click').on('click', function(event) {
             if($(event.target).closest(".footer_container").length === 0){
-                $('.footer_container').removeClass('open');
+                $('.footer_container').removeClass('open')
             }
         })
 
         $('.footer_button').off('click').on('click', function(event) {
-			$('.footer_container').toggleClass('open');
+			$('.footer_container').toggleClass('open')
 		})
 	}, [])
 
@@ -55,7 +55,7 @@ function Footer(props){
 								<li onClick={() => handleClick('privacy')}>{lang === "ro" ? <span>Politica de confidentialitate</span> : <span>Privacy policy</span>}</li>
 								<li onClick={() => handleClick('questions')}>{lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</li>
 								<li onClick={() => handleClick('career')}>{lang === "ro" ? <span>Cariera</span> : <span>Career</span>}</li>
-								<li><a target="_blank" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine"><img id="ukraine_icon" alt="ukraine_icon" src={ukraine} style={{"width": "20px"}}></img></a></li>
+								<li><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine"><img id="ukraine_icon" alt="ukraine_icon" src={ukraine} style={{"width": "20px"}}></img></a></li>
 							</ul>
 						</Col>
 					</Row>

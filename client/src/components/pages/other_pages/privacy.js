@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
@@ -9,11 +9,9 @@ import { useDispatch } from 'react-redux'
 function Privacy(props){
     let lang = props.info.lang
     let dispatch = useDispatch()
-
     function handleBack() {
         dispatch(game_visible("game"))
     }
-
 	return (
         <Row>
             <Col sm={12}>

@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import Table from 'react-bootstrap/Table'
 
 function HistoryTable(props){    
-    let template = props.template;
-    let history = props.history;
-    let lang = props.lang;
-    let rowspan = 0;
-    var title = template.charAt(0).toUpperCase() + template.slice(1);
+    let template = props.template
+    let history = props.history
+    let lang = props.lang
+    let rowspan = 0
+    var title = template.charAt(0).toUpperCase() + template.slice(1)
     switch(template){
         case "roulette":
-            rowspan = history.length.toString();
+            rowspan = history.length.toString()
             return(
                 <>
                     <h3>{title}</h3>
@@ -70,7 +70,7 @@ function HistoryTable(props){
                         </tbody>
                     </Table>
                 </>
-            );
+            )
         case "blackjack":  
             return(
                 <>
@@ -111,7 +111,7 @@ function HistoryTable(props){
                         </tbody>
                     </Table>
                 </>
-            );
+            )
         case "slots":            
             return(
                 <>
@@ -146,7 +146,7 @@ function HistoryTable(props){
                         </tbody>
                     </Table>
                 </>
-            );
+            )
         case "craps":
             return(
                 <>
@@ -181,7 +181,7 @@ function HistoryTable(props){
                         </tbody>
                     </Table>
                 </>
-            );
+            )
         case "race":
             return(
                 <>
@@ -206,7 +206,7 @@ function HistoryTable(props){
                                                         history[0].rabbit_list.map(function(item, i){
                                                             return(
                                                                 <div key={i}><span>{i+1}</span> - <span>{item.name}</span></div>
-                                                            );                                                                                                                                    
+                                                            )                                                                                                                               
                                                         })
                                                     }
                                                 </td>
@@ -223,7 +223,7 @@ function HistoryTable(props){
                                                         history[0].rabbit_list.map(function(item, i){
                                                             return(
                                                                 <div key={i}><span>{i+1}</span> - <span>{item.name}</span></div>
-                                                            );                                                                                                                                    
+                                                            )                                                                                                                                   
                                                         })
                                                     }
                                                 </td>
@@ -238,17 +238,17 @@ function HistoryTable(props){
                         </tbody>
                     </Table>
                 </>
-            );
+            )
         default:
             return(
                 <p>{lang === "ro" ? <span>Eroare.</span> : <span>Ups, something went wrong.</span>}</p>
-            );
+            )
     }
 }
 
 function HistoryShort(props){
-	let history = props.history;
-    let lang = props.lang;	
+	let history = props.history
+    let lang = props.lang
     return (
         <div className="history_box">
             {(() => {
@@ -265,16 +265,16 @@ function HistoryShort(props){
                             { history.craps && history.craps.length>0 ? <HistoryTable template="craps" lang={lang} history={history.craps}></HistoryTable> : null}
                             { history.race && history.race.length>0 ? <HistoryTable template="race" lang={lang} history={history.race}></HistoryTable> : null}
                         </>
-                    );
+                    )
                 }
             })()}
         </div>
-    );
+    )
 }
 
 function Transactions(props){
-    let data = props.data;
-    let lang = props.lang;
+    let data = props.data
+    let lang = props.lang
     return ( 
         <div className="transactions_box">
             {(() => {
@@ -285,29 +285,29 @@ function Transactions(props){
                 } else {
                     return (
                         <p>{lang === "ro" ? <span>Nu exista tranzactii</span> : <span>There are no transactions</span>}</p>
-                    );
+                    )
                 }
             })()}
         </div>
-    );
+    )
 }
 
 function History(props){
-	let history = props.history;
-    let transactions = props.transactions;    
-    let lang = props.lang;
-    const [visible, setVisible] = useState("history");
-    const [tab1, setTab1] = useState("active");
-    const [tab2, setTab2] = useState("");
+	let history = props.history
+    let transactions = props.transactions 
+    let lang = props.lang
+    const [visible, setVisible] = useState("history")
+    const [tab1, setTab1] = useState("active")
+    const [tab2, setTab2] = useState("")
 
     function history_choose_tab(link){
-		setVisible(link);
+		setVisible(link)
         if(link === "history"){
-            setTab1("active");
-            setTab2("");
+            setTab1("active")
+            setTab2("")
 		} else if(link === "transactions"){
-            setTab1("");
-            setTab2("active");
+            setTab1("")
+            setTab2("active")
 		}
 	}
 	
@@ -325,7 +325,7 @@ function History(props){
                 <Transactions lang={lang} data={transactions}></Transactions>
             }
         </>
-    );
+    )
 }
 
-export default History;
+export default History

@@ -1,136 +1,136 @@
-import React, {useEffect, useState, useRef} from 'react';
-import $ from 'jquery';
+import React, {useEffect, useState, useRef} from 'react'
+import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { bigText, get_craps_bets, showResults } from '../../utils';
-import { craps_calculate_money, craps_get_history } from '../../actions/actions';
+import { bigText, get_craps_bets, showResults } from '../../utils'
+import { craps_calculate_money, craps_get_history } from '../../actions/actions'
 import { useDispatch } from 'react-redux'
 
-let move = 0;
-let prev_move = 0;
-let move_array = [];
-let my_craps_bets;
+let move = 0
+let prev_move = 0
+let move_array = []
+let my_craps_bets
 
 function craps_bets(props){
-	let self = this;
-	this.images = [];
-	let reason = "";
-	let canvas;
-	let ctx;
-	let canvas_width_bets = 900;
-	let canvas_height_bets = 450;
-	let items = get_craps_bets();
-	let craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450]; //sx,sy,swidth,sheight,x,y,width,height	
-	let game_type = "pass line";
-	let game_odds = 2;
+	let self = this
+	this.images = []
+	let reason = ""
+	let canvas
+	let ctx
+	let canvas_width_bets = 900
+	let canvas_height_bets = 450
+	let items = get_craps_bets()
+	let craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450] //sx,sy,swidth,sheight,x,y,width,height	
+	let game_type = "pass line"
+	let game_odds = 2
 
 	this.ready = function(r){
-		canvas = document.getElementById("craps_bets_canvas");	
+		canvas = document.getElementById("craps_bets_canvas")
 		if(canvas){
-			reason = r;
-			self.createCanvas(canvas_width_bets, canvas_height_bets);
-			self.getImage(reason);
-			self.craps_click();
+			reason = r
+			self.createCanvas(canvas_width_bets, canvas_height_bets)
+			self.getImage(reason)
+			self.craps_click()
 		}
 	}
 
 	this.createCanvas = function(canvas_width_bets, canvas_height_bets){
-		ctx = canvas.getContext("2d");
+		ctx = canvas.getContext("2d")
 		
-		canvas.width = 900;
-		canvas.height = 450;
-		craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450];
+		canvas.width = 900
+		canvas.height = 450
+		craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450]
 		
-		canvas_width_bets = canvas.width;
-		canvas_height_bets = canvas.height;		
-		canvas.height = canvas_height_bets;
+		canvas_width_bets = canvas.width
+		canvas_height_bets = canvas.height	
+		canvas.height = canvas_height_bets
 	}
 
 	this.getImage = function(reason){
 		if(reason !== "resize"){
-			let promises = [];
+			let promises = []
 			for(let i in items){				
-				promises.push(self.preaload_images(items[i]));
+				promises.push(self.preaload_images(items[i]))
 			}
 
 			Promise.all(promises).then(function(result){
-				self.images = result;
-				self.choose_craps_bets();
-			});	
+				self.images = result
+				self.choose_craps_bets()
+			})
 		} else {
-			self.choose_craps_bets();
+			self.choose_craps_bets()
 		}
 	}
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
-			let image = new Image();
-			image.id = item.id;
-			image.src = item.src;
+			let image = new Image()
+			image.id = item.id
+			image.src = item.src
 			image.addEventListener("load", function() {
 				resolve(image)
-			}, false);
-		});
+			}, false)
+		})
 	}
 
 	this.choose_craps_bets = function(){		
-		self.draw_craps_bets(self.images[0]);
+		self.draw_craps_bets(self.images[0])
 	}
 
 	this.draw_craps_bets = function(img){
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
 		//ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
-		ctx.drawImage(img, craps_bets_coord[0], craps_bets_coord[1], craps_bets_coord[2], craps_bets_coord[3], craps_bets_coord[4], craps_bets_coord[5], craps_bets_coord[6], craps_bets_coord[7]);
+		ctx.drawImage(img, craps_bets_coord[0], craps_bets_coord[1], craps_bets_coord[2], craps_bets_coord[3], craps_bets_coord[4], craps_bets_coord[5], craps_bets_coord[6], craps_bets_coord[7])
 	}
 
 	this.craps_click = function(){			
 		$('#craps_bets_canvas').off('click').on('click', function(event) {
-			self.canvas_click(event);
-		});
+			self.canvas_click(event)
+		})
 
 		$('#craps_bets_canvas').off('mousemove').on('mousemove', function(event) {
-			let mousePos = getMousePos(event);
-			self.draw_craps_bets(self.images[0]);	
+			let mousePos = getMousePos(event)
+			self.draw_craps_bets(self.images[0])	
 			for(let i in items){
 				if (items[i].id !== "craps" && isInside(mousePos, items[i])) {
-					self.draw_craps_bets(self.images[i]);
-					break;
+					self.draw_craps_bets(self.images[i])
+					break
 				}
 			}
-		});
+		})
 	}
 	
 	this.canvas_click = function(event){		
-		let mousePos = getMousePos(event);
+		let mousePos = getMousePos(event)
 		for(let i in items){
 			if (items[i].id !== "craps" && isInside(mousePos, items[i])) {
-				game_type = items[i].text;
-				game_odds = items[i].odds;
-				self.draw_craps_bets(self.images[i]);
-				break;
+				game_type = items[i].text
+				game_odds = items[i].odds
+				self.draw_craps_bets(self.images[i])
+				break
 			}
-			// ctx.beginPath();
-			// ctx.lineWidth = "1";
-			// ctx.strokeStyle = "blue";
-			// ctx.rect(items[i].x, items[i].y, items[i].width, items[i].height);
-			// ctx.stroke();
+			// ctx.beginPath()
+			// ctx.lineWidth = "1"
+			// ctx.strokeStyle = "blue"
+			// ctx.rect(items[i].x, items[i].y, items[i].width, items[i].height)
+			// ctx.stroke()
 		}
 	}
 
 	this.get_game_info = function(){
-		return [game_type, game_odds];
+		return [game_type, game_odds]
 	}
 
 	this.reset = function(){
-		self.draw_craps_bets(self.images[0]);
+		self.draw_craps_bets(self.images[0])
 	}
 
 	function getMousePos(event) {
-		let rect = canvas.getBoundingClientRect();
+		let rect = canvas.getBoundingClientRect()
 		return {
 			x: event.clientX - rect.left,
 			y: event.clientY - rect.top
-		};
+		}
 	}
 
 	function isInside(mousePos, obj){
@@ -139,12 +139,12 @@ function craps_bets(props){
 }
 
 function Dice(props){	
-	let number = props.number;
-	const [x, setX] = useState(1);
+	let number = props.number
+	const [x, setX] = useState(1)
 
 	useEffect(() => {
-		setX(Math.floor((Math.random() * 6) + 1));
-	}, []); 
+		setX(Math.floor((Math.random() * 6) + 1))
+	}, [])
 
 	return (
 		<div ref={props.innerRef} className="dice_box">
@@ -185,20 +185,20 @@ function Dice(props){
 			</div>
 			<div className="shadow_convex"></div>
 		</div>
-	);
+	)
 }
 
 function CrapsBoardText(props){	
 	if(props.info && move !== prev_move){ //fix re-rendering
-		move_array.push(props.info);
-		prev_move = move;
+		move_array.push(props.info)
+		prev_move = move
 		return(
 			<>
 				{
 					move_array.map(function(item, i){
-						let dices = item.dices;
-						let point = item.point;
-						let sum = item.sum;
+						let dices = item.dices
+						let point = item.point
+						let sum = item.sum
 						if(dices === "Craps!!!" || dices === "Natural!!!"){
 							return <div key={i} className="craps_board_text"><span className="text text01">{dices}</span></div>
 						} else if(point){
@@ -211,34 +211,34 @@ function CrapsBoardText(props){
 			</>
 		)
 	} else {
-		return '';
+		return ''
 	}		
 }
 
 function Craps(props){
-	let lang = props.lang;
-	let socket = props.socket;
-	let money = props.info.money;
-	let dispatch = useDispatch();
+	let lang = props.lang
+	let socket = props.socket
+	let money = props.data.money
+	let dispatch = useDispatch()
 	
-	const [open, setOpen] = useState("");
-	const [title, setTitle] = useState("");
-	const [crapsBoardText, setCrapsBoardText] = useState(null);
-	const [moneyTotal, setMoneyTotal] = useState(money-1);
-	const [bet, setBet] = useState(1);
-	const [gameType, setGameType] = useState("pass line");
-	const [gameOdds, setGameOdds] = useState(2);
+	const [open, setOpen] = useState("")
+	const [title, setTitle] = useState("")
+	const [crapsBoardText, setCrapsBoardText] = useState(null)
+	const [moneyTotal, setMoneyTotal] = useState(money-1)
+	const [bet, setBet] = useState(1)
+	const [gameType, setGameType] = useState("pass line")
+	const [gameOdds, setGameOdds] = useState(2)
 
-	let craps_board = useRef(null);
-	const dice1 = useRef(null);
-	const dice2 = useRef(null);
-	let dice_array = [dice1, dice2];
-	let dicesNumber = [];	
+	let craps_board = useRef(null)
+	const dice1 = useRef(null)
+	const dice2 = useRef(null)
+	let dice_array = [dice1, dice2]
+	let dicesNumber = []
 	
 
 	function handleChange(e){
-		setBet(e.target.value);
-		setMoneyTotal(money-e.target.value);
+		setBet(e.target.value)
+		setMoneyTotal(money-e.target.value)
 	}
 
 	function game_craps_rules(){
@@ -273,9 +273,9 @@ function Craps(props){
 					Acest pariu este echivalent cu cel Don’t Pass Line, 
 					unica diferenţă fiind aceea că miza nu poate fi pusă decât după ce a fost rostogolit primul punct.
 				</p>
-			</div>`;
-			let text = bigText("craps_rules", lang, pay_table);
-			showResults("Reguli", text, 400);
+			</div>`
+			let text = bigText(pay_table)
+			showResults("Reguli", text, 400, false)
 		} else {
 			let pay_table = `
 			<div id="craps_rules" class="craps_rules">
@@ -315,67 +315,66 @@ function Craps(props){
 					<b>Proposition Bet:</b>
 					One roll bet, the numbers are 2, 3, 7, 11 and 12.
 				</p>
-			</div>`;
-			let text = bigText("craps_rules", lang, pay_table);
-			showResults("Rules", text, 400);
+			</div>`
+			let text = bigText(pay_table)
+			showResults("Rules", text, 400, false)
 		}
 	}
 
 	function check_win_lose(win, bet){		
 		if(bet){
-			let win_lose_money = moneyTotal;
+			let win_lose_money = moneyTotal
 			if(win === 'win'){
-				let pay = gameOdds + bet;
+				let pay = gameOdds + bet
 				if(lang === "ro"){
-					showResults("Resultate", "Ai castigat " + pay + " morcovi!");
+					showResults("Resultat", "Ai castigat " + pay + " morcovi!", 300, true)
 				} else {
-					showResults("Results", "You won " + pay + " carrots!");
+					showResults("Results", "You won " + pay + " carrots!", 300, true)
 				}	
-				setMoneyTotal(win_lose_money + pay);		
+				setMoneyTotal(win_lose_money + pay)	
 			} else if(win === 'push'){
 				if(lang === "ro"){
-					showResults("Push", "Iti iei morcovii inapoi!");
+					showResults("Push", "Iti iei morcovii inapoi!", 300, false)
 				} else {
-					showResults("Push", "You take your carrots back!");
+					showResults("Push", "You take your carrots back!", 300, false)
 				}			
 			} else {
 				if(lang === "ro"){
-					showResults("Resultate", "Ai pierdut " + bet + " morcovi!");
+					showResults("Resultat", "Ai pierdut " + bet + " morcovi!", 300, false)
 				} else {
-					showResults("Results", "You lost " + bet + " carrots!");
+					showResults("Results", "You lost " + bet + " carrots!", 300, false)
 				}
-				setMoneyTotal(win_lose_money - bet);		
+				setMoneyTotal(win_lose_money - bet)
 			}
 
-			let win_lose_history = {type: gameType, odds: gameOdds, bet: bet};
+			let win_lose_history = {type: gameType, odds: gameOdds, bet: bet}
 
-			dispatch(craps_calculate_money(win_lose_money));
-			dispatch(craps_get_history(win_lose_history));
+			dispatch(craps_calculate_money(win_lose_money))
+			dispatch(craps_get_history(win_lose_history))
 			
 			let craps_payload_server = {
-				user_id: props.info.id, 
-				user_uuid: props.info.uuid, 
-				user_table: props.info.user_table, 
+				user_uuid: props.data.uuid, 
+				game_choice: props.game_choice,
 				money: win_lose_money,
 				bet: bet,
 				status: win,
 			}
-			socket.emit('results_send', craps_payload_server);
+			socket.emit('results_send', craps_payload_server)
 		}
 	}
 
 	function show_on_board(dicesNumber, sum, point){
 		move++
-		setCrapsBoardText({dices: dicesNumber, sum: sum, point: point});	
-		scrollToBottom();
+		setCrapsBoardText({dices: dicesNumber, sum: sum, point: point})	
+		scrollToBottom()
 	}
 
 	function animate(dice, roll){
 		if(dice && roll){			
 			for (let i = 1; i <= 6; i++) {
-				$(dice).removeClass('show_' + i);
+				$(dice).removeClass('show_' + i)
 				if (roll === i) {
-					$(dice).addClass('show_' + i);
+					$(dice).addClass('show_' + i)
 				}
 			}
 		}
@@ -387,102 +386,102 @@ function Craps(props){
 				if(dice_array && dice_array.length>0 && res && res.length>0){
 					for(let i in res){
 						if(dice_array[i] && dice_array[i].current){
-							let dice = $(dice_array[i].current).children()[0];
-							let roll = res[i];				
-							animate(dice, roll);
+							let dice = $(dice_array[i].current).children()[0]
+							let roll = res[i]			
+							animate(dice, roll)
 						}
 				   	}					
-					dicesNumber = res;
-					resolve(res);
+					dicesNumber = res
+					resolve(res)
 				} else {
-					resolve(false);
+					resolve(false)
 				}
-			});
-		});
+			})
+		})
 	}
 
 	function getNumbers(point){
 		return new Promise(function(resolve, reject){
-			let dice_number1 = getDiceNumber(dice_array[0]);
-			let dice_number2 = getDiceNumber(dice_array[1]);
-			let payload={uuid:props.info.uuid, how_many_dices:2, user_table: props.info.user_table, point:point, before: [dice_number1, dice_number2]}
-			socket.emit('craps_send', payload);
+			let dice_number1 = getDiceNumber(dice_array[0])
+			let dice_number2 = getDiceNumber(dice_array[1])
+			let payload={uuid:props.data.uuid, how_many_dices:2, game_choice: props.game_choice, point:point, before: [dice_number1, dice_number2]}
+			socket.emit('craps_send', payload)
 			socket.on('craps_read', function(data){
 				if(data){
-					resolve(data);
+					resolve(data)
 				}
-			});	
-		});
-	};
+			})
+		})
+	}
 
 	function getDiceNumber(dice){
-		let x;
+		let x
 		if(dice && dice.current){
-			let child = $(dice.current).children()[0];
-			let classList = $(child).attr('class').split(/\s+/);
+			let child = $(dice.current).children()[0]
+			let classList = $(child).attr('class').split(/\s+/)
 			for(let i in classList){
 				if(classList[i].indexOf("show_") > -1){
-					x = parseInt(classList[i].replace("show_", ""));
-					break;
+					x = parseInt(classList[i].replace("show_", ""))
+					break
 				}
 			}
 		}
-		return x;
+		return x
 	}
 	
 	function game_bet(){
-		setOpen("open");
+		setOpen("open")
 	}
 
 	function game_close(){
-		setOpen("");
+		setOpen("")
 	}
 
 	function scrollToBottom(){		
 		if(craps_board && craps_board.current){
-			let board = craps_board.current;
-			let height = $(board)[0].scrollHeight;
-			$(board).animate({scrollTop: height},"fast");
+			let board = craps_board.current
+			let height = $(board)[0].scrollHeight
+			$(board).animate({scrollTop: height},"fast")
 		}
 	}
 
 	function canvas_click(){
 		if(typeof my_craps_bets !== "undefined"){
-			let get_game_info = my_craps_bets.get_game_info();
-			setGameType(get_game_info[0]);
-			setGameOdds(get_game_info[1]);
+			let get_game_info = my_craps_bets.get_game_info()
+			setGameType(get_game_info[0])
+			setGameOdds(get_game_info[1])
 		}
 	}
 
 	function canvas_clear(){
-		setGameType("pass line");
-		setGameOdds(2);
+		setGameType("pass line")
+		setGameOdds(2)
 		if(typeof my_craps_bets !== "undefined"){
-			my_craps_bets.reset();
+			my_craps_bets.reset()
 		}
 	}
 
 	function game_start(){
 		if(moneyTotal >= 0){
-			let timer;
-			let state = 1;
-			let point = 0;
-			let sum;
-			move_array = [];
-			let myArray;
-			let value;
-			setCrapsBoardText(null);
+			let timer
+			let state = 1
+			let point = 0
+			let sum
+			move_array = []
+			let myArray
+			let value
+			setCrapsBoardText(null)
 			switch(gameType) {
 				case "any 7":
 					roll(point).then(function(){ // one roll, sum must be 7
-						sum = dicesNumber[0] + dicesNumber[1];
+						sum = dicesNumber[0] + dicesNumber[1]
 						if(sum === 7){
-							check_win_lose('win', bet);
+							check_win_lose('win', bet)
 						} else {
-							check_win_lose('lose', bet);
+							check_win_lose('lose', bet)
 						}
-					});
-					break;
+					})
+					break
 				case "hardway 1":
 				case "hardway 2":
 				case "hardway 3":
@@ -505,74 +504,74 @@ function Craps(props){
 						value = 12
 					}
 					roll(point).then(function(){
-						sum = dicesNumber[0] + dicesNumber[1];
+						sum = dicesNumber[0] + dicesNumber[1]
 						if(sum === value){
-							check_win_lose('win', bet);
+							check_win_lose('win', bet)
 						} else {
-							check_win_lose('lose', bet);
+							check_win_lose('lose', bet)
 						}
-					});
-					break;
+					})
+					break
 				case "any craps":
 					roll(point).then(function(){ // one roll, wins if a 2, 3 or 12
-						sum = dicesNumber[0] + dicesNumber[1];
+						sum = dicesNumber[0] + dicesNumber[1]
 						if(sum === 2 || sum === 3 || sum === 12){
-							check_win_lose('win', bet);
+							check_win_lose('win', bet)
 						} else {
-							check_win_lose('lose', bet);
+							check_win_lose('lose', bet)
 						}
-					});
-					break;
+					})
+					break
 				case "place bet 4":
 				case "place bet 5":
 				case "place bet 6":
 				case "place bet 8":
 				case "place bet 9":
 				case "place bet 10":
-					myArray = gameType.split("place bet ");
-					value = parseInt(myArray[1]);
+					myArray = gameType.split("place bet ")
+					value = parseInt(myArray[1])
 					timer = setInterval(function () {				
 						switch(state) {
 							case 1:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
+									sum = dicesNumber[0] + dicesNumber[1]
 									if(sum === value){
-										state = 2;
+										state = 2
 									} else if(sum === 7){
-										state = 4;
+										state = 4
 									} else {
-										point = sum;
-										state = 3;
-										show_on_board(dicesNumber, sum);
+										point = sum
+										state = 3
+										show_on_board(dicesNumber, sum)
 									}
-								});
-								break;
+								})
+								break
 							case 2:
-								check_win_lose('win', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('win', bet)
+								clearInterval(timer)
+								break
 							case 3:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
-									show_on_board(dicesNumber, sum);
+									sum = dicesNumber[0] + dicesNumber[1]
+									show_on_board(dicesNumber, sum)
 									if (sum === value) {
-										state = 2;
+										state = 2
 									} else if (sum === 7) {
-										state = 4;
+										state = 4
 									} else if (sum === 2 || sum === 3 || sum === 12) {
-										state = 4;
+										state = 4
 									} else {
-										state = 3;
+										state = 3
 									}
-								});
-								break;
+								})
+								break
 							case 4:
-								check_win_lose('lose', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('lose', bet)
+								clearInterval(timer)
+								break
 						}
-					}, 3000);
-					break;
+					}, 3000)
+					break
 				case "field bet 2":
 				case "field bet 3":
 				case "field bet 4":
@@ -580,256 +579,261 @@ function Craps(props){
 				case "field bet 10":
 				case "field bet 11":
 				case "field bet 12":
-					myArray = gameType.split("field bet ");
-					value = parseInt(myArray[1]);
+					myArray = gameType.split("field bet ")
+					value = parseInt(myArray[1])
 					roll(point).then(function(){ // one roll bet for 2, 3, 4, 9, 10, 11, 12
-						sum = dicesNumber[0] + dicesNumber[1];
+						sum = dicesNumber[0] + dicesNumber[1]
 						if(sum === value){
-							check_win_lose('win', bet);
+							check_win_lose('win', bet)
 						} else {
-							check_win_lose('lose', bet);
+							check_win_lose('lose', bet)
 						}
-					});
-					break;
+					})
+					break
 				case "6 big 8": //you think you will land a 6 or 8 before landing a 7
 					timer = setInterval(function () {				
 						switch(state) {
 							case 1:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
+									sum = dicesNumber[0] + dicesNumber[1]
 									if(sum === 6|| sum === 8){
-										state = 2;
+										state = 2
 									} else if (sum === 7) {
-										state = 4;
+										state = 4
 									} else {
-										state = 3;
+										state = 3
 									}
-								});
-								break;
+								})
+								break
 							case 2:
-								check_win_lose('win', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('win', bet)
+								clearInterval(timer)
+								break
 							case 3:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
-									show_on_board(dicesNumber, sum);
+									sum = dicesNumber[0] + dicesNumber[1]
+									show_on_board(dicesNumber, sum)
 									if (sum === 7) {
-										state = 4;
+										state = 4
 									}
-								});
-								break;
+								})
+								break
 							case 4:
-								check_win_lose('lose', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('lose', bet)
+								clearInterval(timer)
+								break
 						}
-					}, 3000);
-					break;
+					}, 3000)
+					break
 				case "come":
 					timer = setInterval(function () {				
 						switch(state) {
 							case 1:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
+									sum = dicesNumber[0] + dicesNumber[1]
 									if(sum === 7|| sum === 11){
-										state = 2;
+										state = 2
 									} else {
-										point = sum;
-										state = 3;
-										show_on_board(dicesNumber, sum, point);
+										point = sum
+										state = 3
+										show_on_board(dicesNumber, sum, point)
 									}
-								});
-								break;
+								})
+								break
 							case 2:
-								check_win_lose('win', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('win', bet)
+								clearInterval(timer)
+								break
 							case 3:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
-									show_on_board(dicesNumber, sum, point);
+									sum = dicesNumber[0] + dicesNumber[1]
+									show_on_board(dicesNumber, sum, point)
 									if (sum === point) {
-										state = 2;
+										state = 2
 									} else if (sum === 7) {
-										state = 4;
+										state = 4
 									} else if (sum === 2 || sum === 3 || sum === 12) {
-										state = 4;
+										state = 4
 									} else {
-										state = 3;
+										state = 3
 									}
-								});
-								break;
+								})
+								break
 							case 4:
-								check_win_lose('lose', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('lose', bet)
+								clearInterval(timer)
+								break
 						}
-					}, 3000);
-					break;
+					}, 3000)
+					break
 				case "don't come":
 					timer = setInterval(function () {				
 						switch(state) {
 							case 1:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];		
+									sum = dicesNumber[0] + dicesNumber[1]	
 									if(sum === 2 || sum === 3){
-										state = 2;
+										state = 2
 									} else {
-										point = sum;
-										state = 3;
-										show_on_board(dicesNumber, sum, point);
+										point = sum
+										state = 3
+										show_on_board(dicesNumber, sum, point)
 									}
-								});
-								break;
+								})
+								break
 							case 2:
-								check_win_lose('win', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('win', bet)
+								clearInterval(timer)
+								break
 							case 3:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
-									show_on_board(dicesNumber, sum, point);
+									sum = dicesNumber[0] + dicesNumber[1]
+									show_on_board(dicesNumber, sum, point)
 									if (sum !== point) {
-										state = 2;
+										state = 2
 									} else if (sum === 12) {
-										check_win_lose('push', bet);
-										clearInterval(timer);
+										check_win_lose('push', bet)
+										clearInterval(timer)
 									} else if (sum === 7|| sum === 11) {
-										state = 2;
+										state = 2
 									} else {
-										state = 3;
+										state = 3
 									}
-								});
-								break;
+								})
+								break
 							case 4:
-								check_win_lose('lose', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('lose', bet)
+								clearInterval(timer)
+								break
 						}
-					}, 3000);
-					break;
+					}, 3000)
+					break
 				case "don't pass line":
 					timer = setInterval(function () {				
 						switch(state) {
 							case 1:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];		
+									sum = dicesNumber[0] + dicesNumber[1]		
 									if(sum === 2 || sum === 3){
 										//Natural
-										state = 2;
-										show_on_board("Natural!!!", sum);
+										state = 2
+										show_on_board("Natural!!!", sum)
 									} else {
-										point = sum;
-										state = 3;
-										show_on_board(dicesNumber, sum, point);
+										point = sum
+										state = 3
+										show_on_board(dicesNumber, sum, point)
 									}
-								});
-								break;
+								})
+								break
 							case 2:
-								check_win_lose('win', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('win', bet)
+								clearInterval(timer)
+								break
 							case 3:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
-									show_on_board(dicesNumber, sum, point);
+									sum = dicesNumber[0] + dicesNumber[1]
+									show_on_board(dicesNumber, sum, point)
 									if (sum !== point) {
-										state = 2;
+										state = 2
 									} else if (sum === 12) {
-										check_win_lose('push', bet);
-										clearInterval(timer);
+										check_win_lose('push', bet)
+										clearInterval(timer)
 									} else if (sum === 7|| sum === 11) {
 										//Craps
-										state = 2;
-										show_on_board("Craps!!!", sum);
+										state = 2
+										show_on_board("Craps!!!", sum)
 									} else {
-										state = 3;
+										state = 3
 									}
-								});
-								break;
+								})
+								break
 							case 4:
-								check_win_lose('lose', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('lose', bet)
+								clearInterval(timer)
+								break
 						}
-					}, 3000);
-					break;
+					}, 3000)
+					break
 				default: //pass line or if the player doesn't choose
 					timer = setInterval(function () {				
 						switch(state) {
 							case 1:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
+									sum = dicesNumber[0] + dicesNumber[1]
 									if(sum === 7|| sum === 11){
 										//Natural
-										state = 2;
-										show_on_board("Natural!!!", sum);
+										state = 2
+										show_on_board("Natural!!!", sum)
 									} else {
-										point = sum;
-										state = 3;
-										show_on_board(dicesNumber, sum, point);
+										point = sum
+										state = 3
+										show_on_board(dicesNumber, sum, point)
 									}
-								});
-								break;
+								})
+								break
 							case 2:
-								check_win_lose('win', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('win', bet)
+								clearInterval(timer)
+								break
 							case 3:
 								roll(point).then(function(res){
-									sum = dicesNumber[0] + dicesNumber[1];
-									show_on_board(dicesNumber, sum, point);
+									sum = dicesNumber[0] + dicesNumber[1]
+									show_on_board(dicesNumber, sum, point)
 									if (sum === point) {
-										state = 2;
+										state = 2
 									} else if (sum === 7) {
-										state = 4;
+										state = 4
 									} else if (sum === 2 || sum === 3 || sum === 12) {
 										//craps
-										state = 4;
-										show_on_board("Craps!!!", sum);
+										state = 4
+										show_on_board("Craps!!!", sum)
 									} else {
-										state = 3;
+										state = 3
 									}
-								});
-								break;
+								})
+								break
 							case 4:
-								check_win_lose('lose', bet);
-								clearInterval(timer);
-								break;
+								check_win_lose('lose', bet)
+								clearInterval(timer)
+								break
 						}
-					}, 3000);
+					}, 3000)
 			}
 		} else {
 			if(lang === "ro"){
-				showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 600);
+				showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 300, false)
 			} else {
-				showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 600);
+				showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 300, false)
 			}
 		}
 	}
 
 	useEffect(() => {
-		let table = props.info.table;
-		table = table.charAt(0).toUpperCase() + table.slice(1);
+		let table = props.game_choice.table_name
+		if(props.game_choice.table_id){
+			table += ' ' + props.game_choice.table_id
+		}
+		table = table.charAt(0).toUpperCase() + table.slice(1)
 		if (window.innerWidth >= 960){
-			setTitle(table);		
+			setTitle(table)
 		} else {
-			setTitle("");
+			setTitle('')
 		}
 		
-		my_craps_bets = new craps_bets(props);
-		my_craps_bets.ready();
+		my_craps_bets = new craps_bets(props)
+		my_craps_bets.ready()
 		
 		$(window).resize(function(){
 			if (window.innerWidth >= 960){
-				setTitle(table);		
+				setTitle(table)		
 			} else {
-				setTitle("");
+				setTitle("")
 			}
-			my_craps_bets.ready("resize");
-		});
-	}, []); 
+			if(document.getElementById("craps_bets_canvas")){
+				my_craps_bets.ready("resize")
+			}
+		})
+	}, []) 
 	
 	return (
 		<>
@@ -900,7 +904,7 @@ function Craps(props){
 				</div>
 			</div>
 		</>
-	);
+	)
 }
 
-export default Craps;
+export default Craps

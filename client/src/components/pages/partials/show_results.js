@@ -1,4 +1,5 @@
 import React from 'react'
+import firework from '../../css/firework.css'
 function ShowResults(props){
     let lang = props.lang
 	return (
@@ -8,7 +9,8 @@ function ShowResults(props){
                 <h1 className="header">{lang === "ro" ? <span>Alerta</span> : <span>Alert</span>}</h1>
                 <div className="message"></div>
             </div>
+            <div className="firework"></div>
         </div>
-	);
+	)
 }
 export default ShowResults

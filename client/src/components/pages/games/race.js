@@ -1,35 +1,35 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import {game_page, race_calculate_money, race_get_history} from '../../actions/actions'
-import $ from 'jquery'; 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { showResults } from '../../utils';
-import rabbit_sit from '../../img/rabbit_move/rabbit000.png';
-import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png';
-import obstacle from '../../img/icons/obstacle.png';
-import Carousel from '../partials/carousel';
+import $ from 'jquery'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import { showResults } from '../../utils'
+import rabbit_sit from '../../img/rabbit_move/rabbit000.png'
+import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png'
+import obstacle from '../../img/icons/obstacle.png'
+import Carousel from '../partials/carousel'
 
-let canvas;
-let ctx;
+let canvas
+let ctx
 
 function Land(config) {
-	let self = this;
-    self.layer = config.layer;
-    self.x = config.x;
-    self.y = config.y;
-    self.width = config.width;
-    self.height = config.height;
-};
+	let self = this
+    self.layer = config.layer
+    self.x = config.x
+    self.y = config.y
+    self.width = config.width
+    self.height = config.height
+}
 
 function Landscape(config){
-	let self = this;
-	let distance = 1;
+	let self = this
+	let distance = 1
 
-	self.x = -config.speed * distance;
-	self.y = config.y;
-    self.lands = [];
-	self.layer = config.layer;
+	self.x = -config.speed * distance
+	self.y = config.y
+    self.lands = []
+	self.layer = config.layer
 	self.width = {
 		min: config.width.min,
     	max: config.width.max
@@ -38,18 +38,18 @@ function Landscape(config){
 		min: config.height.min,
     	max: config.height.max
 	}  
-	self.speed = config.speed;
-	self.color = config.color;
-	self.color_stroke = config.color_stroke;
-	self.stroke = config.stroke;
+	self.speed = config.speed
+	self.color = config.color
+	self.color_stroke = config.color_stroke
+	self.stroke = config.stroke
 	self.populate = function (){
-		let totalWidth = 0;
-		let x = 0;
+		let totalWidth = 0
+		let x = 0
 		while (totalWidth <= 2*canvas.width + (10 * self.width.max)) {
-			let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
-			let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
+			let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min
+			let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min
 			if(self.lands.length !== 0){
-				x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x;
+				x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x
 			}
 			self.lands.push(new Land({
 				layer: self.layer,
@@ -60,40 +60,40 @@ function Landscape(config){
 				stroke: self.stroke,
 				x: x,
         		y: self.y - newHeight,
-			}));
+			}))
 
-			totalWidth = totalWidth + newWidth;
+			totalWidth = totalWidth + newWidth
 		}
 	}
 	self.draw = function(){
-		ctx.save();
-		ctx.translate(self.x, 0);
-		ctx.beginPath();
-		let lands = self.lands;
-		ctx.moveTo(self.lands[0].x, self.lands[0].y);
+		ctx.save()
+		ctx.translate(self.x, 0)
+		ctx.beginPath()
+		let lands = self.lands
+		ctx.moveTo(self.lands[0].x, self.lands[0].y)
 		
 		for(let i=0; i<lands.length-1; i++){
-			let point01 = (self.lands[i].x + self.lands[i + 1].x) / 2;
-			let point02 = (self.lands[i].y + self.lands[i + 1].y) / 2;
-			ctx.quadraticCurveTo(self.lands[i].x, self.lands[i].y, point01, point02);
+			let point01 = (self.lands[i].x + self.lands[i + 1].x) / 2
+			let point02 = (self.lands[i].y + self.lands[i + 1].y) / 2
+			ctx.quadraticCurveTo(self.lands[i].x, self.lands[i].y, point01, point02)
 		}
-		ctx.lineTo(canvas.width - self.x, canvas.height);
-    	ctx.lineTo(0 - self.x, canvas.height);
+		ctx.lineTo(canvas.width - self.x, canvas.height)
+    	ctx.lineTo(0 - self.x, canvas.height)
 
-		ctx.fillStyle = self.color;
-		ctx.lineWidth = self.stroke;
-		ctx.strokeStyle = self.color_stroke;
-		ctx.fill();
-		ctx.stroke();
+		ctx.fillStyle = self.color
+		ctx.lineWidth = self.stroke
+		ctx.strokeStyle = self.color_stroke
+		ctx.fill()
+		ctx.stroke()
 		ctx.restore()
 	}
 	self.update = function(){
-		let x = 0;
-		let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min;
-		let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min;
+		let x = 0
+		let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min
+		let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min
 		
 		if(self.lands.length !== 0){
-			x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x;
+			x = self.lands[self.lands.length - 1].x + self.lands[self.lands.length - 1].width + self.x
 		}
 		self.lands.push(new Land({
 			layer: self.layer,
@@ -104,174 +104,169 @@ function Landscape(config){
 			stroke: self.stroke,
 			x: x,
 			y: self.y - newHeight,
-		}));
+		}))
 	}
 }
 
 function Rabbit(config){
-	let self = this;
+	let self = this
 
-	self.id = config.id;
-	self.name = config.name;
-	self.color = config.color;
+	self.id = config.id
+	self.name = config.name
+	self.color = config.color
 
-	self.speed = config.speed;
-	self.delay = config.delay;
-	self.max_speed = config.max_speed;
-	self.min_speed = config.min_speed;
+	self.speed = config.speed
+	self.delay = config.delay
+	self.max_speed = config.max_speed
+	self.min_speed = config.min_speed
 
-	self.img_sit = config.img_sit;
-	self.img_move = config.img_move;
-	self.img_stop = config.img_stop;
+	self.img_sit = config.img_sit
+	self.img_move = config.img_move
+	self.img_stop = config.img_stop
 
-	self.x = config.x;
-	self.y = config.y;
-	self.w = config.w;
-	self.h = config.h;
-	self.y_original = config.y;	
+	self.x = config.x
+	self.y = config.y
+	self.w = config.w
+	self.h = config.h
+	self.y_original = config.y
 
-	self.frameWidth = 672;
-	self.frameHeight = 592;
-	self.frame = 0;
-	self.avg_dist = 0;
+	self.frameWidth = 672
+	self.frameHeight = 592
+	self.frame = 0
+	self.avg_dist = 0
 	
 	self.draw = function(ctx){
-		ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+		ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
 	}
 	self.run = function(ctx, nr, finish_line_x){
 		if(nr >= self.delay){
 			if(typeof finish_line_x === "undefined"){
 				if(self.avg_dist > canvas.width/2){
-					self.x = self.x-3;
+					self.x = self.x-3
 				}
-			} 
-			
+			}			
 			if(nr % self.speed === 0){
-				self.frame++;
-				self.x = self.x+3;				
+				self.frame++
+				self.x = self.x+3				
 			}
-
 			if(self.frame > 7){
-				self.frame = 0;
-			}
-
-			// let font_obstacle = 'bold 10px sans-serif';
-			// self.add_text(self.x+'/'+self.y, self.x,  self.y, font_obstacle, "white", "center");			
-			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+				self.frame = 0
+			}					
+			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
 		} else {
-			ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+			ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
 		}		
 	}
 
 	self.add_text = function(text, x, y, font, color, text_align, stroke, line){
-		ctx.font = font;
+		ctx.font = font
 		if(stroke && line){
-			ctx.strokeStyle = stroke;
-    		ctx.lineWidth = line;
-			ctx.strokeText(text, x, y);
-			ctx.fillStyle = color;
-			ctx.textAlign = text_align;
-			ctx.fillText(text, x, y);
+			ctx.strokeStyle = stroke
+    		ctx.lineWidth = line
+			ctx.strokeText(text, x, y)
+			ctx.fillStyle = color
+			ctx.textAlign = text_align
+			ctx.fillText(text, x, y)
 		} else {
-			ctx.fillStyle = color;
-			ctx.textAlign = text_align;
-			ctx.fillText(text, x, y);
+			ctx.fillStyle = color
+			ctx.textAlign = text_align
+			ctx.fillText(text, x, y)
 		}
 	}
 
 	self.stop = function(ctx, nr){
 		if(self.frame !== 4){	
 			if(nr % self.speed === 0){
-				self.frame++;
-				self.x = self.x+5;				
+				self.frame++
+				self.x = self.x+5				
 			}		
 			if(self.frame > 7){
-				self.frame = 0;
+				self.frame = 0
 			}						
-			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
 		} else {
-			ctx.drawImage(self.img_stop, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h);
+			ctx.drawImage(self.img_stop, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
 		}
 	}
 
 	self.change_speed = function(){
-		let random_speed = Math.floor(Math.random() * self.max_speed) + self.min_speed;
-		self.speed = random_speed;
+		let random_speed = Math.floor(Math.random() * self.max_speed) + self.min_speed
+		self.speed = random_speed
 	}
 
 	self.move_view = function(all){
-		let sum_dist = 0;
+		let sum_dist = 0
 		for(let i in all){
-			sum_dist = sum_dist + all[i].x;
+			sum_dist = sum_dist + all[i].x
 		}
-		self.avg_dist = sum_dist/all.length;
+		self.avg_dist = sum_dist/all.length
 	}
 }
 
 function Obstacle(config){
-	let self = this;
-	self.id = config.id+1;
-	self.img = config.img;
-	self.color = config.color;
-	self.border = config.border;
-	self.border_color = config.border_color;
-	self.x = config.x;
-	self.y = config.y + config.w;
-	self.w = config.w;
-	self.h = config.h;
-	self.frameWidth = 816;
-	self.frameHeight = 635;
+	let self = this
+	self.id = config.id+1
+	self.img = config.img
+	self.color = config.color
+	self.border = config.border
+	self.border_color = config.border_color
+	self.x = config.x
+	self.y = config.y + config.w
+	self.w = config.w
+	self.h = config.h
+	self.frameWidth = 816
+	self.frameHeight = 635
 
 	self.draw = function(ctx){
-		let y001 = self.y+self.h/2;
-		ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, y001, self.w, self.h);
-		//draw_dot(self.x, y001, self.w/2, 0, 2 * Math.PI, false, self.color, self.border, self.border_color);
-		// let font_obstacle = '10px sans-serif';
-		// self.add_text(self.x+'/'+self.y, self.x,  y001, font_obstacle, "black", "center");
+		let y001 = self.y+self.h/2
+		ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, y001, self.w, self.h)
+		//draw_dot(self.x, y001, self.w/2, 0, 2 * Math.PI, false, self.color, self.border, self.border_color)
+		// let font_obstacle = '10px sans-serif'
+		// self.add_text(self.x+'/'+self.y, self.x,  y001, font_obstacle, "black", "center")
 	}
 	self.add_text = function(text, x, y, font, color, text_align, stroke, line){
-		ctx.font = font;
+		ctx.font = font
 		if(stroke && line){
-			ctx.strokeStyle = stroke;
-    		ctx.lineWidth = line;
-			ctx.strokeText(text, x, y);
-			ctx.fillStyle = color;
-			ctx.textAlign = text_align;
-			ctx.fillText(text, x, y);
+			ctx.strokeStyle = stroke
+    		ctx.lineWidth = line
+			ctx.strokeText(text, x, y)
+			ctx.fillStyle = color
+			ctx.textAlign = text_align
+			ctx.fillText(text, x, y)
 		} else {
-			ctx.fillStyle = color;
-			ctx.textAlign = text_align;
-			ctx.fillText(text, x, y);
+			ctx.fillStyle = color
+			ctx.textAlign = text_align
+			ctx.fillText(text, x, y)
 		}
 	}
 }
 
 function Lane(config){
-	let self = this;
-	self.id = config.id;
+	let self = this
+	self.id = config.id
 
-	self.x = config.x;
-	self.y = config.y;
-	self.w = config.w;
-	self.h = config.h;
-	self.min_speed = 0;
+	self.x = config.x
+	self.y = config.y
+	self.w = config.w
+	self.h = config.h
+	self.min_speed = 0
 
-	self.rabbit = null;
-	self.rabbit_config = config.rabbit_config;
+	self.rabbit = null
+	self.rabbit_config = config.rabbit_config
 
-	self.obstacles = [];
-	self.obstacle_img = config.obstacle_img;	
-	self.obstacle_size = config.obstacle_size;	
+	self.obstacles = []
+	self.obstacle_img = config.obstacle_img	
+	self.obstacle_size = config.obstacle_size	
 	
 	self.create_rabbit = function(){
-		self.rabbit = new Rabbit(self.rabbit_config);
+		self.rabbit = new Rabbit(self.rabbit_config)
 	}
 
 	self.create_obstacles = function(){		
-		let chance = Math.random() < 0.01;//probability of 1%		
+		let chance = Math.random() < 0.01 //probability of 1%		
 		if(chance){
-			let x = canvas.width + self.obstacle_size[0];
-			let t = self.obstacles.length+1;
+			let x = canvas.width + self.obstacle_size[0]
+			let t = self.obstacles.length+1
 			if(self.obstacles.length>0){
 				if(x > self.obstacles[self.obstacles.length-1].x + 10*self.obstacle_size[0]){					
 					let obstacle = new Obstacle({
@@ -285,8 +280,8 @@ function Lane(config){
 						y: self.y,
 						w: self.obstacle_size[0],
 						h: self.obstacle_size[1],
-					});
-					self.obstacles.push(obstacle);
+					})
+					self.obstacles.push(obstacle)
 				}
 			} else {
 				let obstacle = new Obstacle({
@@ -300,171 +295,167 @@ function Lane(config){
 					y: self.y,
 					w: self.obstacle_size[0],
 					h: self.obstacle_size[1],
-				});
-				self.obstacles.push(obstacle);
+				})
+				self.obstacles.push(obstacle)
 			}
 		}
 	}
 
 	self.lane_update = function(obstacle){
-		obstacle.x = obstacle.x-3;	
+		obstacle.x = obstacle.x-3
 	}
 
 	self.draw_obstacle = function(ctx, obstacle){
-		obstacle.draw(ctx);
+		obstacle.draw(ctx)
 	}
 
 	self.move_obstacles = function(ctx, nr){
 		for(let i in self.obstacles){
-			self.lane_update(self.obstacles[i], nr);
-			self.draw_obstacle(ctx, self.obstacles[i]);
+			self.lane_update(self.obstacles[i], nr)
+			self.draw_obstacle(ctx, self.obstacles[i])
 			if(self.obstacles[i].x < -50){
-				self.obstacles.splice(i, 1); 
-				i--;
+				self.obstacles.splice(i, 1) 
+				i--
 			}
 		}
 	}
 
 	self.collision = function(){
-		let collision = false;	
+		let collision = false	
 		for(let i in self.obstacles){
 			if(self.collision_entities(self.rabbit, self.obstacles[i])){
-				collision = true;
-				break;
+				collision = true
+				break
 			}
 		}
-		return collision;
+		return collision
 	}
 	self.collision_entities = function(rect01, rect02){	
-		let cond01 = rect01.x <= rect02.x + rect02.w;
-		let cond02 = rect01.y <= rect02.y + rect02.h;
-		let cond03 = rect02.x <= rect01.x + rect01.w;
-		let cond04 = rect02.y <= rect01.y + rect01.h;		
-		return cond01 && cond02 && cond03 && cond04;
+		let cond01 = rect01.x <= rect02.x + rect02.w
+		let cond02 = rect01.y <= rect02.y + rect02.h
+		let cond03 = rect02.x <= rect01.x + rect01.w
+		let cond04 = rect02.y <= rect01.y + rect01.h		
+		return cond01 && cond02 && cond03 && cond04
 	}
 
 	self.action = function(rabbit_list, nr, finish_line_x){	
 		//check collision
-		self.rabbit.y = self.rabbit.y_original;			
+		self.rabbit.y = self.rabbit.y_original		
 		if(self.collision()){					
-			self.rabbit.y_original = self.rabbit.y;
-			self.rabbit.y = self.rabbit.y - 2*self.obstacle_size[0];
+			self.rabbit.y_original = self.rabbit.y
+			self.rabbit.y = self.rabbit.y - 2*self.obstacle_size[0]
 		}
 
 		//create and move obstacle
-		self.create_obstacles(nr, finish_line_x);
-		self.move_obstacles(ctx, nr);
+		self.create_obstacles(nr, finish_line_x)
+		self.move_obstacles(ctx, nr)
 
 		//make rabbit run
-		self.rabbit.change_speed();
-		self.rabbit.move_view(rabbit_list, nr);
-		self.rabbit.run(ctx, nr, finish_line_x);
+		self.rabbit.change_speed()
+		self.rabbit.move_view(rabbit_list, nr)
+		self.rabbit.run(ctx, nr, finish_line_x)
 
-		self.get_min_speed(rabbit_list, nr);
+		self.get_min_speed(rabbit_list, nr)
 	}
 
 	self.get_min_speed = function(all){
-		let min_speed = all[0].speed;
+		let min_speed = all[0].speed
 		for(let i in all){
 			if(min_speed > all[i].speed){
 				min_speed = all[i].speed
 			}
 		}
-		self.min_speed = min_speed;
+		self.min_speed = min_speed
 	}
 }
 
 function FinishLine(config){
-	let self = this;
-	
-	self.fillStyle = config.fillStyle;
-	self.lineWidth = config.lineWidth;
-	self.strokeStyle = config.strokeStyle;
-	self.x = config.x;
-	self.y = config.y;
-	self.cube = config.cube;
+	let self = this
+	let space = 2
 
-	let space = 2;
+	self.fillStyle = config.fillStyle
+	self.lineWidth = config.lineWidth
+	self.strokeStyle = config.strokeStyle
+	self.x = config.x
+	self.y = config.y
+	self.cube = config.cube	
 
 	self.draw = function(ctx){
-		//line01
-		draw_rect(ctx, self.x, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle);
+		draw_rect(ctx, self.x, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle) //line01
 		
 		//cubes
-		let t = self.y-self.cube;
-		let z = 0;
+		let t = self.y-self.cube
+		let z = 0
 		while(t<canvas.height){
-			t = t+self.cube;
-			z++;
+			t = t+self.cube
+			z++
 			if(z%2===0){
-				draw_rect(ctx, self.x+1*self.cube+space, t, self.cube, self.cube, self.fillStyle, self.lineWidth, self.strokeStyle);
+				draw_rect(ctx, self.x+1*self.cube+space, t, self.cube, self.cube, self.fillStyle, self.lineWidth, self.strokeStyle)
 			} else {
-				draw_rect(ctx, self.x+2*self.cube, t, self.cube, self.cube, self.fillStyle, self.lineWidth, self.strokeStyle);
+				draw_rect(ctx, self.x+2*self.cube, t, self.cube, self.cube, self.fillStyle, self.lineWidth, self.strokeStyle)
 			}
-		}		
-
-		//line03
-		draw_rect(ctx, self.x + 4*self.cube-space, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle);	
+		}
+		
+		draw_rect(ctx, self.x + 4*self.cube-space, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle) //line03
 	}
 	self.move = function(x){
-		self.x = x;
+		self.x = x
 	}
 }
 
 function race_game(props){
-	console.log(props)
-	let self = this;
-	let socket = props.data.socket;
-	let lang = props.data.lang;
-	let dispatch = props.dispatch;
-	let dispatch_nr = 0;
-	let rabbit_array = props.rabbitArray;	
-	let lane_list = [];
-	let rabbit_list = [];
+	let self = this
+	let socket = props.socket
+	let lang = props.lang
+	let dispatch = props.dispatch
+	let dispatch_nr = 0
+	let rabbit_array = props.rabbitArray	
+	let lane_list = []
+	let rabbit_list = []
 	
-	let canvas_width = 900;
-	let canvas_height = 800;
+	let canvas_width = 900
+	let canvas_height = 800
 	
-	let font_title = 'bold 30px sans-serif';
-	let font_counter = 'bold 40px sans-serif';
+	let font_title = 'bold 30px sans-serif'
+	let font_counter = 'bold 40px sans-serif'
 
-	let landscape = [];
-	let lanscape_config = {};
+	let landscape = []
+	let lanscape_config = {}
 	let land_color = [
 		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
 		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
 		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1]
 	]	
-	let draw_road_height;
+	let draw_road_height
 
-	let rabbit_img_sit = {src: rabbit_sit};
-	let rabbit_img_move = {src: rabbit_move};
-	let rabbit_img_stop = {src: rabbit_sit};
-	let obstacle_img = {src: obstacle};
-	let rabbit_size;
-	let obstacle_size;
+	let rabbit_img_sit = {src: rabbit_sit}
+	let rabbit_img_move = {src: rabbit_move}
+	let rabbit_img_stop = {src: rabbit_sit}
+	let obstacle_img = {src: obstacle}
+	let rabbit_size
+	let obstacle_size
 
-	let finish_line;
-	let finish_line_x = 0;
+	let finish_line
+	let finish_line_x = 0
 		
 	this.ready = function(reason){
-		self.createCanvas(canvas_width, canvas_height);	
-		self.start(reason);
+		self.createCanvas(canvas_width, canvas_height)	
+		self.start(reason)
 	}
 
 	this.createCanvas = function(canvas_width, canvas_height){	
-		canvas = document.getElementById("race_canvas");	
-		ctx = canvas.getContext("2d");
+		canvas = document.getElementById("race_canvas")	
+		ctx = canvas.getContext("2d")
 		
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 300;
-				canvas.height = 300;			
+				canvas.width = 300
+				canvas.height = 300			
 			} else {
 				//small portrait
-				canvas.width = 280;
-				canvas.height = 300;		
+				canvas.width = 280
+				canvas.height = 300		
 			}
 			lanscape_config = {
 				y: 100,
@@ -472,22 +463,22 @@ function race_game(props){
 				height: [20, 4, 30, 4],
 				sun: [35, 35, 15],
 			}
-			draw_road_height = 101;
-			rabbit_size = [5, 100, 35, 35, -5];
-			obstacle_size = [10, 10];
-			font_title = 'bold 20px sans-serif';
-			font_counter = 'bold 30px sans-serif';
+			draw_road_height = 101
+			rabbit_size = [5, 100, 35, 35, -5]
+			obstacle_size = [10, 10]
+			font_title = 'bold 20px sans-serif'
+			font_counter = 'bold 30px sans-serif'
 		} else {
 			//big
-			canvas.width = 900;
-			canvas.height = 800;
-			font_title = 'bold 30px sans-serif';
-			font_counter = 'bold 40px sans-serif';
+			canvas.width = 900
+			canvas.height = 800
+			font_title = 'bold 30px sans-serif'
+			font_counter = 'bold 40px sans-serif'
 			if (window.innerWidth >= 1200){
-				canvas.width = 1000;	
+				canvas.width = 1000	
 			} 
 			if (window.innerWidth >= 1400){
-				canvas.width = 1200;
+				canvas.width = 1200
 			} 
 			lanscape_config = {
 				y: 500,
@@ -495,65 +486,65 @@ function race_game(props){
 				height: [200, 40, 300, 40],
 				sun: [50, 50, 30],
 			}
-			draw_road_height = canvas.height/2;
-			rabbit_size = [10, 350, 80, 80, -10];
-			obstacle_size = [20, 20];		
+			draw_road_height = canvas.height/2
+			rabbit_size = [10, 350, 80, 80, -10]
+			obstacle_size = [20, 20]		
 		}
 		
-		canvas_width = canvas.width;
-		canvas_height = canvas.height;		
-		canvas.height = canvas_height;		
-		$('#race_order_container').css("width", canvas_width+"px");	
-		finish_line_x = canvas_width;
+		canvas_width = canvas.width
+		canvas_height = canvas.height		
+		canvas.height = canvas_height		
+		$('#race_order_container').css("width", canvas_width+"px")	
+		finish_line_x = canvas_width
 	}
 
 	this.start = function(reason){
-		let promises = [];
+		let promises = []
 		if(reason !== "resize"){
-			promises.push(self.preaload_images(rabbit_img_sit));
-			promises.push(self.preaload_images(rabbit_img_move));
-			promises.push(self.preaload_images(rabbit_img_stop));
-			promises.push(self.preaload_images(obstacle_img));
+			promises.push(self.preaload_images(rabbit_img_sit))
+			promises.push(self.preaload_images(rabbit_img_move))
+			promises.push(self.preaload_images(rabbit_img_stop))
+			promises.push(self.preaload_images(obstacle_img))
 			Promise.all(promises).then(function(result){
-				lane_list = self.create_lane(result);
-				rabbit_list = self.get_rabbits(lane_list);
-				self.background();
-				self.draw_rabbits('sit');
-				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
+				lane_list = self.create_lane(result)
+				rabbit_list = self.get_rabbits(lane_list)
+				self.background()
+				self.draw_rabbits('sit')
+				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center")
 				setTimeout(function(){
-					self.counter(3);
-				}, 500);
-			});			
+					self.counter(3)
+				}, 500)
+			})			
 		} else {
-			self.background();
-			self.draw_rabbits('sit');
-			self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
+			self.background()
+			self.draw_rabbits('sit')
+			self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center")
 			setTimeout(function(){
-				self.counter(3);
-			}, 500);
+				self.counter(3)
+			}, 500)
 		}
 	}
 
 	self.get_rabbits = function(lane_list){
-		let rabbits = [];
+		let rabbits = []
 		for(let i in lane_list){
-			rabbits.push(lane_list[i].rabbit);
+			rabbits.push(lane_list[i].rabbit)
 		}
-		return rabbits;
+		return rabbits
 	}
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
-			let image = new Image();
-			image.src = item.src;
+			let image = new Image()
+			image.src = item.src
 			image.addEventListener("load", function() {
 				resolve(image)
-			}, false);
-		});
+			}, false)
+		})
 	}
 
 	this.create_lane = function(img){
-		let lanes = [];
+		let lanes = []
 		for(let i in rabbit_array){
 			let rabbit_config = {
 				id: rabbit_array[i].id, 
@@ -581,68 +572,68 @@ function race_game(props){
 				obstacle_img: img[3],
 				obstacle_size: obstacle_size,
 			})
-			lane.create_rabbit();
-			lanes.push(lane);			
+			lane.create_rabbit()
+			lanes.push(lane)			
 		}
-		return lanes;
+		return lanes
 	}
 
 	this.draw_rabbits = function(action, nr, finish_line_x){
 		if(action==="run"){
 			for(let i in lane_list){
-				lane_list[i].action(rabbit_list, nr, finish_line_x);
+				lane_list[i].action(rabbit_list, nr, finish_line_x)
 			}
-			rabbit_list = self.order_rabbits(rabbit_list);
-			self.post_order_rabbits(rabbit_list);
+			rabbit_list = self.order_rabbits(rabbit_list)
+			self.post_order_rabbits(rabbit_list)
 		} else {
 			for(let i in lane_list){
-				lane_list[i].rabbit.draw(ctx);
+				lane_list[i].rabbit.draw(ctx)
 			}
 		}
 	}
 
 	this.post_order_rabbits = function(list){
-		$('#race_order').empty();
+		$('#race_order').empty()
 		for(let i in list){
-			let x = parseInt(i)+1;
+			let x = parseInt(i)+1
 			if(x === 1){
-				x = x + 'st';
+				x = x + 'st'
 			} else if(x === 2){
-				x = x + 'nd';
+				x = x + 'nd'
 			} else if(x === 3){
-				x = x + 'rd';
+				x = x + 'rd'
 			} else {
-				x = x + 'th';
+				x = x + 'th'
 			}
-			$('#race_order').append('<div class="race_order_elem_container"><div class="race_order_elem '+list[i].color+'"><span class="order">'+x+': </span><span class="color">'+list[i].name+'</span></div></div>');
+			$('#race_order').append('<div class="race_order_elem_container"><div class="race_order_elem '+list[i].color+'"><span class="order">'+x+'</span><span class="color">: '+list[i].name+'</span></div></div>')
 		}
 	}
 
 	this.add_text = function(text, x, y, font, color, text_align, stroke, line){
-		ctx.font = font;
+		ctx.font = font
 		if(stroke && line){
-			ctx.strokeStyle = stroke;
-    		ctx.lineWidth = line;
-			ctx.strokeText(text, x, y);
-			ctx.fillStyle = color;
-			ctx.textAlign = text_align;
-			ctx.fillText(text, x, y);
+			ctx.strokeStyle = stroke
+    		ctx.lineWidth = line
+			ctx.strokeText(text, x, y)
+			ctx.fillStyle = color
+			ctx.textAlign = text_align
+			ctx.fillText(text, x, y)
 		} else {
-			ctx.fillStyle = color;
-			ctx.textAlign = text_align;
-			ctx.fillText(text, x, y);
+			ctx.fillStyle = color
+			ctx.textAlign = text_align
+			ctx.fillText(text, x, y)
 		}		
 	}
 
 	this.background = function(){
-		self.create_background();	
-		self.draw_background();	
-		self.create_finish_line();
+		self.create_background()	
+		self.draw_background()	
+		self.create_finish_line()
 	}
 
 	this.create_background = function(){
-		let i = land_color.length;
-		landscape = [];
+		let i = land_color.length
+		landscape = []
 		while(i--){
 			let config = {
 				layer: i,
@@ -661,18 +652,18 @@ function race_game(props){
 				stroke: land_color[i][2]
 			}
 			let my_land = new Landscape(config)
-			my_land.populate();
+			my_land.populate()
 			landscape.push(my_land)
 		}	
 	}
 	this.draw_background = function(){
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		self.draw_sun();		
-		let i = landscape.length;
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
+		self.draw_sun()		
+		let i = landscape.length
 		while (i--) {
-			landscape[i].draw();
+			landscape[i].draw()
 		}
-		self.draw_road(-100, draw_road_height, 2*canvas.width, draw_road_height, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)");		
+		self.draw_road(-100, draw_road_height, 2*canvas.width, draw_road_height, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)")		
 	}
 
 	this.create_finish_line = function(){
@@ -683,289 +674,290 @@ function race_game(props){
 			x: finish_line_x,
 			y: draw_road_height,
 			cube: 10,
-		});
-		finish_line.draw(ctx);
+		})
+		finish_line.draw(ctx)
 	}
 
 	this.draw_sun = function(){
-		draw_dot(canvas.width-lanscape_config.sun[0], lanscape_config.sun[1], lanscape_config.sun[2], 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, 'rgba(255, 255, 0, 0.5)');
+		draw_dot(canvas.width-lanscape_config.sun[0], lanscape_config.sun[1], lanscape_config.sun[2], 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, 'rgba(255, 255, 0, 0.5)')
 	}
 
 	this.draw_road = function(x, y, w, h, line, bg, color){
-		ctx.clearRect(0, h, canvas.width, canvas.height);
-		ctx.beginPath();
-		ctx.fillStyle = bg;
-		ctx.fillRect(x, y, w, canvas.height);
-		ctx.strokeStyle = color;
-		ctx.lineWidth = line;
-		ctx.strokeRect(x, y, w, canvas.height);
+		ctx.clearRect(0, h, canvas.width, canvas.height)
+		ctx.beginPath()
+		ctx.fillStyle = bg
+		ctx.fillRect(x, y, w, canvas.height)
+		ctx.strokeStyle = color
+		ctx.lineWidth = line
+		ctx.strokeRect(x, y, w, canvas.height)
 	}
 
 	this.counter = function(totalTime){
-		let self_counter = this;
-		self_counter.totaTime = totalTime;
-		self_counter.timeRemaining = self_counter.totaTime;
-		let my_counter;
+		let self_counter = this
+		self_counter.totaTime = totalTime
+		self_counter.timeRemaining = self_counter.totaTime
+		let my_counter
 
-		timerGame();
+		timerGame()
 
 		function timerGame(){	
 			my_counter = setInterval(function(){
-				self_counter.timeRemaining = self_counter.timeRemaining - 1;
+				self_counter.timeRemaining = self_counter.timeRemaining - 1
 				if(self_counter.timeRemaining < 0){
-					self_counter.timeRemaining = 0;
+					self_counter.timeRemaining = 0
 				}
-				self.draw_background();
-				self.draw_rabbits('sit');
-				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center");
-				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "rgba(255, 215, 0, 0.5)", "center", "gold", "1");
+				self.draw_background()
+				self.draw_rabbits('sit')
+				self.add_text("Rabbit Race", canvas.width/2,  30, font_title, "gold", "center")
+				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "rgba(255, 215, 0, 0.5)", "center", "gold", "1")
 			  	if(self_counter.timeRemaining <= 0){
-					clearInterval(my_counter);
-					self.start_race(800);
+					clearInterval(my_counter)
+					self.start_race(800)
 			  	}
-			}, 1000);
+			}, 1000)
 		}
 	}
 	
 	this.start_race = function(time, monkey){
-		let nr = 0;
-		dispatch_nr++;
-		// time = 100;
-		let move_landscape = false;
+		let nr = 0
+		dispatch_nr++
+		// time = 100
+		let move_landscape = false
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
 			window.webkitRequestAnimationFrame ||
 			window.mozRequestAnimationFrame    ||
 			function( callback ){
-			  window.setTimeout(callback, 1000 / 60);
-			};
-	  	})();
+			  window.setTimeout(callback, 1000 / 60)
+			}
+	  	})()
 	  
 	  	function race() {			
-			let stop = false;
-			let avg_dist = lane_list[0].rabbit.avg_dist;
+			let stop = false
+			let avg_dist = lane_list[0].rabbit.avg_dist
 
 			if (nr > time) {
-				rabbit_list = self.order_rabbits(rabbit_list);			
-				let end_rabbit = true;
-				let end_finish_line = true;
-				let sit_rabbit = true;
+				rabbit_list = self.order_rabbits(rabbit_list)			
+				let end_rabbit = true
+				let end_finish_line = true
+				let sit_rabbit = true
 				
 				if(finish_line_x > canvas.width/2){
-					finish_line_x = finish_line_x - 5;
-					end_finish_line = false;
+					finish_line_x = finish_line_x - 5
+					end_finish_line = false
 				} 
 				
-				end_rabbit = self.check_rabbits(finish_line_x);
+				end_rabbit = self.check_rabbits(finish_line_x)
 
 				if(end_rabbit && end_finish_line){
 					for(let i in lane_list){		
 						if(lane_list[i].rabbit.frame !== 4){
-							sit_rabbit = false;
-							break;
+							sit_rabbit = false
+							break
 						}
 					}
 
 					if(sit_rabbit){
-						stop = true;
-						self.draw_background();
-						finish_line.draw(ctx);
+						stop = true
+						self.draw_background()
+						finish_line.draw(ctx)
 
 						for(let i in lane_list){		
-							lane_list[i].rabbit.stop(ctx, nr);
+							lane_list[i].rabbit.stop(ctx, nr)
 						}
-						self.win_lose();
+						self.win_lose()
 					} else {
-						nr++; 		
-						stop = false;
-						self.draw_background();
-						finish_line.draw(ctx);
+						nr++
+						stop = false
+						self.draw_background()
+						finish_line.draw(ctx)
 
 						for(let i in lane_list){		
-							lane_list[i].rabbit.stop(ctx, nr);
+							lane_list[i].rabbit.stop(ctx, nr)
 						}
 					}
 					
 				} else {
-					nr++; 		
-					stop = false;
-					self.draw_background();
-					finish_line.move(finish_line_x);
-					finish_line.draw(ctx);
+					nr++
+					stop = false
+					self.draw_background()
+					finish_line.move(finish_line_x)
+					finish_line.draw(ctx)
 
 					if(end_rabbit){
 						for(let i in lane_list){		
-							lane_list[i].rabbit.stop(ctx, nr, false);
+							lane_list[i].rabbit.stop(ctx, nr, false)
 						}
 					} else {
-						self.draw_rabbits('run', nr, finish_line_x); 
+						self.draw_rabbits('run', nr, finish_line_x) 
 					}
 				}			
 			} else{
-				nr++; 		
-				stop = false;
+				nr++	
+				stop = false
 				if(!move_landscape){
 					if(avg_dist > canvas.width/2){
-						move_landscape = true;
+						move_landscape = true
 					}
 				} else {
-					let i = landscape.length;				
+					let i = landscape.length			
 					while (i--) {
-						landscape[i].update();
-						let my_lands = landscape[i].lands;
+						landscape[i].update()
+						let my_lands = landscape[i].lands
 						for(let j in my_lands){
-							my_lands[j].x = my_lands[j].x + landscape[i].x;
+							my_lands[j].x = my_lands[j].x + landscape[i].x
 						}
 					}
 				}
-				self.draw_background();	
-				self.draw_rabbits('run', nr);
+				self.draw_background()	
+				self.draw_rabbits('run', nr)
 			} 	
 			
 			if(!stop){
-				window.requestAnimFrame(race);
+				window.requestAnimFrame(race)
 			} else {
-				window.cancelAnimationFrame(race);
+				window.cancelAnimationFrame(race)
 			}
-	  	};
+	  	}
 
 	  	if(dispatch_nr === 1){
-			race();
+			race()
 	  	}	  
 	}
 
 	this.win_lose = function(){
-		rabbit_list = self.order_rabbits(rabbit_list);
-		let win_lose = [];
-		let money = props.data.money;
+		rabbit_list = self.order_rabbits(rabbit_list)
+		let win_lose = []
+		let money = props.data.money
 		for(let i in rabbit_array){
 			if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
-				let bet = rabbit_array[i].bet;
-				let win = 10 * bet;
-				let place = rabbit_array[i].place;
-				let elem = {};
+				let bet = rabbit_array[i].bet
+				let win = 10 * bet
+				let place = rabbit_array[i].place
+				let elem = {}
 				if(rabbit_list[place-1].id === rabbit_array[i].id){
-					money = money + win;
+					money = money + win
 					elem = {win: true, get:win, money_history: money, history: rabbit_array[i], rabbit_list: rabbit_list}				
 				} else {
-					money = money - bet;
+					money = money - bet
 					elem = {win: false, get:bet, money_history: money, history: rabbit_array[i], rabbit_list: rabbit_list}							
 				}
-				win_lose.push(elem);
+				win_lose.push(elem)
 			}
 		}
 		
-		let get = props.data.money - win_lose[win_lose.length-1].money_history;
-		let remaining_money = win_lose[win_lose.length-1].money_history;
-		let status = 'win';
+		let get = props.data.money - win_lose[win_lose.length-1].money_history
+		let remaining_money = win_lose[win_lose.length-1].money_history
+		let status = 'win'
 
-		dispatch(race_calculate_money(remaining_money));
-		dispatch(race_get_history(win_lose));
+		dispatch(race_calculate_money(remaining_money))
+		dispatch(race_get_history(win_lose))
 
 		if($('#user_money').length>0){
 			if($('#user_money span').length>0){
-				$('#user_money span').text(remaining_money);
+				$('#user_money span').text(remaining_money)
 			}
 		}
 
 		if(lang === "ro"){
 			if(props.data.money<remaining_money){
-				showResults("Rezultate", "Ai castigat " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
+				showResults("Rezultat", "Ai castigat " + get + " morcovi!", 300, true)
 			} else if(get>0){
-				showResults("Rezultate", "Ai pierdut " + get + " morcovi. Mai ai " + remaining_money + " morcovi!");
+				showResults("Rezultat", "Ai pierdut " + get + " morcovi!", 300, false)
 				status = "lose"
 			} else {
-				showResults("Rezultate", "Ai " + remaining_money + " morcovi!");
+				showResults("Rezultat", "Ai " + remaining_money + " morcovi!", 300, false)
 			}			
 		} else {
 			if(props.data.money<remaining_money){
-				showResults("Results", "you won " + get + " carrots. You have " + remaining_money + " carrots!");
+				showResults("Results", "you won " + get + " carrots!", 300, true)
 			} else if(get>0){
-				showResults("Results", "You lost " + get + " carrots. You have " + remaining_money + " carrots!");
+				showResults("Results", "You lost " + get + " carrots!", 300, false)
 				status = "lose"
 			} else {
-				showResults("Results", "You have " + remaining_money + " carrots!");
+				showResults("Results", "You have " + remaining_money + " carrots!", 300, false)
 			}
 		}
-		self.pay(win_lose, get, status);	
+		self.pay(win_lose, get, status)	
 	}
 
 	this.pay = function(win_lose, get, status){
-		let money = win_lose[win_lose.length-1].money_history;
+		let money = win_lose[win_lose.length-1].money_history
 		let race_payload_server = {
-			user_id: props.data.id, 
 			user_uuid: props.data.uuid, 
-			user_table: props.data.user_table, 
+			game_choice: 'race',
 			money: money,
 			bet: get,
 			status: status,
 		}
-		socket.emit('results_send', race_payload_server);
+		socket.emit('results_send', race_payload_server)
 	}
 
 	this.check_rabbits = function(line){
 		//check if all rabbits passed the finish line
-		let passed = true;
+		let passed = true
 		for(let i in lane_list){		
 			if(lane_list[i].rabbit.x < line){
-				passed = false;
-				break;
+				passed = false
+				break
 			}
 		}
-		return passed;
+		return passed
 	}
 
 	this.order_rabbits = function(list){
-		let done = false;
+		let done = false
 		while (!done) { //false
-			done = true;
+			done = true
 			for (let i = 1; i < list.length; i += 1) {
 				if (list[i - 1].x < list[i].x) {
-					done = false;
-					let tmp = list[i - 1];
-					list[i - 1] = list[i];
-					list[i] = tmp;
+					done = false
+					let tmp = list[i - 1]
+					list[i - 1] = list[i]
+					list[i] = tmp
 				} 
 			}
 		}
-		return list;
+		return list
 	}
 }
 
 function draw_dot(x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
-	ctx.beginPath();
-	ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
-	ctx.fillStyle = fillStyle;
+	ctx.beginPath()
+	ctx.arc(x, y, r, sAngle, eAngle, counterclockwise)
+	ctx.fillStyle = fillStyle
 	if(strokeStyle !== ""){
-		ctx.lineWidth = lineWidth;
-		ctx.strokeStyle = strokeStyle;
-		ctx.stroke();
+		ctx.lineWidth = lineWidth
+		ctx.strokeStyle = strokeStyle
+		ctx.stroke()
 	}		
-	ctx.fill();
-	ctx.closePath();
+	ctx.fill()
+	ctx.closePath()
 }
 function draw_rect(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
-	ctx.beginPath();
-	ctx.rect(x, y, width, height);
-	ctx.fillStyle = fillStyle;
+	ctx.beginPath()
+	ctx.rect(x, y, width, height)
+	ctx.fillStyle = fillStyle
 	if(strokeStyle !== ""){
-		ctx.lineWidth = lineWidth;
-		ctx.strokeStyle = strokeStyle;
-		ctx.stroke();
+		ctx.lineWidth = lineWidth
+		ctx.strokeStyle = strokeStyle
+		ctx.stroke()
 	}		
-	ctx.fill();
-	ctx.closePath();
+	ctx.fill()
+	ctx.closePath()
 }
 
 function RaceGame(props){
 	useEffect(() => {
-		let my_race = new race_game(props);
-		my_race.ready();	
+		let my_race = new race_game(props)
+		my_race.ready()	
 		$(window).resize(function(){
-			my_race.ready("resize");	
-		});
-	}, []); 
+			if(document.getElementById("race_canvas")){
+				my_race.ready("resize")	
+			}
+		})
+	}, []) 
 	return (
 		<div className="race_container">
 			<canvas className="shadow_convex" id="race_canvas"></canvas>
@@ -980,44 +972,44 @@ function RaceGame(props){
 }
 
 function RaceTables(props){
-	let lang = props.data.lang;
-	let socket = props.data.socket;
-	const [rabbitArray, setRabbitArray] = useState(props.rabbitArray);
-	const carousel = useRef(null);
+	let lang = props.lang
+	let socket = props.socket
+	const [rabbitArray, setRabbitArray] = useState(props.rabbitArray)
+	const carousel = useRef(null)
 
 	function check_bets(){
 		//check to see if at least one rabbit has a bet
-		let start = false;
+		let start = false
 		for(let i in rabbitArray){
 			if(rabbitArray[i].bet > 0){
-				start = true;
-				break;
+				start = true
+				break
 			}
 		}
-		return start;
+		return start
 	}
 
 	function race_start(){
 		let item_list_changed = carousel.current.item_list_changed
-		setRabbitArray(item_list_changed);
-		let start = check_bets();				
+		setRabbitArray(item_list_changed)
+		let start = check_bets()				
 		if(start){
-		 	props.get_data(rabbitArray);
+		 	props.get_data(rabbitArray)
 		} else {
 		 	if(props.lang === "ro"){
-		 		showResults("", "Pariati pe un iepure pentru a intra in joc.");	
+		 		showResults("", "Pariati pe un iepure pentru a intra in joc.", 300, false)	
 		 	} else {
-				showResults("", "Please place your bet before playing.");	
+				showResults("", "Please place your bet before playing.", 300, false)	
 		 	}							
 		}
 	}
 
 	function race_clear_bets(){
-		let array = rabbitArray;
+		let array = rabbitArray
 		for(let i in array){
-			array[i].bet = 0;
+			array[i].bet = 0
 		}
-		setRabbitArray(array);
+		setRabbitArray(array)
 		if($(".race_input").length>0){
 			$(".race_input").val(0)
 		}
@@ -1027,7 +1019,7 @@ function RaceTables(props){
 		<>
 			<Row>
 				<Col sm={2}></Col>
-				<Col xs={10} sm={8} className="race_table_container spacing_small">						
+				<Col xs={10} sm={8} className="race_table_container">						
 					<Row>
 						<Col sm={12}>
 							<div className="race_table_header shadow_convex">
@@ -1064,25 +1056,25 @@ function RaceTables(props){
 }
 
 function Race(props){
-	let dispatch = useDispatch();
-	const [rabbitArray, setRabbitArray] = useState([]);	
-	const [ready, setReady] = useState(false);	
-	const [startRace, setStartRace] = useState(false);
-	let socket = props.info.socket;
+	let dispatch = useDispatch()
+	const [rabbitArray, setRabbitArray] = useState([])	
+	const [ready, setReady] = useState(false)	
+	const [startRace, setStartRace] = useState(false)
+	let socket = props.socket
 	
 	useEffect(() => {
-		dispatch(game_page("race"));
-		socket.emit('race_board_send', {uuid: props.info.uuid});
+		dispatch(game_page("race"))
+		socket.emit('race_board_send', {uuid: props.data.uuid})
 		socket.on('race_board_read', function(data){
 			if(data && data.rabbit_race){
-				setRabbitArray(data.rabbit_race);
+				setRabbitArray(data.rabbit_race)
 			}
-			setReady(true);
-		});
-	}, []);  
+			setReady(true)
+		})
+	}, [])  
 	
 	function get_data(){
-		setStartRace(true);
+		setStartRace(true)
 	}
 	
 	return (
@@ -1090,9 +1082,9 @@ function Race(props){
 			{(() => {
 				if (ready) {
 					if (startRace) {
-						return <RaceGame data={props.info} rabbitArray={rabbitArray} dispatch={dispatch}></RaceGame>
+						return <RaceGame data={props.data} rabbitArray={rabbitArray} lang={props.lang} socket={props.socket} dispatch={dispatch}></RaceGame>
 					} else {
-						return <RaceTables data={props.info} rabbitArray={rabbitArray} get_data={get_data} dispatch={dispatch}></RaceTables>
+						return <RaceTables data={props.data} rabbitArray={rabbitArray} lang={props.lang} socket={props.socket} dispatch={dispatch} get_data={get_data}></RaceTables>
 					}						
 				} else {return null}
 			})()}
@@ -1100,4 +1092,4 @@ function Race(props){
 	)
 }
 
-export default Race;
+export default Race

@@ -2,11 +2,9 @@ import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button'
 
 import $ from 'jquery'
-
 import OwlCarousel from 'react-owl-carousel'
 import 'owl.carousel/dist/assets/owl.carousel.css'
 import 'owl.carousel/dist/assets/owl.theme.default.css'
-
 import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
 import rabbit_img_board from '../../img/race_imgs/rabbit.jpg'
 import { showResults } from '../../utils'
@@ -14,7 +12,7 @@ import Stars from './stars'
 
 class Carousel extends Component {	
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			socket: props.socket,
 			lang: props.lang,
@@ -71,12 +69,8 @@ class Carousel extends Component {
 		}
 	}
 	
-	handleClick(table_name, table_id, table_type="", user) {
-		let payload = {table_name, table_id, table_type, user}
-		this.state.socket.emit('choose_table_send', payload)
-		this.state.socket.on('choose_table_read', function(data){
-			window.location.href = '/table/' + data
-		})
+	handleClick(table_name, table_id, table_type) {
+		this.props.gameChoice({table_name, table_id, table_type})
 	}
 
 	my_click(id){
@@ -111,9 +105,9 @@ class Carousel extends Component {
 			if(item_list[t]){
 				if(item_list[t].bet+1 > money){
 					if(this.props.lang === "ro"){
-						showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 300)
+						showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 300, false)
 					} else {
-						showResults("You don't have enough carrots!", "Go and buy some from the Market.", 300)
+						showResults("You don't have enough carrots!", "Go and buy some from the Market.", 300, false)
 					}
 				} else {
 					item_list[t].bet++					
@@ -134,7 +128,7 @@ class Carousel extends Component {
 		let item_list = this.state.item_list
 		if(item_list && item_list.length>0){
 			if(item_list[t]){
-				item_list[t].place = value;
+				item_list[t].place = value
 			}
 			input.val(item_list[t].bet)
 			this.item_list_changed = item_list
@@ -170,7 +164,7 @@ class Carousel extends Component {
 									items:4
 								},
 							}
-						};
+						}
 						return (
 							<OwlCarousel {...options}>
 								{
@@ -185,7 +179,7 @@ class Carousel extends Component {
 															<div>
 																<p>{lang === "ro" ? <span className="rabbit_box_text" type="table">Masa: </span> : <span className="rabbit_box_text" type="table">Tabel: </span>}{item.table_name} {item.table_id}</p>
 																<p>{lang === "ro" ? <span className="rabbit_box_text" type="type">Tip: </span> : <span className="rabbit_box_text" type="type">Type: </span>}{item.table_type}</p>
-																<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, item.table_type, user)}>
+																<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, item.table_type)}>
 																	{lang === "ro" ? <span className="rabbit_box_text" type="play">Joaca</span> : <span className="rabbit_box_text" type="play">Play</span>}
 																</Button>
 															</div>
@@ -199,7 +193,7 @@ class Carousel extends Component {
 														<div className="table_box shadow_concav">
 															<div>
 																<p>{lang === "ro" ? <span className="rabbit_box_text" type="table">Masa:</span> : <span className="rabbit_box_text" type="table">Tabel:</span>}{item.table_name} {item.table_id}</p>
-																<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id, '', user)}>
+																<Button id={button_id} className="button_table shadow_convex" type="button" onClick={()=>self.handleClick(item.table_name, item.table_id)}>
 																	{lang === "ro" ? <span className="rabbit_box_text" type="play">Joaca</span> : <span className="rabbit_box_text" type="play">Play</span>}
 																</Button>
 															</div>
@@ -211,12 +205,12 @@ class Carousel extends Component {
 													<div>
 														{lang === "ro" ? <span className="rabbit_box_text" type="error">Nu exista masa!</span> : <span className="rabbit_box_text" type="error">Ups, no tabel!</span>}
 													</div>										
-												);					
+												)				
 										}
 									})
 								} 
 							</OwlCarousel>
-						);
+						)
 					} else if(template === "market"){
 						const options = {
 							items: 4,
@@ -234,7 +228,7 @@ class Carousel extends Component {
 									items:3
 								},
 							}
-						};
+						}
 				
 						return(
 							<OwlCarousel {...options}>
@@ -264,7 +258,7 @@ class Carousel extends Component {
 									})
 								}
 							</OwlCarousel>
-						);
+						)
 					} else if(template === "race"){
 						const options = {
 							items: 1,
@@ -288,7 +282,7 @@ class Carousel extends Component {
 									items:4
 								},
 							}
-						};
+						}
 						return(
 							<>							
 								<OwlCarousel {...options}>									

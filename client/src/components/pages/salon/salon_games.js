@@ -8,25 +8,55 @@ import { useDispatch } from 'react-redux'
 import { game_page } from '../../actions/actions'
 
 function SalonGames(props){
-	let info = props.info
-    let socket = info.socket
-    let lang = info.lang
     const [width, setWidth] = useState(window.innerWidth)
-    let dispatch = useDispatch()	
+    const [casinoGames, setCasinoGames] = useState(null)
+    const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
+    let dispatch = useDispatch()
 
     useEffect(() => {
-		dispatch(game_page('salon'))
+		//dispatch(game_page('salon'))
+        create_casino_games(props.data)
         $(window).resize(function(){            
 			setWidth(window.innerWidth)
 		})
 	}, [])
 
+    function create_casino_games(res){
+        let casino_games = {
+            roulette_tables: [], 
+            blackjack_tables: [],
+            slots_tables: [],
+            craps_tables: []
+        }
+        let casino_games_title = Object.getOwnPropertyNames(casino_games)
+
+		for(let i in res.server_tables){
+			switch (res.server_tables[i].table_name) {
+				case "roulette":
+					casino_games.roulette_tables.push(res.server_tables[i])
+					break
+				case "blackjack":
+					casino_games.blackjack_tables.push(res.server_tables[i])
+					break
+				case "slots":
+					casino_games.slots_tables.push(res.server_tables[i])
+					break
+				case "craps":
+					casino_games.craps_tables.push(res.server_tables[i])
+					break
+				default:
+					break						
+				}
+		}
+		setCasinoGames(casino_games)
+        setCasinoGamesTitle(casino_games_title)
+	}
+
     function handleExit(){
-        setCookie("casino_user", '')
+        setCookie("casino_uuid", '')
+		setCookie("casino_user", '')
 		setCookie("casino_email", '')
-		let url = window.location.href
-		url = url.split('/salon')
-		window.location.href = url[0]
+		window.location.href = "/"
 	}
 
     function handleDropdown(t) {
@@ -51,6 +81,11 @@ function SalonGames(props){
             $('.casino_games_title i').removeClass('fa-angle-up')
         }
 	}
+
+    function gameChoice(x){
+        dispatch(game_page(x.table_name))
+        props.gameChoice(x)
+    }
 	
 	return (
         <>
@@ -59,7 +94,7 @@ function SalonGames(props){
                 <Col sm={8}>
                 {(() => {
                     if (width < 960) {
-                        $('.casino_games_table_container').removeClass('open');
+                        $('.casino_games_table_container').removeClass('open')
                         $('.casino_games_table_container').eq(0).addClass('open')
                         return (
                             <div id="casino_games_title_dropdown_container">
@@ -72,11 +107,11 @@ function SalonGames(props){
                                 <div className="casino_games_title_box_container">
                                     <div className="casino_games_title_box">
                                         {
-                                            info.casino_games_title.map(function(t, i){
-                                                let title = t.split('_').join(' ');
+                                            casinoGamesTitle.map(function(t, i){
+                                                let title = t.split('_').join(' ')
                                                 return(
                                                     <div key={i} className="capitalize" onClick={()=>handleDropdown(t)}>{title}</div>
-                                                );
+                                                )
                                             })
                                         }
                                     </div>
@@ -92,7 +127,7 @@ function SalonGames(props){
                 <Col sm={2}></Col>
                 <Col sm={8}>
                     {
-                        info.casino_games_title.map(function(t, i){
+                        casinoGamesTitle.map(function(t, i){
                             let title = t.split('_')[0]
                             let box = "casino_games_table_container"
                             if(i === 0){
@@ -101,7 +136,7 @@ function SalonGames(props){
 
                             return(
                                 <div key={i}>
-                                    {(() => {
+                                {(() => {
                                         if (width > 960) {
                                             return (
                                                 <div className="casino_games_title_container">
@@ -109,22 +144,22 @@ function SalonGames(props){
                                                 </div>
                                             )
                                         }
-                                    })()}                                    
+                                    })()} 
                                     <div box={t} className={box}>
                                         <div className="casino_games_table">
                                             {(() => {
-                                                if (info.casino_games[t].length === 0) {
+                                                if (casinoGames[t].length === 0) {
                                                     return (
-                                                        <div><p>Loading...</p></div>
+                                                        <div><p>Loading</p></div>
                                                     )
                                                 } else {
                                                     return (
-                                                        <Carousel template="salon" lang={lang} socket={socket} item_list={info.casino_games[t]}></Carousel>
+                                                        <Carousel gameChoice={gameChoice} template="salon" lang={props.lang} socket={props.socket} item_list={casinoGames[t]} dispatch={dispatch}></Carousel>
                                                     )
                                                 }
                                             })()}
                                         </div>
-                                    </div>	
+                                    </div>  
                                 </div>													
                             )
                         })
@@ -134,12 +169,12 @@ function SalonGames(props){
             </Row>
             <Row>
                 <Col sm={12}>
-                    {lang === "ro" ? 
+                    {props.lang === "ro" ? 
                         <p id="exit_salon" className="shadow_convex" onClick={() => handleExit()}>Iesi din salon</p> : 
                         <p id="exit_salon" className="shadow_convex" onClick={() => handleExit()}>Exit salon</p>	
                     }																			
                 </Col>
-            </Row>	
+            </Row>
         </>
 	)
 }

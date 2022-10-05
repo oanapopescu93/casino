@@ -1,4 +1,4 @@
-var express = require("express");
+var express = require("express")
 // var bodyParser = require('body-parser')
 var path = require("path")
 var router = express.Router()
@@ -25,15 +25,15 @@ var mailOptions = {
 	html: '<h1>Recovery username and password</h1><p>Username: xxx</p><p>Password: xxx</p><p>Go to <a target="_blank" href="'+my_server+'/recovery">Link</a> to recover them.</p>'
 }
 
-router.use(express.static(path.join(__dirname, '/client/build')));
+router.use(express.static(path.join(__dirname, '/client/build')))
 router.get('*', function(req, res) {
-	res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+	res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
 })
 
 var recovery_email = ""
 
 router.post('/registration', function(req, res, next) {
-	res.redirect('/salon')
+	res.redirect('/')
 })
 
 router.post('/recovery', function(req, res, next) {

@@ -28,17 +28,17 @@ function SignIn(props) {
 					} else {
 						dispatch(game_load(false))
 						if(lang === "ro"){
-							showResults("Eroare", "Parola gresita.")
+							showResults("Eroare", "Parola gresita.", 300, false)
 						} else {
-							showResults("Error", "Incorrect password.")
+							showResults("Error", "Incorrect password.", 300, false)
 						}
 					}
 				} else {
-					dispatch(game_load(false));		
+					dispatch(game_load(false))	
 					if(lang === "ro"){
-						showResults("Eroare", "Nu esti integistrat SAU nu ai scris ceva corect.")
+						showResults("Eroare", "Nu esti integistrat SAU nu ai scris ceva corect.", 300, false)
 					} else {
-						showResults("Error", "You are not registered OR you have a typo somewhere.")
+						showResults("Error", "You are not registered OR you have a typo somewhere.", 300, false)
 					}
 				}
 			})
@@ -89,12 +89,8 @@ function SignIn(props) {
 		})
 	}
 	
-	function submit_form(socket, lang){
-		setTimeout(function(){
-			if($("#user_form")){
-				$("#user_form").submit()
-			}
-		}, 500)
+	function submit_form(){
+		props.submit()
 	}
 	
 	function check_submit(){
@@ -131,7 +127,7 @@ function SignIn(props) {
 				</Modal.Body>				
 			</Modal>
 		</>		
-	);
+	)
 }
 
 export default SignIn

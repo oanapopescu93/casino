@@ -1,20 +1,16 @@
 import React from 'react'
-
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-
 import rabbit_stand_right from '../../img/icons/rabbit_stand_right.png'
 import rabbit_stand_left from '../../img/icons/rabbit_stand_left.png'
 
 function Not_found(props) {
     let lang = props.lang
-
     function handleBack(){
         window.location.href = "/"
-    }
-    
+    }    
 	return (
         <div id="not_found" className="full-height">
 			<div className="full-height-content">
@@ -51,7 +47,7 @@ function Not_found(props) {
                 </Container>
 		    </div>	
         </div>	
-	);
+	)
 }
 
 export default Not_found

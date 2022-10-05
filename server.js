@@ -1,63 +1,66 @@
-var express = require("express");
-const app = express();
+var express = require("express")
+const app = express()
 
-var http = require('http').createServer(app);
+var http = require('http').createServer(app)
 var io = require('socket.io')(http,{
     pingInterval: 10000,
     pingTimeout: 5000,
-});
-const port = process.env.PORT || 5000;
-app.set("port", port);
+})
+const port = process.env.PORT || 5000
+app.set("port", port)
 
-const database = require('./utils/mysql');
-const { encrypt, decrypt, encrypt_jwt, decrypt_jwt } = require('./utils/crypto');
-var constants = require('./var/constants');
-var career = require('./var/career');
-var question = require('./var/questions');
-var routes = require("./routes");
-const axios = require('axios');
-const e = require("express");
-const crypto = require('crypto');
+const database = require('./utils/mysql')
+const { encrypt, decrypt, encrypt_jwt, decrypt_jwt } = require('./utils/crypto')
+var constants = require('./var/constants')
+var career = require('./var/career')
+var question = require('./var/questions')
+var routes = require("./routes")
+const axios = require('axios')
+const e = require("express")
+const crypto = require('crypto')
 
 var users_json
-var user_join = [];
-var user_money = 100;
-var account_type = 1;
+var user_join = []
+var user_money = 100
+var account_type = 1
 
-var career_array = career.CAREER_ARRAY;
-var question_array = question.QUESTION_ARRAY;
-var rabbit_race = constants.SERVER_RABBITS;
-var slot_prize = constants.SLOT_PRIZE;
-var server_tables = constants.SERVER_TABLES;
-var market = constants.SERVER_MARKET;
-var profiles = constants.SERVER_PROFILES;
-var donations = constants.DONATIONS;
-var contact_details = constants.CONTACT;
-var database_config = constants.DATABASE[0];
+var career_array = career.CAREER_ARRAY
+var question_array = question.QUESTION_ARRAY
+var rabbit_race = constants.SERVER_RABBITS
+var slot_prize = constants.SLOT_PRIZE
+var server_tables = constants.SERVER_TABLES
+var market = constants.SERVER_MARKET
+var profiles = constants.SERVER_PROFILES
+var donations = constants.DONATIONS
+var contact_details = constants.CONTACT
+var database_config = constants.DATABASE[0]
 
-var text01 = 'The user is offline or does not exist';
-var text02 = 'Please type a user ( /w username message )';
+var text01 = 'The user is offline or does not exist'
+var text02 = 'Please type a user ( /w username message )'
 var text03 = "Game has begun. Please wait for the next round."
 
-var users = [];
-var sockets = [];
-var monkey_roulette = [];
-var monkey_blackjack = false;
-var monkey_slots = false;
-var monkey_craps = false;
-var monkey_race = false;
+var sockets = []
+var monkey_roulette = []
+var monkey_blackjack = false
+var monkey_slots = false
+var monkey_craps = false
+var monkey_race = false
+var keno_winnings = [
+    [1, 1, 2], [2, 2, 10], [3, 3, 25], [3, 2, 2], [4, 4, 50], [4, 3, 5], [4, 2, 1], [5, 5, 500], [5, 4, 15], [5, 3, 2], [6, 6, 1500], [6, 5, 50], [6, 4, 5], [6, 3, 1], [7, 7, 5000], [7, 6, 150], [7, 5, 15], [7, 4, 2], [7, 3, 1], [8, 8, 15000], [8, 7, 400], [8, 6, 50], [8, 5, 10], [8, 4, 2], [9, 9, 25000], [9, 8, 2,500], [9, 7, 200], [9, 6, 25], [9, 5, 4], [9, 4, 1], [10, 10, 200000], [10, 9, 10000], [10, 8, 500], [10, 7, 50], [10, 6, 10], [10, 5, 3], [10, 4, 2], 
+]
+let how_lucky = 7
 
-var blackjack_deck = new Array();
-var hidden_dealer = {};
+var blackjack_deck = new Array()
+var hidden_dealer = {}
 var blackjack_current_player = 0
-var blackjack_players = [];
-var blackjack_dealer = {};
+var blackjack_players = []
+var blackjack_dealer = {}
 
 var rabbit_speed = [3, 1] //max, min
 var rabbit_delay = [40, 20] //max, min
 
-let sign_in_up = false;
-app.use(routes);
+let sign_in_up = false
+app.use(routes)
 
 // casino_users, history_users, login_history
 
@@ -84,7 +87,7 @@ io.on('connection', function(socket) {
 							city: data1.data.city ? data1.data.city : "",
 							country: data1.data.country ? data1.data.country : "",
 							ip_address: data1.data.ip_address? data1.data.ip_address : "",
-						};
+						}
 						let timestamp = new Date().getTime() + ""
 						
 						database_config.sql = "UPDATE casino_users SET uuid='" + uuid + "' WHERE id=" + users_json[i].id + "; "
@@ -102,12 +105,12 @@ io.on('connection', function(socket) {
 							}catch(e){
 								console.log('[error]','signin_read1 :', e)
 							}
-						});
-					});
-					break;
+						})
+					})
+					break
 				} else if((data.user === users_json[i].user || data.user === users_json[i].email) && pass01 !== pass02){
 					//the user exists but the password was not correct
-					exists = true;
+					exists = true
 					try{
 						io.to(socket.id).emit('signin_read', [exists, obj])	
 					}catch(e){
@@ -126,108 +129,114 @@ io.on('connection', function(socket) {
 		})
 	})
 	socket.on('signup_send', function(data) {
-		sign_in_up = false;
+		sign_in_up = false
 		let device = get_device(socket.request.headers)
-		database_config.sql = 'SELECT * FROM casino_users WHERE user = "' + data.user + '" AND email = "' + data.email + '"';
+		database_config.sql = 'SELECT * FROM casino_users WHERE user = "' + data.user + '" AND email = "' + data.email + '"'
 		database(database_config).then(function(result){
 			if(result && result.length == 0){
-				sign_in_up = true;	
-				let pass = JSON.stringify(encrypt(data.pass));
-				let uuid = crypto.randomBytes(20).toString('hex');
+				sign_in_up = true	
+				let pass = JSON.stringify(encrypt(data.pass))
+				let uuid = crypto.randomBytes(20).toString('hex')
 
 				get_extra_data().then(function(data1) {				
 					let extra_data = {
 						city: data1.data.city ? data1.data.city : "",
 						country: data1.data.country ? data1.data.country : "",
 						ip_address: data1.data.ip_address? data1.data.ip_address : "",
-					};
-					let timestamp = new Date().getTime() + "";
+					}
+					let timestamp = new Date().getTime() + ""
 
-					database_config.sql = "INSERT INTO casino_users (uuid, user, email, pass, account_type, money, signup) VALUES (?, ?, ?, ?, ?, ?, ?)";
-					let payload =  [uuid, data.user, data.email, pass, account_type, user_money, timestamp];
+					database_config.sql = "INSERT INTO casino_users (uuid, user, email, pass, account_type, money, signup) VALUES (?, ?, ?, ?, ?, ?, ?)"
+					let payload =  [uuid, data.user, data.email, pass, account_type, user_money, timestamp]
 					database(database_config, payload).then(function(result){
-						let insertId = result.insertId;
-						database_config.sql = 'INSERT INTO login_history (user_id, login_date, device, ip_address, city, country) VALUES (' + insertId + ', "' + timestamp + '", ' + device + ', "' + extra_data.ip_address + '", "' + extra_data.city + '", "' + extra_data.country + '");';
-						database_config.sql += 'SELECT * FROM casino_users;';
+						let insertId = result.insertId
+						database_config.sql = 'INSERT INTO login_history (user_id, login_date, device, ip_address, city, country) VALUES (' + insertId + ', "' + timestamp + '", ' + device + ', "' + extra_data.ip_address + '", "' + extra_data.city + '", "' + extra_data.country + '");'
+						database_config.sql += 'SELECT * FROM casino_users;'
 						database(database_config).then(function(result){
-							users_json = result[1];
-							obj = {id: insertId, uuid:uuid, user: data.user, email: data.email, account_type: account_type, money: user_money};
+							users_json = result[1]
+							obj = {id: insertId, uuid:uuid, user: data.user, email: data.email, account_type: account_type, money: user_money}
 							try{
-								io.to(socket.id).emit('signup_read', [false, obj]);
+								io.to(socket.id).emit('signup_read', [false, obj])
 							}catch(e){
-								console.log('[error]','signup_read1 :', e);
+								console.log('[error]','signup_read1 :', e)
 							}
-						});
-					});
-				});
+						})
+					})
+				})
 			} else {
 				try{
 					// the user already exists
-					io.to(socket.id).emit('signup_read', [true, {}]);
+					io.to(socket.id).emit('signup_read', [true, {}])
 				}catch(e){
-					console.log('[error]','signup_read2 :', e);
+					console.log('[error]','signup_read2 :', e)
 				}
 			}
-		});
+		})
 	})
 
 	socket.on('salon_send', function(uuid) {
 		if(uuid){
 			if(sign_in_up){
-				check_user_salon(uuid);
+				check_user_salon(uuid)
 			} else {
 				database_config.sql = "SELECT * FROM casino_users; "
 				database(database_config).then(function(data){
-					users_json = data;
-					check_user_salon(uuid);
-				});
+					users_json = data
+					check_user_salon(uuid)
+				})
 			}
 		} else {
 			try{				
-				io.to(socket.id).emit('salon_read', false);
+				io.to(socket.id).emit('salon_read', false)
 			}catch(e){
-				console.log('[error]','salon_read0 :', e);
+				console.log('[error]','salon_read0 :', e)
 			}
 		}		
 	})
 	function check_user_salon(uuid){
-		let user_found
-		for(let i in users_json){
-			if(users_json[i].uuid == uuid){
-				user_found = users_json[i];										
-				break
-			}
-		}
+		let user_found = get_user_from_uuid(uuid, users_json)
 		if(user_found){				
 			let first_enter_salon = false		
 			let id = user_found.id
 			let user = user_found.user
 			let money = user_found.money
 			let signup = user_found.signup
+			let profile_pic = user_found.profile_pic
+			let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic))
 			let timestamp = new Date().getTime()
 			
 			database_config.sql = "SELECT * FROM login_history"
 			database(database_config).then(function(data){
 				let latest =[]
+				let logs =[]
 				for(let i in data){
 					if(data[i].user_id == id){
 						latest = data[i]
+						logs.push(data[i])			
 					}
 				}
+				let streak = check_streak(logs)
 
 				//check first time player
 				if(latest.login_date === signup && (timestamp - parseInt(latest.login_date)/60000 < 0.25)){ 
 					first_enter_salon = true
-				}
-				
+				}				
+			
 				let obj = {
-					server_tables: server_tables, 
 					uuid: uuid, 
 					first_enter_salon: first_enter_salon, 
+					streak: streak,
+					user: user, 
+					money: money, 
+					profile_pic: [profile_pic, profile_animal],				
+					profiles: profiles,
 					contact: contact_details,
 					questions: question_array,
 					career: career_array,
+					market:market, 
+					server_tables: server_tables, 
 				}
+			
 				sign_in_up = false	
 
 				try{				
@@ -235,10 +244,10 @@ io.on('connection', function(socket) {
 				}catch(e){
 					console.log('[error]','salon_read1 :', e)
 				}
-			});
+			})
 		} else {
 			try{
-				io.to(socket.id).emit('user_page_read', null)
+				io.to(socket.id).emit('salon_read', null)
 			}catch(e){
 				console.log('[error]','user_page_send1 :', e)
 			}
@@ -247,15 +256,15 @@ io.on('connection', function(socket) {
 
 	socket.on('user_page_send', function(data) {
 		if(data.uuid){
-			let table = data.table
+			let choice = data.choice
 			let uuid = data.uuid	
 			if(typeof users_json !== "undefined" && users_json !== "null" && users_json !== null && users_json !== ""){
-				check_user_page(uuid, table)
+				check_user_page(uuid, choice)
 			} else {
-				database_config.sql = "SELECT * FROM casino_users";
+				database_config.sql = "SELECT * FROM casino_users"
 				database(database_config).then(function(result){						
 					users_json = result
-					check_user_page(uuid, table)
+					check_user_page(uuid, choice)
 				})
 			}	
 		} else {
@@ -266,77 +275,43 @@ io.on('connection', function(socket) {
 			}
 		}			
 	})
-	function check_user_page(uuid, table){
-		let user_found
-		for(let i in users_json){
-			if(users_json[i].uuid == uuid){
-				user_found = users_json[i]											
-				break
-			}
-		}
+
+	function check_user_page(uuid, choice){
+		let user_found = get_user_from_uuid(uuid, users_json)
 		if(user_found){
-			let id = user_found.id
-			let uuid = user_found.uuid
-			let user = user_found.user
-			let money = user_found.money
-			let game = table.split('_')[0]
-			let type = table.split('_')[2]
-			let profile_pic = user_found.profile_pic
-			let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic))
-			
-			let server_user = {
-				uuid: uuid, 
-				user: user, 
-				money: money, 
-				profile_pic: [profile_pic, profile_animal],
-				market:market, 
-				profiles: profiles, 
-				user_table: table, 
-				game: game, 
-				contact: contact_details,
-				questions: question_array,
-				career: career_array,
-			}		
-			
+			let id = user_found.id		
+			let user = user_found.user	
 			socket.user_id = id
 			socket.user_uuid = uuid
 			socket.user = user
-			socket.user_table = table			
 
-			database_config.sql = "SELECT * FROM login_history"
-			database(database_config).then(function(data){
-				let logs =[]
-				for(let i in data){
-					if(data[i].user_id == id){
-						logs.push(data[i])							
-					}
-				}
-				server_user.streak = check_streak(logs)
-				let room_name = table	
-				try{
+			let room_name = get_room_name({game_choice: choice})
+			socket.room_name = room_name
+
+			let exists = false
+			for (let i in user_join) {
+				if (user_join[i].uuid === uuid) {
+					let last_room = user_join[i].room_name
+					socket.leave(last_room)
+					exists = true
+					user_join[i].room_name = room_name
+					user_join[i].time = new Date().getTime()
 					socket.join(room_name)
-					
-					let exists = false
-					for (let i in user_join) {
-						if (user_join[i].uuid === uuid) {
-							exists = true
-							user_join[i] = {uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()}
-							break;
-						}
-					}
-					if(!exists){
-						user_join.push({uuid: uuid, user: user, user_table: table, user_type: type, time: new Date().getTime()})	
-					}
-						
 					sockets.push(socket)
-					users[socket.user] = socket			
-					
-					io.to(socket.id).emit('user_page_read', server_user)
-					io.to(room_name).emit('chatlist', user_join)			
-				}catch(e){
-					console.log('[error]','join room :',e)
+					break
 				}
-			})
+			}
+			if(!exists){
+				user_join.push({uuid: uuid, user: user, room_name: room_name, time: new Date().getTime()})	
+				socket.join(room_name)
+				sockets.push(socket)
+			}
+			
+			try{				
+				io.to(socket.id).emit('user_page_read' , true)
+			}catch(e){
+				console.log('[error]','join room :',e)
+			}
 		} else {
 			try{
 				io.to(socket.id).emit('user_page_read', null)
@@ -376,27 +351,28 @@ io.on('connection', function(socket) {
 			}
 		}			
 	})
-	socket.on('chat_message_send', function(data){		
-		let room_name = data.user_table;
-		if(room_name === "race" || room_name === "keno"){
-			room_name = "salon"
-			socket.join(room_name)
+
+	//chat
+	socket.on('chatlist_send', function(data){	
+		let room_name = get_room_name(data, '1')
+		let list = []
+		for(let i in user_join){
+			if(user_join[i].room_name == room_name){
+				list.push(user_join[i])
+			}
 		}
+		try{
+			io.to(room_name).emit('chatlist_read', list)
+		}catch(e){
+			console.log('[error]','chatlist_read :', e)
+		}
+	})
+	socket.on('chat_message_send', function(data){	
+		let room_name = get_room_name(data, '2')
 		try{
 			io.to(room_name).emit('chat_message_read', chatMessage(data.user, data.message))
 		}catch(e){
 			console.log('[error]','chat_message_read :', e)
-		}
-	})
-	socket.on('choose_table_send', function(data){
-		let my_table = data.table_name + '_' +data.table_id
-		if(data.table_type !== "" && typeof data.table_type !== "undefined" && data.table_type !== null){
-			my_table = my_table + '_' + data.table_type
-		} 
-		try{
-			io.emit('choose_table_read', my_table)
-		}catch(e){
-			console.log('[error]','choose_table_read :', e)
 		}
 	})
 
@@ -414,10 +390,14 @@ io.on('connection', function(socket) {
 				}
 			}
 			if(user_found){
-				database_config.sql = "UPDATE casino_users SET user='" + user_new + "' WHERE id=" + user_found.id + '; ';
+				database_config.sql = "UPDATE casino_users SET user='" + user_new + "' WHERE id=" + user_found.id + '; '
 				database_config.sql += "SELECT * FROM casino_users"
-				database(database_config).then(function(result){
-					//console.log(result)
+				database(database_config).then(function(){
+					try{
+						io.to(socket.id).emit('change_username_read', true)
+					}catch(e){
+						console.log('[error]','change_username_read :', e)
+					}
 				})
 			}
 		}
@@ -442,8 +422,12 @@ io.on('connection', function(socket) {
 			if(user_found){
 				database_config.sql = "UPDATE casino_users SET pass='" + new_pass_encrypt + "' WHERE id=" + user_found.id + '; '
 				database_config.sql += "SELECT * FROM casino_users"
-				database(database_config).then(function(result){
-					//console.log(result)
+				database(database_config).then(function(){
+					try{
+						io.to(socket.id).emit('change_password_read', true)
+					}catch(e){
+						console.log('[error]','change_password_read :', e)
+					}
 				})
 			}
 		}
@@ -455,14 +439,20 @@ io.on('connection', function(socket) {
 			let user_found
 			for(let i in users_json){
 				if(users_json[i].uuid == uuid){
-					users_json[i].profile_pic = pic;
+					users_json[i].profile_pic = pic
 					user_found = users_json[i]	
 					break
 				}
 			}
 			if(user_found){
 				database_config.sql = "UPDATE casino_users SET profile_pic='" + pic + "' WHERE id=" + user_found.id
-				database(database_config).then(function(){})
+				database(database_config).then(function(){
+					try{
+						io.to(socket.id).emit('change_pic_read', true)
+					}catch(e){
+						console.log('[error]','change_pic_read :', e)
+					}
+				})
 			}
 		}
 	})
@@ -472,7 +462,6 @@ io.on('connection', function(socket) {
 		if(data.uuid && data.spin_click === 1){
 			let monkey = []
 			let is_lucky = Math.floor(Math.random() * 100)
-			let how_lucky = 7
 			if(is_lucky % how_lucky === 0){
 				monkey_roulette = true
 			}
@@ -485,10 +474,10 @@ io.on('connection', function(socket) {
 			let spin_time = Math.floor(Math.random() * (800 - 300)) + 300
 			//let spin_time = 100
 			let ball_speed = 0.06
-			let room_name = data.user_table
+			let room_name = get_room_name(data, '3')
 			// let k = data.my_click
 			let k = Math.floor(Math.random() * (monkey.length-1 - 0)) + 0
-			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}			
+			let payload = {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}	
 			io.to(room_name).emit('roulette_spin_read', payload)
 
 			function get_monkey_for_roulette(bets){
@@ -544,24 +533,18 @@ io.on('connection', function(socket) {
 		}
 	})	
 	socket.on('blackjack_get_users_send', function(data) {
-		let room_name = data.user_table
+		let room_name = get_room_name(data, '4')
 		io.to(room_name).emit('blackjack_get_users_read', user_join)
 	})	
 	socket.on('blackjack_send', function(data) {
 		if(data[1].uuid){
 			let is_lucky = Math.floor(Math.random() * 100)
-			let how_lucky = 7
 			if(is_lucky % how_lucky === 0){
 				monkey_blackjack = true
 			}
 
 			let game_start = false
-			let user_table = data[1].user_table.split(' ').join('_')
-			let room_name = user_table
-			if(typeof data[1].user_type !== "undefined"){
-				let user_type = data[1].user_type
-				room_name = room_name + '_' + user_type
-			}
+			let room_name = get_room_name(data[1], '5')
 			switch (data[0]) {
 				case 'start':
 					if(!game_start){
@@ -609,7 +592,7 @@ io.on('connection', function(socket) {
 						io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
 						//console.log('stay--> ', ['stay', blackjack_players, hidden_dealer, blackjack_deck.length-1])
 					} else {
-						blackjack_win_lose();
+						blackjack_win_lose()
 						io.to(room_name).emit('blackjack_read', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
 						//console.log('stay--> ', ['stay', blackjack_players, blackjack_dealer, blackjack_deck.length-1])
 					}				
@@ -690,7 +673,7 @@ io.on('connection', function(socket) {
 						blackjack_players[blackjack_current_player].points = points_hit_me
 						blackjack_players[blackjack_current_player].lose = false
 						blackjack_players[blackjack_current_player].win = false
-						break;	
+						break	
 					case 'dealer':
 						let points_dealer = 0
 						for(let i in blackjack_dealer.hand){
@@ -727,8 +710,8 @@ io.on('connection', function(socket) {
 				}
 			}		
 			function blackjack_win_lose(){
-				let max = -1;
-				let winner = -1;
+				let max = -1
+				let winner = -1
 				
 				//ger player with max points
 				let score = 0
@@ -769,7 +752,7 @@ io.on('connection', function(socket) {
 						}
 					}	
 				} else {	
-					blackjack_dealer.win = true;
+					blackjack_dealer.win = true
 				}
 			}
 		}
@@ -786,7 +769,6 @@ io.on('connection', function(socket) {
 
 			for(let i in users_json){
 				if(users_json[i].uuid == uuid){
-					users_json[i].money = money
 					user_found = users_json[i]										
 					break
 				}
@@ -810,7 +792,6 @@ io.on('connection', function(socket) {
 				for(let i in sockets){
 					if(sockets[i].user_id === id){
 						let is_lucky = Math.floor(Math.random() * 100)
-						let how_lucky = 7
 						if(is_lucky % how_lucky === 0){
 							monkey_slots = true
 						}
@@ -824,12 +805,11 @@ io.on('connection', function(socket) {
 	socket.on('craps_send', function(data) {
 		if(data.uuid){
 			let is_lucky = Math.floor(Math.random() * 100)
-			let how_lucky = 7
 			if(is_lucky % how_lucky === 0){
 				monkey_craps = true
 			}
 
-			let room_name = data.user_table
+			let room_name = get_room_name(data, '5')
 			let how_many_dices = data.how_many_dices
 			let numbers = []
 			let point = data.point
@@ -888,7 +868,6 @@ io.on('connection', function(socket) {
 
 			for(let i in users_json){
 				if(users_json[i].uuid == uuid){
-					users_json[i].money = money
 					user_found = users_json[i]										
 					break
 				}
@@ -921,14 +900,55 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
+	socket.on('keno_send', function(data) {
+		if(data === "winnings"){
+			io.to(socket.id).emit('keno_read', keno_winnings)
+		} else {
+			let user_found = get_user_from_uuid(data.uuid, users_json)
+			if(user_found){
+				let is_lucky = Math.floor(Math.random() * 100)
+				if(is_lucky % how_lucky === 0){
+					monkey_keno = true
+				}
+
+				let arr = []
+				while(arr.length < data.length){
+					let r = Math.floor(Math.random() * data.max) + 1;
+					if(arr.indexOf(r) === -1) arr.push(r);
+				}
+				try{
+					io.to(socket.id).emit('keno_read', arr)
+				}catch(e){
+					console.log('[error]','keno_send :', e)
+				}
+			} else {
+				try{
+					io.to(socket.id).emit('keno_read', [])
+				}catch(e){
+					console.log('[error]','keno_send :', e)
+				}
+			}
+		}
+	})
+	function get_room_name(data, x){
+		console.log('get_room_name ', data, x)
+		let room_name = data.game_choice.table_name ? data.game_choice.table_name : data.game_choice
+		if(data.game_choice.table_id){
+			room_name += '_' + data.game_choice.table_id
+		}
+		if(data.game_choice.table_type){
+			room_name += '_' + data.game_choice.table_type
+		}
+		return room_name
+	}
 
 	// result infos after a game
 	socket.on('results_send', function(data) {
+		console.log('results_send --> ', data)
 		let uuid = data.user_uuid
-		let user_table = data.user_table.split('_')		
-		let game_name = user_table[0]
-		let game_id = user_table[1] ? user_table[1] : game_name
-		let game_type = user_table[2] ? user_table[2] : game_name
+		let game_name = data.game_choice.table_name ? data.game_choice.table_name : data.game_choice
+		let game_id = data.game_choice.table_id ? data.game_choice.table_id : game_name
+		let game_type = data.game_choice.table_type ? data.game_choice.table_type : game_name
 		let money = data.money
 		let status = data.status
 		let bet = Math.abs(data.bet)
@@ -964,28 +984,11 @@ io.on('connection', function(socket) {
 
 	// other
 	socket.on('disconnect', function(reason) {
-		console.log('disconnect', reason)
 		let k = sockets.indexOf(socket)
 		if(k !== -1){
 			if(typeof user_join[k] !== "undefined"){
 				if(typeof user_join[k].user !== "undefined"){
-					let user_table = user_join[k].user_table.split(' ')	
-					user_table = user_table.join('_')		
-					let room_name = user_table
-	
-					if(typeof user_join[k].user_type !== "undefined"){
-						let user_type = user_join[k].user_type
-						room_name = room_name + '_' + user_type			
-					}	
-					
-					try{
-						io.to(room_name).emit('user_page_read', {event: "disconnect", user: user_join[k].user})
-						sockets.splice(k, 1)		
-						user_join.splice(user_join.indexOf(k), 1)	
-						socket.leave(room_name)
-					}catch(e){
-						console.log('[error]','disconnect :', e)
-					}
+					console.log('disconnect ', reason, k, user_join[k])
 				}
 			}			
 		}
@@ -1007,8 +1010,19 @@ io.on('connection', function(socket) {
 	})
 })
 
+function get_user_from_uuid(uuid, users_json){
+	let user_found
+	for(let i in users_json){
+		if(users_json[i].uuid == uuid){
+			user_found = users_json[i]									
+			break
+		}
+	}
+	return user_found
+}
+
 function get_device(headers){
-	let device = 0; // 0 = computer, 1 = mobile, 2 = something went wrong
+	let device = 0 // 0 = computer, 1 = mobile, 2 = something went wrong
 	if(headers){
 		if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
 			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
@@ -1028,7 +1042,7 @@ function check_streak(result){
 
 	for(let i = 0; i < result.length-1; i++){
 		let date01 = new Date(parseInt(result[i].login_date))
-		var day01 = date01.getDate();			
+		var day01 = date01.getDate()			
 		let date02 = new Date(parseInt(result[i+1].login_date))
 		var day02 = date02.getDate()
 		let period = parseInt(result[i+1].login_date)-parseInt(result[i].login_date)
@@ -1130,7 +1144,7 @@ function slot_matrix(x, size){
 				}
 				matrix.push([t, i])
 			}
-			break; 	
+			break 	
 		case 9:	
 		case 10:				
 			for(let i=0; i < length01; i++){
@@ -1184,9 +1198,9 @@ function slot_matrix(x, size){
 						t--
 					}
 				}
-				matrix.push([t, i]);
+				matrix.push([t, i])
 			}
-			break; 	
+			break 	
 		case 13:	
 		case 14:		
 			for(let i=0; i < length01; i++){
@@ -1227,7 +1241,7 @@ function slot_matrix(x, size){
 			}
 			break
 	} 
-	return {matrix_id: x, matrix:matrix, prize:my_prize};
+	return {matrix_id: x, matrix:matrix, prize:my_prize}
 }
 
 function get_extra_data(){

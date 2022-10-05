@@ -1,32 +1,32 @@
-import React, {useEffect, useState } from 'react';
-import market_img from '../../img/icons/market_icon.png';
-import inventory_img from '../../img/icons/inventory_icon.png';
-import AccountProfile from './account_profile';
-import AccountMarket from './account_market';
-import { game_page } from '../../actions/actions';
+import React, {useEffect, useState } from 'react'
+import market_img from '../../img/icons/market_icon.png'
+import inventory_img from '../../img/icons/inventory_icon.png'
+import AccountProfile from './account_profile'
+import AccountMarket from './account_market'
+import { game_page } from '../../actions/actions'
 import { useDispatch } from 'react-redux'
 
 function UserAccount(props){
-	let lang = props.info.lang;
-	let socket = props.info.socket;
-	const [visible, setVisible] = useState(true);
-	const [profileActive, setProfileActive] = useState("active");
-	const [marketActive, setMarketActive] = useState("");
-	let dispatch = useDispatch();
+	let lang = props.lang
+	let socket = props.socket
+	const [visible, setVisible] = useState(true)
+	const [profileActive, setProfileActive] = useState("active")
+	const [marketActive, setMarketActive] = useState("")
+	let dispatch = useDispatch()
 
 	useEffect(() => {		
-		dispatch(game_page('user_account'));
-	}, []); 
+		dispatch(game_page('account'))
+	}, [])
 
 	function account_choose_tab(link){	
 		if(link === "account_profile"){
-			setVisible(true);
-			setProfileActive("active");
-			setMarketActive("");
+			setVisible(true)
+			setProfileActive("active")
+			setMarketActive("")
 		} else if(link === "account_market"){
-			setVisible(false);
-			setProfileActive("");
-			setMarketActive("active");
+			setVisible(false)
+			setProfileActive("")
+			setMarketActive("active")
 		}
 	}	
 	return (
@@ -39,7 +39,7 @@ function UserAccount(props){
 			</div>				
 			{ visible ? <AccountProfile info={props.info} lang={lang} socket={socket}></AccountProfile> : <AccountMarket info={props.info} lang={lang} socket={socket}></AccountMarket>	}
 		</div>
-	);
+	)
 }
 
-export default UserAccount;
+export default UserAccount

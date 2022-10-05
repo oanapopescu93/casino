@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 function GameBoard(props){
-	let lang = props.lang;	
-	let money = props.money;
-	const [moneyTotal, setmoneyTotal] = useState(money-1);
-	const [bet, setBet] = useState(1);
+	let lang = props.lang
+	let money = props.money
+	const [moneyTotal, setmoneyTotal] = useState(money-1)
+	const [bet, setBet] = useState(1)
 
 	function handleChange(e){
-		let my_bet = parseInt(e.target.value);
-		setBet(my_bet);
-		setmoneyTotal(money-my_bet);
+		let my_bet = parseInt(e.target.value)
+		setBet(my_bet)
+		setmoneyTotal(money-my_bet)
 	}
 
 	function handleClick(x){
-		props.choice(x, bet);
+		props.choice(x, bet)
 	}
 
 	return(
@@ -44,19 +44,19 @@ function GameBoard(props){
 											<button onClick={()=>handleClick("hit")} className="game_button shadow_convex" id="blackjack_hit">HIT</button>
 											<button onClick={()=>handleClick("stay")} className="game_button shadow_convex" id="blackjack_stay">STAY</button>
 										</div>
-									);
+									)
 								case "slots":
 									return(
 										<div className="game_start_container">
 											<button onClick={()=>handleClick("spin")} className="game_button shadow_convex" id="slot_spin">SPIN</button>
 										</div>
-									);							
+									)							
 							}
 						})()}						
 					</div>
 				</div>
 			</div>
-	);	
+	)
 }
 
-export default GameBoard;
+export default GameBoard

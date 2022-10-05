@@ -1,31 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import {Route, Switch, BrowserRouter} from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import Container from 'react-bootstrap/Container'
-
-import '../css/style.css'
-import HomePage from './homePage'
-import Salon from './salon/salon'
-import SignInRecovery from './sign/signIn_recovery'
-import NotFound from './other_pages/not_found'
-import UserPage from './user/userPage'
-import Donate from './money/donate'
-import Page from './money/page'
-import Language from './partials/language'
-import Footer from './partials/footer'
-
 import { getCookie, setCookie, showResults } from '../utils'
-
-import socketIOClient from "socket.io-client/dist/socket.io"
+import HomePage from './homePage'
+import NotFound from './other_pages/not_found'
+import Language from './partials/language'
 import Cookies from './partials/cookies_modal'
+import Footer from './partials/footer'
 import ShowResults from './partials/show_results'
+import Donate from './money/donate'
+import socketIOClient from "socket.io-client/dist/socket.io"
+import '../css/style.css'
 const socket = socketIOClient("/")
 
 function Home(props){
-	let dispatch = useDispatch()
 	const [cookies, setCookies] = useState(false)
 	const [lang, setLang] = useState(getCookie("casino_lang"))
-	const [donationShow, setDonationShow] = useState(false)
 	const [donationInfo, setDonationInfo] = useState(null)
 	let page = props.page
 	let show_loader = props.show
@@ -49,54 +39,37 @@ function Home(props){
 			showResults("Error", text)
 			console.log('server_error ', text)
 		})
-	})
+	}, [])
 
 	function lang_change(text){
 		setLang(text)
-	}
-
-	function my_donation(donations){
-		setDonationShow(true)
-		setDonationInfo(donations)
-	}
-	
-	function back(){
-		setDonationShow(false)
-	}
+	}	
 
 	function casino_cookies(){
 		setCookie("casino_cookies", true)
 		setCookies(true)
+	}
+
+	function my_donation(donations){
+		setDonationInfo(donations)
 	}
 	
 	return (
 		<>	
 			<div className={"full-height "+open} id={page}>
 				<div className="full-height-content">
-					{ 
-						donationShow ? <Page back={back} info={donationInfo} lang={lang} socket={socket}></Page> : 
-						<Container>				
-							<BrowserRouter>					
-								<Switch>			
-									<Route path="/table/:name">
-										<UserPage choice="game" lang={lang} socket={socket} dispatch={dispatch}></UserPage>
-									</Route>
-									<Route path="/salon">
-										<Salon lang={lang} socket={socket}></Salon>
-									</Route>
-									<Route path="/recovery">
-										<SignInRecovery lang={lang} socket={socket} dispatch={dispatch}></SignInRecovery>
-									</Route>							
-									<Route exact path="/">
-										<HomePage lang={lang} socket={socket}></HomePage>
-									</Route>
-									<Route path="*">
-										<NotFound lang={lang}></NotFound>
-									</Route>
-								</Switch>			
-							</BrowserRouter>
-						</Container>
-					}									
+                    <Container>		
+                        <BrowserRouter>					
+                            <Switch>
+                                <Route exact path="/">
+                                    <HomePage lang={lang} socket={socket} donationInfo={donationInfo}></HomePage>
+                                </Route>
+                                <Route path="*">
+                                    <NotFound lang={lang}></NotFound>
+                                </Route>
+                            </Switch>			
+                        </BrowserRouter>
+                    </Container>					
 				</div>			
 			</div>
 			{!cookies ? <Cookies casino_cookies={casino_cookies} lang={lang}></Cookies>  : null}

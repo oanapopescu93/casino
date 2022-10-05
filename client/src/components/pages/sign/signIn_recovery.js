@@ -12,7 +12,7 @@ function submit(){
 	if($('#signin_user').val() !== "" && $('#signin_pass').val() !== ""){
 		loader().then(function(data){
 			submit_form()
-		});
+		})
 	} else {
 		if($('#signin_user').val() === ""){
 			$('#signin_user_red').show()
@@ -41,13 +41,13 @@ function submit_form(){
 	return new Promise(function(resolve, reject){
 		setTimeout(function(){
 			$("#user_form").submit()
-			resolve(true);
-		}, 500);
+			resolve(true)
+		}, 500)
 	})
 }
 
 function SignInRecovery(props) {
-	let lang = props.lang;
+	let lang = props.lang
 	return (
         <Row>
 			<Col sm={4} md={4} lg={4}></Col>
@@ -71,7 +71,7 @@ function SignInRecovery(props) {
 				<Col sm={4} md={4} lg={4}></Col>
 			</Col>
 		</Row>
-	);
+	)
 }
 
 export default SignInRecovery

@@ -426,9 +426,8 @@ textarea {
 }
 
 #salon.full-height, 
-#user_account.full-heigh, 
 #race.full-height, 
-#user_account.full-height{
+#account.full-height{
     position: relative;
 	z-index: 1;
 	display:block;
@@ -447,10 +446,27 @@ textarea {
 	display: block;
 	padding: 10px 0px;
 }
-#user_account .full-height-content,
-#race .full-height-content{
+#salon .full-height-content, #race .full-height-content{	
+	position: relative;
+	z-index: 1;
+	display: block;
+	padding: 10px 0px;
+}
+#account .full-height-content{
 	padding: 10px 0px;	
 	display: block;
+}
+.userPage{
+	padding:0px 40px;
+}
+#race .full-height-content, #race .container, #race .row, #race .col-sm-12, #race .userPage, #race .casino_container{
+	height: 100%;
+}
+#race .race_table_container{
+	position: relative;
+	z-index: 1;
+	top: 50%;
+	transform: translate(0px, -50%);
 }
 
 a, a:hover, a:focus, a:active{
@@ -672,7 +688,7 @@ table {
 	z-index: 1;
     bottom: 5px;
     cursor: pointer;
-    left: 5;
+    left: 5px;
     padding: 5px 10px;
 }
 
@@ -1260,11 +1276,11 @@ table {
 
 /* footer */
 .footer_container{
-	display:none;
 	position:fixed;
 	z-index:9990;
 	height:65px;
 	bottom:-65px;
+	left: 0px;
 	color:var(--yellow);
 	width:100%;
 	background-color: black;
@@ -1275,9 +1291,6 @@ table {
     -moz-transition:all .5s ease-out;
 	-o-transition: all .5s ease-out;
 	transition:all .5s ease-out;
-}
-#salon .footer_container{
-	display:block;
 }
 .footer_container.open{
 	bottom: 0px!important;
@@ -1371,7 +1384,7 @@ table {
 	display: block;
 	margin:auto;
 }
-.roulette_bets_container, .craps_bets_container{
+.roulette_bets_container, .craps_bets_container, .keno_bets_container{
 	position: fixed;
 	z-index:1;
 	top:0px;
@@ -1384,18 +1397,14 @@ table {
 	-o-transition: 0.7s;
 	transition:0.7s;
 }
-.roulette_bets_container.open, .craps_bets_container.open{
+.roulette_bets_container.open, .craps_bets_container.open, .keno_bets_container.open{
 	right:0px;
 }
-.roulette_bets_box{
-	overflow: hidden;
-	cursor: pointer;
-}
-.roulette_bets_box, .craps_bets_box{
+.roulette_bets_box, .craps_bets_box, .keno_bets_box{
 	overflow: auto;
 	cursor: pointer;
 }
-.roulette_bets, .craps_bets{
+.roulette_bets, .craps_bets, .keno_bets{
 	position: relative;
 	z-index:1;
 	top:50%;
@@ -1406,7 +1415,13 @@ table {
 	padding:10px;
 	background: black;
 }
-.roulette_bets .close, .craps_bets .close{
+.keno_bets{
+	max-width: 600px;
+	max-width: 600px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.roulette_bets .close, .craps_bets .close, .keno_bets .close{
 	color: var(--yellow);
 	text-shadow: none;
 	opacity:1;
@@ -1456,8 +1471,8 @@ table {
 .salon_button_container{
 	position: fixed;
     z-index: 9999;
-    top: 0px;
-	bottom:0px;
+    top: 50px;
+	bottom: 50px;
     left: -50px;
     width: 50px;
 	-webkit-transition:0.7s;
@@ -1930,26 +1945,27 @@ table {
 	border-radius:5px;
 }
 
-.red{
+.race_order_elem.red, .rabbit_box_nr.red{
 	background-color: red;
 }
-.orange{
+.race_order_elem.orange, .rabbit_box_nr.orange{
 	background-color: orange;
 	border:solid 1px black;
 	color:black;
 }
-.yellow{
+.race_order_elem.yellow, .rabbit_box_nr.yellow{
 	background-color: yellow;
 	border:solid 1px black;
 	color:black;
 }
-.green{
+.race_order_elem.green, .rabbit_box_nr.green{
 	background-color: green;
+
 }
-.blue{
+.race_order_elem.blue, .rabbit_box_nr.blue{
 	background-color: blue;
 }
-.purple{
+.race_order_elem.purple, .rabbit_box_nr.purple{
 	background-color: purple;
 }
 
@@ -2063,10 +2079,12 @@ table {
 .donation_body_crypto{
 	border: solid 1px var(--yellow);
     border-radius: 10px;
-    background: var(--transparent_2);	
+    background: var(--transparent_2);
+	padding: 10px 15px;
+	text-align: left!important;
 }
 .donation_body{	
-    padding: 10px 15px;
+    text-align: center;
 }
 .paypal-buttons{
 	opacity: 0;
@@ -2077,12 +2095,10 @@ table {
     border-radius: 5px!important;
     color: var(--yellow)!important;
 	width:100%!important;
-	max-width: 100px!important;
 	padding:5px 10px!important;
 	display: block!important;
     text-align: center!important;
 	position: relative;
-	/*top: -40px;*/
 }
 .paypal_button:hover, .paypal_button:active, .paypal_button:focus{
     color: var(--yellow);
@@ -2093,10 +2109,10 @@ table {
 }
 .donation_link:last-child{
 	padding-bottom: 0px;
+	display: inline-block;
 }
 .donation_link_paypall{
 	width:100%;
-	max-width: 100px;
 }
 
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
@@ -2278,19 +2294,91 @@ table {
 	line-height: 2em;
 }
 
-.side:nth-child(1) {transform: translateZ(50px); }
-.side:nth-child(6) {transform: rotateY(90deg) translateZ(50px); }
-.side:nth-child(3) {transform: rotateY(-90deg) translateZ(50px); }
-.side:nth-child(4) {transform: rotateX(90deg) translateZ(50px); }
-.side:nth-child(5) {transform: rotateX(-90deg) translateZ(50px); }
-.side:nth-child(2) {transform: rotateY(-180deg) translateZ(50px); }
+.side:nth-child(1) {
+	-webkit-transform: translateZ(50px);
+    -moz-transform: translateZ(50px);
+    -ms-transform: translateZ(50px);
+    -o-transform: translateZ(50px);
+	transform: translateZ(50px); 
+}
+.side:nth-child(6) {
+	-webkit-transform: rotateY(90deg) translateZ(50px);
+    -moz-transform: rotateY(90deg) translateZ(50px);
+    -ms-transform: rotateY(90deg) translateZ(50px);
+    -o-transform: rotateY(90deg) translateZ(50px);
+	transform: rotateY(90deg) translateZ(50px); 
+}
+.side:nth-child(3) {
+	-webkit-transform: rotateY(-90deg) translateZ(50px);
+    -moz-transform: rotateY(-90deg) translateZ(50px);
+    -ms-transform: rotateY(-90deg) translateZ(50px);
+    -o-transform: rotateY(-90deg) translateZ(50px);
+	transform: rotateY(-90deg) translateZ(50px); 
+}
+.side:nth-child(4) {
+	-webkit-transform: rotateX(90deg) translateZ(50px);
+    -moz-transform: rotateX(90deg) translateZ(50px);
+    -ms-transform: rotateX(90deg) translateZ(50px);
+    -o-transform: rotateX(90deg) translateZ(50px);
+	transform: rotateX(90deg) translateZ(50px); 
+}
+.side:nth-child(5) {
+	-webkit-transform: rotateX(-90deg) translateZ(50px);
+    -moz-transform: rotateX(-90deg) translateZ(50px);
+    -ms-transform: rotateX(-90deg) translateZ(50px);
+    -o-transform: rotateX(-90deg) translateZ(50px);
+	transform: rotateX(-90deg) translateZ(50px); 
+}
+.side:nth-child(2) {
+	-webkit-transform: rotateY(-180deg) translateZ(50px);
+    -moz-transform: rotateY(-180deg) translateZ(50px);
+    -ms-transform: rotateY(-180deg) translateZ(50px);
+    -o-transform: rotateY(-180deg) translateZ(50px);
+	transform: rotateY(-180deg) translateZ(50px); 
+}
 
-.show_1 {transform: rotateX(720deg) rotateZ(-720deg);  }
-.show_2 {transform: rotateX(-900deg) rotateZ(1080deg); }
-.show_3 {transform: rotateY(810deg) rotateZ(720deg); }
-.show_4 {transform: rotateX(-810deg) rotateZ(-1080deg); }
-.show_5 {transform: rotateX(450deg) rotateZ(-720deg);}
-.show_6 {transform: rotateY(-450deg) rotateZ(-1440deg); }
+.show_1 {
+	-webkit-transform: rotateX(720deg) translateZ(-720deg);
+    -moz-transform: rotateX(720deg) translateZ(-720deg);
+    -ms-transform: rotateX(720deg) translateZ(-720deg);
+    -o-transform: rotateX(720deg) translateZ(-720deg);
+	transform: rotateX(720deg) rotateZ(-720deg);  
+}
+.show_2 {
+	-webkit-transform: rotateX(-900deg) translateZ(1080deg);
+    -moz-transform: rotateX(-900deg) translateZ(1080deg);
+    -ms-transform: rotateX(-900deg) translateZ(1080deg);
+    -o-transform: rotateX(-900deg) translateZ(1080deg);
+	transform: rotateX(-900deg) rotateZ(1080deg); 
+}
+.show_3 {
+	-webkit-transform: rotateY(810deg) translateZ(720deg);
+    -moz-transform: rotateY(810deg) translateZ(720deg);
+    -ms-transform: rotateY(810deg) translateZ(720deg);
+    -o-transform: rotateY(810deg) translateZ(720deg);
+	transform: rotateY(810deg) rotateZ(720deg); 
+}
+.show_4 {
+	-webkit-transform: rotateX(-810deg) translateZ(-1080deg);
+    -moz-transform: rotateX(-810deg) translateZ(-1080deg);
+    -ms-transform: rotateX(-810deg) translateZ(-1080deg);
+    -o-transform: rotateX(-810deg) translateZ(-1080deg);
+	transform: rotateX(-810deg) rotateZ(-1080deg); 
+}
+.show_5 {
+	-webkit-transform: rotateX(450deg) translateZ(-720deg);
+    -moz-transform: rotateX(450deg) translateZ(-720deg);
+    -ms-transform: rotateX(450deg) translateZ(-720deg);
+    -o-transform: rotateX(450deg) translateZ(-720deg);
+	transform: rotateX(450deg) rotateZ(-720deg);
+}
+.show_6 {
+	-webkit-transform: rotateY(-450deg) translateZ(-1440deg);
+    -moz-transform: rotateY(-450deg) translateZ(-1440deg);
+    -ms-transform: rotateY(-450deg) translateZ(-1440deg);
+    -o-transform: rotateY(-450deg) translateZ(-1440deg);
+	transform: rotateY(-450deg) rotateZ(-1440deg); 
+}
 
 .two_1, .three_1, .four_1, .five_1, .six_1 {top: 20%;left: 20%;}
 .four_3, .five_3, .six_4 {top: 20%;left: 80%;}
@@ -2435,33 +2523,29 @@ table {
 }
 
 /* KENO */
+.keno_title{
+	margin-bottom: 10px;
+}
 #keno_canvas{
 	cursor: pointer;
-	background-color: #2a1800;
-	border-radius: 3px;
-	border: solid #2a1800;
-	border-width: 5px 0px 0px 5px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 0px;
+    border: solid 1px var(--yellow);
+    padding: 5px 0px 0px 5px;
 }
 #keno_rules_button{
 	cursor: pointer;
 }
 .keno_info{
-	display: inline-block;
-    padding: 5px;
-    text-align: center;
-    width: 100%;
-    max-width: 280px;
-	border: solid 1px var(--yellow);
-	border-radius:5px;
-	margin: 10px 0px;
+	display: none;
 }
 .keno_info_box > span{
 	display: block;
 }
+.keno_info_box > span:first-child{
+	font-weight: bold;
+}
 .keno_button{
-	color: var(--yellow);
-    background: transparent;
-    border: solid 1px var(--yellow);
 	border-radius: 100%;
     height: 55px;
     width: 55px;
@@ -2469,11 +2553,51 @@ table {
     margin: 5px;
 	display: inline-block;
 	vertical-align: middle;
-}
-.button_table:hover, .button_table:focus, .button_table:active, .button_table:active:focus{
-    background: var(--transparent_yellow);
+	cursor: pointer;
 	color: var(--yellow);
-	border: solid 1px var(--yellow);
+    background: transparent;
+    border: solid 1px var(--yellow);
+}
+#keno_quick_pick, #keno_quick_settings{
+	width: auto;
+    height: auto;
+    border-radius: 25px;
+    padding: 5px 10px;
+}
+.keno_button:hover, .keno_button:focus, .keno_button:active, .keno_button:active:focus,
+#keno_quick_pick:hover, #keno_quick_pick:focus, #keno_quick_pick:active, #keno_quick_pick:active:focus,
+#keno_quick_settings:hover, #keno_quick_settings:focus, #keno_quick_settings:active, #keno_quick_settings:active:focus{
+    background: var(--transparent_yellow);
+}
+
+#keno_winnings{
+	height:350px;
+	overflow-y: auto;
+	padding: 5px;
+}
+#keno_winnings table{
+	width:100%;
+}
+#keno_winnings table tr th, #pay_table table tr td{
+	padding:5px;
+	vertical-align: top;
+	text-align: left;
+	border:solid 1px black;
+}
+#keno_winnings table tr th{
+	background: black;
+	color:var(--yellow);
+	border-right: solid 1px var(--yellow);
+}
+#keno_winnings table tr th:last-child{
+	border-right: solid 1px black;
+}
+
+#game_board_keno #game_board_bet {
+    display: block;
+}
+.game_buttons_box{
+	width:100%
 }
 
 /* Profile pics */
@@ -2675,6 +2799,9 @@ table {
 	}
 }
 @media (max-width: 960px){
+	.race_order_elem .color{
+		display:none
+	}
 	.career_header_container{
 		position: relative;
 		z-index: 2;
@@ -2768,10 +2895,6 @@ table {
 	.side:nth-child(4) {transform: rotateX(90deg) translateZ(30px); }
 	.side:nth-child(5) {transform: rotateX(-90deg) translateZ(30px); }
 	.side:nth-child(2) {transform: rotateY(-180deg) translateZ(30px); }
-	.spacing_small{
-		padding-left:0px;
-		padding-right:50px;
-	}
 	.race_order_elem_container{
 		width:100%
 	}

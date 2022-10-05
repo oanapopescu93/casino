@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import {game_visible} from '../../actions/actions'
+import {game_visible, game_page} from '../../actions/actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle, faComments, faHome, faCog, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import { setCookie } from '../../utils'
@@ -10,13 +10,21 @@ import ChatForm from './chatForm'
 import carrot_img from '../../img/icons/carrot_icon.png'
 
 function Panel(props){
-    let lang = props.info.lang
-    let socket = props.info.socket
-    let user = props.info.user
-    let type = props.info.type
-    let user_table = props.info.user_table
-    let money = props.info.money
-    let streak = props.info.streak ? props.info.streak : 1
+    let lang = props.lang
+    let socket = props.socket
+    let user = props.data.user
+    let money = props.data.money
+    let streak = props.data.streak ? props.data.streak : 1
+
+    let game_choice = props.game_choice
+    let title = game_choice.table_name
+    if(game_choice.table_id){
+        title += ' ' + game_choice.table_id
+    }
+    if(game_choice.table_type){
+        title += ' ' + game_choice.table_type
+    }
+
     let dispatch = useDispatch()
 
     const [show, setShow] = useState(false)
@@ -30,9 +38,8 @@ function Panel(props){
 
 	function handleClose(){ setShow(false) }
     function handleShow(){ setShow(true) }
-
+    
     function handleClick(link) {
-        let url_back01 = window.location.href.split('/table/');
 		switch (link) {
 			case "account":
                 setUserGame("active")
@@ -40,12 +47,14 @@ function Panel(props){
                 dispatch(game_visible('account'))
 			  	break
 			case "casino":
-                setUserGame("");
-                setUserAccount("active");
+                setUserGame("")
+                setUserAccount("active")
 				dispatch(game_visible('game'))
+                dispatch(game_page('current_game'))
 				break
             case "salon":					
-				window.location.href = url_back01[0]+"/salon"
+                dispatch(game_visible("game"))
+                dispatch(game_page('salon'))
 			 	break
             case "settings":	
                 handleShow()
@@ -54,14 +63,16 @@ function Panel(props){
                 setCookie("casino_uuid", '')
                 setCookie("casino_user", '')
 				setCookie("casino_email", '')
-				window.location.href = url_back01[0]
+                window.location.href = "/"
 			 	break
             case "support":
                 dispatch(game_visible('support'))
                 break
 			default:
-				let url_back02 = window.location.href.split('/table/')
-				window.location.href = url_back02[0]
+				setCookie("casino_uuid", '')
+                setCookie("casino_user", '')
+				setCookie("casino_email", '')
+                window.location.href = "/"
 		  }
 	}
 
@@ -107,7 +118,7 @@ function Panel(props){
                 </div>
 
                 <div id="user_panel_box" className={"panel_box " + panelUser}>                                    
-                    <h4 id="user_title">{user_table}</h4>
+                    <h4 id="user_title">{title}</h4>
                     <div id="user_subtitle">
                         <div className="user_subtitle_left">
                             <span id="user_name">{user}</span>
@@ -141,7 +152,7 @@ function Panel(props){
                 </div>
 
                 <div id="chat_panel_box" className={"panel_box " + panelChat}>
-                    <ChatForm user={user} type={type} user_table={user_table} lang={lang} socket={socket}></ChatForm>
+                    <ChatForm user={user} game_choice={game_choice} lang={lang} socket={socket}></ChatForm>
                 </div>	
 
             </div>

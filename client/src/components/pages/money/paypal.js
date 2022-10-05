@@ -9,7 +9,7 @@ class Paypal extends Component {
 				<PayPalButton
                     amount="0.01"
                     onSuccess={(details, data) => {
-                        alert("Transaction completed!");
+                        alert("Transaction completed!")
                     }}
                     style= {{
                         layout:  'horizontal',
@@ -28,7 +28,7 @@ class Paypal extends Component {
                               value: '0.01'
                             }
                           }]
-                        });
+                        })
                       }
                     }
                     options={{

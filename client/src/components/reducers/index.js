@@ -1,14 +1,14 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from 'redux'
 
-import rouletteReducer from './roulette';
-import blackjackReducer from './blackjack';
-import slotReducer from './slot';
-import crapsReducer from './craps';
-import raceReducer from './race';
-import kenoReducer from './keno';
-import visibilityReducer from './visibility';
-import pageReducer from './page';
-import loadReducer from './load';
+import rouletteReducer from './roulette'
+import blackjackReducer from './blackjack'
+import slotReducer from './slot'
+import crapsReducer from './craps'
+import raceReducer from './race'
+import kenoReducer from './keno'
+import visibilityReducer from './visibility'
+import pageReducer from './page'
+import loadReducer from './load'
 
 const allReducers = combineReducers({
 	roulette: rouletteReducer,
@@ -20,6 +20,6 @@ const allReducers = combineReducers({
 	visibility: visibilityReducer,
 	page: pageReducer,
 	load: loadReducer,
-});
+})
 
-export default allReducers;
+export default allReducers

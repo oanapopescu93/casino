@@ -17,7 +17,7 @@ function Support(props){
     const support_result = useRef()
 
 	useEffect(() => {
-		dispatch(game_page('user_account'))	
+		dispatch(game_page('account'))	
 	}, [])
 
     function submit(event){
@@ -35,7 +35,7 @@ function Support(props){
         if(check_submit('email') && $('#support_message').val() !== ""){
             if(event.target.getAttribute("finished") === "yes"){
                 event.target.setAttribute("finished", "no")
-                submit_form(event);
+                submit_form(event)
             } 
         } else {
             if(!check_submit('email')){
@@ -130,30 +130,30 @@ function Support(props){
                                 <div className="support_info">
                                     {(() => {
                                         if (contact.length>0) {
-                                            let info, location, email, phone, website, linkedin, github;
+                                            let info, location, email, phone, website, linkedin, github
                                             for(let i in contact){
                                                 switch(contact[i].title){
                                                     case "info":
-                                                        info = contact[i];
-                                                        break;
+                                                        info = contact[i]
+                                                        break
                                                     case "location":
-                                                        location = contact[i];
-                                                        break;
+                                                        location = contact[i]
+                                                        break
                                                     case "email":
-                                                        email = contact[i];
-                                                        break;
+                                                        email = contact[i]
+                                                        break
                                                     case "phone":
-                                                        phone = contact[i];
-                                                        break;
+                                                        phone = contact[i]
+                                                        break
                                                     case "website":
-                                                        website = contact[i];
-                                                        break;
+                                                        website = contact[i]
+                                                        break
                                                     case "linkedin":
-                                                        linkedin = contact[i];
-                                                        break;
+                                                        linkedin = contact[i]
+                                                        break
                                                     case "github":
-                                                        github = contact[i];
-                                                        break;
+                                                        github = contact[i]
+                                                        break
                                                 }   
                                             }
                                             return(
@@ -170,7 +170,7 @@ function Support(props){
                                                         <li><a href={linkedin.link}><i className={linkedin.icon}></i></a></li>
                                                     </ul>
                                                 </>
-                                            );
+                                            )
                                         } else {
                                             return(
                                                 <div>Loading...</div>

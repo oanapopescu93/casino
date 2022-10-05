@@ -71,7 +71,7 @@ export const keno_calculate_money = function(money_sum) {
 }
 export const keno_get_history = function(history) {
 	return {
-		type: "race_get_history",
+		type: "keno_get_history",
 		history: history
 	}
 }

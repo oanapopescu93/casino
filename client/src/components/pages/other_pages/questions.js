@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import $ from 'jquery';
+import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import {game_visible} from '../../actions/actions'
@@ -31,9 +31,7 @@ function Questions(props){
 }
 
 function QuestionsList(props){
-    console.log('questions ', props)
     let lang = props.info.lang
-    let socket = props.info.socket
     const [list, setList] = useState([])
     const [header, setHeader] = useState([])
 
@@ -54,7 +52,7 @@ function QuestionsList(props){
         $('.answer_container').removeClass('open')
 		$('.answer_container').each(function() {
 			if($(this).attr('box') === x.toString()){
-				$(this).addClass('open');
+				$(this).addClass('open')
 			}
 		})
     }
@@ -67,8 +65,8 @@ function QuestionsList(props){
                         <div className="question_container">
                             {
                                 list.map(function(item, i){
-                                    let question = item.question;
-                                    let answer = item.answer;
+                                    let question = item.question
+                                    let answer = item.answer
                                     return(
                                         <div key={i} className="question_box">
                                             <div className="question_container">
@@ -80,13 +78,13 @@ function QuestionsList(props){
                                                         <div box={i} className="answer_container open">
                                                             {answer}
                                                         </div>
-                                                    );
+                                                    )
                                                 } else {
                                                     return(
                                                         <div box={i} className="answer_container">
                                                             {answer}
                                                         </div>
-                                                    );
+                                                    )
                                                 }
                                             })()}
                                         </div>

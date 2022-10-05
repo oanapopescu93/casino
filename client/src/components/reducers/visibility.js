@@ -1,11 +1,9 @@
 const visibilityReducer = (state = "game", action) => {	
-	//console.log("visibility0-- ", action);
 	switch(action.type){
 		case "game_visible":						
-			return action.visibility;			
+			return action.visibility			
 		default: 
-			return state;
+			return state
 	}
 }
-
-export default visibilityReducer;
+export default visibilityReducer

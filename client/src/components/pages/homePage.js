@@ -9,29 +9,32 @@ import Splash from './splash_screen'
 import Sapou from './partials/sapou'
 import { getCookie} from '../utils'
 import { game_page } from '../actions/actions'
+import Salon from './salon/salon'
 
 function HomePage(props){
 	let lang = props.lang
 	let socket = props.socket
 	const [visible, setVisible] = useState(true)
 	const [splash, setSplash] = useState(true)
+	const [isSalon, setIsSalon] = useState(false)
 	const dispatch = useDispatch()
-	dispatch(game_page('home'))
 
 	useEffect(() => {
+		dispatch(game_page('home'))
 		checkCookie()
-	})
+	}, [])
 
 	function randomIntFromInterval(min, max) { // min and max included 
 		return Math.floor(Math.random() * (max - min + 1) + min)
 	}
 
 	function checkCookie(){
-		let user = getCookie("casino_user")
-		if(user === ""){
+		let uuid = getCookie("casino_uuid")
+		if(uuid === ""){
 			splash_screen()
 		} else {
-			window.location.href = '/salon'
+			setSplash(false)
+			setIsSalon(true)
 		}
 	}
 	
@@ -39,7 +42,7 @@ function HomePage(props){
 		$('.sign_errors').hide()
 		$('.sign_errors').empty()	
 		if(link === "sign_in"){			
-			setVisible(true);
+			setVisible(true)
 			$('#link_login').addClass('active')
 			$('#link_sign').removeClass('active')
 		} else if(link === "sign_up"){
@@ -51,8 +54,8 @@ function HomePage(props){
 
 	function splash_screen(){	
 		setTimeout(function(){
-			progress_move(100, 2000)
-		}, 1000)
+			progress_move(100, 1000)
+		}, 500)
 	}	
 
 	function progress_move(progress_frame, progress_timeout){	
@@ -78,47 +81,61 @@ function HomePage(props){
 			}
 		}
 	}
+
+	function submit(){
+		setIsSalon(true)
+	}
+
+	function handleBack(){
+		setIsSalon(false)
+	}
 	
 	return (
 		<>
 			{ 
 				splash ? <Splash></Splash>  : 
-				<Row>
-					<Col sm={2} md={4} lg={4}></Col>
-					<Col sm={8} md={4} lg={4} className="color_yellow">
-						<div className="HomePage">
-							<div className="deco">
-								<div className="HomePage_box">
-									<Sapou lang={lang} page="home"></Sapou>													
-									<Row>
-										<Col sm={12}>					
+				<>
+					{
+						isSalon ? <Salon lang={lang} socket={socket} back={handleBack} donationInfo={props.donationInfo}></Salon> : 
+						<Row>
+							<Col sm={2} md={4} lg={4}></Col>
+							<Col sm={8} md={4} lg={4} className="color_yellow">
+								<div className="HomePage">
+									<div className="deco">
+										<div className="HomePage_box">
+											<Sapou lang={lang} page="home"></Sapou>													
 											<Row>
-												<Col sm={12}>
-													<div className="login_link_container shadow_convex">
-														<div id="link_login" className="login_link active" onClick={()=>casino_log("sign_in")}>
-															{lang === "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
-														</div>	
-														<div id="link_sign" className="login_link" onClick={()=>casino_log("sign_up")}>
-															{lang === "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
-														</div>	
-													</div>
+												<Col sm={12}>					
+													<Row>
+														<Col sm={12}>
+															<div className="login_link_container shadow_convex">
+																<div id="link_login" className="login_link active" onClick={()=>casino_log("sign_in")}>
+																	{lang === "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
+																</div>	
+																<div id="link_sign" className="login_link" onClick={()=>casino_log("sign_up")}>
+																	{lang === "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
+																</div>	
+															</div>
+														</Col>
+													</Row>
+													<Row>
+														<Col sm={12} className="user_form_container">
+															{ visible ? <SignIn submit={submit} lang={lang} socket={socket}></SignIn> : 
+															<SignUp submit={submit} lang={lang} socket={socket}></SignUp> }
+														</Col>
+													</Row>
 												</Col>
 											</Row>
-											<Row>
-												<Col sm={12} className="user_form_container">
-													{ visible ? <SignIn lang={lang} socket={socket}></SignIn> : <SignUp lang={lang} socket={socket}></SignUp> }
-												</Col>
-											</Row>
-										</Col>
-									</Row>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-						<div className="sign_errors"></div>
-					</Col>
-					<Col sm={2} md={4} lg={4}></Col>
-				</Row> 
-			}			
+								<div className="sign_errors"></div>
+							</Col>
+							<Col sm={2} md={4} lg={4}></Col>
+						</Row> 
+					}
+				</>
+			}	
 		</>
 	)
 }
