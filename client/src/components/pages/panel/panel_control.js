@@ -151,8 +151,8 @@ function Panel(props){
                     <div id="support_button" onClick={() => handleClick('support')}>{lang === "ro" ? <span>Suport</span> : <span>Support</span>}</div>
                 </div>
 
-                <div id="chat_panel_box" className={"panel_box " + panelChat}>
-                    <ChatForm user={user} game_choice={game_choice} lang={lang} socket={socket}></ChatForm>
+                <div id="chat_panel_box" className={"panel_box " + panelChat }>
+                    <ChatForm uuid={props.data.uuid} user={user} game_choice={game_choice} lang={lang} socket={socket}></ChatForm>
                 </div>	
 
             </div>

@@ -375,7 +375,6 @@ function blackjack_game(props){
 	}
 
 	this.start = function(bet){	
-		console.log('START')	
 		if(canvas){
 			blackjack_status = true
 			your_bets = bet
@@ -393,6 +392,7 @@ function blackjack_game(props){
 					blackjack_hand = data
 					ctx.clearRect(0, 0, canvas.width, canvas.height)
 					self.draw_cards()
+					self.check_win_lose()
 				}
 			})
 		}
@@ -439,7 +439,7 @@ function blackjack_game(props){
 	}
 
 	this.check_win_lose = function(){		
-		if(typeof blackjack_hand[2].win !== "undefined" && blackjack_hand[2].win === true){
+		if(blackjack_hand[2].lose === false && blackjack_hand[2].win === true){
 			self.end_game(blackjack_hand[2])	
 		} else {
 			let all_lose = 0
@@ -480,7 +480,7 @@ function blackjack_game(props){
 	this.pay = function(obj){
 		let status = 'win'
 		let payload = []
-		let money_original = user_info.money
+		let money_original = user_info.money		
 		for(let i in blackjack_hand[1]){
 			if(blackjack_hand[1][i].id === props.data.id){				
 				if(obj === "dealer" || obj.id !== blackjack_hand[1][i].id){
@@ -524,7 +524,7 @@ function blackjack_game(props){
 			user_uuid: props.data.uuid, 
 			game_choice: props.game_choice,
 			money: user_info.money,
-			bet: money_original - user_info.money,
+			bet: Math.abs(money_original - user_info.money),
 			status: status,
 		}
 		socket.emit('results_send', blackjack_payload_server)

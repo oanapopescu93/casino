@@ -3,6 +3,7 @@ import Sapou from '../partials/sapou'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import ukraine from '../../img/icons/ukraine.svg'
 
 function Page(props){
     let lang = props.lang 
@@ -38,6 +39,11 @@ function Page(props){
                     {loading ? <div>Loading...</div> : 
                         <>
                             {info ? <div className="donation_container color_yellow">
+                                <div className="donation_ukraine">
+                                    <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine">
+                                        Donation for Ukraine <img id="ukraine_icon" alt="ukraine_icon" src={ukraine}></img>
+                                    </a>
+                                </div>
                                 {	                    																		
                                     info_title.map(function(item01, i){                        
                                         let first = item01.slice(0, 1).toUpperCase()
@@ -49,7 +55,7 @@ function Page(props){
                                         }
                                         return(
                                             <div key={i} className="donation_box">
-                                                { item01 !== "crypto" ? null : <div className="donation_header"><h4>{title}</h4></div> }
+                                                {/* { item01 !== "crypto" ? null : <div className="donation_header"><h4>{title}</h4></div> } */}
                                                 <ul className={style}>
                                                     {
                                                         info.map(function(item02, j){

@@ -102,6 +102,12 @@ export const isEmpty = function (element){
   return empty
 }
 
+export const formatDate = function(date){	
+  let d = new Date(date)
+  let dateString = new Date(d.getTime() - (d.getTimezoneOffset() * 60000 )).toISOString().split(".")[0].replace(/T/g, " ").replace(/-/g, "/")
+  return dateString
+}
+
 export const setCookie = function (cname, cvalue, hours=12){
   let d = new Date()
   d.setTime(d.getTime() + (hours * 60 * 60 * 1000))

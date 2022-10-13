@@ -492,7 +492,7 @@ function slot_game(props, id){
 		if(win){
 			user_info.money = user_info.money + pay
 		} else {
-			status = 'lost'
+			status = 'lose'
 			user_info.money = user_info.money - pay
 		}
 		

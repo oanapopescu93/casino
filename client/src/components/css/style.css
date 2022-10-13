@@ -2787,6 +2787,14 @@ table {
 .my_tooltip:hover .my_tooltiptext {
 	visibility: visible;
 }
+
+#ukraine_icon{
+	width:20px;
+}
+.donation_ukraine{
+	text-align: center;
+    padding: 10px 0px 0px 0px;
+}
   
 /* media */
 @media (max-width: 1024px){
@@ -3242,4 +3250,5 @@ table {
 ::-webkit-scrollbar-thumb{
 	border-radius: 10px;
 	background-color: black;
+	border:solid 1px var(--yellow)
 }

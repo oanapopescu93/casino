@@ -1,14 +1,82 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import $ from 'jquery'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { formatDate } from '../../utils'
+
+let chatmessages = []
+function Chat(props){
+	let data = props.data
+	let lang = props.lang
+	const messagesEndRef = useRef(null);	
+
+	useEffect(() => {
+		messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+	}, [props])
+
+	if(data){
+		if(data.reason && (data.reason === "join" || data.reason === "leave")){
+			let exists = false
+			for(let i in chatmessages){
+				if(chatmessages[i].reason === data.reason && chatmessages[i].from === data.from){
+					exists = true
+					break
+				}
+			}
+			if(!exists){
+				chatmessages.push(data)
+			}			
+		} else {
+			let exists = false
+			for(let i in chatmessages){
+				if(chatmessages[i].from === data.from && chatmessages[i].text === data.text && chatmessages[i].time === data.time){
+					exists = true
+					break
+				}
+			}
+			if(!exists){
+				chatmessages.push(data)
+			}
+		}
+	}
+
+	return(
+		<div id="chatmessages">
+			{							
+				chatmessages.map(function(item, i){
+					if(item.reason && item.reason === "join"){
+						if(props.lang === "ro"){
+							return <div key={i} className="message"><div className="text"><strong>{item.from} </strong>s-a alaturat chat-lui</div></div>
+						} else {
+							return <div key={i} className="message"><div className="text"><strong>{item.from} </strong>joined the chat</div></div>
+						}
+					} else if(item.reason && item.reason === "leave"){
+						if(props.lang === "ro"){
+							return <div key={i} className="message"><div className="text"><strong>{item.from} </strong>a parasit chat-lui</div></div>
+						} else {
+							return <div key={i} className="message"><div className="text"><strong>{item.from} </strong>left the chat</div></div>
+						}
+					} else {
+						if(item.from){
+							return <div key={i} className="message message01"><div className="chat_header"><span className="user"><strong>{item.from} </strong></span> (<span className="date">{formatDate(item.time)}</span>)</div><div className="chat_body"><span className="text">{item.text}</span></div></div>
+						} else {
+							return <div key={i} className="message message02"><div className="user"></div><div className="text">{item.text}</div></div>
+						}
+					}
+				})
+			}
+			<div ref={messagesEndRef} />
+		</div>
+	)
+}
 
 function ChatForm(props) {
-	let click = 0
 	let socket = props.socket
 	const [list, setList] = useState([])
+	const [message, setMessage] = useState(null)
+	const isMounted = useRef(false)
 	let game_choice = props.game_choice.table_name ? props.game_choice.table_name : props.game_choice
 	if(props.game_choice.table_id){
 		game_choice += '_' + props.game_choice.table_id
@@ -18,42 +86,41 @@ function ChatForm(props) {
 	}
 
 	useEffect(() => {
-		socket.on('chat_message_read', function(data){
-			click++
-			if(click === 1){
-				if(data.from){
-					$('#chatmessages').append('<div class="message message01"><div class="chat_header"><span class="user"><strong>' + data.from + '</strong></span> (<span class="date">' + formatDate(data.time) + '</span>)</div><div class="chat_body"><span class="text">' + data.text + '</span></div></div>')
-				} else {
-					$('#chatmessages').append('<div class="message message02"><div class="user"></div><div class="text">' + data.text + '</div></div>')
-				}	
-				let objDiv = document.getElementById("chatmessages")
-				objDiv.scrollTop = objDiv.scrollHeight
-			}
-		})
-		
-		socket.emit('chatlist_send', {user: props.uuid, game_choice: game_choice})
-		socket.on('chatlist_read', function(data) {
-			setList(data)
-		})
-	}, [])
-	
-	function formatDate(date) {	
-		let d = new Date(date)
-		let dateString = new Date(d.getTime() - (d.getTimezoneOffset() * 60000 )).toISOString().split(".")[0].replace(/T/g, " ").replace(/-/g, "/")
-		return dateString
-	}
-	
+		isMounted.current = true
+		socket.emit('join_leave_chat_send', {uuid: props.uuid, game_choice: game_choice, reason: "join"})
+		socket.emit('chatlist_send', {uuid: props.uuid, game_choice: game_choice})
+		return () => {
+			isMounted.current = false
+			socket.emit('join_leave_chat_send', {uuid: props.uuid, game_choice: game_choice, reason: "leave"})
+		}
+	}, [])	
+
+	useEffect(() => {
+		if(isMounted && isMounted.current){
+			socket.on('join_leave_chat_read', function(data){
+				setMessage(data)
+			})
+			socket.on('chatlist_read', function(data){
+				setList(data)
+			})
+		}
+	}, [message, socket])	
+
 	function my_click(e){
 		if($('#chattext').val() !== ""){
 			socket.emit('chat_message_send', {user: props.user, game_choice: game_choice, message: $('#chattext').val()})
 			$('#chattext').val('')
 		}
 	}
+
+	socket.on('chat_message_read', function(data){
+		setMessage(data)
+	})
 	
 	return (
 		<div className="chat_form_box">
-		   <Form className="chatroom" id="chatform" method="post" action="/members/chat">
-				<div id="chatmessages"></div>
+			<div className="chatroom" id="chatform">
+				<Chat data={message} lang={props.lang}></Chat>
 				<Row className="chattext_container">
 					<Col sm={8}>
 						<Form.Control type="text" name="chattext" id="chattext" placeholder="type here" />
@@ -64,7 +131,7 @@ function ChatForm(props) {
 						</Button>
 					</Col>
 				</Row>
-			</Form>
+			</div>
 			<ul id="user_list">
 				{(() => {
 					if(list && list.length > 0){

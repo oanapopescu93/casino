@@ -759,7 +759,7 @@ function roulette_game(props){
 			user_uuid: props.data.uuid,
 			game_choice: props.game_choice,
 			money: user_info.money,
-			bet: money_original - user_info.money,
+			bet: Math.abs(money_original - user_info.money),
 			status: status,
 		}
 		socket.emit('results_send', roulette_payload_server)
