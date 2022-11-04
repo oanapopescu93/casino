@@ -4,7 +4,7 @@
   "description": "react project",
   "homepage": "https://bunnybet.herokuapp.com",
   "engines": {
-    "node": "10.15.3"
+    "node": "16.15.0"
   },
   "repository": {
     "type": "git",

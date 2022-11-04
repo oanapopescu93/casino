@@ -565,6 +565,7 @@ input:-internal-autofill-selected {
 .user_form_container{
 	position: relative;
 	z-index: 1;
+	min-height: 135px;
 }
 .sign_errors{
 	border: solid 1px var(--red);

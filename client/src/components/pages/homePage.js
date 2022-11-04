@@ -17,6 +17,8 @@ function HomePage(props){
 	const [visible, setVisible] = useState(true)
 	const [splash, setSplash] = useState(true)
 	const [isSalon, setIsSalon] = useState(false)
+	const [linkLogin, setLinkLogin] = useState('active')
+	const [linkSign, setLinkSign] = useState('')
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -43,12 +45,12 @@ function HomePage(props){
 		$('.sign_errors').empty()	
 		if(link === "sign_in"){			
 			setVisible(true)
-			$('#link_login').addClass('active')
-			$('#link_sign').removeClass('active')
+			setLinkLogin('active')
+			setLinkSign('')
 		} else if(link === "sign_up"){
 			setVisible(false)
-			$('#link_login').removeClass('active')
-			$('#link_sign').addClass('active')
+			setLinkLogin('')
+			setLinkSign('active')
 		}
 	}
 
@@ -109,10 +111,10 @@ function HomePage(props){
 													<Row>
 														<Col sm={12}>
 															<div className="login_link_container shadow_convex">
-																<div id="link_login" className="login_link active" onClick={()=>casino_log("sign_in")}>
+																<div id="link_login" className={"login_link " + linkLogin} onClick={()=>casino_log("sign_in")}>
 																	{lang === "ro" ? <h4>Logare</h4> : <h4>Sign In</h4>}
 																</div>	
-																<div id="link_sign" className="login_link" onClick={()=>casino_log("sign_up")}>
+																<div id="link_sign" className={"login_link " + linkSign} onClick={()=>casino_log("sign_up")}>
 																	{lang === "ro" ? <h4>Inregistrare</h4> : <h4>Sign Up</h4>}
 																</div>	
 															</div>
