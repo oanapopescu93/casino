@@ -51,6 +51,7 @@ io.on('connection', function(socket) {
 		let device = get_device(socket.request.headers)
 		let exists = false
         let obj = {}
+		let pass01 = data.pass
 
         for(let i in users_json){
             let pass02 = decrypt(JSON.parse(users_json[i].pass))
