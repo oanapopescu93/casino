@@ -463,25 +463,33 @@ function keno_board(props, dispatch){
 		if(win>0){
 			status = 'win'
 		}		
-		let payload = {
+		let money_history = money - bet
+		let payload = [{
 			bet_value: bet, 
-			money_history: money,
+			money_history: money_history,
 			win: status, 
 			kenoSpotArraySelected: kenoSpotArraySelected,
 			picks: picks,
 			kenoSpotWin: kenoSpotWin,
-		}
-		dispatch(keno_calculate_money(money))
+		}]
+		dispatch(keno_calculate_money(money_history))
 		dispatch(keno_get_history(payload))
+
+		if($('#user_money').length>0){
+			if($('#user_money span').length>0){
+				$('#user_money span').text(money_history)
+			}
+		}
 		
 		let keno_payload_server = {
 			uuid: data.uuid,
 			game_choice: game_choice,
-			money: money,
+			money: money_history,
 			bet: bet,
 			status: status,
 		}
-		// socket.emit('results_send', keno_payload_server)
+		// console.log('keno_payload_server ', keno_payload_server)
+		socket.emit('results_send', keno_payload_server)
 	}
 	
 	function generatePick(length, max){

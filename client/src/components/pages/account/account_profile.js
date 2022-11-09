@@ -41,17 +41,18 @@ function Picture(props){
 }
 
 function Account_profile(props) {
-	console.log('Account_profile ', props)
 	let username = props.info.user
 	let lang = props.lang
 	let socket = props.socket
 	let profiles = props.info.profiles
+	let account_type = props.info.account_type
 
 	let roulette_info = useSelector(state => state.roulette)
 	let blackjack_info = useSelector(state => state.blackjack)
 	let slots_info = useSelector(state => state.slot)
 	let craps_info = useSelector(state => state.craps)
 	let race_info = useSelector(state => state.race)
+	let keno_info = useSelector(state => state.keno)
 	
 	const [show1, setShow1] = useState(false)
 	const [show2, setShow2] = useState(false)
@@ -89,13 +90,14 @@ function Account_profile(props) {
 		setShow3(true) 
 	}
 	
-	let money = props.info.money;
+	let money = props.info.money
 	let history = {
 		roulette: null,
 		blackjack: null,
 		slots: null,
 		craps: null,
-		race: null
+		race: null,
+		keno: null
 	}
 	if(roulette_info !== -1){		
 		money = roulette_info[0].money
@@ -116,6 +118,10 @@ function Account_profile(props) {
 	if(race_info !== -1){		
 		money = race_info[0].money
 		history.race = race_info[1].history
+	}
+	if(keno_info !== -1){		
+		money = keno_info[0].money
+		history.keno = keno_info[1].history
 	}
 
 	let transactions = []
@@ -176,8 +182,10 @@ function Account_profile(props) {
 	}
 
 	function choosePic(e){
-		setPicId(e.id)
-		setAnimal(e)
+		if(e.free){
+			setPicId(e.id)
+			setAnimal(e)
+		}
 	}
 
 	function handle_eye(x){
@@ -239,7 +247,7 @@ function Account_profile(props) {
 									{lang === "ro" ? <b>Schimba parola</b> : <b>Change password</b>}
 								</div>
 								<div id="profile_buy_carrots" className="profile_button button_yellow" onClick={buy_carrots}>
-									{lang === "ro" ? <b>Cumpara mrcovi</b> : <b>Buy carrots</b>}
+									{lang === "ro" ? <b>Cumpara morcovi</b> : <b>Buy carrots</b>}
 								</div>
 							</div>
 						</Col>
@@ -261,13 +269,18 @@ function Account_profile(props) {
 					<div className="crop_profile_pic_container">
 						{							
 							profiles.map(function(item, i){
+								console.log(i, item, account_type)
+								let show = ''
+								if(account_type === 1 && !item.free){
+									show = ' grey_image'
+								}
 								return(
 									<div key={i} className="crop_profile_pic_box">										
 										{lang === "ro" ? <p>{item.name_ro}</p> : <p>{item.name_eng}</p>}
 										<input type="radio" id={item.id} name="radio-group" onChange={() => choosePic(item)}></input>
 										<label htmlFor={item.id}>
 											<div className="crop_profile_pic shadow_convex">
-												<img alt="profile_pic" className={"profile_pic pic_"+item.id} src={profilePic}/>
+												<img alt="profile_pic" className={"profile_pic pic_"+item.id+show} src={profilePic}/>
 											</div>
 										</label>
 									</div>

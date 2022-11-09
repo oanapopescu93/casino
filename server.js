@@ -9,7 +9,7 @@ var io = require('socket.io')(http,{
 const port = process.env.PORT || 5000
 app.set("port", port)
 
-const fs = require('fs');
+const fs = require('fs')
 const { encrypt, decrypt } = require('./utils/crypto')
 
 var constants = require('./var/constants')
@@ -40,6 +40,7 @@ app.use(routes)
 function cleanJsons() {
 	let payload = JSON.stringify([])
 	fs.writeFileSync('./json/history_user.json', payload)
+	fs.writeFileSync('./json/login_user.json', payload)
 }
 setInterval(cleanJsons, cleanDays * 86400000)
 
@@ -55,11 +56,10 @@ io.on('connection', function(socket) {
 
         for(let i in users_json){
             let pass02 = decrypt(JSON.parse(users_json[i].pass))
-			console.log(users_json[i], pass02)
             if((data.user === users_json[i].user || data.user === users_json[i].email) && pass01 === pass02){
                 //the user exists and the password was correct
                 exists = true
-                obj = {id: users_json[i].id, uuid: uuid, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money};
+                obj = {id: users_json[i].id, uuid: uuid, user: users_json[i].user, email: users_json[i].email, money: users_json[i].money}
                 get_extra_data().then(function(data1) {	
                     let extra_data = {
                         city: data1.data.city ? data1.data.city : "",
@@ -105,12 +105,12 @@ io.on('connection', function(socket) {
         }
 
         try{
-            io.to(socket.id).emit('signin_read', [exists, obj]);	
+            io.to(socket.id).emit('signin_read', [exists, obj])
         }catch(e){
-            console.log('[error]','signin_read2 :', e);
+            console.log('[error]','signin_read2 :', e)
         }
 	})
-	socket.on('signup_send', function(data) {
+	socket.on('signup_send', function(data){
         let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
         let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
         let headers = socket.request.headers
@@ -138,7 +138,7 @@ io.on('connection', function(socket) {
                         city: data1.data.city ? data1.data.city : "",
                         country: data1.data.country ? data1.data.country : "",
                         ip_address: data1.data.ip_address? data1.data.ip_address : "",
-                    };
+                    }
                     let timestamp = new Date().getTime() + ""               
 
                     let new_user = {
@@ -178,46 +178,47 @@ io.on('connection', function(socket) {
                         fs.writeFileSync('./json/login_user.json', payload)
                         login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))
 
-                        let obj = {id: id, uuid:uuid, user: data.user, email: data.email, account_type: account_type, money: default_money};
+                        let obj = {id: id, uuid:uuid, user: data.user, email: data.email, account_type: account_type, money: default_money}
                         try{
-                            io.to(socket.id).emit('signup_read', [false, obj]);
+                            io.to(socket.id).emit('signup_read', [false, obj])
                         }catch(e){
-                            console.log('[error]','signup_read1 :', e);
+                            console.log('[error]','signup_read1 :', e)
                         }
                     }
                 })
             } else {
                 try{
 					// the user already exists
-					io.to(socket.id).emit('signup_read', [true, {}]);
+					io.to(socket.id).emit('signup_read', [true, {}])
 				}catch(e){
-					console.log('[error]','signup_read2 :', e);
+					console.log('[error]','signup_read2 :', e)
 				}
             }
         }
 	})
 
-	socket.on('salon_send', function(uuid) {
+	socket.on('salon_send', function(uuid){
 		if(uuid){
 			let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8')) 
             let user_found = get_user_from_uuid(uuid, users_json)
 
             if(user_found){
-				let first_enter_salon = false;		
-                let id = user_found.id;
-                let user = user_found.user;
-                let money = user_found.money;
-                let signup = user_found.signup;
+				let first_enter_salon = false		
+                let id = user_found.id
+                let user = user_found.user
+                let money = user_found.money
+                let signup = user_found.signup
+				let account_type = user_found.account_type
                 let timestamp = new Date().getTime()
 				let profile_pic = user_found.profile_pic
 				let profiles = constants.SERVER_PROFILES
 				let profile_animal = profiles.filter(a => a.id === parseInt(profile_pic))
                 
                 let login_user = JSON.parse(fs.readFileSync('./json/login_user.json', 'utf8'))                
-                let latest = null;
+                let latest = null
                 for(let i in login_user){
                     if(login_user[i].user_id == id){
-                        latest = login_user[i];
+                        latest = login_user[i]
                     }
                 }
                 if(latest){
@@ -247,6 +248,7 @@ io.on('connection', function(socket) {
 					career: career_array,
 					market:market, 
 					server_tables: server_tables, 
+					account_type: account_type
 				}
 				try{				
 					io.to(socket.id).emit('salon_read', obj)
@@ -263,7 +265,7 @@ io.on('connection', function(socket) {
 		}		
 	})
 
-	socket.on('user_page_send', function(data) {
+	socket.on('user_page_send', function(data){
 		if(data.uuid){
 			let choice = data.choice
 			let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8')) 
@@ -402,8 +404,8 @@ io.on('connection', function(socket) {
 
 	// changes in dashboard
 	socket.on('change_pic_send', function(data) {
-		let uuid = data.uuid;
-		let pic = data.pic;		
+		let uuid = data.uuid
+		let pic = data.pic	
         let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
 
         for(let i in users_json){
@@ -412,12 +414,13 @@ io.on('connection', function(socket) {
 				break
 			}
         }
+
         let payload = JSON.stringify(users_json)
         fs.writeFileSync('./json/casino_user.json', payload)
 	})
 	socket.on('change_username_send', function(data) {
-		let uuid = data.uuid;
-		let user_new = data.user_new;
+		let uuid = data.uuid
+		let user_new = data.user_new
         let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
         
         for(let i in users_json){
@@ -431,9 +434,9 @@ io.on('connection', function(socket) {
         fs.writeFileSync('./json/casino_user.json', payload)
 	})
 	socket.on('change_password_send', function(data) {
-		let uuid = data.uuid;
-		let pass_old = data.pass_old;
-		let pass_new = data.pass_new;
+		let uuid = data.uuid
+		let pass_old = data.pass_old
+		let pass_new = data.pass_new
         let users_json = JSON.parse(fs.readFileSync('./json/casino_user.json', 'utf8'))
 
         for(let i in users_json){
@@ -540,7 +543,7 @@ io.on('connection', function(socket) {
 			let money = data.money
 			let status = data.status
 			let bet = Math.abs(data.bet)
-			let timestamp = new Date().getTime();
+			let timestamp = new Date().getTime()
 
 			// update money
 			let user_found

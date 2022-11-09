@@ -108,6 +108,17 @@ export const formatDate = function(date){
   return dateString
 }
 
+export const checkWinterMonths = function(){
+  let winter = false
+  // const d = new Date('01/01/2011')
+  const d = new Date()
+  let month = d.getMonth()
+  if(month === 0 || month === 1 || month === 11){
+      winter = true
+  }
+  return winter
+}
+
 export const setCookie = function (cname, cvalue, hours=12){
   let d = new Date()
   d.setTime(d.getTime() + (hours * 60 * 60 * 1000))

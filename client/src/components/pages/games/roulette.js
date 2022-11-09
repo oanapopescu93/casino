@@ -762,6 +762,7 @@ function roulette_game(props){
 			bet: Math.abs(money_original - user_info.money),
 			status: status,
 		}
+		// console.log('roulette_payload_server ', roulette_payload_server)
 		socket.emit('results_send', roulette_payload_server)
 	}	
 }

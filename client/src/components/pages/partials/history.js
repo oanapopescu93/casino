@@ -7,6 +7,7 @@ function HistoryTable(props){
     let lang = props.lang
     let rowspan = 0
     var title = template.charAt(0).toUpperCase() + template.slice(1)
+    console.log('keno --> ', title, template, history)
     switch(template){
         case "roulette":
             rowspan = history.length.toString()
@@ -239,6 +240,41 @@ function HistoryTable(props){
                     </Table>
                 </>
             )
+        case "keno":            
+            return(
+                <>
+                    <h3>{title}</h3>
+                    <Table className="history_container 444">
+                        <thead>
+                            <tr>                                
+                                <th>{lang === "ro" ? <span>Status</span> : <span>Status</span>}</th>
+                                <th>{lang === "ro" ? <span>Morcovi</span> : <span>Carrots</span>}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {(() => {
+                                    if(history[0].win){
+                                        return(                                        
+                                            <>                                                
+                                                <td>{lang === "ro" ? <span>Ai castigat </span> : <span>You won </span>}{history[0].bet_value}</td>
+                                                <td>{history[0].money_history}</td>
+                                            </>
+                                        )
+                                    } else {
+                                        return(                                        
+                                            <>                                                
+                                                <td>{lang === "ro" ? <span>Ai pierdut </span> : <span>You lost </span>}{history[0].bet_value}</td>
+                                                <td>{history[0].money_history}</td>
+                                            </>
+                                        )
+                                    }
+                                })()}
+                            </tr>
+                        </tbody>
+                    </Table>
+                </>
+            )
         default:
             return(
                 <p>{lang === "ro" ? <span>Eroare.</span> : <span>Ups, something went wrong.</span>}</p>
@@ -252,7 +288,7 @@ function HistoryShort(props){
     return (
         <div className="history_box">
             {(() => {
-                if (history.roulette === null && history.blackjack === null && history.slots === null && history.craps === null && history.race === null) {
+                if (history.roulette === null && history.blackjack === null && history.slots === null && history.craps === null && history.race === null && history.keno === null) {
                     return (
                         <p>{lang === "ro" ? <span>Nu ai niciun pariu recent</span> : <span>You don't have recent bet</span>}</p>
                     )
@@ -264,6 +300,7 @@ function HistoryShort(props){
                             { history.slots && history.slots.length>0 ? <HistoryTable template="slots" lang={lang} history={history.slots}></HistoryTable> : null}
                             { history.craps && history.craps.length>0 ? <HistoryTable template="craps" lang={lang} history={history.craps}></HistoryTable> : null}
                             { history.race && history.race.length>0 ? <HistoryTable template="race" lang={lang} history={history.race}></HistoryTable> : null}
+                            { history.keno && history.keno.length>0 ? <HistoryTable template="keno" lang={lang} history={history.keno}></HistoryTable> : null}
                         </>
                     )
                 }

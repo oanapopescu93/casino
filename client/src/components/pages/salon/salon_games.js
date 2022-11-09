@@ -3,12 +3,13 @@ import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from '../partials/carousel'
-import { setCookie } from '../../utils'
+import { checkWinterMonths, setCookie } from '../../utils'
 import { useDispatch } from 'react-redux'
 import { game_page } from '../../actions/actions'
 
 function SalonGames(props){
     const [width, setWidth] = useState(window.innerWidth)
+    const [snow, setSnow] = useState('')
     const [casinoGames, setCasinoGames] = useState(null)
     const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
     let dispatch = useDispatch()
@@ -19,6 +20,10 @@ function SalonGames(props){
         $(window).resize(function(){            
 			setWidth(window.innerWidth)
 		})
+        let winter = checkWinterMonths()
+        if(winter){
+            setSnow('snow')
+        }
 	}, [])
 
     function create_casino_games(res){
@@ -99,7 +104,7 @@ function SalonGames(props){
                         return (
                             <div id="casino_games_title_dropdown_container">
                                 <div onClick={()=>handleDropdown_small()} className="casino_games_title_container">
-                                    <div className="capitalize casino_games_title shadow_convex">
+                                    <div className={"capitalize casino_games_title shadow_convex "+snow}>
                                         <span className="capitalize">roulette tables</span>
                                         <i className="fa fa-angle-down"></i>
                                     </div>
@@ -140,7 +145,7 @@ function SalonGames(props){
                                         if (width > 960) {
                                             return (
                                                 <div className="casino_games_title_container">
-                                                    <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleDropdown(t)}>{title}</div>
+                                                    <div className={"capitalize casino_games_title shadow_convex "+snow} onClick={()=>handleDropdown(t)}>{title}</div>
                                                 </div>
                                             )
                                         }

@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react'
+import { useDispatch } from 'react-redux'
+import $ from 'jquery'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import $ from 'jquery'
 import { getCookie, setCookie, showResults } from '../../utils'
+import { game_load } from '../../actions/actions'
 
 function SignUp(props){
 	let lang = props.lang
 	let socket = props.socket
 	const [minor, setMinor] = useState(true)
+	let dispatch = useDispatch()
 
 	useEffect(() => {
 		setMinor(getCookie('user_minor'))
@@ -18,13 +21,8 @@ function SignUp(props){
 		$('.sign_errors').empty()
 		if(check_submit('email') && check_submit('pass')){
 			loader().then(function(data){
+				dispatch(game_load(false))
 				if(data[0]){
-					if($('#loader_container')){
-						$('#loader_container').hide()
-					}
-					if($('#home')){
-						$('#home').show()
-					}	
 					if(lang === "ro"){
 						showResults('Alerta', 'Esti deja inregistrat.', 300, false)
 					} else {
@@ -62,12 +60,7 @@ function SignUp(props){
 	
 	function loader(){
 		return new Promise(function(resolve, reject){
-			if($('#loader_container')){
-				$('#loader_container').show()
-			}
-			if($('#home')){
-				$('#home').hide()	
-			}		
+			dispatch(game_load(true))	
 			socket.emit('signup_send', {email: $('#signup_email').val(), user: $('#signup_user').val(), pass: $('#signup_pass').val()})	
 			socket.on('signup_read', function(data){
 				resolve(data)
