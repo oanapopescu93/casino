@@ -7,16 +7,11 @@ module.exports = Object.freeze({
     DATABASE: [
         {
             host: 'db4free.net', 
-            user: 'oanapopescu93', 
+            user: 'oana_popescu_93', 
             password: 'Qazwsxedc123rfv123!',
-            database: 'bunny_bet_casino',
+            database: 'bunnybetdatabase',
             sql: "SELECT * FROM casino_users",
-
-            // host: 'sql104.epizy.com', 
-            // user: 'epiz_32574901', 
-            // password: 'Qazwsxedc123rfv123',
-            // database: 'epiz_32574901_bunny_bet_casino',
-            // sql: "SELECT * FROM casino_users",
+            // multipleStatements: true 
         },
     ],
 
