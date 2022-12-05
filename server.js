@@ -40,6 +40,7 @@ let sign_in_up = false
 app.use(routes)
 
 io.on('connection', function(socket) {
+	console.log('connection!!!')
 	function get_history(){
 		return new Promise(function(resolve, reject){
 			database_config.sql = "SELECT * FROM history_user"
