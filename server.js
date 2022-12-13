@@ -6,7 +6,7 @@ var io = require('socket.io')(http,{
     pingInterval: 10000,
     pingTimeout: 5000,
 })
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5222
 app.set("port", port)
 
 const database = require('./utils/mysql')
