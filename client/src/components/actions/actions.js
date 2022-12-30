@@ -96,3 +96,10 @@ export const game_load = function(data) {
 		load: data
 	}
 }
+
+export const popup_info = function(data) {
+	return {
+		type: "popup_info",
+		info: data
+	}
+}

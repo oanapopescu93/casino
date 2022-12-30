@@ -39,8 +39,7 @@ let sign_in_up = false
 
 app.use(routes)
 
-io.on('connection', function(socket) {
-	console.log('connection!!!')
+io.on('connection', function(socket){
 	function get_history(){
 		return new Promise(function(resolve, reject){
 			database_config.sql = "SELECT * FROM history_user"
@@ -597,7 +596,7 @@ io.on('connection', function(socket) {
 	// other
 	socket.on('disconnect', function(reason) {		
 		let k = sockets.indexOf(socket)
-		console.log('disconnect111', k, socket.room_name)
+		//console.log('disconnect111', k, socket.room_name)
 		if(k !== -1){
 			if(typeof user_join[k] !== "undefined"){
 				if(typeof user_join[k].user !== "undefined"){
@@ -608,7 +607,7 @@ io.on('connection', function(socket) {
     })
 	socket.on('disconnecting', function(reason) {
 		let k = sockets.indexOf(socket)
-		console.log('disconnecting111', k, socket.room_name)
+		//console.log('disconnecting111', k, socket.room_name)
 		if(k !== -1){
 			if(typeof user_join[k] !== "undefined"){
 				if(typeof user_join[k].user !== "undefined"){

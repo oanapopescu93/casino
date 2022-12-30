@@ -82,6 +82,7 @@ function roulette_game(props){
 		socket.on('roulette_spin_read', function(data){	
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				spin_time = data.spin_time
+				// spin_time = 10
 				ball.speed = data.ball_speed			
 				if (window.innerWidth < 900){
 					if(window.innerHeight < window.innerWidth){
@@ -423,7 +424,6 @@ function roulette_game(props){
 	
 	this.spin = function(arc, spin_time, monkey){
 		let spin_nr = 0
-		//let spin_time = 10
 		let spin_time_more = 200
 		let monkey_wait = 200		
 		dispatch_nr++

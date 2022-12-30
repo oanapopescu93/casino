@@ -11,6 +11,7 @@ import ShowResults from './partials/show_results'
 import Donate from './money/donate'
 import socketIOClient from "socket.io-client/dist/socket.io"
 import '../css/style.css'
+import Popup from './partials/popup'
 const socket = socketIOClient("/")
 
 function Home(props){
@@ -76,6 +77,7 @@ function Home(props){
 			<Language lang_change={lang_change}></Language>
 			<Donate my_donation={my_donation} info={donationInfo} socket={socket}></Donate>
 			<ShowResults lang={lang}></ShowResults>
+			<Popup lang={lang}></Popup>
 			<Footer lang={lang} socket={socket}></Footer>
 		</>
 	)

@@ -9,6 +9,7 @@ import kenoReducer from './keno'
 import visibilityReducer from './visibility'
 import pageReducer from './page'
 import loadReducer from './load'
+import popupReducer from './popup'
 
 const allReducers = combineReducers({
 	roulette: rouletteReducer,
@@ -20,6 +21,7 @@ const allReducers = combineReducers({
 	visibility: visibilityReducer,
 	page: pageReducer,
 	load: loadReducer,
+	popup: popupReducer,
 })
 
 export default allReducers
