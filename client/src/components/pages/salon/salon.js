@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch} from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
-import { bigText, showResults, getCookie, setCookie, isEmpty } from '../../utils'
-import { game_load, game_page, game_visible } from '../../actions/actions'
+import {bigText, getCookie, setCookie, isEmpty } from '../../utils'
+import {game_load, game_page, game_visible, popup_info} from '../../actions/actions'
 import UserPage from '../user/userPage'
 import giftPic from '../../img/chest/chest.gif'
 
@@ -36,7 +36,7 @@ function Salon(props){
 						<p><b>` + gift_text + `</b></p>
 					</div>`
 					let text = bigText(gift_table)
-					showResults(gift_title, text, 300, false)		
+					dispatch(popup_info({title: gift_title, text: text, width: 300, fireworks: false}))		
 				}
 			} 
 			setLoaded(true)

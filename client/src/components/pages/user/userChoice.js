@@ -52,7 +52,7 @@ function UserChoice(props) {
                                                         case "blackjack":
                                                         case "slots":
                                                         case "craps":
-                                                            return <Game lang={props.lang} socket={props.socket} data={data} game_choice={game}></Game>
+                                                            return <Game lang={props.lang} socket={props.socket} data={data} game_choice={game} dispatch={dispatch}></Game>
                                                         case "donation":
                                                             return <Page lang={props.lang} socket={props.socket} back={back}></Page>
                                                         default:
@@ -68,7 +68,7 @@ function UserChoice(props) {
                                                     if(page === "donation"){
                                                         return <Page lang={props.lang} socket={props.socket} back={back}></Page>
                                                     } else {
-                                                        return <Game lang={props.lang} socket={props.socket} data={data} game_choice={choice}></Game>
+                                                        return <Game lang={props.lang} socket={props.socket} data={data} game_choice={choice} dispatch={dispatch}></Game>
                                                     }
                                                     
                                                 default:

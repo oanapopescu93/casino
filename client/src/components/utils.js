@@ -94,6 +94,8 @@ import 	craps_any_craps from './img/craps/hover/craps_any_craps.png'
 
 import keno_dirt_01 from './img/keno/keno_dirt_01.png'
 
+import { popup_info } from './actions/actions'
+
 export const isEmpty = function (element){
   let empty = true
   if(typeof element !== "undefined" && element !== 'null' && element !== null && element !== ''){
@@ -145,36 +147,6 @@ export const getCookie = function (cname){
     }
   }
   return ""
-}
-
-export const showResults = function(title="", message="", w=200, showFireworks=false) {
-  if($('.show_results_container').length>0){
-    $('.show_results_container').show()
-    $('.show_results').css('max-width', w)
-    $('.show_results').css('height', 'auto')
-    if($('.show_results .header').length>0){
-      $('.show_results .header').empty()
-      $('.show_results .header').append(title)
-    }  
-    if($('.show_results .message').length>0){
-      $('.show_results .message').empty()
-      $('.show_results .message').append(message)
-    }    
-    $( ".show_results_container" ).click(function() {
-      $(this).hide()
-    })
-    $( ".show_results_container .show_results_close" ).click(function() {
-      $(this).closest('show_results_container').hide()
-      if($('.firework')){
-        $('.firework').removeClass('show')
-      }
-    })
-    if(showFireworks){
-      if($('.firework')){
-        $('.firework').addClass('show')
-      }
-    }
-  }
 }
 
 export const bigText = function(payload) {
@@ -365,8 +337,8 @@ export const get_keno_images = function(){
   return [{id: 1, src: keno_dirt_01},]
 }
 
-export const showStreak = function(streak, lang){
-  if(streak > 1){
+export const showStreak = function(streak, lang, dispatch){
+  if(streak > 1 && dispatch){    
     let showed_streak = getCookie("casino_streak") // check if opup streak was already shown
     if(typeof showed_streak === "undefined" || showed_streak === "null" || showed_streak === null || showed_streak === ""){
       setCookie("casino_streak", true)							
@@ -396,7 +368,7 @@ export const showStreak = function(streak, lang){
       </div>`							
       
       let text = bigText(streak_table)
-      showResults(streak + ' ' + streak_days, text, 600) 
+      dispatch(popup_info({title: streak + ' ' + streak_days, text: text, width: 600, fireworks: false}))
 
       $( "#streak .bubble" ).each(function(i) {
         if(i < streak){

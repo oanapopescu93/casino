@@ -1,8 +1,8 @@
 import React, { useEffect, useState }from 'react'
-import {connect, useDispatch} from 'react-redux'
+import {connect} from 'react-redux'
 import $ from 'jquery'
-import {roulette_calculate_money, roulette_get_history} from '../../actions/actions'
-import { get_roulette_bets, showResults } from '../../utils'
+import {roulette_calculate_money, roulette_get_history, popup_info} from '../../actions/actions'
+import {get_roulette_bets} from '../../utils'
 import carrot_img from '../../img/icons/carrot_icon.png'
 
 let canvas
@@ -397,7 +397,7 @@ function roulette_game(props){
 			//console.log('SPIN', your_bets)
 			dispatch_nr = 0	
 			if(JSON.stringify(your_bets) === JSON.stringify([])){
-				showResults("", "Please place your bet before playing.", 300, false)			
+				dispatch(popup_info({title: "", text: "Please place your bet before playing.", width: 300, fireworks: false}))			
 			} else {
 				spin_click++
 				my_click++
@@ -459,9 +459,9 @@ function roulette_game(props){
 				
 				setTimeout(function(){ 
 					if(lang === "ro"){
-						showResults("Resultat", "Numarul norocos este " + win_nr.nr, 300, false)
+						dispatch(popup_info({title: "Resultat", text: "Numarul norocos este " + win_nr.nr, width: 300, fireworks: false}))	
 					} else {
-						showResults("Results", "The lucky number is " + win_nr.nr, 300, false)
+						dispatch(popup_info({title: "Results", text: "The lucky number is " + win_nr.nr, width: 300, fireworks: false}))	
 					}						
 					your_last_bet = {}
 					your_bets = []
@@ -770,6 +770,7 @@ function roulette_game(props){
 function roulette_bets(props){
 	let self = this
 	let lang = props.lang
+	const dispatch = props.dispatch
 	this.images = []
 	let reason = ""
 	let canvas_bets
@@ -860,9 +861,9 @@ function roulette_bets(props){
 				self.canvas_click(canvas_bets, event)
 			} else {
 				if(lang === "ro"){
-					showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 300, false)
+					dispatch(popup_info({title: "Nu ai suficienti morcovi!", text: "Du-te in contul tau, la sectiunea Market si cumpara.", width: 300, fireworks: false}))	
 				} else {
-					showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 300, false)
+					dispatch(popup_info({title: "You don't have enough carrots!", text: "Go to your account, at the Market Section and buy some.", width: 300, fireworks: false}))	
 				}
 			}
 		})

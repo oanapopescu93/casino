@@ -1,11 +1,11 @@
 import React, { useState }from 'react'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
-import { setCookie, showResults } from '../../utils'
+import {setCookie} from '../../utils'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import { game_load } from '../../actions/actions'
+import {game_load, popup_info} from '../../actions/actions'
 
 function SignIn(props) {
 	const [show, setShow] = useState(false)
@@ -28,17 +28,17 @@ function SignIn(props) {
 					} else {
 						dispatch(game_load(false))
 						if(lang === "ro"){
-							showResults("Eroare", "Parola gresita.", 300, false)
+							dispatch(popup_info({title: "Errore", text: "Parola gresita.", width: 300, fireworks: false}))
 						} else {
-							showResults("Error", "Incorrect password.", 300, false)
+							dispatch(popup_info({title: "Error", text: "Incorrect password.", width: 300, fireworks: false}))
 						}
 					}
 				} else {
 					dispatch(game_load(false))	
 					if(lang === "ro"){
-						showResults("Eroare", "Nu esti integistrat SAU nu ai scris ceva corect.", 300, false)
+						dispatch(popup_info({title: "Errore", text: "Nu esti integistrat SAU nu ai scris ceva corect.", width: 300, fireworks: false}))
 					} else {
-						showResults("Error", "You are not registered OR you have a typo somewhere.", 300, false)
+						dispatch(popup_info({title: "Error", text: "You are not registered OR you have a typo somewhere.", width: 300, fireworks: false}))
 					}
 				}
 			})

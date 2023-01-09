@@ -29,7 +29,7 @@ function Game(props){
 			if(data){
 				setTimeout(function(){
 					setLoaded(true)
-					showStreak(streak, lang)
+					showStreak(streak, lang, props.dispatch)
 				}, 1000)
 			}
 		})

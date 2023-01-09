@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button'
-
 import $ from 'jquery'
 import OwlCarousel from 'react-owl-carousel'
-import 'owl.carousel/dist/assets/owl.carousel.css'
-import 'owl.carousel/dist/assets/owl.theme.default.css'
 import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
 import rabbit_img_board from '../../img/race_imgs/rabbit.jpg'
-import { showResults } from '../../utils'
 import Stars from './stars'
+import 'owl.carousel/dist/assets/owl.carousel.css'
+import 'owl.carousel/dist/assets/owl.theme.default.css'
+import { popup_info } from '../../actions/actions'
 
 class Carousel extends Component {	
 	constructor(props) {
@@ -104,10 +103,12 @@ class Carousel extends Component {
 		if(item_list && item_list.length>0){
 			if(item_list[t]){
 				if(item_list[t].bet+1 > money){
-					if(this.props.lang === "ro"){
-						showResults("Nu ai suficienti morcovi!", "Du-te si cumpara din Market", 300, false)
-					} else {
-						showResults("You don't have enough carrots!", "Go and buy some from the Market.", 300, false)
+					if(this.props.dispatch){
+						if(this.props.lang === "ro"){
+							this.props.dispatch(popup_info({title: "Nu ai suficienti morcovi!", text: "Du-te si cumpara din Market", width: 300, fireworks: false}))	
+						} else {
+							this.props.dispatch(popup_info({title: "You don't have enough carrots!", text: "Go and buy some from the Market.", width: 300, fireworks: false}))		
+						}
 					}
 				} else {
 					item_list[t].bet++					

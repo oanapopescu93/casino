@@ -2,8 +2,8 @@ import React, {useEffect, useState, useRef} from 'react'
 import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { bigText, get_craps_bets, showResults } from '../../utils'
-import { craps_calculate_money, craps_get_history } from '../../actions/actions'
+import { bigText, get_craps_bets } from '../../utils'
+import { craps_calculate_money, craps_get_history, popup_info } from '../../actions/actions'
 import { useDispatch } from 'react-redux'
 
 let move = 0
@@ -275,7 +275,7 @@ function Craps(props){
 				</p>
 			</div>`
 			let text = bigText(pay_table)
-			showResults("Reguli", text, 400, false)
+			dispatch(popup_info({title: "Reguli", text: text, width: 300, fireworks: false}))
 		} else {
 			let pay_table = `
 			<div id="craps_rules" class="craps_rules">
@@ -317,7 +317,7 @@ function Craps(props){
 				</p>
 			</div>`
 			let text = bigText(pay_table)
-			showResults("Rules", text, 400, false)
+			dispatch(popup_info({title: "Reguli", text: text, width: 300, fireworks: false}))
 		}
 	}
 
@@ -327,22 +327,22 @@ function Craps(props){
 			if(win === 'win'){
 				let pay = gameOdds + bet
 				if(lang === "ro"){
-					showResults("Resultat", "Ai castigat " + pay + " morcovi!", 300, true)
+					dispatch(popup_info({title: "Resultat", text: "Ai castigat " + pay + " morcovi!", width: 300, fireworks: true}))
 				} else {
-					showResults("Results", "You won " + pay + " carrots!", 300, true)
+					dispatch(popup_info({title: "Results", text: "You won " + pay + " carrots!", width: 300, fireworks: true}))
 				}	
 				setMoneyTotal(win_lose_money + pay)	
 			} else if(win === 'push'){
 				if(lang === "ro"){
-					showResults("Push", "Iti iei morcovii inapoi!", 300, false)
+					dispatch(popup_info({title: "Push", text: "Iti iei morcovii inapoi!", width: 300, fireworks: false}))
 				} else {
-					showResults("Push", "You take your carrots back!", 300, false)
+					dispatch(popup_info({title: "Push", text: "You take your carrots back!", width: 300, fireworks: false}))
 				}			
 			} else {
 				if(lang === "ro"){
-					showResults("Resultat", "Ai pierdut " + bet + " morcovi!", 300, false)
+					dispatch(popup_info({title: "Resultat", text: "Ai pierdut " + bet + " morcovi!", width: 300, fireworks: false}))
 				} else {
-					showResults("Results", "You lost " + bet + " carrots!", 300, false)
+					dispatch(popup_info({title: "Resultat", text: "You lost " + bet + " carrots!", width: 300, fireworks: false}))
 				}
 				setMoneyTotal(win_lose_money - bet)
 			}
@@ -801,9 +801,9 @@ function Craps(props){
 			}
 		} else {
 			if(lang === "ro"){
-				showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 300, false)
+				dispatch(popup_info({title: "Nu ai suficienti morcovi!", text: "Du-te in contul tau, la sectiunea Market si cumpara.", width: 300, fireworks: false}))
 			} else {
-				showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 300, false)
+				dispatch(popup_info({title: "You don't have enough carrots!", text: "Go to your account, at the Market Section and buy some.", width: 300, fireworks: false}))
 			}
 		}
 	}

@@ -1653,7 +1653,7 @@ table {
     border: solid 1px rgba(0, 0, 0, 0.5);	
 }
 
-.show_results_container{
+.popup_container{
 	background:var(--transparent_5);
 	position: fixed;
 	z-index: 99999;
@@ -1666,7 +1666,10 @@ table {
 	padding:10px;
 	display:none;
 }
-.show_results{
+.popup_container.open{
+	display:block;
+}
+.popup_box{
 	position: absolute;
 	z-index: 1;
 	top:50%;
@@ -1679,19 +1682,19 @@ table {
 	color: black;
 	border: solid 1px black;
 }
-.show_results .header{
+.popup_box .header{
 	font-size: 24px;
 	line-height: 32px;
 	margin-bottom:10px;
 	padding:0px 10px;
 	border-bottom:solid 1px black;
 }
-.show_results .message{
+.popup_box .message{
 	font-size: 14px;
 	margin-bottom:10px;
 	padding:0px 10px;
 }
-.show_results i{
+.popup_box i{
 	position: absolute;
     top: -10px;
     right: -10px;
@@ -1704,7 +1707,7 @@ table {
     height: 25px;
     border: solid 1px black;
 }
-.show_results i:hover{
+.popup_box i:hover{
     background: var(--dark_yellow);
 }
 #slot_rules{

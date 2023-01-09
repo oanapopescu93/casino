@@ -30,7 +30,7 @@ let my_console = function(){
 
 function App(props){	
 	const [show, setShow] = useState(false)
-	my_console.disable()
+	//my_console.disable()
 	let page = useSelector(state => state.page)
 	let show_loader = useSelector(state => state.load)
 	// console.log('page--> ', page)

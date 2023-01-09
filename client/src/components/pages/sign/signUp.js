@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import $ from 'jquery'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { getCookie, setCookie, showResults } from '../../utils'
-import { game_load } from '../../actions/actions'
+import {getCookie, setCookie} from '../../utils'
+import {game_load, popup_info} from '../../actions/actions'
 
 function SignUp(props){
 	let lang = props.lang
@@ -24,9 +24,9 @@ function SignUp(props){
 				dispatch(game_load(false))
 				if(data[0]){
 					if(lang === "ro"){
-						showResults('Alerta', 'Esti deja inregistrat.', 300, false)
+						dispatch(popup_info({title: "Alerta", text: 'Esti deja inregistrat.', width: 300, fireworks: false}))
 					} else {
-						showResults('Alert', 'You are already registered.', 300, false)
+						dispatch(popup_info({title: "Alert", text: 'You are already registered.', width: 300, fireworks: false}))
 					}					
 				} else {
 					setCookie("casino_uuid", data[1].uuid)

@@ -16,13 +16,6 @@
   }
 }
 
-.firework{
-  display: none;
-}
-.firework.show{
-  display: block;
-}
-
 .firework,
 .firework::before,
 .firework::after {

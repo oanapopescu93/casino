@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef }from 'react'
+import React, {useState, useEffect}from 'react'
 import {connect} from 'react-redux'
 import $ from 'jquery'
-import {blackjack_calculate_money, blackjack_get_history} from '../../actions/actions'
-import { get_blackjack_cards, showResults } from '../../utils'
+import {blackjack_calculate_money, blackjack_get_history, popup_info} from '../../actions/actions'
+import {get_blackjack_cards} from '../../utils'
 import GameBoard from '../partials/game_board'
 
 let my_blackjack
@@ -463,16 +463,16 @@ function blackjack_game(props){
 		if(obj.id === "dealer"){
 			self.pay("dealer")
 			if(lang === "ro"){
-				showResults("Resultat", 'Dealer-ul a castigat!', 300, false)
+				dispatch(popup_info({title: "Resultat", text: 'Dealer-ul a castigat!', width: 300, fireworks: false}))	
 			} else {
-				showResults("Results", 'The dealer has won!', 300, false)
+				dispatch(popup_info({title: "Results", text: 'The dealer has won!', width: 300, fireworks: false}))	
 			}				
 		} else {
 			self.pay(obj)
 			if(lang === "ro"){
-				showResults("Resultat", 'Jucatorul ' + obj.user + ' a castigat!', 300, true)	
+				dispatch(popup_info({title: "Resultat", text: 'Jucatorul ' + obj.user + ' a castigat!', width: 300, fireworks: true}))	
 			} else {
-				showResults("Results", 'Player ' + obj.user + ' has won!', 300, true)	
+				dispatch(popup_info({title: "Results", text: 'Player ' + obj.user + ' has won!', width: 300, fireworks: true}))	
 			}	
 		}
 	}

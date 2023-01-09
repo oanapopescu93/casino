@@ -1,8 +1,8 @@
 import React, { useState, useEffect }from 'react'
 import {connect} from 'react-redux'
 import $ from 'jquery'
-import {slot_calculate_money, slot_get_history} from '../../actions/actions'
-import { bigText, get_slots_images, showResults } from '../../utils'
+import {slot_calculate_money, slot_get_history, popup_info} from '../../actions/actions'
+import {bigText, get_slots_images} from '../../utils'
 import GameBoard from '../partials/game_board'
 
 let reel = []
@@ -168,7 +168,7 @@ function slot_game(props, id){
 			text = bigText(pay_table)
 			title = "Pay table"
 		}
-		showResults(title, text, 400, false)
+		dispatch(popup_info({title: title, text: text, width: 400, fireworks: false}))
 		for(let i in win){
 			let my_matrix = win[i].matrix
 			let my_prize = win[i].prize
@@ -197,16 +197,16 @@ function slot_game(props, id){
 				self.spin(spin_time, slot_speed)
 			} else {
 				if(lang === "ro"){
-					showResults("Eroare", "Ceva s-a intamplat. Va rog restartati jocul!", 300, false)
+					dispatch(popup_info({title: "Eroare", text: "Ceva s-a intamplat. Va rog restartati jocul!", width: 300, fireworks: false}))
 				} else {
-					showResults("Error", "Something went wrong. Please restart the game!", 300, false)
+					dispatch(popup_info({title: "Error", text: "Something went wrong. Please restart the game!", width: 300, fireworks: false}))
 				}
 			}
 		} else {
 			if(lang === "ro"){
-				showResults("Nu ai suficienti morcovi!", "Du-te in contul tau, la sectiunea Market si cumpara.", 300, false)
+				dispatch(popup_info({title: "Nu ai suficienti morcovi!", text: "Du-te in contul tau, la sectiunea Market si cumpara.", width: 300, fireworks: false}))
 			} else {
-				showResults("You don't have enough carrots!", "Go to your account, at the Market Section and buy some.", 300, false)
+				dispatch(popup_info({title: "You don't have enough carrots!", text: "Go to your account, at the Market Section and buy some.", width: 300, fireworks: false}))
 			}
 		}
 	}
@@ -503,31 +503,31 @@ function slot_game(props, id){
 
 		if(win){
 			if(lang === "ro"){
+				let carrots = "morcovi"
 				if(game_pay === 1){
-					showResults("Resultat", "Ai castigat " + game_pay + " morcov", 300, true)
-				} else {
-					showResults("Results", "Ai castigat " + game_pay + " morcovi", 300, true)
-				}				
+					carrots = "morcov"
+				}
+				dispatch(popup_info({title: "Resultat", text: "Ai castigat " + game_pay + " " + carrots + "!", width: 300, fireworks: true}))		
 			} else {
+				let carrots = "carrots"
 				if(game_pay === 1){
-					showResults("Results", "You won " + game_pay + " carrot!", 300, true)
-				} else {
-					showResults("Results", "You won " + game_pay + " carrots!", 300, true)
-				}				
+					carrots = "carrot"
+				}
+				dispatch(popup_info({title: "Results", text: "You won " + game_pay + " " + carrots + "!", width: 300, fireworks: true}))			
 			}
 		} else {
 			if(lang === "ro"){
+				let carrots = "morcovi"
 				if(game_pay === 1){
-					showResults("Resultat", "Ai pierdut " + game_pay + " morcov", 300, false)
-				} else {
-					showResults("Resultat", "Ai pierdut " + game_pay + " morcovi", 300, false)
+					carrots = "morcov"
 				}
+				dispatch(popup_info({title: "Resultat", text: "Ai pierdut " + game_pay + " " + carrots + "!", width: 300, fireworks: false}))	
 			} else {
+				let carrots = "carrots"
 				if(game_pay === 1){
-					showResults("Results", "You lost " + game_pay + " carrot!", 300, false)
-				} else {
-					showResults("Results", "You lost " + game_pay + " carrots!", 300, false)
+					carrots = "carrot"
 				}
+				dispatch(popup_info({title: "Results", text: "You lost " + game_pay + " " + carrots + "!", width: 300, fireworks: false}))	
 			}			
 		}
 		let payload = [{bet_value: game_pay, money_history: user_info.money,win: win}]

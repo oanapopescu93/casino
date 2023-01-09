@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import {Route, Switch, BrowserRouter} from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
-import { getCookie, setCookie, showResults } from '../utils'
+import { getCookie, setCookie} from '../utils'
 import HomePage from './homePage'
 import NotFound from './other_pages/not_found'
 import Language from './partials/language'
 import Cookies from './partials/cookies_modal'
 import Footer from './partials/footer'
-import ShowResults from './partials/show_results'
+import Popup from './partials/popup'
 import Donate from './money/donate'
 import socketIOClient from "socket.io-client/dist/socket.io"
 import '../css/style.css'
-import Popup from './partials/popup'
+import { popup_info } from '../actions/actions'
+
 const socket = socketIOClient("/")
 
 function Home(props){
 	const [cookies, setCookies] = useState(false)
 	const [lang, setLang] = useState(getCookie("casino_lang"))
 	const [donationInfo, setDonationInfo] = useState(null)
+	const dispatch = useDispatch()
+	let popupInfo = useSelector(state => state.popup)
 	let page = props.page
 	let show_loader = props.show
 	let open = "open"
@@ -37,7 +41,7 @@ function Home(props){
 			socket.emit('heartbeat', { data: "ping" })
 		}, 15000)
 		socket.on('server_error', function (text) {
-			showResults("Error", text)
+			dispatch(popup_info({title: "Error", text: text, width: 300, fireworks: false}))
 			console.log('server_error ', text)
 		})
 	}, [])
@@ -76,8 +80,7 @@ function Home(props){
 			{!cookies ? <Cookies casino_cookies={casino_cookies} lang={lang}></Cookies>  : null}
 			<Language lang_change={lang_change}></Language>
 			<Donate my_donation={my_donation} info={donationInfo} socket={socket}></Donate>
-			<ShowResults lang={lang}></ShowResults>
-			<Popup lang={lang}></Popup>
+			{popupInfo ? <Popup lang={lang} data={popupInfo}></Popup> : null}
 			<Footer lang={lang} socket={socket}></Footer>
 		</>
 	)

@@ -1,4 +1,4 @@
-const popupReducer = (state = "", action) => {	
+const popupReducer = (state = null, action) => {	
 	switch(action.type){
 		case "popup_info":						
 			return action.info			

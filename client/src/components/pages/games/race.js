@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import {game_page, race_calculate_money, race_get_history} from '../../actions/actions'
+import {game_page, race_calculate_money, race_get_history, popup_info} from '../../actions/actions'
 import $ from 'jquery'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { showResults } from '../../utils'
 import rabbit_sit from '../../img/rabbit_move/rabbit000.png'
 import rabbit_move from '../../img/rabbit_move/rabbit_move_colored.png'
 import obstacle from '../../img/icons/obstacle.png'
@@ -862,21 +861,21 @@ function race_game(props){
 
 		if(lang === "ro"){
 			if(props.data.money<remaining_money){
-				showResults("Rezultat", "Ai castigat " + get + " morcovi!", 300, true)
+				dispatch(popup_info({title: "Rezultat", text: "Ai castigat " + get + " morcovi!", width: 300, fireworks: true}))
 			} else if(get>0){
-				showResults("Rezultat", "Ai pierdut " + get + " morcovi!", 300, false)
+				dispatch(popup_info({title: "Rezultat", text: "Ai pierdut " + get + " morcovi!", width: 300, fireworks: false}))
 				status = "lose"
 			} else {
-				showResults("Rezultat", "Ai " + remaining_money + " morcovi!", 300, false)
+				dispatch(popup_info({title: "Rezultat", text: "Ai " + remaining_money + " morcovi!", width: 300, fireworks: false}))
 			}			
 		} else {
 			if(props.data.money<remaining_money){
-				showResults("Results", "you won " + get + " carrots!", 300, true)
+				dispatch(popup_info({title: "Rezultat", text: "You won " + get + " carrots!", width: 300, fireworks: true}))
 			} else if(get>0){
-				showResults("Results", "You lost " + get + " carrots!", 300, false)
+				dispatch(popup_info({title: "Rezultat", text: "You lost " + get + " carrots!", width: 300, fireworks: false}))
 				status = "lose"
 			} else {
-				showResults("Results", "You have " + remaining_money + " carrots!", 300, false)
+				dispatch(popup_info({title: "Rezultat", text: "You have " + remaining_money + " carrots!", width: 300, fireworks: false}))
 			}
 		}
 		self.pay(win_lose, get, status)	
@@ -974,6 +973,7 @@ function RaceGame(props){
 function RaceTables(props){
 	let lang = props.lang
 	let socket = props.socket
+	let dispatch = props.dispatch
 	const [rabbitArray, setRabbitArray] = useState(props.rabbitArray)
 	const carousel = useRef(null)
 
@@ -997,10 +997,10 @@ function RaceTables(props){
 		 	props.get_data(rabbitArray)
 		} else {
 		 	if(props.lang === "ro"){
-		 		showResults("", "Pariati pe un iepure pentru a intra in joc.", 300, false)	
+				dispatch(popup_info({title: "", text: "Pariati pe un iepure pentru a intra in joc.", width: 300, fireworks: false}))	
 		 	} else {
-				showResults("", "Please place your bet before playing.", 300, false)	
-		 	}							
+				dispatch(popup_info({title: "", text: "Please place your bet before playing.", width: 300, fireworks: false}))
+		 	}					
 		}
 	}
 
@@ -1029,7 +1029,7 @@ function RaceTables(props){
 							</div>
 							<div className="race_table_body_container">
 								<div className="race_table_body shadow_convex">
-									<Carousel ref={carousel} template="race" lang={lang} socket={socket} user={props.data.user} item_list={rabbitArray} money={props.data.money}></Carousel>
+									<Carousel ref={carousel} template="race" lang={lang} socket={socket} user={props.data.user} item_list={rabbitArray} money={props.data.money} dispatch={dispatch}></Carousel>
 								</div>
 							</div>
 						</Col>

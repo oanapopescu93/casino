@@ -267,7 +267,6 @@ io.on('connection', function(socket){
 			}
 		}			
 	})
-
 	function check_user_page(uuid, choice){
 		let user_found = get_user_from_uuid(uuid, users_array)
 		if(user_found){
@@ -600,7 +599,7 @@ io.on('connection', function(socket){
 		if(k !== -1){
 			if(typeof user_join[k] !== "undefined"){
 				if(typeof user_join[k].user !== "undefined"){
-					console.log('disconnect222 ', reason, k, user_join[k], socket.room_name)
+					//console.log('disconnect222 ', reason, k, user_join[k], socket.room_name)
 				}
 			}			
 		}

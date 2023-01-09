@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import { useDispatch } from 'react-redux'
-import {game_page, keno_calculate_money, keno_get_history} from '../../actions/actions'
+import {useDispatch} from 'react-redux'
+import {game_page, keno_calculate_money, keno_get_history, popup_info} from '../../actions/actions'
 import $ from 'jquery'
-import { bigText, get_keno_images, showResults } from '../../utils'
+import {bigText, get_keno_images} from '../../utils'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/esm/Button'
@@ -261,9 +261,9 @@ function keno_board(props, dispatch){
 						break
 					} else {
 						if(lang === "ro"){
-							showResults("", "Maxim 10 casutele Keno!", 300, false)
+							dispatch(popup_info({title: "", text: "Maxim 10 casutele Keno!", width: 300, fireworks: false}))
 						} else {
-							showResults("", "Max 10 Keno spots!", 300, false)
+							dispatch(popup_info({title: "", text: "Maxim 10 casutele Keno!", width: 300, fireworks: false}))
 						}
 					}
 				} 
@@ -441,7 +441,7 @@ function keno_board(props, dispatch){
 		if(win > 0){
 			fireworks_show = true
 		}		
-		showResults(title, text, 300, fireworks_show)
+		dispatch(popup_info({title: title, text: text, width: 300, fireworks: fireworks_show}))
 		self.pay(picks, win)
 	}
 
@@ -577,9 +577,9 @@ function Keno(props){
 				}
 			} else {
 				if(lang === "ro"){
-					showResults("", "Please place your bet before playing.", 300, false)
+					dispatch(popup_info({title: "", text: "Please place your bet before playing.", width: 300, fireworks: false}))
 				} else {
-					showResults("", "Please place your bet before playing.", 300, false)
+					dispatch(popup_info({title: "", text: "Please place your bet before playing.", width: 300, fireworks: false}))
 				}
 			}
 		}		
@@ -659,7 +659,7 @@ function Keno(props){
 			text = bigText(pay_table)
 			title = "Rules"
 		}
-		showResults(title, text, 400, false)
+		dispatch(popup_info({title: title, text: text, width: 400, fireworks: false}))
 		for(let i in winnings){
 			let numbers_played = winnings[i][0]
 			let numbers_matched = winnings[i][1]
