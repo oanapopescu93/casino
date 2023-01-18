@@ -18,6 +18,7 @@ module.exports = function database(database_config, params){
 				if(params){
 					con.query(database_config.sql, params, function (err, result, fields) {
 						if (err) {
+							console.log('database error1 ', err)
 							throw err;
 						}			
 						sql_result = result;
@@ -27,6 +28,7 @@ module.exports = function database(database_config, params){
 				} else {
 					con.query(database_config.sql, function (err, result, fields) {
 						if (err) {
+							console.log('database error1 ', err)
 							throw err;
 						}			
 						sql_result = result;

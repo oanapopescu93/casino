@@ -560,7 +560,7 @@ io.on('connection', function(socket){
 		let game_id = data.game_choice.table_id ? data.game_choice.table_id : game_name
 		let game_type = data.game_choice.table_type ? data.game_choice.table_type : game_name
 		let money = data.money
-		let status = data.status
+		let status = data.status == "win" ? 1 : 0 
 		let bet = Math.abs(data.bet)
 		if(uuid){
 			let user_found
@@ -574,7 +574,7 @@ io.on('connection', function(socket){
 			if(user_found){
 				let id = user_found.id
 				database_config.sql = "UPDATE casino_user SET money="+money+" WHERE id="+id
-				database(database_config).then(function(data){
+				database(database_config).then(function(data){					
 					let timestamp = new Date().getTime()
 					database_config.sql = 'INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) '
 					database_config.sql += ' VALUES ('
@@ -585,7 +585,7 @@ io.on('connection', function(socket){
 					database_config.sql += '"' + timestamp + '", '
 					database_config.sql += '"' + status + '", '
 					database_config.sql += bet
-					database_config.sql += ')'		
+					database_config.sql += ')'
 					database(database_config).then(function(){})
 				})
 			}

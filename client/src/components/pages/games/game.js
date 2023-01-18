@@ -16,7 +16,6 @@ import Race from './race'
 import Keno from './keno'
 import Panel from '../panel/panel_control'
 
-
 function Game(props){
 	const [loaded, setLoaded] = useState(false)
 	let game_choice = props.game_choice.table_name ? props.game_choice.table_name : props.game_choice
