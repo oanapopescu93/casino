@@ -50,7 +50,7 @@ function Footer(props){
 						<Col sm={12} className="box_info">
 							<ul>
 								<li onClick={() => handleClick('about')}>{lang === "ro" ? <span>Despre noi</span> : <span>About us</span>}</li>
-								<li onClick={() => handleClick('support')}>{lang === "ro" ? <span>Contact</span> : <span>Contact us</span>}</li>
+								<li onClick={() => handleClick('contact')}>{lang === "ro" ? <span>Contact</span> : <span>Contact us</span>}</li>
 								<li onClick={() => handleClick('terms')}>{lang === "ro" ? <span>Termeni si conditii</span> : <span>Terms and Conditions</span>}</li>
 								<li onClick={() => handleClick('privacy')}>{lang === "ro" ? <span>Politica de confidentialitate</span> : <span>Privacy policy</span>}</li>
 								<li onClick={() => handleClick('questions')}>{lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</li>

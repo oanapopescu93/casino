@@ -74,10 +74,10 @@ module.exports = Object.freeze({
     ],
 
     CONTACT: [
-        {title: "info", text: "I'm a self-taught frontend and javascript developer. My passion is to create websites, web applications, and games."},
-        {title: "website", link: "https://oana-popescu.000webhostapp.com/", icon: "fa fa-globe"},
+        {title: "info", text: "I'm a self-taught Frontend / Javascript / React developer. My passion is to create websites, web applications, and games."},
+        {title: "website", link: "https://oanapopescu.onrender.com/", icon: "fa fa-globe"},
         {title: "github", link: "https://github.com/oanapopescu93", icon: "fa fa-github"},
-        {title: "email", link: "mailto:oanapopescu93@gmail.com", text: "oanapopescu93@gmail.com", icon: "fa fa-envelope"},
+        {title: "email", link: "mailto:oanapopescu93@gmail.com", text: "oanapopescu93@gmail.com", icon: "fa fa-paper-plane"},
         {title: "phone", link: "#", text: "-", icon: "fa fa-phone"},
         // {title: "phone", link: "tel:+40729699148", text: "0729.699.148", icon: "fa fa-phone"},
         {title: "linkedin", link: "https://www.linkedin.com/in/oanapopescu93/", icon: "fa fa-linkedin"},

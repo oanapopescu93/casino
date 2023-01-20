@@ -690,54 +690,103 @@ table {
     padding: 5px 10px;
 }
 
-.support_container{	
+/* Contact page */
+.contact_container{	
 	position: relative;
 	z-index:1;
 	background-color: var(--transparent_5);
     padding: 10px;
-	margin-top:60px;
+	margin-top:40px;
+	border-radius: 10px;
+	height: 400px;
 }
-.support_container .deco{
+.contact_container .deco{
 	width: 100%;
-    min-height: 300px;
+    height: 100%;
 }
-.support_container .box{
-	padding:15px;
+
+.contact_form_container{
+	position: relative;
+	z-index: 1;
+	height: 100%;
+}
+
+#contact_info{
+	position: absolute;
+	z-index: 1;
+	top:-50px;
+	bottom: -50px;
+	left:0px;
+	right: 0px;
+	padding:10px;
 	background-color: black;
+	border-radius: 10px;
+	text-align: center;
 }
-.support_info{
-	padding:15px 0px;
-	text-align: left;
+#contact_info .deco{
+    height: 100%;
 }
-#contact_items_info, #contact_list_info{
-	margin-bottom:10px;
+.contact_info_box{
+	position: relative;
+	z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+	padding: 10px;
+}
+
+#contact_items_info{
+	margin-bottom:20px;
+}
+#contact_list_info li{
+	margin-bottom:20px;
 }
 #contact_list_info li i{
-	width:15px;
+	font-size: 14px;
+	margin: 0px 5px 0px 0px;
 }
+
 #contact_list_social li{
 	display: inline-block;
 	padding:5px;
 }
-#support_form{
-	position:absolute;
-	z-index:1;
-	top:-30px;
-	right:-10px;
-	background-color: var(--transparent_5);
-	padding: 10px;
-	width:50%;	
-}
-#support_form button, #support_form input, #support_form textarea{
-	width: 100%;
-    margin: 5px 0px;
-    border-radius: 20px;
-	background-color: transparent;
-}
-#support_form textarea{
-	height: 200px
+#contact_list_social li i{
+	font-size: 25px;
+	margin: 0px 5px;
 }
 
+#contact_form{
+	padding: 10px 0px;
+}
+#contact_form input, #contact_form textarea{
+	width: 100%;
+    margin: 5px 0px;
+    border-radius: 10px;
+	background-color: transparent;
+	background-color: var(--transparent_8);
+}
+#contact_form textarea{
+	height: 180px
+}
+#contact_form button{
+	border-radius: 100%;
+}
+
+#contact_form button{
+	border-radius: 100%;
+    height: 55px;
+    width: 55px;
+	padding: 5px;
+	margin: 5px 0px;
+	background-color: transparent;
+	background-color: black;
+}
+#contact_form button:hover, #contact_form button:focus, #contact_form button:active, #contact_form button:active:focus{
+    background: var(--transparent_yellow);
+	color: var(--yellow);
+	border: solid 1px var(--yellow);
+}
+
+/* Chatroom */
 .chatroom #chatmessages{
 	display:block;
 	width:100%;
@@ -3018,6 +3067,27 @@ table {
 	animation-delay:3s,1.5s
 }
 
+.easter_eggs{
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	vertical-align: middle;
+	width:400px;
+}
+.easter_eggs .eggs{
+	display: inline-block;
+	vertical-align: middle;
+	position: absolute;
+	z-index: 1;
+	top:-80px;
+}
+.easter_eggs .eggs:first-child{
+	left:0px
+}
+.easter_eggs .eggs:last-child{
+	right:0px
+}
+
 /* media */
 @media (max-width: 1024px){
 	.rabbit_box_info, .rabbit_box_input{
@@ -3055,6 +3125,26 @@ table {
 	}
 	.casino_games_table_container.open{
 		margin-top: 40px;
+	}
+	.contact_container{
+		margin-top: 0px;
+		background-color: transparent;
+		padding: 0px 10px;
+	}
+	#contact_form textarea {
+		height: 100px;
+	}
+	#contact_info{
+		position: static;
+		background-color: transparent;
+		padding: 0px 10px;
+	}
+	.contact_info_box {
+		position: static;
+		transform: none;
+	}
+	#contact_list_info li {
+		margin-bottom: 5px;
 	}
 }
 @media (max-width: 767px) {
@@ -3327,6 +3417,9 @@ table {
 	.rabbit_box_name{
 		padding: 0px;
 		margin:0px;
+	}
+	.easter_eggs{
+		width:260px;
 	}
 }
 @media (max-width:600px) {	

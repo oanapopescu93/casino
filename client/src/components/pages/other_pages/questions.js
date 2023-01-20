@@ -16,13 +16,13 @@ function Questions(props){
         <>
             <Row>
                 <Col sm={12}>
-                    <h2>{props.info.lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</h2>
+                    <h2>{props.lang === "ro" ? <span>Intrebari</span> : <span>Questions</span>}</h2>
                 </Col>
             </Row>
             <Row>
                 <Col sm={2}></Col>
                 <Col sm={8}>
-                    <QuestionsList handleBack={()=>handleBack()} info={props.info}></QuestionsList>
+                    <QuestionsList handleBack={()=>handleBack()} info={props.info} lang={props.lang}></QuestionsList>
                 </Col>
                 <Col sm={2}></Col>
             </Row>
@@ -31,18 +31,18 @@ function Questions(props){
 }
 
 function QuestionsList(props){
-    let lang = props.info.lang
+    let lang = props.lang
     const [list, setList] = useState([])
     const [header, setHeader] = useState([])
 
     useEffect(() => {
-        setList(props.info.questions)
+        setList(props.info.questions[0][lang])
         let header = []
-        for(let i in props.info.questions){
-            header.push(props.info.questions[i].answer)             
+        for(let i in props.info.questions[0][lang]){
+            header.push(props.info.questions[0][lang][i].answer)             
         }
         setHeader(header)
-	}, [])
+	}, [lang])
 
     function handleExit(){
         props.handleBack('game')

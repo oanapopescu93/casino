@@ -103,7 +103,7 @@ function SalonGames(props){
                         $('.casino_games_table_container').eq(0).addClass('open')
                         return (
                             <div id="casino_games_title_dropdown_container">
-                                <div onClick={()=>handleDropdown_small()} className="casino_games_title_container">
+                                <div onClick={()=>handleDropdown_small()} className="casino_games_title_container">                                    
                                     <div className={"capitalize casino_games_title shadow_convex "+snow}>
                                         <span className="capitalize">roulette tables</span>
                                         <i className="fa fa-angle-down"></i>

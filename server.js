@@ -25,7 +25,7 @@ const { slots } = require("./server_games/slots")
 const { craps } = require("./server_games/craps")
 const { race } = require("./server_games/race")
 const { keno } = require("./server_games/keno")
-const { get_room_name, get_user_from_uuid, get_device, check_streak, chatMessage, get_extra_data } = require("./utils/other")
+const { get_room_name, get_user_from_uuid, get_device, check_streak, chatMessage, get_extra_data, sendMail } = require("./utils/other")
 
 var users_array
 var user_join = []
@@ -66,12 +66,17 @@ io.on('connection', function(socket){
 					//the user exists and the password was correct
 					exists = true
 					sign_in_up = true
-					get_extra_data().then(function(data1){	
+					get_extra_data().then(function(data1){
 						let extra_data = {
-							city: data1.data.city ? data1.data.city : "",
-							country: data1.data.country ? data1.data.country : "",
-							ip_address: data1.data.ip_address? data1.data.ip_address : "",
-						}
+							city: "",
+							country: "",
+							ip_address: "",
+						}						
+						if(data1 && data1.data){
+							extra_data.city = data1.data.city ? data1.data.city : ""
+							extra_data.country = data1.data.country ? data1.data.country : ""
+							extra_data.ip_address = data1.data.ip_address? data1.data.ip_address : ""
+						}						
 						let timestamp = new Date().getTime() + ""
 						
 						database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + users_array[i].id + "; "
@@ -322,6 +327,8 @@ io.on('connection', function(socket){
 		}	
 	})
 	socket.on('contact_send', function(data){
+		console.log('contact_read ', data)
+		sendMail(data)
 		let contact_details = constants.CONTACT
 		try{
 			io.emit('contact_read', contact_details)

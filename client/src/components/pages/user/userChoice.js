@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col'
 import Game from '../games/game'
 import Sapou from '../partials/sapou'
 import About from '../other_pages/about'
-import Support from '../other_pages/support'
 import Terms from '../other_pages/terms'
 import Privacy from '../other_pages/privacy'
 import Questions from '../other_pages/questions'
@@ -15,6 +14,7 @@ import Page from '../money/page'
 import { game_page, game_visible } from '../../actions/actions'
 import UserAccount from '../account/userAccount'
 import Panel from '../panel/panel_control'
+import ContactPage from '../other_pages/contact/contact_page'
 
 function UserChoice(props) {
     let dispatch = useDispatch()
@@ -93,42 +93,42 @@ function UserChoice(props) {
                                 return (
                                     <>
                                         <Sapou lang={props.lang} page={visible}></Sapou>
-                                        <About info={data}></About>
+                                        <About info={data} lang={props.lang}></About>
                                     </>
                                 )	
-                            case "support":
+                            case "contact":
                                 return (
                                     <>
                                         <Sapou lang={props.lang} page={visible}></Sapou>
-                                        <Support info={data}></Support>
+                                        <ContactPage info={data} lang={props.lang}></ContactPage>
                                     </>
                                 )
                             case "terms":
                                 return (
                                     <>
                                         <Sapou lang={props.lang} page={visible}></Sapou>
-                                        <Terms info={data}></Terms>
+                                        <Terms info={data} lang={props.lang}></Terms>
                                     </>
                                 )
                             case "privacy":
                                 return (
                                     <>
                                         <Sapou lang={props.lang} page={visible}></Sapou>
-                                        <Privacy info={data}></Privacy>
+                                        <Privacy info={data} lang={props.lang}></Privacy>
                                     </>
                                 )
                             case "questions":
                                 return (
                                     <>
                                         <Sapou lang={props.lang} page={visible}></Sapou>
-                                        <Questions info={data}></Questions>
+                                        <Questions info={data} lang={props.lang}></Questions>
                                     </>
                                 )
                             case "career":
                                 return (
                                     <>
                                         <Sapou lang={props.lang} page={visible}></Sapou>
-										<Career info={data}></Career>
+										<Career info={data} lang={props.lang}></Career>
                                     </>
                                 )
                             default:

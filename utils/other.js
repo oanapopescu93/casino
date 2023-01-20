@@ -1,4 +1,14 @@
 const axios = require('axios')
+var nodemailer = require('nodemailer')
+var constants = require('../var/constants')
+var transport = nodemailer.createTransport({
+	host: "smtp.mailtrap.io",
+	port: 2525,
+	auth: {
+	  user: constants.AUTH_USER,
+	  pass: constants.AUTH_PASS
+	}
+})
 
 function sort_array_obj(array, sort_by){
 	let sorted = false
@@ -93,15 +103,30 @@ function check_streak(result){
 function chatMessage(from, text){
 	return {from: from, text:text, time: new Date().getTime()} 
 }
+
+function get_geolocation(apiKey) {
+	return "https://api.ipgeolocation.io/ipgeo?apiKey=" + apiKey
+}
 function get_extra_data(){
 	return new Promise(function(resolve, reject){
-		axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=2813994f865540fe848c8bcb293ec74c')
-		.then(response => {
+		let url = get_geolocation('3b154170258741fb81976e7f34d61938')
+		axios.get(url).then(response => {
 			resolve(response)	
 		}).catch(error => {
-			resolve('get_extra_data--> ', error)
+			console.log('get_extra_data_error--> ', error)
+			resolve(false)
 		})
 	})
+}
+
+function sendMail(payload){
+	console.log('sendMail ', payload)
+	var mailOptions = {
+		from: 'youremail@gmail.com',
+		to: constants.AUTH_FROM,
+		subject: 'Sending Email using Node.js',
+		text: 'That was easy!'
+	}
 }
 
 module.exports = {
@@ -112,4 +137,5 @@ module.exports = {
 	check_streak,
 	chatMessage,
 	get_extra_data,
+	sendMail,
 }

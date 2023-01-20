@@ -66,7 +66,7 @@ function Panel(props){
                 window.location.href = "/"
 			 	break
             case "support":
-                dispatch(game_visible('support'))
+                dispatch(game_visible('contact'))
                 break
 			default:
 				setCookie("casino_uuid", '')
