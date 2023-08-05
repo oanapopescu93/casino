@@ -1,41 +1,51 @@
 {
-  "name": "casino_project",
-  "version": "0.1.0",
+  "name": "client",
+  "version": "1.0.0",
+  "description": "client",
   "private": true,
+  "keywords": ["casino", "games", "online", "roulette", "blackjack", "slots", "craps", "race", "keno", "rabbit"],
+  "author": "Oana Popescu",
+  "license": "UNLICENSED",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.30",
-    "@fortawesome/free-solid-svg-icons": "^5.14.0",
-    "@fortawesome/react-fontawesome": "^0.1.11",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "bootstrap": "^4.5.2",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@reduxjs/toolkit": "^1.9.3",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "boostrap": "^2.0.0",
+    "bootstrap": "^5.2.3",
+    "crypto-js": "^4.1.1",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.5.1",
-    "react": "^16.13.1",
-    "react-bootstrap": "^1.3.0",
-    "react-build-dist": "0.0.8",
-    "react-dom": "^16.13.1",
-    "react-html-parser": "^2.0.2",
-    "react-redux": "^7.2.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
-    "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0",
-    "socket.io-client": "^2.3.0"
+    "jquery": "^3.6.4",
+    "leaflet": "^1.9.3",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.2",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
+    "react-owl-carousel": "^2.3.3",
+    "react-redux": "^8.0.5",
+    "react-scripts": "5.0.1",
+    "redux": "^4.2.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-saga": "^1.2.3",
+    "redux-thunk": "^2.4.2",
+    "socket.io-client": "^2.5.0"
   },
   "scripts": {
-    "start-client": "react-scripts start",
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-dist": "react-build-dist --bundle-name index.js",
     "build": "react-scripts build"
   },
+  "proxy": "http://localhost:1111",
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -48,6 +58,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://localhost:5222"
+  }
 }

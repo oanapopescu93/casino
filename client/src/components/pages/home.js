@@ -1,89 +1,116 @@
-import React, { useEffect, useState } from 'react'
-import {useSelector, useDispatch} from 'react-redux'
-import {Route, Switch, BrowserRouter} from 'react-router-dom'
-import Container from 'react-bootstrap/Container'
-import { getCookie, setCookie} from '../utils'
-import HomePage from './homePage'
-import NotFound from './other_pages/not_found'
-import Language from './partials/language'
-import Cookies from './partials/cookies_modal'
-import Footer from './partials/footer'
-import Popup from './partials/popup'
-import Donate from './money/donate'
-import socketIOClient from "socket.io-client/dist/socket.io"
-import '../css/style.css'
-import { popup_info } from '../actions/actions'
+import React, {useEffect, useState} from 'react'
+import {useDispatch} from 'react-redux'
+import Footer from '../partials/footer'
+import About from './about/about'
+import Contact from './contact/contact'
+import Salon from '../salon/salon'
+import Cookies from '../partials/cookies'
+import { changeCookies } from '../../reducers/settings'
+import Questions from './questions/questions'
+import TermsConditions from './termsConditions/termsConditions'
+import PolicyPrivacy from './policyPrivacy/policyPrivacy'
+import Career from './career'
+import { ReactComponent as Bitcoin } from '../../img/icons/bitcoin-love-heart.svg'
+import { changePage } from '../../reducers/page'
+import Donation from './donation'
+import Checkout from './checkout/checkout'
+import Orders from './order/orders'
+import Cart from './cart/cart'
+import Market from '../games/pages/market/market'
+import Dashboard from '../games/pages/dashboard/dashboard'
+import Panel from '../games/sidebar/panel'
+import BuyCarrots from './buyCarrots'
+import HowToPlay from './howToPlay/howToPlay'
 
-const socket = socketIOClient("/")
+function Home(props) {
+    const {home, page, user, cookies} = props
+    let dispatch = useDispatch()
+    
+    function handleCookiesClick(){
+        dispatch(changeCookies())
+    }    
 
-function Home(props){
-	const [cookies, setCookies] = useState(false)
-	const [lang, setLang] = useState(getCookie("casino_lang"))
-	const [donationInfo, setDonationInfo] = useState(null)
-	const dispatch = useDispatch()
-	let popupInfo = useSelector(state => state.popup)
-	let page = props.page
-	let show_loader = props.show
-	let open = "open"
-    if(show_loader){
-        open = ""
+    return <div id="page-container">        
+        {(() => {
+            switch (page.page) {
+                case "About":
+                    return <About {...props}></About>
+                case "terms_cond":
+                    return <TermsConditions {...props}></TermsConditions>
+                case "policy_privacy":
+                    return <PolicyPrivacy {...props}></PolicyPrivacy>         
+                case "Career":
+                    let list_career = []
+                    if(home.career && home.career[0] && home.career[0][props.lang]){
+                        list_career = home.career[0][props.lang]
+                    }
+                    return <Career {...props} list={list_career}></Career>           
+                case "Questions":
+                    let list_questions = []
+                    if(home.questions && home.questions[0] && home.questions[0][props.lang]){
+                        list_questions = home.questions[0][props.lang]
+                    }
+                    return <Questions {...props} list={list_questions}></Questions>
+                case "Contact":
+                    return <Contact {...props}></Contact>
+                case "Donation":
+                    return <Donation {...props} list={home.donations}></Donation>
+                case "Cart":
+                    return <Cart {...props}></Cart>
+                case "Checkout":
+                    return <Checkout {...props}></Checkout>
+                case "Order":
+                    return <Orders {...props}></Orders>
+                case "BuyCarrots":
+                    return <BuyCarrots {...props}></BuyCarrots>
+                case "how_to_play": 
+                    return <HowToPlay {...props}></HowToPlay>
+                case "Salon":
+                    switch (page.game_page) {
+                        case "dashboard":
+                            return <>
+                                <div className="content_wrap">
+                                    <Dashboard {...props}></Dashboard>
+                                </div>
+                                <Panel {...props}></Panel>
+                            </>
+                        case "market":
+                            return <>
+                                <div className="content_wrap">
+                                    <Market {...props}></Market>
+                                </div>
+                                <Panel {...props}></Panel>
+                            </>
+                        default:
+                            return <Salon {...props} user={user} home={home} page={page}></Salon>
+                    }                    
+                default:
+                    return <Salon {...props} user={user} home={home} page={page}></Salon>
+            }
+        })()}        
+        {cookies !== '1' ? <Cookies lang={props.lang} cookiesClick={()=>handleCookiesClick()}></Cookies> : null}
+        <Donate lang={props.lang}></Donate>
+        <Footer lang={props.lang}></Footer>
+    </div>
+}
+
+function Donate(){
+    const dispatch = useDispatch()
+    const [open, setOpen] = useState("")
+
+    useEffect(() => {
+        setTimeout(function(){
+            setOpen("open")
+        }, 500)
+	}, [])
+    
+    function handleClick(){        
+        dispatch(changePage('Donation'))
     }
 
-	useEffect(() => {
-		let casino_cookies = getCookie("casino_cookies")
-		if(casino_cookies !== ""){
-			setCookies(true)
-		}
-		if(lang === ''){
-			setLang('eng')
-		}
-		setInterval(function () {		  
-			socket.emit('heartbeat', { data: "ping" })
-		}, 15000)
-		socket.on('server_error', function (text) {
-			dispatch(popup_info({title: "Error", text: text, width: 300, fireworks: false}))
-			console.log('server_error ', text)
-		})
-	}, [])
-
-	function lang_change(text){
-		setLang(text)
-	}	
-
-	function casino_cookies(){
-		setCookie("casino_cookies", true)
-		setCookies(true)
-	}
-
-	function my_donation(donations){
-		setDonationInfo(donations)
-	}
-	
-	return (
-		<>	
-			<div className={"full-height "+open} id={page}>
-				<div className="full-height-content">
-                    <Container>		
-                        <BrowserRouter>					
-                            <Switch>
-                                <Route exact path="/">
-                                    <HomePage lang={lang} socket={socket} donationInfo={donationInfo}></HomePage>
-                                </Route>
-                                <Route path="*">
-                                    <NotFound lang={lang}></NotFound>
-                                </Route>
-                            </Switch>			
-                        </BrowserRouter>
-                    </Container>					
-				</div>			
-			</div>
-			{!cookies ? <Cookies casino_cookies={casino_cookies} lang={lang}></Cookies>  : null}
-			<Language lang_change={lang_change}></Language>
-			<Donate my_donation={my_donation} info={donationInfo} socket={socket}></Donate>
-			{popupInfo ? <Popup lang={lang} data={popupInfo}></Popup> : null}
-			<Footer lang={lang} socket={socket}></Footer>
-		</>
-	)
+	return <div id="donate" className={open} onClick={()=>handleClick()}>
+        <Bitcoin></Bitcoin>
+    </div>
 }
 
 export default Home
