@@ -67,7 +67,7 @@ function Chat(props){
     let chatRoomUsers = props.chatRoomUsers ? props.chatRoomUsers : []
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
-    const [height, setHeight] = useState(100)
+    const [height] = useState(100)
 
     useEffect(() => {
         socket.on('message_read', function(res){

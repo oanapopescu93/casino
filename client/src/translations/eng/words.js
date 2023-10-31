@@ -14,6 +14,7 @@ var word_bank = {
     craps: "Craps",
     keno: "Keno",
     back: "Back",
+    bet_type: "Bet type",
 
     error: "Error",
     all_rights_reserved: "All rights reserved",   
@@ -36,6 +37,7 @@ var word_bank = {
     signin_forgot_password: "I forgot password",
     subtitle: "Dare catch the rabbit",
     city: "City",
+    your_streak: "How many days in a row you have played",
 
     exit_salon: "Exit salon",
     salon_subtitle: "Welcome to the salon",
@@ -202,6 +204,7 @@ var word_bank = {
     welcome: "Welcome",
     welcome_gift: "Welcome gift",
     prize: "Prize",
+    our_casino: "our Casino",
 }
 
 export const wordsEng = function(info){

@@ -87,36 +87,10 @@ function User(props){
                     <span>{streak}</span>
                     <div className="my_tooltip">
                         <FontAwesomeIcon icon={faCalendarDays} />
-                        {(() => {
-                            switch (props.lang) {
-                                case "DE":
-                                    return <span className="my_tooltiptext">
-                                    <p>Cate zile la rand ai jucat</p>
-                                </span> 
-                                case "ES":
-                                    return <span className="my_tooltiptext">
-                                    <p>Cate zile la rand ai jucat</p>
-                                </span> 
-                                case "FR":
-                                    return <span className="my_tooltiptext">
-                                    <p>Cate zile la rand ai jucat</p>
-                                </span> 
-                                case "IT":
-                                    return <span className="my_tooltiptext">
-                                    <p>Cate zile la rand ai jucat</p>
-                                </span> 
-                                case "RO":
-                                    return <span className="my_tooltiptext">
-                                    <p>Cate zile la rand ai jucat</p>
-                                </span> 
-                                case "ENG":
-                                default:
-                                    return <span className="my_tooltiptext">
-                                    <p><b>Your streak</b></p>
-                                    <p>How many days in a row you have played</p>
-                                </span>
-                            }
-                        })()}
+                        <span className="my_tooltiptext">
+                            <p><b>Streak</b></p>
+                            <p>{translate({lang: props.lang, info: "your_streak"})}</p>
+                        </span>
                     </div>
                 </span> : null}
             </div>

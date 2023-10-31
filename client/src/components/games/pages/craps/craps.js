@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CrapsGame from './crapsGame'
 import GameBets from '../other/gameBets'
@@ -8,6 +8,13 @@ function Craps(props){
     const [open, setOpen] = useState(false)
     let dispatch = useDispatch()
     let bets = useSelector(state => state.games.craps.bets)	
+
+    useEffect(() => {	
+		dispatch(changeCrapsBets({game_type: "pass line", game_odds: 2, bet: 1}))
+        return () => {
+            dispatch(changeCrapsBets({bets: null, lucky_bet: null, result: null}))
+        }
+	}, []) 
 
     function getData(x){
         dispatch(changeCrapsBets(x))

@@ -362,6 +362,7 @@ textarea:focus, input:focus{
   border: solid 1px var(--color)!important;
   color: var(--bg)!important;
   border-radius: 100%;
+  padding: var(--padding_small);
 }
 .round:hover, .round:active, .round:focus{
   background-color: var(--bg)!important;
@@ -503,7 +504,7 @@ textarea {
   height: 120px;
   background-color: var(--transparent_2);
 }
-.cell_salon p, .cell_market p, .cell_howToPlay p{
+.cell_salon, .cell_info, .cell_market, .cell_howToPlay{
   margin-bottom: var(--padding);
 }
 .cell_salon h4, .cell_market h4{
@@ -1885,6 +1886,13 @@ textarea {
 }
 #contact_map .leaflet-container a.leaflet-popup-close-button{
   color: white;
+}
+#contact_map .leaflet-control-layers-selector{
+  width: auto;
+  height: auto;
+}
+#contact_map .leaflet-control-layers label{
+  color: var(--bg);
 }
 
 /* DASHBOARD */

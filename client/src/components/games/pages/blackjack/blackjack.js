@@ -359,7 +359,7 @@ function blackjack_game(props){
     this.action = function(data){
 		if(data.action){
 			blackjack_data = data
-			//console.log('blackjack_data ', blackjack_data)
+			console.log('blackjack_data ', blackjack_data)
 			ctx.clearRect(0, 0, canvas.width, canvas.height)
 			if(data.action === "start"){
 				resize = 0
@@ -423,14 +423,14 @@ function Blackjack(props){
     let dispatch = useDispatch()
 
 	let clear = function(bet){
-		blackjack_bets = bet
-		if(blackjack_bets > 0){			
+		blackjack_bets = bet		
+		if(bet > 0 && blackjack_status){			
 			let blackjack_payload = {
 				uuid: props.user.uuid,
-				game: game,
+				game,
 				status: 'lose',
-				bet: blackjack_bets,
-				money: money - blackjack_bets
+				bet,
+				money: money - bet
 			}
 			props.results(blackjack_payload)
 		}
@@ -440,8 +440,7 @@ function Blackjack(props){
 		setStartGame(false)
 	}
     let options = {...props, dispatch, getResults, clear}
-    let my_blackjack = new blackjack_game(options)
-    
+    let my_blackjack = new blackjack_game(options)    
 
     function ready(){
         if(my_blackjack && document.getElementById("blackjack_canvas")){

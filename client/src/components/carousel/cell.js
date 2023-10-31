@@ -30,14 +30,14 @@ function Cell(props) {
         dispatch(changeRaceBets({id: data.id, place: x}))
         switch(x) {
             case '3':
-                setTitleDropdown('place_03')
+                setTitleDropdown(translate({lang, info: "place_03"}))
                 break
             case '2':
-                setTitleDropdown('place_02')
+                setTitleDropdown(translate({lang, info: "place_02"}))
                 break
             case '1':
             default: 
-                setTitleDropdown('place_01')
+                setTitleDropdown(translate({lang, info: "place_01"}))
         }
     }
 

@@ -22,23 +22,40 @@ function blackjack(data, user_join){
             blackjack_hidden_dealer.hand.push(blackjack_dealer.hand[0])
 
             checkBlackjack()
+            
             if(blackjack_dealer.win){
                 blackjack_game_end = true
                 return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
             } else {
-                return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
+                let check_player_win = blackjack_players.filter((x)=>{
+                    if(x.win) return x
+                })
+                if(check_player_win.length > 0){ // one of the players won
+                    blackjack_game_end = true
+                    return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
+                } else {
+                    return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
+                }
             } 
         case 'hit':
             blackjack_players = data.players
             let index_hit = blackjack_players.findIndex((x) => x.uuid === data.uuid)
             if(index_hit === blackjack_current_player){
                 hitMe()
-                checkForEndOfGame(index_hit)
+                checkForEndOfGame(index_hit)                
                 if(blackjack_dealer.win){
                     blackjack_game_end = true
                     return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
                 } else {
-                    return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
+                    let check_player_win = blackjack_players.filter((x)=>{
+                        if(x.win) return x
+                    })
+                    if(check_player_win.length > 0){ // one of the players won
+                        blackjack_game_end = true
+                        return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
+                    } else {
+                        return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
+                    }
                 }                
             } else {
                 return {action: 'not_current_player'} 

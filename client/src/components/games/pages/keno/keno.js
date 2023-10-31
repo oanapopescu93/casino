@@ -6,6 +6,7 @@ import KenoBoard from './kenoBoard'
 import { changePopup } from '../../../../reducers/popup'
 import { decryptData } from '../../../../utils/crypto'
 
+var keno_status = false
 function Keno(props){    
     let dispatch = useDispatch()
     const [start, setStart] = useState(false)
@@ -14,6 +15,23 @@ function Keno(props){
     let money = decryptData(props.user.money)
     let game = props.page.game
     let dataUpdate = null
+
+    useEffect(() => {
+		return () => {
+            if(keno_status){
+                let keno_bets = 1
+                let keno_payload = {
+                    uuid: props.user.uuid,
+                    game: game,
+                    status: 'lose',
+                    bet: keno_bets,
+                    money: money - keno_bets
+                }
+                props.results(keno_payload)
+                keno_status = false
+            }
+		}
+    }, [])
 
     useEffect(() => {
         if(data){
@@ -51,6 +69,7 @@ function Keno(props){
                 money: pay
             }
             props.results(keno_payload)
+            keno_status = false
         }
     }, [resultsPayload])
 
@@ -58,6 +77,7 @@ function Keno(props){
         if(dataUpdate && dataUpdate.list && dataUpdate.list.length>0){ 
             if(dataUpdate.price_per_game>0){
                 setStart(true)
+                keno_status = true
             } else {
                 let payload = {
                     open: true,
@@ -89,6 +109,7 @@ function Keno(props){
             template: "keno_prizes",
             title: translate({lang: props.lang, info: "keno_prizes"}),
             data: props.home.keno_prizes,
+            size: 'lg',
         }
         dispatch(changePopup(payload))
     }

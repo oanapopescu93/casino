@@ -116,8 +116,7 @@ function Craps(props){
 	useEffect(() => {	
 		if(crapsBoardText){
 			setCrapsBoardList([... crapsBoardList, crapsBoardText])
-		}
-		
+		}		
 	}, [crapsBoardText]) 
 
 	function roll(point){
@@ -575,15 +574,37 @@ function Craps(props){
 	</>	
 }
 
+let craps_status = false
 function CrapsGame(props){
 	let dispatch = useDispatch()
 	const [start, setStart] = useState(false)
 	let money = decryptData(props.user.money)
-	let game = props.page.game
+	let game = props.page.game	
+
+	useEffect(() => {
+		return () => clear()
+    }, [])
+
+	function clear(){
+		if(craps_status){
+			let craps_payload = {
+				uuid: props.user.uuid,
+				game: game,
+				money: money - 1,
+				status: 'lose',
+				bet: 1
+			}
+			if(typeof props.results === "function"){
+				props.results(craps_payload)
+			}
+		}
+		
+	}
 
 	function gameStart(){
 		if(!start && props.bets){
 			setStart(true)
+			craps_status = true
 		} else {
 			let payload = {
 				open: true,
@@ -613,6 +634,7 @@ function CrapsGame(props){
 			props.results(craps_payload)
 		}
 		setStart(false)
+		craps_status = false
 	}
 
 	function openTable(){

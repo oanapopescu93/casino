@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
 import { decryptData } from '../../../utils/crypto'
-import { getData, isEmpty, postData } from '../../../utils/utils'
+import { isEmpty, postData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
@@ -208,7 +208,7 @@ function Payment(props){
                                         let tt=setInterval(function(){startTime()},60000) // check each minute
                                         let counter = 0
                                         function startTime(){
-                                            if(counter == 10) {
+                                            if(counter === 10) {
                                                 clearInterval(tt) // stop checking after 10 minutes
                                             } else {
                                                 counter++

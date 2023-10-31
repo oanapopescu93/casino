@@ -31,7 +31,7 @@ function KenoSpot(config){
 
 function KenoBoard(props){
     const [kenoSpots, setKenoSpots] = useState([])
-    const [titleDropdown1, setTitleDropdown1] = useState(0)
+    const [titleDropdown1, setTitleDropdown1] = useState(1)
     const [titleDropdown2, setTitleDropdown2] = useState(1)  
     const [quickPickLength, setQuickPickLength] = useState(1)
     let howManySpots = 80 

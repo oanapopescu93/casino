@@ -14,6 +14,7 @@ var word_bank = {
     craps: "Craps",
     keno: "Keno",
     back: "Inapoi",
+    bet_type: "Tip de pariu",
 
     error: "Eroare",
     all_rights_reserved: "Toate drepturile rezervate",      
@@ -36,6 +37,7 @@ var word_bank = {
     signin_forgot_password: "Am uitat parola",  
     subtitle: "Indrazneste sa prinzi iepurele", 
     city: "City",  
+    your_streak: "Câte zile la rând ai jucat",
 
     exit_salon: "Iesi din salon",
     salon_subtitle: "Salon",
@@ -203,6 +205,7 @@ var word_bank = {
     welcome: "Bine ai venit",
     welcome_gift: "Cadiu de bun-venit",
     prize: "Premii",
+    our_casino: "casinoul nostru",
 }
 
 export const wordsRo = function(info){

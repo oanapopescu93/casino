@@ -12,6 +12,7 @@ import AboutFr from './aboutFr'
 import AboutIt from './aboutIt'
 
 function About(props){
+    let casino_name = "BunnyBet"
     let dispatch = useDispatch()
     function handleBack(){
         dispatch(changePage('Salon'))
@@ -24,18 +25,18 @@ function About(props){
             {(() => {
                 switch (props.lang) {
                     case "DE":
-                        return <AboutDe></AboutDe>
+                        return <AboutDe casino_name={casino_name}></AboutDe>
                     case "ES":
-                        return <AboutEs></AboutEs>
+                        return <AboutEs casino_name={casino_name}></AboutEs>
                     case "FR":
-                        return <AboutFr></AboutFr>
+                        return <AboutFr casino_name={casino_name}></AboutFr>
                     case "IT":
-                        return <AboutIt></AboutIt>
+                        return <AboutIt casino_name={casino_name}></AboutIt>
                     case "RO":
-                        return <AboutRo></AboutRo>
+                        return <AboutRo casino_name={casino_name}></AboutRo>
                     case "ENG":
                     default:
-                        return <AboutEng></AboutEng>
+                        return <AboutEng casino_name={casino_name}></AboutEng>
                 }
             })()}    
         </div>

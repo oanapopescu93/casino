@@ -617,8 +617,10 @@ function RouletteGame(props){
 			ready()
 		})
 		return () => {
-			if(my_roulette){
-				my_roulette.leave()// if the user leaves the game, if he bet, he will lose the bets
+			if(my_roulette){				
+				if(my_roulette.get_status_game()){
+					my_roulette.leave()// if the user leaves the game, if he bet, he will lose the bets
+				}
 				my_roulette = null
 			}
 		}

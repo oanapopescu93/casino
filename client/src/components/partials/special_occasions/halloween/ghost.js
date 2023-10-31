@@ -6,8 +6,8 @@ function Ghost(props){
     let stroke = props.stroke ? props.stroke : "rgba(255, 215, 0, 0.2)"
 
 	return <div className='halloween_ghost'>
-        <svg className="ghost" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXxlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-        width="127.433px" height="132.743px" viewBox="0 0 127.433 132.743" enable-background="new 0 0 127.433 132.743" xmlXspace="preserve">
+        <svg className="ghost" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsxxlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        width="127.433px" height="132.743px" viewBox="0 0 127.433 132.743" enableBackground="new 0 0 127.433 132.743" xmlxspace="preserve">
             <path fill={stroke} d="M116.223,125.064c1.032-1.183,1.323-2.73,1.391-3.747V54.76c0,0-4.625-34.875-36.125-44.375
                 s-66,6.625-72.125,44l-0.781,63.219c0.062,4.197,1.105,6.177,1.808,7.006c1.94,1.811,5.408,3.465,10.099-0.6
                 c7.5-6.5,8.375-10,12.75-6.875s5.875,9.75,13.625,9.25s12.75-9,13.75-9.625s4.375-1.875,7,1.25s5.375,8.25,12.875,7.875
@@ -20,7 +20,7 @@ function Ghost(props){
                 c-0.001,0-0.002-0.001-0.003-0.001c2.221,1.871,4.536,2.88,6.912,2.986c0.333,0.014,0.67,0.012,1.007-0.01
                 c3.163-0.191,5.572-1.942,6.888-3.166l0.452-0.453c0.021-0.019,0.04-0.041,0.06-0.061l0.034-0.034
                 c-0.007,0.007-0.015,0.014-0.021,0.02C71.666,63.771,71.892,63.307,71.916,62.782z"/>
-            <path fill={fill} stroke={fill} stroke-miterlimit="10" d="M116.279,55.814c-0.021-0.286-2.323-28.744-30.221-41.012
+            <path fill={fill} stroke={fill} strokeMiterlimit="10" d="M116.279,55.814c-0.021-0.286-2.323-28.744-30.221-41.012
                 c-7.806-3.433-15.777-5.173-23.691-5.173c-16.889,0-30.283,7.783-37.187,15.067c-9.229,9.736-13.84,26.712-14.191,30.259
                 l-0.748,62.332c0.149,2.133,1.389,6.167,5.019,6.167c1.891,0,4.074-1.083,6.672-3.311c4.96-4.251,7.424-6.295,9.226-6.295
                 c1.339,0,2.712,1.213,5.102,3.762c4.121,4.396,7.461,6.355,10.833,6.355c2.713,0,5.311-1.296,7.942-3.962
@@ -37,8 +37,8 @@ function Ghost(props){
                 c7.636,0,15.336,1.684,22.887,5.004c26.766,11.771,29.011,39.047,29.027,39.251V121.405z"/>
         </svg>
         {shadow ? <p className="shadowFrame">
-            <svg version="1.1" className="shadow" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXxlink="http://www.w3.org/1999/xlink" x="61px" y="20px"
-            width="122.436px" height="39.744px" viewBox="0 0 122.436 39.744" enable-background="new 0 0 122.436 39.744" xmlXspace="preserve">
+            <svg version="1.1" className="shadow" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsxxlink="http://www.w3.org/1999/xlink" x="61px" y="20px"
+            width="122.436px" height="39.744px" viewBox="0 0 122.436 39.744" enableBackground="new 0 0 122.436 39.744" xmlxspace="preserve">
                 <ellipse fill={stroke} cx="61.128" cy="19.872" rx="49.25" ry="8.916"/>
             </svg>
         </p> : null}
