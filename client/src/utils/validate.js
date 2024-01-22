@@ -28,7 +28,7 @@ export const validateInput = function(input="", type){
     }		
     let regex_exp = new RegExp(regex)			
     let pass_result = regex_exp.test(input)
-    pass_result = true //to make any input valid
+    // pass_result = true //to make any input valid
     return pass_result
 }
   
