@@ -15,6 +15,9 @@ var word_bank = {
     keno: "Keno",
     back: "Back",
     bet_type: "Bet type",
+    and: "and",
+    or: "or",
+    i_agree_to: "I agree to",
 
     error: "Error",
     all_rights_reserved: "All rights reserved",   
@@ -36,6 +39,7 @@ var word_bank = {
     sign_in_pass_error: "Password is incorrect",
     signin_forgot_password: "I forgot password",
     subtitle: "Dare catch the rabbit",
+    country: "Country",
     city: "City",
     your_streak: "How many days in a row you have played",
 
@@ -73,7 +77,7 @@ var word_bank = {
     no: "No",
     isMinor_sign: "You can't enter because you are underage.",
     
-    forgot_password_title: "Forgot your passowrd",
+    forgot_password_title: "Forgot your password",
     forgot_password_text: "Please enter the email address used to register. We will send you your new password to that address.",
     send: "Send",
     email_send: "Email has been sent",
@@ -132,6 +136,7 @@ var word_bank = {
     fill_field: "Please fill out this field",
     name: "Name",
     email: "Email",
+    phone: "Phone",
     payment_info: "Payment info",
     cash_on_delivery: "cash on delivery",
     pay_card: "Credit or Debit card",
@@ -145,8 +150,6 @@ var word_bank = {
     error_charge: "We are sorry, but we can't charge you due to an error on our behalf. We will repair this error as soon as possible.",
     submit: "Submit",
     min_amount: "Minimum amount",
-    and: "and",
-    or: "or",
     fiat_equivalent: "Fiat equivalent",
 
     // order
@@ -196,10 +199,10 @@ var word_bank = {
     // results
     results: "Results",
     result: "Result",
-    game: "Joc",
-    game_type: "Tip joc",
-    you_win: "Ai castigat",
-    you_lose: "Ai pierdut",
+    game: "Game",
+    game_type: "Game type",
+    you_win: "You won",
+    you_lose: "You lost",
 
     welcome: "Welcome",
     welcome_gift: "Welcome gift",

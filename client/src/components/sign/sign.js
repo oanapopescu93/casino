@@ -83,7 +83,7 @@ function Sign(props) {
             template: "forgotPassword",
             title: translate({lang: props.lang, info: "forgot_password_title"}),
             data: translate({lang: props.lang, info: "forgot_password_text"}),
-            size: 'lg',
+            // size: 'lg',
         }
         dispatch(changePopup(payload))
     }
@@ -184,23 +184,16 @@ function Sign(props) {
                                                 <div className="checkbox_radio_container">
                                                     <label>
                                                         <input className="input_light" type="checkbox" name="checkbox1" checked={checkboxOne} onChange={()=>{handleChangeCheck("checkbox1")}}/>
-                                                        {(() => {
-                                                            switch (props.lang) {
-                                                                case "DE":
-                                                                    return <h6>Ich stimme <span onClick={()=>handleLink("terms_cond")}>{translate({lang: props.lang, info: "terms_cond"})}</span> und <span onClick={()=>handleLink("policy_privacy")}>{translate({lang: props.lang, info: "policy_privacy"})}</span></h6>
-                                                                case "ES":
-                                                                    return <h6>Estoy de acuerdo con <span onClick={()=>handleLink("terms_cond")}>{translate({lang: props.lang, info: "terms_cond"})}</span> y <span onClick={()=>handleLink("policy_privacy")}>{translate({lang: props.lang, info: "policy_privacy"})}</span></h6>
-                                                                case "FR":
-                                                                    return <h6>Je suis d'accord avec <span onClick={()=>handleLink("terms_cond")}>{translate({lang: props.lang, info: "terms_cond"})}</span> et <span onClick={()=>handleLink("policy_privacy")}>{translate({lang: props.lang, info: "policy_privacy"})}</span></h6>
-                                                                case "IT":
-                                                                    return <h6>I agree to <span onClick={()=>handleLink("terms_cond")}>{translate({lang: props.lang, info: "terms_cond"})}</span> and <span onClick={()=>handleLink("policy_privacy")}>{translate({lang: props.lang, info: "policy_privacy"})}</span></h6>
-                                                                case "RO":
-                                                                    return <h6>Sono d'accordo con <span onClick={()=>handleLink("terms_cond")}>{translate({lang: props.lang, info: "terms_cond"})}</span> e <span onClick={()=>handleLink("policy_privacy")}>{translate({lang: props.lang, info: "policy_privacy"})}</span></h6>
-                                                                case "ENG":
-                                                                default:
-                                                                    return <h6>I agree to <span onClick={()=>handleLink("terms_cond")}>{translate({lang: props.lang, info: "terms_cond"})}</span> and <span onClick={()=>handleLink("policy_privacy")}>{translate({lang: props.lang, info: "policy_privacy"})}</span></h6>
-                                                            } 
-                                                        })()}
+                                                        <h6>
+                                                            {translate({lang: props.lang, info: "i_agree_to"})}&nbsp;
+                                                            <span onClick={()=>handleLink("terms_cond")}>
+                                                                {translate({lang: props.lang, info: "terms_cond"})}
+                                                            </span>
+                                                            &nbsp;{translate({lang: props.lang, info: "and"})}&nbsp;
+                                                            <span onClick={()=>handleLink("policy_privacy")}>
+                                                                {translate({lang: props.lang, info: "policy_privacy"})}
+                                                            </span>
+                                                        </h6>
                                                     </label>
                                                 </div>
                                                 </>}

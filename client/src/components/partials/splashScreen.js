@@ -4,10 +4,10 @@ import TransparentText from './transparentText'
 import { getWindowDimensions } from '../../utils/utils'
 
 function Splash(props) {
-    const [height, setHeight] = useState(getWindowDimensions().width > 960 ? 72 : 30)
+    const [height, setHeight] = useState(getWindowDimensions().width >= 960 ? 72 : 30)
 
-    function handleResize(event){
-        setHeight(getWindowDimensions().width > 960 ? 72 : 30)
+    function handleResize(){
+        setHeight(getWindowDimensions().width >= 960 ? 72 : 30)
     }
 
     useEffect(() => {        

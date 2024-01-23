@@ -6,6 +6,7 @@ import Carousel from '../carousel/carousel'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { changeGame, changeGamePage } from '../../reducers/page'
+import { checkWinterMonths } from '../../utils/special_occasions'
 
 function SalonGames(props){
     const {lang, items} = props
@@ -14,7 +15,8 @@ function SalonGames(props){
     const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
     const [index, setIndex] = useState(0)
     const [titleDropdown, setTitleDropdown] = useState("")
-    let dispatch = useDispatch()
+    let dispatch = useDispatch()    
+    const [showWinter, setShowWinter] = useState(false)
 
     let salon_carousel_options = {
         items: 4,
@@ -37,12 +39,19 @@ function SalonGames(props){
         }
     }
 
-    function handleResize(event){
+    function handleResize(){
         setWidth(getWindowDimensions().width)
     }
 
     useEffect(() => {
         create_casino_games()
+
+        // special occasions
+        let winter = checkWinterMonths()
+		if(winter){ // will appear only on winter months
+			setShowWinter(true)
+		}
+
         if (typeof window !== "undefined") {
             window.addEventListener("resize", handleResize)
             handleResize()
@@ -102,7 +111,7 @@ function SalonGames(props){
         <Row>
             <Col sm={2}></Col>
             <Col sm={8}>
-                {width < 960 ? <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" onSelect={handleSelect}>
+                {width < 960 ? <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "snow" : ""} onSelect={handleSelect}>
                     {casinoGamesTitle.map(function(t, i){
                         return <Dropdown.Item key={i} eventKey={t}>{t}</Dropdown.Item>
                     })}
@@ -115,21 +124,13 @@ function SalonGames(props){
             <Col sm={8}>
                 {casinoGamesTitle.map(function(t, i){
                     let box = ""
-                    if(i === index){
-                        box = "open"
-                    }
+                    if(i === index){ box = "open" }
                     return <div key={i}>
-                        {(() => {
-                            if (width > 960) {
-                                return (
-                                    <div className="casino_games_title_container">
-                                        <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
-                                            <h4>{t}</h4>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                        })()} 
+                        {width >= 960 ? <div className={showWinter ? "casino_games_title_container snow" : "casino_games_title_container"}>
+                            <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
+                                <h4>{t}</h4>
+                            </div>
+                        </div> : null}
                         <div box={t} className={"casino_games_table_container "+box}>
                             <div className="casino_games_table">
                                 <Carousel 

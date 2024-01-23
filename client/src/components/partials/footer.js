@@ -3,14 +3,21 @@ import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../reducers/page'
 import { translate } from '../../translations/translate'
 import ukraine from '../../img/icons/ukraine.svg'
+import { checkWinterMonths } from '../../utils/special_occasions'
+import { getWindowDimensions } from '../../utils/utils'
 
 function Footer(props){
     let dispatch = useDispatch()
     const [date, setDate] = useState('')
     const [up, setUp] = useState('')
+    const [showWinter, setShowWinter] = useState(false)
 
     useEffect(() => {
         handleDate()
+        let winter = checkWinterMonths()
+		if(winter && getWindowDimensions().width >= 960){ // will appear only on winter months and only if the width is more than 960
+			setShowWinter(true)
+		}
     }, [])    
 
     function handleDate(){
@@ -35,7 +42,7 @@ function Footer(props){
 
     return <div className={"footer_container " + up}>
         <div className="footer_button_container">
-            <div className="footer_button" onClick={()=>handleFooterUp()}>
+            <div className={showWinter ? "footer_button snow_small" : "footer_button"} onClick={()=>handleFooterUp()}>
                 <span>Footer</span>
             </div>
         </div>

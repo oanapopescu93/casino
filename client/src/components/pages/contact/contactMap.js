@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useRef} from 'react'
 import Leaflet from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap}  from 'react-leaflet'
 import { translate } from '../../../translations/translate'
@@ -15,10 +15,15 @@ let L = Leaflet.noConflict()
 function MapChild(props){
     const {markerOptions, popupOptions, country, city, zoom} = props 
     const map = useMap()
+    const leafletRef = useRef()
 
     useEffect(() => {
         map.setView(markerOptions.position, zoom)
     }, [markerOptions, popupOptions, country, city, zoom])
+
+    useEffect(() => {
+        leafletRef.current.openPopup() //open popup imediately
+    },[])
 
     return <>
         <LayersControl position="topright">
@@ -35,7 +40,7 @@ function MapChild(props){
                 />
             </BaseLayer>
         </LayersControl>
-        <Marker {...markerOptions}>
+        <Marker ref={leafletRef} {...markerOptions}>
             <Popup {...popupOptions}><p>{translate({lang: props.lang, info: country + ', ' + city})}</p></Popup>
         </Marker>
     </>

@@ -5,14 +5,16 @@ import { wordsEs } from './es/words'
 import { wordsFr } from './fr/words'
 import { wordsIt } from './it/words'
 import { wordsRo } from './ro/words'
+import { wordsRu } from './ru/words'
 import { wordsEng } from './eng/words'
+import { wordsPt } from './pt/words'
 
 export const translate = function (data){
     if(!data) return
     let lang = data.lang ? data.lang : "ENG"
     let info = data.info
     let capitalize_first_letter = data.capitalize_first_letter ? data.capitalize_first_letter : false
-    let word = wordsEng(info)
+    let word = wordsEng(info)    
     switch(lang){
         case "DE":
             word = wordsDe(info)
@@ -26,8 +28,14 @@ export const translate = function (data){
         case "IT":
             word = wordsIt(info)
             break
+        case "PT":
+            word = wordsPt(info)
+            break
         case "RO":
             word = wordsRo(info)
+            break
+        case "RU":
+            word = wordsRu(info)
             break
         case "ENG":
         default:

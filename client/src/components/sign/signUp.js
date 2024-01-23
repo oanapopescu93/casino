@@ -71,14 +71,14 @@ function SignUp(props) {
                 <Col sm={8}>
                     <input className="input_light" type="password" value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
                 </Col>
-            </Row>
-            <Row>
+            </Row>    
+            {!isEmpty(isMinor) && !isMinor ? <Row> {/* Show Sign up button only if the user checks that he's not a Minor*/}
                 <Col>
                     <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor">
                         {translate({lang: props.lang, info: "sign_up"})}
                     </Button>
                 </Col>
-            </Row>
+            </Row> : null}            
         </Form>
     </div>
 }

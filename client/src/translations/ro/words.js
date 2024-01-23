@@ -15,6 +15,9 @@ var word_bank = {
     keno: "Keno",
     back: "Inapoi",
     bet_type: "Tip de pariu",
+    and: "si",
+    or: "sau",
+    i_agree_to: "Sunt de acord cu",
 
     error: "Eroare",
     all_rights_reserved: "Toate drepturile rezervate",      
@@ -36,12 +39,13 @@ var word_bank = {
     sign_in_pass_error: "Parola este incorecta",
     signin_forgot_password: "Am uitat parola",  
     subtitle: "Indrazneste sa prinzi iepurele", 
-    city: "City",  
+    country: "Țară",
+    city: "Oraș",  
     your_streak: "Câte zile la rând ai jucat",
 
-    exit_salon: "Iesi din salon",
+    exit_salon: "Ieși din salon",
     salon_subtitle: "Salon",
-    exit_game: "Iesi din joc",
+    exit_game: "Ieși din joc",
 
     donation: "Donatii",
 
@@ -132,6 +136,7 @@ var word_bank = {
     fill_field: "Va rog sa completati campul",
     name: "Nume",
     email: "Email",
+    phone: "Telefon",
     payment_info: "Plata",
     cash_on_delivery: "plata ramburs",
     pay_card: "card credit/debit",
@@ -145,8 +150,6 @@ var word_bank = {
     error_charge: "Ne pare rau, dar nu putem onora comanda din motive tehnice. Vom repara eroarea cat de curand posibil.",
     submit: "Finalizeaza comanda",
     min_amount: "Suma minima",
-    and: "si",
-    or: "sau",
     fiat_equivalent: "Echivalent in valuta",
 
     // order

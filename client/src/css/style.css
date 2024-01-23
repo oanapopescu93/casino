@@ -194,7 +194,7 @@ textarea:focus, input:focus{
 /* FORMS, BUTTONS, INPUTS, TEXTAREA */
 .sign_container{
   width: 100%;
-  max-width: 420px;
+  max-width: 600px;
   transform: translate(-50%, -50%);
   position: absolute;
   z-index: 1;
@@ -241,7 +241,7 @@ textarea:focus, input:focus{
   vertical-align: middle;
   font-size: 14px;
   line-height: 14px;
-  width: 100px;
+  width: 150px;
   cursor: pointer;
 }
 .sign_container ul li.active, .sign_container ul li:hover, .sign_container ul li:focus, .sign_container ul li:active{
@@ -449,7 +449,7 @@ input, textarea{
 }
 textarea {
 	resize: none;
-  min-height: 200px;
+  min-height: 175px;
 }
 
 .alert {
@@ -478,7 +478,7 @@ textarea {
 }
 #exit_salon{
   display: inline-block;
-  max-width: 100px;
+  max-width: 120px;
 }
 
 /* SALON */
@@ -609,9 +609,10 @@ textarea {
 }
 .modal-header{
   padding: var(--padding_small) var(--padding);
-  background: var(--bg);
+  background: var(--bg);  
   color: var(--color);
-  border: solid 0px transparent;
+  /* border: solid 0px transparent; */
+  border: solid 1px var(--color);
 }
 .closeButton{
   background: var(--color);
@@ -1015,7 +1016,7 @@ textarea {
   font-size: 12px;
   line-height: 12px;
   width: 100%;
-  max-width: 80px;
+  max-width: 90px;
 }
 .language li{
   display: inline-block;
@@ -1204,7 +1205,7 @@ textarea {
   color: var(--color);
   border-radius: var(--radius) 0px 0px var(--radius);
   width: 35px;
-  height: 110px;
+  height: 130px;
   text-align: center;
   vertical-align: top;
   padding: var(--padding) var(--padding_small) var(--padding) var(--padding);
@@ -1840,6 +1841,9 @@ textarea {
   margin-bottom: var(--padding);
   text-align: left;
 }
+#contact_map{
+  border: solid 1px var(--red);
+}
 .contact_form .input_light{
   margin-bottom: var(--padding_small)!important;
 }
@@ -1855,6 +1859,7 @@ textarea {
   border: solid 1px var(--color);
   margin-bottom: var(--padding);
   cursor: pointer;
+  text-align: left;
 }
 .contact_list_item_container:last-child .contact_list_item{
   margin-bottom: 0px;
@@ -1891,8 +1896,16 @@ textarea {
   width: auto;
   height: auto;
 }
-#contact_map .leaflet-control-layers label{
-  color: var(--bg);
+#contact_map .leaflet-touch .leaflet-control-layers, 
+#contact_map .leaflet-touch .leaflet-bar{
+  background-color: var(--red);
+  border: solid 1px var(--red);
+  color: white;
+}
+#contact_map .leaflet-touch .leaflet-bar a{
+  background-color: var(--red);
+  border: solid 1px var(--red);
+  color: white;
 }
 
 /* DASHBOARD */
@@ -3156,10 +3169,10 @@ textarea {
 @media (max-width:600px) {	
   /* SIGN */
   .sign_container_box{
-    height: 460px;
+    height: 480px;
   }
   .sign_box{
-    height: 240px;
+    height: 260px;
   }
 	.sign_container .label_container {
     text-align: left;
@@ -3258,6 +3271,14 @@ textarea {
   }
   .cell_howToPlay{
     height: 80px;
+  }
+  /* SIGN */
+  .sign_container ul li{    
+    width: 100%;
+    border-radius: var(--radius)!important;
+  }
+  .sign_container ul li:first-child{    
+    margin-bottom: var(--padding_small);
   }
 }
 

@@ -96,8 +96,8 @@ module.exports = Object.freeze({
     ],
     CONTACT: [
         {country: "Romania", city: "Bucharest", email: "oanapopescu93@gmail.com", phone: "+40 711 111 111"},
-        {country: "USA", city: "New York", email: "oanapopescu93@gmail.com", phone: "+1 111-111-1111"},
-        {country: "Germany", city: "Berlin", email: "oanapopescu93@gmail.com", phone: "+49 111 11111111"}
+        // {country: "USA", city: "New York", email: "oanapopescu93@gmail.com", phone: "+1 111-111-1111"},
+        // {country: "Germany", city: "Berlin", email: "oanapopescu93@gmail.com", phone: "+49 111 11111111"}
     ],
     COUPONS: [
         {name: "coupon01", discount: 10},

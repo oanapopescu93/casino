@@ -15,6 +15,9 @@ var word_bank = {
     keno: "Keno",
     back: "Retour",
     bet_type: "Type de pari",
+    and: "et",
+    or: "ou",
+    i_agree_to: "Je suis d'accord avec",
 
     error: "Erreur",
     all_rights_reserved: "Tous droits réservés",
@@ -36,6 +39,7 @@ var word_bank = {
     sign_in_pass_error: "Le mot de passe est incorrect",
     signin_forgot_password: "J'ai oublié mon mot de passe",
     subtitle: "Osez attraper le lapin",
+    country: "Pays",
     city: "Ville",
     your_streak: "Combien de jours d'affilée as-tu joué ",
 
@@ -132,6 +136,7 @@ var word_bank = {
     fill_field: "Veuillez remplir ce champ",
     name: "Nom",
     email: "Email",
+    phone: "Téléphone",
     payment_info: "Informations de paiement",
     cash_on_delivery: "Paiement à la livraison",
     pay_card: "Carte de crédit ou de débit",
@@ -145,8 +150,6 @@ var word_bank = {
     error_charge: "Nous sommes désolés, mais nous ne pouvons pas vous facturer en raison d'une erreur de notre part. Nous réparerons cette erreur dès que possible.",
     submit: "Envoyer",
     min_amount: "Montant minimum",
-    and: "et",
-    or: "ou",
     fiat_equivalent: "Équivalent en monnaie fiduciaire",
 
     // order

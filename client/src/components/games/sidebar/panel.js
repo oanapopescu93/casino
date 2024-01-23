@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { translate } from '../../../translations/translate'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle, faComments } from '@fortawesome/free-solid-svg-icons'
 import User from './user'
 import Chat from './chat'
+import { checkWinterMonths } from '../../../utils/special_occasions'
+import { getWindowDimensions } from '../../../utils/utils'
 
 function Panel(props){
     const {lang, page} = props
@@ -11,6 +13,7 @@ function Panel(props){
     const [panel, setPanel] = useState("user_panel_box")
     const [panelUser, setPanelUser] = useState("active")
     const [panelChat, setPanelChat] = useState("")
+    const [showWinter, setShowWinter] = useState(false)
 
     function handleToggle(type){
         if(panel === type){
@@ -38,15 +41,39 @@ function Panel(props){
 		}
     }
 
+    function handleResize(){
+        // special occasions
+        let winter = checkWinterMonths()
+		if(winter && getWindowDimensions().width >= 960){ // will appear only on winter months and only if the width is more than 960
+			setShowWinter(true)
+		}
+    }
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.addEventListener("resize", handleResize)
+            handleResize()
+            return () => window.removeEventListener("resize", handleResize)
+        }
+	}, [])
+
     return <div className={"panel_container " + open}>
         <div className="panel_button_box">
-            <div id="panel_info_button" className="panel_button shadow_convex" onClick={()=>handleToggle("user_panel_box")}>
+            <div 
+                id="panel_info_button" 
+                className={showWinter ? "panel_button shadow_convex snow_small" : "panel_button shadow_convex"} 
+                onClick={()=>handleToggle("user_panel_box")}
+            >
                 <p>
                     <FontAwesomeIcon icon={faUserCircle} />
                     <span className="panel_button_text">{translate({lang: lang, info: "Info"})}</span>
                 </p>
             </div>
-            {page.game && !page.game_page ? <div id="panel_chat_button" className="panel_button shadow_convex" onClick={()=>handleToggle("chat_panel_box")}>
+            {page.game && !page.game_page ? <div 
+                id="panel_chat_button" 
+                className={showWinter ? "panel_button shadow_convex snow_small" : "panel_button shadow_convex"} 
+                onClick={()=>handleToggle("chat_panel_box")}
+            >
                 <p>
                     <FontAwesomeIcon icon={faComments} />
                     <span className="panel_button_text">{translate({lang: lang, info: "Chat"})}</span>
