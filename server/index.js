@@ -28,6 +28,8 @@ const { slots } = require("./games/slots")
 const { craps } = require("./games/craps")
 const { race } = require("./games/race")
 const { keno } = require("./games/keno")
+// const { poker } = require("./games/poker01")
+const { poker } = require("./games/poker")
 
 var coupons = require('./var/home').COUPONS
 
@@ -42,16 +44,16 @@ var chatroom_users = []
 
 const database = require('./database/mysql')
 var constants = require('./var/constants')
-const { poker } = require("./games/poker")
 var database_config = constants.DATABASE[0]
 
 io.on('connection', function(socket) {
   socket.on('signin_send', (data) => {  
     database_config.sql = "SELECT * FROM casino_user;"
     database_config.sql += "SELECT * FROM login_user;"
+    database_config.name = "db01"
 		database(database_config).then(function(result){
       if(result && result[0] && result[1]){
-        users_array = result[0]
+        users_array = result[0] 
         login_user = result[1]
         let user_found = users_array.filter(function(x){
           return (x.user === data.user || x.email === data.email) && decrypt(JSON.parse(x.pass)) === data.pass
@@ -120,6 +122,7 @@ io.on('connection', function(socket) {
   })
   socket.on('signup_send', (data) => {  
     database_config.sql = 'SELECT * FROM casino_user WHERE user = "' + data.user + '" AND email = "' + data.email + '"'
+    database_config.name = "db02"
 		database(database_config).then(function(result){
       if(result && result.length == 0){
         //no user was found --> new user --> he must sign up
@@ -159,9 +162,11 @@ io.on('connection', function(socket) {
           //insert new user in users and login tables
           database_config.sql = "INSERT INTO casino_user (uuid, user, email, pass, account_type, money, signup) VALUES (?, ?, ?, ?, ?, ?, ?)"
 					let payload = [uuid, data.user, data.email, pass, account_type, user_money, timestamp] 
+          database_config.name = "db03"
           database(database_config, payload).then(function(result){
 						let insertId = result.insertId
             database_config.sql = 'INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (' + insertId + ', "' + timestamp + '", ' + device + ', "' + extra_data.ip_address + '", "' + extra_data.city + '", "' + extra_data.country + '");'
+            database_config.name = "db04"
             database(database_config).then(function(result){})
           })                           
         })
@@ -177,6 +182,7 @@ io.on('connection', function(socket) {
   })
   socket.on('forgotPassword_send', (data) => {    
     database_config.sql = "SELECT * FROM casino_user"
+    database_config.name = "db05"
 		database(database_config).then(function(result){
       if(result && result.length>0){
         users_array = result
@@ -213,7 +219,8 @@ io.on('connection', function(socket) {
 		if(data.uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.sql += "SELECT * FROM login_user;"
-      database(database_config).then(function(result){        
+      database_config.name = "db06"
+      database(database_config).then(function(result){     
         let payload = {streak: 1, prize: 0}
         if(result){
           users_array = result[0]
@@ -251,6 +258,7 @@ io.on('connection', function(socket) {
   function updateMoney(user_found, payload){
     if(user_found[0]){            
       database_config.sql = "UPDATE casino_user SET money="+payload.prize+" WHERE id="+user_found[0].id
+      database_config.name = "db07"
       database(database_config).then(function(data){
         let table_name = 'streak_prize'
         let game_id = 'streak_prize'
@@ -268,6 +276,7 @@ io.on('connection', function(socket) {
         database_config.sql += '"' + status + '", '
         database_config.sql += payload.prize
         database_config.sql += ')'
+        database_config.name = "db08"
         database(database_config).then(function(){})
       })
     }
@@ -352,6 +361,7 @@ io.on('connection', function(socket) {
   socket.on('game_results_send', function(data){
     if(data.uuid){
       database_config.sql = "SELECT * FROM casino_user;"
+      database_config.name = "db09"
       database(database_config).then(function(result){
         if(result && result.length>0){
           users_array = result
@@ -394,6 +404,7 @@ io.on('connection', function(socket) {
             database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE id=" + data.uuid + '; '
             break
         }
+        database_config.name = "db010"
         database(database_config).then(function(){})
     }   
   })  

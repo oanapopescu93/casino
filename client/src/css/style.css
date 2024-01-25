@@ -528,7 +528,7 @@ textarea {
   height: 140px;
 }
 .salon_games{
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .casino_games_title{
   background-color: transparent;
@@ -546,6 +546,7 @@ textarea {
 /* dropdown */
 .dropdown{
   border-radius: var(--radius);
+  z-index: 9999;
 }
 .dropdown .dropdown-toggle, .dropdown .dropdown-toggle:hover, .dropdown .dropdown-toggle:active, .dropdown .dropdown-toggle:focus{
   background-color: transparent;
@@ -573,7 +574,7 @@ textarea {
 	overflow-y: auto;
 }
 .salon_games .dropdown .dropdown-menu{
-  max-height: 115px;
+  max-height: 150px;
 }
 .dropdown-item{
   color: var(--color);

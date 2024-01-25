@@ -4,10 +4,12 @@ import { Button, Row, Col } from 'react-bootstrap'
 import Counter from '../../../partials/counter'
 import { decryptData } from '../../../../utils/crypto'
 import PokerBoard from './pokerBoard'
+// import PokerBoard from './pokerBoard01'
 
 function GameBoard(props){
     const {template, lang, user, startGame} = props
     let max_bet = decryptData(user.money)
+    console.log(template, lang, user, startGame)
 
     function handleClick(e){        
         if(typeof props.choice === "function"){

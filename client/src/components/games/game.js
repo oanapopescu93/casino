@@ -7,13 +7,16 @@ import { changePage, changeGame, changeGamePage, changeRoom } from '../../reduce
 import Header from '../partials/header'
 
 import Roulette from './pages/roulette/roulette'
+import Blackjack from './pages/blackjack/blackjack'
 import Slots from './pages/slots/slots'
 import Craps from './pages/craps/craps'
+// import Poker from './pages/poker01/poker'
+import Poker from './pages/poker/poker'
 import Race from './pages/race/race'
 import Keno from './pages/keno/keno'
 import Panel from './sidebar/panel'
-import Blackjack from './pages/blackjack/blackjack'
 import { getRoom } from '../../utils/games'
+import WhackARabbit from './pages/whackARabbit/whackARabbit'
 
 import roulette_loading_icon from '../../img/icons_other/icons/yellow/roulette.png'
 import blackjack_loading_icon from '../../img/icons_other/icons/yellow/blackjack.png'
@@ -23,13 +26,12 @@ import race_loading_icon from '../../img/icons_other/icons/yellow/race.png'
 import keno_loading_icon from '../../img/icons_other/icons/yellow/keno.png'
 import poker_loading_icon from '../../img/icons_other/icons/yellow/carribean.png'
 import whack_loading_icon from '../../img/whack_a_rabbit/whack_a_rabbit_icon.png'
+
 import Dashboard from './pages/dashboard/dashboard'
 import Market from './pages/market/market'
 import { changePopup } from '../../reducers/popup'
 import { getCookie, isEmpty, setCookie } from '../../utils/utils'
 import { changeMoney } from '../../reducers/auth'
-import Poker from './pages/poker/poker'
-import WhackARabbit from './pages/whackARabbit/whackARabbit'
 
 function Game(props){
     const {lang, page, socket} = props

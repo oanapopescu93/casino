@@ -10,7 +10,7 @@ function SignUp(props) {
     const [email, setEmail] = useState('')
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
-    let dispatch = useDispatch()
+    let dispatch = useDispatch()    
 
     function handleChange(type, e){
         switch(type) {
@@ -44,6 +44,7 @@ function SignUp(props) {
             }
             dispatch(changePopup(payload))
         }
+        console.log(!isMinor)
 	}, [isMinor]) 
 
     return <div className="sign_up_container">
@@ -71,14 +72,14 @@ function SignUp(props) {
                 <Col sm={8}>
                     <input className="input_light" type="password" value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
                 </Col>
-            </Row>    
-            {!isEmpty(isMinor) && !isMinor ? <Row> {/* Show Sign up button only if the user checks that he's not a Minor*/}
+            </Row>
+            {!isMinor ? null : <Row>
                 <Col>
                     <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor">
                         {translate({lang: props.lang, info: "sign_up"})}
                     </Button>
                 </Col>
-            </Row> : null}            
+            </Row>}                        
         </Form>
     </div>
 }
