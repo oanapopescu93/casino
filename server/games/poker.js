@@ -107,7 +107,7 @@ function poker(data, user_join){
     }
     function handleFold(index){     
         //poker_players.splice(index, 1) 
-        poker_players[index].fold = true
+        if(poker_players[index]) poker_players[index].fold = true
     }
     function nextTurn() {  
         poker_current_player++

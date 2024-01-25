@@ -9,7 +9,7 @@ let how_many_rounds = 3
 let poker_current_player = 0    
 let poker_current_round = 0
 
-function poker(data, user_join){ 
+function poker(data, user_join){
     switch(data.game){
         case "texas_holdem":
             how_many_cards = 2
@@ -21,6 +21,7 @@ function poker(data, user_join){
     switch (data.action) {
         case 'start':    
             poker_players = []  
+            poker_dealer = null
             poker_deck = []
             poker_hidden_players = []
             poker_current_player = 0    
@@ -37,21 +38,21 @@ function poker(data, user_join){
             
             payload = {action: "preflop_betting", players: poker_hidden_players}
             return payload
-        case "preflop_betting":             
-            poker_players = preflop_betting()
+        case "preflop_betting":  
+        case "check":           
+            poker_players = preflop_betting(data.action)
             poker_hidden_players = createHiddenPlayers()
             poker_dealer = dealHands("dealer")   
-            payload = {action: "flop", players: poker_hidden_players, dealer: poker_dealer}
+            payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer}
             return payload
         case "fold":
             poker_players = handleFold()
             poker_hidden_players = createHiddenPlayers()
-            console.log(poker_dealer)
-            payload = {action: "fold", players: poker_hidden_players, dealer: poker_dealer}
-            return payload
-        case "flop":
-            payload = {action: "ceva", players: poker_hidden_players, dealer: poker_dealer}
-            return payload
+            payload = {action: "fold", players: poker_hidden_players}
+            if(poker_dealer){
+                payload.dealer = poker_dealer
+            }
+            return payload        
     }  
     
     function createDeck(turns){
@@ -152,29 +153,68 @@ function poker(data, user_join){
         return hidden_players 
     }
 
-    function preflop_betting(){
+    function preflop_betting(action){
         let players = [...poker_players] 
         let index = poker_players.findIndex((x) => x.uuid === data.uuid)
         for(let i in players){
             if(parseInt(i) === index){
-                players[index].bet = data.bet
+                players[index].bet = 0
+                if(action !== "check"){
+                    players[index].bet = data.bet
+                }                
             } else {
-                if(players[i].hand){
-                    let handStrength = evaluateHand(players[i].hand)
-                    if (handStrength.strength >= 9) {
-                        players[i].bet = data.bet + 1
-                    } else if (handStrength >= 5) {
-                        players[i].bet = data.bet
-                    } else {
-                        players[i].bet = data.bet - 1
-                        if(players[i].bet < 1){
-                            players[i].bet = 1
-                        }
+                let choice = 'bet'
+                let number = Math.floor(Math.random() * 10) + 1
+                if(number >= 5){
+                    choice = 'bet'
+                } else if(number >= 3){
+                    choice = 'check'
+                    let playerCanCheck = canCheck(i, players)
+                    if(!playerCanCheck){
+                        choice = 'bet'
                     }
+                } else {
+                    choice = 'fold'
                 }
+                players[i] = botChoice(choice, players[i])
             }
         }        
         return players
+    }
+    function botChoice(x, player){
+        switch(x){
+            case "bet":
+                if(player.hand){
+                    let handStrength = evaluateHand(player.hand)
+                    if (handStrength.strength >= 9) {
+                        player.bet = data.bet + 1
+                    } else if (handStrength >= 5) {
+                        player.bet = data.bet
+                    } else {
+                        player.bet = data.bet - 1
+                        if(player.bet < 1){
+                            player.bet = 1
+                        }
+                    }
+                }
+                break
+            case "check":
+                //player.bet = 0
+                break
+            case "fold":
+                player.fold = true
+                break
+        }
+        return player
+    }
+    function canCheck(playerIndex, players){
+        for (let i = 0; i < playerIndex; i++) {
+            // console.log(i, players[i].user, players[i].bet, typeof players[i].bet !== "undefined",players[i].bet > 0)
+            if (typeof players[i].bet !== "undefined" || players[i].bet > 0) {
+                return true
+            }
+        }
+        return false
     }
 
     function handleFold(){

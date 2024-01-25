@@ -70,6 +70,9 @@ function PokerDashboard(props){
                     poker_payload_server.bet = poker_bets
                     props.socket.emit('poker_send', poker_payload_server)
                     break
+                case "check":
+                    props.socket.emit('poker_send', poker_payload_server)
+                    break
                 case "fold":
                     props.socket.emit('poker_send', poker_payload_server)
             }

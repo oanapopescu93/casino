@@ -9,7 +9,6 @@ import PokerBoard from './pokerBoard'
 function GameBoard(props){
     const {template, lang, user, startGame} = props
     let max_bet = decryptData(user.money)
-    console.log(template, lang, user, startGame)
 
     function handleClick(e){        
         if(typeof props.choice === "function"){
