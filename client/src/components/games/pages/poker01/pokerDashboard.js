@@ -15,7 +15,6 @@ function PokerDashboard(props){
     let dispatch = useDispatch()
     let [startGame, setStartGame] = useState(false)
     let [action, setAction]= useState(null) 
-    let [fold, setFold] = useState(false)
     let poker_bets = 0
     
     let clear = function(bet){
@@ -60,21 +59,35 @@ function PokerDashboard(props){
                 room: getRoom(game),
                 action: e,
                 money: money
-            }
+            }            
 
             switch(e){
                 case "start":                    
                     props.socket.emit('poker_send', poker_payload_server)
                     break
                 case "preflop_betting":
-                    poker_payload_server.bet = poker_bets
-                    props.socket.emit('poker_send', poker_payload_server)
+                    if(poker_bets === 0){
+                        let payload = {
+                            open: true,
+                            template: "error",
+                            title: translate({lang: props.lang, info: "error"}),
+                            data: translate({lang: props.lang, info: "no_bets"})
+                        }
+                        dispatch(changePopup(payload))
+                    } else {          
+                        poker_payload_server.bet = poker_bets
+                        props.socket.emit('poker_send', poker_payload_server)
+                    }
                     break
                 case "check":
                     props.socket.emit('poker_send', poker_payload_server)
                     break
                 case "fold":
                     props.socket.emit('poker_send', poker_payload_server)
+                    break
+                case "call":
+                    props.socket.emit('poker_send', poker_payload_server)
+                    break
             }
         }        
     }
@@ -84,12 +97,11 @@ function PokerDashboard(props){
 			if(my_poker && data && data.action){
                 setAction(data.action)
                 switch(data.action){
-                    case "preflop_betting":
+                    case "preflop_betting":                        
                         setStartGame(true)
                         break
                     case "fold":
                         setStartGame(false)
-                        setFold(true)
                         break
                 }
             }	
@@ -101,14 +113,13 @@ function PokerDashboard(props){
     }
 
     return <div className="game_container poker_container">
+        <p>{translate({lang: props.lang, info: "under_construction"})}</p>
         <canvas id="poker_canvas"></canvas>
-        {!startGame ? <>
-            {!fold ? <div className="game_start">
-                <Button type="button" onClick={()=>choice('start')} className="mybutton button_fullcolor shadow_convex">
-                    {translate({lang: props.lang, info: "start"})}
-                </Button>
-            </div> : null}            
-        </> : <GameBoard 
+        {!startGame ? <div className="game_start">
+            <Button type="button" onClick={()=>choice('start')} className="mybutton round button_fullcolor shadow_convex">
+                {translate({lang: props.lang, info: "start"})}
+            </Button>
+        </div> : <GameBoard 
             template={props.template}
             {...props}
             action={action}

@@ -3,8 +3,8 @@ import { translate } from '../../../../translations/translate'
 import { Button, Row, Col } from 'react-bootstrap'
 import Counter from '../../../partials/counter'
 import { decryptData } from '../../../../utils/crypto'
-import PokerBoard from './pokerBoard'
-// import PokerBoard from './pokerBoard01'
+// import PokerBoard from './pokerBoard'
+import PokerBoard from './pokerBoard01'
 
 function GameBoard(props){
     const {template, lang, user, startGame} = props

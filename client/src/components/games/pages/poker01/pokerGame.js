@@ -179,6 +179,7 @@ export const poker_game = function(props){
     let card_base = {width: 120, height: 180, space: 35}
     let space = 12
     let positions = []
+    let how_many_cards = 5
     
     let items = get_cards()
 
@@ -205,8 +206,12 @@ export const poker_game = function(props){
 		if(data && data.action){
             poker_data = data
             self.drawBackground()
-            self.create_cards()
-            self.draw_cards()
+            if(data.action !== "fold"){
+                self.create_cards()
+                self.draw_cards()
+            } else {
+                self.fold()
+            }           
 		}
     }
 
@@ -343,9 +348,22 @@ export const poker_game = function(props){
                     } 
                     let hand = []
                     if(poker_data.players[i].hand){
+                        //the player with visible hands
                         hand = poker_data.players[i].hand
                     } else {
-                        hand = [{Value: null}, {Value: null}, {Value: null}, {Value: null}, {Value: null}]
+                        //the other players with hidden hands
+                        switch(props.template){
+                            case "texas_holdem":
+                                how_many_cards = 2
+                                break
+                            default: //ex: 5_card_draw
+                                how_many_cards = 5
+                        }
+
+                        hand = []
+                        for(let i = 0; i < how_many_cards; i++){
+                            hand.push({Value: null})
+                        }
                     }
                     let fold = false
                     if(poker_data.players[i].fold){
@@ -386,4 +404,29 @@ export const poker_game = function(props){
 			}
 		}
 	} 
+
+    this.fold = function(){
+        let player = poker_data.players.filter(function(x){
+            return x.uuid === props.user.uuid
+        })
+        if(player && player[0] && player[0].bet){
+            let bet = player[0].bet
+            let status = 'lose'
+            let game = props.page.game
+            let money = decryptData(props.user.money)
+            let money_history = money - bet 
+
+            let poker_payload = {
+                uuid: props.user.uuid,
+                game: game,
+                money: money_history,
+                status: status,
+                bet: bet
+            }
+            
+            if(typeof props.getResults === "function"){
+                //props.getResults(poker_payload)
+            }
+        }
+    }
 }

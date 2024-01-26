@@ -34,25 +34,41 @@ function poker(data, user_join){
             // a certain number of cards are dealt to each player, only the user will see his own cards, the rest will be hidden
             poker_deck = createDeck(10000) 
             poker_players = dealHands("players")  
-            poker_hidden_players = createHiddenPlayers()            
+            poker_hidden_players = createHiddenPlayers() 
             
-            payload = {action: "preflop_betting", players: poker_hidden_players}
+            // calculate pot
+            poker_pot = calculatePot()
+            
+            payload = {action: "preflop_betting", players: poker_hidden_players, pot: poker_pot}
             return payload
         case "preflop_betting":  
         case "check":           
             poker_players = preflop_betting(data.action)
             poker_hidden_players = createHiddenPlayers()
-            poker_dealer = dealHands("dealer")   
-            payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer}
+            poker_dealer = dealHands("dealer") 
+            poker_pot = calculatePot()
+            payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot}
             return payload
         case "fold":
             poker_players = handleFold()
             poker_hidden_players = createHiddenPlayers()
-            payload = {action: "fold", players: poker_hidden_players}
+            poker_pot = calculatePot()
+            payload = {action: "fold", players: poker_hidden_players, pot: poker_pot}
             if(poker_dealer){
                 payload.dealer = poker_dealer
             }
-            return payload        
+            return payload
+        case "call": 
+        case "raise":        
+            let result = handleCallRaise()  
+            if(result.error){
+                return {action: payload.action, error: result.error}
+            } 
+            poker_players = result
+            poker_hidden_players = createHiddenPlayers()
+            poker_pot = calculatePot()            
+            payload = {action: "call", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot}  
+            return payload
     }  
     
     function createDeck(turns){
@@ -97,13 +113,14 @@ function poker(data, user_join){
     function createPlayers(){        
         let players = []
         for(let i=0; i<how_many_players;i++){
-            let player = {uuid: "player_"+i, user: "player_"+i, type: "bot", money: 100, fold: false} // if fewer than 4 players join, we add bots for the rest occupied sits
+            let player = {uuid: "player_"+i, user: "player_"+i, type: "bot", money: 100, fold: false, bet: 0} // if fewer than 4 players join, we add bots for the rest occupied sits
             if(user_join[i]){
                 player.uuid = user_join[i].uuid
                 player.user = user_join[i].user
                 player.type = "human"
                 player.money = user_join[i].money
                 player.fold = false
+                player.bet = 0
             }
             players.push(player)
         }
@@ -158,6 +175,7 @@ function poker(data, user_join){
         let index = poker_players.findIndex((x) => x.uuid === data.uuid)
         for(let i in players){
             if(parseInt(i) === index){
+                players[index].last_choice = action
                 players[index].bet = 0
                 if(action !== "check"){
                     players[index].bet = data.bet
@@ -199,18 +217,19 @@ function poker(data, user_join){
                 }
                 break
             case "check":
-                //player.bet = 0
+                player.bet = 0
                 break
             case "fold":
                 player.fold = true
                 break
         }
+        player.last_choice = x
         return player
     }
     function canCheck(playerIndex, players){
         for (let i = 0; i < playerIndex; i++) {
-            // console.log(i, players[i].user, players[i].bet, typeof players[i].bet !== "undefined",players[i].bet > 0)
-            if (typeof players[i].bet !== "undefined" || players[i].bet > 0) {
+            console.log(i, players[i].user, players[i].bet, typeof players[i].bet !== "undefined",players[i].bet > 0)
+            if (players[i].bet > 0) {
                 return true
             }
         }
@@ -219,9 +238,57 @@ function poker(data, user_join){
 
     function handleFold(){
         let players = [...poker_players]
-        let index = poker_players.findIndex((x) => x.uuid === data.uuid)
+        let index = players.findIndex((x) => x.uuid === data.uuid)
         players[index].fold = true
         return players
+    }
+
+    function handleCallRaise(){
+        let players = [...poker_players]
+        let index = players.findIndex((x) => x.uuid === data.uuid)
+        if(players[index]){
+            let amount = players[index].bet
+            const maxBet = getBet()
+            const amountToCall = maxBet - players[index].bet
+
+            if(data.action === "raise" && amount <= amountToCall) {
+                return {error: 'invalid_raise'} //Invalid raise amount. Must raise more than the amount to call.
+            }
+            if(data.action === "call" && players[index].money < amountToCall) {
+                return {error: 'no_enough_money'} //Insufficient money to call.
+            }
+            
+            // Update the player's bet and pot
+            if(data.action === "raise"){
+                players[index].bet += amount
+                poker_pot += amount
+            } else if(data.action === "call"){
+                players[index].bet += amountToCall
+                poker_pot += amountToCall
+            }
+
+            return players
+        }
+    }
+    function getBet() {
+        let bet = 0      
+        for (let i in poker_players) {
+            if (poker_players[i].bet > bet){
+                bet = poker_players[i].bet
+            }
+        }      
+        return bet
+    }
+
+    function calculatePot(){        
+        let players = [...poker_players]
+        let pot = 0
+        for(let i in players){
+            if(players[i].bet && players[i].bet > 0){
+                pot = pot + players[i].bet
+            }
+        }
+        return pot
     }
 
     function evaluateHands(array){        

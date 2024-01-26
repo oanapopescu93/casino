@@ -28,8 +28,8 @@ const { slots } = require("./games/slots")
 const { craps } = require("./games/craps")
 const { race } = require("./games/race")
 const { keno } = require("./games/keno")
-// const { poker } = require("./games/poker01")
-const { poker } = require("./games/poker")
+const { poker } = require("./games/poker01")
+// const { poker } = require("./games/poker")
 
 var coupons = require('./var/home').COUPONS
 

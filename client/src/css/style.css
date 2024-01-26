@@ -1451,6 +1451,21 @@ textarea {
   cursor: pointer;
 }
 
+/* POKER */
+.game_container.poker_container{
+  position: relative;
+  z-index: 1;
+}
+.game_container.poker_container .game_start{
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  transform: translate(0px, -50%);
+}
+
 /* GAME BOARD */
 .gameboard{
   background-color: var(--dark_color);

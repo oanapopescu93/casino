@@ -31,13 +31,13 @@ function PokerBoard(props){
                         </Col>
                         <Col xs={8}>
                             <div className="button_box">
-                                <Button type="button" onClick={()=>handleClick('preflop_betting')} className="mybutton button_fullcolor shadow_convex">
+                                <Button type="button" onClick={()=>handleClick('preflop_betting')} className="mybutton round button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "bet"})}
                                 </Button>
-                                <Button type="button" onClick={()=>handleClick('check')} className="mybutton button_fullcolor shadow_convex">
+                                <Button type="button" onClick={()=>handleClick('check')} className="mybutton round button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "check"})}
                                 </Button>
-                                <Button type="button" onClick={()=>handleClick('fold')} className="mybutton button_fullcolor shadow_convex">
+                                <Button type="button" onClick={()=>handleClick('fold')} className="mybutton round button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "fold"})}
                                 </Button>
                             </div>
@@ -50,13 +50,13 @@ function PokerBoard(props){
                     </Col>
                     <Col xs={8}>
                         <div className="button_box">
-                            <Button type="button" onClick={()=>handleClick('call')} className="mybutton button_fullcolor shadow_convex">
+                            <Button type="button" onClick={()=>handleClick('call')} className="mybutton round button_fullcolor shadow_convex">
                                 {translate({lang: lang, info: "call"})}
                             </Button>
-                            <Button type="button" onClick={()=>handleClick('raise')} className="mybutton button_fullcolor shadow_convex">
+                            <Button type="button" onClick={()=>handleClick('raise')} className="mybutton round button_fullcolor shadow_convex">
                                 {translate({lang: lang, info: "raise"})}
                             </Button>
-                            <Button type="button" onClick={()=>handleClick('fold')} className="mybutton button_fullcolor shadow_convex">
+                            <Button type="button" onClick={()=>handleClick('fold')} className="mybutton round button_fullcolor shadow_convex">
                                 {translate({lang: lang, info: "fold"})}
                             </Button>
                         </div>
