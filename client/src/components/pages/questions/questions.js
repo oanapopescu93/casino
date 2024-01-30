@@ -65,6 +65,7 @@ function Questions(props){
                 {translate({lang: props.lang, info: "back"})}
             </Button>
         </div>
+        <br/><br/>
     </div>
 }
 export default Questions

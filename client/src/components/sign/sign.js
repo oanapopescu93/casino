@@ -105,7 +105,7 @@ function Sign(props) {
     } 
 
     useEffect(() => {
-        props.socket.on('signin_read', function(data){	
+        const handleSignInRead = function(data) {
             setLoaded(true)
             if(data && data.exists && data.obj && Object.keys(data.obj).length>0){
                 dispatch(changeUser(data.obj))
@@ -123,9 +123,8 @@ function Sign(props) {
                     data: translate({lang: props.lang, info: "signin_error"})
                 }))
             } 
-        })
-
-        props.socket.on('signup_read', function(data){	
+        }
+        const handleSignUpRead = function(data) {
             setLoaded(true)
             if(data && !data.exists && data.obj && Object.keys(data.obj).length>0){
                 dispatch(changeUser(data.obj))
@@ -149,7 +148,13 @@ function Sign(props) {
                 }
                 dispatch(changePopup(payload))
             }
-        })
+        }
+		props.socket.on('signin_read', handleSignInRead)
+        props.socket.on('signup_read', handleSignUpRead)
+		return () => {
+            props.socket.off('signin_read', handleSignInRead)
+            props.socket.off('signup_read', handleSignUpRead)
+        }
     }, [props.socket])  
 
     return <>

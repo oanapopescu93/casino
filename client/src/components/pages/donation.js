@@ -22,12 +22,7 @@ function Donation(props){
         <div className="page_content">
             {(() => {
                 if(list && list.length>0){
-                    return <div className="donation_container">
-                        <div className="donation_ukraine">
-                            <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine">
-                                {translate({lang: props.lang, info: "donation"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine}></img>
-                            </a>
-                        </div>
+                    return <div className="donation_container">                        
                         <div className="deco">
                             <div className="donation_box">
                                 {donation_type.map(function(item01, i){
@@ -39,10 +34,16 @@ function Donation(props){
                                         {list.map(function(item02, j){
                                             if(item01 === item02.type){
                                                 if(item01 === "crypto"){
+                                                    if(item02.text==="-"){
+                                                        return
+                                                    }
                                                     return <li key={j} className="donation_link donation_link_crypto">
-                                                        <span>{item02.title}: </span><span>{item02.text}</span>
+                                                        <span>{item02.title}: </span> <span>{item02.text}</span>
                                                     </li>                                               
                                                 } else if(item01 === "paypal"){
+                                                    if(item02.link===""){
+                                                        return
+                                                    }
                                                     return <li key={j} className="donation_link donation_link_paypall">
                                                         <a className="mybutton button_transparent shadow_convex" rel="noopener noreferrer" target="_blank" href={item02.link}>{item02.title}</a>
                                                     </li>
@@ -56,7 +57,12 @@ function Donation(props){
                                     </ul>
                                 })}
                             </div>
-                    </div>
+                        </div>
+                        <div className="donation_ukraine">
+                            <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine">
+                                {translate({lang: props.lang, info: "donation_ukraine"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine}></img>
+                            </a>
+                        </div>
                     </div>
                 } else {
                     return <div className="donation_container">

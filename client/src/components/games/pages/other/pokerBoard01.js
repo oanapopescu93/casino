@@ -31,37 +31,56 @@ function PokerBoard(props){
                         </Col>
                         <Col xs={8}>
                             <div className="button_box">
-                                <Button type="button" onClick={()=>handleClick('preflop_betting')} className="mybutton round button_fullcolor shadow_convex">
+                                <Button type="button" onClick={()=>handleClick({action: 'bet', stage: action})} className="mybutton round button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "bet"})}
                                 </Button>
-                                <Button type="button" onClick={()=>handleClick('check')} className="mybutton round button_fullcolor shadow_convex">
+                                <Button type="button" onClick={()=>handleClick({action: 'check', stage: action})} className="mybutton round button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "check"})}
                                 </Button>
-                                <Button type="button" onClick={()=>handleClick('fold')} className="mybutton round button_fullcolor shadow_convex">
+                                <Button type="button" onClick={()=>handleClick({action: 'fold', stage: action})} className="mybutton round button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "fold"})}
                                 </Button>
                             </div>
                         </Col>                        
                     </>
                 case "postflop_betting":
+                case "turn":                
+                    let payload = 'turn'
+                    if(action === "turn"){
+                        payload = 'river'
+                    }
                     return <>
-                    <Col xs={4}>
-                        <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
-                    </Col>
-                    <Col xs={8}>
-                        <div className="button_box">
-                            <Button type="button" onClick={()=>handleClick('call')} className="mybutton round button_fullcolor shadow_convex">
-                                {translate({lang: lang, info: "call"})}
-                            </Button>
-                            <Button type="button" onClick={()=>handleClick('raise')} className="mybutton round button_fullcolor shadow_convex">
-                                {translate({lang: lang, info: "raise"})}
-                            </Button>
-                            <Button type="button" onClick={()=>handleClick('fold')} className="mybutton round button_fullcolor shadow_convex">
-                                {translate({lang: lang, info: "fold"})}
-                            </Button>
-                        </div>
-                    </Col>                        
-                </>
+                        <Col xs={4}>
+                            <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
+                        </Col>
+                        <Col xs={8}>
+                            <div className="button_box">
+                                <Button type="button" onClick={()=>handleClick({action: 'call', stage: payload})} className="mybutton round button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "call"})}
+                                </Button>
+                                <Button type="button" onClick={()=>handleClick({action: 'raise', stage: payload})} className="mybutton round button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "raise"})}
+                                </Button>
+                                <Button type="button" onClick={()=>handleClick({action: 'fold', stage: payload})} className="mybutton round button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "fold"})}
+                                </Button>
+                            </div>
+                        </Col>                        
+                    </>
+                case "river":
+                    return <>
+                        <Col xs={4}></Col>
+                        <Col xs={8}>
+                            <div className="button_box">
+                                <Button type="button" onClick={()=>handleClick({action: 'showdown', stage: "showdown"})} className="mybutton round button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "showdown"})}
+                                </Button>
+                                <Button type="button" onClick={()=>handleClick({action: 'fold', stage: "showdown"})} className="mybutton round button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "fold"})}
+                                </Button>
+                            </div>
+                        </Col>                        
+                    </>
             }
         })()}
     </Row>

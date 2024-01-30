@@ -476,12 +476,17 @@ function Slots(props){
     }, [])
 
     useEffect(() => {
-		props.socket.on('slots_read', function(data){
-			if(my_slots && data){
+		const handleSlotsRead = function(data) {
+            if(my_slots && data){
                 slots_data = data
                 my_slots.ready()
-            }	
-		})	
+            }
+        }
+
+		props.socket.on('slots_read', handleSlotsRead)
+		return () => {
+            props.socket.off('slots_read', handleSlotsRead)
+        }
     }, [props.socket])
 
     function choice(type){		

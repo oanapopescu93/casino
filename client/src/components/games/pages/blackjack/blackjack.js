@@ -359,7 +359,6 @@ function blackjack_game(props){
     this.action = function(data){
 		if(data.action){
 			blackjack_data = data
-			console.log('blackjack_data ', blackjack_data)
 			ctx.clearRect(0, 0, canvas.width, canvas.height)
 			if(data.action === "start"){
 				resize = 0
@@ -465,8 +464,8 @@ function Blackjack(props){
     }, [])
 
     useEffect(() => {
-		props.socket.on('blackjack_read', function(data){
-			if(my_blackjack && data){
+		const handleBlackjackRead = function(data) {
+            if(my_blackjack && data){
 				if(data.action === "start" || data.action === "hit" || data.action === "stand" || data.action === "double_down"  || data.action === "surrender"){
 					my_blackjack.action(data)
 				} else {
@@ -480,8 +479,12 @@ function Blackjack(props){
 					dispatch(changePopup(payload))
 				}
 				
-            }		
-		})	
+            }
+        }
+		props.socket.on('blackjack_read', handleBlackjackRead)
+		return () => {
+            props.socket.off('blackjack_read', handleBlackjackRead)
+        }
     }, [props.socket])
 
     function choice(type){		

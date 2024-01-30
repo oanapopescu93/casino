@@ -48,6 +48,7 @@ var word_bank = {
     exit_game: "Ieși din joc",
 
     donation: "Donatii",
+    donation_ukraine: "Donație pentru Ucraina",
 
     all: "Tot",
     other: "Altceva",
@@ -195,7 +196,9 @@ var word_bank = {
     keno_win: "Premiu",
     your_numbers: "Numerele tale",
     lucky_numbers: "Numerele norocoase", 
-    
+
+    // poker
+    total_pot: "Total Pot",    
 
     // results
     results: "Rezultate",

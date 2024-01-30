@@ -1090,6 +1090,9 @@ textarea {
   overflow: hidden;
   transition: height 0.2s ease-out;
 }
+.footer_body h6{
+  font-size: 11px;
+}
 .footer_container.up .footer_body{
   border-top:solid 1px var(--color);
   height: 50px;
@@ -1099,6 +1102,7 @@ textarea {
 }
 .footer_list li{
   display: inline-block;
+  vertical-align: middle;
   padding: 0px var(--padding_small);
   border-right: solid 1px var(--color);
   cursor: pointer;
@@ -1464,6 +1468,23 @@ textarea {
   right: 0px;
   width: 100%;
   transform: translate(0px, -50%);
+}
+.poker_pot_container{ 
+  position: absolute;
+  z-index: 1;
+  top: 180px;
+  left: 0px;
+  right: 0px;
+}
+.poker_pot{
+  background-color: var(--transparent_5);
+  border: solid 1px var(--color);
+  border-radius: var(--radius);
+  color: var(--color);
+  display: inline-block;
+  width: 100%;
+  max-width: 150px;
+  padding: var(--padding_small) var(--padding);
 }
 
 /* GAME BOARD */
@@ -1857,9 +1878,6 @@ textarea {
   margin-bottom: var(--padding);
   text-align: left;
 }
-#contact_map{
-  border: solid 1px var(--red);
-}
 .contact_form .input_light{
   margin-bottom: var(--padding_small)!important;
 }
@@ -1900,13 +1918,12 @@ textarea {
 #contact_map .contactMap{
   height: 250px;
 }
-#contact_map .leaflet-popup-content-wrapper, #contact_map .leaflet-popup-tip,
 #contact_map .leaflet-popup-content-wrapper, #contact_map .leaflet-popup-tip{
-  background-color: var(--red);
-  color: white;
+  background-color: white;
+  color: black;
 }
 #contact_map .leaflet-container a.leaflet-popup-close-button{
-  color: white;
+  color: black
 }
 #contact_map .leaflet-control-layers-selector{
   width: auto;
@@ -1914,14 +1931,14 @@ textarea {
 }
 #contact_map .leaflet-touch .leaflet-control-layers, 
 #contact_map .leaflet-touch .leaflet-bar{
-  background-color: var(--red);
-  border: solid 1px var(--red);
-  color: white;
+  background-color: var(--bg);
+  border: solid 1px var(--bg);
+  color: var(--color);
 }
 #contact_map .leaflet-touch .leaflet-bar a{
-  background-color: var(--red);
-  border: solid 1px var(--red);
-  color: white;
+  background-color: var(--bg);
+  border: solid 1px var(--bg);
+  color: var(--color);
 }
 
 /* DASHBOARD */
@@ -2950,6 +2967,9 @@ textarea {
 	.shop_shader{
 		height:100px;
 	}
+  .poker_pot_container{ 
+    top: 150px;
+  }
 }
 @media (max-width: 1024px){
 	.shop_shader{

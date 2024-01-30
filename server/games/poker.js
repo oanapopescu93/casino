@@ -1,173 +1,88 @@
 var poker_deck = []
 var poker_players = []
-var poker_dealer = {}
+var poker_dealer = null
 var poker_hidden_players = []
 var poker_pot = 0
 let how_many_players = 4
 let how_many_cards = 5
-let how_many_rounds = 3
-let poker_current_player = 0    
-let poker_current_round = 0
-let showdown = false
 
 function poker(data, user_join){
-    poker_hidden_players = []
-    let index = null 
-    let suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
-    let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
-
     switch(data.game){
         case "texas_holdem":
             how_many_cards = 2
             break
         default: //ex: 5_card_draw
             how_many_cards = 5
-    }
+    }    
 
     switch (data.action) {
-        case 'start':     
+        case 'start':    
+            poker_players = []  
+            poker_dealer = null
+            poker_deck = []
+            poker_hidden_players = []
             poker_current_player = 0    
-            poker_current_round = 0    
-            poker_deck = createDeck(10000) 
-            poker_pot = 0
-            createPlayers()        
-            dealHands()            
-            handleBet()
-            break
-        case "raise": 
-        case "call":
-        case "fold":
-            index = poker_players.findIndex((x) => x.uuid === data.uuid)   
-            if(data.action === "fold"){
-                handleFold(index)
-            } else {
-                handleCallRaise(data, index)
-            }
-            nextTurn()
-            break
-        case "replace":
-            index = poker_players.findIndex((x) => x.uuid === data.uuid)  
-            replaceCards(index, data.replaceCards) 
-            break
-    }
-
-    let payload = {}
-    if(!showdown){
-        createHiddenPlayers()
-        poker_hidden_players = evaluateHands(poker_hidden_players)   
-        add_cards_dealer()
-        payload = {action: data.action, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, player: poker_current_player, round: poker_current_round, showdown}
-        return payload
-    } else {
-        //showdown
-        poker_players = evaluateHands(poker_players)
-        payload = {action: data.action, players: poker_players, dealer: poker_dealer, pot: poker_pot, player: poker_current_player, round: poker_current_round, showdown}
-        showdown = false
-        return payload
-    }   
-    
-    function add_cards_dealer(){
-        if(data.action != "replace" && (poker_current_round === 1 || poker_current_round === 2)){ // it is a turn or a river
-            let card = poker_deck.pop()
-            poker_dealer.hand.push(card)
-        }
-    }
-    
-    function handleCallRaise(payload, index){
-        if(poker_players[index]){
-            let amount = poker_players[index].bet
-            const maxBet = getBet()
-            const amountToCall = maxBet - poker_players[index].bet
-
-            if(payload.action === "raise" && amount <= amountToCall) {
-                return {action: payload.action, error: 'invalid_raise'} //Invalid raise amount. Must raise more than the amount to call.
-            }
-            if(payload.action === "call" && poker_players[index].money < amountToCall) {
-                return {action: payload.action, error: 'no_enough_money'} //Insufficient money to call.
-            }
+            poker_current_round = 0 
+            poker_pot = 0  
             
-            // Update the player's bet and pot
-            if(payload.action === "raise"){
-                poker_players[index].bet += amount
-                poker_pot += amount
-            } else if(payload.action === "call"){
-                poker_players[index].bet += amountToCall
-                poker_pot += amountToCall
+            // a certain number of players sit at the table 
+            poker_players = createPlayers()
+            
+            // a certain number of cards are dealt to each player, only the user will see his own cards, the rest will be hidden
+            poker_deck = createDeck(10000) 
+            poker_players = dealHands("players")  
+            poker_hidden_players = createHiddenPlayers() 
+            
+            // calculate pot
+            poker_pot = calculatePot()
+            
+            payload = {action: "preflop_betting", players: poker_hidden_players, pot: poker_pot}
+            return payload
+        case "bet":  
+        case "check":           
+            poker_players = preflop_betting(data.action)
+            poker_hidden_players = createHiddenPlayers()
+            poker_dealer = dealHands("dealer") 
+            poker_pot = calculatePot()
+            payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
+            return payload
+        case "fold":
+            poker_players = handleFold()
+            poker_hidden_players = createHiddenPlayers()
+            poker_pot = calculatePot()
+            payload = {action: "fold", players: poker_hidden_players, pot: poker_pot}
+            if(poker_dealer){
+                payload.dealer = poker_dealer
             }
-        }
-    }
-    function getBet() {
-        let bet = 0      
-        for (let i in poker_players) {
-            if (poker_players[i].bet > bet){
-                bet = poker_players[i].bet
+            return payload
+        case "call": 
+        case "raise":        
+            let result = handleCallRaise()  
+            if(result && result.error){
+                return {action: payload.action, error: result.error}
+            } 
+            poker_players = result
+            poker_hidden_players = createHiddenPlayers()
+            poker_pot = calculatePot()    
+            if(data.stage === "turn" || data.stage === "river"){
+                poker_dealer = addCardsDealer()
             }
-        }      
-        return bet
-    }
-    function handleFold(index){     
-        //poker_players.splice(index, 1) 
-        if(poker_players[index]) poker_players[index].fold = true
-    }
-    function nextTurn() {  
-        poker_current_player++
-        bot_decisions(poker_current_player) //simulate bots making decisions
-        console.log('nextTurn2 ', poker_current_player, poker_current_round, data.action)
-        if(poker_current_player >= poker_players.length){
-            poker_current_player = 0
-            poker_current_round++
-        }
-        console.log('nextTurn3 ', poker_current_player, poker_current_round, data.action)
-        if (poker_current_round > how_many_rounds-1 || check_how_many_players_active()<=1) {
-            showdown = true
-        }
+            payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
+            return payload
+        case "replace":
+            poker_players = replaceCards(data.replaceCards) 
+            poker_hidden_players = createHiddenPlayers()
+            poker_pot = calculatePot()  
+            payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
+            break
+        case "showdown":
+            payload = {action: data.stage, players: poker_players, dealer: poker_dealer, pot: poker_pot, showdown: true} 
+            break
     }  
-
-    function check_how_many_players_active(){
-        let how_many = 0
-        for(let i in poker_players){
-            if(!poker_players[i].fold){
-                how_many++
-            }
-        }
-        return how_many
-    }
     
-    function bot_decisions(index){
-        for(let i=index; i<poker_players.length; i++){   
-            if(poker_players[i].uuid !== "bot"){ //if it's a real player we stop the simulation and let the player decide
-                break
-            } else { 
-                if(!poker_players[i].fold){ //even if it's a bot, if he already decided to fold, we pass him
-                    let random_action = Math.floor(Math.random() * 100 + 1)
-                    let random_bet = Math.floor(Math.random() * 10 + 1)
-                    poker_players[i].bet = random_bet
-                    let payload = {
-                        bet: random_bet,
-                        action: "call"
-                    }
-                    if(random_action<20){
-                        handleFold(i)
-                    } else {
-                        if(random_action>=20 && random_action<60){
-                            payload.action = "raise"
-                        }
-                        handleCallRaise(payload, i)
-                    }
-                }                
-                poker_current_player++
-                console.log('nextTurn1 ', poker_current_player, poker_current_round, data.action)
-            }            
-        }
-    }
-
-    function handleBet(){
-        let index = poker_players.findIndex((x) => x.uuid === data.uuid)
-        if(index >= 0){
-            poker_pot += poker_players[index].bet
-        }
-    }
     function createDeck(turns){
+        let suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
+        let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
         for (let i = 0 ; i < values.length; i++){
             for(let j = 0; j < suits.length; j++){
                 let weight = 0
@@ -203,55 +118,226 @@ function poker(data, user_join){
         }
         return poker_deck
     }
+
     function createPlayers(){        
-        poker_players = []
+        let players = []
         for(let i=0; i<how_many_players;i++){
-            let player = {user: "player_"+i, uuid: "bot", bet: 1, money: 100, fold: false} // if fewer than 4 players join, we add bots for the rest occupied sits
+            let player = {uuid: "player_"+i, user: "player_"+i, type: "bot", money: 100, fold: false, bet: 0} // if fewer than 4 players join, we add bots for the rest occupied sits
             if(user_join[i]){
-                player = user_join[i]
+                player.uuid = user_join[i].uuid
+                player.user = user_join[i].user
+                player.type = "human"
+                player.money = user_join[i].money
                 player.fold = false
+                player.bet = 0
             }
-            poker_players.push(player)
+            players.push(player) 
         }
-    }		
-    function dealHands(){
-        poker_dealer = {id: "dealer", hand: []}	
-        for(let i = 0; i < 3; i++){ //the dealer will show 3 cards at the start of the game
-            let card = poker_deck.pop()
-            poker_dealer.hand.push(card)
-        }	
-        for(let i = 0; i < how_many_cards; i++){
-            for (let j = 0; j < poker_players.length; j++){
-                let card = poker_deck.pop()
-                if(i === 0){
-                    poker_players[j].hand = []
-                } else {
-                    if(data.uuid == poker_players[j].uuid){
-                        poker_players[j].bet = data.bet
-                    }	
-                }	
-                poker_players[j].hand.push(card)
-            }
-        }
-        //sort hand after the value of the card
-        poker_players.sort((a, b) => b.Weight - a.Weight)
+        return players
     }
-    function createHiddenPlayers(){        
-        for(let i in poker_players){
-            if(data.uuid === poker_players[i].uuid){
-                poker_hidden_players.push(poker_players[i])
+    function dealHands(who){
+        switch(who){
+            case "players":
+                let players = [...poker_players]
+                for(let i = 0; i < how_many_cards; i++){
+                    for (let j = 0; j < players.length; j++){
+                        let card = poker_deck.pop()
+                        if(i === 0){
+                            players[j].hand = []
+                        } else {
+                            if(data.uuid == players[j].uuid){
+                                players[j].bet = data.bet
+                            }	
+                        }	
+                        players[j].hand.push(card)
+                    }
+                }                
+                players.sort((a, b) => b.Weight - a.Weight) //sort hand after the value of the card
+                return players
+            case "dealer":
+                let dealer = {id: "dealer", hand: []}	
+                for(let i = 0; i < 3; i++){ //the dealer will show 3 cards at the start of the game
+                    let card = poker_deck.pop()
+                    dealer.hand.push(card) 
+                }
+                return dealer
+        }
+    }
+    function createHiddenPlayers(){
+        let players = [...poker_players] 
+        let hidden_players = []       
+        for(let i in players){
+            if(data.uuid === players[i].uuid){                
+                if(players[i].hand){
+                    players[i].handStrength = evaluateHand(players[i].hand)
+                }
+                hidden_players.push(players[i])
             } else {
-                poker_hidden_players.push({...poker_players[i], hand: null})
+                hidden_players.push({...players[i], hand: null})
             }
+        }
+        return hidden_players 
+    }
+
+    function preflop_betting(action){
+        let players = [...poker_players] 
+        let index = poker_players.findIndex((x) => x.uuid === data.uuid)
+        for(let i in players){
+            if(parseInt(i) === index){
+                players[index].last_choice = action
+                players[index].bet = 0
+                if(action !== "check"){
+                    players[index].bet = data.bet
+                }                
+            } else {
+                let choice = 'bet'
+                let number = Math.floor(Math.random() * 10) + 1
+                if(number >= 5){
+                    choice = 'bet'
+                } else if(number >= 3){
+                    choice = 'check'
+                    let playerCanCheck = canCheck(i, players)
+                    if(!playerCanCheck){
+                        choice = 'bet'
+                    }
+                } else {
+                    choice = 'fold'
+                }
+                players[i] = botChoice(choice, players[i])
+            }
+        }        
+        return players
+    }
+    function botChoice(x, player){
+        switch(x){
+            case "bet":
+                if(player.hand){
+                    let handStrength = evaluateHand(player.hand)
+                    if (handStrength.strength >= 9) {
+                        player.bet = data.bet + 1
+                    } else if (handStrength >= 5) {
+                        player.bet = data.bet
+                    } else {
+                        player.bet = data.bet - 1
+                        if(player.bet < 1){
+                            player.bet = 1
+                        }
+                    }
+                }
+                break
+            case "check":
+                player.bet = 0
+                break
+            case "fold":
+                player.fold = true
+                break
+        }
+        player.last_choice = x
+        return player
+    }
+    function canCheck(playerIndex, players){
+        for (let i = 0; i < playerIndex; i++) {
+            console.log(i, players[i].user, players[i].bet, typeof players[i].bet !== "undefined",players[i].bet > 0)
+            if (players[i].bet > 0) {
+                return true
+            }
+        }
+        return false
+    }
+
+    function handleFold(){
+        let players = [...poker_players]
+        let index = players.findIndex((x) => x.uuid === data.uuid)
+        players[index].fold = true
+        return players
+    }
+
+    function handleCallRaise(){
+        let players = [...poker_players]
+        let index = players.findIndex((x) => x.uuid === data.uuid)
+        if(players[index]){
+            let amount = players[index].bet
+            const maxBet = getBet()
+            const amountToCall = maxBet - players[index].bet
+
+            if(data.action === "raise" && amount <= amountToCall) {
+                return {error: 'invalid_raise'} //Invalid raise amount. Must raise more than the amount to call.
+            }
+            if(data.action === "call" && players[index].money < amountToCall) {
+                return {error: 'no_enough_money'} //Insufficient money to call.
+            }
+            
+            // Update the player's bet and pot
+            if(data.action === "raise"){
+                players[index].bet += amount
+                poker_pot += amount
+            } else if(data.action === "call"){
+                players[index].bet += amountToCall
+                poker_pot += amountToCall
+            }
+
+            return players
         }
     }
-    function evaluateHands(array){        
-        for(let i in array){
-            if(array[i].hand){
-                array[i].handStrength = evaluateHand(array[i].hand)
+    function getBet() {
+        let bet = 0      
+        for (let i in poker_players) {
+            if (poker_players[i].bet > bet){
+                bet = poker_players[i].bet
+            }
+        }      
+        return bet
+    }
+
+    function addCardsDealer(){
+        let dealer = {...poker_dealer}
+        let card = poker_deck.pop()
+        dealer.hand.push(card)
+        return dealer
+    }
+
+    function check_how_many_players_active(){
+        let how_many = 0
+        for(let i in poker_players){
+            if(!poker_players[i].fold){
+                how_many++
             }
         }
-        return array
+        return how_many
+    }
+
+    function replaceCards(cards_to_replace){
+        let players = [...poker_players] 
+        let index = poker_players.findIndex((x) => x.uuid === data.uuid)
+        if(players[index] && cards_to_replace && cards_to_replace.length>0){
+            for(let i in cards_to_replace){
+                let x = cards_to_replace[i]
+                if(players[index].hand[x]){
+                    const newCard = poker_deck.pop()
+                    players[index].hand[x] = newCard
+                }
+            }
+        }
+        return players
+    }
+
+    function checkShowdown(){
+        let showdown = false
+        if(check_how_many_players_active() <= 1){
+            showdown = true
+        }
+        return showdown
+    }    
+
+    function calculatePot(){        
+        let players = [...poker_players]
+        let pot = 0
+        for(let i in players){
+            if(players[i].bet && players[i].bet > 0){
+                pot = pot + players[i].bet
+            }
+        }
+        return pot
     }
 
     function evaluateHand(hand){
@@ -329,18 +415,6 @@ function poker(data, user_join){
         }    
         const pairs = Object.values(valueCounts).filter((count) => count === 2)
         return pairs.length
-    }
-
-    function replaceCards(index, cards_to_replace){
-        if(poker_players[index] && cards_to_replace && cards_to_replace.length>0){
-            for(let i in cards_to_replace){
-                let x = cards_to_replace[i]
-                if(poker_players[index].hand[x]){
-                    const newCard = poker_deck.pop()
-                    poker_players[index].hand[x] = newCard
-                }
-            }
-        }
     }
     
     return {}

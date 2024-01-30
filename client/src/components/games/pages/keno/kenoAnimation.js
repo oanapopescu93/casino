@@ -224,20 +224,24 @@ function KenoAnimation(props){
     }, [])
 
     useEffect(() => {
-        props.socket.on('keno_read', function(res){
-            if(res){
+        const handleKenoRead = function(data) {
+            if(data){
                 let list_filtered = []
-                for(let i in res){
-                    let filteredArray = res[i].filter(value => list.includes(value)) //array intersections
+                for(let i in data){
+                    let filteredArray = data[i].filter(value => list.includes(value)) //array intersections
                     if(filteredArray && filteredArray.length>0){
                         list_filtered.push(filteredArray)
                     }
                 }
                 if(typeof props.getResults !== "undefined"){
-                    props.getResults({list_results: res, list_filtered})
+                    props.getResults({list_results: data, list_filtered})
                 }
             }
-        })
+        }
+		props.socket.on('keno_read', handleKenoRead)
+		return () => {
+            props.socket.off('keno_read', handleKenoRead)
+        }
     }, [props.socket])
 
     function handleShowPrizes(){

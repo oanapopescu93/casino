@@ -956,7 +956,11 @@ function RaceGame(props){
     }, [])
 
 	useEffect(() => {
-		props.socket.on('race_read', function(data){})	
+		const handleRaceRead = function(data) {}
+		props.socket.on('race_read', handleRaceRead)
+		return () => {
+            props.socket.off('race_read', handleRaceRead)
+        }
     }, [props.socket])
 
     return <div className="game_container race_game_container">

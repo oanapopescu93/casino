@@ -627,7 +627,7 @@ function RouletteGame(props){
     }, [])
 
 	useEffect(() => {
-		props.socket.on('roulette_read', function(data){
+		const handleRouletteRead = function(data) {
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				if (window.innerWidth < 960){
 					if(window.innerHeight < window.innerWidth){
@@ -641,8 +641,12 @@ function RouletteGame(props){
 				if(my_roulette && document.getElementById("roulette_canvas")){
 					my_roulette.spin(data)
 				}
-			}				
-		})	
+			}
+		}
+		props.socket.on('roulette_read', handleRouletteRead)
+		return () => {
+            props.socket.off('roulette_read', handleRouletteRead)
+        }
     }, [props.socket])
 
     function openTable(){

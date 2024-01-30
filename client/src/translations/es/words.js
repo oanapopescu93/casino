@@ -48,6 +48,7 @@ var word_bank = {
     exit_game: "Salir del juego",
 
     donation: "Donaciones",
+    donation_ukraine: "Donación para Ucrania",
 
     all: "Todos",
     other: "Otros",
@@ -195,6 +196,9 @@ var word_bank = {
     keno_win: "Ganancia",
     your_numbers: "Tus números",
     lucky_numbers: "Números de la suerte",
+
+    // poker
+    total_pot: "Total Pot",
 
     // results
     results: "Resultados",
