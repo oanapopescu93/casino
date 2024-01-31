@@ -3,7 +3,7 @@ var poker_players = []
 var poker_dealer = null
 var poker_hidden_players = []
 var poker_pot = 0
-let how_many_players = 4
+let how_many_players = 6
 let how_many_cards = 5
 
 function poker(data, user_join){
@@ -57,7 +57,7 @@ function poker(data, user_join){
             return payload
         case "call": 
         case "raise":        
-            let result = handleCallRaise()  
+            let result = handleCallRaise(data.bet)  
             if(result && result.error){
                 return {action: payload.action, error: result.error}
             } 
@@ -65,7 +65,7 @@ function poker(data, user_join){
             poker_hidden_players = createHiddenPlayers()
             poker_pot = calculatePot()    
             if(data.stage === "turn" || data.stage === "river"){
-                poker_dealer = addCardsDealer()
+                poker_dealer = addCardsDealer() 
             }
             payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
             return payload
@@ -76,6 +76,7 @@ function poker(data, user_join){
             payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
             break
         case "showdown":
+            poker_players = evaluateHands(poker_players)
             payload = {action: data.stage, players: poker_players, dealer: poker_dealer, pot: poker_pot, showdown: true} 
             break
     }  
@@ -122,7 +123,7 @@ function poker(data, user_join){
     function createPlayers(){        
         let players = []
         for(let i=0; i<how_many_players;i++){
-            let player = {uuid: "player_"+i, user: "player_"+i, type: "bot", money: 100, fold: false, bet: 0} // if fewer than 4 players join, we add bots for the rest occupied sits
+            let player = {uuid: "player_"+i, user: "player_"+i, type: "bot", money: 100, fold: false, bet: 0}
             if(user_join[i]){
                 player.uuid = user_join[i].uuid
                 player.user = user_join[i].user
@@ -252,11 +253,10 @@ function poker(data, user_join){
         return players
     }
 
-    function handleCallRaise(){
+    function handleCallRaise(amount=1){
         let players = [...poker_players]
         let index = players.findIndex((x) => x.uuid === data.uuid)
         if(players[index]){
-            let amount = players[index].bet
             const maxBet = getBet()
             const amountToCall = maxBet - players[index].bet
 
@@ -340,6 +340,14 @@ function poker(data, user_join){
         return pot
     }
 
+    function evaluateHands(array){        
+        for(let i in array){
+            if(array[i].hand){
+                array[i].handStrength = evaluateHand(array[i].hand)
+            }
+        }
+        return array
+    }
     function evaluateHand(hand){
         // Sort the hand by card weight in descending order
         hand.sort((a, b) => b.Weight - a.Weight)

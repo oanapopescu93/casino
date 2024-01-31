@@ -27,6 +27,7 @@ function Card(config){
     self.hand = config.hand
     self.selectedCards = []
     self.fold = config.fold
+    self.bet = config.bet ? config.bet : 0
 
 	self.show_cards = function(ctx, data){
         if(self.id !== -1){
@@ -36,13 +37,16 @@ function Card(config){
             } 
 
             if(self.uuid === self.props.user.uuid){
+                //user
                 let cards_number = self.hand.length
                 let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
                 self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(ctx, self.user, self.text_x-hand_length/2, self.text_y, 70, 12)                    
+                self.draw_card_text(ctx, self.user, self.text_x-hand_length/2, self.text_y, 90, 12)                    
             } else {
+                //bot
+                let text = self.user + "(Bet: " + self.bet + ")"
                 self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(ctx, self.user, self.text_x, self.text_y, 70, 12)
+                self.draw_card_text(ctx, text, self.text_x, self.text_y, 90, 12)
             }
 
             ctx.filter = 'grayscale(0)'
@@ -179,6 +183,7 @@ export const poker_game = function(props){
     let card_base = {width: 120, height: 180, space: 35}
     let space = 12
     let positions = []
+    let how_many_players = 6
     let how_many_cards = 5
     
     let items = get_cards()
@@ -221,7 +226,7 @@ export const poker_game = function(props){
 
 		if(window.innerWidth <= 480){
             card = {width: 33, height: 50}
-            card_base = {width: 46, height: 70, space: 15}
+            card_base = {width: 46, height: 70, space: 25}
             space = 8
 			if(window.innerHeight < window.innerWidth){
 				//extra small landscape				
@@ -234,7 +239,7 @@ export const poker_game = function(props){
 			}			
 		} else if (window.innerWidth <= 960){
             card = {width: 40, height: 60}
-            card_base = {width: 53, height: 80, space: 15}
+            card_base = {width: 53, height: 80, space: 25}
             space = 10
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
@@ -267,10 +272,12 @@ export const poker_game = function(props){
 		canvas.height = canvas_height
 
         positions = [
-            {x: canvas.width/2 - card.width/2, y: canvas.height - card.height - card_base.space, width: card_base.width, height: card_base.height}, //bottom
-            {x: card_base.space, y: canvas.height/2 - card.height/2, width: card_base.width, height: card_base.height}, //left
+            {x: canvas.width/2 - card.width/2, y: canvas.height - card.height - card_base.space, width: card_base.width, height: card_base.height}, //bottom            
+            {x: card_base.space, y: canvas.height/2 - card.height/2 + (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //left-bottom
+            {x: card_base.space, y: (canvas.height - card.height)/2 - (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //left-top
             {x: canvas.width/2 - card.width/2, y: card_base.space, width: card_base.width, height: card_base.height}, //top
-            {x: canvas.width - card.width - 2 * card_base.space, y: canvas.height/2 - card.height/2, width: card_base.width, height: card_base.height}, //right
+            {x: canvas.width - card.width - 2 * card_base.space, y: (canvas.height - card.height)/2 - (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //right-top
+            {x: canvas.width - card.width - 2 * card_base.space, y: (canvas.height - card.height)/2 + (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //right-top
         ] 
 	}
 
@@ -331,12 +338,13 @@ export const poker_game = function(props){
                     card_img: card_img,
                     images: images,
                     space: space,
-                    hand: poker_data.dealer.hand
+                    hand: poker_data.dealer.hand,
+                    bet: null
                 }))	
             }            
             
             //players
-            for(let i=0;i<4;i++){
+            for(let i = 0; i < how_many_players; i++){
                 if(positions[i] && poker_data.players[i]){ 
                     let uuid = null 
                     let user = 'player_'+i
@@ -365,10 +373,6 @@ export const poker_game = function(props){
                             hand.push({Value: null})
                         }
                     }
-                    let fold = false
-                    if(poker_data.players[i].fold){
-                        fold = true
-                    }
                     card_list.push(new Card({
                         id: i,
                         name: 'player',
@@ -390,7 +394,9 @@ export const poker_game = function(props){
                         props: props,
                         evaluateHand: evaluateHand,
                         hand: hand,
-                        fold: fold
+                        fold: poker_data.players[i].fold ? true : false,
+                        bet: poker_data.players[i].bet,
+                        type: poker_data.players[i].type
                     }))
                 }
             }

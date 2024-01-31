@@ -87,6 +87,8 @@ function PokerDashboard(props){
                     props.socket.emit('poker_send', poker_payload_server)
                     break
                 case "bet":
+                case "call":                    
+                case "raise":
                     if(poker_bets === 0){
                         let payload = {
                             open: true,
@@ -101,14 +103,9 @@ function PokerDashboard(props){
                     }
                     break
                 case "check":
+                case "fold":                
+                case "showdown":
                     props.socket.emit('poker_send', poker_payload_server)
-                    break
-                case "fold":
-                    props.socket.emit('poker_send', poker_payload_server)
-                    break
-                case "call":
-                    props.socket.emit('poker_send', poker_payload_server)
-                    break
             }
         }        
     }    

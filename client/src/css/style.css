@@ -1495,7 +1495,7 @@ textarea {
   border-bottom: solid var(--padding_small) var(--dark_color);
   border-left: solid var(--padding_small) var(--color);
   border-radius: var(--radius_small);
-  padding: var(--padding);
+  padding: var(--padding_small) var(--padding);
   color: var(--bg);
   display: inline-block;
   width: 100%;
@@ -1512,10 +1512,18 @@ textarea {
 }
 .gameboard .button_box {
   padding: var(--padding_small) 0px;
+  text-align: center;
 }
 .gameboard .button_fullcolor:hover{
   border: solid 1px var(--bg)!important;
   color: var(--bg)!important;
+}
+.gameboard .button_box .button_fullcolor{
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  max-width: 150px;
+  margin-right: var(--padding_small);
 }
 
 /* DONATE */
