@@ -545,8 +545,7 @@ textarea {
 
 /* dropdown */
 .dropdown{
-  border-radius: var(--radius);
-  z-index: 9999;
+  border-radius: var(--radius);  
 }
 .dropdown .dropdown-toggle, .dropdown .dropdown-toggle:hover, .dropdown .dropdown-toggle:active, .dropdown .dropdown-toggle:focus{
   background-color: transparent;
@@ -557,6 +556,9 @@ textarea {
 }
 .dropdown-toggle::after{
   display: none;
+}
+.salon_games .dropdown{
+  z-index: 9999;
 }
 .salon_games .dropdown .dropdown-toggle,
 .page_content.how_to_play .dropdown .dropdown-toggle{
@@ -1078,7 +1080,7 @@ textarea {
   border-radius: var(--radius) var(--radius) 0px 0px;
   display: inline-block;  
   position: relative;
-  top: 1px;
+  top: 2px;
 }
 .footer_body{
   background-color: var(--bg);
@@ -2625,6 +2627,7 @@ textarea {
   overflow: hidden;
   border-radius:100%;
 	border:solid 1px var(--color);
+  background-color: var(--transparent_2);
 	display:inline-block!important;
   position: relative;
   z-index: 1;

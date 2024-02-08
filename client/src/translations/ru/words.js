@@ -198,7 +198,11 @@ var word_bank = {
     lucky_numbers: "Удачные числа",
 
     // poker
-    total_pot: "Total Pot",
+    total_pot: "Общий банк",
+    check: "Чек",
+    fold: "Фолд",
+    call: "Колл",
+    raise: "Рейз",
 
     // results
     results: "Результаты",

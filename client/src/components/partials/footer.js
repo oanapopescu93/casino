@@ -5,6 +5,8 @@ import { translate } from '../../translations/translate'
 import ukraine from '../../img/icons/ukraine.svg'
 import { checkWinterMonths } from '../../utils/special_occasions'
 import { getWindowDimensions } from '../../utils/utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 function Footer(props){
     let dispatch = useDispatch()
@@ -43,7 +45,7 @@ function Footer(props){
     return <div className={"footer_container " + up}>
         <div className="footer_button_container">
             <div className={showWinter ? "footer_button snow_small" : "footer_button"} onClick={()=>handleFooterUp()}>
-                <span>Footer</span>
+                <span><FontAwesomeIcon icon={up === "up" ? faChevronDown : faChevronUp} /></span>
             </div>
         </div>
         <div className="footer_body">

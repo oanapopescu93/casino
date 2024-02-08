@@ -199,6 +199,10 @@ var word_bank = {
 
     // poker
     total_pot: "Total Pot",
+    check: "Check",
+    fold: "Fold",
+    call: "Call",
+    raise: "Raise",
 
     // results
     results: "Risultati",

@@ -2,6 +2,11 @@ import { draw_rect, getMousePos, get_cards, isInside } from '../../../../utils/g
 import { decryptData } from '../../../../utils/crypto'
 import $ from "jquery"
 
+var poker_data = null
+var card_list = []
+var poker_bets = 0
+var poker_status = false
+
 function Card(config){
 	let self = this
 	self.id = config.id
@@ -27,7 +32,6 @@ function Card(config){
     self.hand = config.hand
     self.selectedCards = []
     self.fold = config.fold
-    self.bet = config.bet ? config.bet : 0
 
 	self.show_cards = function(ctx, data){
         if(self.id !== -1){
@@ -37,16 +41,13 @@ function Card(config){
             } 
 
             if(self.uuid === self.props.user.uuid){
-                //user
                 let cards_number = self.hand.length
                 let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
                 self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(ctx, self.user, self.text_x-hand_length/2, self.text_y, 90, 12)                    
+                self.draw_card_text(ctx, self.user, self.text_x-hand_length/2, self.text_y, 70, 12)                    
             } else {
-                //bot
-                let text = self.user + "(Bet: " + self.bet + ")"
                 self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(ctx, text, self.text_x, self.text_y, 90, 12)
+                self.draw_card_text(ctx, self.user, self.text_x, self.text_y, 70, 12)
             }
 
             ctx.filter = 'grayscale(0)'
@@ -128,6 +129,7 @@ function Card(config){
                     ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i * self.space, y, w, h)
                     self.updateHand(i, x + i * self.space, y, w, h)
                 }
+                ctx.filter = 'grayscale(0)'
             } else {
                 //dealer
                 ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i * (self.space + w), y, w, h)
@@ -174,25 +176,22 @@ export const poker_game = function(props){
 	let ctx
 	let canvas_width = 900
 	let canvas_height = 500	
-
-    let poker_data = null
-    let card_list = [] 
 	
 	let card = {}
 	let card_img = {width: 237, height: 365}
     let card_base = {width: 120, height: 180, space: 35}
     let space = 12
     let positions = []
-    let how_many_players = 6
-    let how_many_cards = 5
     
     let items = get_cards()
 
-    this.ready = function(r){
-        self.createCanvas(canvas_width, canvas_height)
+    this.ready = function(){
+		card_list = []
+		self.createCanvas(canvas_width, canvas_height)
         self.drawBackground()
         self.handleClick()
-        if(r !== "resize"){ //first time entering
+        if(!poker_status){
+            //first time entering
             let promises = []
             for(let i in items){				
                 promises.push(self.preaload_images(items[i]))
@@ -201,23 +200,10 @@ export const poker_game = function(props){
                 images = result
             })
         } else {
+            // the game started
             self.create_cards()
-            self.draw_cards()
+			self.draw_cards()
         }
-    }
-
-    this.action = function(data){
-        console.log('action--> ', data)
-		if(data && data.action){
-            poker_data = data
-            self.drawBackground()
-            if(data.action !== "fold"){
-                self.create_cards()
-                self.draw_cards()
-            } else {
-                self.fold()
-            }           
-		}
     }
 
     this.createCanvas = function(canvas_width, canvas_height){		
@@ -226,29 +212,29 @@ export const poker_game = function(props){
 
 		if(window.innerWidth <= 480){
             card = {width: 33, height: 50}
-            card_base = {width: 46, height: 70, space: 25}
+            card_base = {width: 46, height: 70, space: 15}
             space = 8
 			if(window.innerHeight < window.innerWidth){
 				//extra small landscape				
 				canvas.width = 400
-				canvas.height = 220	
+				canvas.height = 200	
 			} else {
 				//extra small portrait
 				canvas.width = 300
-				canvas.height = 220
+				canvas.height = 200
 			}			
 		} else if (window.innerWidth <= 960){
             card = {width: 40, height: 60}
-            card_base = {width: 53, height: 80, space: 25}
+            card_base = {width: 53, height: 80, space: 15}
             space = 10
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
 				canvas.width = 480
-				canvas.height = 240	
+				canvas.height = 220	
 			} else {
 				//small portrait
 				canvas.width = 300
-				canvas.height = 240
+				canvas.height = 200
 			}
 		} else if (window.innerWidth <= 1200){
 			//big
@@ -272,13 +258,21 @@ export const poker_game = function(props){
 		canvas.height = canvas_height
 
         positions = [
-            {x: canvas.width/2 - card.width/2, y: canvas.height - card.height - card_base.space, width: card_base.width, height: card_base.height}, //bottom            
-            {x: card_base.space, y: canvas.height/2 - card.height/2 + (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //left-bottom
-            {x: card_base.space, y: (canvas.height - card.height)/2 - (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //left-top
+            {x: canvas.width/2 - card.width/2, y: canvas.height - card.height - card_base.space, width: card_base.width, height: card_base.height}, //bottom
+            {x: card_base.space, y: canvas.height/2 - card.height/2, width: card_base.width, height: card_base.height}, //left
             {x: canvas.width/2 - card.width/2, y: card_base.space, width: card_base.width, height: card_base.height}, //top
-            {x: canvas.width - card.width - 2 * card_base.space, y: (canvas.height - card.height)/2 - (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //right-top
-            {x: canvas.width - card.width - 2 * card_base.space, y: (canvas.height - card.height)/2 + (card.height/2 + card_base.space), width: card_base.width, height: card_base.height}, //right-top
+            {x: canvas.width - card.width - 2 * card_base.space, y: canvas.height/2 - card.height/2, width: card_base.width, height: card_base.height}, //right
         ] 
+	}
+
+    this.preaload_images = function(item){
+		return new Promise(function(resolve, reject){
+			let image = new Image()
+			image.src = item.src
+			image.addEventListener("load", function() {
+				resolve({suit: item.suit, value: item.value, src: image})
+			}, false)
+		})
 	}
 
     this.drawBackground = function(){
@@ -299,52 +293,26 @@ export const poker_game = function(props){
         ctx.fill()
     }
 
-    this.handleClick = function(){
-        if($('#poker_canvas')){
-            $('#poker_canvas').off('click').on('click', function(event) {
-                let mousePos = getMousePos(canvas, event)
-                self.canvas_click(mousePos)
-            })
-        }		
-    }
-
-    this.canvas_click = function(mouse){
-
-    }
-
-    this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
-			let image = new Image()
-			image.src = item.src
-			image.addEventListener("load", function() {
-				resolve({suit: item.suit, value: item.value, src: image})
-			}, false)
-		})
-	}
-
-    this.create_cards = function(){
+    this.create_cards = function(){   
         card_list = []      
         if(poker_data){
             // create dealer
-            if(poker_data.dealer){
-                card_list.push(new Card({
-                    id: -1,
-                    name: 'dealer',
-                    x: canvas.width/2 - card.width/2, 
-                    y: canvas.height/2 - card.height/2, 
-                    width: positions[0].width, 
-                    height: positions[0].height, 
-                    card: card,
-                    card_img: card_img,
-                    images: images,
-                    space: space,
-                    hand: poker_data.dealer.hand,
-                    bet: null
-                }))	
-            }            
+            card_list.push(new Card({
+                id: -1,
+                name: 'dealer',
+                x: canvas.width/2 - card.width/2, 
+                y: canvas.height/2 - card.height/2, 
+                width: positions[0].width, 
+                height: positions[0].height, 
+                card: card,
+                card_img: card_img,
+                images: images,
+                space: space,
+                hand: poker_data.dealer.hand
+            }))	
             
             //players
-            for(let i = 0; i < how_many_players; i++){
+            for(let i=0;i<4;i++){
                 if(positions[i] && poker_data.players[i]){ 
                     let uuid = null 
                     let user = 'player_'+i
@@ -356,22 +324,13 @@ export const poker_game = function(props){
                     } 
                     let hand = []
                     if(poker_data.players[i].hand){
-                        //the player with visible hands
                         hand = poker_data.players[i].hand
                     } else {
-                        //the other players with hidden hands
-                        switch(props.template){
-                            case "texas_holdem":
-                                how_many_cards = 2
-                                break
-                            default: //ex: 5_card_draw
-                                how_many_cards = 5
-                        }
-
-                        hand = []
-                        for(let i = 0; i < how_many_cards; i++){
-                            hand.push({Value: null})
-                        }
+                        hand = [{Value: null}, {Value: null}, {Value: null}, {Value: null}, {Value: null}]
+                    }
+                    let fold = false
+                    if(poker_data.players[i].fold){
+                        fold = true
                     }
                     card_list.push(new Card({
                         id: i,
@@ -394,9 +353,7 @@ export const poker_game = function(props){
                         props: props,
                         evaluateHand: evaluateHand,
                         hand: hand,
-                        fold: poker_data.players[i].fold ? true : false,
-                        bet: poker_data.players[i].bet,
-                        type: poker_data.players[i].type
+                        fold: fold
                     }))
                 }
             }
@@ -405,34 +362,127 @@ export const poker_game = function(props){
 
     this.draw_cards = function(){
 		if(poker_data){
-			for(let i in card_list){                
+			for(let i in card_list){
 				card_list[i].show_cards(ctx, poker_data)
 			}
 		}
 	} 
+    
+    this.action = function(data){
+        //console.log('action--> ', data, data.player, data.round)
+		if(data && data.action){
+            poker_data = data
+            self.drawBackground()
+            self.create_cards()
+            self.draw_cards()
+            if(data.showdown){
+                this.showdown()
+            }
+		}
+    }
 
-    this.fold = function(){
+    this.handleClick = function(){
+        if($('#poker_canvas')){
+            $('#poker_canvas').off('click').on('click', function(event) {
+                let mousePos = getMousePos(canvas, event)
+                self.canvas_click(mousePos)
+            })
+        }		
+    }
+
+    this.canvas_click = function(mouse){ 
+        for(let i in card_list){
+			let hand = card_list[i].hand
+            if(card_list[i].uuid === props.user.uuid){
+                for(let j in hand){
+                    if(isInside(mouse, hand[j])){
+                        card_list[i].updateSelected(j) 
+                        self.drawBackground()
+                        self.draw_cards()
+                        let selectedCards = card_list[i].selectedCards
+                        for(let k in selectedCards){
+                            let t = selectedCards[k]
+                            let card = card_list[i].hand[t]
+                            draw_rect(ctx, card.x, card.y, card.width, card.height, "transparent", 3, "red")
+                        }
+                    }
+                }
+            }
+		}
+    }
+
+    this.getReplaceCards = function(){
+        let replaceCards = []
+        for(let i in card_list){
+            if(card_list[i].uuid === props.user.uuid){
+                replaceCards = card_list[i].selectedCards
+                break
+            }
+        }
+        return replaceCards
+    }
+
+	this.showdown = function(){
+        let players = [...poker_data.players]
+        for(let i = 0; i < players.length; i++){                                    
+            if(players[i].fold) { 
+                players.splice(i, 1)
+                i--
+            }
+        }
+
+        let bestPlayer = players[0]
+        for(let i = 1; i < players.length; i++){   
+            if(bestPlayer.handStrength.strength < players[i].handStrength.strength){
+                bestPlayer = players[i]
+            } else if(bestPlayer.handStrength.strength === players[i].handStrength.strength){
+                if(bestPlayer.hand[0].Weight < players[i].hand[0].Weight){
+                    bestPlayer = players[i]
+                }
+            }
+        }
+
+        self.check_win_lose(bestPlayer)        
+    }
+
+	this.check_win_lose = function(bestPlayer){
         let player = poker_data.players.filter(function(x){
             return x.uuid === props.user.uuid
         })
-        if(player && player[0] && player[0].bet){
-            let bet = player[0].bet
-            let status = 'lose'
-            let game = props.page.game
-            let money = decryptData(props.user.money)
-            let money_history = money - bet 
 
-            let poker_payload = {
-                uuid: props.user.uuid,
-                game: game,
-                money: money_history,
-                status: status,
-                bet: bet
-            }
-            
-            if(typeof props.getResults === "function"){
-                //props.getResults(poker_payload)
-            }
+		let game = null	
+		if(props.page && props.page.game){
+			game = props.page.game
+		}
+
+		let money = decryptData(props.user.money)
+        let money_history = money        
+        let pot = poker_data.pot
+
+        let mybets = 1
+        if(player && player[0] && player[0].bet){
+            mybets = player[0].bet
+        }
+
+        let status = 'lose'
+        if(bestPlayer.uuid === props.user.uuid){
+            status = 'win'
+            money_history = money_history + pot
+        } else {
+            money_history = money_history - mybets
+        }
+        
+
+        let poker_payload = {
+			uuid: props.user.uuid,
+			game: game,
+			money: money_history,
+			status: status,
+			bet: mybets
+		}
+        
+        if(typeof props.getResults === "function"){
+            props.getResults(poker_payload)
         }
     }
 }

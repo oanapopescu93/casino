@@ -198,7 +198,11 @@ var word_bank = {
     lucky_numbers: "Numerele norocoase", 
 
     // poker
-    total_pot: "Total Pot",    
+    total_pot: "Total Pot",
+    check: "Check",
+    fold: "Fold",
+    call: "Call",
+    raise: "Raise",    
 
     // results
     results: "Rezultate",

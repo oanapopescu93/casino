@@ -7,6 +7,7 @@ let how_many_players = 6
 let how_many_cards = 5
 
 function poker(data, user_join){
+    console.log(data.action, data.stage)
     switch(data.game){
         case "texas_holdem":
             how_many_cards = 2
@@ -74,11 +75,11 @@ function poker(data, user_join){
             poker_hidden_players = createHiddenPlayers()
             poker_pot = calculatePot()  
             payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
-            break
+            return payload
         case "showdown":
             poker_players = evaluateHands(poker_players)
             payload = {action: data.stage, players: poker_players, dealer: poker_dealer, pot: poker_pot, showdown: true} 
-            break
+            return payload
     }  
     
     function createDeck(turns){

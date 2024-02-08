@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { Button } from 'react-bootstrap'
 import GameBoard from '../other/gameBoard'
 import { useDispatch } from 'react-redux'
 import { decryptData } from '../../../../utils/crypto'
@@ -7,155 +8,134 @@ import { getRoom } from '../../../../utils/games'
 import { translate } from '../../../../translations/translate'
 import { changePopup } from '../../../../reducers/popup'
 import { poker_game } from './pokerGame'
+import { getWindowDimensions } from '../../../../utils/utils'
 
-var poker_bets = 0
-var poker_status = false
 function PokerDashboard(props){ 
     let game = props.page.game
-	let money = decryptData(props.user.money)
-	let [startGame, setStartGame]= useState(false)
-    let [round, setRound]= useState(0)
-    let [spectator, setSpectator]= useState(false)
-    let dispatch = useDispatch()    
-
-	let clear = function(bet){
-		poker_bets = bet
-		if(poker_bets > 0){			
-			let poker_payload = {
-				uuid: props.user.uuid,
-				game: game,
-				status: 'lose',
-				bet: poker_bets,
-				money: money - poker_bets
-			}
-			props.results(poker_payload)
-		}
+	let money = decryptData(props.user.money)  
+    let dispatch = useDispatch()
+    let [startGame, setStartGame] = useState(false)
+    let [showdown, setShowDown] = useState(false)
+    let [pot, setPot] = useState(0)
+    let [action, setAction]= useState(null) 
+    let poker_bets = 0
+    
+    let clear = function(bet){
+		console.log('clear')
 	}
 
     let getResults = function(payload){
-		props.results(payload)
-		setStartGame(false)
-        poker_status = false
+		console.log('results--> ', payload)
 	}
     let options = {...props, dispatch, getResults, clear}
-    let my_poker = new poker_game(options)    
+    let my_poker = new poker_game(options)
 
-    function ready(){
+    function ready(r){
         if(my_poker && document.getElementById("poker_canvas")){
-            my_poker.ready()
+            my_poker.ready(r)
         }
     }
 
     useEffect(() => {
         ready()
         $(window).resize(function(){
-			ready()
+			ready('resize')
 		})
 		return () => {
-			if(my_poker){
-				clear(poker_bets) // if the user leaves the game, if he bet, he will lose the bets
-				my_poker = null
-				poker_bets = 0
-				poker_status = false	
-			}
+			if(my_poker){}
 		}
     }, [])
 
     useEffect(() => {
-		props.socket.on('poker_read', function(data){
-			if(my_poker && data){
-                if(data.action === "start" || data.action === "call" || data.action === "raise" || data.action === "fold" || data.action === "replace"){
-                    my_poker.action(data)
-                    setRound(data.round)
-                    if(data.action === "fold"){ //the user decided to quit --> he loses his bet  
-                        let poker_payload = {
-                            uuid: props.user.uuid,
-                            game: game,
-                            status: 'lose',
-                            bet: poker_bets,
-                            money: money - poker_bets
-                        }
-                        props.results(poker_payload)
-                    }				
-                } else {
-                    //it means it must be an error, if the user folds, he just loses the money without payload to server
-                    let payload = {
-                        open: true,
-                        template: "error",
-                        title: translate({lang: props.lang, info: "error"}),
-                        data: translate({lang: props.lang, info: data.action})
+        const handlePokerRead = function(data) {
+            if (my_poker && data) {
+                if(data.action){
+                    setAction(data.action)
+                    switch(data.action){
+                        case "preflop_betting":                        
+                            setStartGame(true)
+                            break
+                        case "fold":
+                            setStartGame(false)
+                            break
+                        case "showdown":
+                            setShowDown(true)
                     }
-                    dispatch(changePopup(payload))
+                    if(data.pot){
+                        setPot(data.pot)
+                    }
                 }
-            }	
-		})	
+                my_poker.action(data)
+            }
+        }
+		props.socket.on('poker_read', handlePokerRead)	
+        return () => {
+            props.socket.off('poker_read', handlePokerRead)
+        }
     }, [props.socket])
 
-    function choice(type){
-        if(type === "start" || type === "fold" || type === "call" || type === "raise" || type === "replace"){
-            if(my_poker){
-                let poker_payload_server = {
-                    game: props.template,
-                    uuid: props.user.uuid,
-                    room: getRoom(game),
-                    action: type,
-                    bet: poker_bets,
-                    money: money
-                }
-
-                let payload = null
-                switch (type) {
-                    case "start":
-                        if(poker_bets === 0){
-                            payload = {
-                                open: true,
-                                template: "error",
-                                title: translate({lang: props.lang, info: "error"}),
-                                data: translate({lang: props.lang, info: "no_bets"})
-                            }
-                            dispatch(changePopup(payload))
-                        } else {          
-                            if(!poker_status){                                
-                                props.socket.emit('poker_send', poker_payload_server)
-                                poker_status = true
-                                setStartGame(true)
-                            }
-                        }                    
-                        break
-                    case "fold": 
-                    case "call":
-                    case "raise":
-                    case "replace":
-                        if(type === "replace"){
-                            poker_payload_server.replaceCards = my_poker.getReplaceCards()
-                        }
-                        props.socket.emit('poker_send', poker_payload_server)
-                        if(type === "fold"){
-                            setSpectator(true)
-                        }
-                        break
-                }
-                if(payload){
-                    dispatch(changePopup(payload))
-                }
+    function choice(e){
+        if(my_poker){
+            let poker_payload_server = {
+                game: props.template,
+                uuid: props.user.uuid,
+                room: getRoom(game),
+                action: e.action,
+                stage: e.stage,
+                money: money
             }
-        }		
-	}
 
-    function updateBets(x){
-        poker_bets = x
+            switch(e.action){
+                case "start":                    
+                    props.socket.emit('poker_send', poker_payload_server)
+                    break
+                case "bet":
+                case "call":                    
+                case "raise":
+                    if(poker_bets === 0){
+                        let payload = {
+                            open: true,
+                            template: "error",
+                            title: translate({lang: props.lang, info: "error"}),
+                            data: translate({lang: props.lang, info: "no_bets"})
+                        }
+                        dispatch(changePopup(payload))
+                    } else {          
+                        poker_payload_server.bet = poker_bets
+                        props.socket.emit('poker_send', poker_payload_server)
+                    }
+                    break
+                case "check":
+                case "fold":                
+                case "showdown":
+                    props.socket.emit('poker_send', poker_payload_server)
+            }
+        }        
+    }    
+
+    function updateBets(e){
+        poker_bets = e
     }
 
     return <div className="game_container poker_container">
+        <p>{translate({lang: props.lang, info: "under_construction"})}</p>
         <canvas id="poker_canvas"></canvas>
-        {!spectator ? <GameBoard 
+        {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
+            <div className="poker_pot">{translate({lang: props.lang, info: "total_pot"})}: {pot}</div>
+        </div> : null}        
+        {!startGame ? <div className="game_start">
+            <Button type="button" onClick={()=>choice({action: 'start', stage: 'start'})} className="mybutton round button_fullcolor shadow_convex">
+                {translate({lang: props.lang, info: "start"})}
+            </Button>
+        </div> : <>
+        {showdown ? <></> : <GameBoard 
             template={props.template}
-            {...props} 
-            startGame={startGame} 
-            round={round}
+            {...props}
+            action={action}
             choice={(e)=>choice(e)} 
             updateBets={(e)=>updateBets(e)}
-        ></GameBoard> : null}
+        ></GameBoard>}        
+        </>}
     </div>
 }
 
