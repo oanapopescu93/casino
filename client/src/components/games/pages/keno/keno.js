@@ -82,7 +82,7 @@ function Keno(props){
                 let payload = {
                     open: true,
                     template: "error",
-                    title: translate({lang: props.lang, info: "error"}),
+                    title: "error",
                     data: translate({lang: props.lang, info: "no_bets"})
                 }
                 dispatch(changePopup(payload))
@@ -91,7 +91,7 @@ function Keno(props){
             let payload = {
                 open: true,
                 template: "error",
-                title: translate({lang: props.lang, info: "error"}),
+                title: "error",
                 data: translate({lang: props.lang, info: "no_selections"})
             }
             dispatch(changePopup(payload))
@@ -107,7 +107,7 @@ function Keno(props){
         let payload = {
             open: true,
             template: "keno_prizes",
-            title: translate({lang: props.lang, info: "keno_prizes"}),
+            title: "keno_prizes",
             data: props.home.keno_prizes,
             size: 'lg',
         }

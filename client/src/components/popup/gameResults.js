@@ -4,7 +4,7 @@ import carrot_img from '../../img/icons/carrot_icon_black.png'
 
 function GameResults(props) {
     const {lang, results} = props    
-    let table_name = results.game.table_name
+    let table_name = results.game.table_name ? results.game.table_name : results.game
     let table_type = results.game.table_type
     let status = results.status
     let bet = results.bet

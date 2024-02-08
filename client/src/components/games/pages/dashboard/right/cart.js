@@ -42,7 +42,9 @@ function Cart(props){
         let total = 0
         for(let i in cart){
             let product = market.filter(a => a.id === cart[i].id)
-            total = total + product[0].price * cart[i].qty
+            if(product && product[0] && product[0].price){
+                total = total + product[0].price * cart[i].qty
+            }
         }
         return total
     }

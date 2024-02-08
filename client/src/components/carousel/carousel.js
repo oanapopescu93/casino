@@ -11,18 +11,19 @@ function Carousel(props){
 
     useEffect(() => {
         if($('#'+id+' .cell_button button')){
-            $('#'+id+' .cell_button button').click(function(e) {
+            $('#'+id+' .cell_button button').click(function(e) { 
+                e.stopPropagation()            
                 let payload = {}
                 switch(id) {
                     case "carousel_market":
-                        let id = $(e.target).attr('market_id')
-                        let qty = $(e.target).attr('market_qty')
-                        payload = {id, qty}
+                        let id = $(e.currentTarget).attr('market_id')
+                        let qty = $(e.currentTarget).attr('market_qty')
+                        payload = {id, qty}                        
                         break
                     default: //carousel_salon
-                        let table_name = $(e.target).attr('table_name')
-                        let table_type = $(e.target).attr('table_type')
-                        let table_id = $(e.target).attr('table_id')
+                        let table_name = $(e.currentTarget).attr('table_name')
+                        let table_type = $(e.currentTarget).attr('table_type')
+                        let table_id = $(e.currentTarget).attr('table_id')
                         payload = {table_name, table_type, table_id}
                 }
                 if(typeof props.getItem === "function"){

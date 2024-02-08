@@ -21,10 +21,10 @@ import Streak from "./streak"
 import WhackARabbit from "./whackARabbit"
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 
-function Popup(props){
+function Popup(props){    
     const {lang, date, currency, socket, home} = props
     let open = useSelector(state => state.popup.open)
-    let title = useSelector(state => state.popup.title)
+    let popup_title = useSelector(state => state.popup.title)
     let template = useSelector(state => state.popup.template)
     let data = useSelector(state => state.popup.data)
     let size = useSelector(state => state.popup.size)
@@ -32,6 +32,7 @@ function Popup(props){
     let dispatch = useDispatch()
     const [forgotPasswordResult, setForgotPasswordResult] = useState('')
     let currencies = home.currencies
+    let title = translate({lang: lang, info: popup_title})
 
   	function closeModal(){
         if(template !== "isMinor"){ //prevents modal from closing without making a choice

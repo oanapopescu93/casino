@@ -5,10 +5,9 @@ import { changePopup } from '../../../reducers/popup'
 import { translate } from '../../../translations/translate'
 import { decryptData } from '../../../utils/crypto'
 import Header from '../../partials/header'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCalendarDays} from '@fortawesome/free-solid-svg-icons'
 import carrot_img from '../../../img/icons/carrot_icon.png'
-import {faHouse, faGear, faPaperPlane, faPowerOff, faCircleQuestion} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faUser, faStore, faHouse, faCartShopping, faGear, faPaperPlane, faPowerOff, faCircleQuestion,faCalendarDays} from '@fortawesome/free-solid-svg-icons'
 import { isEmpty, setCookie } from '../../../utils/utils'
 
 function User(props){
@@ -37,7 +36,7 @@ function User(props){
                 let payload = {
                     open: true,
                     template: "settings",
-                    title: translate({lang: lang, info: "settings"}),
+                    title: "settings",
                 }
                 dispatch(changePopup(payload))
 				break
@@ -97,10 +96,10 @@ function User(props){
          </div>
         <div id="user_tags">
             <div className={"user_list_button " + buttonUser} onClick={()=>{handleChange('dashboard')}}>
-                <span>{translate({lang: lang, info: "user"})}</span>
+                <span><FontAwesomeIcon icon={faUser} />{translate({lang: lang, info: "user"})}</span>
             </div>
             <div className={"user_list_button " + buttonMarket} onClick={()=>{handleChange('market')}}>
-                <span>{translate({lang: lang, info: "market"})}</span>
+                <span><FontAwesomeIcon icon={faStore} />{translate({lang: lang, info: "market"})}</span>
             </div>
         </div>        
         <ul id="user_list">
@@ -108,7 +107,7 @@ function User(props){
                 <span><FontAwesomeIcon icon={faHouse} />{translate({lang: lang, info: "salon"})}</span>
             </li> : null}            
             <li onClick={()=>{handleChange('cart')}}>
-                <span><FontAwesomeIcon icon={faHouse} />{translate({lang: lang, info: "cart"})}</span>
+                <span><FontAwesomeIcon icon={faCartShopping} />{translate({lang: lang, info: "cart"})}</span>
             </li>
             <li onClick={()=>{handleChange('settings')}}>
                 <span><FontAwesomeIcon icon={faGear} />{translate({lang: lang, info: "settings"})}</span>

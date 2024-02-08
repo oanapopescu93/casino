@@ -59,7 +59,7 @@ function KenoBoard(props){
             let payload = {
 				open: true,
 				template: "error",
-				title: translate({lang: props.lang, info: "error"}),
+				title: "error",
 				data: translate({lang: props.lang, info: "no_money_enough"})
 			}
 			dispatch(changePopup(payload))

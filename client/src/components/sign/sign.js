@@ -81,7 +81,7 @@ function Sign(props) {
         let payload = {
             open: true,
             template: "forgotPassword",
-            title: translate({lang: props.lang, info: "forgot_password_title"}),
+            title: "forgot_password_title",
             data: translate({lang: props.lang, info: "forgot_password_text"}),
             // size: 'lg',
         }
@@ -135,7 +135,7 @@ function Sign(props) {
                 let payload = {
                     open: true,
                     template: "welcome",
-                    title: translate({lang: props.lang, info: "welcome"}),
+                    title: "welcome",
                     size: 'lg',
                 }
                 dispatch(changePopup(payload))
@@ -143,7 +143,7 @@ function Sign(props) {
                 let payload = {
                     open: true,
                     template: "signup",
-                    title: translate({lang: props.lang, info: "error"}),
+                    title: "error",
                     data: translate({lang: props.lang, info: "signup_error"})
                 }
                 dispatch(changePopup(payload))

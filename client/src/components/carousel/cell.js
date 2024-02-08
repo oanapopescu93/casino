@@ -8,6 +8,8 @@ import { Button, Row, Col } from 'react-bootstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { decryptData } from '../../utils/crypto'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faBasketShopping} from '@fortawesome/free-solid-svg-icons'
 
 function Cell(props) {
     const {lang, index, data, template} = props
@@ -97,7 +99,7 @@ function Cell(props) {
                                     className="mybutton round button_transparent shadow_convex"
                                     market_qty={qty}
                                     market_id={data.id}
-                                >{translate({lang: lang, info: "buy"})}</Button>
+                                ><FontAwesomeIcon icon={faBasketShopping} /></Button>
                             </div>
                         </div>
                     </div>

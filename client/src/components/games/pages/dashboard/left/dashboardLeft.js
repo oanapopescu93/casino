@@ -77,8 +77,8 @@ function DashboardLeft(props){
             let payload = {
                 open: true,
                 template: choice,
-                title: translate({lang: lang, info: title}),
-                size: size,
+                title,
+                size,
             }
             if(data){
                 payload.data = data

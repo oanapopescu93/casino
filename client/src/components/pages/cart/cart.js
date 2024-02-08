@@ -8,6 +8,8 @@ import Promo from './promo'
 import Panel from './panel'
 import { translate } from '../../../translations/translate'
 import Header from '../../partials/header'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faStore, faReply} from '@fortawesome/free-solid-svg-icons'
 
 function Cart(props){
     let market = props.home.market
@@ -90,14 +92,20 @@ function Cart(props){
                         updatePromo={(e)=>updatePromo(e)}
                     ></Promo>
                 </Col>
-            </Row> : <>
-                <p style={{paddingBottom: "10px"}}>{translate({lang: props.lang, info: "no_cart"})}</p>
-                <div className="text_center">
+            </Row> : 
+            <Row>
+                <Col sm={12}>
+                    <p style={{paddingBottom: "10px"}}>{translate({lang: props.lang, info: "no_cart"})}</p>
+                </Col>
+                <Col sm={12} className="button_action_group">
+                    <Button type="button" onClick={()=>handleContinueShopping()} className="mybutton round button_transparent shadow_convex">
+                        {translate({lang: props.lang, info: "market"})}
+                    </Button>	
                     <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
                         {translate({lang: props.lang, info: "back"})}
-                    </Button>
-                </div>
-            </>}
+                    </Button>	
+                </Col>
+            </Row>}
         </div>
     </div>
 }

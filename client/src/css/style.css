@@ -355,6 +355,10 @@ textarea:focus, input:focus{
   width: 100%;
   cursor: pointer;
 }
+.mybutton svg{
+  font-size: 18px;
+  line-height: 18px;
+}
 .round{
   width: 50px;
   height: 50px;
@@ -401,7 +405,7 @@ textarea:focus, input:focus{
 .button_action_group button:last-child{
   margin-bottom: 0px;
 }
-.button_action_group .mybutton svg{
+#cart_panel .mybutton svg{
   margin-right: var(--padding_small);
 }
 .button_action_group .round{
@@ -1306,6 +1310,9 @@ textarea {
 }
 .user_list_button.active, .user_list_button:hover{
   background: var(--transparent_color);
+}
+.user_list_button svg{
+  margin-right: var(--padding_small);
 }
 #user_list li {
   border-bottom: solid 1px var(--color);
@@ -2266,6 +2273,9 @@ textarea {
 }
 .cart_total_price, #cart_promo h4, #cart_promo input{
   margin-bottom: var(--padding);
+}
+#cart_panel .mybutton{
+  height: 35px;
 }
 
 /* CHECKOUT */

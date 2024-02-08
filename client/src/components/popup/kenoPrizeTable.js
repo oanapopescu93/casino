@@ -9,7 +9,7 @@ function KenoPrizeTable(props){
             {kenoPrizes.map(function(items, i){ 
                 let x = i+1
                 return <div key={i} className="keno_rules_box">
-                    <div className="keno_rules_box_header">{translate({lang: lang, info: "keno_numbers_played"})}{x}</div>
+                    <div className="keno_rules_box_header">{translate({lang: lang, info: "keno_numbers_played"})}: {x}</div>
                     <div className="keno_rules_box_body">
                         <div className="keno_rules_items">
                             <div className="keno_rules_item">{translate({lang: lang, info: "keno_numbers_matched"})}</div>

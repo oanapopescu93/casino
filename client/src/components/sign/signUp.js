@@ -38,7 +38,7 @@ function SignUp(props) {
             let payload = {
                 open: true,
                 template: "isMinor",
-                title: translate({lang: props.lang, info: "isMinor_title"}),
+                title: "isMinor_title",
                 data: translate({lang: props.lang, info: "isMinor_text"}),
                 sticky: true
             }

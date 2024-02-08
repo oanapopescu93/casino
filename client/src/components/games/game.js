@@ -48,7 +48,7 @@ function Game(props){
             let payload = {
                 open: true,
                 template: "game_results",
-                title: translate({lang: props.lang, info: "results"}),
+                title: "results",
                 data: res
             }
             dispatch(changePopup(payload))
