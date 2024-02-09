@@ -475,6 +475,10 @@ textarea {
   border: solid 1px var(--red);
   color: var(--red);
 }
+.modal-body .alert{
+  margin-top: 0px;
+  margin-bottom: var(--padding);
+}
 
 .page_exit{
   text-align: center;
@@ -964,6 +968,10 @@ textarea {
     font-size: 14px;
     line-height: 14px;
   }
+}
+
+.changeUsername_box, .changePassword_box{
+  margin-bottom: var(--padding_small);
 }
 
 /* COOKIES */

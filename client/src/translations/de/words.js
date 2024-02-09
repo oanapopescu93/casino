@@ -110,9 +110,16 @@ var word_bank = {
     carrots: "Karotten",
     change_username: "Benutzernamen ändern",
     change_password: "Passwort ändern",
-    buy_carrots: "Karotten kaufen",
-    profile_grey: "Um dieses Bild zu haben, benötigst du mehr als 1000 Karotten",
+    buy_carrots: "Karotten kaufen",    
     choose: "Wählen",
+    change: "Ändern",
+    profile_grey: "Um dieses Bild zu haben, benötigst du mehr als 1000 Karotten",
+    empty_input_change_username: "Der Benutzername darf nicht leer sein",
+    password_rule01: "Mindestens ein Großbuchstabe",
+    password_rule02: "Mindestens ein Kleinbuchstabe",
+    password_rule03: "Mindestens eine Ziffer",
+    password_rule04: "Mindestens ein Sonderzeichen",
+    password_rule05: "Mindestens acht Zeichen lang",
     
     //cart
     price: "Preis",

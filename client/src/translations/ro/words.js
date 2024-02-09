@@ -110,9 +110,16 @@ var word_bank = {
     carrots: "Morcovi",
     change_username: "Schimba nume user",
     change_password: "Schimba parola",
-    buy_carrots: "Cumpara morcovi",
-    profile_grey: "Pentru a avea acesta poza trebuie sa ai peste 1000 de morcovi",
+    buy_carrots: "Cumpara morcovi",    
     choose: "Alege",
+    change: "Schimba",
+    profile_grey: "Pentru a avea acesta poza trebuie sa ai peste 1000 de morcovi",
+    empty_input_change_username: "Numele de utilizator nu poate fi gol",
+    password_rule01: "Cel puțin o literă majusculă",
+    password_rule02: "Cel puțin o literă minusculă",
+    password_rule03: "Cel puțin o cifră",
+    password_rule04: "Cel puțin un caracter special",
+    password_rule05: "Minim opt caractere în lungime",
 
     //cart"
     price: "Pret",

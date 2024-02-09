@@ -49,7 +49,7 @@ function DashboardLeft(props){
     let profiles = home.profiles
     let picId = decryptData(user.profile_pic)    
     let animal = profiles.filter(function(x){
-        return x.id === picId
+        return x.id === parseInt(picId)
     })
 
     function handleChoice(choice){
@@ -99,7 +99,7 @@ function DashboardLeft(props){
                 <p className="dashboard_animal">
                     <b>{translate({lang: lang, info: "animal"})}: </b>
                     {(() => {
-                        if(animal && animal.length === 1 && animal[0]){
+                        if(animal && animal[0]){
                             switch (props.lang) {
                                 case "DE":
                                     return <>{animal[0].name_de}</>

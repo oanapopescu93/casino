@@ -168,9 +168,6 @@ function Card(config){
 
 function blackjack_game(props){
     let self = this	
-	let socket = props.socket
-	let lang = props.lang
-	let dispatch = props.dispatch
     let images = []
 
 	let canvas

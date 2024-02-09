@@ -10,14 +10,16 @@ function ChangeProfilePic(props) {
     const {lang} = props
     let home = useSelector(state => state.home)
     let user = useSelector(state => state.auth.user)
-    const [choice, setChoice] = useState(null)
-    const [error, setError] = useState(false)
-    const [index, setIndex] = useState(-1)
-    let dispatch = useDispatch()
-    
     let profiles = home.profiles
+    let picId = decryptData(user.profile_pic)
+    let indexProfile = profiles.findIndex((x) => x.id === parseInt(picId))
     let money = decryptData(user.money)  
     let account_type = decryptData(user.account_type)  
+    const [choice, setChoice] = useState(null)
+    const [error, setError] = useState(false)
+    const [index, setIndex] = useState(indexProfile)
+    let dispatch = useDispatch()    
+   
     let item_name_lang = "name_eng"
     switch (lang) {
         case "DE":
@@ -47,8 +49,8 @@ function ChangeProfilePic(props) {
             setError(true)
             setTimeout(function(){ 
                 setError(false)
-            }, 2000)
-        } else {
+            }, 3000)
+        } else if(parseInt(i) !== parseInt(picId)){
             setIndex(i)
             setChoice(item.id)
             dispatch(changePic(item.id))
@@ -66,7 +68,7 @@ function ChangeProfilePic(props) {
                     let selected = ''
                     if(i === index){
                         selected = ' selected'
-                    }
+                    }            
                     return <div key={i} className={"crop_profile_pic_box"+selected} onClick={() => choosePic(item, i)}>
                         <div className="crop_profile_pic shadow_convex">
                             <img alt="profile_pic" className={"profile_pic pic_"+item.id+show} src={profilePic}/>

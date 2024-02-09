@@ -110,9 +110,16 @@ var word_bank = {
     carrots: "Carrots",
     change_username: "Change username",
     change_password: "Change password",
-    buy_carrots: "Buy carrots",
-    profile_grey: "To have this pic you need to have more than 1000 carrots",
+    buy_carrots: "Buy carrots",    
     choose: "Choose",
+    change: "Change",
+    profile_grey: "To have this pic you need to have more than 1000 carrots",
+    empty_input_change_username: "The username can't be empty",
+    password_rule01: "At least one uppercase English letter",
+    password_rule02: "At least one lowercase English letter",
+    password_rule03: "At least one digit",
+    password_rule04: "At least one special character",
+    password_rule05: "Minimum eight characters in length",
 
     //cart
     price: "Price",

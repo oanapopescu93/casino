@@ -110,9 +110,16 @@ var word_bank = {
     carrots: "Cenouras",
     change_username: "Alterar nome de usuário",
     change_password: "Alterar senha",
-    buy_carrots: "Comprar cenouras",
-    profile_grey: "Para ter esta imagem, você precisa ter mais de 1000 cenouras",
+    buy_carrots: "Comprar cenouras",    
     choose: "Escolher",
+    change: "Alterar",
+    profile_grey: "Para ter esta imagem, você precisa ter mais de 1000 cenouras",
+    empty_input_change_username: "O nome de usuário não pode estar vazio",
+    password_rule01: "Pelo menos uma letra maiúscula",
+    password_rule02: "Pelo menos uma letra minúscula",
+    password_rule03: "Pelo menos um dígito",
+    password_rule04: "Pelo menos um caractere especial",
+    password_rule05: "Mínimo de oito caracteres de comprimento",
 
     //cart
     price: "Preço",

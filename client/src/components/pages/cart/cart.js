@@ -8,8 +8,6 @@ import Promo from './promo'
 import Panel from './panel'
 import { translate } from '../../../translations/translate'
 import Header from '../../partials/header'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faStore, faReply} from '@fortawesome/free-solid-svg-icons'
 
 function Cart(props){
     let market = props.home.market

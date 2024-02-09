@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { translate } from '../../../translations/translate'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle, faComments } from '@fortawesome/free-solid-svg-icons'
@@ -6,6 +6,7 @@ import User from './user'
 import Chat from './chat'
 import { checkWinterMonths } from '../../../utils/special_occasions'
 import { getWindowDimensions } from '../../../utils/utils'
+import $ from "jquery"
 
 function Panel(props){
     const {lang, page} = props
@@ -14,6 +15,7 @@ function Panel(props){
     const [panelUser, setPanelUser] = useState("active")
     const [panelChat, setPanelChat] = useState("")
     const [showWinter, setShowWinter] = useState(false)
+    const wrapperRef = useRef(null)    
 
     function handleToggle(type){
         if(panel === type){
@@ -41,13 +43,16 @@ function Panel(props){
 		}
     }
 
-    function handleResize(){
-        // special occasions
-        let winter = checkWinterMonths()
-		if(winter && getWindowDimensions().width >= 960){ // will appear only on winter months and only if the width is more than 960
-			setShowWinter(true)
-		}
-    }
+    useEffect(() => {
+		document.addEventListener("click", handleClickOutside)
+        return () => document.removeEventListener("click", handleClickOutside)
+	}, []) 
+
+    function handleClickOutside(e){
+        if (wrapperRef && wrapperRef.current && !wrapperRef.current.contains(e.target)){
+            setOpen('')
+        }
+    }    
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -57,7 +62,15 @@ function Panel(props){
         }
 	}, [])
 
-    return <div className={"panel_container " + open}>
+    function handleResize(){
+        // special occasions
+        let winter = checkWinterMonths()
+		if(winter && getWindowDimensions().width >= 960){ // will appear only on winter months and only if the width is more than 960
+			setShowWinter(true)
+		}
+    }
+
+    return <div ref={wrapperRef} className={"panel_container " + open}>
         <div className="panel_button_box">
             <div 
                 id="panel_info_button" 

@@ -10,6 +10,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import { decryptData } from '../../utils/crypto'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBasketShopping} from '@fortawesome/free-solid-svg-icons'
+import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
 
 function Cell(props) {
     const {lang, index, data, template} = props
@@ -73,6 +74,9 @@ function Cell(props) {
                     return <div className="cell_market_container">
                         <div className="cell_market shadow_concav">
                             <div className="cell_info">
+                                <div className="crop_vegetables">
+                                    <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow}></img>
+                                </div>
                                 {(() => {
                                     switch (props.lang) {
                                         case "DE":

@@ -110,9 +110,16 @@ var word_bank = {
     carrots: "Zanahorias",
     change_username: "Cambiar nombre de usuario",
     change_password: "Cambiar contraseña",
-    buy_carrots: "Comprar zanahorias",
-    profile_grey: "Para tener esta imagen, necesitas tener más de 1000 zanahorias",
+    buy_carrots: "Comprar zanahorias",    
     choose: "Elegir",
+    change: "Cambiar",
+    profile_grey: "Para tener esta imagen, necesitas tener más de 1000 zanahorias",
+    empty_input_change_username: "El nombre de usuario no puede estar vacío",
+    password_rule01: "Al menos una letra mayúscula",
+    password_rule02: "Al menos una letra minúscula",
+    password_rule03: "Al menos un dígito",
+    password_rule04: "Al menos un carácter especial",
+    password_rule05: "Mínimo ocho caracteres de longitud",
 
     //cart
     price: "Precio",

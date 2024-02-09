@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import { translate } from '../../../translations/translate'
-import { Form, Button, Col, Row } from 'react-bootstrap';
-import { validateInput } from '../../../utils/validate';
-import { postData } from '../../../utils/utils';
+import { Form, Button, Col, Row } from 'react-bootstrap'
+import { validateInput } from '../../../utils/validate'
+import { postData } from '../../../utils/utils'
 
 function ContactForm(props){
     const {lang} = props
