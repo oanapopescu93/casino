@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState} from 'react'
 import { translate } from '../../../../translations/translate'
 import { Button, Row, Col } from 'react-bootstrap'
 import Counter from '../../../partials/counter'
@@ -21,13 +21,6 @@ function PokerBoard(props){
             setNum(e)
         }
     }
-
-    useEffect(() => {
-		console.log('xxx01 ', num)
-		return () => {
-			console.log('xxx02 ', num)
-		}  
-	}, [action]) 
 
     return <Row>
         <Col xs={12}>{action}</Col>

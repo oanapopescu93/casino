@@ -2897,7 +2897,7 @@ textarea {
 }
 .how_to_play_titles{
   text-align: center;
-  max-height: 320px;
+  max-height: 360px;
   overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: var(--padding);
@@ -2911,7 +2911,7 @@ textarea {
 }
 .cell_howToPlay{
   width: 100%;
-  height: 150px;
+  height: 160px;
   position: relative;
   z-index: 1;
   cursor: pointer;
@@ -2923,6 +2923,18 @@ textarea {
   transform: translate(-50%, -50%);
   width: 100%;
   padding: var(--padding);
+}
+.cell_howToPlay .cell_text{
+  position: absolute;
+  bottom: -15px;
+  left: 10px;
+  right: 10px;
+  padding: var(--padding_small) var(--padding);
+  border-radius: var(--radius_big);
+  border: solid 1px var(--color);
+  background-color: var(--color);
+  color: var(--bg);
+
 }
 .cell_howToPlay img{
   width: 100%;

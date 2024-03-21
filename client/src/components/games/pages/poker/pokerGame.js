@@ -177,6 +177,7 @@ export const poker_game = function(props){
 
     let poker_data = null
     let card_list = [] 
+    let action = ""
 	
 	let card = {}
 	let card_img = {width: 237, height: 365}
@@ -207,7 +208,8 @@ export const poker_game = function(props){
     }
 
     this.action = function(data){
-        console.log('action--> ', data)
+        action = data.action
+        //console.log('action--> ', action)
 		if(data && data.action){
             poker_data = data
             self.drawBackground()
@@ -303,7 +305,8 @@ export const poker_game = function(props){
     }
 
     this.handleClick = function(){
-        if($('#poker_canvas')){
+        console.log('handleClick--> ', action)
+        if(props.template === "5_card_draw" && $('#poker_canvas')){
             $('#poker_canvas').off('click').on('click', function(event) {
                 let mousePos = getMousePos(canvas, event)
                 self.canvas_click(mousePos)
@@ -311,8 +314,25 @@ export const poker_game = function(props){
         }		
     }
 
-    this.canvas_click = function(mouse){
-
+    this.canvas_click = function(mouse){ 
+        for(let i in card_list){
+			let hand = card_list[i].hand
+            if(card_list[i].uuid === props.user.uuid){
+                for(let j in hand){
+                    if(isInside(mouse, hand[j])){
+                        card_list[i].updateSelected(j) 
+                        self.drawBackground()
+                        self.draw_cards()
+                        let selectedCards = card_list[i].selectedCards
+                        for(let k in selectedCards){
+                            let t = selectedCards[k]
+                            let card = card_list[i].hand[t]
+                            draw_rect(ctx, card.x, card.y, card.width, card.height, "transparent", 3, "red")
+                        }
+                    }
+                }
+            }
+		}
     }
 
     this.preaload_images = function(item){
@@ -444,9 +464,8 @@ export const poker_game = function(props){
         let player = poker_data.players.filter(function(x){
             return x.uuid === props.user.uuid
         })
+        
         if(player && player[0] && player[0].bet){
-            console.log('winner--> ', winner)
-
             let bet = player[0].bet
             let pot = poker_data.pot
             let game = props.page.game
@@ -466,13 +485,13 @@ export const poker_game = function(props){
                 game,
                 money: money_history,
                 status,
-                bet
-            }
-
-            console.log('poker_payload ', poker_payload)
+                bet,
+                winner,
+                pot
+            }            
             
             if(typeof props.getResults === "function"){
-                //props.getResults(poker_payload)
+                props.getResults(poker_payload)
             }
         }
     }

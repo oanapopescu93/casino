@@ -259,7 +259,12 @@ function poker(data, user_join){
         let index = players.findIndex((x) => x.uuid === data.uuid)
         if(players[index]){
             const maxBet = getBet()
-            const amountToCall = maxBet - players[index].bet
+            let amountToCall = 0
+            if (maxBet === 0) {
+                amountToCall = 1 //Set amountToCall to the minimum allowed bet or another default value
+            } else {
+                amountToCall = maxBet - players[index].bet
+            }
 
             if(data.action === "raise" && amount <= amountToCall) {
                 return {error: 'invalid_raise'} //Invalid raise amount. Must raise more than the amount to call.

@@ -209,7 +209,8 @@ var word_bank = {
     check: "Check",
     fold: "Fold",
     call: "Call",
-    raise: "Raise",    
+    raise: "Raise",
+    showdown: "Showdown", 
 
     // results
     results: "Rezultate",

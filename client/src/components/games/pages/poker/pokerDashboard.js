@@ -11,14 +11,15 @@ import { poker_game } from './pokerGame'
 import { getWindowDimensions } from '../../../../utils/utils'
 
 function PokerDashboard(props){ 
-    let game = props.page.game
-	let money = decryptData(props.user.money)  
+    const {page, bet} = props
+    let game = page.game
+	let money = decryptData(props.user.money) 
+    let poker_bets = bet 
     let dispatch = useDispatch()
     let [startGame, setStartGame] = useState(false)
     let [showdown, setShowDown] = useState(false)
     let [pot, setPot] = useState(0)
     let [action, setAction]= useState(null) 
-    let poker_bets = 0
     
     let clear = function(bet){
 		console.log('clear')
@@ -114,7 +115,7 @@ function PokerDashboard(props){
     }    
 
     function updateBets(e){
-        poker_bets = e
+        props.updateBets(e)
     }
 
     return <div className="game_container poker_container">

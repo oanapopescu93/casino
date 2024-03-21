@@ -40,9 +40,9 @@ function HowToPlayTitles(props){
                                 default:
                                     return null
                             }  
-                        })()}
-                        <p>{t}</p>
+                        })()}                        
                     </div>
+                    <div className="cell_text">{t}</div>
                 </div>
             </div>
         })}

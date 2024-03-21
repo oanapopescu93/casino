@@ -210,6 +210,7 @@ var word_bank = {
     fold: "Fold",
     call: "Call",
     raise: "Raise",
+    showdown: "Showdown",
 
     // results
     results: "Results",
