@@ -178,6 +178,7 @@ export const poker_game = function(props){
     let poker_data = null
     let card_list = [] 
     let action = ""
+    this.aaa = []
 	
 	let card = {}
 	let card_img = {width: 237, height: 365}
@@ -209,7 +210,7 @@ export const poker_game = function(props){
 
     this.action = function(data){
         action = data.action
-        //console.log('action--> ', action)
+        console.log('action--> ', action)
 		if(data && data.action){
             poker_data = data
             self.drawBackground()
@@ -305,7 +306,6 @@ export const poker_game = function(props){
     }
 
     this.handleClick = function(){
-        console.log('handleClick--> ', action)
         if(props.template === "5_card_draw" && $('#poker_canvas')){
             $('#poker_canvas').off('click').on('click', function(event) {
                 let mousePos = getMousePos(canvas, event)
@@ -331,6 +331,9 @@ export const poker_game = function(props){
                         }
                     }
                 }
+                if(typeof props.getCardList === "function"){
+                    props.getCardList(card_list[i].selectedCards)
+                }                
             }
 		}
     }

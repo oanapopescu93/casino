@@ -10,6 +10,8 @@ import { changePopup } from '../../../../reducers/popup'
 import { poker_game } from './pokerGame'
 import { getWindowDimensions } from '../../../../utils/utils'
 
+let replaceCards = null
+
 function PokerDashboard(props){ 
     const {page, bet} = props
     let game = page.game
@@ -21,6 +23,7 @@ function PokerDashboard(props){
     let [pot, setPot] = useState(0)
     let [action, setAction]= useState(null) 
     
+    
     let clear = function(bet){
 		console.log('clear')
 	}
@@ -28,7 +31,10 @@ function PokerDashboard(props){
     let getResults = function(payload){
 		console.log('results--> ', payload)
 	}
-    let options = {...props, dispatch, getResults, clear}
+    let getCardList = function(payload){
+        replaceCards = payload
+	}
+    let options = {...props, dispatch, getResults, getCardList, clear}
     let my_poker = new poker_game(options)
 
     function ready(r){
@@ -39,16 +45,19 @@ function PokerDashboard(props){
 
     useEffect(() => {
         ready()
-        $(window).resize(function(){
-			ready('resize')
-		})
+
+        const handleResize = () => ready('resize')
+        $(window).resize(handleResize)
+
 		return () => {
-			if(my_poker){}
+			$(window).off('resize', handleResize)
+            replaceCards = null
 		}
     }, [])
 
     useEffect(() => {
         const handlePokerRead = function(data) {
+            console.log(data)
             if (my_poker && data) {
                 if(data.action){
                     setAction(data.action)
@@ -86,12 +95,14 @@ function PokerDashboard(props){
                 money: money
             }
 
+            console.log('choice--> ', e)
+
             switch(e.action){
-                case "start":                    
+                case "start":
                     props.socket.emit('poker_send', poker_payload_server)
                     break
                 case "bet":
-                case "call":                    
+                case "call":
                 case "raise":
                     if(poker_bets === 0){
                         let payload = {
@@ -101,18 +112,23 @@ function PokerDashboard(props){
                             data: translate({lang: props.lang, info: "no_bets"})
                         }
                         dispatch(changePopup(payload))
-                    } else {          
+                    } else {
                         poker_payload_server.bet = poker_bets
                         props.socket.emit('poker_send', poker_payload_server)
                     }
                     break
+                case "draw":
+                    poker_payload_server.replaceCards = replaceCards
+                    props.socket.emit('poker_send', poker_payload_server)
+                    break
                 case "check":
-                case "fold":                
+                case "fold":
                 case "showdown":
                     props.socket.emit('poker_send', poker_payload_server)
+                    break
             }
-        }        
-    }    
+        }       
+    }   
 
     function updateBets(e){
         props.updateBets(e)

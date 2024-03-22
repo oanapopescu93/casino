@@ -18,13 +18,7 @@ function poker(data, user_join){
 
     switch (data.action) {
         case 'start':    
-            poker_players = []  
-            poker_dealer = null
-            poker_deck = []
-            poker_hidden_players = []
-            poker_current_player = 0    
-            poker_current_round = 0 
-            poker_pot = 0  
+            resetGameState() 
             
             // a certain number of players sit at the table 
             poker_players = createPlayers()
@@ -40,10 +34,19 @@ function poker(data, user_join){
             payload = {action: "preflop_betting", players: poker_hidden_players, pot: poker_pot}
             return payload
         case "bet":  
-        case "check":           
+        case "check":                    
             poker_players = preflop_betting(data.action)
             poker_hidden_players = createHiddenPlayers()
             poker_dealer = dealHands("dealer") 
+            poker_pot = calculatePot()            
+            payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
+            if(data.stage === "draw"){
+                payload.action = data.stage  
+            }
+            return payload
+        case "draw":
+            poker_players = replaceCards(data.replaceCards) 
+            poker_hidden_players = createHiddenPlayers()
             poker_pot = calculatePot()
             payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
             return payload
@@ -70,17 +73,21 @@ function poker(data, user_join){
             }
             payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
             return payload
-        case "replace":
-            poker_players = replaceCards(data.replaceCards) 
-            poker_hidden_players = createHiddenPlayers()
-            poker_pot = calculatePot()  
-            payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
-            return payload
         case "showdown":
             poker_players = evaluateHands(poker_players)
             payload = {action: data.stage, players: poker_players, dealer: poker_dealer, pot: poker_pot, showdown: true} 
             return payload
-    }  
+    }
+    
+    function resetGameState(){
+        poker_players = []  
+        poker_dealer = null
+        poker_deck = []
+        poker_hidden_players = []
+        poker_current_player = 0    
+        poker_current_round = 0 
+        poker_pot = 0 
+    }
     
     function createDeck(turns){
         let suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
@@ -166,6 +173,9 @@ function poker(data, user_join){
         }
     }
     function createHiddenPlayers(){
+        if (!poker_players || !Array.isArray(poker_players)) {
+            return []
+        }
         let players = [...poker_players] 
         let hidden_players = []       
         for(let i in players){
