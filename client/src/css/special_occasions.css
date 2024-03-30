@@ -1,3 +1,14 @@
+:root {
+	--egg_bg01: #FBE9E7;
+	--egg_bg02: #EC407A;
+	--egg_stripe_color01: #FFBDE8;
+	--egg_stripe_color02: #BDE8FF;
+	--egg_stripe_color03: #E8FFBD;
+	--egg_stripe_color04: #FFE8BD;
+	--egg_stripe_color05: #E8BDFF;
+	--egg_stripe_color06: #FFBDE8;
+}
+
 /* HALLOWEEN */
 .halloween_container{
     position: relative;
