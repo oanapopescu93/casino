@@ -1,7 +1,7 @@
 export const checkWinterMonths = function(){
     let winter = false
-    const d = new Date()
-    if(d.getMonth() === 0 || d.getMonth() === 1 || d.getMonth() === 11){
+    let today = new Date()
+    if(today.getMonth() === 0 || today.getMonth() === 1 || today.getMonth() === 11){ // january, february or december
         winter = true
     }
     return winter
@@ -9,43 +9,63 @@ export const checkWinterMonths = function(){
 
 export const checkEaster = function(){
     let easter = false
-    const d = new Date()
-  
-    let date_from = Easter(d.getFullYear()) // 3 days before the catholic easter
-    date_from.setDate(date_from.getDate() - 3)
-  
-    let date_to = Easter(d.getFullYear())
-    date_to.setDate(date_to.getDate() + 10) //3 days to get to ortodox easter and one more week
-  
-    if(d >= date_from && d <= date_to){
+    let today = new Date()
+    let currentYear = today.getFullYear()
+
+    let catholicEasterDate = Easter(currentYear, "catholic")
+    let orthodoxEasterDate = Easter(currentYear, "orthodox")
+
+    // Calculate 3 days before Catholic Easter
+    let threeDaysBeforeCatholicEaster = new Date(catholicEasterDate)
+    threeDaysBeforeCatholicEaster.setDate(catholicEasterDate.getDate() - 3)
+
+    // Calculate 3 days after Orthodox Easter
+    let threeDaysAfterOrthodoxEaster = new Date(orthodoxEasterDate)
+    threeDaysAfterOrthodoxEaster.setDate(orthodoxEasterDate.getDate() + 3)
+
+    if(today >= threeDaysBeforeCatholicEaster && today <= threeDaysAfterOrthodoxEaster){
       easter = true
     }
-  
+
     return easter
 }
-  
-function Easter(Y) {
-    var C = Math.floor(Y/100)
-    var N = Y - 19*Math.floor(Y/19)
-    var K = Math.floor((C - 17)/25)
-    var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15
-    I = I - 30*Math.floor((I/30))
-    I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11))
-    var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4)
-    J = J - 7*Math.floor(J/7)
-    var L = I - J
-    var M = 3 + Math.floor((L + 40)/44)
-    var D = L + 28 - 31*Math.floor(M/4)
-  
-    let d = new Date()
-    d.setDate(D)
-    d.setMonth(M-1)
-    return d
+
+function Easter(year, type="catholic") {
+    if(type === "catholic"){
+        // Gauss algorithm to calculate the date of Easter
+        let a = year % 19
+        let b = Math.floor(year / 100)
+        let c = year % 100
+        let d = Math.floor(b / 4)
+        let e = b % 4
+        let f = Math.floor((b + 8) / 25)
+        let g = Math.floor((b - f + 1) / 3)
+        let h = (19 * a + b - d - g + 15) % 30
+        let i = Math.floor(c / 4)
+        let k = c % 4
+        let l = (32 + 2 * e + 2 * i - h - k) % 7
+        let m = Math.floor((a + 11 * h + 22 * l) / 451)
+        let month = Math.floor((h + l - 7 * m + 114) / 31)
+        let day = ((h + l - 7 * m + 114) % 31) + 1
+        let date = new Date(year, month - 1, day)
+        return date
+    } else {
+        // Julian algorithm to calculate the date of Orthodox Easter
+        let a = year % 4
+        let b = year % 7
+        let c = year % 19
+        let d = (19 * c + 15) % 30
+        let e = (2 * a + 4 * b - d + 34) % 7
+        let month = Math.floor((d + e + 114) / 31)
+        let day = ((d + e + 114) % 31) + 1
+        return new Date(year, month - 1, day)
+    }
+    
 }
 
 export const checkOccasion = function(type){
     let occasion = false
-    let d = new Date()
+    let today = new Date()
     let day = -1
     let month = -1
     let interval = [0, 0]
@@ -59,7 +79,7 @@ export const checkOccasion = function(type){
         case "christmas":
             day = 25
             month = 11
-            interval = [7, 7] //one week before and after christmas
+            interval = [14, 7] //two week before and one week after christmas
             break
         default:
     }
@@ -75,7 +95,7 @@ export const checkOccasion = function(type){
         date_to.setMonth(month)
         date_to.setDate(date_to.getDate() + interval[1])
     
-        if(d >= date_from && d <= date_to){
+        if(today >= date_from && today <= date_to){
             occasion = true
         }
     }    

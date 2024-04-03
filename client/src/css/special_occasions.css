@@ -115,9 +115,9 @@ ellipse {
 .stripe {
     height: 20%;
 }  
-.stripe:not(:first-child) {
+/* .stripe:not(:first-child) {
     border-top: 2px solid var(--egg_stripe_color01);
-}  
+}   */
 .stripe:nth-child(1) {
     background-color: var(--egg_stripe_color02);
 }  
