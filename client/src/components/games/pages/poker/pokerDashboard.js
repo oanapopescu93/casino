@@ -12,24 +12,34 @@ import { getWindowDimensions } from '../../../../utils/utils'
 
 let replaceCards = null
 
-function PokerDashboard(props){ 
+function PokerDashboard(props){
     const {page, bet} = props
     let game = page.game
 	let money = decryptData(props.user.money) 
-    let poker_bets = bet 
+    let poker_bets = bet
     let dispatch = useDispatch()
     let [startGame, setStartGame] = useState(false)
     let [showdown, setShowDown] = useState(false)
     let [pot, setPot] = useState(0)
-    let [action, setAction]= useState(null) 
-    
+    let [action, setAction]= useState(null)
     
     let clear = function(bet){
-		console.log('clear')
+		if(bet > 0 && startGame){			
+			let payload = {
+				uuid: props.user.uuid,
+				game,
+				status: 'lose',
+				bet,
+				money: money - bet
+			}
+            console.log('clear--> ', payload)
+			// props.results(payload)
+		}
 	}
 
     let getResults = function(payload){
 		console.log('results--> ', payload)
+        // props.results(payload)
 	}
     let getCardList = function(payload){
         replaceCards = payload
@@ -57,28 +67,38 @@ function PokerDashboard(props){
 
     useEffect(() => {
         const handlePokerRead = function(data) {
-            console.log(data)
-            if (my_poker && data) {
+            if (my_poker && data){
                 if(data.action){
                     setAction(data.action)
-                    switch(data.action){
-                        case "preflop_betting":                        
-                            setStartGame(true)
-                            break
-                        case "fold":
-                            setStartGame(false)
-                            break
-                        case "showdown":
-                            setShowDown(true)
-                    }
-                    if(data.pot){
-                        setPot(data.pot)
+                    if(data.error){
+                        let payload = {
+                            open: true,
+                            template: "error",
+                            title: "error",
+                            data: translate({lang: props.lang, info: data.error})
+                        }
+                        dispatch(changePopup(payload))
+                    } else {
+                        switch(data.action){
+                            case "preflop_betting":                      
+                                setStartGame(true)
+                                break
+                            case "fold":
+                                setStartGame(false)
+                                break
+                            case "showdown":
+                                setShowDown(true)
+                        }
+                        if(data.pot){
+                            setPot(data.pot)
+                        }
+                        my_poker.action(data)
                     }
                 }
-                my_poker.action(data)
+                
             }
         }
-		props.socket.on('poker_read', handlePokerRead)	
+		props.socket.on('poker_read', handlePokerRead)
         return () => {
             props.socket.off('poker_read', handlePokerRead)
         }

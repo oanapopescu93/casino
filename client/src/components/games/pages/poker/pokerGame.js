@@ -29,32 +29,38 @@ function Card(config){
     self.fold = config.fold
     self.bet = config.bet ? config.bet : 0
 
-	self.show_cards = function(ctx, data){
+	self.show_cards = function(ctx, data, template){        
         if(self.id !== -1){
             //player
             if(self.fold){ //if the player folded, his cards will be grey
                 ctx.filter = 'grayscale(1)'
             } 
 
+            let title = self.user
+            if(self.bet > 0){
+                title = title + " (Bet: " + self.bet + ")"
+            }
+
             if(self.uuid === self.props.user.uuid){
                 //user
                 let cards_number = self.hand.length
                 let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
                 self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(ctx, self.user, self.text_x-hand_length/2, self.text_y, 90, 12)                    
+                self.draw_card_text(ctx, title, self.text_x-hand_length/2, self.text_y, 90, 12)                    
             } else {
                 //bot
-                let text = self.user + "(Bet: " + self.bet + ")"
                 self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(ctx, text, self.text_x, self.text_y, 90, 12)
+                self.draw_card_text(ctx, title, self.text_x, self.text_y, 90, 12)
             }
 
             ctx.filter = 'grayscale(0)'
         } else {
             //dealer
-            let cards_number = data.dealer.hand.length
-            let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
-            self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, data.dealer.hand, "dealer")
+            if(template !== "5_card_draw"){ //in texas hold'em we have community cards, in 5 card draw we don't                
+                let cards_number = data.dealer.hand.length
+                let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
+                self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, data.dealer.hand, "dealer")
+            }
         }
 			
 	}
@@ -432,7 +438,7 @@ export const poker_game = function(props){
     this.draw_cards = function(){
 		if(poker_data){
 			for(let i in card_list){                
-				card_list[i].show_cards(ctx, poker_data)
+				card_list[i].show_cards(ctx, poker_data, props.template)
 			}
 		}
 	} 

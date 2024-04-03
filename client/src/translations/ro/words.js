@@ -211,6 +211,8 @@ var word_bank = {
     call: "Call",
     raise: "Raise",
     showdown: "Showdown", 
+    invalid_raise: "Plusare invalidă",
+    not_enough_money: "Nu ai suficienți bani",
 
     // results
     results: "Rezultate",

@@ -210,6 +210,8 @@ var word_bank = {
     fold: "Fold",
     call: "Call",
     raise: "Raise",
+    invalid_raise: "Ungültige Erhöhung",
+    not_enough_money: "Sie haben nicht genug Geld",
 
     // results
     results: "Ergebnisse",

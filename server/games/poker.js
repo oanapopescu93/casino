@@ -200,7 +200,8 @@ function poker(data, user_join){
                 players[index].bet = 0
                 if(action !== "check"){
                     players[index].bet = data.bet
-                }                
+                }
+                console.log(index, action, players[index], data)            
             } else {
                 let choice = 'bet'
                 let number = Math.floor(Math.random() * 10) + 1
@@ -220,17 +221,17 @@ function poker(data, user_join){
         }        
         return players
     }
-    function botChoice(x, player){
+    function botChoice(x, player){        
         switch(x){
             case "bet":
-                if(player.hand){
+                if(player.hand){                    
                     let handStrength = evaluateHand(player.hand)
                     if (handStrength.strength >= 9) {
-                        player.bet = data.bet + 1
+                        player.bet = player.bet + 1
                     } else if (handStrength >= 5) {
-                        player.bet = data.bet
+                        player.bet = player.bet
                     } else {
-                        player.bet = data.bet - 1
+                        player.bet = player.bet - 1
                         if(player.bet < 1){
                             player.bet = 1
                         }

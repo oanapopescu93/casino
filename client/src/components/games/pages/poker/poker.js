@@ -20,7 +20,7 @@ function Poker(props){
         setBet(e) 
     }
 
-    return <PokerDashboard {...props} template={template} poker_bets={bet} updateBets={(e)=>updateBets(e)}></PokerDashboard>
+    return <PokerDashboard {...props} template={template} bet={bet} updateBets={(e)=>updateBets(e)}></PokerDashboard>
 }
 
 export default Poker

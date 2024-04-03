@@ -211,6 +211,8 @@ var word_bank = {
     call: "Колл",
     raise: "Рейз",
     showdown: "Показ карт",
+    invalid_raise: "Недействительная ставка",
+    not_enough_money: "У вас недостаточно денег",
 
     // results
     results: "Результаты",
