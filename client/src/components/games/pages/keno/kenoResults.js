@@ -27,7 +27,7 @@ function KenoResults(props){
                     return <>
                         <div className="KenoResults_box">
                             <h4>{translate({lang: lang, info: "lucky_numbers"})}: </h4>
-                            <div className="KenoResults_matrix">
+                            <div className="KenoResults_matrix 111">
                                 {list_results.map(function(items, i){                                     
                                     if(items && items.length>0){
                                         return <ul key={i}>
@@ -47,13 +47,13 @@ function KenoResults(props){
                         </div>
                         <div className="KenoResults_box">
                             <h4>{translate({lang: lang, info: "results"})}: </h4>
-                            <div className="KenoResults_matrix">
+                            <div className="KenoResults_matrix 222">
                                 {(() => {
-                                    if(list_filtered && list_filtered.length>0){
+                                    if(list_filtered && list_filtered[0] && list_filtered[0].length>0){
                                         return <ul>
-                                            {list_filtered.map(function(item, i){
-                                                let comma = ", "
-                                                if(i === list_filtered.length-1){ //last element from the list will not have a comma
+                                            {list_filtered[0].map(function(item, i){
+                                                let comma = ", "                                                
+                                                if(i === list_filtered[0].length-1){ //last element from the list will not have a comma
                                                     comma = ""
                                                 }
                                                 return <li key={i}>{item}{comma}</li>
