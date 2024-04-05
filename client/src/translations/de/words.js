@@ -47,7 +47,17 @@ var word_bank = {
     salon_subtitle: "Willkommen im Salon",
     exit_game: "Spiel verlassen",
     
-    donation: "Spende",
+    donation: "Spenden",
+    crypto: "Krypto",
+    paypal: "Paypal",
+    bank: "Bank",
+    crypto_donation_title: "Spenden Sie über Kryptowährung",
+    crypto_donation_text: "Vielen Dank, dass Sie eine Spende in Betracht ziehen! Ihre Unterstützung wird sehr geschätzt. Bitte senden Sie Ihre Kryptowährungsspende an die folgenden Adressen. Sobald die Spende gesendet wurde, kann es einige Zeit dauern, bis sie im Blockchain-Netzwerk bestätigt wird.",
+    paypal_donation_title: "Spenden Sie über PayPal",
+    paypal_donation_text: "Vielen Dank, dass Sie eine Spende in Betracht ziehen! Ihre Unterstützung wird sehr geschätzt. Bitte verwenden Sie die folgenden Links, um eine Spende über PayPal zu tätigen. Sobald die Spende abgeschlossen ist, kann es einige Zeit dauern, bis sie verarbeitet wird.",
+    bank_donation_title: "Spenden Sie per Banküberweisung",
+    bank_donation_text: "Bitte senden Sie Ihre Spende auf das folgende Bankkonto. Sobald die Spende überwiesen wurde, kann es einige Zeit dauern, bis sie im Konto erscheint.",
+    donation_footer_text: "Vielen Dank für Ihre Großzügigkeit!",
     donation_ukraine: "Spende für die Ukraine",
     
     all: "Alle",

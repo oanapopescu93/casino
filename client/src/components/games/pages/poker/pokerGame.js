@@ -26,8 +26,9 @@ function Card(config){
 
     self.hand = config.hand
     self.selectedCards = []
-    self.fold = config.fold
+    self.fold = config.fold ? config.fold : false
     self.bet = config.bet ? config.bet : 0
+    self.last_choice = config.last_choice ? config.last_choice : null
 
 	self.show_cards = function(ctx, data, template){        
         if(self.id !== -1){
@@ -39,6 +40,8 @@ function Card(config){
             let title = self.user
             if(self.bet > 0){
                 title = title + " (Bet: " + self.bet + ")"
+            } else if(self.last_choice){
+                title = title + " (" + self.last_choice + ")"
             }
 
             if(self.uuid === self.props.user.uuid){
@@ -216,7 +219,6 @@ export const poker_game = function(props){
 
     this.action = function(data){
         action = data.action
-        console.log('action--> ', action)
 		if(data && data.action){
             poker_data = data
             self.drawBackground()
@@ -355,10 +357,10 @@ export const poker_game = function(props){
 	}
 
     this.create_cards = function(){
-        card_list = []      
+        card_list = []
         if(poker_data){
             // create dealer
-            if(poker_data.dealer){
+            if(props.template !== "5_card_draw" && poker_data.dealer){
                 card_list.push(new Card({
                     id: -1,
                     name: 'dealer',
@@ -428,6 +430,7 @@ export const poker_game = function(props){
                         hand: hand,
                         fold: poker_data.players[i].fold ? true : false,
                         bet: poker_data.players[i].bet,
+                        last_choice: poker_data.players[i].last_choice,
                         type: poker_data.players[i].type
                     }))
                 }
@@ -449,6 +452,7 @@ export const poker_game = function(props){
         })
         if(player && player[0] && player[0].bet){
             let bet = player[0].bet
+            let pot = poker_data.pot
             let status = 'lose'
             let game = props.page.game
             let money = decryptData(props.user.money)
@@ -456,14 +460,15 @@ export const poker_game = function(props){
 
             let poker_payload = {
                 uuid: props.user.uuid,
-                game: game,
+                game,
                 money: money_history,
-                status: status,
-                bet: bet
+                status,
+                bet,
+                pot
             }
             
             if(typeof props.getResults === "function"){
-                //props.getResults(poker_payload)
+                props.getResults(poker_payload)
             }
         }
     }
@@ -506,25 +511,32 @@ export const poker_game = function(props){
     }
 
     this.determineWinner = function(players){
+        players = players.filter(player => !player.fold) // Filter out folded players
         players.sort((a, b) => b.handStrength.strength - a.handStrength.strength)
-        let winner = players[0]
+        let winners = [players[0]] // Initialize with the first player
         for (let i = 1; i < players.length; i++){
-            if (players[i].handStrength.strength === winner.handStrength.strength) {
+            if (players[i].handStrength.strength === winners[0].handStrength.strength) {
                 // Compare kickers
-                for (let j = 0; j < winner.handStrength.info.Value.length; j++) {
-                    const winnerKicker = winner.handStrength.info.Value.charCodeAt(j)
+                let isTie = true
+                for (let j = 0; j < winners[0].handStrength.info.Value.length; j++) {
+                    const winnerKicker = winners[0].handStrength.info.Value.charCodeAt(j)
                     const currentKicker = players[i].handStrength.info.Value.charCodeAt(j)
                     if (currentKicker > winnerKicker) {
-                        winner = players[i]
+                        winners.push(players[i])
+                        isTie = false
                         break
                     } else if (currentKicker < winnerKicker) {
+                        isTie = false
                         break
                     }
+                }
+                if (isTie) {
+                    winners.push(players[i]) // Add tied player to the winners array
                 }
             } else {
                 break // No tie, exit loop
             }
         }
-        return winner
+        return winners
     }
 }

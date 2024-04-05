@@ -6,7 +6,6 @@ import User from './user'
 import Chat from './chat'
 import { checkWinterMonths } from '../../../utils/special_occasions'
 import { getWindowDimensions } from '../../../utils/utils'
-import $ from "jquery"
 
 function Panel(props){
     const {lang, page} = props

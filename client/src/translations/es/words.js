@@ -48,7 +48,18 @@ var word_bank = {
     exit_game: "Salir del juego",
 
     donation: "Donaciones",
+    crypto: "Cripto",
+    paypal: "Paypal",
+    bank: "Banco",
+    crypto_donation_title: "Donar a través de Criptomonedas",
+    crypto_donation_text: "¡Gracias por considerar una donación! Su apoyo es muy apreciado. Por favor, envíe su donación en criptomonedas a las siguientes direcciones. Una vez que se envía la donación, puede tomar algún tiempo confirmarla en la red blockchain.",
+    paypal_donation_title: "Donar a través de PayPal",
+    paypal_donation_text: "¡Gracias por considerar una donación! Su apoyo es muy apreciado. Por favor, use los siguientes enlaces para hacer una donación a través de PayPal. Una vez completada la donación, puede tomar algún tiempo para procesarse.",
+    bank_donation_title: "Donar a través de Transferencia Bancaria",
+    bank_donation_text: "Por favor, envíe su donación a la siguiente cuenta bancaria. Una vez transferida la donación, puede tomar algún tiempo para reflejarse en la cuenta.",
+    donation_footer_text: "¡Gracias por su generosidad!",
     donation_ukraine: "Donación para Ucrania",
+
 
     all: "Todos",
     other: "Otros",

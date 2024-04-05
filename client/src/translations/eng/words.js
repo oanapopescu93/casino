@@ -48,7 +48,17 @@ var word_bank = {
     exit_game: "Exit game",
 
     donation: "Donations",
-    donation_ukraine: "Donation of Ukraine",
+    crypto: "Crypto",
+    paypal: "Paypal",
+    bank: "Bank",
+    crypto_donation_title: "Donate via Cryptocurrency",
+    crypto_donation_text: "Please send your cryptocurrency donation to the following addresses. Once the donation is sent, it may take some time to confirm on the blockchain network.",
+    paypal_donation_title: "Donate via Paypal",
+    paypal_donation_text: "Please use the following links to make a donation via PayPal. Once the donation is completed, it may take some time to process.",
+    bank_donation_title: "Donate via Bank Transfer",
+    bank_donation_text: "Please send your donation to the following bank account. Once the donation is transferred, it may take some time to reflect in the account.",
+    donation_footer_text: "Thank you for your generosity!",
+    donation_ukraine: "Donation for Ukraine",
 
     all: "All",
     other: "Other",

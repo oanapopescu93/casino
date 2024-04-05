@@ -47,8 +47,19 @@ var word_bank = {
     salon_subtitle: "Benvenuto nel salone",
     exit_game: "Esci dal gioco",
 
-    donation: "Donazione",
-    donation_ukraine: "Doação para a Ucrânia",
+    donation: "Donazioni",
+    crypto: "Cripto",
+    paypal: "Paypal",
+    bank: "Banca",
+    crypto_donation_title: "Fai una Donazione via Criptovaluta",
+    crypto_donation_text: "Grazie per considerare una donazione! Il tuo supporto è molto apprezzato. Si prega di inviare la tua donazione in criptovaluta ai seguenti indirizzi. Una volta inviata la donazione, potrebbe volerci del tempo per essere confermata sulla rete blockchain.",
+    paypal_donation_title: "Fai una Donazione via PayPal",
+    paypal_donation_text: "Grazie per considerare una donazione! Il tuo supporto è molto apprezzato. Si prega di utilizzare i seguenti link per fare una donazione tramite PayPal. Una volta completata la donazione, potrebbe volerci del tempo per essere elaborata.",
+    bank_donation_title: "Fai una Donazione via Bonifico Bancario",
+    bank_donation_text: "Si prega di inviare la tua donazione al seguente conto bancario. Una volta trasferita la donazione, potrebbe volerci del tempo per riflettersi sul conto.",
+    donation_footer_text: "Grazie per la tua generosità!",
+    donation_ukraine: "Donazione per l'Ucraina",
+
 
     all: "Tutto",
     other: "Altro",

@@ -48,7 +48,18 @@ var word_bank = {
     exit_game: "Ieși din joc",
 
     donation: "Donații",
+    crypto: "Cripto",
+    paypal: "Paypal",
+    bank: "Bancă",
+    crypto_donation_title: "Donați prin Criptomonedă",
+    crypto_donation_text: "Vă mulțumim că luați în considerare o donație! Susținerea dvs. este foarte apreciată. Vă rugăm să trimiteți donația dvs. în criptomonedă la următoarele adrese. Odată ce donația este trimisă, ar putea dura ceva timp până când este confirmată în rețeaua blockchain.",
+    paypal_donation_title: "Donați prin PayPal",
+    paypal_donation_text: "Vă mulțumim că luați în considerare o donație! Susținerea dvs. este foarte apreciată. Vă rugăm să utilizați următoarele linkuri pentru a face o donație prin PayPal. Odată ce donația este finalizată, ar putea dura ceva timp pentru a fi procesată.",
+    bank_donation_title: "Donați prin Transfer Bancar",
+    bank_donation_text: "Vă rugăm să trimiteți donația dvs. la următorul cont bancar. Odată ce donația este transferată, ar putea dura ceva timp până când este reflectată în cont.",
+    donation_footer_text: "Vă mulțumim pentru generozitatea dvs.!",
     donation_ukraine: "Donație pentru Ucraina",
+
 
     all: "Tot",
     other: "Altceva",

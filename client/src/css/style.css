@@ -1578,17 +1578,46 @@ textarea {
 .donation_box{
   padding: var(--padding);
 }
-.donation_link_crypto{
+.donation_box_tabs{
   margin-bottom: var(--padding);
 }
-.donation_body_paypal li{
+.donation_box_tabs li {
+  display: inline-block;
+  padding: var(--padding_small) var(--padding);
+  border: solid 1px var(--color);
+  width: 100px;
+  cursor: pointer;
+  text-align: center;
+}
+.donation_box_tabs li:first-child {
+  border-radius: var(--radius) 0px 0px var(--radius);
+}
+.donation_box_tabs li:last-child {
+  border-radius: 0px var(--radius) var(--radius) 0px;
+}
+.donation_box_tabs li.active{
+  background: var(--transparent_color);
+}
+.donation_box_content{
+  height: 150px;
+}
+.donation_box_content h2{
+  margin-bottom: var(--padding);
+}
+.donation_box_content p{
+  margin-bottom: var(--padding);
+}
+.donation_link_crypto{
+  margin-bottom: var(--padding_small);
+}
+.donation_link_paypal{
   width: 100%;
   max-width: 150px;
   display: inline-block;
   vertical-align: middle;
   padding: var(--padding_small);
 }
-.donation_body_paypal li a{
+.donation_link_paypal a{
   width: 100%;
   display: inline-block;
 }

@@ -114,9 +114,6 @@ function PokerDashboard(props){
                 stage: e.stage,
                 money: money
             }
-
-            console.log('choice--> ', e)
-
             switch(e.action){
                 case "start":
                     props.socket.emit('poker_send', poker_payload_server)

@@ -49,13 +49,14 @@ module.exports = Object.freeze({
         {id: 6, name_eng: "marten", name_ro: "jder", name_fr: "martre", name_de: "marder", name_es: "marta", name_it: "martora", free: true},
     ],
     DONATIONS: [        
-        {type: "crypto", title: "Bitcoin", text: "-", link: "bitcoin:-"},
+        {type: "crypto", title: "Bitcoin", text: "bc1qhpj7gpflqumppla8p9rk6f3fsq2qrmslakgmha", link: "bitcoin:bc1qhpj7gpflqumppla8p9rk6f3fsq2qrmslakgmha"},
         {type: "crypto", title: "Ethereum", text: "-"},
         {type: "crypto", title: "Litecoin", text: "-"},
         {type: "crypto", title: "Bitcoin Cash", text: "-"},
         {type: "crypto", title: "Dogecoin", text: "-"},
         {type: "paypal", title: "PaypalMe", link: "https://paypal.me/oanapopescu93?country.x=RO&locale.x=en_US"},
-        {type: "paypal", title: "Paypal Donate", link: "https://www.paypal.com/donate/?hosted_button_id=FBUHUHZCKWZRA"}
+        {type: "paypal", title: "Paypal Donate", link: "https://www.paypal.com/donate/?hosted_button_id=FBUHUHZCKWZRA"},
+        {type: "bank", title: "IBAN", text: "RO93BTRLRONCRT0316896401"}
     ],
     SLOT_PRIZES: [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3],
     RACE_RABBITS: [        

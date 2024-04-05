@@ -48,7 +48,18 @@ var word_bank = {
     exit_game: "Quitter le jeu",
 
     donation: "Dons",
-    donation_ukraine: "Don de l'Ukraine",
+    crypto: "Crypto",
+    paypal: "Paypal",
+    bank: "Banque",
+    crypto_donation_title: "Faire un Don via Cryptomonnaie",
+    crypto_donation_text: "Merci de considérer un don ! Votre soutien est grandement apprécié. Veuillez envoyer votre don en cryptomonnaie aux adresses suivantes. Une fois le don envoyé, cela peut prendre un certain temps pour être confirmé sur le réseau blockchain.",
+    paypal_donation_title: "Faire un Don via PayPal",
+    paypal_donation_text: "Merci de considérer un don ! Votre soutien est grandement apprécié. Veuillez utiliser les liens suivants pour faire un don via PayPal. Une fois le don complété, cela peut prendre un certain temps pour être traité.",
+    bank_donation_title: "Faire un Don via Virement Bancaire",
+    bank_donation_text: "Veuillez envoyer votre don au compte bancaire suivant. Une fois le don transféré, cela peut prendre un certain temps pour apparaître sur le compte.",
+    donation_footer_text: "Merci pour votre générosité !",
+    donation_ukraine: "Don pour l'Ukraine",
+
 
     all: "Tous",
     other: "Autre",

@@ -90,9 +90,13 @@ function Header(props){
                             <h3>{translate({lang: lang, info: "subtitle"})}</h3>                                    
                         </div>          
                     default:
+                        let style = ""
+                        if(template === "donation"){
+                            style = " easter_eggs_salon"
+                        }
                         return <div className="header">
                             <h1 className="title">{title}</h1>
-                            {showEaster ? <div className="easter_eggs">
+                            {showEaster ? <div className={"easter_eggs" + style}>
                                 <EasterEgg></EasterEgg>
                                 <EasterEgg></EasterEgg>
                             </div> : null}

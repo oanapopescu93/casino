@@ -136,18 +136,18 @@ ellipse {
   
 @keyframes egg-left-animation {
     0% {
-        transform: rotate(-15deg);
+        transform: rotate(-25deg);
     }
     100% {
-        transform: rotate(-10deg);
+        transform: rotate(-20deg);
     }
 }
 @keyframes egg-right-animation {
     0% {
-        transform: rotate(30deg);
+        transform: rotate(40deg);
     }
     100% {
-        transform: rotate(25deg);
+        transform: rotate(35deg);
     }
 }
   
