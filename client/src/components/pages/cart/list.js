@@ -39,8 +39,8 @@ function List(props){
                                     </div>
                                 </Col>
                                 <Col xs={6} sm={8} className="cart_info">
-                                    {(() => {
-                                        switch (lang) {
+                                    {(() => {                                        
+                                        switch (props.lang) {
                                             case "DE":
                                                 return <h4>{item.name_de}</h4>
                                             case "ES":
@@ -49,8 +49,12 @@ function List(props){
                                                 return <h4>{item.name_fr}</h4>
                                             case "IT":
                                                 return <h4>{item.name_it}</h4>
+                                            case "PT":
+                                                return <h4>{item.name_pt}</h4>
                                             case "RO":
                                                 return <h4>{item.name_ro}</h4>
+                                            case "RU":
+                                                return <h4>{item.name_ru}</h4>
                                             case "ENG":
                                             default:
                                                 return <h4>{item.name_eng}</h4>

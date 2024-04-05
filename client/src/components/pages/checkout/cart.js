@@ -62,12 +62,16 @@ function Cart(props){
                                         return <h4>{item.name_fr}</h4>
                                     case "IT":
                                         return <h4>{item.name_it}</h4>
+                                    case "PT":
+                                        return <h4>{item.name_pt}</h4>
                                     case "RO":
                                         return <h4>{item.name_ro}</h4>
+                                    case "RU":
+                                        return <h4>{item.name_ru}</h4>
                                     case "ENG":
                                     default:
                                         return <h4>{item.name_eng}</h4>
-                                } 
+                                }
                             })()}
                             <h4><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h4>                                   
                         </Col>

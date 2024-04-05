@@ -2109,6 +2109,7 @@ textarea {
 }
 .cart_item:last-child{
   margin-bottom: var(--padding);
+  border-bottom: solid 0 transparent;
 }
 .cart_footer{
   padding: var(--padding_small) 0px;
@@ -2122,6 +2123,9 @@ textarea {
 .cart .remove{
   width: 40px;
   height: 40px;
+}
+.cart_action h4{
+  margin-bottom: var(--padding_small);
 }
 
 /* Profile pics */

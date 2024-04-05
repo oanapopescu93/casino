@@ -147,6 +147,9 @@ cryptoPayment.post("/api/crypto_min", jsonParser, (req, res, next) => {
     let amount = req.body.amount
     if(typeof amount != "undefined" && amount != "null" && amount != null && amount != ""  && amount > 0){
         checkMinPayment(amount).then(function(data) {
+            if(data && data.payload && data.payload.fiat_equivalent){
+                data.payload.fiat_equivalent = data.payload.fiat_equivalent.toFixed(1)
+            }
             res.json(data)
         })  
     } else {

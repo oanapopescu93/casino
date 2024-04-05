@@ -99,7 +99,7 @@ function DashboardLeft(props){
                 <p className="dashboard_animal">
                     <b>{translate({lang: lang, info: "animal"})}: </b>
                     {(() => {
-                        if(animal && animal[0]){
+                        if(animal && animal[0]){                            
                             switch (props.lang) {
                                 case "DE":
                                     return <>{animal[0].name_de}</>
@@ -109,8 +109,12 @@ function DashboardLeft(props){
                                     return <>{animal[0].name_fr}</>
                                 case "IT":
                                     return <>{animal[0].name_it}</>
+                                case "PT":
+                                    return <>{animal[0].name_pt}</>
                                 case "RO":
                                     return <>{animal[0].name_ro}</>
+                                case "RU":
+                                    return <>{animal[0].name_ru}</>
                                 case "ENG":
                                 default:
                                     return <>{animal[0].name_eng}</>

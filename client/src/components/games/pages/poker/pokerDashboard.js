@@ -32,14 +32,12 @@ function PokerDashboard(props){
 				bet,
 				money: money - bet
 			}
-            console.log('clear--> ', payload)
-			// props.results(payload)
+			props.results(payload)
 		}
 	}
 
-    let getResults = function(payload){
-		console.log('results--> ', payload)
-        // props.results(payload)
+    let getResults = function(payload){		
+        props.results(payload)
 	}
     let getCardList = function(payload){
         replaceCards = payload
@@ -152,7 +150,6 @@ function PokerDashboard(props){
     }
 
     return <div className="game_container poker_container">
-        <p>{translate({lang: props.lang, info: "under_construction"})}</p>
         <canvas id="poker_canvas"></canvas>
         {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
             <div className="poker_pot">{translate({lang: props.lang, info: "total_pot"})}: {pot}</div>

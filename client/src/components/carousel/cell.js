@@ -77,7 +77,7 @@ function Cell(props) {
                                 <div className="crop_vegetables">
                                     <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow}></img>
                                 </div>
-                                {(() => {
+                                {(() => {                                    
                                     switch (props.lang) {
                                         case "DE":
                                             return <h4>{data.name_de}</h4>
@@ -87,8 +87,12 @@ function Cell(props) {
                                             return <h4>{data.name_fr}</h4>
                                         case "IT":
                                             return <h4>{data.name_it}</h4>
+                                        case "PT":
+                                            return <h4>{data.name_pt}</h4>
                                         case "RO":
                                             return <h4>{data.name_ro}</h4>
+                                        case "RU":
+                                            return <h4>{data.name_ru}</h4>
                                         case "ENG":
                                         default:
                                             return <h4>{data.name_eng}</h4>

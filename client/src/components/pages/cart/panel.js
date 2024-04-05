@@ -58,7 +58,7 @@ function Panel(props){
                 type="button"  
                 className="mybutton button_transparent shadow_convex remove"
                 onClick={()=>handleCheckout()}
-            ><FontAwesomeIcon icon={faTrashCan}/><span>{translate({lang: lang, info: "checkout"})}</span></Button>
+            ><FontAwesomeIcon icon={faCartShopping}/><span>{translate({lang: lang, info: "checkout"})}</span></Button>
             <Button 
                 type="button"  
                 className="mybutton button_transparent shadow_convex remove"

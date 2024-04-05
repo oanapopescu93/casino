@@ -75,8 +75,12 @@ function Cart(props){
                                         return <h4>{product[0].name_fr}</h4>
                                     case "IT":
                                         return <h4>{product[0].name_it}</h4>
+                                    case "PT":
+                                        return <h4>{product[0].name_pt}</h4>
                                     case "RO":
                                         return <h4>{product[0].name_ro}</h4>
+                                    case "RU":
+                                        return <h4>{product[0].name_ru}</h4>
                                     case "ENG":
                                     default:
                                         return <h4>{product[0].name_eng}</h4>
