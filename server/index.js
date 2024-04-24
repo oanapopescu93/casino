@@ -45,6 +45,14 @@ const database = require('./database/mysql')
 var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
+  // // database_config.sql = "SELECT * FROM casino_user;"
+  // database_config.sql = "SELECT * FROM login_user;"
+  //   database_config.name = "db00"
+	// 	database(database_config).then(function(result){
+      
+  //     console.log('user_found01 ', result)
+  //   }) 
+
 io.on('connection', function(socket) {
   socket.on('signin_send', (data) => {  
     database_config.sql = "SELECT * FROM casino_user;"
@@ -73,8 +81,8 @@ io.on('connection', function(socket) {
             uuid, 
             user: user_found[0].user, 
             email: user_found[0].email, 
-            account_type: account_type, 
-            money: user_money, 
+            account_type: user_found[0].account_type, 
+            money: user_found[0].money, 
             device,
             profile_pic: user_found[0].profile_pic,
             logs: logs.length
@@ -90,8 +98,8 @@ io.on('connection', function(socket) {
             if(res && res.data){
               extra_data = {
                 city: res.data.city ? res.data.city : "",
-                country: res.data.country ? res.data.country : "",
-                ip_address: res.data.ip_address? res.data.ip_address : "",
+                country: res.data.country_name ? res.data.country_name : "",
+                ip_address: res.data.ip? res.data.ip : "",
               }            
             }   				
             let timestamp = new Date().getTime() + ""
@@ -151,8 +159,8 @@ io.on('connection', function(socket) {
           if(res && res.data){
             extra_data = {
               city: res.data.city ? res.data.city : "",
-              country: res.data.country ? res.data.country : "",
-              ip_address: res.data.ip_address? res.data.ip_address : "",
+              country: res.data.country_name ? res.data.country_name : "",
+              ip_address: res.data.ip? res.data.ip : "",
             }            
           }  
           let timestamp = new Date().getTime() + ""   

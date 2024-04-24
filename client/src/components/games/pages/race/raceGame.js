@@ -459,9 +459,10 @@ function race_game(props){
 	let finish_line_x = 0
 	let race_interval = 800
 	// let race_interval = 20
+	let game_status = false
 		
 	this.ready = function(reason){
-		startGameRace = false //the game immediately begins
+		startGameRace = false //the game immediately begins		
 		self.createCanvas(canvas_width, canvas_height)	
 		self.start(reason)
 	}
@@ -764,6 +765,7 @@ function race_game(props){
 		let nr = 0
 		let time = race_interval
 		let move_landscape = false
+		game_status = true
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame       ||
@@ -887,6 +889,8 @@ function race_game(props){
 			}
 		}
 
+		game_status = false
+
 		let status = "lose"
 		if(money_history > money_original){
 			status = "win"
@@ -901,30 +905,41 @@ function race_game(props){
 		}
 		if(typeof props.results === "function"){
 			props.results(race_payload)
-		}		
+		}
+		
+		if(typeof props.resetBets === "function"){
+			props.resetBets()
+		}	
 	}
 
     this.leave = function(){
 		startGameRace = true
-		let money = decryptData(props.user.money)
-		let bet = 0
+		if(game_status){
+			//the user decided to leave in the middle of the race --> he will lose the bet
+			let money = decryptData(props.user.money)
+			let bet = 0
 
-		for(let i in rabbit_array){
-			if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
-				bet = bet + rabbit_array[i].bet
+			for(let i in rabbit_array){
+				if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
+					bet = bet + rabbit_array[i].bet
+				}
+			}		
+
+			let race_payload = {
+				uuid: props.user.uuid,
+				game: "race",
+				money: money - bet,
+				status: 'lose',
+				bet: bet
 			}
-		}		
 
-		let race_payload = {
-			uuid: props.user.uuid,
-			game: "race",
-			money: money - bet,
-			status: 'lose',
-			bet: bet
-		}
+			if(typeof props.results === "function"){
+				props.results(race_payload)
+			}
+		} 
 
-		if(typeof props.results === "function"){
-			props.results(race_payload)
+		if(typeof props.resetBets === "function"){
+			props.resetBets()
 		}
 	}
 }

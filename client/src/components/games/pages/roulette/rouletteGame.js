@@ -669,12 +669,23 @@ function RouletteGame(props){
 
     function gameStart(){
         if(my_roulette && document.getElementById("roulette_canvas") && roulette_bets && roulette_bets.length>0){
-			let roulette_payload_server = {
-				uuid: props.user.uuid,
-				room: getRoom(props.page.game),
-				bet: roulette_bets,
+			let money = decryptData(props.user.money)
+			if(roulette_bets.length > money){ // the user bet more than he has
+				let payload = {
+					open: true,
+					template: "error",
+					title: "error",
+					data: translate({lang: props.lang, info: "no_money"})
+				}
+				dispatch(changePopup(payload))
+			} else {
+				let roulette_payload_server = {
+					uuid: props.user.uuid,
+					room: getRoom(props.page.game),
+					bet: roulette_bets,
+				}
+				props.socket.emit('roulette_send', roulette_payload_server)
 			}
-			props.socket.emit('roulette_send', roulette_payload_server)
 		} else {
 			let payload = {
 				open: true,

@@ -36,10 +36,15 @@ function Race(props){
         }
 	}
 
+    function resetBets(){
+        setBets([])
+        setStartRace(false)
+    }
+
     return <>
         {(() => {
             if (startRace) {
-                return <RaceGame {...props} bets={bets}></RaceGame>
+                return <RaceGame {...props} bets={bets} resetBets={()=>resetBets()}></RaceGame>
             } else {
                 return <RaceTables {...props} getData={(x)=>getData(x)}></RaceTables>
             }	

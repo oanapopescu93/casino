@@ -45,12 +45,17 @@ function sort_array_obj(array, sort_by){
 function get_device(headers){
 	let device = 0 // 0 = computer, 1 = mobile, 2 = other
 	if(headers){
-		if(typeof headers["user-agent"] !== "undefined" || headers["user-agent"] !== "null" || headers["user-agent"] !== null || headers["user-agent"] !== ""){
-			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(headers["user-agent"]) ) {
-				device = 1
+		if (headers && typeof headers["user-agent"] === "string" && headers["user-agent"].trim() !== "") {
+			const userAgent = headers["user-agent"].toLowerCase()
+			if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile safari|windows phone|silk-accelerated/i.test(userAgent)) {
+				device = 1; // Mobile
+			} else if (/tablet|ipad|android(?!.*mobile)/i.test(userAgent)) {
+				device = 1; // Tablet
+			} else {
+				device = 0; // Assuming non-mobile devices as computers
 			}
 		} else {
-			device = 2
+			device = 2; // Other or undefined
 		}
 	}
 	return device
@@ -88,6 +93,7 @@ function get_extra_data(){
 	return new Promise(function(resolve, reject){
 		let url = get_geolocation('3b154170258741fb81976e7f34d61938')
 		axios.get(url).then(response => {
+			console.log('extra_data ', response)
 			resolve(response)	
 		}).catch(error => {
 			console.log('get_extra_data_error--> ', error)
