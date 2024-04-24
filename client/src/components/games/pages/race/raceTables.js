@@ -11,7 +11,9 @@ function RaceTables(props){
     const [index, setIndex] = useState(0)
 
     useEffect(() => {
-        myCarousel.current.to(index, 0)
+        if(myCarousel && myCarousel.current){
+            myCarousel.current.to(index, 0)
+        }        
 	}, [race_bets, index]) 
 
     let race_carousel_options = {

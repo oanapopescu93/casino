@@ -25,7 +25,7 @@ function Cell(props) {
         setQty(x)
     }
 
-    function updateRaceBet(x){
+    function updateRaceBet(x, index){
         dispatch(changeRaceBets({id: data.id, bet: x}))
     }
 
@@ -112,7 +112,7 @@ function Cell(props) {
                         </div>
                     </div>
                 case "race":
-                    return <div className="rabbit_box_container" key={index}>
+                    return <div className={"rabbit_box_container " + index} key={index}>
                         <div className="rabbit_box shadow_concav">
                             <Row>
                                 <Col sm={6}>
@@ -133,10 +133,10 @@ function Cell(props) {
                                     </div>
                                     <div className="rabbit_box_bet">
                                         <p>{translate({lang: lang, info: "bet"})}:</p>
-                                        <Counter num={0} max={max_bet} update={(e)=>updateRaceBet(e)}></Counter>
+                                        <Counter num={0} max={max_bet} update={(e)=>updateRaceBet(e, index)}></Counter>
                                     </div>
                                     <div className="rabbit_box_place">
-                                        <DropdownButton title={titleDropdown} id="language_button" onSelect={(e)=>handleDropdown(e)}>
+                                        <DropdownButton title={titleDropdown} id="language_button" onSelect={(e)=>handleDropdown(e, index)}>
                                             <Dropdown.Item eventKey={1}>{translate({lang: lang, info: 'place_01'})}</Dropdown.Item>
                                             <Dropdown.Item eventKey={2}>{translate({lang: lang, info: 'place_02'})}</Dropdown.Item>
                                             <Dropdown.Item eventKey={3}>{translate({lang: lang, info: 'place_03'})}</Dropdown.Item>
@@ -149,8 +149,7 @@ function Cell(props) {
                 default:
                     return <div key={index}>{translate({lang: lang, info: "error"})}</div>
             }
-        })()}
-        
+        })()}        
     </>
 }
 

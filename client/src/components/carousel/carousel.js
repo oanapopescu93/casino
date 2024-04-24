@@ -32,19 +32,10 @@ function Carousel(props){
             })
         }
     }, [carouselList])
-
     function handleSelect(e){
         if (e.item) {
-            var index = e.item.index - 1
-            var count = e.item.count
-            if (index > count){
-                index = 0
-            }
-            if (index <= 0){
-                index = count
-            }
             if(typeof props.getIndex === "function"){
-                props.getIndex(index)
+                props.getIndex(e.item.index)
             }
         }
     }
