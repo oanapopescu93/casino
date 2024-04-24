@@ -30,7 +30,7 @@ var word_bank = {
     sign_up: "Зарегистрироваться",
     signin_error: "Пользователь не существует",
     signup_error: "Пользователь уже существует",
-    user: "Пользователь",
+    user: "юзер",
     password: "Пароль",
     sign_in_email_empty: "Электронная почта пуста",
     sign_in_user_empty: "Пользователь не указан",

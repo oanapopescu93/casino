@@ -65,7 +65,7 @@ function Cell(props) {
                                     table_name={data.table_name}
                                     table_type={data.table_type}
                                     table_id={data.table_id}
-                                >{translate({lang: lang, info: "Click"})}</Button>
+                                >{translate({lang: lang, info: "play"})}</Button>
                             </div>
                         </div>
                     </div>

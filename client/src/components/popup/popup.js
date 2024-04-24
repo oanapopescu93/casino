@@ -95,11 +95,11 @@ function Popup(props){
                         case "settings":
                             return <Settings lang={lang} date={date} currency={currency} currencies={currencies}></Settings>
                         case "change_pic":
-                            return <ChangeProfilePic profiles={data} choosePic={(e)=>dashboardChanges(e)}></ChangeProfilePic>
+                            return <ChangeProfilePic lang={lang} profiles={data} choosePic={(e)=>dashboardChanges(e)}></ChangeProfilePic>
                         case "change_username":
-                            return <ChangeUsername changeUsername={(e)=>dashboardChanges(e)}></ChangeUsername>
+                            return <ChangeUsername lang={lang} changeUsername={(e)=>dashboardChanges(e)}></ChangeUsername>
                         case "change_password":
-                            return <ChangePassword changePassword={(e)=>dashboardChanges(e)}></ChangePassword>
+                            return <ChangePassword lang={lang} changePassword={(e)=>dashboardChanges(e)}></ChangePassword>
                         case "keno_prizes":
                             return <KenoPrizeTable lang={lang} kenoPrizes={data}></KenoPrizeTable>
                         case "game_results":

@@ -132,7 +132,7 @@ var word_bank = {
     password_rule04: "Almeno un carattere speciale",
     password_rule05: "Lunghezza minima di otto caratteri",    
 
-        //cart
+    //cart
     price: "Prezzo",
     qty: "Quantità",
     total_price: "Prezzo totale",
@@ -185,7 +185,7 @@ var word_bank = {
     order_date: "Data dell'ordine",
     postal_code: "Codice postale",
 
-        // blackjack
+    // blackjack
     start: "Inizia",
     hit: "Pesca",
     stand: "Stai",
@@ -237,6 +237,8 @@ var word_bank = {
     welcome_gift: "Regalo di benvenuto",
     prize: "Premio",
     our_casino: "il nostro casinò",
+
+    play: "Gioca",
 }
 
 export const wordsIt = function(info){

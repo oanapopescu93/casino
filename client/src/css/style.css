@@ -10,6 +10,7 @@
 
   --padding: 10px;
   --padding_small: 5px;
+  --padding_big: 20px;
   --radius:10px;
   --radius_small:5px;
   --radius_big:25px;
@@ -973,6 +974,11 @@ textarea {
 .changeUsername_box, .changePassword_box{
   margin-bottom: var(--padding_small);
 }
+.changeUsername_box .input_light, .changePassword_box .input_light{
+  background-color: transparent;
+  border: solid 1px var(--bg);
+  color: var(--bg);
+}
 
 /* COOKIES */
 .cookies_msg_container {
@@ -1054,7 +1060,7 @@ textarea {
   min-height: 100vh;
 }
 .content_wrap{
-  padding: var(--padding) 40px;
+  padding: var(--padding_big) 40px;
   transform: translate(0px, -50%);
   position: absolute;
   width: 100%;

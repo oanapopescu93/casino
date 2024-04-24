@@ -133,7 +133,6 @@ function getCryptoPaymentByID(payment_id){
 
 cryptoPayment.post("/api/crypto_get_payment", jsonParser, (req, res, next) => {
     let payment_id = req.body.payment_id
-    console.log('crypto_get_payment ', payment_id)
     if(typeof payment_id != "undefined" && payment_id != "null" && payment_id != null && payment_id != ""  && payment_id > 0){
         getCryptoPaymentByID(payment_id).then(function(data) {
             res.json(data)
@@ -153,7 +152,7 @@ cryptoPayment.post("/api/crypto_min", jsonParser, (req, res, next) => {
             res.json(data)
         })  
     } else {
-        res.json({payload: err, result: "error"})
+        res.json({payload: "amount", result: "error"})
     }    
 })
 
@@ -164,7 +163,7 @@ cryptoPayment.post("/api/crypto_status", jsonParser, (req, res, next) => {
             res.json(data)
         })  
     } else {
-        res.json({payload: err, result: "error"})
+        res.json({payload: "paymentId", result: "error"})
     } 
 })
 

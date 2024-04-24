@@ -37,11 +37,14 @@ function ChangeProfilePic(props) {
         case "RO":
             item_name_lang = "name_ro"
             break
+        case "RU":
+            item_name_lang = "name_ru"
+            break
         case "ENG":
         default:
             item_name_lang = "name_eng"
             break
-    } 
+    }
 
     function choosePic(item, i){
         setError(false)
