@@ -371,7 +371,7 @@ function blackjack_game(props){
 		if(props.page && props.page.game){
 			game = props.page.game
 		}
-		let money = decryptData(props.user.money)
+		let money = props.user.money ? decryptData(props.user.money) : 0
 
 		let dealer = null
 		if(blackjack_data && blackjack_data.dealer){
@@ -414,7 +414,7 @@ var blackjack_bets = 0
 var blackjack_status = false
 function Blackjack(props){
 	let game = props.page.game
-	let money = decryptData(props.user.money)
+	let money = props.user.money ? decryptData(props.user.money) : 0
 	let [startGame, setStartGame]= useState(false)
     let dispatch = useDispatch()
 

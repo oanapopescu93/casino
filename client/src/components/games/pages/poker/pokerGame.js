@@ -385,7 +385,7 @@ export const poker_game = function(props){
                     let evaluateHand = null
                     if(poker_data.players && poker_data.players[i] && props.user.uuid === poker_data.players[i].uuid){
                         uuid = poker_data.players[i].uuid
-                        user = decryptData(poker_data.players[i].user)
+                        user = poker_data.players[i].user ? decryptData(poker_data.players[i].user) : "-"
                         evaluateHand = poker_data.players[i].evaluateHand
                     } 
                     let hand = []
@@ -455,7 +455,7 @@ export const poker_game = function(props){
             let pot = poker_data.pot
             let status = 'lose'
             let game = props.page.game
-            let money = decryptData(props.user.money)
+            let money = props.user.money ? decryptData(props.user.money) : 0 
             let money_history = money - bet 
 
             let poker_payload = {
@@ -483,7 +483,7 @@ export const poker_game = function(props){
             let bet = player[0].bet
             let pot = poker_data.pot
             let game = props.page.game
-            let money = decryptData(props.user.money)
+            let money = props.user.money ? decryptData(props.user.money) : 0 
             let money_history = money
 
             let status = 'lose'

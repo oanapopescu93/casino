@@ -237,8 +237,6 @@ var word_bank = {
     welcome_gift: "Cadiu de bun-venit",
     prize: "Premii",
     our_casino: "casinoul nostru",
-
-    play: "Joaca",
 }
 
 export const wordsRo = function(info){

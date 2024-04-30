@@ -203,8 +203,9 @@ function Craps(props){
 		let sum
 		let myArray
 		let value
-		let time = 3000
+		let time = 2000
 		setCrapsBoardText(null)
+		setCrapsBoardList([])
 		switch(game_type) {
 			case "any 7":
 					roll(point).then(function(){ // one roll, sum must be 7
@@ -578,7 +579,7 @@ let craps_status = false
 function CrapsGame(props){
 	let dispatch = useDispatch()
 	const [start, setStart] = useState(false)
-	let money = decryptData(props.user.money)
+	let money = props.user.money ? decryptData(props.user.money) : 0
 	let game = props.page.game	
 
 	useEffect(() => {

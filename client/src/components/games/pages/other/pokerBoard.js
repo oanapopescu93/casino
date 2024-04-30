@@ -6,7 +6,7 @@ import { decryptData } from '../../../../utils/crypto'
 
 function PokerBoard(props){
     const {lang, user, action, template} = props
-    let max_bet = decryptData(user.money)
+    let max_bet = user.money ? decryptData(user.money) : 0
     const [num, setNum]= useState(0)
 
     function handleClick(e){   
@@ -31,7 +31,7 @@ function PokerBoard(props){
                         payload1 = 'draw'
                     }
                     return <>
-                        <Col xs={12}>1. {action} / {payload1}</Col>
+                        {/* <Col xs={12}>1. {action} / {payload1}</Col> */}
                         <Col xs={4}>
                             <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
                         </Col>
@@ -51,7 +51,7 @@ function PokerBoard(props){
                     </>
                 case "draw":
                     return <>
-                        <Col xs={12}>2. {action} / draw</Col>
+                        {/* <Col xs={12}>2. {action} / draw</Col> */}
                         <Col xs={4}></Col>
                         <Col xs={8}>
                             <div className="button_box">
@@ -71,7 +71,7 @@ function PokerBoard(props){
                         payload2 = 'river'
                     }
                     return <>
-                        <Col xs={12}>3. {action} / {payload2}</Col>
+                        {/* <Col xs={12}>3. {action} / {payload2}</Col> */}
                         <Col xs={4}>
                             <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
                         </Col>
@@ -91,7 +91,7 @@ function PokerBoard(props){
                     </>
                 case "river":
                     return <>
-                        <Col xs={12}>4. {action} / showdown</Col>
+                        {/* <Col xs={12}>4. {action} / showdown</Col> */}
                         <Col xs={4}></Col>
                         <Col xs={8}>
                             <div className="button_box">

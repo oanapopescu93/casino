@@ -253,7 +253,7 @@ function whack_game(props){
 		if(props.page && props.page.game){
 			game = props.page.game
 		}
-        let money = decryptData(props.user.money)
+        let money = props.user.money ? decryptData(props.user.money) : 0 
 
         let whack_payload = {
 			uuid: props.user.uuid,

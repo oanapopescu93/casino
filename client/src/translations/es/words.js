@@ -237,8 +237,6 @@ var word_bank = {
     welcome_gift: "Regalo de bienvenida",
     prize: "Premio",
     our_casino: "nuestro casino",
-
-    play: "Juega",
 }
 
 export const wordsEs = function(info){

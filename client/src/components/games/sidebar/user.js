@@ -75,11 +75,11 @@ function User(props){
         <Header template="panel_user" details={page} lang={lang}></Header>
         <div id="user_subtitle">
             <div className="user_subtitle_left">
-                <span id="user_name">{decryptData(user.user)}</span>
+                <span id="user_name">{user.user ? decryptData(user.user) : "-"}</span>
             </div>
             <div className="user_subtitle_right">
                 <span id="user_money">
-                    <span>{decryptData(user.money)}</span>
+                    <span>{user.money ? decryptData(user.money) : 0}</span>
                     <img alt="carrot_img" className="currency_img" src={carrot_img}/>
                 </span>
                 {!isEmpty(streak) ? <span id="user_streak">

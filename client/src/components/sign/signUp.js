@@ -44,7 +44,6 @@ function SignUp(props) {
             }
             dispatch(changePopup(payload))
         }
-        console.log(!isMinor)
 	}, [isMinor]) 
 
     return <div className="sign_up_container">

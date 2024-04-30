@@ -7,8 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import "./css/fonts.css"
 import "./css/special_occasions.css"
 import "./css/style.css"
-import 'owl.carousel/dist/assets/owl.carousel.css'
-import 'owl.carousel/dist/assets/owl.theme.default.css'
 
 import Page from "./components/pages/page"
 

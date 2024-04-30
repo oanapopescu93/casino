@@ -45,14 +45,6 @@ const database = require('./database/mysql')
 var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
-  // // database_config.sql = "SELECT * FROM casino_user;"
-  // database_config.sql = "SELECT * FROM login_user;"
-  //   database_config.name = "db00"
-	// 	database(database_config).then(function(result){
-      
-  //     console.log('user_found01 ', result)
-  //   }) 
-
 io.on('connection', function(socket) {
   socket.on('signin_send', (data) => {  
     database_config.sql = "SELECT * FROM casino_user;"

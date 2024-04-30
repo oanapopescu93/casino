@@ -1,58 +1,78 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import { translate } from '../../../../translations/translate'
 import Carousel from '../../../carousel/carousel'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
+import { decryptData } from '../../../../utils/crypto'
+import { changePopup } from '../../../../reducers/popup'
 
 function RaceTables(props){
     const {lang, home} = props
-    let myCarousel = useRef()
-    let race_bets = useSelector(state => state.games.race.bets)
-    const [index, setIndex] = useState(0)
+    let race_bets = useSelector(state => state.games.race.bets) 
+    let money = props.user.money ? decryptData(props.user.money) : 0
+    let dispatch = useDispatch()   
 
-    useEffect(() => {
-        if(myCarousel && myCarousel.current){
-            myCarousel.current.to(index, 0)
-        }        
-	}, [race_bets, index]) 
-
-    let race_carousel_options = {
-        items: 1,
-        nav: false,
-        rewind: true,
-        autoplay: false,
-        slideBy: 1,
-        dots: false,
-        loop:true,
-        responsive:{
-            0:{
-                items:1
-            },
-            960:{
-                items:2
-            },
-            1400:{
-                items:3
-            },
-            1800:{
-                items:4
-            },
-        },
-    }    
     let race_array = []
 	if(home.race_rabbits && home.race_rabbits.length>0){
 		race_array = home.race_rabbits.filter(function(x){
 			return x.participating
 		})
 	}
-    
-    function getIndex(e){
-        setIndex(e)
-    }
 
-    function getData(){
-		props.getData(race_bets)
+    function getData(){        
+        const sum = race_bets.reduce((total, current) => total + current.bet, 0)
+        if(money >= sum){ //the user has enough money to make all these bets
+            props.getData(race_bets)
+        } else {
+            let payload = {
+				open: true,
+				template: "error",
+				title: "error",
+				data: translate({lang: props.lang, info: "no_money"})
+			}
+			dispatch(changePopup(payload))
+        }
 	}
+
+    const race_carousel_options = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        swipeToSlide: true,
+        draggable: true,
+        dots: false,
+        arrows: false,
+        initialSlide: 0,
+        swipeThreshold: 20,
+        responsive: [
+            {
+                breakpoint: 1800,
+                settings: {
+                    slidesToShow: 4,
+                }
+            },
+            {
+                breakpoint: 1400,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },            
+            {
+                breakpoint: 960,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 0,
+                settings: {
+                    slidesToShow: 1,
+                }
+            }            
+        ]
+    }
 
     return <div className="game_container race_tables_container">
         <Carousel 
@@ -60,16 +80,14 @@ function RaceTables(props){
             template="race" 
             options={race_carousel_options} 
             lang={lang} 
-            itemList={race_array}
-            innerRef={myCarousel}    
-            getIndex={(e)=>getIndex(e)}        
+            itemList={race_array}    
         ></Carousel>
         <div className="game_start">
             <Button 
                 type="button"  
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>getData()}
-            >{translate({lang: lang, info: "Start"})}</Button>
+            >{translate({lang: lang, info: "start"})}</Button>
         </div>
     </div>
 }

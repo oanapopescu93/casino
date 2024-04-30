@@ -874,7 +874,7 @@ function race_game(props){
 
 	this.win_lose = function(){
 		rabbit_list = self.order_rabbits(rabbit_list)
-		let money_original = decryptData(props.user.money)
+		let money_original = props.user.money ? decryptData(props.user.money) : 0 
 		let money_history = money_original
 		for(let i in rabbit_array){
 			if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
@@ -916,7 +916,7 @@ function race_game(props){
 		startGameRace = true
 		if(game_status){
 			//the user decided to leave in the middle of the race --> he will lose the bet
-			let money = decryptData(props.user.money)
+			let money = props.user.money ? decryptData(props.user.money) : 0 
 			let bet = 0
 
 			for(let i in rabbit_array){

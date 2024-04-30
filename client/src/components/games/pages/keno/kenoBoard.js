@@ -35,7 +35,7 @@ function KenoBoard(props){
     const [titleDropdown2, setTitleDropdown2] = useState(1)  
     const [quickPickLength, setQuickPickLength] = useState(1)
     let howManySpots = 80 
-    let money = decryptData(props.user.money)
+    let money = props.user.money ? decryptData(props.user.money) : 0
     let dispatch = useDispatch()
 
     useEffect(() => {
@@ -165,10 +165,7 @@ function KenoBoard(props){
             <div className="keno_board shadow_convex">
                 {kenoSpots.map(function(item, i){ 
                     let number = item.get_number()
-                    let selected = ""
-                    if(item.get_status()){
-                        selected = " selected"
-                    }
+                    let selected = item.get_status() ? " selected" : ""
                     return <>                        
                         <div key={i} className={"keno_spot" + selected} onClick={()=>handleClick(item)}>
                             <div className="keno_spot_box">{number}</div>

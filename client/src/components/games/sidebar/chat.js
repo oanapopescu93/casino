@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import Header from '../../partials/header'
-import { Form, Button } from 'react-bootstrap';
-import { translate } from '../../../translations/translate';
-import { formatDate, isEmpty } from '../../../utils/utils';
-import { decryptData } from '../../../utils/crypto';
-import { getRoom } from '../../../utils/games';
+import { Form, Button } from 'react-bootstrap'
+import { translate } from '../../../translations/translate'
+import { formatDate, isEmpty } from '../../../utils/utils'
+import { decryptData } from '../../../utils/crypto'
+import { getRoom } from '../../../utils/games'
+import { useSelector } from 'react-redux'
 
 function ChatMessages(props){
     const messagesEndRef = React.createRef()
+    let date_format = useSelector(state => state.settings.date)
 
     function scrollToBottom(){
         if(messagesEndRef && messagesEndRef.current){
@@ -22,21 +24,21 @@ function ChatMessages(props){
     return <div className="messages" style={{height: props.height+'px'}}>
         {props.messages.map(function(message, i){
             let text = message.text
-            let user = message.user
-            let date = formatDate(message.timestamp)
+            let user = message.user ? decryptData(message.user) : "" 
+            let date = formatDate(message.timestamp, date_format)
             switch (text) {
                 case "join":
                     return <div key={i} className='message'>
-                        <p>{decryptData(user)} {translate({lang: props.lang, info: "joined_the_chat"})}</p>
+                        <p>{user} {translate({lang: props.lang, info: "joined_the_chat"})}</p>
                     </div>
                 case "leave":
                     return <div key={i} className='message'>
-                        <p>{decryptData(user)} {translate({lang: props.lang, info: "left_the_chat"})}</p>
+                        <p>{user} {translate({lang: props.lang, info: "left_the_chat"})}</p>
                     </div>        
                 default:
                     return <div key={i} className="message">
                         <div className="chat_header">
-                            <span className="user"><strong>{decryptData(user)} </strong>
+                            <span className="user"><strong>{user} </strong>
                             </span> (<span className="date">{date}</span>)
                         </div>
                         <div className="chat_body">
@@ -50,9 +52,10 @@ function ChatMessages(props){
 }
 
 function ChatList(props){
+    let date_format = useSelector(state => state.settings.date)
     return <ul className="chat_list">
         {props.list.map(function(item, i){
-            let date = formatDate(item.timestamp)
+            let date = formatDate(item.timestamp, date_format)
             return <li key={i}>
                 <span className="left">{decryptData(item.user)}</span>
                 <span className="right">{date}</span>

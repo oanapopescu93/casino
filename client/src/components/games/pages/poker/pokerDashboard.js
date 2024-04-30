@@ -15,7 +15,7 @@ let replaceCards = null
 function PokerDashboard(props){
     const {page, bet} = props
     let game = page.game
-	let money = decryptData(props.user.money) 
+	let money = props.user.money ? decryptData(props.user.money) : 0 
     let poker_bets = bet
     let dispatch = useDispatch()
     let [startGame, setStartGame] = useState(false)

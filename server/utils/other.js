@@ -93,7 +93,6 @@ function get_extra_data(){
 	return new Promise(function(resolve, reject){
 		let url = get_geolocation('3b154170258741fb81976e7f34d61938')
 		axios.get(url).then(response => {
-			console.log('extra_data ', response)
 			resolve(response)	
 		}).catch(error => {
 			console.log('get_extra_data_error--> ', error)
@@ -155,7 +154,6 @@ function sendEmail(data){ //send an email with instructions to reset token
           console.log('error--> ', error, mailOptions)
           resolve({send: "email_no_send"})
         } else {
-          console.log('info--> ', info.response)
           resolve({send: "email_send"})
         }
       })

@@ -419,16 +419,14 @@ function roulette_game(props){
 		let elem02 = JSON.parse(JSON.stringify(x))
 
 		dispatch(changeRouletteLuckyBet(elem02))
-        let money_history = decryptData(props.user.money)
+        let money_history = props.user.money ? decryptData(props.user.money) : 0 
 
         for(let i in elem01){		
 			if(isNaN(elem01[i].text) === false){
 				if(parseInt(elem01[i].text) === parseInt(elem02.nr)){
-					//console.log('case-a', elem01[i].text, elem02.nr)
 					elem01[i].win = true
 					money_history = money_history + elem01[i].bet_value
 				} else {
-					//console.log('case-b', elem01[i].text, elem02.nr)
 					elem01[i].win = false
 					money_history = money_history - elem01[i].bet_value
 				}
@@ -566,7 +564,7 @@ function roulette_game(props){
 			game = props.page.game
 		}
 		let status = "lose"
-		let money_original = decryptData(props.user.money)
+		let money_original = props.user.money ? decryptData(props.user.money) : 0 
 		if(!leave && money_original < money_history){
 			status = "win"
 		}		
@@ -652,7 +650,7 @@ function RouletteGame(props){
     function openTable(){
         if(my_roulette){
             let status = my_roulette.get_status_game()
-			let money = decryptData(props.user.money)
+			let money = props.user.money ? decryptData(props.user.money) : 0 
             if(!status && money && money>0){
                 props.openTable()
             } else {
@@ -669,7 +667,7 @@ function RouletteGame(props){
 
     function gameStart(){
         if(my_roulette && document.getElementById("roulette_canvas") && roulette_bets && roulette_bets.length>0){
-			let money = decryptData(props.user.money)
+			let money = props.user.money ? decryptData(props.user.money) : 0 
 			if(roulette_bets.length > money){ // the user bet more than he has
 				let payload = {
 					open: true,

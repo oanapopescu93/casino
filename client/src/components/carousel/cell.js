@@ -19,10 +19,12 @@ function Cell(props) {
     const [titleDropdown, setTitleDropdown] = useState(place)
     let dispatch = useDispatch()
     let user = useSelector(state => state.auth.user)
-    let max_bet = decryptData(user.money)
+    let max_bet = user.money ? decryptData(user.money) : 0
 
     function updateQtyMarket(x){
-        setQty(x)
+        if(x > 0){
+            setQty(x)
+        }
     }
 
     function updateRaceBet(x, index){
@@ -44,33 +46,43 @@ function Cell(props) {
         }
     }
 
+    function getItem(x){ 
+        if(typeof props.getItem === "function"){
+            switch (template) {
+                case "market":
+                    let id = data.id ? data.id : null
+                    let payload_market = {id, qty} 
+                    props.getItem(payload_market)
+                    break
+                case "salon":
+                    let table_name = x.table_name ? x.table_name : null
+                    let table_type = x.table_type ? x.table_type : null
+                    let table_id = x.table_id ? x.table_id : null
+                    let payload_race = {table_name, table_type, table_id}
+                    props.getItem(payload_race)
+                    break
+            }            
+        }        
+    }
+
 	return <>
         {(() => {
             switch (template) {
                 case "salon":
-                    let table_type = data.table_type
-                    if(table_type){
-                        table_type=table_type.split('_').join(' ')
-                    }
                     return <div className="cell_salon_container">
                         <div className="cell_salon shadow_concav">
                             <div className="cell_info">
                                 <h4>{data.table_name} {data.table_id}</h4>
-                                {table_type ? <p>{table_type}</p> : null}
+                                {data.table_type ? <p>{data.table_type.split('_').join(' ')}</p> : null}
                             </div>
                             <div className="cell_button">
-                                <Button 
-                                    type="button"  
-                                    className="mybutton round button_transparent shadow_convex"
-                                    table_name={data.table_name}
-                                    table_type={data.table_type}
-                                    table_id={data.table_id}
-                                >{translate({lang: lang, info: "play"})}</Button>
+                                <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>
+                                    {translate({lang: lang, info: "play"})}
+                                </Button>
                             </div>
                         </div>
                     </div>
                 case "market":
-                    let price = data.price
                     return <div className="cell_market_container">
                         <div className="cell_market shadow_concav">
                             <div className="cell_info">
@@ -98,16 +110,13 @@ function Cell(props) {
                                             return <h4>{data.name_eng}</h4>
                                     } 
                                 })()}
-                                <p>{translate({lang: lang, info: "price"})}: {price}</p>
+                                <p>{translate({lang: lang, info: "price"})}: {data.price}</p>
                                 <Counter update={(e)=>updateQtyMarket(e)}></Counter>
                             </div>                            
                             <div className="cell_button">
-                                <Button 
-                                    type="button"  
-                                    className="mybutton round button_transparent shadow_convex"
-                                    market_qty={qty}
-                                    market_id={data.id}
-                                ><FontAwesomeIcon icon={faBasketShopping} /></Button>
+                                <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>
+                                    <FontAwesomeIcon icon={faBasketShopping} />
+                                </Button>
                             </div>
                         </div>
                     </div>

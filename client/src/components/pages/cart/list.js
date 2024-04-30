@@ -10,7 +10,7 @@ import { decryptData } from '../../../utils/crypto'
 
 function List(props){
     const {list, lang, user} = props
-    let max = decryptData(user.money)
+    let max = user.money ? decryptData(user.money) : 0
 
     function updateQtyProduct(x, item){
         let payload = {...item, qty: x}

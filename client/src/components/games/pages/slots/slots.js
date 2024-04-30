@@ -407,7 +407,7 @@ function slots_game(props, id){
 			game = props.page.game
 		}
 		let status = win ? "win" : "lose"
-		let money_original = decryptData(props.user.money)
+		let money_original = props.user.money ? decryptData(props.user.money) : 0 
 		let money = win ? money_original + pay : money_original - pay
 		let slots_payload = {
 			uuid: props.user.uuid,
@@ -429,7 +429,7 @@ function Slots(props){
     let dispatch = useDispatch()    
     let game = props.page.game
     let game_type = game.table_type
-	let money = decryptData(props.user.money)
+	let money = props.user.money ? decryptData(props.user.money) : 0 
     let lines = 5
     switch(game_type) {
         case "type1":

@@ -12,26 +12,39 @@ import { changePage, changeGame, changeGamePage } from '../../../../reducers/pag
 function Market(props){
     const {lang, socket, home} = props
     let market = home.market ? home.market : []
-	let shader_style = {backgroundImage: `url(${shop})`}
-    let market_carousel_options = {
-        items: 4,
-        nav: false,
-        rewind: true,
-        autoplay: false,
-        slideBy: 1,
+	let shader_style = {backgroundImage: `url(${shop})`}    
+    const market_carousel_options = {
         dots: false,
-        loop:true,
-        responsive:{
-            0:{
-                items:1
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        swipeToSlide: true,
+        draggable: true,
+        dots: false,
+        arrows: false,
+        initialSlide: 0,
+        swipeThreshold: 20,
+        responsive: [
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 4,
+                }
             },
-            768:{
-                items:3
-            },
-            1200:{
-                items:4
-            },
-        }
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                }
+            }, 
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                }
+            }            
+        ]
     }
     let dispatch = useDispatch()
     

@@ -2427,6 +2427,9 @@ textarea {
 }
 
 /* CRAPS */
+.craps_subtitle{
+  margin-bottom: var(--padding);
+}
 .dice_box {
 	position: relative;
 	z-index: 0;

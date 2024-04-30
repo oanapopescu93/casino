@@ -12,7 +12,7 @@ function Cart(props){
     const {lang, cart, home, user} = props
     let market = home.market ? home.market : []
     let total = totalPriceSum().toFixed(2)
-    let max = decryptData(user.money)
+    let max = user.money ? decryptData(user.money) : 0
 
     function cartRemoveAllProduct(){
         if(typeof props.cartRemoveAllProduct === "function"){

@@ -11,10 +11,10 @@ function ChangeProfilePic(props) {
     let home = useSelector(state => state.home)
     let user = useSelector(state => state.auth.user)
     let profiles = home.profiles
-    let picId = decryptData(user.profile_pic)
+    let picId = user.profile_pic ? decryptData(user.profile_pic) : 0
     let indexProfile = profiles.findIndex((x) => x.id === parseInt(picId))
-    let money = decryptData(user.money)  
-    let account_type = decryptData(user.account_type)  
+    let money = props.user.money ? decryptData(props.user.money) : 0 
+    let account_type = user.account_type ? decryptData(user.account_type) : 1
     const [choice, setChoice] = useState(null)
     const [error, setError] = useState(false)
     const [index, setIndex] = useState(indexProfile)

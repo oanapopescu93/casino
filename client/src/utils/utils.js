@@ -6,10 +6,30 @@ export const isEmpty = function(element){
   return empty
 }
 
-export const formatDate = function(date){	
+export const formatDate = function(date, format = 'd.m.Y H:i'){	//d.m.Y H:i, d-m-Y H:i, m/d/Y H:i, d-m-Y h:i A, m/d/Y h:i A
   let d = new Date(date)
-  let dateString = new Date(d.getTime() - (d.getTimezoneOffset() * 60000 )).toISOString().split(".")[0].replace(/T/g, " ").replace(/-/g, "/")
-  return dateString
+  const pad = (num) => (num < 10 ? '0' : '') + num // Helper function to pad numbers with leading zeros
+
+  const yyyy = d.getFullYear();
+  const MM = pad(d.getMonth() + 1);
+  const dd = pad(d.getDate());
+  const HH24 = pad(d.getHours());
+  const hh12 = pad((d.getHours() % 12) || 12); // Convert to 12-hour format
+  const mm = pad(d.getMinutes());
+  const ss = pad(d.getSeconds());
+  const ampm = d.getHours() < 12 ? 'AM' : 'PM'
+
+  let formattedDate = format
+    .replace('d', dd)
+    .replace('m', MM)
+    .replace('Y', yyyy)
+    .replace('H', HH24)
+    .replace('i', mm)
+    .replace('s', ss)
+    .replace('h', hh12)
+    .replace('A', ampm)
+
+  return formattedDate
 }
 
 export const roundNumber = function(number, precision = 1000){

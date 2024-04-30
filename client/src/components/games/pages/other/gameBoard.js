@@ -7,7 +7,7 @@ import PokerBoard from './pokerBoard'
 
 function GameBoard(props){
     const {template, lang, user, startGame} = props
-    let max_bet = decryptData(user.money)
+    let max_bet = user.money ? decryptData(user.money) : 0
 
     function handleClick(e){        
         if(typeof props.choice === "function"){

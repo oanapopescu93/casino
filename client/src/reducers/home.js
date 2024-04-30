@@ -52,9 +52,7 @@ const homeSlice = createSlice({
     name: "home",
     initialState,
     reducers: {
-        bringPayload: () => {
-            //console.log("bringThemAll!!!")
-        },
+        bringPayload: () => {},
         showPayload: (state, { payload }) => {            
             state.products = payload.products
             state.market = payload.market

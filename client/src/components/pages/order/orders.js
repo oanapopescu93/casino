@@ -9,6 +9,7 @@ function Orders(props){
     const {lang} = props
     let orders = useSelector(state => state.order.order) 
     const [selectedOrder, setSelectedOrder] = useState(null)
+    let date_format = useSelector(state => state.settings.date)
 
     function handleViewOrder(x){
         setSelectedOrder(x)

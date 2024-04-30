@@ -15,7 +15,7 @@ import PaymentCart from './paymentCart'
 function Payment(props){
     const {lang, user, template, home} = props
     let dispatch = useDispatch()
-    let max_bet = decryptData(user.money)
+    let max_bet = user.money ? decryptData(user.money) : 0
     let price_per_carrot = 1
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(price_per_carrot)       
@@ -164,7 +164,7 @@ function Payment(props){
 
     function crypto_status(payment_id){
         postData("/api/crypto_get_payment", {payment_id}).then((data) => {
-            console.log('sendPayload5--> ', data, data.payment_status)
+            //console.log('sendPayload5--> ', data, data.payment_status)
         })
     }
 

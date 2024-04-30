@@ -2,11 +2,13 @@ import React from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
 import { translate } from '../../../translations/translate'
 import { formatDate, isEmpty, roundNumber } from '../../../utils/utils'
+import { useSelector } from 'react-redux'
 
 function Order(props){
     const {lang, order} = props
     let timestamp = 1000 * order.created
-    let date = formatDate(timestamp)
+    let date_format = useSelector(state => state.settings.date)
+    let date = formatDate(timestamp, date_format)
     let order_amount = roundNumber(order.amount)
 
     function handleBack(){

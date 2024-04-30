@@ -44,8 +44,8 @@ function DashboardLeft(props){
     const {home, user, lang} = props
     let dispatch = useDispatch()
 
-    let name = user.user
-    let money = user.money
+    let name = user.user ? decryptData(user.user) : "-"
+    let money = user.money ? decryptData(user.money) : 0
     let profiles = home.profiles
     let picId = user.profile_pic ? decryptData(user.profile_pic) : 1
     let animal = profiles.filter(function(x){
@@ -94,7 +94,7 @@ function DashboardLeft(props){
             </Col>
             <Col sm={6} className="dashboard_user_info">
                 <p className="dashboard_user">
-                    <b>{translate({lang: lang, info: "user"})}: </b><span id="dashboard_user_text">{decryptData(name)}</span>
+                    <b>{translate({lang: lang, info: "user"})}: </b><span id="dashboard_user_text">{name}</span>
                 </p>										
                 <p className="dashboard_animal">
                     <b>{translate({lang: lang, info: "animal"})}: </b>
@@ -125,7 +125,7 @@ function DashboardLeft(props){
                     })()}
                 </p>
                 <p className="dashboard_money">
-                    <b>{translate({lang: lang, info: "carrots"})}: </b>{decryptData(money)}
+                    <b>{translate({lang: lang, info: "carrots"})}: </b>{money}
                 </p>
             </Col>
         </Row>	

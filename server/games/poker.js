@@ -7,7 +7,6 @@ let how_many_players = 6
 let how_many_cards = 5
 
 function poker(data, user_join){
-    console.log(data.action, data.stage)
     switch(data.game){
         case "texas_holdem":
             how_many_cards = 2
@@ -200,8 +199,7 @@ function poker(data, user_join){
                 players[index].bet = 0
                 if(action !== "check"){
                     players[index].bet = data.bet
-                }
-                console.log(index, action, players[index], data)            
+                }          
             } else {
                 let choice = 'bet'
                 let number = Math.floor(Math.random() * 10) + 1
@@ -250,7 +248,6 @@ function poker(data, user_join){
     }
     function canCheck(playerIndex, players){
         for (let i = 0; i < playerIndex; i++) {
-            console.log(i, players[i].user, players[i].bet, typeof players[i].bet !== "undefined",players[i].bet > 0)
             if (players[i].bet > 0) {
                 return true
             }
@@ -262,7 +259,7 @@ function poker(data, user_join){
         let players = [...poker_players]
         let index = players.findIndex((x) => x.uuid === data.uuid)
         players[index].fold = true
-        return players
+        return players 
     }
 
     function handleCallRaise(amount=1){

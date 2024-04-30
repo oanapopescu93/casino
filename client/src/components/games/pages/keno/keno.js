@@ -12,7 +12,7 @@ function Keno(props){
     const [start, setStart] = useState(false)
     const [data, setData] = useState(null)
     const [resultsPayload, setResultsPayload] = useState(null)
-    let money = decryptData(props.user.money)
+    let money = props.user.money ? decryptData(props.user.money) : 0
     let game = props.page.game
     let dataUpdate = null
 

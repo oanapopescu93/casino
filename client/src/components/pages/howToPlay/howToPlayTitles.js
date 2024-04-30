@@ -18,9 +18,9 @@ function HowToPlayTitles(props){
 
     return <div className="how_to_play_titles">
         {list_games.map(function(t, i){
-            return <div class="cell_howToPlay_container" onClick={()=>handleChoice(t)}>
-                <div class="cell_howToPlay shadow_concav">
-                    <div class="cell_info">
+            return <div className="cell_howToPlay_container" onClick={()=>handleChoice(t)}>
+                <div className="cell_howToPlay shadow_concav">
+                    <div className="cell_info">
                         {(() => {
                             switch (t) {
                                 case "roulette":

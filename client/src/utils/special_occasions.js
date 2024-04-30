@@ -50,7 +50,7 @@ function Easter(year, type="catholic") {
         let date = new Date(year, month - 1, day)
         return date
     } else {
-        // Julian algorithm to calculate the date of Orthodox Easter
+        // Find the Julian Easter Sunday date
         let a = year % 4
         let b = year % 7
         let c = year % 19
@@ -58,7 +58,13 @@ function Easter(year, type="catholic") {
         let e = (2 * a + 4 * b - d + 34) % 7
         let month = Math.floor((d + e + 114) / 31)
         let day = ((d + e + 114) % 31) + 1
-        return new Date(year, month - 1, day)
+        let julianEaster = new Date(year, month - 1, day)
+        
+        // Find the number of days skipped in the Gregorian calendar
+        let gregorianEaster = new Date(julianEaster);
+        gregorianEaster.setDate(julianEaster.getDate() + 13)
+    
+        return new Date(gregorianEaster.getFullYear(), gregorianEaster.getMonth(), gregorianEaster.getDate())
     }
     
 }

@@ -17,26 +17,37 @@ function SalonGames(props){
     const [titleDropdown, setTitleDropdown] = useState("")
     let dispatch = useDispatch()    
     const [showWinter, setShowWinter] = useState(false)
-
-    let salon_carousel_options = {
-        items: 4,
-        nav: false,
-        rewind: true,
-        autoplay: false,
-        slideBy: 1,
+    const salon_carousel_options = {
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        swipeToSlide: true,
+        draggable: true,
         dots: false,
-        loop:true,
-        responsive:{
-            0:{
-                items:1
+        arrows: false,
+        initialSlide: 0,
+        swipeThreshold: 20,
+        responsive: [
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 4,
+                }
             },
-            768:{
-                items:3
-            },
-            1200:{
-                items:4
-            },
-        }
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                }
+            }, 
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                }
+            }            
+        ]
     }
 
     function handleResize(){
@@ -140,7 +151,7 @@ function SalonGames(props){
                                     options={salon_carousel_options} 
                                     lang={lang} 
                                     itemList={casinoGames[t]} 
-                                    getItem={(e)=>gameChoice(e)}
+                                    getItem={(e)=>gameChoice(e)}   
                                 ></Carousel>
                             </div>
                         </div>
