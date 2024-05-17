@@ -35,6 +35,12 @@ function KenoBoard(props){
     const [titleDropdown2, setTitleDropdown2] = useState(1)  
     const [quickPickLength, setQuickPickLength] = useState(1)
     let howManySpots = 80 
+    const chunkSize = 10
+    const chunkedKenoSpots = []
+    // Split kenoSpots into chunks of size chunkSize
+    for (let i = 0; i < kenoSpots.length; i += chunkSize) {
+        chunkedKenoSpots.push(kenoSpots.slice(i, i + chunkSize))
+    }
     let money = props.user.money ? decryptData(props.user.money) : 0
     let dispatch = useDispatch()
 
@@ -44,7 +50,7 @@ function KenoBoard(props){
             let kenoSpot = new KenoSpot({number: i})
             array.push(kenoSpot)
         }
-        setKenoSpots(array)
+        setKenoSpots(array)        
     }, [])
 
     function handleClick(item){
@@ -163,16 +169,17 @@ function KenoBoard(props){
                 <Col sm={2}></Col>   
             </Row>            
             <div className="keno_board shadow_convex">
-                {kenoSpots.map(function(item, i){ 
-                    let number = item.get_number()
-                    let selected = item.get_status() ? " selected" : ""
-                    return <>                        
-                        <div key={i} className={"keno_spot" + selected} onClick={()=>handleClick(item)}>
-                            <div className="keno_spot_box">{number}</div>
-                        </div>
-                        {number % 10 === 0 ? <br></br> : null}                        
-                    </>
-                })}
+                {chunkedKenoSpots.map((chunk, rowIndex) => (
+                    <div key={rowIndex} className="keno_row">
+                        {chunk.map((item, columnIndex) => {
+                            const number = item.get_number();
+                            const selected = item.get_status() ? " selected" : "";
+                            return <div key={rowIndex * chunkSize + columnIndex} className={"keno_spot" + selected} onClick={() => handleClick(item)}>
+                                <div className="keno_spot_box">{number}</div>
+                            </div>
+                        })}
+                    </div>
+                ))}
             </div>
             <Row className="keno_options">
                 <Col sm={2}></Col>

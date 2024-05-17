@@ -17,6 +17,8 @@ function keno_game(props){
     let howManyBalls = 80
     let font_obstacle = '12px sans-serif'
     let duration = 1000
+    let ballPos = [350, 50]
+    let ballSpeed = [1000, 3000]
 
     this.ready = function(){
         self.createCanvas(canvas_width, canvas_height)
@@ -30,25 +32,21 @@ function keno_game(props){
 		ctx = canvas.getContext("2d")
 		
 		if (window.innerWidth < 960){
-			if(window.innerHeight < window.innerWidth){
-				//small landscape
-				canvas.width = 250
-				canvas.height = 250
-                radiusBall = 10
-                radiusBig = 100
-			} else {
-				//small portrait
-				canvas.width = 250
-				canvas.height = 250
-                radiusBall = 10
-                radiusBig = 100
-			}
+            //small landscape and portrait
+            canvas.width = 250
+            canvas.height = 250
+            radiusBall = 10
+            radiusBig = 100
+            ballPos = [150, 50]
+            ballSpeed = [500, 1500]
 		} else {
             //big
             canvas.width = 610
             canvas.height = 610
             radiusBall = 20
             radiusBig = 300
+            ballPos = [350, 50]
+            ballSpeed = [1000, 3000]
 			
 		}
         canvas_width = canvas.width
@@ -62,21 +60,20 @@ function keno_game(props){
                 radius: radiusBall,
                 xspeed: 0,
                 yspeed: 0,
-                xpos: canvas.width/2,
-                ypos: canvas.height/2,
-                changeDir: false,
+                xpos: ballPos[0],
+                ypos: ballPos[1],
                 dir: (Math.random() * 2) + 0.5,
             }
             let dir = (Math.random() * 1) + 0
             if(Math.round(Math.random())>0.5){
                 dir = -dir
             }
-            ballsArray[i].xspeed = dir * Math.floor((Math.random()*3000)+1000)            
+            ballsArray[i].xspeed = dir * Math.floor((Math.random()*ballSpeed[1])+ballSpeed[0])            
             dir = (Math.random() * 1) + 0
             if(Math.round(Math.random())>0.5){
                 dir = -dir
             }
-            ballsArray[i].yspeed = dir * Math.floor((Math.random()*3000)+1000)
+            ballsArray[i].yspeed = dir * Math.floor((Math.random()*ballSpeed[1])+ballSpeed[0])
             ballsArray[i].number = parseInt(i)+1
        }
     }
@@ -106,7 +103,6 @@ function keno_game(props){
 
     this.move = function(){
         setTimeout(function(){
-            //duration = 100
             self.animation(duration)
        }, 500)  
     }
@@ -114,6 +110,7 @@ function keno_game(props){
     this.animation = function(time){ 
 		let spin_nr = 0
 		let spin_time = time
+        // let spin_time = 100
 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame	||
@@ -146,9 +143,7 @@ function keno_game(props){
                     for(let i in ballsArray){
                         let point01 = {x: ballsArray[i].xpos, y: ballsArray[i].ypos}
                         let point02 = {x: canvas.width/2, y: canvas.height/2}
-                        if (getDistance_between_entities(point01, point02) + ballsArray[i].radius >= radiusBig) { 
-                            //ballsArray[i].changeDir = true
-                            
+                        if (getDistance_between_entities(point01, point02) + ballsArray[i].radius >= radiusBig) {                             
                             let nx_o = canvas.width/2 -  ballsArray[i].xpos
                             let ny_o = canvas.width/2 -  ballsArray[i].ypos
                     

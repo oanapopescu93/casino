@@ -27,8 +27,11 @@ function Keno(props){
                     bet: keno_bets,
                     money: money - keno_bets
                 }
+                
                 props.results(keno_payload)
+                setStart(false)
                 keno_status = false
+                setResultsPayload(null)
             }
 		}
     }, [])
@@ -68,8 +71,11 @@ function Keno(props){
                 bet: keno_bets,
                 money: pay
             }
+            
             props.results(keno_payload)
+            setStart(false)
             keno_status = false
+            setResultsPayload(null)
         }
     }, [resultsPayload])
 
