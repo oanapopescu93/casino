@@ -215,6 +215,9 @@ var word_bank = {
     your_numbers: "I tuoi numeri",
     lucky_numbers: "Numeri fortunati",
 
+    // slots
+    slots_prizes: "Premi delle slot",
+
     // poker
     total_pot: "Total Pot",
     check: "Check",
@@ -236,6 +239,7 @@ var word_bank = {
     welcome: "Benvenuto",
     welcome_gift: "Regalo di benvenuto",
     prize: "Premio",
+    prizes: "Premi",
     our_casino: "il nostro casinò",
 }
 

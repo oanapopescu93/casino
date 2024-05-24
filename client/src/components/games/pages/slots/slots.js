@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import { draw_dot, getRoom, get_slots_images } from '../../../../utils/games'
 import $ from 'jquery'
-import { sortList } from '../../../../utils/utils'
+import { getWindowDimensions, sortList } from '../../../../utils/utils'
 import GameBoard from '../other/gameBoard'
 import { changePopup } from '../../../../reducers/popup'
 import { decryptData } from '../../../../utils/crypto'
@@ -24,7 +24,6 @@ function slots_game(props, id){
 	let spin_time_reel = spin_time/5 // how long each slot spins at minimum
 	let slot_speed = [] // how many pixels per second slots roll
 	let speed = 10
-	let slot_type = ""
 	
 	this.state = 0
 	this.images = []
@@ -60,9 +59,9 @@ function slots_game(props, id){
     }
 
     this.resize = function(){
+		reel = self.get_reel(props.lines)
         self.fit()
-        slots_canvas = []
-        reel = self.get_reel(props.lines)
+        slots_canvas = []        
         self.offset = self.get_offset(reel)
 		self.create_slot_machine_lines()		
         for(let i in reel){
@@ -89,16 +88,24 @@ function slots_game(props, id){
 		return offset
 	}
 
-    this.fit = function(){
-		speed = 10
+    this.fit = function(){		
 		image_size = [100, 100]
 		image_size_canvas = [290, 290, 5, 5, 80, 80]
+		speed = 10
 		slot_speed = []
 		if (window.innerWidth < 768){
 			image_size = [50, 50]
 			image_size_canvas = [290, 290, 3, 3, 40, 40]
 			speed = 5
-		}				
+		}
+		if (props.lines > 3 && window.innerWidth < 480){
+			image_size = [40, 40]
+			image_size_canvas = [290, 290, 3, 3, 30, 30]
+		}
+		if (props.lines > 3 && window.innerWidth < 360){
+			image_size = [30, 30]
+			image_size_canvas = [290, 290, 3, 3, 20, 20]
+		}			
 	}
 
 	this.create_slot_machine_lines = function(){
@@ -296,69 +303,50 @@ function slots_game(props, id){
 					break
 				}
 			}
+		}		
+		return splitArray(array, 3) // there are always 3 veggies per column
+	}
+
+	function splitArray(array, chunkSize) {
+		const result = []
+		for (let i = 0; i < array.length; i += chunkSize) {
+			result.push(array.slice(i, i + chunkSize))
 		}
-		let t = -1
-		let array01 = []
-		let array02 = []
-		let array03 = []
-		for(let i in array){
-			t++
-			if(t === 3){
-				t = 0
-			}
-			switch(t) {
-				case 0:	
-					array01.push(array[i])
-					break		
-				case 1:
-					array02.push(array[i])		
-					break		
-				case 2:
-					array03.push(array[i])	
-					break		
-			}
-		}
-		return [array01, array02, array03]
+		return result
 	}
 
 	this.win_lose = function(array){
 		let win_results = []
-		let matrix = slots_data.matrix		
+		let matrix = slots_data.matrix
 		for(let i in matrix){
-			let small_matrix = matrix[i].matrix
-			let t = 0
-			for(let j=0; j<small_matrix.length-1; j++){
-				let x1 = small_matrix[j][0]
-				let y1 = small_matrix[j][1]
-				let x2 = small_matrix[j+1][0]
-				let y2 = small_matrix[j+1][1]
-				let my_veggy1 = array[x1][y1].img.id
-				let my_veggy2 = array[x2][y2].img.id
-
-				if(reel.length === 3){
-					//if it has 3 reels we check if the two are equal
-					if(my_veggy1===my_veggy2){
-						t++
-					} else {
-						t = 0
-						break
-					}
-				} else if(reel.length === 5){
-					//if it has 5 reels we check if the two are equal or if one of them is a carrot (5 reel slots have a wildcard)
-					if(my_veggy1===my_veggy2 || my_veggy1==="carrot" || my_veggy2==="carrot"){
-						t++
-					} else {
-						t = 0
-						break
-					}
-				}
-				
-			}
-			if(t === 2){
+			if(checkIdentical(getImgIds(array, matrix[i].matrix))){
 				win_results.push({matrix: matrix[i]})
 			}
 		}
 		return win_results
+	}
+
+	function getImgIds(veggy_array, small_matrix) {
+		const imgIds = []	
+		for (const [j, i] of small_matrix) {
+			if (veggy_array[i] && veggy_array[i][j] && veggy_array[i][j].img && veggy_array[i][j].img.id){
+				imgIds.push(veggy_array[i][j].img.id)
+			}
+		}	
+		return imgIds
+	}
+
+	function checkIdentical(array) {
+		if (array.length === 0) {
+			return false
+		}		
+		let trump_cards = array.length === 3 ? ["carrot", "potato"] : ["carrot"]
+		for (let i = 0; i < array.length-1; i++) {
+			if(array[i] !== array[i+1] && !trump_cards.includes(array[i]) && !trump_cards.includes(array[i+1])){ // if element and the next element are not identical and none of them is a trump card, then no need to check anymore
+				return false
+			}			
+		}
+		return true
 	}
 
 	this.drawResultsArray = function(results){
@@ -417,7 +405,7 @@ function slots_game(props, id){
 			bet: pay
 		}		
 		if(typeof props.results === "function"){
-            props.results(slots_payload)
+            //props.results(slots_payload)
         }
     }
 }
@@ -426,7 +414,8 @@ let slots_data = null
 let slots_bets = 0
 let slots_status = false
 function Slots(props){
-    let dispatch = useDispatch()    
+    let dispatch = useDispatch() 
+	const [width, setWidth] = useState(getWindowDimensions().width)   
     let game = props.page.game
     let game_type = game.table_type
 	let money = props.user.money ? decryptData(props.user.money) : 0 
@@ -444,14 +433,14 @@ function Slots(props){
 	function clear(bet){
 		slots_bets = bet
 		if(slots_bets > 0 && slots_status){			
-			let blackjack_payload = {
+			let slots_payload = {
 				uuid: props.user.uuid,
 				game: game,
 				status: 'lose',
 				bet: slots_bets,
 				money: money - slots_bets
 			}
-			props.results(blackjack_payload)
+			//props.results(slots_payload)
 		}
 	}
     let options = {...props, lines, items, dispatch, clear}
@@ -510,32 +499,48 @@ function Slots(props){
         slots_bets = x
     }
 
+	function handleShowPrizes(){
+		let payload = {
+            open: true,
+            template: "slots_prizes",
+            title: "slots_prizes",
+            data: slots_data,
+        }
+        dispatch(changePopup(payload))
+	}
+
     return <div className="game_container">
-        <div id="slot_machine" className="slot_machine">
+        <div id="slot_machine" className={"slot_machine " + "slot_machine_" + lines}>
             <canvas id="slot_machine_lines"></canvas>
             {(() => {
                 switch(lines) {
-                case 3:
-                    return <>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_1'></canvas></div>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_2'></canvas></div>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_3'></canvas></div>
-                    </>
-                case 5:
-                default: 
-                    return <>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_1'></canvas></div>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_2'></canvas></div>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_3'></canvas></div>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_4'></canvas></div>
-                        <div className="box"><canvas className="slot_canvas" id='slot_canvas_5'></canvas></div>
-                    </>
-                }
+					case 3:
+						return <>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_1'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_2'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_3'></canvas></div>
+						</>
+					case 5:
+					default: 
+						return <>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_1'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_2'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_3'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_4'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_5'></canvas></div>
+						</>
+					}
             })()}
-        </div>
+			{getWindowDimensions().width >= 600 ? <div id="slots_prizes" className="desktop" onClick={()=>handleShowPrizes()}>
+            	{translate({lang: props.lang, info: "prizes"})}
+        	</div> : null}			
+        </div>		
         <div className="slot_machine_board">
             <GameBoard template="slots" {...props} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)}></GameBoard>
         </div>
+		{getWindowDimensions().width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
+            {translate({lang: props.lang, info: "prizes"})}
+        </div> : null}
     </div>
 }
 

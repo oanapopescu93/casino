@@ -2394,6 +2394,38 @@ textarea {
   background: white;
 	border-color: var(--dark_color) var(--color);
 }
+#slots_prizes{
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: -45px;
+  transform: translate(0px, -50%);
+  border-radius: 0 var(--padding_small) var(--padding_small) 0;
+  background: var(--color);
+  color: var(--bg);
+  border-left: var(--padding_small) solid var(--dark_color);
+  padding: var(--padding_small);
+  width: 35px;
+  height: 150px;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  cursor: pointer;
+}
+#slots_prizes.mobile{
+  position: static;
+  transform: none;
+  width: 100%;
+  height: auto;
+  writing-mode: unset;
+  text-orientation: unset;
+  background-color: var(--dark_color);
+  border-top: solid var(--padding_small) var(--dark_color);
+  border-right: solid var(--padding_small) var(--color);
+  border-bottom: solid var(--padding_small) var(--dark_color);
+  border-left: solid var(--padding_small) var(--color);
+  border-radius: var(--radius_small);
+  margin-top: var(--padding);
+}
 #slot_machine_lines{
 	position: absolute;
 	z-index: 1;
@@ -2421,11 +2453,34 @@ textarea {
 	background: white;
 }
 .slot_machine_board{
-  width: 570px;
+  width: 100%;
+  max-width: 570px;
   margin: auto;
   padding-top: var(--padding);
 }
-
+.slots_rules{
+  padding: var(--padding_small);
+  max-height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.slots_rules_box{
+  margin-bottom: var(--padding_small);
+}
+.slots_rules_box td{
+  width: 30px;
+  height: 30px;
+  border: solid 1px var(--bg);  
+}
+.slots_rules_box td.selected{
+  background-color: var(--bg);
+  border: solid 1px var(--color); 
+}
+.slots_rules_left, .slots_rules_right{
+  display: inline-block;
+  vertical-align: top;
+  padding: 0px var(--padding_small);
+}
 /* CRAPS */
 .craps_subtitle{
   margin-bottom: var(--padding);
@@ -3243,9 +3298,6 @@ textarea {
   .slot_machine .box{
     height: 160px;
   }
-  .slot_machine_board{
-    width: 320px;
-  }
 
   /* CRAPS */
   .dice {
@@ -3374,6 +3426,13 @@ textarea {
   }
 }
 @media (max-width:480px) {
+  /* SLOTS */
+  .slot_machine .box {
+    height: 130px;
+  }
+  .slot_machine.slot_machine_3 .box {
+    height: 160px;
+  }
   /* KENO */
   .keno_spot .keno_spot_box{
     width: 25px;

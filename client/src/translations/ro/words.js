@@ -215,6 +215,9 @@ var word_bank = {
     your_numbers: "Numerele tale",
     lucky_numbers: "Numerele norocoase",
 
+    // slots
+    slots_prizes: "Premii la sloturi",
+
     // poker
     total_pot: "Total Pot",
     check: "Check",
@@ -235,7 +238,8 @@ var word_bank = {
 
     welcome: "Bine ai venit",
     welcome_gift: "Cadiu de bun-venit",
-    prize: "Premii",
+    prize: "Premiu",
+    prizes: "Premii",
     our_casino: "casinoul nostru",
 }
 

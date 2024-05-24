@@ -20,6 +20,7 @@ import Welcome from "./welcome"
 import Streak from "./streak"
 import WhackARabbit from "./whackARabbit"
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
+import SlotsPrizeTable from "./slotsPrizeTable"
 
 function Popup(props){    
     const {lang, date, currency, socket, home} = props
@@ -91,30 +92,28 @@ function Popup(props){
                                 forgotPasswordResult={forgotPasswordResult}
                             ></ForgotPassword>
                         case "isMinor":
-                            return <IsMinor lang={lang} text={data} isMinorClick={(e)=>isMinorClick(e)}></IsMinor>
+                            return <IsMinor lang={lang} text={data} isMinorClick={(e)=>isMinorClick(e)} />
                         case "settings":
-                            return <Settings lang={lang} date={date} currency={currency} currencies={currencies}></Settings>
+                            return <Settings lang={lang} date={date} currency={currency} currencies={currencies} />
                         case "change_pic":
-                            return <ChangeProfilePic lang={lang} profiles={data} choosePic={(e)=>dashboardChanges(e)}></ChangeProfilePic>
+                            return <ChangeProfilePic lang={lang} profiles={data} choosePic={(e)=>dashboardChanges(e)} />
                         case "change_username":
-                            return <ChangeUsername lang={lang} changeUsername={(e)=>dashboardChanges(e)}></ChangeUsername>
+                            return <ChangeUsername lang={lang} changeUsername={(e)=>dashboardChanges(e)} />
                         case "change_password":
-                            return <ChangePassword lang={lang} changePassword={(e)=>dashboardChanges(e)}></ChangePassword>
+                            return <ChangePassword lang={lang} changePassword={(e)=>dashboardChanges(e)} />
+                        case "slots_prizes":
+                            return <SlotsPrizeTable lang={lang} slotsPrizes={data}/>
                         case "keno_prizes":
-                            return <KenoPrizeTable lang={lang} kenoPrizes={data}></KenoPrizeTable>
+                            return <KenoPrizeTable lang={lang} kenoPrizes={data} />
                         case "game_results":
-                            return <GameResults lang={lang} results={data}></GameResults>
+                            return <GameResults lang={lang} results={data} />
                         case "streak":
-                            return <Streak lang={lang} data={data}></Streak>
+                            return <Streak lang={lang} data={data} />
                         case "whack_a_rabbit":
-                            return <WhackARabbit lang={lang} handleClick={()=>handleWhackARabbit()}></WhackARabbit>
+                            return <WhackARabbit lang={lang} handleClick={()=>handleWhackARabbit()} />
                         case "error":
                         default:
-                            if(typeof data === "string"){
-                                return <Default lang={lang} text={data}></Default>
-                            }
-                            return null
-                            
+                            return <>{typeof data === "string" ? <Default lang={lang} text={data} /> : null}</>                            
                     }
                 })()}
             </Modal.Body>
@@ -127,7 +126,7 @@ function Popup(props){
             })()}
         </Modal> : <Modal id="myModal_gift" className={"mymodal " + template} show={open} onHide={closeModal} size={size} centered> 
             <Modal.Body>
-                <Welcome lang={lang}></Welcome>
+                <Welcome lang={lang} />
             </Modal.Body>
         </Modal>}
     </>
