@@ -1584,6 +1584,9 @@ textarea {
 .donation_box{
   padding: var(--padding);
 }
+.donation_box h2{
+  font-family: 'Roboto Condensed';
+}
 .donation_box_tabs{
   margin-bottom: var(--padding);
 }
