@@ -13,7 +13,7 @@ function SlotsPrizeTable(props){
                 let prize = item.prize       
                 return <div key={i} className="slots_rules_box">                    
                     <div className="slots_rules_left">
-                        {small_matrix && length>0 ? <table>
+                        {small_matrix && length>0 ? <table><tbody>
                             {Array.from({ length: 3 }).map((_, rowIndex) => (
                                 <tr key={rowIndex}>
                                     {small_matrix.slice(0, length).map((x, colIndex) => {
@@ -22,7 +22,7 @@ function SlotsPrizeTable(props){
                                     })}
                                 </tr>
                             ))}
-                        </table> : null}
+                        </tbody></table> : null}
                     </div>
                     <div className="slots_rules_right">{translate({lang: lang, info: "prize"})}: {prize}</div>                   
                 </div>

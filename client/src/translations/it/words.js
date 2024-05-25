@@ -8,6 +8,7 @@ var word_bank = {
     career: "Carriera",
     games: "Giochi",
     race: "Corsa",
+    info: "Info",
     roulette: "Roulette",
     blackjack: "Blackjack",
     slots: "Slot",
@@ -67,6 +68,7 @@ var word_bank = {
     location: "Posizione",
     requirements: "Requisiti",
     responsabilities: "Responsabilità",
+    marketing: "Marketing", 
 
     under_construction: "In costruzione",
 

@@ -405,7 +405,7 @@ function slots_game(props, id){
 			bet: pay
 		}		
 		if(typeof props.results === "function"){
-            //props.results(slots_payload)
+            props.results(slots_payload)
         }
     }
 }
@@ -440,7 +440,9 @@ function Slots(props){
 				bet: slots_bets,
 				money: money - slots_bets
 			}
-			//props.results(slots_payload)
+			if(typeof props.results === "function"){
+				props.results(slots_payload)
+			}
 		}
 	}
     let options = {...props, lines, items, dispatch, clear}
@@ -505,6 +507,7 @@ function Slots(props){
             template: "slots_prizes",
             title: "slots_prizes",
             data: slots_data,
+			size: 'sm'
         }
         dispatch(changePopup(payload))
 	}

@@ -78,7 +78,7 @@ function Panel(props){
             >
                 <p>
                     <FontAwesomeIcon icon={faUserCircle} />
-                    <span className="panel_button_text">{translate({lang: lang, info: "Info"})}</span>
+                    <span className="panel_button_text">{translate({lang: lang, info: "info"})}</span>
                 </p>
             </div>
             {page.game && !page.game_page ? <div 

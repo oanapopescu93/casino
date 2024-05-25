@@ -1992,17 +1992,6 @@ textarea {
   width: auto;
   height: auto;
 }
-#contact_map .leaflet-touch .leaflet-control-layers, 
-#contact_map .leaflet-touch .leaflet-bar{
-  background-color: var(--bg);
-  border: solid 1px var(--bg);
-  color: var(--color);
-}
-#contact_map .leaflet-touch .leaflet-bar a{
-  background-color: var(--bg);
-  border: solid 1px var(--bg);
-  color: var(--color);
-}
 
 /* DASHBOARD */
 .dashboard_box{
@@ -2463,7 +2452,7 @@ textarea {
 }
 .slots_rules{
   padding: var(--padding_small);
-  max-height: 600px;
+  max-height: 500px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -2831,7 +2820,7 @@ textarea {
 }
 .keno_rules{
   padding: var(--padding_small);
-  max-height: 600px;
+  max-height: 500px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -3045,7 +3034,7 @@ textarea {
 .list_games_table{
   text-align: left;
   margin-bottom: var(--padding);
-  max-height: 600px;
+  max-height: 500px;
   overflow-x: hidden;
   overflow-y: auto;
 }
