@@ -70,7 +70,7 @@ function Panel(props){
     }
 
     return <div ref={wrapperRef} className={"panel_container " + open}>
-        <div className="panel_button_box">
+        <div className="panel_button_box"> 
             <div 
                 id="panel_info_button" 
                 className={showWinter ? "panel_button shadow_convex snow_small" : "panel_button shadow_convex"} 
