@@ -13,10 +13,10 @@ import Checkout from './checkout/checkout'
 import Orders from './order/orders'
 import BuyCarrots from './buyCarrots'
 import HowToPlay from './howToPlay/howToPlay'
+import { translate } from '../../translations/translate'
 
 function OtherPages(props) {
-    const {lang, page, home} = props 
-    console.log(home)
+    const {lang, page, home} = props
 
     return <>        
         <Language title={lang}></Language>          
