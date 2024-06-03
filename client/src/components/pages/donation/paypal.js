@@ -5,8 +5,8 @@ function PaypalDonation(props){
     const paypalDonation = list.filter(x => x.type === "paypal")
     return <>
         {paypalDonation && paypalDonation.length > 0 ? <>
-            <h2>{translate({lang: lang, info: "bank_donation_title"})}</h2>
-            <p>{translate({lang: lang, info: "bank_donation_text"})}</p>
+            <h2>{translate({lang: lang, info: "paypal_donation_title"})}</h2>
+            <p>{translate({lang: lang, info: "paypal_donation_text"})}</p>
             <ul>
                 {paypalDonation.map(function(item, i){
                     if(item.link===""){
