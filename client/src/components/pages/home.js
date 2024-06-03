@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useDispatch} from 'react-redux'
 import Footer from '../partials/footer'
 import Salon from '../salon/salon'
 import Cookies from '../partials/cookies'
 import { changeCookies } from '../../reducers/settings'
-import { ReactComponent as Bitcoin } from '../../img/icons/bitcoin-love-heart.svg'
-import { changePage } from '../../reducers/page'
 import Market from '../games/pages/market/market'
 import Dashboard from '../games/pages/dashboard/dashboard'
 import Panel from '../games/sidebar/panel'
 import OtherPages from './otherPages'
+import ButtonDonation from './donation/buttonDonation'
+import { changePage } from '../../reducers/page'
 
 function Home(props) {
     const {home, page, user, cookies} = props
@@ -17,6 +17,9 @@ function Home(props) {
     
     function handleCookiesClick(){
         dispatch(changeCookies())
+    }
+    function handleDonationClick(){        
+        dispatch(changePage('Donation'))
     }    
 
     return <div id="page-container">        
@@ -59,27 +62,8 @@ function Home(props) {
             }
         })()}        
         {cookies !== '1' ? <Cookies lang={props.lang} cookiesClick={()=>handleCookiesClick()}></Cookies> : null}
-        <Donate lang={props.lang}></Donate>
+        <ButtonDonation handleDonationClick={()=>handleDonationClick()}/>
         <Footer lang={props.lang}></Footer>
-    </div>
-}
-
-function Donate(){
-    const dispatch = useDispatch()
-    const [open, setOpen] = useState("")
-
-    useEffect(() => {
-        setTimeout(function(){
-            setOpen("open")
-        }, 500)
-	}, [])
-    
-    function handleClick(){        
-        dispatch(changePage('Donation'))
-    }
-
-	return <div id="donate" className={open} onClick={()=>handleClick()}>
-        <Bitcoin></Bitcoin>
     </div>
 }
 

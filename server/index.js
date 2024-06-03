@@ -20,7 +20,6 @@ const fs = require('fs')
 const { encrypt, decrypt } = require('./utils/crypto')
 const { get_device, get_extra_data, sendEmail, check_streak} = require("./utils/other")
 const crypto = require('crypto')
-const stripe = require('stripe')("sk_test_51Mdvu1CWq9uV6YuM2iH4wZdBXlSMfexDymB6hHwpmH3J9Dm7owHNBhq4l4wawzFV9dXL3xrYGbhO74oc8OeQn5uJ00It2XDg9U")
 
 const { roulette } = require("./games/roulette")
 const { blackjack } = require("./games/blackjack")
@@ -371,7 +370,7 @@ io.on('connection', function(socket) {
             let table_type = data.game.table_type ? data.game.table_type : table_name
             let status = data.status == "win" ? 1 : 0 
             let timestamp = new Date().getTime()
-            database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id=" + data.uuid + '; '
+            database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id=" + user_found[0].id + '; '
             database_config.sql = 'INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) '
             database_config.sql += ' VALUES ('
             database_config.sql += user_found[0].id + ', '
@@ -393,14 +392,14 @@ io.on('connection', function(socket) {
     if(data.uuid){
         switch(data.type) {
           case "pic":            
-            database_config.sql = "UPDATE casino_user SET profile_pic='" + data.value + "' WHERE id=" + data.uuid + '; '
+            database_config.sql = "UPDATE casino_user SET profile_pic='" + data.value + "' WHERE uuid='" + data.uuid + "'; "
             break
           case "user":
-            database_config.sql = "UPDATE casino_user SET user='" + data.value + "' WHERE id=" + data.uuid + '; '
+            database_config.sql = "UPDATE casino_user SET user='" + data.value + "'WHERE uuid='" + data.uuid + "'; "
             break
           case "pass":
             let new_pass = JSON.stringify(encrypt(data.value))
-            database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE id=" + data.uuid + '; '
+            database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE uuid='" + data.uuid + "'; "
             break
         }
         database_config.name = "db010"

@@ -513,8 +513,11 @@ textarea {
   height: 120px;
   background-color: var(--transparent_2);
 }
-.cell_salon, .cell_info, .cell_market, .cell_howToPlay{
+.cell_salon, .cell_info, .cell_market{
   margin-bottom: var(--padding);
+}
+.cell_howToPlay{
+  margin-bottom: 25px
 }
 .cell_salon h4, .cell_market h4{
   font-size: 20px;
@@ -2135,6 +2138,7 @@ textarea {
   border-radius: 100%;
   border: solid 1px var(--color);
 	display: inline-block;
+  cursor: pointer;
 }
 .profile_pic_container .profile_pic{
 	width: 100%;
@@ -2188,6 +2192,21 @@ textarea {
   z-index: 2;
   top: -15px;
 }
+.crop_profile_pic_box {
+  display: inline-block;
+  cursor: pointer;
+  padding: var(--padding_small);
+}
+#carousel_profile .selected .crop_profile_pic{
+  border:solid 3px var(--bg);
+}
+#changeProfilePic_btn{
+  width: 100px;
+}
+.crop_profile_pic_box:hover .crop_profile_pic{
+  border:solid 3px var(--bg);
+}
+
 .crop_profile_pic{
 	width: 80px;
 	height: 80px;
@@ -2199,9 +2218,6 @@ textarea {
 .crop_profile_pic .profile_pic {
 	width: 480px!important;
 	height: 80px;	
-}
-.selected .crop_profile_pic{
-  border:solid 3px var(--bg);
 }
 .profile_pic.pic_1 {
 	margin-top: 0px;
@@ -2227,11 +2243,59 @@ textarea {
 	margin-top: 0px;
   margin-left: -400px;
 }
-#changeProfilePic_btn{
-  width: 100px;
+
+#carousel_profile .crop_profile_pic {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  display: inline-block !important;
+  border-radius: 100%;
+  border: solid 1px var(--bg);
 }
-.crop_profile_pic_box:hover .crop_profile_pic{
-  border:solid 3px var(--bg);
+#carousel_profile .crop_profile_pic .profile_pic {
+  width: 900px !important;
+  height: 150px;
+}
+#carousel_profile .profile_pic.pic_1 {
+  margin-top: 0px;
+  margin-left: 0px;
+}
+#carousel_profile .profile_pic.pic_2 {
+  margin-top: 0px;
+  margin-left: -150px;
+}
+#carousel_profile .profile_pic.pic_3 {
+  margin-top: 0px;
+  margin-left: -300px;
+}
+#carousel_profile .profile_pic.pic_4 {
+  margin-top: 0px;
+  margin-left: -450px;
+}
+#carousel_profile .profile_pic.pic_5 {
+  margin-top: 0px;
+  margin-left: -600px;
+}
+#carousel_profile .profile_pic.pic_6 {
+  margin-top: 0px;
+  margin-left: -750px;
+}
+
+.slick-prev, .slick-next{
+  width: 30px!important;
+  height: 30px!important;
+  z-index: 999999;
+}
+.slick-prev {
+  left: 0px!important;
+}
+.slick-next{
+  right: 0px!important;
+}
+.slick-prev:before, .slick-next:before{
+  color: var(--bg)!important;
+  font-size: 30px!important;
+  opacity: 1!important;
 }
 
 /* MARKET */
@@ -2989,7 +3053,6 @@ textarea {
   max-height: 360px;
   overflow-x: hidden;
   overflow-y: auto;
-  margin-bottom: var(--padding);
 }
 .cell_howToPlay_container{
   width: 100%;

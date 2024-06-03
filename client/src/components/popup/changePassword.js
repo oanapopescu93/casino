@@ -6,7 +6,7 @@ import { validateInput } from '../../utils/validate'
 
 function ChangePassword(props) {
     const {lang} = props
-    const [choice, setChoice] = useState(null)
+    const [choice, setChoice] = useState("")
     const [error, setError] = useState(false)
     const [errorPassword, setErrorPassword] = useState(false)
     let user = useSelector(state => state.auth.user) 

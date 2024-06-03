@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { translate } from '../../translations/translate'
-import profilePic from '../../img/profile/predators.jpg'
 import { decryptData } from '../../utils/crypto'
 import { changePic } from '../../reducers/auth'
+import Carousel from '../carousel/carousel'
 
 function ChangeProfilePic(props) {
     const {lang} = props
@@ -18,35 +18,22 @@ function ChangeProfilePic(props) {
     const [choice, setChoice] = useState(null)
     const [error, setError] = useState(false)
     const [index, setIndex] = useState(indexProfile)
-    let dispatch = useDispatch()    
-   
-    let item_name_lang = "name_eng"
-    switch (lang) {
-        case "DE":
-            item_name_lang = "name_de"
-            break
-        case "ES":
-            item_name_lang = "name_es"
-            break
-        case "FR":
-            item_name_lang = "name_fr"
-            break
-        case "IT":
-            item_name_lang = "name_it"
-            break
-        case "RO":
-            item_name_lang = "name_ro"
-            break
-        case "RU":
-            item_name_lang = "name_ru"
-            break
-        case "ENG":
-        default:
-            item_name_lang = "name_eng"
-            break
+    let dispatch = useDispatch() 
+    
+    let profile_carousel_options = {
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        swipeToSlide: true,
+        draggable: true,
+        dots: false,
+        arrows: true,
+        initialSlide: 0,
+        swipeThreshold: 20,
     }
 
-    function choosePic(item, i){
+    function handlePic(item, i){
         setError(false)
         if(!item.free && money < 1000 && account_type === 1){
             setError(true)
@@ -55,37 +42,38 @@ function ChangeProfilePic(props) {
             }, 3000)
         } else if(parseInt(i) !== parseInt(picId)){
             setIndex(i)
-            setChoice(item.id)
-            dispatch(changePic(item.id))
+            setChoice(item.id)      
+        }
+    }
+
+    function choosePic(e){
+        if(typeof props.choosePic === "function"){
+            dispatch(changePic(e.value))
+            props.choosePic(e)
         }
     }
 
     return <div className="changeProfilePic">
         <div className="changeProfilePic_box">
             {profiles && profiles.length>0 ? <>
-                {profiles.map(function(item, i){
-                    let show = '' 
-                    if(!item.free && money < 1000 && account_type === 1){
-                        show = ' grey_image'
-                    }
-                    let selected = ''
-                    if(i === index){
-                        selected = ' selected'
-                    }            
-                    return <div key={i} className={"crop_profile_pic_box"+selected} onClick={() => choosePic(item, i)}>
-                        <div className="crop_profile_pic shadow_convex">
-                            <img alt="profile_pic" className={"profile_pic pic_"+item.id+show} src={profilePic}/>
-                        </div>										
-                        <p>{item[item_name_lang]}</p>                        
-                    </div>
-                })}
+                <Carousel 
+                    id="carousel_profile"
+                    template="profile" 
+                    options={profile_carousel_options} 
+                    lang={lang} 
+                    itemList={profiles} 
+                    handlePic={(item, i)=>handlePic(item, i)}
+                    money={money}
+                    account_type={account_type}
+                    selected={index}
+                ></Carousel>
             </> : <>
                 {translate({lang: lang, info: "error"})}
             </>}
             {error ? <div className="alert alert-danger"><p className="text_red">{translate({lang: lang, info: "profile_grey"})}</p></div> : null}
         </div>
         <div className="changeProfilePic_buttons">
-            <Button type="button" id="changeProfilePic_btn" className="mybutton button_fullcolor_dark" onClick={()=>props.choosePic({value: choice, uuid: user.uuid, type: "pic"})}>
+            <Button type="button" id="changeProfilePic_btn" className="mybutton button_fullcolor_dark" onClick={()=>choosePic({value: choice, uuid: user.uuid, type: "pic"})}>
                 {translate({lang: lang, info: "choose"})}
             </Button>
         </div>

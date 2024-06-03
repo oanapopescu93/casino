@@ -18,7 +18,7 @@ function HowToPlayTitles(props){
 
     return <div className="how_to_play_titles">
         {list_games.map(function(t, i){
-            return <div className="cell_howToPlay_container" onClick={()=>handleChoice(t)}>
+            return <div key={i} className="cell_howToPlay_container" onClick={()=>handleChoice(t)}>
                 <div className="cell_howToPlay shadow_concav">
                     <div className="cell_info">
                         {(() => {
@@ -42,7 +42,7 @@ function HowToPlayTitles(props){
                             }  
                         })()}                        
                     </div>
-                    <div className="cell_text">{t}</div>
+                    <div className="cell_text shadow_convex">{t}</div>
                 </div>
             </div>
         })}

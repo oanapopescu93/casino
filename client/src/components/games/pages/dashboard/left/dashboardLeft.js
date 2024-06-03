@@ -65,7 +65,7 @@ function DashboardLeft(props){
                 case "change_pic":
                     title = "choose_profile_pic"
                     data = profiles
-                    size = 'lg'
+                    size = 'sm'
                     break
                 case "change_username":
                 case "change_password":

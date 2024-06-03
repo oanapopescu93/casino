@@ -11,15 +11,17 @@ import { decryptData } from '../../utils/crypto'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBasketShopping} from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
+import profilePic from '../../img/profile/predators.jpg'
 
 function Cell(props) {
-    const {lang, index, data, template} = props
+    const {lang, index, selected, data, template} = props
     const [qty, setQty] = useState(1)
     let place = translate({lang: lang, info: 'place'})
     const [titleDropdown, setTitleDropdown] = useState(place)
     let dispatch = useDispatch()
     let user = useSelector(state => state.auth.user)
     let max_bet = user.money ? decryptData(user.money) : 0
+    const [isDragging, setIsDragging] = useState(false)
 
     function updateQtyMarket(x){
         if(x > 0){
@@ -63,6 +65,20 @@ function Cell(props) {
                     break
             }            
         }        
+    }
+
+    const handleMouseDown = () => {
+        setIsDragging(false)
+    };
+
+    const handleMouseMove = () => {
+        setIsDragging(true)
+    };
+
+    const handleMouseUp = () => {
+        if(!isDragging && typeof props.handlePic === "function"){
+            props.handlePic(data, index-1)
+        }
     }
 
 	return <>
@@ -155,6 +171,51 @@ function Cell(props) {
                             </Row>
                         </div>
                     </div>
+                case "profile":
+                    let show = '' 
+                    if(!data.free && props.money < 1000 && props.account_type === 1){
+                        show = ' grey_image'
+                    }
+                    let item_name_lang = "name_eng"
+                    switch (lang) {
+                        case "DE":
+                            item_name_lang = "name_de"
+                            break
+                        case "ES":
+                            item_name_lang = "name_es"
+                            break
+                        case "FR":
+                            item_name_lang = "name_fr"
+                            break
+                        case "IT":
+                            item_name_lang = "name_it"
+                            break
+                        case "RO":
+                            item_name_lang = "name_ro"
+                            break
+                        case "RU":
+                            item_name_lang = "name_ru"
+                            break
+                        case "ENG":
+                        default:
+                            item_name_lang = "name_eng"
+                            break
+                    }
+                    let style = ''
+                    if(index-1 === selected){
+                        style = ' selected'
+                    } 
+                    return <div 
+                        className={"crop_profile_pic_box"+style}
+                        onMouseDown={handleMouseDown}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}
+                    >
+                    <div className="crop_profile_pic shadow_convex">
+                        <img alt="profile_pic" className={"profile_pic pic_"+data.id+show} src={profilePic}/>
+                    </div>										
+                    <p>{data[item_name_lang]}</p>                    
+                </div>
                 default:
                     return <div key={index}>{translate({lang: lang, info: "error"})}</div>
             }
