@@ -2002,7 +2002,7 @@ textarea {
   border: solid 1px var(--color);
   border-radius: var(--radius);
   padding: var(--padding);
-  margin-bottom: var(--padding);
+  margin-top: var(--padding);
 }
 .dashboard_left_buttons .mybutton{
   margin-top: var(--padding);
@@ -2014,7 +2014,7 @@ textarea {
   max-height: 200px;
   overflow: auto;
 }
-.cart_image, .cart_info, .cart_price{
+.cart_image, .cart_info, .cart_buttons{
   display: inline-block;
   vertical-align: top;
   padding: var(--padding_small);
@@ -2023,8 +2023,11 @@ textarea {
 .cart_image{
   text-align: center;
 }
-.cart_price{
-  width: 20%;
+.cart_info{
+  width: 70%;
+}
+.cart_buttons{
+  text-align: right;
 }
 .crop_vegetables{
 	width: 40px;
@@ -2121,9 +2124,12 @@ textarea {
   padding: var(--padding_small);
   width: 50%;
 }
+.cart .cart_button .mybutton{
+  height: 32px;
+}
 .cart .remove{
-  width: 40px;
-  height: 40px;
+  width: 40px!important;
+  height: 40px!important;
 }
 .cart_action h4{
   margin-bottom: var(--padding_small);
@@ -3226,6 +3232,7 @@ textarea {
     line-height: 8px;
   }
   .mybutton.round{
+    width: 50px;
     height: 50px;
     line-height: 12px;
   }

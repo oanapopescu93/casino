@@ -1,7 +1,7 @@
 import React from 'react'
 import { translate } from '../../../../../translations/translate'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
+import {faTrashCan, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../../../../img/icons/vegetables_yellow.png'
 import Counter from '../../../../partials/counter'
 import carrot_img from '../../../../../img/icons/carrot_icon.png'
@@ -91,7 +91,7 @@ function Cart(props){
                             <Counter num={item.qty} max={max} update={(e)=>updateQtyProduct(e, item)}></Counter>
                             <h4><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h4>
                         </div>                        
-                        <div className="cart_price">  
+                        <div className="cart_buttons">  
                             <Button 
                                 type="button"  
                                 className="mybutton round button_transparent shadow_convex remove"
@@ -110,14 +110,14 @@ function Cart(props){
                         type="button"  
                         className="mybutton button_transparent shadow_convex"
                         onClick={()=>cartRemoveAllProduct()}
-                    ><FontAwesomeIcon icon={faTrashCan}/></Button>
+                    ><FontAwesomeIcon icon={faTrashCan}/> {translate({lang: lang, info: "remove_all"})}</Button>
                 </div>
                 <div className="cart_button">
                     <Button 
                         type="button"  
                         className="mybutton button_fullcolor shadow_convex"
                         onClick={()=>handleCheckout()}
-                    >{translate({lang: lang, info: "checkout"})}</Button>
+                    ><FontAwesomeIcon icon={faCartShopping}/> {translate({lang: lang, info: "checkout"})}</Button>
                 </div>
             </div>
         </> : <p>{translate({lang: lang, info: "no_cart"})}</p>}
