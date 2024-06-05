@@ -8,6 +8,7 @@ function Roulette(props){
     const [open, setOpen] = useState(false)
     let dispatch = useDispatch()
     let bets = useSelector(state => state.games.roulette.bets)	
+    const [update, setUpdate] = useState(0)
 
     function getData(x){
         dispatch(changeRouletteBets(x))
@@ -19,12 +20,13 @@ function Roulette(props){
     function results(x){
         if(typeof props.results === "function"){
             props.results(x)
+            setUpdate(prevUpdate => prevUpdate + 1)
         }
     }
 
     return <div className='game_container'>
-        <RouletteGame {...props} bets={bets} openTable={()=>openTable()} results={(e)=>results(e)}></RouletteGame>
-        <GameBets {...props} open={open} getData={(e)=>getData(e)} closeTable={()=>closeTable()}></GameBets>
+        <RouletteGame {...props} bets={bets} openTable={()=>openTable()} results={(e)=>results(e)} />
+        <GameBets {...props} open={open} getData={(e)=>getData(e)} closeTable={()=>closeTable()} update={update} />
     </div>
 }
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import RouletteTable from '../roulette/rouletteTable'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
@@ -8,21 +8,24 @@ function GameBets(props){
     let open = props.open ? "open" : ""
     let template = props.page.game.table_name
     const [clear, setClear] = useState(0)
-    let t = 0
 
     function handleClose(){
         props.closeTable()
     }
 
     function handleClear(){
-        t++
-        setClear(t)
+        setClear(prevUpdate => prevUpdate + 1)
         props.getData(null)
     }
 
     function getData(x){
         props.getData(x)
 	}
+
+    useEffect(() => {			
+		setClear(prevUpdate => prevUpdate + 1)
+        props.getData(null)
+	}, [props.update])
 
     return <div className={"game_bets_container " + open}>
         <div className="game_bets shadow_concav">

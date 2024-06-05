@@ -299,8 +299,7 @@ function roulette_game(props){
 						self.drawBall(win_nr.x, win_nr.y, ball.width, 0, 2 * Math.PI, false)				
 						self.check_win_lose(roulette_bets, win_nr)
 						
-						setTimeout(function(){ 
-							//dispatch(popup_info({title: "Resultat", text: "Numarul norocos este " + win_nr.nr, width: 300, fireworks: false}))
+						setTimeout(function(){							
 							self.start()
 							start_game = false	
 						}, 500)
@@ -413,10 +412,9 @@ function roulette_game(props){
 		}		
 	}
 
-    this.check_win_lose = function(x){
-		//make a copy of elements
-		let elem01 = JSON.parse(JSON.stringify(roulette_bets))
-		let elem02 = JSON.parse(JSON.stringify(x))
+    this.check_win_lose = function(x, nr){
+		let elem01 = JSON.parse(JSON.stringify(x))
+		let elem02 = JSON.parse(JSON.stringify(nr))
 
 		dispatch(changeRouletteLuckyBet(elem02))
         let money_history = props.user.money ? decryptData(props.user.money) : 0 
@@ -626,6 +624,7 @@ function RouletteGame(props){
 
 	useEffect(() => {
 		const handleRouletteRead = function(data) {
+			console.log('roulette_read ', data)
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				if (window.innerWidth < 960){
 					if(window.innerHeight < window.innerWidth){

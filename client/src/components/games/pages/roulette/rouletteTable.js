@@ -2,14 +2,16 @@ import React, {useEffect} from 'react'
 import { getMousePos, get_roulette_bets, isInside } from '../../../../utils/games'
 import $ from 'jquery'
 import carrot_img from '../../../../img/icons/carrot_icon.png'
+import { useDispatch } from 'react-redux'
+import { decryptData } from '../../../../utils/crypto'
+import { translate } from '../../../../translations/translate'
+import { changePopup } from '../../../../reducers/popup'
 
 function roulette_bets(props){
     let self = this	
 	let canvas
 	let ctx
     let reason = ""
-	let canvas_width = 0
-	let canvas_height = 0
 	
 	let small_image = false
 	let roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268]
@@ -22,6 +24,9 @@ function roulette_bets(props){
 	let your_last_bet = {} 
     let numbers = []
 	let bet_square = 40
+	let bet_value_sum = 0
+
+	let money = props.user.money ? decryptData(props.user.money) : 0 
 
     this.ready = function(r){
         reason = r
@@ -65,8 +70,6 @@ function roulette_bets(props){
 			roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268]
 			bet_square = 40
 		}
-        canvas_width = canvas.width
-		canvas_height = canvas.height	
 	}
 
 	this.getImage = function(reason){
@@ -311,11 +314,22 @@ function roulette_bets(props){
 
     this.canvas_click = function(mouse){ 
         for(let i in list_bets){
-			let obj = list_bets[i]
+			let obj = list_bets[i]			
 			if (isInside(mouse, obj)) {
-				your_bets = [...your_bets, obj]
-				your_last_bet = obj
-				self.draw_tokens(your_last_bet)
+				bet_value_sum++				
+				if(bet_value_sum > money){
+					let payload = {
+						open: true,
+						template: "error",
+						title: "error",
+						data: translate({lang: props.lang, info: "no_money"})
+					}
+					props.dispatch(changePopup(payload))
+				} else {
+					your_bets = [...your_bets, obj]
+					your_last_bet = obj
+					self.draw_tokens(your_last_bet)
+				}				
 				break
 			} 
 		}
@@ -337,10 +351,11 @@ function roulette_bets(props){
 
 function RouletteTable(props){    
     let clear = props.clear
-    let options = {...props}
+	let dispatch = useDispatch()
+    let options = {...props, dispatch}
     let my_roulette_bets = new roulette_bets(options)
 
-    useEffect(() => {        
+    useEffect(() => {
         if(my_roulette_bets){
             my_roulette_bets.ready()
         }

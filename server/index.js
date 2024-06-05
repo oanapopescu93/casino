@@ -124,8 +124,7 @@ io.on('connection', function(socket) {
 		database(database_config).then(function(result){
       if(result && result.length == 0){
         //no user was found --> new user --> he must sign up
-        users_array = result
-        login_user = JSON.parse(fs.readFileSync(path.resolve(__dirname, "./json/login.json")))
+        users_array = result        
         let uuid = crypto.randomBytes(20).toString('hex')
         let device = get_device(socket.request.headers) // 0 = computer, 1 = mobile, 2 = other
   
@@ -225,7 +224,7 @@ io.on('connection', function(socket) {
           login_user = result[1]
           if(users_array && users_array.length>0 && login_user && login_user.length>0){            
             try{
-              let user_found = users_array.filter((x) => x.uuid === data.uuid) 
+              let user_found = users_array.filter((x) => x.uuid === data.uuid)              
               payload = updateStreak(user_found, login_user)        
               io.to(socket.id).emit('game_read', payload)
               updateMoney(user_found, payload)
@@ -253,30 +252,22 @@ io.on('connection', function(socket) {
     }
     return {streak, prize}
   }
-  function updateMoney(user_found, payload){
-    if(user_found[0]){            
-      database_config.sql = "UPDATE casino_user SET money="+payload.prize+" WHERE id="+user_found[0].id
+  function updateMoney(user_found, x){
+    if(user_found[0]){  
       database_config.name = "db07"
-      database(database_config).then(function(data){
-        let table_name = 'streak_prize'
-        let game_id = 'streak_prize'
-        let game_type = 'streak_prize'
-        let status = 1
-        let timestamp = new Date().getTime()
-
-        database_config.sql = 'INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) '
-        database_config.sql += ' VALUES ('
-        database_config.sql += user_found[0].id + ', '
-        database_config.sql += '"' + table_name + '", '
-        database_config.sql += '"' + game_id + '", '
-        database_config.sql += '"' + game_type + '", '
-        database_config.sql += '"' + timestamp + '", '
-        database_config.sql += '"' + status + '", '
-        database_config.sql += payload.prize
-        database_config.sql += ')'
-        database_config.name = "db08"
-        database(database_config).then(function(){})
-      })
+      let money = user_found.money + x.prize
+      let table_name = 'streak_prize'
+      let game_id = 'streak_prize'
+      let game_type = 'streak_prize'
+      let status = 1
+      let timestamp = new Date().getTime() 
+      database_config.sql = ""
+      if(money){
+        database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id="+user_found[0].id
+      }
+      database_config.sql += "INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) VALUES (?, ?, ?, ?, ?, ?, ?)"
+      let payload =  [user_found[0].id, table_name, game_id, game_type, timestamp, status, x.prize]
+      database(database_config, payload).then(function(){})
     }
   }
 
@@ -361,31 +352,31 @@ io.on('connection', function(socket) {
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db09"
       database(database_config).then(function(result){
-        if(result && result.length>0){
+        if(result){
           users_array = result
-          let user_found = users_array.filter((x) => x.uuid === data.uuid)  
-          if(user_found && user_found.length>0){
-            let table_name = data.game.table_name ? data.game.table_name : ""
-            let table_id = data.game.table_id ? data.game.table_id : table_name
-            let table_type = data.game.table_type ? data.game.table_type : table_name
-            let status = data.status == "win" ? 1 : 0 
-            let timestamp = new Date().getTime()
-            database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id=" + user_found[0].id + '; '
-            database_config.sql = 'INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) '
-            database_config.sql += ' VALUES ('
-            database_config.sql += user_found[0].id + ', '
-            database_config.sql += '"' + table_name + '", '
-            database_config.sql += '"' + table_id + '", '
-            database_config.sql += '"' + table_type + '", '
-            database_config.sql += '"' + timestamp + '", '
-            database_config.sql += '"' + status + '", '
-            database_config.sql += data.bet
-            database_config.sql += ')'
+          if(users_array && users_array.length>0){            
+            try{
+              let user_found = users_array.filter((x) => x.uuid === data.uuid) 
+              if(user_found && user_found.length>0){
+                let table_name = data.game.table_name ? data.game.table_name : ""
+                let table_id = data.game.table_id ? data.game.table_id : table_name
+                let table_type = data.game.table_type ? data.game.table_type : table_name
+                let status = data.status == "win" ? 1 : 0 
+                let timestamp = new Date().getTime()
+
+                database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id=" + user_found[0].id + '; '
+                database_config.sql += "INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                let payload =  [user_found[0].id, table_name, table_id, table_type, timestamp, status, data.bet]
+                database(database_config, payload).then(function(){})
+              }
+            } catch(e){
+              console.log('[error]','game_results_read--> ', e)
+            }            
           }
         }
       })
-    } 
-	})
+    }
+  })
 
   // DASHBOARD, CART, CHECKOUT
   socket.on('dashboardChanges_send', function(data){
