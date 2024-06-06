@@ -11,14 +11,16 @@ import Header from '../../partials/header'
 import ContactDetails from './contactDetails'
 
 function Contact(props){
+    let locations = props.home.contact    
     const [contactElement, setContactElement] = useState(null)
     let dispatch = useDispatch() 
-    const [mapCenter, setsetMapCenter] = useState({lat: 44.469663, lng: 26.096306})
-    const [markerPosition, setMarkerPosition] = useState([44.439663, 26.096306])    
-    const [country, setCountry] = useState('Romania')
-    const [city, setCity] = useState('Bucharest') 
-    const [zoom, setZoom] = useState(10)  
-    const [width, setWidth] = useState(getWindowDimensions().width)  
+    const [mapCenter, setMapCenter] = useState(locations[0][props.lang].map)
+    const [markerPosition, setMarkerPosition] = useState(locations[0][props.lang].marker)    
+    const [country, setCountry] = useState(locations[0][props.lang].country)
+    const [city, setCity] = useState(locations[0][props.lang].city) 
+    const [zoom, setZoom] = useState(10)
+    const [width, setWidth] = useState(getWindowDimensions().width)
+    const [index, setIndex] = useState(0)
 
     function handleBack(){
         dispatch(changePage('Salon'))
@@ -26,33 +28,16 @@ function Contact(props){
         dispatch(changeGamePage(null))
     }
 
-    function handleChooseContactElement(x){
+    function handleChooseContactElement(x, i){        
         if(x){
-            setContactElement(x)            
-            if(x.city){
-                setCity(x.city)
-            }
-            if(x.country){
-                setCountry(x.country)
-            }            
-            switch(x.country) {        
-                // case "USA":
-                //     setsetMapCenter({lat: 40.730610, lng: -73.935242})
-                //     setMarkerPosition([40.730610, -73.935242])
-                //     setZoom(10)
-                //     break
-                // case "Germany":
-                //     setsetMapCenter({lat: 52.5200, lng: 13.4050})
-                //     setMarkerPosition([52.5200, 13.4050])
-                //     setZoom(10)
-                //     break
-                case "Romania":
-                default:    
-                    setsetMapCenter({lat: 44.469663, lng: 26.096306})
-                    setMarkerPosition([44.439663, 26.096306])
-                    setZoom(10)
-                    break                  
-            } 
+            setIndex(i)
+            let location = locations[i][props.lang]
+            setContactElement(x)
+            setCountry(location.country)
+            setCity(location.city)            
+            setMapCenter(location.map)
+            setMarkerPosition(location.marker)
+            setZoom(10) 
         }
     }
 
@@ -66,7 +51,15 @@ function Contact(props){
             handleResize()
             return () => window.removeEventListener("resize", handleResize)
         }
-    }, []) 
+    }, [])
+
+    useEffect(() => {
+        let location = locations[index][props.lang]
+        setCountry(location.country)
+        setCity(location.city)            
+        setMapCenter(location.map)
+        setMarkerPosition(location.marker)     
+    }, [props.lang])
 
     return <div className="content_wrap">
         <Header template="contact" title={translate({lang: props.lang, info: "contact"})}></Header>        
@@ -76,15 +69,15 @@ function Contact(props){
                     <ContactForm lang={props.lang} socket={props.socket}></ContactForm>
                 </Col>
                 <Col sm={8} md={8} lg={8}>
-                    {props.home.contact && props.home.contact.length>1 ? <ContactList 
+                    {locations && locations.length>1 ? <ContactList 
                         lang={props.lang} 
-                        list={props.home.contact} 
-                        handleChooseContactElement={(e)=>handleChooseContactElement(e)}
+                        list={locations} 
+                        handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
                     /> : <ContactDetails 
                         lang={props.lang} 
-                        item={props.home.contact[0]} 
+                        item={locations[0]} 
                     />}  
-                    {props.home.contact && props.home.contact.length === 1 && width >= 960 ?<>
+                    {locations && locations.length === 1 && width >= 960 ?<>
                         {width >= 960 ? <ContactMap 
                             lang={props.lang} 
                             contactElement={contactElement}
@@ -97,7 +90,7 @@ function Contact(props){
                     </> : null}           
                 </Col>
             </Row>
-            {props.home.contact && props.home.contact.length>1 && width >= 960 ? <Row>
+            {locations && locations.length>1 && width >= 960 ? <Row>
                 <Col sm={12}>
                     <ContactMap 
                         lang={props.lang} 

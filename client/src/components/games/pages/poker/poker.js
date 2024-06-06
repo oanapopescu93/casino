@@ -4,16 +4,16 @@ import PokerDashboard from './pokerDashboard'
 function Poker(props){ 
     const {page} = props
     let table_type = page.game.table_type //texas holdem or 5 card draw
-    let template = "texas_holdem"
+    let template = "poker_texas_holdem"
     let [bet, setBet] = useState(0)
 
     switch(table_type) {
-        case "5_card_draw":
-            template = "5_card_draw"
+        case "poker_5_card_draw":
+            template = "poker_5_card_draw"
             break
-        case "texas_holdem":
+        case "poker_texas_holdem":
         default: 
-            template = "texas_holdem"
+            template = "poker_texas_holdem"
     }
 
     function updateBets(e){

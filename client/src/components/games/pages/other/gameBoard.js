@@ -81,8 +81,8 @@ function GameBoard(props){
                             </div>
                         </Col>
                     </Row>
-                case "texas_holdem":
-                case "5_card_draw":
+                case "poker_texas_holdem":
+                case "poker_5_card_draw":
                     return <PokerBoard {...props} handleClick={(e)=>handleClick(e)} updateQtyMarket={(e)=>updateQtyMarket(e)}></PokerBoard>
                 default: 
                     return null

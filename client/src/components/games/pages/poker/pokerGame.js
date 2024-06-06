@@ -59,7 +59,7 @@ function Card(config){
             ctx.filter = 'grayscale(0)'
         } else {
             //dealer
-            if(template !== "5_card_draw"){ //in texas hold'em we have community cards, in 5 card draw we don't                
+            if(template !== "poker_5_card_draw"){ //in texas hold'em we have community cards, in 5 card draw we don't                
                 let cards_number = data.dealer.hand.length
                 let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
                 self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, data.dealer.hand, "dealer")
@@ -314,7 +314,7 @@ export const poker_game = function(props){
     }
 
     this.handleClick = function(){
-        if(props.template === "5_card_draw" && $('#poker_canvas')){
+        if(props.template === "poker_5_card_draw" && $('#poker_canvas')){
             $('#poker_canvas').off('click').on('click', function(event) {
                 let mousePos = getMousePos(canvas, event)
                 self.canvas_click(mousePos)
@@ -360,7 +360,7 @@ export const poker_game = function(props){
         card_list = []
         if(poker_data){
             // create dealer
-            if(props.template !== "5_card_draw" && poker_data.dealer){
+            if(props.template !== "poker_5_card_draw" && poker_data.dealer){
                 card_list.push(new Card({
                     id: -1,
                     name: 'dealer',
@@ -395,10 +395,10 @@ export const poker_game = function(props){
                     } else {
                         //the other players with hidden hands
                         switch(props.template){
-                            case "texas_holdem":
+                            case "poker_texas_holdem":
                                 how_many_cards = 2
                                 break
-                            default: //ex: 5_card_draw
+                            default: //ex: poker_5_card_draw
                                 how_many_cards = 5
                         }
 

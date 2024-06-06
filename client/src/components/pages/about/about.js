@@ -25,18 +25,18 @@ function About(props){
             {(() => {
                 switch (props.lang) {
                     case "DE":
-                        return <AboutDe casino_name={casino_name}></AboutDe>
+                        return <AboutDe lang={props.lang} casino_name={casino_name}></AboutDe>
                     case "ES":
-                        return <AboutEs casino_name={casino_name}></AboutEs>
+                        return <AboutEs lang={props.lang} casino_name={casino_name}></AboutEs>
                     case "FR":
-                        return <AboutFr casino_name={casino_name}></AboutFr>
+                        return <AboutFr lang={props.lang} casino_name={casino_name}></AboutFr>
                     case "IT":
-                        return <AboutIt casino_name={casino_name}></AboutIt>
+                        return <AboutIt lang={props.lang} casino_name={casino_name}></AboutIt>
                     case "RO":
-                        return <AboutRo casino_name={casino_name}></AboutRo>
+                        return <AboutRo lang={props.lang} casino_name={casino_name}></AboutRo>
                     case "ENG":
                     default:
-                        return <AboutEng casino_name={casino_name}></AboutEng>
+                        return <AboutEng lang={props.lang} casino_name={casino_name}></AboutEng>
                 }
             })()}    
         </div>

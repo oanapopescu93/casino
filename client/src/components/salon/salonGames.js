@@ -7,6 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { changeGame, changeGamePage } from '../../reducers/page'
 import { checkWinterMonths } from '../../utils/special_occasions'
+import { translate } from '../../translations/translate'
 
 function SalonGames(props){
     const {lang, items} = props
@@ -102,7 +103,7 @@ function SalonGames(props){
         } 
         setCasinoGames(casino_games)
         setCasinoGamesTitle(casino_games_title)  
-        setTitleDropdown(casino_games_title[0])
+        setTitleDropdown(translate({lang: props.lang, info: casino_games_title[0]}))
     }    
 
     function handleSelect(x){
@@ -124,7 +125,7 @@ function SalonGames(props){
             <Col sm={8}>
                 {width < 960 ? <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "snow" : ""} onSelect={handleSelect}>
                     {casinoGamesTitle.map(function(t, i){
-                        return <Dropdown.Item key={i} eventKey={t}>{t}</Dropdown.Item>
+                        return <Dropdown.Item key={i} eventKey={translate({lang: props.lang, info: t})}>{translate({lang: props.lang, info: t})}</Dropdown.Item>
                     })}
                 </DropdownButton> : null}
             </Col>
@@ -139,7 +140,7 @@ function SalonGames(props){
                     return <div key={i}>
                         {width >= 960 ? <div className={showWinter ? "casino_games_title_container snow" : "casino_games_title_container"}>
                             <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
-                                <h4>{t}</h4>
+                                <h4>{translate({lang: props.lang, info: t})}</h4>
                             </div>
                         </div> : null}
                         <div box={t} className={"casino_games_table_container "+box}>

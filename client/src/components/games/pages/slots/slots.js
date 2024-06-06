@@ -415,16 +415,15 @@ let slots_bets = 0
 let slots_status = false
 function Slots(props){
     let dispatch = useDispatch() 
-	const [width, setWidth] = useState(getWindowDimensions().width)   
     let game = props.page.game
     let game_type = game.table_type
 	let money = props.user.money ? decryptData(props.user.money) : 0 
     let lines = 5
     switch(game_type) {
-        case "type1":
+        case "reel_3":
             lines = 3
             break
-        case "type2":
+        case "reel_5":
         default: 
             lines = 5
             break

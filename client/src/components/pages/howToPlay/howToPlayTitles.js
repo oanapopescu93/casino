@@ -6,6 +6,7 @@ import craps_icon from '../../../img/icons_other/icons/yellow/craps.png'
 import race_icon from '../../../img/icons_other/icons/yellow/race.png'
 import keno_icon from '../../../img/icons_other/icons/yellow/keno.png'
 import poker_icon from '../../../img/icons_other/icons/yellow/carribean.png'
+import { translate } from '../../../translations/translate'
 
 function HowToPlayTitles(props){
     let list_games = ["roulette", "blackjack", "slots", "craps", "race", "keno", "poker"]
@@ -42,7 +43,7 @@ function HowToPlayTitles(props){
                             }  
                         })()}                        
                     </div>
-                    <div className="cell_text shadow_convex">{t}</div>
+                    <div className="cell_text shadow_convex">{translate({lang: props.lang, info: t})}</div>
                 </div>
             </div>
         })}

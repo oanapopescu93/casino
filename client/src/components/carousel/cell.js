@@ -88,8 +88,8 @@ function Cell(props) {
                     return <div className="cell_salon_container">
                         <div className="cell_salon shadow_concav">
                             <div className="cell_info">
-                                <h4>{data.table_name} {data.table_id}</h4>
-                                {data.table_type ? <p>{data.table_type.split('_').join(' ')}</p> : null}
+                                <h4>{translate({lang: lang, info: data.table_name})} {data.table_id}</h4>
+                                {data.table_type ? <p className="truncate">{translate({lang: lang, info: data.table_type})}</p> : null}
                             </div>
                             <div className="cell_button">
                                 <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>

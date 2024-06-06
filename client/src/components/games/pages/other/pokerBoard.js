@@ -27,7 +27,7 @@ function PokerBoard(props){
             switch(action) {
                 case "preflop_betting":
                     let payload1 = action
-                    if(template === '5_card_draw'){
+                    if(template === 'poker_5_card_draw'){
                         payload1 = 'draw'
                     }
                     return <>

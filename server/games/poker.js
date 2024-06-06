@@ -8,10 +8,10 @@ let how_many_cards = 5
 
 function poker(data, user_join){
     switch(data.game){
-        case "texas_holdem":
+        case "poker_texas_holdem":
             how_many_cards = 2
             break
-        default: //ex: 5_card_draw
+        default: //ex: poker_5_card_draw
             how_many_cards = 5
     }    
 

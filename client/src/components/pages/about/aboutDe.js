@@ -1,9 +1,19 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { translate } from '../../../translations/translate'
+import { useDispatch } from 'react-redux'
+import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faCircleQuestion} from '@fortawesome/free-solid-svg-icons'
 
 function AboutDe(props){
     let casino_name = props.casino_name ? props.casino_name : translate({lang: props.lang, info: "our_casino"})
+    let dispatch = useDispatch()
+    function handleHowToPlay(){
+        dispatch(changePage("how_to_play"))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
+    }
     return <Row id="about" className="other_page_container">
         <Col sm={2}></Col>
         <Col sm={8}>            
@@ -22,6 +32,7 @@ function AboutDe(props){
             <p>Wir sind immer offen für Feedback und Vorschläge unserer Spieler, um das Gesamterlebnis beim Spielen zu verbessern. Ihr Beitrag ist von unschätzbarem Wert, während wir daran arbeiten, unsere Angebote zu erweitern und zu verbessern.</p>
             <p>Treten Sie uns bei {casino_name} bei und werden Sie Teil unserer wachsenden Gemeinschaft leidenschaftlicher Spieler. Auch wenn wir kein kommerzielles Casino sind, sind wir eine Plattform, die auf Liebe zum Spielen und dem Wunsch aufbaut, etwas wirklich Besonderes zu schaffen. Also schnappen Sie sich Ihre virtuellen Chips, werfen Sie die Würfel und drehen Sie die Walzen für ein Spielerlebnis, das sich ganz um die reine Freude am Spielen dreht.</p>
             <p>Vielen Dank, dass Sie Teil unserer Reise mit {casino_name} sind. Wir freuen uns darauf, viele unvergessliche Momente in der Welt des Spielens gemeinsam zu erleben.</p>
+            <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: props.lang, info: "how_to_play"})}</p>
         </Col>
     </Row>
 }

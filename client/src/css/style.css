@@ -161,6 +161,11 @@ a, a:hover, a:focus, a:active{
 .text_center{
   text-align: center;
 }
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 #logo_icon{
   width: 40px;
@@ -1984,16 +1989,22 @@ textarea {
 #contact_map .contactMap{
   height: 250px;
 }
-#contact_map .leaflet-popup-content-wrapper, #contact_map .leaflet-popup-tip{
+#contact_map .leaflet-popup-content-wrapper, #contact_map .leaflet-popup-tip,
+#contact_map .leaflet-touch .leaflet-bar a, 
+#contact_map .leaflet-touch .leaflet-control-layers-toggle{
   background-color: white;
-  color: black;
+  border: solid 1px var(--red);
+  color: var(--red);
 }
 #contact_map .leaflet-container a.leaflet-popup-close-button{
-  color: black
+  color: var(--red);
 }
 #contact_map .leaflet-control-layers-selector{
   width: auto;
   height: auto;
+}
+#contact_map .leaflet-touch .leaflet-control-layers, #contact_map .leaflet-touch .leaflet-bar{
+  border: none;
 }
 
 /* DASHBOARD */
@@ -3159,6 +3170,16 @@ textarea {
 .other_page_container li{
 	display: list-item;
   list-style: circle;
+}
+#about_how_to_play{
+  margin: var(--padding);
+  cursor: pointer;
+}
+#about_how_to_play svg{
+  margin-right: var(--padding_small);
+}
+#about_how_to_play:hover{
+  text-decoration: underline;
 }
 
 /* media */

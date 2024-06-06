@@ -2,11 +2,10 @@ import React, {useEffect, useRef} from 'react'
 import Leaflet from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap}  from 'react-leaflet'
 import { translate } from '../../../translations/translate'
-// import icon from 'leaflet/dist/images/marker-icon.png';
-import icon from '../../../img/icons/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import icon from '../../../img/icons/marker-icon.png'
+import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
-import 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css'
 import 'leaflet/dist/leaflet.css'
 
 const { BaseLayer } = LayersControl
@@ -15,7 +14,7 @@ let L = Leaflet.noConflict()
 function MapChild(props){
     const {markerOptions, popupOptions, country, city, zoom} = props 
     const map = useMap()
-    const leafletRef = useRef()
+    const leafletRef = useRef()    
 
     useEffect(() => {
         map.setView(markerOptions.position, zoom)
