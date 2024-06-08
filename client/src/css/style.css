@@ -544,9 +544,6 @@ textarea {
 .casino_games_table_container.open{
   height: 140px;
 }
-.salon_games{
-  /* overflow: hidden; */
-}
 .casino_games_title{
   background-color: transparent;
   padding: var(--padding);
@@ -3203,13 +3200,8 @@ textarea {
   .progress_bubble_container{
     max-height: 205px;
   }
-  /* HOW TO PLAY */
-  .cell_howToPlay_container{
-    max-width: 100px;
-  }
-  .cell_howToPlay{
-    height: 100px;
-  }
+  /* HOW TO PLAY */  
+  
   .list_games_table{
     max-height: 400px;
   }
@@ -3507,6 +3499,11 @@ textarea {
   .keno_rules{
     max-height: 200px;
   }
+
+  /* DASHBOARD */
+  .dashboard_user_info{
+    text-align: center;
+  }
 }
 @media (max-width:480px) {
   /* SLOTS */
@@ -3525,13 +3522,6 @@ textarea {
   }
   .welcome_popup img{
     width:150px;
-  }
-  /* HOW TO PLAY */
-  .cell_howToPlay_container{
-    max-width: 80px;
-  }
-  .cell_howToPlay{
-    height: 80px;
   }
   /* SIGN */
   .sign_container ul li{    
@@ -3577,4 +3567,17 @@ textarea {
 
 .under_construction_icon{
 	width: 150px;
+}
+
+.slick-slide {
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+}
+
+/* Active state when dragging */
+.slick-slide:active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
 }

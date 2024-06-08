@@ -36,10 +36,10 @@ function Dashboard(props){
 					<Col sm={12}><h2>Dashboard</h2></Col>
 				</Row>
 				<Row>
-					<Col md={4}>
+					<Col lg={4}>
 						<DashboardLeft {...props}></DashboardLeft>
 					</Col>
-					<Col md={8}>
+					<Col lg={8}>
 						<DashboardRight 
 							{...props} 
 							cart={cart} 

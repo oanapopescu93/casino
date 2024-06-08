@@ -66,7 +66,7 @@ function RaceTables(props){
                 }
             },
             {
-                breakpoint: 480,
+                breakpoint: 780,
                 settings: {
                     slidesToShow: 1,
                 }

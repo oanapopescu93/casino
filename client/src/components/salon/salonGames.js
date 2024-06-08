@@ -37,17 +37,17 @@ function SalonGames(props){
                 }
             },
             {
-                breakpoint: 768,
+                breakpoint: 960,
                 settings: {
                     slidesToShow: 3,
                 }
             }, 
             {
-                breakpoint: 480,
+                breakpoint: 768,
                 settings: {
                     slidesToShow: 1,
                 }
-            }            
+            }          
         ]
     }
 
