@@ -26,6 +26,7 @@ function Sign(props) {
     const [signUp, setSignUp] = useState('')
     const [checkboxOne, setCheckboxOne] = useState(false)
     const [loaded, setLoaded] = useState(true)
+    const [date, setDate] = useState('')
 
     function handleClick(choice){
         setErrorEmail(false)
@@ -155,7 +156,17 @@ function Sign(props) {
             props.socket.off('signin_read', handleSignInRead)
             props.socket.off('signup_read', handleSignUpRead)
         }
-    }, [props.socket])  
+    }, [props.socket])
+    
+    function handleDate(){
+        let my_date = new Date()
+		my_date = my_date.getFullYear()
+        setDate(my_date)
+    }
+
+    useEffect(() => {
+        handleDate()        
+    }, []) 
 
     return <>
         {(() => {
@@ -216,7 +227,10 @@ function Sign(props) {
                                         </div>
                                     }
                                 })()}                           
-                            </div>   
+                            </div>
+                            <div className="sign_footer">
+                                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: props.lang, info: "all_rights_reserved"})}.</h6>
+                            </div>                            
                         </> : <Loader></Loader>}
                     </>
             }

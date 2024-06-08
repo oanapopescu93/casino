@@ -63,7 +63,7 @@ function Page(props) {
                 setProgressNumber(width)
             }
         }
-    }   
+    }
 
     return <>
         {(() => {

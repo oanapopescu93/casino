@@ -58,25 +58,25 @@ function Header(props){
                                 title = title + ' ' + table_id
                             }                            
                             return <div id="header_game" className="header">
-                                <TransparentText text={title}></TransparentText>
+                                <TransparentText text={title} />
                             </div>
                         } else {
                             return <div id="header" className="header">
-                                <TransparentText text={title}></TransparentText>                             
+                                <TransparentText text={title} />                           
                             </div>
                         }
                     case "panel_user":                        
                         if(details && details.game){
                             if(details.game_page){
                                 //ex: dashboard, market
-                                return <TransparentText text={translate({lang: lang, info: details.game_page})}></TransparentText>
+                                return <TransparentText text={translate({lang: lang, info: details.game_page})} />
                             } else {
                                 //game
                                 let table_name = details.game.table_name
                                 let table_id = details.game.table_id
                                 let title = capitalizeFirstLetter(table_name) + ' ' + table_id
                                 return <h3 id="user_title">
-                                    <TransparentText text={title}></TransparentText>
+                                    <TransparentText text={title} />
                                 </h3>
                             }
                         } else {

@@ -284,6 +284,16 @@ textarea:focus, input:focus{
   text-decoration: underline;
   cursor: pointer;
 }
+.sign_footer{
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  padding: var(--padding);
+}
 
 /* checkbox and radio buttons */
 .checkbox_radio_container input[type="radio"], .checkbox_radio_container input[type="checkbox"] {
@@ -1784,7 +1794,7 @@ textarea {
 }
 #splash_screen .content_box{
   position: absolute;
-  top: 50px;
+  top: 35px;
   left: 50%;
   transform: translate(-50%, 0px);
   z-index: 10;
@@ -1917,7 +1927,7 @@ textarea {
 }
 .progress{
     background-color: var(--color);
-    height: 10px;
+    height: 1px;
     border-radius: 0px;
 }
 .progress_text{
@@ -3272,10 +3282,10 @@ textarea {
     width: 300px;
   }
   #splash_screen .content_box{
-    top: 58px;
+    top: 28px;
   }
   #splash_screen #logo_splash{
-    width: 30px;
+    width: 40px;
   }
   #splash_screen .main-diamond-outer {
     height: 300px;
@@ -3323,10 +3333,7 @@ textarea {
   }
   .progress_container{
     max-width: 250px;
-  }
-  .progress{
-    height: 5px;
-  }
+  }  
   .progress_text{
     width: 100% !important;
   }
@@ -3423,6 +3430,12 @@ textarea {
 	.sign_container .label_container {
     text-align: left;
     padding-bottom: var(--padding_small);
+  }
+  #splash_screen #logo_splash{
+    width: 30px;
+  }
+  .progress_box_container{
+    display: none;
   }
 
   /* SALON */
@@ -3530,6 +3543,20 @@ textarea {
   }
   .sign_container ul li:first-child{    
     margin-bottom: var(--padding_small);
+  }  
+}
+@media (max-width:360px) {
+  #splash_screen .mid-diamond-left{
+    width: 30px;
+    height: 30px;
+    left: -40px;
+    top: 85px;
+  }
+  #splash_screen .mid-diamond-right{
+    width: 30px;
+    height: 30px;
+    right: -40px;
+    top: 85px;
   }
 }
 
