@@ -40,10 +40,15 @@ function ChangeProfilePic(props) {
             setTimeout(function(){ 
                 setError(false)
             }, 3000)
-        } else if(parseInt(i) !== parseInt(picId)){
+        } else {
             setIndex(i)
-            setChoice(item.id)      
+            setChoice(item.id)
         }
+        // } else if(parseInt(i) !== parseInt(picId)){  
+        //     console.log('handlePic2 ', i, item)          
+        //     setIndex(i)
+        //     setChoice(item.id)      
+        // }
     }
 
     function choosePic(e){

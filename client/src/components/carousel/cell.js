@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import { translate } from '../../translations/translate'
 import Counter from '../partials/counter'
 import Stars from '../rating/stars'
@@ -22,6 +22,8 @@ function Cell(props) {
     let user = useSelector(state => state.auth.user)
     let max_bet = user.money ? decryptData(user.money) : 0
     const [isDragging, setIsDragging] = useState(false)
+    const dragStart = useRef({ x: 0, y: 0 })
+    const dragThreshold = 5 // pixels
 
     function updateQtyMarket(x){
         if(x > 0){
@@ -67,15 +69,24 @@ function Cell(props) {
         }        
     }
 
-    const handleMouseDown = () => {
+    const handleMouseDown = (e) => {
         setIsDragging(false)
-    };
-
-    const handleMouseMove = () => {
-        setIsDragging(true)
-    };
-
+        dragStart.current = { x: e.clientX, y: e.clientY }
+      }
+    
+    const handleMouseMove = (e) => {
+        const dx = e.clientX - dragStart.current.x
+        const dy = e.clientY - dragStart.current.y
+        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) {
+          setIsDragging(true)
+        }
+    }
+    
     const handleMouseUp = () => {
+        setTimeout(() => setIsDragging(false), 0) // Small delay to ensure click event processes
+    }
+
+    const handleClick = () => {
         if(!isDragging && typeof props.handlePic === "function"){
             props.handlePic(data, index-1)
         }
@@ -210,6 +221,7 @@ function Cell(props) {
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
+                        onClick={handleClick}
                     >
                     <div className="crop_profile_pic shadow_convex">
                         <img alt="profile_pic" className={"profile_pic pic_"+data.id+show} src={profilePic}/>
