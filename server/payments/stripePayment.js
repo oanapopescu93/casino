@@ -8,10 +8,10 @@ var jsonParser = bodyParser.json()
 const stripe = require('stripe')("sk_test_51Mdvu1CWq9uV6YuM2iH4wZdBXlSMfexDymB6hHwpmH3J9Dm7owHNBhq4l4wawzFV9dXL3xrYGbhO74oc8OeQn5uJ00It2XDg9U")
 
 stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
-    const { name, email, country, city, phone, cardNumber, expiry_month, expiry_year, cvv, amount } = req.body
+    const { name, email, country, city, phone, cardNumber, month, year, cvv, amount } = req.body
 
-    if (!name || !email || !cardNumber || !expiry_month || !expiry_year || !cvv) {
-        return res.status(400).json({ error: "Missing required fields" })
+    if (!name || !email || !cardNumber || !month || !year || !cvv) {
+        res.json({type: "stripe", result: "error", payload: 'error_charge'})
     }
 
     if(amount){
@@ -30,8 +30,8 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
             // },
             card: {
                 number: cardNumber,
-                exp_month: parseInt(expiry_month),
-                exp_year: parseInt(expiry_year),
+                exp_month: parseInt(month),
+                exp_year: parseInt(year),
                 cvc: cvv,
                 name: name,
             },
@@ -76,8 +76,7 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
                 }
             })
         } catch (error) {
-            console.error('Stripe error:', error)
-            return res.status(500).json({ error: error.message })
+            res.json({type: "stripe", result: "error", payload: 'error_charge', details: error})
         }        
     } else {
         res.json({type: "stripe", result: "error", payload: 'no_money'})

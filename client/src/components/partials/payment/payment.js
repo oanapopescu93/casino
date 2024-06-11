@@ -355,23 +355,7 @@ function Payment(props){
             }
             dispatch(changePopup(payload))
         }
-    }
-
-    function handleSave(e){
-        if($('#payment_form') && qty > 0){            
-            let payload = getFormDetails()
-            if(!validateSave(payload)){
-                setPaymentDetails(payload)
-                dispatch(updatePaymentDetails(payload))
-            }
-        }
-    }
-
-    function validateSave(data){
-        let problem = false
-        // console.log('validateSave ', data)
-        return problem
-    }
+    }    
 
     return<Row>
         {paymentDetails ? <PaymentDetails 
@@ -387,7 +371,6 @@ function Payment(props){
                 <PaymentForm 
                     {...props} 
                     getChanges={(e)=>getChanges(e)}
-                    handleSave={()=>handleSave()}
                     nameError={nameError} 
                     emailError={emailError} 
                     phoneError={phoneError}
@@ -403,14 +386,7 @@ function Payment(props){
                     gateway={gateway}
                     gatewayDetailsMandatory={gatewayDetailsMandatory}
                     paymentDetails={payment_details}
-                />
-                <div sm={12} className="button_action_group">
-                    <Button 
-                        type="button"  
-                        className="mybutton round button_transparent shadow_convex"
-                        onClick={()=>handleSave()}
-                    >{translate({lang: lang, info: "save"})}</Button>                
-                </div>      
+                />                     
             </Col>
             <Col sm={4}>
                 <Row>
