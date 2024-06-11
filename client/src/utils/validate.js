@@ -14,9 +14,9 @@ export const validateInput = function(input="", type){
 				// Minimum eight in length .{8,}
 				break
       case "bitcoin_address":
-        regex = '^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$'
+        regex = '^(1|3|bc1)[a-zA-HJ-NP-Z0-9]{25,39}$'
         // an identifier of 26-35 alphanumeric characters
-        // beginning with the number 1 or 3
+        // beginning with the number 1 or 3 or bc1 (used for Bech32 addresses)
         // random digits
         // uppercase
         // lowercase letters
@@ -37,14 +37,13 @@ export const validateCard = function(val) {
     let value = val.replace(/\D/g, '')
     let sum = 0
     let shouldDouble = false
+
     // loop through values starting at the rightmost side
     for (let i = value.length - 1; i >= 0; i--) {
-        let digit = parseInt(value.charAt(i))
-  
+      let digit = parseInt(value.charAt(i))  
       if (shouldDouble) {
         if ((digit *= 2) > 9) digit -= 9
-      }
-  
+      }  
       sum += digit
       shouldDouble = !shouldDouble
     }
@@ -54,7 +53,7 @@ export const validateCard = function(val) {
     
     // loop through the keys (visa, mastercard, amex, etc.)
     Object.keys(acceptedCreditCards).forEach(function(key) {
-        let regex = acceptedCreditCards[key]
+      let regex = acceptedCreditCards[key]
       if (regex.test(value)) {
         accepted = true
       }
@@ -66,15 +65,12 @@ export const validateCard = function(val) {
 export const validateCVV = function(my_card, my_cvv){
     // remove all non digit characters
     let creditCard = my_card.replace(/\D/g, '')
-    let cvv = my_cvv.replace(/\D/g, '')
-    // american express and cvv is 4 digits
+    let cvv = my_cvv.replace(/\D/g, '')    
     if ((acceptedCreditCards.amex).test(creditCard)) {
-      if((/^\d{4}$/).test(cvv))
-        return true
-    } else if ((/^\d{3}$/).test(cvv)) { // other card & cvv is 3 digits
-      return true
+      return (/^\d{4}$/).test(cvv) // American Express CVV is 4 digits
+    } else {
+      return (/^\d{3}$/).test(cvv) // Other cards CVV is 3 digits
     }
-    return false
 }
   
 var acceptedCreditCards = {
@@ -90,8 +86,5 @@ export const validateCardMonthYear = function(exYear, exMonth) {
   let today = new Date()
   let someday = new Date()
   someday.setFullYear(exYear, exMonth, 1)
-  if(someday.getTime() < today.getTime()){
-    return false
-  }
-  return true
+  return someday.getTime() > today.getTime()
 }

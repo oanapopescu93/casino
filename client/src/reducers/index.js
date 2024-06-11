@@ -8,6 +8,7 @@ import popupReducer from './popup'
 import gamesReducer from './games'
 import cartReducer from './cart'
 import orderReducer from './order'
+import paymentDetailsReducer from './paymentDetails'
 
 const allReducers = combineReducers({	
 	settings: settingsReducer,
@@ -18,6 +19,7 @@ const allReducers = combineReducers({
 	games: gamesReducer,
 	cart: cartReducer,
 	order: orderReducer,
+	paymentDetails: paymentDetailsReducer,
 })
 
 export default allReducers

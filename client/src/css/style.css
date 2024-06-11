@@ -598,6 +598,7 @@ textarea {
   max-height: 200px;
   overflow-x: hidden;  
 	overflow-y: auto;
+  padding: var(--padding_small);
 }
 .salon_games .dropdown .dropdown-menu{
   max-height: 150px;
@@ -2042,9 +2043,6 @@ textarea {
 .cart_image{
   text-align: center;
 }
-.cart_info{
-  width: 70%;
-}
 .cart_buttons{
   text-align: right;
 }
@@ -2128,7 +2126,7 @@ textarea {
 
 .cart_header, .cart_item{
   border-bottom: solid 1px var(--color);
-  padding: var(--padding_small) 0px;
+  padding: var(--padding_small) 15px;
 }
 .cart_item:last-child{
   margin-bottom: var(--padding);
@@ -2416,13 +2414,20 @@ textarea {
   height: 25px;
   width: 100%;
   font-size: 14px;
-  line-height: 12px;
+  line-height: 6px;
 }
 #payment_form input, #payment_form .dropdown{
   margin-bottom: var(--padding);
 }
 #payment_form .alert{
   margin-top: 0px;
+  margin-bottom: var(--padding);
+}
+#payment_details h3{
+  margin-bottom: var(--padding_small);
+}
+.payment_details_box{
+  text-align: left;
 }
 
 /* ORDERS */
@@ -3262,7 +3267,7 @@ textarea {
   }
   input, textarea, #payment_form .dropdown .dropdown-toggle{
     font-size: 12px;
-    line-height: 12px;
+    line-height: 6px;
     height: 20px;
   }
 

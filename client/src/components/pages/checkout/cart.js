@@ -46,12 +46,12 @@ function Cart(props){
                 let cart_item_total_price = (item.qty * item.price).toFixed(2)
                 return <div key={i} className='cart_item'>
                     <Row>
-                        <Col xs={6} sm={4} className="cart_image">
+                        <Col xs={6} sm={12} md={4} className="cart_image">
                             <div className="crop_vegetables">
                                 <img alt="vegetable" className={'vegetable '+item.id} src={vegetables_yellow}></img>
                             </div>
                         </Col>
-                        <Col xs={6} sm={8} className="cart_info">
+                        <Col xs={6} sm={12} md={8} className="cart_info">
                             {(() => {
                                 switch (lang) {
                                     case "DE":
@@ -73,7 +73,7 @@ function Cart(props){
                                         return <h4>{item.name_eng}</h4>
                                 }
                             })()}
-                            <h4><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h4>                                   
+                            <p><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>                                   
                         </Col>
                     </Row>
                 </div>

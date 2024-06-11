@@ -1,4 +1,5 @@
 const express = require("express")
+require('dotenv').config()
 const PORT = process.env.PORT || 1111
 const app = express()
 
@@ -14,8 +15,8 @@ app.use(paypalPayment)
 var cryptoPayment = require("./payments/cryptoPayment")
 app.use(cryptoPayment) 
 
-const path = require("path")
-const fs = require('fs')
+// const path = require("path")
+// const fs = require('fs')  
 
 const { encrypt, decrypt } = require('./utils/crypto')
 const { get_device, get_extra_data, sendEmail, check_streak} = require("./utils/other")
