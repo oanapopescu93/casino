@@ -170,18 +170,18 @@ export const getData = async function (url = "") {
 
 export const checkoutData = function(){	
   const monthOptions = [
-    {ENG: "January" , RO: "Ianuarie"},
-    {ENG: "February", RO: "Februarie"},
-    {ENG: "March", RO: "Martie"},
-    {ENG: "April", RO: "Aprilie"},
-    {ENG: "May", RO: "Mai"},
-    {ENG: "June", RO: "Iunie"},
-    {ENG: "July", RO: "Iulie"},
-    {ENG: "August", RO: "August"},
-    {ENG: "September", RO: "Septembrie"},
-    {ENG: "October", RO: "Octombrie"},
-    {ENG: "November", RO: "Noiembrie"},
-    {ENG: "December", RO: "Decembrie"},
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december"
   ]
   let date = new Date().getFullYear()-1
   const yearOptions = Array.from({length: 10}, (_, i) => i + date)

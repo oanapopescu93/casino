@@ -8,15 +8,8 @@ import { useSelector } from 'react-redux'
 function Cart(props){
     const {lang, home} = props
     let market = home.market ? home.market : []
-    let cart = useSelector(state => state.cart.cart) 
-    let promo = useSelector(state => state.cart.promo) 
+    let cart = useSelector(state => state.cart.cart)
     let list = getProducts(cart) 
-    let total = totalPriceSum()
-    let total_promo = total
-    if(promo && Object.keys(promo).length>0){
-        total_promo = (total_promo - (total_promo * promo.discount)/100).toFixed(2)
-    }
-    // total_promo = 123 //for testing
 
     function getProducts(cart){
         let array = []
@@ -28,16 +21,6 @@ function Cart(props){
             }            
         }
         return array
-    }    
-    function totalPriceSum(){
-        let total = 0
-        for(let i in cart){
-            let product = market.filter(a => a.id === cart[i].id)
-            if(product && product[0] && product[0].price){
-                total = total + product[0].price * cart[i].qty
-            }
-        }
-        return total.toFixed(2)
     }
 
     return <div className="cart_list">

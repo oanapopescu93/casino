@@ -13,18 +13,23 @@ import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
 import PaymentDetails from './paymentDetails'
 import { updatePaymentDetails } from '../../../reducers/paymentDetails'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faStore, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 function Payment(props){
     const {lang, user, template, home} = props
     let dispatch = useDispatch()
     let max_bet = user.money ? decryptData(user.money) : 0
     let price_per_carrot = 1
+
+    let payment_details = useSelector(state => state.paymentDetails)
+
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(price_per_carrot)       
-    const [month, setMonth] = useState(-1)    
-    const [year, setYear] = useState("")
-    const [country, setCountry] = useState("")
-    const [city, setCity] = useState("")    
+    const [month, setMonth] = useState(payment_details.month !== -1 ? payment_details.month : -1)    
+    const [year, setYear] = useState(payment_details.year !== "" ? payment_details.year : "")
+    const [country, setCountry] = useState(payment_details.country !== "" ? payment_details.country : "")
+    const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")     
     const [nameError, setNameError] = useState(false)
     const [emailError, setEmailError] = useState(false)
     const [phoneError, setPhoneError] = useState(false)
@@ -34,20 +39,20 @@ function Payment(props){
     const [yearError, setYearError] = useState(false)
     const [countryError, setCountryError] = useState(false)
     const [cityError, setCityError] = useState(false)
-    const [bitcoinWalletError, setBitcoinWalletError] = useState(false)
+    const [bitcoinAddressError, setBitcoinAddressError] = useState(false)
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
     const [paymentDetails, setPaymentDetails] = useState(null)
 
     let gatewayDetails = {
-        stripe: ["name", "email", "phone", "country", "city", "card_number", "year", "month", "cvv"],
-        paypal: ["name", "email", "phone", "country", "city"],
-        crypto: ["bitcoin_address"]
+        stripe: ["name", "email", "phone", "country", "city", "payment_methode", "card_number", "year", "month", "cvv"],
+        paypal: ["name", "email", "phone", "country", "city", "payment_methode"],
+        crypto: ["payment_methode", "bitcoin_address"]
     }
     let gatewayDetailsMandatory = {
-        stripe: ["name", "email", "card_number", "year", "month", "cvv"],
-        paypal: ["name", "email"],
-        crypto: ["bitcoin_address"]
+        stripe: ["name", "email", "payment_methode", "card_number", "year", "month", "cvv"],
+        paypal: ["name", "email", "payment_methode"],
+        crypto: ["payment_methode", "bitcoin_address"]
     }
 
     let market = home.market ? home.market : []
@@ -78,6 +83,22 @@ function Payment(props){
             setCryptoData(res.payload)
         })
     }, [])
+
+    useEffect(() => {
+        switch (payment_details.option) {
+            case "1":
+                setGateway("stripe")
+                break;
+            case "2":
+                setGateway("paypal")
+                break;
+            case "3":
+                setGateway("crypto")
+                break;
+            default:
+                setGateway("stripe")
+        }
+    }, [payment_details.option])
 
     function getChanges(data){
         let type = data.type
@@ -110,7 +131,7 @@ function Payment(props){
     function handleBack(){
         dispatch(changePage('Salon'))
         dispatch(changeGame(null))
-        dispatch(changeGamePage(null))
+        dispatch(changeGamePage('market'))
     }
 
     function getFormDetails(){
@@ -146,9 +167,9 @@ function Payment(props){
             payload.month = month
         }
         if(year){
-            payload.cvv = year
+            payload.year = year
         }
-        let bitcoin_address = getValueFromForm(form, 'bitcoin_wallet')
+        let bitcoin_address = getValueFromForm(form, 'bitcoin_address')
         if(bitcoin_address){
             payload.bitcoin_address = bitcoin_address
         }
@@ -157,8 +178,8 @@ function Payment(props){
     }
 
     function handleSubmit(){
-        if($('#payment_form') && qty > 0){            
-            validate(getFormDetails())
+        if($('#payment_form') && qty > 0){
+            validateSubmit(getFormDetails())
         }
     }
 
@@ -170,8 +191,11 @@ function Payment(props){
             }
         }
     }
-    function validate(data){ 
+    function validateSubmit(data){
         let problem = false
+        let pay_card = data.option === "1" ? true : false
+        let pay_paypal = data.option === "2" ? true : false
+        let pay_crypto = data.option === "3" ? true : false    
         setNameError(false)
         setEmailError(false)
         // setPhoneError(false)
@@ -181,44 +205,21 @@ function Payment(props){
         setCvvError(false)
         setMonthError(false)
         setYearError(false)
-        setBitcoinWalletError(false)        
-
-        let pay_card = $("input[name='radio1']:checked").val()
-        //let pay_paypal = $("input[name='radio2']:checked").val()
-        let pay_crypto = $("input[name='radio3']:checked").val()        
+        setBitcoinAddressError(false)
         
-        if(isEmpty(data.name)){
-            setNameError(true)
-            problem = true
-        }
-        if(isEmpty(data.email) || !validateInput(data.email, "email")){
-            setEmailError(true)
-            problem = true
-        }
-
-        // if(isEmpty(data.phone)){
-        //     setPhoneError(true)
-        //     problem = true
-        // }
-        // if(isEmpty(data.country)){
-        //     setCountryError(true)
-        //     problem = true
-        // }
-        // if(isEmpty(data.city)){
-        //     setCityError(true)
-        //     problem = true
-        // }
-       
-        if(pay_card){            
+        if(pay_card){ //"name", "email", "payment_methode", "card_number", "year", "month", "cvv"
+            if(isEmpty(data.name)){
+                setNameError(true)
+                problem = true
+            }
+            if(isEmpty(data.email) || !validateInput(data.email, "email")){
+                setEmailError(true)
+                problem = true
+            }
             if(isEmpty(data.cardNumber) || !validateCard(data.cardNumber)){
                 setCardNumberError(true)
                 problem = true
-            }     
-            if(isEmpty(data.cvv) || !validateCVV(data.cardNumber, data.cvv)){
-                setCvvError(true)
-                problem = true
             }
-            
             if(month === -1){
                 setMonthError(true)
                 problem = true
@@ -232,16 +233,31 @@ function Payment(props){
                 setYearError(true)
                 problem = true
             }
-        }
-        if(pay_crypto){
-            if(isEmpty(data.bitcoin_address)){
-                setBitcoinWalletError(true)
+            if(isEmpty(data.cvv) || !validateCVV(data.cardNumber, data.cvv)){
+                setCvvError(true)
                 problem = true
-            }            
+            }
+        }
+        if(pay_paypal){ //"name", "email", "payment_methode"
+            if(isEmpty(data.name)){
+                setNameError(true)
+                problem = true
+            }
+            if(isEmpty(data.email) || !validateInput(data.email, "email")){
+                setEmailError(true)
+                problem = true
+            }
+        }
+        if(pay_crypto){ //"payment_methode", "bitcoin_address"
+            if(isEmpty(data.bitcoin_address)){
+                setBitcoinAddressError(true)
+                problem = true
+            }
         }
         
         if(!problem){
             sendPayload(data)
+            dispatch(updatePaymentDetails(data))
         }
     }
 
@@ -353,7 +369,7 @@ function Payment(props){
 
     function validateSave(data){
         let problem = false
-        console.log('validateSave ', data)
+        // console.log('validateSave ', data)
         return problem
     }
 
@@ -381,12 +397,20 @@ function Payment(props){
                     cvvError={cvvError} 
                     monthError={monthError}  
                     yearError={yearError}   
-                    bitcoinWalletError={bitcoinWalletError}             
+                    bitcoinAddressError={bitcoinAddressError}             
                     cryptoData={cryptoData}
                     totalPromo={total_promo}
                     gateway={gateway}
                     gatewayDetailsMandatory={gatewayDetailsMandatory}
-                />            
+                    paymentDetails={payment_details}
+                />
+                <div sm={12} className="button_action_group">
+                    <Button 
+                        type="button"  
+                        className="mybutton round button_transparent shadow_convex"
+                        onClick={()=>handleSave()}
+                    >{translate({lang: lang, info: "save"})}</Button>                
+                </div>      
             </Col>
             <Col sm={4}>
                 <Row>
@@ -409,12 +433,12 @@ function Payment(props){
                             type="button"  
                             className="mybutton button_fullcolor shadow_convex"
                             onClick={()=>handleSubmit()}
-                        >{translate({lang: lang, info: "submit"})}</Button>
+                        ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "submit"})}</Button>
                         <Button 
                             type="button"  
                             className="mybutton button_fullcolor shadow_convex"
                             onClick={()=>handleBack()}
-                        >{translate({lang: lang, info: "back"})}</Button>                    
+                        ><FontAwesomeIcon icon={faStore} /> {translate({lang: lang, info: "market"})}</Button>                    
                     </Col>
                 </Row>
             </Col>

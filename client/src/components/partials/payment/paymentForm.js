@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { translate } from '../../../translations/translate'
-import { Col, Row, Button, Dropdown, DropdownButton } from 'react-bootstrap'
+import { Col, Row, Dropdown, DropdownButton } from 'react-bootstrap'
 import { checkoutData } from '../../../utils/utils'
 import countriesData from '../../../utils/constants/countries.json'
-import { useSelector } from 'react-redux'
 
 function PaymentForm(props){
     const {
-        lang, 
         nameError, 
         emailError, 
         phoneError, 
@@ -17,14 +15,13 @@ function PaymentForm(props){
         yearError, 
         countryError, 
         cityError, 
-        bitcoinWalletError, 
+        bitcoinAddressError, 
         cryptoData,
         totalPromo,
         gateway,
-        gatewayDetailsMandatory
-    } = props 
-
-    let paymentDetails = useSelector(state => state.paymentDetails)
+        gatewayDetailsMandatory,
+        paymentDetails
+    } = props    
 
     const [name] = useState(paymentDetails.name !== "" ? paymentDetails.name : "")
     const [email] = useState(paymentDetails.email !== "" ? paymentDetails.email : "")
@@ -142,13 +139,7 @@ function PaymentForm(props){
         const filtered = cities.filter(city => city.toLowerCase().includes(e.toLowerCase()))
         setFilteredCities(filtered)
         setFilteredCity(e)
-    }
-
-    function handleSave(){
-        if(props.handleSave && typeof props.handleSave === "function"){
-            props.handleSave()
-        }
-    }
+    }  
 
     return <form id="payment_form">
         <Row>
@@ -285,9 +276,9 @@ function PaymentForm(props){
                     <Row>
                         <Col sm={4}>
                             <label>{translate({lang: props.lang, info: "month"})} {gatewayDetailsMandatory[gateway].includes("month") ? <>*</> : null}</label>
-                            <DropdownButton title={monthOptions[month] ? monthOptions[month][lang] : translate({lang: props.lang, info: "month"})} onSelect={(e)=>changeMonth(e)} className="shadow_concav">
+                            <DropdownButton title={monthOptions[month] ? translate({lang: props.lang, info: monthOptions[month]}) : translate({lang: props.lang, info: "month"})} onSelect={(e)=>changeMonth(e)} className="shadow_concav">
                                 {months.map(function(x, i){
-                                    return <Dropdown.Item key={i} eventKey={x}>{monthOptions[x][lang]}</Dropdown.Item>
+                                    return <Dropdown.Item key={i} eventKey={x}>{translate({lang: props.lang, info: monthOptions[x]})}</Dropdown.Item>
                                 })}
                             </DropdownButton>                                    
                             {monthError ? <div className="alert alert-danger">
@@ -323,13 +314,13 @@ function PaymentForm(props){
                 {radioThree ? <>
                     <Row>
                         <Col sm={12}>
-                            {(() => {                                
+                            {(() => {                        
                                 if(cryptoData && totalPromo > 0){
                                     if(parseInt(cryptoData.fiat_equivalent) <= parseInt(totalPromo)){
                                         return <>
-                                            <label htmlFor="bitcoin_wallet">{translate({lang: props.lang, info: "bitcoin_wallet"})} {gatewayDetailsMandatory[gateway].includes("bitcoin_wallet") ? <>*</> : null}</label>
-                                            <input defaultValue={bitcoinAddress} className="input_light shadow_concav" type="text" placeholder={translate({lang: props.lang, info: "bitcoin_wallet"})} id="bitcoin_wallet" name="bitcoin_wallet"/>
-                                            {bitcoinWalletError ? <div className="alert alert-danger">
+                                            <label htmlFor="bitcoin_address">{translate({lang: props.lang, info: "bitcoin_address"})} {gatewayDetailsMandatory[gateway].includes("bitcoin_address") ? <>*</> : null}</label>
+                                            <input defaultValue={bitcoinAddress} className="input_light shadow_concav" type="text" placeholder={translate({lang: props.lang, info: "bitcoin_address"})} id="bitcoin_address" name="bitcoin_address"/>
+                                            {bitcoinAddressError ? <div className="alert alert-danger">
                                                 <p className="text_red">
                                                     {translate({lang: props.lang, info: "fill_field"})}
                                                 </p>                            
@@ -349,16 +340,7 @@ function PaymentForm(props){
                     </Row>
                 </> : null}                       
             </Col>
-        </Row> 
-        <Row>
-            <Col sm={12} className="button_action_group">
-                <Button 
-                    type="button"  
-                    className="mybutton round button_transparent shadow_convex"
-                    onClick={()=>handleSave()}
-                >{translate({lang: lang, info: "save"})}</Button>                
-            </Col>
-        </Row>                             
+        </Row>                                    
     </form>
 }
 export default PaymentForm

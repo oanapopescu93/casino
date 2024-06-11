@@ -19,8 +19,7 @@ const paymentDetailsSlice = createSlice({
     name: 'paymentDetails',
     initialState,
     reducers: {
-        updatePaymentDetails: (state, { payload }) => {	
-            console.log(payload)
+        updatePaymentDetails: (state, { payload }) => {
             Object.keys(payload).forEach(key => {
                 state[key] = payload[key]
                 setCookie(`casino_payment_${key}`, payload[key])

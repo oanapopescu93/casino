@@ -367,7 +367,7 @@ textarea:focus, input:focus{
   line-height: 12px;
   padding: var(--padding_small) var(--padding);
   border-radius: 10px;
-  height: 25px;
+  height: 30px;
   width: 100%;
   cursor: pointer;
 }
@@ -2405,10 +2405,13 @@ textarea {
 }
 
 /* CHECKOUT */
-#payment_form h3{
+#payment_form h3, #payment_details h3{
   padding: var(--padding_small);
   margin-bottom: var(--padding_small);
   border-bottom: solid 1px var(--color);
+}
+#payment_form label{
+  margin-bottom: var(--padding_small);
 }
 #payment_form .dropdown .dropdown-toggle{
   height: 25px;
@@ -2429,8 +2432,9 @@ textarea {
 .payment_details_box{
   text-align: left;
 }
-
-/* ORDERS */
+.payment_details_box{
+  text-align: left;
+}
 
 /* ORDER */
 .order_box{
