@@ -2405,7 +2405,7 @@ textarea {
 }
 
 /* CHECKOUT */
-#payment_form h3, #payment_details h3{
+#payment_form h3, #payment_details .payment_details_title h3{
   padding: var(--padding_small);
   margin-bottom: var(--padding_small);
   border-bottom: solid 1px var(--color);
@@ -2426,14 +2426,12 @@ textarea {
   margin-top: 0px;
   margin-bottom: var(--padding);
 }
-#payment_details h3{
+.payment_details_box{
+  text-align: left;
+}
+.payment_details_body, .payment_details_total_price{
+  padding: var(--padding_small);
   margin-bottom: var(--padding_small);
-}
-.payment_details_box{
-  text-align: left;
-}
-.payment_details_box{
-  text-align: left;
 }
 
 /* ORDER */
@@ -3260,10 +3258,10 @@ textarea {
   .footer_container.up .footer_body{
     height: 170px;
   }
-  .mybutton{
+  /* .mybutton{
     height: 20px;
     line-height: 8px;
-  }
+  } */
   .mybutton.round{
     width: 50px;
     height: 50px;
@@ -3522,6 +3520,14 @@ textarea {
   .keno_rules{
     max-height: 200px;
   }
+
+  /* CHECKOUT */
+  .payment_details_box{
+    text-align: center;
+  }
+  .payment_details_body{
+    border-bottom: solid 1px var(--color);
+  }
 }
 @media (max-width:480px) {
   /* SLOTS */
@@ -3565,12 +3571,8 @@ textarea {
   }
 }
 
-@media (max-width: 960px) and (orientation: landscape) {
-	
-}
-@media (max-width: 768px) and (orientation: landscape){
-	
-}
+@media (max-width: 960px) and (orientation: landscape) {}
+@media (max-width: 768px) and (orientation: landscape){}
 
 @media (max-height: 500px){
 	.header_container.game{

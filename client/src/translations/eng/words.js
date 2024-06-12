@@ -161,8 +161,7 @@ var word_bank = {
     coupon_not_valid: "Your coupon is not valid",
 
     //checkout"
-    customer_info: "Customer info",
-    fill_field: "Please fill out this field",
+    customer_info: "Customer info",    
     name: "Name",
     email: "Email",
     phone: "Phone",
@@ -193,9 +192,21 @@ var word_bank = {
     september: "September",
     october: "October",
     november: "November",
-    december: "December",
-    save: "Save",
+    december: "December",    
     bitcoin_address: "Bitcoin address",
+    fill_field: "Please fill out this field",
+    validate_message_name: "This is not a name",
+    validate_message_email: "This is not a valid email",
+    validate_message_phone: "This is not a valid phone number",
+    validate_message_country: "This is not a valid country",
+    validate_message_city: "This is not a valid city",
+    validate_message_cardNumber: "This is not a valid card number",
+    validate_message_month: "This is not a valid month",
+    validate_message_year: "This is not a valid year",
+    validate_message_cvv: "This is not a valid CVV",
+    validate_message_bitcoinAddress: "This is not a valid Bitcoin address",
+    continue: "Continue",
+    save: "Save",
 
     // order
     order: "Order",

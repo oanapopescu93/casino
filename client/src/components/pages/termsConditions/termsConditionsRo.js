@@ -3,8 +3,8 @@ import { Col, Row } from 'react-bootstrap'
 
 function TermsConditionsEng(){
     return <Row id="terms_conditions" className="other_page_container">
-        <Col sm={2}></Col>
-        <Col sm={8}>
+        <Col lg={2}></Col>
+        <Col lg={8}>
             <p>Vă rugăm să citiți cu atenție acești Termeni și Condiții înainte de a utiliza serviciile noastre de cazino online.</p>
             
             <h3>Acceptarea Termenilor</h3>
@@ -47,13 +47,13 @@ function TermsConditionsEng(){
             <p>Ne rezervăm dreptul de a modifica sau înlocui acești Termeni și Condiții în orice moment. Cea mai recentă versiune a Termenilor și Condițiilor va fi publicată pe site-ul nostru web. Utilizarea continuă a Serviciului după astfel de modificări constituie acceptarea noilor Termeni.</p>
 
             <h3>Contactați-ne</h3>
-            <p>Dacă aveți întrebări sau nelămuriri cu privire la acești Termeni și Condiții, vă rugăm să ne contactați la adresa BunnyBetadresă de e-mail sau poștală de contact].</p>
+            <p>Dacă aveți întrebări sau nelămuriri cu privire la acești Termeni și Condiții, vă rugăm să ne contactați.</p>
 
             <br></br>
 
             <p>Utilizând Serviciul nostru, recunoașteți că ați citit, înțeles și sunteți de acord să fiți obligat de acești Termeni și Condiții.</p>
         </Col>
-        <Col sm={2}></Col>
+        <Col lg={2}></Col>
     </Row>
 }
 export default TermsConditionsEng

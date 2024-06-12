@@ -3,13 +3,15 @@ import { Button } from 'react-bootstrap'
 import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import { translate } from '../../../translations/translate'
-import TermsConditionsEng from './termsConditionsEng'
-import TermsConditionsRo from './termsConditionsRo'
-import TermsConditionsIt from './termsConditionsIt'
-import TermsConditionsFr from './termsConditionsFr'
-import TermsConditionsEs from './termsConditionsEs'
-import TermsConditionsDe from './termsConditionsDe'
 import Header from '../../partials/header'
+import TermsConditionsDe from './termsConditionsDe'
+import TermsConditionsEng from './termsConditionsEng'
+import TermsConditionsEs from './termsConditionsEs'
+import TermsConditionsFr from './termsConditionsFr'
+import TermsConditionsIt from './termsConditionsIt'
+import TermsConditionsPt from './termsConditionsPt'
+import TermsConditionsRo from './termsConditionsRo'
+import TermsConditionsRu from './termsConditionsRu'
 
 function TermsConditions(props){
     let dispatch = useDispatch()
@@ -24,18 +26,22 @@ function TermsConditions(props){
             {(() => {
                 switch (props.lang) {
                     case "DE":
-                        return <TermsConditionsDe></TermsConditionsDe>
+                        return <TermsConditionsDe/>
                     case "ES":
-                        return <TermsConditionsEs></TermsConditionsEs>
+                        return <TermsConditionsEs/>
                     case "FR":
-                        return <TermsConditionsFr></TermsConditionsFr>
+                        return <TermsConditionsFr/>
                     case "IT":
-                        return <TermsConditionsIt></TermsConditionsIt>
+                        return <TermsConditionsIt/>
+                    case "PT":
+                        return <TermsConditionsPt/>
                     case "RO":
-                        return <TermsConditionsRo></TermsConditionsRo>
+                        return <TermsConditionsRo/>
+                    case "RU":
+                        return <TermsConditionsRu/>
                     case "ENG":
                     default:
-                        return <TermsConditionsEng></TermsConditionsEng>
+                        return <TermsConditionsEng/>
                 }
             })()}  
         </div>

@@ -3,13 +3,15 @@ import { Button } from 'react-bootstrap'
 import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import { translate } from '../../../translations/translate'
-import AboutEng from './aboutEng'
-import AboutRo from './aboutRo'
 import Header from '../../partials/header'
 import AboutDe from './aboutDe'
+import AboutEng from './aboutEng'
 import AboutEs from './aboutEs'
 import AboutFr from './aboutFr'
 import AboutIt from './aboutIt'
+import AboutPT from './aboutPT'
+import AboutRo from './aboutRo'
+import AboutRu from './aboutRu'
 
 function About(props){
     let casino_name = "BunnyBet"
@@ -25,18 +27,22 @@ function About(props){
             {(() => {
                 switch (props.lang) {
                     case "DE":
-                        return <AboutDe lang={props.lang} casino_name={casino_name}></AboutDe>
+                        return <AboutDe lang={props.lang} casino_name={casino_name} />
                     case "ES":
-                        return <AboutEs lang={props.lang} casino_name={casino_name}></AboutEs>
+                        return <AboutEs lang={props.lang} casino_name={casino_name} />
                     case "FR":
-                        return <AboutFr lang={props.lang} casino_name={casino_name}></AboutFr>
+                        return <AboutFr lang={props.lang} casino_name={casino_name} />
                     case "IT":
-                        return <AboutIt lang={props.lang} casino_name={casino_name}></AboutIt>
+                        return <AboutIt lang={props.lang} casino_name={casino_name} />
+                    case "PT":
+                        return <AboutPT lang={props.lang} casino_name={casino_name} />
                     case "RO":
-                        return <AboutRo lang={props.lang} casino_name={casino_name}></AboutRo>
+                        return <AboutRo lang={props.lang} casino_name={casino_name} />
+                    case "RU":
+                        return <AboutRu lang={props.lang} casino_name={casino_name} />
                     case "ENG":
                     default:
-                        return <AboutEng lang={props.lang} casino_name={casino_name}></AboutEng>
+                        return <AboutEng lang={props.lang} casino_name={casino_name} />
                 }
             })()}    
         </div>

@@ -3,13 +3,15 @@ import { Button } from 'react-bootstrap'
 import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import { translate } from '../../../translations/translate'
-import PolicyPrivacyEng from './policyPrivacyEng'
-import PolicyPrivacyRo from './policyPrivacyRo'
-import PolicyPrivacyIt from './policyPrivacyIt'
-import PolicyPrivacyFr from './policyPrivacyFr'
-import PolicyPrivacyEs from './policyPrivacyEs'
-import PolicyPrivacyDe from './policyPrivacyDe'
 import Header from '../../partials/header'
+import PolicyPrivacyDe from './policyPrivacyDe'
+import PolicyPrivacyEng from './policyPrivacyEng'
+import PolicyPrivacyEs from './policyPrivacyEs'
+import PolicyPrivacyFr from './policyPrivacyFr'
+import PolicyPrivacyIt from './policyPrivacyIt'
+import PolicyPrivacyPt from './policyPrivacyPt'
+import PolicyPrivacyRo from './policyPrivacyRo'
+import PolicyPrivacyRu from './policyPrivacyRu'
 
 function PolicyPrivacy(props){
     let dispatch = useDispatch()
@@ -26,18 +28,22 @@ function PolicyPrivacy(props){
             {(() => {
                 switch (props.lang) {
                     case "DE":
-                        return <PolicyPrivacyDe></PolicyPrivacyDe>
+                        return <PolicyPrivacyDe/>
                     case "ES":
-                        return <PolicyPrivacyEs></PolicyPrivacyEs>
+                        return <PolicyPrivacyEs/>
                     case "FR":
-                        return <PolicyPrivacyFr></PolicyPrivacyFr>
+                        return <PolicyPrivacyFr/>
                     case "IT":
-                        return <PolicyPrivacyIt></PolicyPrivacyIt>
+                        return <PolicyPrivacyIt/>
+                    case "PT":
+                        return <PolicyPrivacyPt/>
                     case "RO":
-                        return <PolicyPrivacyRo></PolicyPrivacyRo>
+                        return <PolicyPrivacyRo/>
+                    case "RU":
+                        return <PolicyPrivacyRu/>
                     case "ENG":
                     default:
-                        return <PolicyPrivacyEng></PolicyPrivacyEng>
+                        return <PolicyPrivacyEng/>
                 }
             })()}            
         </div>

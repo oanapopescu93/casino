@@ -169,22 +169,23 @@ export const getData = async function (url = "") {
 }
 
 export const checkoutData = function(){	
-  const monthOptions = [
-    "january",
-    "february",
-    "march",
-    "april",
-    "may",
-    "june",
-    "july",
-    "august",
-    "september",
-    "october",
-    "november",
-    "december"
-  ]
+  const monthOptions = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   let date = new Date().getFullYear()-1
   const yearOptions = Array.from({length: 10}, (_, i) => i + date)
-
   return {monthOptions, yearOptions}
-} 
+}
+
+export const paymentErrors = function(){	
+  return {
+    name: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_name" },
+    email: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_email" },
+    phone: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_phone" },
+    country: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_country" },
+    city: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_city" },
+    cardNumber: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_cardNumber" },
+    month: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_month" },
+    year: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_year" },
+    cvv: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_cvv" },
+    bitcoinAddress: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_bitcoinAddress" }
+  }
+}

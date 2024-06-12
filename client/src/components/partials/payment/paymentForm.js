@@ -5,37 +5,21 @@ import { checkoutData } from '../../../utils/utils'
 import countriesData from '../../../utils/constants/countries.json'
 
 function PaymentForm(props){
-    const {
-        nameError, 
-        emailError, 
-        phoneError, 
-        cardNumberError, 
-        cvvError, 
-        monthError, 
-        yearError, 
-        countryError, 
-        cityError, 
-        bitcoinAddressError, 
-        cryptoData,
-        totalPromo,
-        gateway,
-        gatewayDetailsMandatory,
-        paymentDetails
-    } = props    
+    const {cryptoData, totalPromo, gateway, gatewayDetailsMandatory, paymentDetails, paymentError} = props
 
     const [name] = useState(paymentDetails.name !== "" ? paymentDetails.name : "")
     const [email] = useState(paymentDetails.email !== "" ? paymentDetails.email : "")
     const [phone] = useState(paymentDetails.phone !== "" ? paymentDetails.phone : "")
 
     const [country, setCountry] = useState(paymentDetails.country !== "" ? paymentDetails.country : "")
-    const [city, setCity] = useState(paymentDetails.city !== "" ? paymentDetails.city : "")    
+    const [city, setCity] = useState(paymentDetails.city !== "" ? paymentDetails.city : "")
 
-    const [radioOne, setRadioOne] = useState(paymentDetails.option === "1" ? true : false) 
+    const [radioOne, setRadioOne] = useState(paymentDetails.option === "1" ? true : false)
     const [radioTwo, setRadioTwo] = useState(paymentDetails.option === "2" ? true : false)
     const [radioThree, setRadioThree] = useState(paymentDetails.option === "3" ? true : false)
 
     const [cardNumber] = useState(paymentDetails.cardNumber !== "" ? paymentDetails.cardNumber : "")
-    const [month, setMonth] = useState(paymentDetails.month !== -1 ? paymentDetails.month : -1)    
+    const [month, setMonth] = useState(paymentDetails.month !== -1 ? paymentDetails.month : -1)
     const [year, setYear] = useState(paymentDetails.year !== "" ? paymentDetails.year : "")
     const [cvv] = useState(paymentDetails.cvv !== "" ? paymentDetails.cvv : "")
 
@@ -46,7 +30,7 @@ function PaymentForm(props){
     const [filteredCities, setFilteredCities] = useState([])
     const [filteredCountries, setFilteredCountries] = useState([])
     const [filteredCountry, setFilteredCountry] = useState("")
-    const [filteredCity, setFilteredCity] = useState("")     
+    const [filteredCity, setFilteredCity] = useState("")
     const monthOptions = checkoutData().monthOptions
     const yearOptions = checkoutData().yearOptions
     const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -153,29 +137,47 @@ function PaymentForm(props){
                     <Col sm={12} md={4}>
                         <label htmlFor="name">{translate({lang: props.lang, info: "name"})} {gatewayDetailsMandatory[gateway].includes("name") ? <>*</> : null}</label>
                         <input defaultValue={name} className="input_light shadow_concav" type="text" placeholder={translate({lang: props.lang, info: "name"})} id="name" name="name"/>
-                        {nameError ? <div className="alert alert-danger">
+                        {!paymentError.name.fill ? <div className="alert alert-danger">
                             <p className="text_red">
-                                {translate({lang: props.lang, info: "fill_field"})}
-                            </p>                            
-                        </div> : null}
+                                {translate({lang: props.lang, info: paymentError.name.fill_message})}
+                            </p>
+                        </div> : <>
+                            {!paymentError.name.validate ? <div className="alert alert-danger">
+                                <p className="text_red">
+                                    {translate({lang: props.lang, info: paymentError.name.validate_message})}
+                                </p>
+                            </div> : null}
+                        </>}                        
                     </Col>
                     <Col sm={12} md={4}>
                         <label htmlFor="email">{translate({lang: props.lang, info: "email"})} {gatewayDetailsMandatory[gateway].includes("email") ? <>*</> : null}</label>
                         <input defaultValue={email} className="input_light shadow_concav" type="text" placeholder="text@text.text" id="email" name="email"/>
-                        {emailError ? <div className="alert alert-danger">
+                        {!paymentError.email.fill ? <div className="alert alert-danger">
                             <p className="text_red">
-                                {translate({lang: props.lang, info: "fill_field"})}
-                            </p>                            
-                        </div> : null}
+                                {translate({lang: props.lang, info: paymentError.email.fill_message})}
+                            </p>
+                        </div> : <>
+                            {!paymentError.email.validate ? <div className="alert alert-danger">
+                                <p className="text_red">
+                                    {translate({lang: props.lang, info: paymentError.email.validate_message})}
+                                </p>
+                            </div> : null}
+                        </>}                        
                     </Col>
                     <Col sm={12} md={4}>
                         <label htmlFor="phone">{translate({lang: props.lang, info: "phone"})} {gatewayDetailsMandatory[gateway].includes("phone") ? <>*</> : null}</label>
                         <input defaultValue={phone} className="input_light shadow_concav" type="text" placeholder={translate({lang: props.lang, info: "phone"})} id="phone" name="phone"/>
-                        {phoneError ? <div className="alert alert-danger">
+                        {!paymentError.phone.fill ? <div className="alert alert-danger">
                             <p className="text_red">
-                                {translate({lang: props.lang, info: "fill_field"})}
-                            </p>                            
-                        </div> : null}
+                                {translate({lang: props.lang, info: paymentError.phone.fill_message})}
+                            </p>
+                        </div> : <>
+                            {!paymentError.phone.validate ? <div className="alert alert-danger">
+                                <p className="text_red">
+                                    {translate({lang: props.lang, info: paymentError.phone.validate_message})}
+                                </p>
+                            </div> : null}
+                        </>}                        
                     </Col>
                 </Row>
             </Col>
@@ -195,16 +197,20 @@ function PaymentForm(props){
                                 />
                             </div>                            
                             {filteredCountries.map(function(country, i){
-                                return <Dropdown.Item key={i} eventKey={country}>
-                                    <span>{country}</span>
-                                </Dropdown.Item>
+                                return <Dropdown.Item key={i} eventKey={country}><span>{country}</span></Dropdown.Item>
                             })}
                         </DropdownButton>
-                        {countryError ? <div className="alert alert-danger">
+                        {!paymentError.country.fill ? <div className="alert alert-danger">
                             <p className="text_red">
-                                {translate({lang: props.lang, info: "fill_field"})}
-                            </p>                            
-                        </div> : null}
+                                {translate({lang: props.lang, info: paymentError.country.fill_message})}
+                            </p>
+                        </div> : <>
+                            {!paymentError.country.validate ? <div className="alert alert-danger">
+                                <p className="text_red">
+                                    {translate({lang: props.lang, info: paymentError.country.validate_message})}
+                                </p>
+                            </div> : null}
+                        </>}                        
                     </Col>
                     <Col sm={12} md={6}>
                         <label htmlFor="city">{translate({lang: props.lang, info: "city"})} {gatewayDetailsMandatory[gateway].includes("city") ? <>*</> : null}</label>
@@ -220,18 +226,20 @@ function PaymentForm(props){
                                 />
                             </div>
                             {filteredCities.map(function(city, i) {
-                                return (
-                                    <Dropdown.Item key={i} eventKey={city}>
-                                        <span>{city}</span>
-                                    </Dropdown.Item>
-                                );
+                                return <Dropdown.Item key={i} eventKey={city}><span>{city}</span></Dropdown.Item>
                             })}
                         </DropdownButton>
-                        {cityError ? <div className="alert alert-danger">
+                        {!paymentError.city.fill ? <div className="alert alert-danger">
                             <p className="text_red">
-                                {translate({lang: props.lang, info: "fill_field"})}
-                            </p>                            
-                        </div> : null}
+                                {translate({lang: props.lang, info: paymentError.city.fill_message})}
+                            </p>
+                        </div> : <>
+                            {!paymentError.city.validate ? <div className="alert alert-danger">
+                                <p className="text_red">
+                                    {translate({lang: props.lang, info: paymentError.city.validate_message})}
+                                </p>
+                            </div> : null}
+                        </>}                        
                     </Col>
                 </Row> 
             </Col>            
@@ -266,11 +274,17 @@ function PaymentForm(props){
                         <Col sm={12}>
                             <label htmlFor="card_number">{translate({lang: props.lang, info: "card_number"})} {gatewayDetailsMandatory[gateway].includes("card_number") ? <>*</> : null}</label>
                             <input defaultValue={cardNumber} className="input_light shadow_concav" type="text" placeholder="XXXX XXXX XXXX XXXX" id="card_number" name="card_number"/>
-                            {cardNumberError ? <div className="alert alert-danger">
+                            {!paymentError.cardNumber.fill ? <div className="alert alert-danger">
                                 <p className="text_red">
-                                    {translate({lang: props.lang, info: "fill_field"})}
-                                </p>                            
-                            </div> : null}
+                                    {translate({lang: props.lang, info: paymentError.cardNumber.fill_message})}
+                                </p>
+                            </div> : <>
+                                {!paymentError.cardNumber.validate ? <div className="alert alert-danger">
+                                    <p className="text_red">
+                                        {translate({lang: props.lang, info: paymentError.cardNumber.validate_message})}
+                                    </p>
+                                </div> : null}
+                            </>}                            
                         </Col>
                     </Row>
                     <Row>
@@ -281,11 +295,17 @@ function PaymentForm(props){
                                     return <Dropdown.Item key={i} eventKey={x}>{translate({lang: props.lang, info: monthOptions[x]})}</Dropdown.Item>
                                 })}
                             </DropdownButton>                                    
-                            {monthError ? <div className="alert alert-danger">
+                            {!paymentError.month.fill ? <div className="alert alert-danger">
                                 <p className="text_red">
-                                    {translate({lang: props.lang, info: "fill_field"})}
-                                </p>                            
-                            </div> : null}
+                                    {translate({lang: props.lang, info: paymentError.month.fill_message})}
+                                </p>
+                            </div> : <>
+                                {!paymentError.month.validate ? <div className="alert alert-danger">
+                                    <p className="text_red">
+                                        {translate({lang: props.lang, info: paymentError.month.validate_message})}
+                                    </p>
+                                </div> : null}
+                            </>}                            
                         </Col>
                         <Col sm={4}>
                             <label>{translate({lang: props.lang, info: "year"})} {gatewayDetailsMandatory[gateway].includes("year") ? <>*</> : null}</label>
@@ -294,20 +314,32 @@ function PaymentForm(props){
                                     return <Dropdown.Item key={i} eventKey={x}>{x}</Dropdown.Item>
                                 })}
                             </DropdownButton>
-                            {yearError ? <div className="alert alert-danger">
+                            {!paymentError.year.fill ? <div className="alert alert-danger">
                                 <p className="text_red">
-                                    {translate({lang: props.lang, info: "fill_field"})}
-                                </p>                            
-                            </div> : null}
+                                    {translate({lang: props.lang, info: paymentError.year.fill_message})}
+                                </p>
+                            </div> : <>
+                                {!paymentError.year.validate ? <div className="alert alert-danger">
+                                    <p className="text_red">
+                                        {translate({lang: props.lang, info: paymentError.year.validate_message})}
+                                    </p>
+                                </div> : null}
+                            </>}                            
                         </Col>
                         <Col sm={4}>
                             <label htmlFor="cvv">{translate({lang: props.lang, info: "cvv"})} {gatewayDetailsMandatory[gateway].includes("cvv") ? <>*</> : null}</label>
                             <input defaultValue={cvv} className="input_light shadow_concav" type="text" placeholder="123" id="cvv" name="cvv"/>
-                            {cvvError ? <div className="alert alert-danger">
+                            {!paymentError.cvv.fill ? <div className="alert alert-danger">
                                 <p className="text_red">
-                                    {translate({lang: props.lang, info: "fill_field"})}
-                                </p>                            
-                            </div> : null}
+                                    {translate({lang: props.lang, info: paymentError.cvv.fill_message})}
+                                </p>
+                            </div> : <>
+                                {!paymentError.cvv.validate ? <div className="alert alert-danger">
+                                    <p className="text_red">
+                                        {translate({lang: props.lang, info: paymentError.cvv.validate_message})}
+                                    </p>
+                                </div> : null}
+                            </>}                            
                         </Col>
                     </Row>
                 </> : null}    
@@ -320,11 +352,17 @@ function PaymentForm(props){
                                         return <>
                                             <label htmlFor="bitcoin_address">{translate({lang: props.lang, info: "bitcoin_address"})} {gatewayDetailsMandatory[gateway].includes("bitcoin_address") ? <>*</> : null}</label>
                                             <input defaultValue={bitcoinAddress} className="input_light shadow_concav" type="text" placeholder={translate({lang: props.lang, info: "bitcoin_address"})} id="bitcoin_address" name="bitcoin_address"/>
-                                            {bitcoinAddressError ? <div className="alert alert-danger">
+                                            {!paymentError.bitcoinAddress.fill ? <div className="alert alert-danger">
                                                 <p className="text_red">
-                                                    {translate({lang: props.lang, info: "fill_field"})}
-                                                </p>                            
-                                            </div> : null}
+                                                    {translate({lang: props.lang, info: paymentError.bitcoinAddress.fill_message})}
+                                                </p>
+                                            </div> : <>
+                                                {!paymentError.bitcoinAddress.validate ? <div className="alert alert-danger">
+                                                    <p className="text_red">
+                                                        {translate({lang: props.lang, info: paymentError.bitcoinAddress.validate_message})}
+                                                    </p>
+                                                </div> : null}
+                                            </>}                                            
                                         </>
                                     } else {
                                         return <>

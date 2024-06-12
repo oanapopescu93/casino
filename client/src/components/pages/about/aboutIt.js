@@ -15,8 +15,8 @@ function AboutIt(props){
         dispatch(changeGamePage(null))
     }
     return <Row id="about" className="other_page_container">
-    <Col sm={2}></Col>
-    <Col sm={8}>        
+    <Col lg={2}></Col>
+    <Col lg={8}>        
         <p>Benvenuti su {casino_name}, un progetto personale nato dall'amore per il gioco, realizzato da un gruppo di appassionati di casinò dedicati a condividere la propria passione con il mondo. Non siamo ancora un casinò commerciale (almeno, non ancora), ma la nostra missione è offrire un'esperienza di gioco unica e divertente ai nostri compagni appassionati di gioco.</p>
         <h3>La Nostra Storia:</h3>
         <p>{casino_name} è nato come progetto personale, scaturito dalla nostra profonda passione per tutto ciò che riguarda il casinò. Essendo noi stessi giocatori appassionati, abbiamo sempre sognato di creare uno spazio in cui le persone potessero godere dell'emozione del gioco d'azzardo senza la pressione degli interessi commerciali. Questo progetto è la testimonianza del nostro impegno nel mondo del gioco e del nostro desiderio di costruire qualcosa di veramente speciale.</p>
@@ -34,6 +34,7 @@ function AboutIt(props){
         <p>Grazie per far parte del nostro percorso su {casino_name}. Non vediamo l'ora di condividere molti momenti memorabili nel mondo del gioco insieme.</p>
         <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: props.lang, info: "how_to_play"})}</p>
     </Col>
+    <Col lg={2}></Col>
 </Row>
 }
 export default AboutIt

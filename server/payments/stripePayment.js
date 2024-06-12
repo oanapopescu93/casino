@@ -21,13 +21,6 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
         let card_token = null
         let card = null
         let cardInfo = {
-            // card: {
-            //     number: '4242424242424242',
-            //     exp_month: 4,
-            //     exp_year: 2024,
-            //     cvc: '314',
-            //     name,
-            // },
             card: {
                 number: cardNumber,
                 exp_month: parseInt(month),

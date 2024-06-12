@@ -15,8 +15,8 @@ function AboutEs(props){
         dispatch(changeGamePage(null))
     }
     return <Row id="about" className="other_page_container">
-    <Col sm={2}></Col>
-    <Col sm={8}>        
+    <Col lg={2}></Col>
+    <Col lg={8}>        
         <p>Bienvenidos a {casino_name}, un proyecto personal hecho realidad por un grupo de entusiastas de los casinos que están dedicados a compartir su pasión por el juego con el mundo. Aunque todavía no somos un casino comercial (al menos, no todavía), nuestra misión es proporcionar una experiencia de juego única y entretenida para nuestros compañeros entusiastas del juego.</p>
         <h3>Nuestra Historia:</h3>
         <p>{casino_name} comenzó como un proyecto personal, nacido de nuestro profundo amor por todo lo relacionado con los casinos. Como jugadores ávidos nosotros mismos, siempre hemos soñado con crear un espacio donde las personas puedan disfrutar de la emoción de los juegos de casino sin la presión de intereses comerciales. Este proyecto es un testimonio de nuestro compromiso con el mundo del juego y nuestro deseo de construir algo verdaderamente especial.</p>
@@ -34,6 +34,7 @@ function AboutEs(props){
         <p>Gracias por formar parte de nuestra travesía en {casino_name}. Esperamos compartir muchos momentos memorables en el mundo del juego juntos.</p>
         <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: props.lang, info: "how_to_play"})}</p>
     </Col>
+    <Col lg={2}></Col>
 </Row>
 }
 export default AboutEs

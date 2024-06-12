@@ -162,7 +162,6 @@ var word_bank = {
 
     //checkout"
     customer_info: "Информация о покупателе",
-    fill_field: "Пожалуйста, заполните это поле",
     name: "Имя",
     email: "Email",
     phone: "Телефон",
@@ -194,8 +193,20 @@ var word_bank = {
     october: "Октябрь",
     november: "Ноябрь",
     december: "Декабрь",
-    save: "Сохранить",
     bitcoin_address: "Биткойн-адрес",
+    fill_field: "Пожалуйста, заполните это поле",
+    validate_message_name: "Это не имя",
+    validate_message_email: "Это не действительный адрес электронной почты",
+    validate_message_phone: "Это не действительный номер телефона",
+    validate_message_country: "Это не действительная страна",
+    validate_message_city: "Это не действительный город",
+    validate_message_cardNumber: "Это не действительный номер карты",
+    validate_message_month: "Это не действительный месяц",
+    validate_message_year: "Это не действительный год",
+    validate_message_cvv: "Это не действительный CVV",
+    validate_message_bitcoinAddress: "Это не действительный адрес Bitcoin",
+    continue: "Продолжить",
+    save: "Сохранить",
 
     // order
     order: "Заказ",

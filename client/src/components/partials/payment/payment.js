@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
 import { decryptData } from '../../../utils/crypto'
-import { isEmpty, postData } from '../../../utils/utils'
+import { isEmpty, paymentErrors, postData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
@@ -29,20 +29,11 @@ function Payment(props){
     const [month, setMonth] = useState(payment_details.month !== -1 ? payment_details.month : -1)    
     const [year, setYear] = useState(payment_details.year !== "" ? payment_details.year : "")
     const [country, setCountry] = useState(payment_details.country !== "" ? payment_details.country : "")
-    const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")     
-    const [nameError, setNameError] = useState(false)
-    const [emailError, setEmailError] = useState(false)
-    const [phoneError, setPhoneError] = useState(false)
-    const [cardNumberError, setCardNumberError] = useState(false)
-    const [cvvError, setCvvError] = useState(false)
-    const [monthError, setMonthError] = useState(false)   
-    const [yearError, setYearError] = useState(false)
-    const [countryError, setCountryError] = useState(false)
-    const [cityError, setCityError] = useState(false)
-    const [bitcoinAddressError, setBitcoinAddressError] = useState(false)
+    const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
     const [paymentDetails, setPaymentDetails] = useState(null)
+    const [paymentError, setPaymentError] = useState(paymentErrors())
 
     let gatewayDetails = {
         stripe: ["name", "email", "phone", "country", "city", "payment_methode", "card_number", "year", "month", "cvv"],
@@ -191,69 +182,75 @@ function Payment(props){
             }
         }
     }
+
     function validateSubmit(data){
-        let problem = false
         let pay_card = data.option === "1" ? true : false
         let pay_paypal = data.option === "2" ? true : false
         let pay_crypto = data.option === "3" ? true : false    
-        setNameError(false)
-        setEmailError(false)
-        // setPhoneError(false)
-        // setCountryError(false)
-        // setCityError(false)
-        setCardNumberError(false)
-        setCvvError(false)
-        setMonthError(false)
-        setYearError(false)
-        setBitcoinAddressError(false)
-        
+        let errors = paymentErrors()
+
         if(pay_card){ //"name", "email", "payment_methode", "card_number", "year", "month", "cvv"
             if(isEmpty(data.name)){
-                setNameError(true)
-                problem = true
+                errors.name.fill = false
             }
-            if(isEmpty(data.email) || !validateInput(data.email, "email")){
-                setEmailError(true)
-                problem = true
+            if(!validateInput(data.name, "name")){
+                errors.name.validate = false
             }
-            if(isEmpty(data.cardNumber) || !validateCard(data.cardNumber)){
-                setCardNumberError(true)
-                problem = true
+            if(isEmpty(data.email)){
+                errors.email.fill = false
             }
-            if(month === -1){
-                setMonthError(true)
-                problem = true
-            }        
+            if(!validateInput(data.email, "email")){
+                errors.email.validate = false
+            }
+            if(isEmpty(data.cardNumber)){
+                errors.cardNumber.fill = false
+            }
+            if(!validateCard(data.cardNumber)){ // test card details --> 4242424242424242
+                errors.cardNumber.validate = false
+            }            
+            if(parseInt(month) === -1){
+                errors.month.fill = false
+            }            
             if(isEmpty(year)){
-                setYearError(true)
-                problem = true
+                errors.year.fill = false
             }
             if(!validateCardMonthYear(year, month)){
-                setMonthError(true)
-                setYearError(true)
-                problem = true
+                errors.month.validate = false
+                errors.year.validate = false
             }
-            if(isEmpty(data.cvv) || !validateCVV(data.cardNumber, data.cvv)){
-                setCvvError(true)
-                problem = true
+            if(isEmpty(data.cvv)){
+                errors.cvv.fill = false
+            }
+            if(!validateCVV(data.cardNumber, data.cvv)){
+                errors.cvv.validate = false
             }
         }
         if(pay_paypal){ //"name", "email", "payment_methode"
             if(isEmpty(data.name)){
-                setNameError(true)
-                problem = true
+                errors.name.fill = false
             }
-            if(isEmpty(data.email) || !validateInput(data.email, "email")){
-                setEmailError(true)
-                problem = true
+            if(!validateInput(data.name, "name")){
+                errors.name.validate = false
+            }
+            if(isEmpty(data.email)){
+                errors.email.fill = false
+            }
+            if(!validateInput(data.email, "email")){
+                errors.email.validate = false
             }
         }
         if(pay_crypto){ //"payment_methode", "bitcoin_address"
             if(isEmpty(data.bitcoin_address)){
-                setBitcoinAddressError(true)
-                problem = true
+                errors.bitcoinAddress.fill = false
+            }
+            if(!validateInput(data.bitcoin_address, "bitcoin_address")){ //test bitcoin address--> 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+                errors.bitcoinAddress.validate = false
             }
         }
+        setPaymentError(errors)
+
+        // Check if there is any problem (fill or validate errors for at least one element in error array)
+        let problem = Object.values(errors).some(error => !error.fill || !error.validate)
         
         if(!problem){
             sendPayload(data)
@@ -371,16 +368,7 @@ function Payment(props){
                 <PaymentForm 
                     {...props} 
                     getChanges={(e)=>getChanges(e)}
-                    nameError={nameError} 
-                    emailError={emailError} 
-                    phoneError={phoneError}
-                    countryError={countryError}
-                    cityError={cityError}
-                    cardNumberError={cardNumberError} 
-                    cvvError={cvvError} 
-                    monthError={monthError}  
-                    yearError={yearError}   
-                    bitcoinAddressError={bitcoinAddressError}             
+                    paymentError={paymentError}            
                     cryptoData={cryptoData}
                     totalPromo={total_promo}
                     gateway={gateway}
@@ -409,7 +397,7 @@ function Payment(props){
                             type="button"  
                             className="mybutton button_fullcolor shadow_convex"
                             onClick={()=>handleSubmit()}
-                        ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "submit"})}</Button>
+                        ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "continue"})}</Button>
                         <Button 
                             type="button"  
                             className="mybutton button_fullcolor shadow_convex"

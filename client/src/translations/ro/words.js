@@ -163,7 +163,6 @@ var word_bank = {
 
     //checkout
     customer_info: "Date client",
-    fill_field: "Vă rugăm să completați câmpul",
     name: "Nume",
     email: "Email",
     phone: "Telefon",
@@ -195,8 +194,20 @@ var word_bank = {
     october: "Octombrie",
     november: "Noiembrie",
     december: "Decembrie",
-    save: "Salvează",
     bitcoin_address: "Adresă Bitcoin",
+    fill_field: "Vă rugăm să completați acest câmp",
+    validate_message_name: "Acesta nu este un nume",
+    validate_message_email: "Acesta nu este un email valid",
+    validate_message_phone: "Acesta nu este un număr de telefon valid",
+    validate_message_country: "Acesta nu este o țară validă",
+    validate_message_city: "Acesta nu este un oraș valid",
+    validate_message_cardNumber: "Acesta nu este un număr de card valid",
+    validate_message_month: "Acesta nu este o lună validă",
+    validate_message_year: "Acesta nu este un an valid",
+    validate_message_cvv: "Acesta nu este un CVV valid",
+    validate_message_bitcoinAddress: "Acesta nu este o adresă Bitcoin validă",
+    continue: "Continuă",
+    save: "Salvează",
 
     // order
     order: "Comandă",

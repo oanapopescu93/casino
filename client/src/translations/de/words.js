@@ -162,7 +162,6 @@ var word_bank = {
 
     //checkout"
     customer_info: "Kundendaten",
-    fill_field: "Bitte fülle dieses Feld aus",
     name: "Name",
     email: "E-Mail",
     phone: "Telefon",
@@ -194,8 +193,20 @@ var word_bank = {
     october: "Oktober",
     november: "November",
     december: "Dezember",
-    save: "Speichern",
     bitcoin_address: "Bitcoin-Adresse",
+    fill_field: "Bitte füllen Sie dieses Feld aus",
+    validate_message_name: "Dies ist kein Name",
+    validate_message_email: "Dies ist keine gültige E-Mail",
+    validate_message_phone: "Dies ist keine gültige Telefonnummer",
+    validate_message_country: "Dies ist kein gültiges Land",
+    validate_message_city: "Dies ist keine gültige Stadt",
+    validate_message_cardNumber: "Dies ist keine gültige Kartennummer",
+    validate_message_month: "Dies ist kein gültiger Monat",
+    validate_message_year: "Dies ist kein gültiges Jahr",
+    validate_message_cvv: "Dies ist keine gültige CVV",
+    validate_message_bitcoinAddress: "Dies ist keine gültige Bitcoin-Adresse",
+    continue: "Weiter",
+    save: "Speichern",
 
     // order
     order: "Bestellung",
