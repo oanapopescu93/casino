@@ -9,6 +9,8 @@ import ContactMap from './contactMap'
 import { getWindowDimensions } from '../../../utils/utils'
 import Header from '../../partials/header'
 import ContactDetails from './contactDetails'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Contact(props){
     let locations = props.home.contact    
@@ -106,7 +108,7 @@ function Contact(props){
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                {translate({lang: props.lang, info: "back"})}
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>
         </div>
     </div>

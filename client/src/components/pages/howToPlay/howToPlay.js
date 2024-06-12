@@ -6,6 +6,8 @@ import { translate } from '../../../translations/translate'
 import Header from '../../partials/header'
 import HowToPlayGames from './howToPlayGames'
 import HowToPlayTitles from './howToPlayTitles'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function HowToPlay(props){
     const [game, setGame] = useState(null)
@@ -39,7 +41,7 @@ function HowToPlay(props){
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                {translate({lang: props.lang, info: "back"})}
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>
         </div>
     </div>

@@ -7,6 +7,8 @@ import { sortList } from '../../utils/utils'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Header from '../partials/header'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function CareerList(props){
     const {lang} = props
@@ -149,7 +151,7 @@ function Career(props){
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                {translate({lang: props.lang, info: "back"})}
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>
         </div>
         <br/><br/>

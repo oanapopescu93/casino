@@ -3,8 +3,8 @@ import { Col, Row } from 'react-bootstrap'
 
 function RouletteRo(){
     return <Row>
-        <Col sm={2}></Col>
-        <Col sm={8}>
+        <Col lg={2}></Col>
+        <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introducere</h3></Col>
                 <Col sm={12}>
@@ -50,7 +50,7 @@ function RouletteRo(){
                 </Col>
             </Row>
         </Col>
-        <Col sm={2}></Col>
+        <Col lg={2}></Col>
     </Row>
 }
 

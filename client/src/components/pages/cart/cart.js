@@ -8,6 +8,8 @@ import Promo from './promo'
 import Panel from './panel'
 import { translate } from '../../../translations/translate'
 import Header from '../../partials/header'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faStore, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Cart(props){
     let market = props.home.market
@@ -97,10 +99,10 @@ function Cart(props){
                 </Col>
                 <Col sm={12} className="button_action_group">
                     <Button type="button" onClick={()=>handleContinueShopping()} className="mybutton round button_transparent shadow_convex">
-                        {translate({lang: props.lang, info: "market"})}
+                        <FontAwesomeIcon icon={faStore} />
                     </Button>	
                     <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                        {translate({lang: props.lang, info: "back"})}
+                        <FontAwesomeIcon icon={faArrowRotateLeft} />
                     </Button>	
                 </Col>
             </Row>}

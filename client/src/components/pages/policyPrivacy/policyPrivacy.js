@@ -12,6 +12,8 @@ import PolicyPrivacyIt from './policyPrivacyIt'
 import PolicyPrivacyPt from './policyPrivacyPt'
 import PolicyPrivacyRo from './policyPrivacyRo'
 import PolicyPrivacyRu from './policyPrivacyRu'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function PolicyPrivacy(props){
     let dispatch = useDispatch()
@@ -25,31 +27,33 @@ function PolicyPrivacy(props){
     return <div className="content_wrap">
         <Header template="policy_privacy" title={translate({lang: props.lang, info: "policy_privacy"})}></Header>        
         <div className="page_content">
-            {(() => {
-                switch (props.lang) {
-                    case "DE":
-                        return <PolicyPrivacyDe/>
-                    case "ES":
-                        return <PolicyPrivacyEs/>
-                    case "FR":
-                        return <PolicyPrivacyFr/>
-                    case "IT":
-                        return <PolicyPrivacyIt/>
-                    case "PT":
-                        return <PolicyPrivacyPt/>
-                    case "RO":
-                        return <PolicyPrivacyRo/>
-                    case "RU":
-                        return <PolicyPrivacyRu/>
-                    case "ENG":
-                    default:
-                        return <PolicyPrivacyEng/>
-                }
-            })()}            
+            <div className="box_scroll">
+                {(() => {
+                    switch (props.lang) {
+                        case "DE":
+                            return <PolicyPrivacyDe/>
+                        case "ES":
+                            return <PolicyPrivacyEs/>
+                        case "FR":
+                            return <PolicyPrivacyFr/>
+                        case "IT":
+                            return <PolicyPrivacyIt/>
+                        case "PT":
+                            return <PolicyPrivacyPt/>
+                        case "RO":
+                            return <PolicyPrivacyRo/>
+                        case "RU":
+                            return <PolicyPrivacyRu/>
+                        case "ENG":
+                        default:
+                            return <PolicyPrivacyEng/>
+                    }
+                })()}         
+            </div>
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                {translate({lang: props.lang, info: "back"})}
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>
         </div>
         <br/><br/>

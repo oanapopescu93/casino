@@ -3,9 +3,9 @@ import { Col, Row } from 'react-bootstrap'
 
 function RaceDe(){
     return <Row>
-        <Col sm={2}></Col>
-        <Col sm={8}>
-        <Row>
+        <Col lg={2}></Col>
+        <Col lg={8}>
+            <Row>
                 <Col sm={12}><h3>Einführung</h3></Col>
                 <Col sm={12}>
                     <p>Pferdewetten beinhalten den Einsatz von Geld auf das Ergebnis eines Rennens.</p>
@@ -26,7 +26,7 @@ function RaceDe(){
                 </Col>
             </Row>
         </Col>
-        <Col sm={2}></Col>
+        <Col lg={2}></Col>
     </Row>
 }
 export default RaceDe

@@ -12,6 +12,8 @@ import TermsConditionsIt from './termsConditionsIt'
 import TermsConditionsPt from './termsConditionsPt'
 import TermsConditionsRo from './termsConditionsRo'
 import TermsConditionsRu from './termsConditionsRu'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function TermsConditions(props){
     let dispatch = useDispatch()
@@ -23,31 +25,33 @@ function TermsConditions(props){
     return <div className="content_wrap">
         <Header template="terms_cond" title={translate({lang: props.lang, info: "terms_cond"})}></Header>     
         <div className="page_content">
-            {(() => {
-                switch (props.lang) {
-                    case "DE":
-                        return <TermsConditionsDe/>
-                    case "ES":
-                        return <TermsConditionsEs/>
-                    case "FR":
-                        return <TermsConditionsFr/>
-                    case "IT":
-                        return <TermsConditionsIt/>
-                    case "PT":
-                        return <TermsConditionsPt/>
-                    case "RO":
-                        return <TermsConditionsRo/>
-                    case "RU":
-                        return <TermsConditionsRu/>
-                    case "ENG":
-                    default:
-                        return <TermsConditionsEng/>
-                }
-            })()}  
+            <div className="box_scroll">
+                {(() => {
+                    switch (props.lang) {
+                        case "DE":
+                            return <TermsConditionsDe/>
+                        case "ES":
+                            return <TermsConditionsEs/>
+                        case "FR":
+                            return <TermsConditionsFr/>
+                        case "IT":
+                            return <TermsConditionsIt/>
+                        case "PT":
+                            return <TermsConditionsPt/>
+                        case "RO":
+                            return <TermsConditionsRo/>
+                        case "RU":
+                            return <TermsConditionsRu/>
+                        case "ENG":
+                        default:
+                            return <TermsConditionsEng/>
+                    }
+                })()}
+            </div>
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                {translate({lang: props.lang, info: "back"})}
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>
         </div>
         <br/><br/>

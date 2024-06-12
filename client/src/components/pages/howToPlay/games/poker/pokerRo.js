@@ -3,9 +3,9 @@ import { Col, Row } from 'react-bootstrap'
 
 function PokerRo(){
     return <Row>
-        <Col sm={2}></Col>
-        <Col sm={8}>
-        <Row>
+        <Col lg={2}></Col>
+        <Col lg={8}>
+            <Row>
                 <Col sm={12}><h3>Introducere</h3></Col>
                 <Col sm={12}>
                     <p>Pokerul este un joc popular de cărți jucat cu un pachet standard de 52 de cărți.</p>

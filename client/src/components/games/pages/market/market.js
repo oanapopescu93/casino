@@ -6,15 +6,15 @@ import Carousel from '../../../carousel/carousel'
 import { useDispatch } from 'react-redux'
 import { cartAdd } from '../../../../reducers/cart'
 import { Button } from 'react-bootstrap'
-import { translate } from '../../../../translations/translate'
 import { changePage, changeGame, changeGamePage } from '../../../../reducers/page'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faCartShopping, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Market(props){
-    const {lang, socket, home} = props
+    const {lang, home} = props
     let market = home.market ? home.market : []
 	let shader_style = {backgroundImage: `url(${shop})`}    
     const market_carousel_options = {
-        dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 4,
@@ -92,10 +92,10 @@ function Market(props){
         <Row>
             <Col sm={12} className="button_action_group">
                 <Button type="button" onClick={()=>handleGoTo('cart')} className="mybutton round button_transparent shadow_convex">
-                    {translate({lang: props.lang, info: "cart"})}
+                    <FontAwesomeIcon icon={faCartShopping}/>
                 </Button>	
                 <Button type="button" onClick={()=>handleGoTo('back')} className="mybutton round button_transparent shadow_convex">
-                    {translate({lang: props.lang, info: "back"})}
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
                 </Button>	
             </Col>
         </Row>

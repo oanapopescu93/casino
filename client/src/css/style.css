@@ -1769,7 +1769,7 @@ textarea {
 }
 .answer_container{
 	display:none;
-  text-align: left;
+  /* text-align: left; */
 }
 .answer_container.open{
 	display:block;
@@ -3126,12 +3126,14 @@ textarea {
 .cell_howToPlay p{
   margin: 0px;
 }
-.list_games_table{
-  text-align: left;
+.box_scroll{  
   margin-bottom: var(--padding);
   max-height: 500px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+.list_games_table{
+  text-align: left;
 }
 .list_games_table h2, .list_games_table h3{
   margin: var(--padding_small) 0px;
@@ -3218,9 +3220,8 @@ textarea {
   .progress_bubble_container{
     max-height: 205px;
   }
-  /* HOW TO PLAY */  
-  
-  .list_games_table{
+  /* HOW TO PLAY */    
+  .box_scroll{
     max-height: 400px;
   }
 }

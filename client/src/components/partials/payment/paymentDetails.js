@@ -4,7 +4,7 @@ import { translate } from '../../../translations/translate'
 import { Row, Col, Button } from 'react-bootstrap'
 import { checkoutData } from '../../../utils/utils'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import {faStore, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 function PaymentDetails(props){
     const {lang, paymentDetails, totalPromo, gateway, gatewayDetails} = props
@@ -38,6 +38,12 @@ function PaymentDetails(props){
     function sendPayment(){
         if(props.sendPayment && typeof props.sendPayment === "function"){
             props.sendPayment()
+        }
+    }
+
+    function handleBack(){
+        if(props.handleBack && typeof props.handleBack === "function"){
+            props.handleBack()
         }
     }
 
@@ -105,6 +111,11 @@ function PaymentDetails(props){
                                         className="mybutton button_fullcolor shadow_convex"
                                         onClick={()=>sendPayment()}
                                     ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "submit"})}</Button>
+                                    <Button 
+                                        type="button"  
+                                        className="mybutton button_fullcolor shadow_convex"
+                                        onClick={()=>handleBack()}
+                                    ><FontAwesomeIcon icon={faStore} /> {translate({lang: lang, info: "market"})}</Button>
                                 </Col> 
                             </Row>
                         </Col>

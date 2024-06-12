@@ -8,6 +8,8 @@ import Header from '../../partials/header'
 import BankDonation from './bank'
 import CryptoDonation from './crypto'
 import PaypalDonation from './paypal'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Donation(props){
     const {lang, list} = props
@@ -57,6 +59,8 @@ function Donation(props){
                                                 return <PaypalDonation lang={props.lang} list={list}/>
                                             case "bank":
                                                 return <BankDonation lang={props.lang} list={list}/>
+                                            default:
+                                                return <p>{translate({lang: props.lang, info: "error"})}</p>
                                         }
                                     })()}
                                 </div>                                
@@ -78,7 +82,7 @@ function Donation(props){
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                {translate({lang: props.lang, info: "back"})}
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>
         </div>
     </div>

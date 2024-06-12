@@ -3,8 +3,8 @@ import { Col, Row } from 'react-bootstrap'
 
 function BlackjackEs(){
     return <Row>
-        <Col sm={2}></Col>
-        <Col sm={8}>
+        <Col lg={2}></Col>
+        <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introducción</h3></Col>
                 <Col sm={12}>
@@ -40,9 +40,7 @@ function BlackjackEs(){
                 </Col>
                 <Col sm={12}><h3>Blackjack</h3></Col>
                 <Col sm={12}>
-                    <p>Si a un jugador o al cr
-
-upier se le reparte un As y una carta con valor de 10 (10, Jota, Reina o Rey) como sus dos primeras cartas, se le llama blackjack.</p>
+                    <p>Si a un jugador o al crupier se le reparte un As y una carta con valor de 10 (10, Jota, Reina o Rey) como sus dos primeras cartas, se le llama blackjack.</p>
                     <p>Un blackjack es una victoria automática para el jugador, que paga 3:2 a menos que el crupier también tenga un blackjack, lo que resulta en un empate.</p>
                 </Col>
                 <Col sm={12}><h3>Determinar el Resultado</h3></Col>
@@ -53,7 +51,7 @@ upier se le reparte un As y una carta con valor de 10 (10, Jota, Reina o Rey) co
                 </Col>
             </Row>
         </Col>
-        <Col sm={2}></Col>
+        <Col lg={2}></Col>
     </Row>
 }
 

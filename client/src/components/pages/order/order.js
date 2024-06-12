@@ -3,6 +3,8 @@ import { Row, Col, Button } from 'react-bootstrap'
 import { translate } from '../../../translations/translate'
 import { formatDate, isEmpty, roundNumber } from '../../../utils/utils'
 import { useSelector } from 'react-redux'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Order(props){
     const {lang, order} = props
@@ -24,7 +26,7 @@ function Order(props){
                     <h3>{translate({lang: lang, info: "order_details"})}</h3>
                     <div className="order_details">
                         <p className="order_details_link">
-                            <a href={order.receipt_url} target="_blank">{translate({lang: lang, info: "order_link"})}</a>
+                            <a href={order.receipt_url} target="_blank" rel="noopener noreferrer">{translate({lang: lang, info: "order_link"})}</a>
                         </p>
                         <p><b>{translate({lang: lang, info: "order_description"})}</b>: <span>{order.description}</span></p>
                         <p><b>{translate({lang: lang, info: "order_date"})}</b>: <span>{date}</span></p>
@@ -65,7 +67,7 @@ function Order(props){
         <Row>
             <Col sm={12}>
                 <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                    {translate({lang: props.lang, info: "back"})}
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
                 </Button>
             </Col>
         </Row>
