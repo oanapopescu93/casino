@@ -16,6 +16,7 @@ import { updatePaymentDetails } from '../../../reducers/paymentDetails'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
+let paypalStartPay = false
 function Payment(props){
     const {lang, user, template, home} = props
     let dispatch = useDispatch()
@@ -23,6 +24,7 @@ function Payment(props){
     let price_per_carrot = 1
 
     let payment_details = useSelector(state => state.paymentDetails)
+    let checkResponsePaypal = null    
 
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(price_per_carrot)       
@@ -32,7 +34,7 @@ function Payment(props){
     const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
-    const [paymentDetails, setPaymentDetails] = useState(null)
+    const [paymentDetails, setPaymentDetails] = useState(payment_details)
     const [paymentError, setPaymentError] = useState(paymentErrors())
 
     let gatewayDetails = {
@@ -268,6 +270,54 @@ function Payment(props){
         setPaymentDetails(e)
     }
 
+    useEffect(() => {  
+        checkResponsePaypal = setInterval(() => {
+            checkPaymentStatus()
+        }, 2000)
+        
+        const timeoutPaymentStatus = setTimeout(() => {
+            clearInterval(checkResponsePaypal)
+        }, 300000) // Stop checking after 5 minutes (300,000 milliseconds)
+
+        return () => {
+            clearInterval(checkResponsePaypal)
+            clearTimeout(timeoutPaymentStatus)
+        }
+    }, [])
+
+    const checkPaymentStatus = async () => {
+        try {
+            if(paypalStartPay){
+                let payload = {
+                    PayerID: paymentDetails?.PayerID, 
+                    paymentId: paymentDetails?.paymentId, 
+                    amount: total_promo
+                }
+
+                const data = await postData('/api/paypal/success', payload)
+
+                if (data) {                
+                    if (data.result === "error") {
+                        clearInterval(checkResponsePaypal)
+                        console.log('checkPaymentStatus1--> ', data)
+                        let payload = {
+                            open: true,
+                            template: "error",
+                            title: translate({lang: props.lang, info: "error"}),
+                            data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
+                        }
+                        dispatch(changePopup(payload))
+                    } else {                    
+                        console.log('checkPaymentStatus2--> ', data)
+                    }
+                }
+            }
+            
+        } catch (error) {
+            console.error('Error checking payment status:', error)
+        }
+    }
+
     function sendPayment(){
         if(typeof total_promo !== "undefined" && total_promo !== "" && total_promo !== "null" && total_promo !== null && amount > 0){ // something is wrong and we can't charge client (ex: somehow the cart is empty, so, the total amount is 0)
             let url = ""
@@ -287,13 +337,15 @@ function Payment(props){
             payload.amount = total_promo
             console.log('sendPayload1--> ', gateway, payload, url)   
             if(!isEmpty(url)){
-                postData(url, payload).then((data) => {
-                    console.log('sendPayload2--> ', data)
+                postData(url, payload).then((data) => {                    
                     if(data && data.result && data.result === "success"){
+                        console.log('sendPayload2--> ', data)
                         switch(gateway){
                             case "stripe":
                             case "paypal":
                                 if(data.payload.receipt_url){
+                                    paypalStartPay = true
+                                    console.log('sendPayload3--> ', paypalStartPay)
                                     window.open(data.payload.receipt_url,'_blank')
                                 }
                                 break
@@ -324,12 +376,12 @@ function Payment(props){
                             default:
                                 break
                         }
-                    } else {
+                    } else {                        
                         let payload = {
                             open: true,
                             template: "error",
                             title: translate({lang: props.lang, info: "error"}),
-                            data: translate({lang: props.lang, info: "error_charge"})
+                            data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
                         }
                         dispatch(changePopup(payload))
                     }

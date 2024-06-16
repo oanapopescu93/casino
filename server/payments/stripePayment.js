@@ -6,6 +6,7 @@ var jsonParser = bodyParser.json()
 // require('dotenv').config()
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const stripe = require('stripe')("sk_test_51Mdvu1CWq9uV6YuM2iH4wZdBXlSMfexDymB6hHwpmH3J9Dm7owHNBhq4l4wawzFV9dXL3xrYGbhO74oc8OeQn5uJ00It2XDg9U")
+const MINIMUM_AMOUNT_USD = 50
 
 stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
     const { name, email, country, city, phone, cardNumber, month, year, cvv, amount } = req.body
@@ -15,6 +16,10 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
     }
 
     if(amount){
+        if (amount < MINIMUM_AMOUNT_USD) {
+            return res.json({type: "stripe", result: "error", payload: 'amount_too_low'})
+        }
+        
         let customer = null
         let customerInfo = {name, email, phone, description: "stripe customer", address: {country, city}}
 
