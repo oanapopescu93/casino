@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
 import { decryptData } from '../../../utils/crypto'
-import { isEmpty, paymentErrors, postData } from '../../../utils/utils'
+import { isEmpty, paymentErrors, postData, getData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
@@ -17,6 +17,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 let paypalStartPay = false
+let paypalPaymentId = null
 function Payment(props){
     const {lang, user, template, home} = props
     let dispatch = useDispatch()
@@ -24,7 +25,7 @@ function Payment(props){
     let price_per_carrot = 1
 
     let payment_details = useSelector(state => state.paymentDetails)
-    let checkResponsePaypal = null    
+    let checkResponsePaypal = null
 
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(price_per_carrot)       
@@ -270,54 +271,6 @@ function Payment(props){
         setPaymentDetails(e)
     }
 
-    useEffect(() => {  
-        checkResponsePaypal = setInterval(() => {
-            checkPaymentStatus()
-        }, 2000)
-        
-        const timeoutPaymentStatus = setTimeout(() => {
-            clearInterval(checkResponsePaypal)
-        }, 300000) // Stop checking after 5 minutes (300,000 milliseconds)
-
-        return () => {
-            clearInterval(checkResponsePaypal)
-            clearTimeout(timeoutPaymentStatus)
-        }
-    }, [])
-
-    const checkPaymentStatus = async () => {
-        try {
-            if(paypalStartPay){
-                let payload = {
-                    PayerID: paymentDetails?.PayerID, 
-                    paymentId: paymentDetails?.paymentId, 
-                    amount: total_promo
-                }
-
-                const data = await postData('/api/paypal/success', payload)
-
-                if (data) {                
-                    if (data.result === "error") {
-                        clearInterval(checkResponsePaypal)
-                        console.log('checkPaymentStatus1--> ', data)
-                        let payload = {
-                            open: true,
-                            template: "error",
-                            title: translate({lang: props.lang, info: "error"}),
-                            data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
-                        }
-                        dispatch(changePopup(payload))
-                    } else {                    
-                        console.log('checkPaymentStatus2--> ', data)
-                    }
-                }
-            }
-            
-        } catch (error) {
-            console.error('Error checking payment status:', error)
-        }
-    }
-
     function sendPayment(){
         if(typeof total_promo !== "undefined" && total_promo !== "" && total_promo !== "null" && total_promo !== null && amount > 0){ // something is wrong and we can't charge client (ex: somehow the cart is empty, so, the total amount is 0)
             let url = ""
@@ -344,8 +297,10 @@ function Payment(props){
                             case "stripe":
                             case "paypal":
                                 if(data.payload.receipt_url){
-                                    paypalStartPay = true
-                                    console.log('sendPayload3--> ', paypalStartPay)
+                                    if(gateway === "gateway"){
+                                        paypalStartPay = true
+                                        paypalPaymentId = data.payload.paymentId
+                                    }
                                     window.open(data.payload.receipt_url,'_blank')
                                 }
                                 break

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
 import Footer from '../partials/footer'
 import Salon from '../salon/salon'
@@ -10,6 +10,7 @@ import Panel from '../games/sidebar/panel'
 import OtherPages from './otherPages'
 import ButtonDonation from './donation/buttonDonation'
 import { changePage } from '../../reducers/page'
+import { postData } from '../../utils/utils'
 
 function Home(props) {
     const {home, page, user, cookies} = props
@@ -20,7 +21,29 @@ function Home(props) {
     }
     function handleDonationClick(){        
         dispatch(changePage('Donation'))
-    }    
+    } 
+    
+    useEffect(() => {  
+        checkPaypalPaymentStatus()
+    }, [])
+
+    const checkPaypalPaymentStatus = async () => {
+        const url = new URL(window.location.href)
+        let paymentId = url.searchParams.get('paymentId')
+        let payerId = url.searchParams.get('PayerID')
+
+        if(paymentId && payerId){
+            postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{
+                if (data) {                
+                    if (data.result === "error") {
+                        console.log('checkPaypalPaymentStatus--> ', data)                        
+                    } else {                    
+                        console.log('checkPaypalPaymentStatus--> ', data)
+                    }
+                }
+            })
+        }        
+    }
 
     return <div id="page-container">        
         {(() => {
