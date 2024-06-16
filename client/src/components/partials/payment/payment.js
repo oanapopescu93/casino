@@ -34,7 +34,7 @@ function Payment(props){
     const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
-    const [paymentDetails, setPaymentDetails] = useState(payment_details)
+    const [paymentDetails, setPaymentDetails] = useState(null)
     const [paymentError, setPaymentError] = useState(paymentErrors())
 
     let gatewayDetails = {
