@@ -33,12 +33,6 @@ function Panel(props){
         }
     }
 
-    function handleBack(){
-        if(typeof props.handleBack === "function"){
-            props.handleBack()
-        }
-    }
-
     function handleContinueShopping(){
         if(typeof props.handleContinueShopping === "function"){
             props.handleContinueShopping()

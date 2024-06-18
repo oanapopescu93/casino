@@ -181,13 +181,9 @@ export const poker_game = function(props){
 
 	let canvas
 	let ctx
-	let canvas_width = 900
-	let canvas_height = 500	
 
     let poker_data = null
     let card_list = [] 
-    let action = ""
-    this.aaa = []
 	
 	let card = {}
 	let card_img = {width: 237, height: 365}
@@ -200,7 +196,7 @@ export const poker_game = function(props){
     let items = get_cards()
 
     this.ready = function(r){
-        self.createCanvas(canvas_width, canvas_height)
+        self.createCanvas()
         self.drawBackground()
         self.handleClick()
         if(r !== "resize"){ //first time entering
@@ -218,7 +214,6 @@ export const poker_game = function(props){
     }
 
     this.action = function(data){
-        action = data.action
 		if(data && data.action){
             poker_data = data
             self.drawBackground()
@@ -234,7 +229,7 @@ export const poker_game = function(props){
 		}
     }
 
-    this.createCanvas = function(canvas_width, canvas_height){		
+    this.createCanvas = function(){		
         canvas = document.getElementById("poker_canvas")
 		ctx = canvas.getContext("2d")	
 
@@ -280,10 +275,6 @@ export const poker_game = function(props){
             space = 10
             
 		}
-		
-		canvas_width = canvas.width
-		canvas_height = canvas.height	
-		canvas.height = canvas_height
 
         positions = [
             {x: canvas.width/2 - card.width/2, y: canvas.height - card.height - card_base.space, width: card_base.width, height: card_base.height}, //bottom            

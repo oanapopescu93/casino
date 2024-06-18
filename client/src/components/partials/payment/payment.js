@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
 import { decryptData } from '../../../utils/crypto'
-import { isEmpty, paymentErrors, postData, getData } from '../../../utils/utils'
+import { isEmpty, paymentErrors, postData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
@@ -16,8 +16,6 @@ import { updatePaymentDetails } from '../../../reducers/paymentDetails'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
-let paypalStartPay = false
-let paypalPaymentId = null
 function Payment(props){
     const {lang, user, template, home} = props
     let dispatch = useDispatch()
@@ -25,7 +23,6 @@ function Payment(props){
     let price_per_carrot = 1
 
     let payment_details = useSelector(state => state.paymentDetails)
-    let checkResponsePaypal = null
 
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(price_per_carrot)       
@@ -288,7 +285,7 @@ function Payment(props){
             }
             let payload = {...paymentDetails}
             payload.amount = total_promo
-            console.log('sendPayload1--> ', gateway, payload, url)   
+            //console.log('sendPayload1--> ', gateway, payload, url)   
             if(!isEmpty(url)){
                 postData(url, payload).then((data) => {                    
                     if(data && data.result && data.result === "success"){
@@ -296,11 +293,7 @@ function Payment(props){
                         switch(gateway){
                             case "stripe":
                             case "paypal":
-                                if(data.payload.receipt_url){
-                                    if(gateway === "gateway"){
-                                        paypalStartPay = true
-                                        paypalPaymentId = data.payload.paymentId
-                                    }
+                                if(data.payload.receipt_url){                                    
                                     window.open(data.payload.receipt_url,'_blank')
                                 }
                                 break

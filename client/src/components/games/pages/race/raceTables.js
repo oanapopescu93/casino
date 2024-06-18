@@ -35,7 +35,6 @@ function RaceTables(props){
 	}
 
     const race_carousel_options = {
-        dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 4,

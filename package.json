@@ -41,7 +41,7 @@
     "bitcore-explorers": "^1.0.1",
     "bitcore-lib": "^10.0.5",
     "body-parser": "^1.20.2",
-    "concurrently": "^8.0.1",
+    "concurrently": "^8.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
@@ -49,11 +49,11 @@
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
-    "nodemailer": "^6.9.1",
+    "nodemailer": "^6.9.4",
     "nodemon": "^2.0.22",
     "path": "^0.12.7",
     "paypal-rest-sdk": "^1.8.1",
-    "socket.io": "2.5.0",
+    "socket.io": "^4.5.4",
     "stripe": "^12.18.0"
   },
   "nodemonConfig": {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import { draw_dot, getRoom, get_slots_images } from '../../../../utils/games'

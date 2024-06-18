@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import {useSelector} from 'react-redux'
 
-import * as io from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./css/fonts.css"
