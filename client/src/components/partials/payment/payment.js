@@ -347,7 +347,7 @@ function Payment(props){
             let payload = {
                 open: true,
                 template: "error",
-                title: translate({lang: props.lang, info: "error3"}),
+                title: translate({lang: props.lang, info: "error"}),
                 data: translate({lang: props.lang, info: "error_charge"})
             }
             dispatch(changePopup(payload))
@@ -355,6 +355,7 @@ function Payment(props){
     }    
 
     return<Row>
+        <p>{translate({lang: props.lang, info: "under_construction"})}</p>
         {paymentDetails ? <PaymentDetails 
             {...props} 
             paymentDetails={paymentDetails}

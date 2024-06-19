@@ -54,7 +54,7 @@ function Dice(props){
 					<div className="dot six_6"></div>
 				</div>					
 			</div>
-			<div className="shadow_convex"></div>
+			<div className="dice_box_shadow"></div>
 		</div>
 	)
 }
@@ -204,6 +204,8 @@ function Craps(props){
 		let myArray
 		let value
 		let time = 2000
+		let firstTime = 100
+		let subsequentTime = 2000
 		setCrapsBoardText(null)
 		setCrapsBoardList([])
 		switch(game_type) {
@@ -217,6 +219,7 @@ function Craps(props){
 						}
 					})
 					break
+
 			case "hardway 1":
 			case "hardway 2":
 			case "hardway 3":
@@ -258,6 +261,7 @@ function Craps(props){
 					}
 				})
 				break
+
 			case "any craps":
 				roll(point).then(function(){ // one roll, wins if a 2, 3 or 12
 					sum = dicesNumber[0] + dicesNumber[1]
@@ -268,6 +272,26 @@ function Craps(props){
 					}
 				})
 				break
+
+			case "field bet 2":
+			case "field bet 3":
+			case "field bet 4":
+			case "field bet 9":
+			case "field bet 10":
+			case "field bet 11":
+			case "field bet 12":
+				myArray = game_type.split("field bet ")
+				value = parseInt(myArray[1])
+				roll(point).then(function(){ // one roll bet for 2, 3, 4, 9, 10, 11, 12
+					sum = dicesNumber[0] + dicesNumber[1]
+					if(sum === value){
+						check_win_lose('win')
+					} else {
+						check_win_lose('lose')
+					}
+				})
+				break
+
 			case "place bet 4":
 			case "place bet 5":
 			case "place bet 6":
@@ -276,7 +300,28 @@ function Craps(props){
 			case "place bet 10":
 				myArray = game_type.split("place bet ")
 				value = parseInt(myArray[1])
-				timer = setInterval(function () {				
+				gameStrategy("place bet")				
+				break
+			
+			case "6 big 8": //you think you will land a 6 or 8 before landing a 7				
+			case "come":
+			case "don't come":
+			case "don't pass line":
+			default: //pass line
+				gameStrategy(game_type)
+				break
+		}
+
+		function gameStrategy(type){
+			setTimeout(function() {
+				gameLogic(type)					
+				timer = setInterval(gameLogic, subsequentTime) // Set up subsequent calls with setInterval for 2000ms
+			}, firstTime)
+		}
+
+		function gameLogic(type){
+			switch(type) {
+				case "place bet":
 					switch(state) {
 						case 1:
 							roll(point).then(function(res){
@@ -316,28 +361,8 @@ function Craps(props){
 							clearInterval(timer)
 							break
 					}
-				}, time)
-				break
-			case "field bet 2":
-			case "field bet 3":
-			case "field bet 4":
-			case "field bet 9":
-			case "field bet 10":
-			case "field bet 11":
-			case "field bet 12":
-				myArray = game_type.split("field bet ")
-				value = parseInt(myArray[1])
-				roll(point).then(function(){ // one roll bet for 2, 3, 4, 9, 10, 11, 12
-					sum = dicesNumber[0] + dicesNumber[1]
-					if(sum === value){
-						check_win_lose('win')
-					} else {
-						check_win_lose('lose')
-					}
-				})
-				break
-			case "6 big 8": //you think you will land a 6 or 8 before landing a 7
-				timer = setInterval(function () {				
+					break
+				case "6 big 8":
 					switch(state) {
 						case 1:
 							roll(point).then(function(res){
@@ -369,10 +394,8 @@ function Craps(props){
 							clearInterval(timer)
 							break
 					}
-				}, time)
-				break
-			case "come":
-				timer = setInterval(function () {				
+					break
+				case "come":
 					switch(state) {
 						case 1:
 							roll(point).then(function(res){
@@ -410,10 +433,8 @@ function Craps(props){
 							clearInterval(timer)
 							break
 					}
-				}, time)
-				break
-			case "don't come":
-				timer = setInterval(function () {				
+					break
+				case "don't come":
 					switch(state) {
 						case 1:
 							roll(point).then(function(res){
@@ -452,10 +473,8 @@ function Craps(props){
 							clearInterval(timer)
 							break
 					}
-				}, time)
-				break
-			case "don't pass line":
-				timer = setInterval(function () {				
+					break
+				case "don't pass line":
 					switch(state) {
 						case 1:
 							roll(point).then(function(res){
@@ -498,10 +517,8 @@ function Craps(props){
 							clearInterval(timer)
 							break
 					}
-				}, time)
-				break
-			default: //pass line
-				timer = setInterval(function () {				
+					break
+				default:
 					switch(state) {
 						case 1:
 							roll(point).then(function(res){
@@ -543,9 +560,9 @@ function Craps(props){
 							clearInterval(timer)
 							break
 					}
-				}, time)
+			}
 		}
-	}
+	}	
 	
 	return <>
 		<Row>

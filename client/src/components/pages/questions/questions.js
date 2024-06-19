@@ -62,7 +62,7 @@ function Questions(props){
     return <div className="content_wrap">
         <Header template="questions" title={translate({lang: props.lang, info: "questions"})}></Header>
         <div className="page_content">
-            {props.list ? <QuestionList lang={props.lang} list={props.list}></QuestionList> : <p>{translate({lang: props.lang, info: "under_construction"})}</p>}
+            {props.list ? <QuestionList lang={props.lang} list={props.list}></QuestionList> : <p>{translate({lang: props.lang, info: "error"})}</p>}
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

@@ -2578,6 +2578,7 @@ textarea {
 	z-index: 0;
 	display: inline-block;
 	margin: 0px var(--padding);
+  border-radius: 5px;
 }
 .dice {
 	position: relative;
@@ -2585,16 +2586,17 @@ textarea {
 	width: 100px;
 	height: 100px;
 	transform-style: preserve-3d;
-	transition: transform 1s; 
+	transition: transform 1s;  
 }
-.dice_shadow{
+.dice_box_shadow{
 	position: absolute;
 	z-index: 1;
 	top: 0;
 	width: 100px;
 	height: 100px;
 	border-radius: var(--radius_small);
-	background: var(--transparent_8);
+	background: var(--transparent_5);
+  box-shadow: 4px 4px 8px 2px var(--transparent_5);
 }
 .dot {
 	position: absolute;
@@ -2607,11 +2609,11 @@ textarea {
 }
 .side {
 	position: absolute;
-	background-color: var(--red);
+	background-color: var(--darkred);
 	border-radius:5px;
 	width: 100px;
 	height: 100px;
-	border: 1px solid black;
+	border: 1px solid var(--red);
 	text-align: center;
 	line-height: 2em;
 }
