@@ -17,6 +17,8 @@ var career = require('./var/career').CAREER_ARRAY
 var questions = require('./var/questions').QUESTION_ARRAY
 var constants = require('./var/constants')
 
+console.log(market)
+
 var transport = nodemailer.createTransport({
 	host: "smtp.mailtrap.io",
 	port: 2525,
@@ -38,7 +40,7 @@ router.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
-router.post("/api/home", jsonParser, (req, res, next) => {
+router.post("/api/home", jsonParser, (req, res, next) => {  
   let payload = {products, market, currencies, profiles, donations, career, questions, slot_prises, race_rabbits, keno_prizes, contact}
   res.send(JSON.stringify(payload))
 })

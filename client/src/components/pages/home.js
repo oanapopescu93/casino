@@ -11,6 +11,8 @@ import OtherPages from './otherPages'
 import ButtonDonation from './donation/buttonDonation'
 import { changePage } from '../../reducers/page'
 import { postData } from '../../utils/utils'
+import { translate } from '../../translations/translate'
+import { changePopup } from '../../reducers/popup'
 
 function Home(props) {
     const {home, page, user, cookies} = props
@@ -33,12 +35,26 @@ function Home(props) {
         let payerId = url.searchParams.get('PayerID')
 
         if(paymentId && payerId){
-            postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{
+            postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{ //test --> /api/paypal/success?paymentId=oaie&PayerID=porc
                 if (data) {                
                     if (data.result === "error") {
-                        console.log('checkPaypalPaymentStatus--> ', data)                        
+                        console.error('checkPaypalPaymentStatus--> ', data)
+                        let payload = {
+                            open: true,
+                            template: "error",
+                            title: translate({lang: props.lang, info: "error"}),
+                            data: translate({lang: props.lang, info: "error_charge"})
+                        }
+                        dispatch(changePopup(payload))
                     } else {                    
                         console.log('checkPaypalPaymentStatus--> ', data)
+                        let payload = {
+                            open: true,
+                            template: "success",
+                            title: translate({lang: props.lang, info: "payment_success"}),
+                            data: translate({lang: props.lang, info: "payment_success_text"})
+                        }
+                        dispatch(changePopup(payload))
                     }
                 }
             })

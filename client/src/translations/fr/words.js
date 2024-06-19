@@ -152,7 +152,7 @@ var word_bank = {
     order_summary: "Résumé de la commande",
     subtotal: "Sous-total",
     shipping: "Livraison",
-    promo_code: "Code promo",
+    promo_code: "Code de réduction",
     promo_discount: "Réduction",
     total: "Total",
     checkout: "Paiement",
@@ -212,6 +212,8 @@ var word_bank = {
     validate_message_bitcoinAddress: "Ce n'est pas une adresse Bitcoin valide",
     continue: "Continuer",
     save: "Enregistrer",
+    payment_success: "Paiement réussi",
+    payment_success_text: "Vous avez terminé votre paiement",
 
     // order
     order: "Commande",

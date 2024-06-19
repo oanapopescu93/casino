@@ -152,7 +152,7 @@ var word_bank = {
     order_summary: "Sumar comandă",
     subtotal: "Subtotal",
     shipping: "Transport",
-    promo_code: "Cod promotional",
+    promo_code: "Cod de reducere",
     promo_discount: "Redusere",
     total: "Total",
     checkout: "Finalizează comandă",
@@ -212,6 +212,8 @@ var word_bank = {
     validate_message_bitcoinAddress: "Acesta nu este o adresă Bitcoin validă",
     continue: "Continuă",
     save: "Salvează",
+    payment_success: "Plată reușită",
+    payment_success_text: "Ați finalizat plata",
 
     // order
     order: "Comandă",

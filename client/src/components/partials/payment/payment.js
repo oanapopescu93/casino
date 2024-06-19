@@ -258,12 +258,6 @@ function Payment(props){
         }
     }
 
-    function crypto_status(payment_id){
-        postData("/api/crypto_get_payment", {payment_id}).then((data) => {
-            //console.log('sendPayload5--> ', data, data.payment_status)
-        })
-    }
-
     function sendPayload(e){
         setPaymentDetails(e)
     }
@@ -289,7 +283,7 @@ function Payment(props){
             if(!isEmpty(url)){
                 postData(url, payload).then((data) => {                    
                     if(data && data.result && data.result === "success"){
-                        console.log('sendPayload2--> ', data)
+                        //console.log('sendPayload2--> ', data)
                         switch(gateway){
                             case "stripe":
                             case "paypal":
@@ -307,17 +301,18 @@ function Payment(props){
                                     postData('/api/crypto_pay', {iid}).then((data) => {
                                         let payment_id = data.payload.payment_id
                                         //console.log('sendPayload4--> ', data, payment_id)
-                                        crypto_status(payment_id)
-                                        let tt=setInterval(function(){startTime()},60000) // check each minute
-                                        let counter = 0
-                                        function startTime(){
-                                            if(counter === 10) {
-                                                clearInterval(tt) // stop checking after 10 minutes
-                                            } else {
-                                                counter++
-                                                crypto_status(payment_id)
+                                        
+                                        if (payment_id) {
+                                            checkCryptoPaymentStatus(iid, payment_id)
+                                        } else {
+                                            let payload = {
+                                                open: true,
+                                                template: "error",
+                                                title: translate({lang: props.lang, info: "error"}),
+                                                data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
                                             }
-                                        }                                        
+                                            dispatch(changePopup(payload))
+                                        }                                    
                                     })                                
                                 }
                                 break 
@@ -352,7 +347,55 @@ function Payment(props){
             }
             dispatch(changePopup(payload))
         }
-    }    
+    }
+    
+    function checkCryptoPaymentStatus(iid, payment_id){
+        let counter = 0
+        let maxChecks = 10
+        let interval = 60000 // 1 minute
+
+        let tt = setInterval(() => {
+            if (counter >= maxChecks) {
+                clearInterval(tt)
+                let payload = {
+                    open: true,
+                    template: "error",
+                    title: translate({lang: props.lang, info: "error"}),
+                    data: translate({lang: props.lang, info: "error_charge"})
+                }
+                dispatch(changePopup(payload))
+            } else {
+                counter++
+                postData('/api/crypto_status', { paymentId: payment_id }).then((data) => {
+                    //console.log('sendPayload5--> ', iid, payment_id, data)
+                    if (data && data.result === "success") {
+                        const paymentStatus = data.payload.payment_status
+                        const actuallyPaid = data.payload.actually_paid
+                        const payAmount = data.payload.pay_amount
+                        if ((paymentStatus === 'confirmed' || paymentStatus === 'finished') && actuallyPaid >= payAmount) {
+                            clearInterval(tt)
+                            let payload = {
+                                open: true,
+                                template: "success",
+                                title: translate({lang: props.lang, info: "payment_success"}),
+                                data: translate({lang: props.lang, info: "payment_success_text"})
+                            }
+                            dispatch(changePopup(payload))
+                        }
+                    } else {
+                        console.error("Error checking payment status", data.payload)
+                        let payload = {
+                            open: true,
+                            template: "error",
+                            title: translate({lang: props.lang, info: "error"}),
+                            data: translate({lang: props.lang, info: "error_charge"})
+                        }
+                        dispatch(changePopup(payload))
+                    }
+                });
+            }
+        }, interval)
+    }
 
     return<Row>
         <p>{translate({lang: props.lang, info: "under_construction"})}</p>

@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import { getMousePos, get_craps_bets, isInside } from '../../../../utils/games'
 import $ from 'jquery'
-import carrot_img from '../../../../img/icons/carrot_icon.png'
 
 function craps_bets(props){
     let self = this

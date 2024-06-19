@@ -7,6 +7,7 @@
   --red: red;
   --darkred: darkred;
   --green: green;
+  --darkgreen: darkgreen;
 
   --padding: 10px;
   --padding_small: 5px;
@@ -994,6 +995,43 @@ textarea {
   background-color: transparent;
   border: solid 1px var(--bg);
   color: var(--bg);
+}
+
+.error .modal-content{
+  background-color: var(--red);
+}
+.error .modal-header{
+  background: var(--darkred); 
+  border: solid 1px var(--red);
+  color: var(--bg);
+}
+.error .closeButton{
+  background: var(--red);
+  border: solid 1px var(--red);  
+  color: var(--bg);
+}
+.error .closeButton:hover{
+  background: var(--darkred);
+  border: solid 1px var(--red);  
+  color: var(--bg);  
+}
+.success .modal-content{
+  background-color: var(--green);
+}
+.success .modal-header{
+  background: var(--darkgreen); 
+  border: solid 1px var(--green);
+  color: var(--bg);
+}
+.success .closeButton{
+  background: var(--green);
+  border: solid 1px var(--green);  
+  color: var(--bg);
+}
+.success .closeButton:hover{
+  background: var(--darkgreen);
+  border: solid 1px var(--green);  
+  color: var(--bg);  
 }
 
 /* COOKIES */

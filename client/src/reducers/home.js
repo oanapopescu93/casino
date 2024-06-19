@@ -53,7 +53,7 @@ const homeSlice = createSlice({
     initialState,
     reducers: {
         bringPayload: () => {},
-        showPayload: (state, { payload }) => {            
+        showPayload: (state, { payload }) => { 
             state.products = payload.products
             state.market = payload.market
             state.currencies = payload.currencies

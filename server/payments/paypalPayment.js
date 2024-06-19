@@ -76,7 +76,6 @@ paypalPayment.post('/api/paypal/checkPaypalPaymentStatus', jsonParser, (req, res
   })
 })
 paypalPayment.post('/api/paypal/success', jsonParser, (req, res) => {
-  //http://localhost:8088/api/paypal/success?paymentId=porc&PayerID=oaie
   const { payerId, paymentId} = req.body 
   
   const execute_payment_json = {
@@ -88,6 +87,7 @@ paypalPayment.post('/api/paypal/success', jsonParser, (req, res) => {
         }
     }]
   }
+  
   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
     if (error) {
       res.json({ type: "paypal", result: "error", payload: 'error_charge', details: error.response })
