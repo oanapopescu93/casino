@@ -6,6 +6,7 @@ import { postData } from '../../../utils/utils'
 
 function ContactForm(props){
     const {lang} = props
+    let mailtrap_link = "https://www.mailtrap.io"
 
     const [email, setEmail] = useState('')
     const [subject, setSubject] = useState('')
@@ -14,7 +15,6 @@ function ContactForm(props){
     const [errorEmail, setErrorEmail] = useState(false)
     const [errorSubject, setErrorSubject] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
-
     const [sendResults, setSendResults] = useState(null)
 
     function handleChange(type, e){
@@ -95,7 +95,9 @@ function ContactForm(props){
             {(() => {
                 if(sendResults === "email_send"){
                     return <div className="alert alert-success">
-                        <p className="text_green">{translate({lang: lang, info: sendResults})}</p>   
+                        <a href="https://www.mailtrap.io" className="text_green">
+                            {translate({lang: lang, info: sendResults})} {mailtrap_link}
+                        </a>
                     </div>
                 } else if(sendResults === "email_no_send"){
                     return <div className="alert alert-danger">

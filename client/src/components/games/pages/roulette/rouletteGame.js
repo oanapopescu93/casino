@@ -624,7 +624,6 @@ function RouletteGame(props){
 
 	useEffect(() => {
 		const handleRouletteRead = function(data) {
-			console.log('roulette_read ', data)
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				if (window.innerWidth < 960){
 					if(window.innerHeight < window.innerWidth){

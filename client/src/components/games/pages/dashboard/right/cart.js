@@ -89,9 +89,10 @@ function Cart(props){
                             <p><b>{translate({lang: lang, info: "price"})}</b>: {product[0].price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
                             <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>
                             <Counter num={item.qty} max={max} update={(e)=>updateQtyProduct(e, item)}></Counter>
-                            <h4><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h4>
-                        </div>                        
-                        <div className="cart_buttons">  
+                            
+                        </div>                      
+                        <div className="cart_buttons">
+                            <h4><b>{translate({lang: lang, info: "price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h4> 
                             <Button 
                                 type="button"  
                                 className="mybutton round button_transparent shadow_convex remove"

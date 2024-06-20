@@ -20,7 +20,7 @@ function ChangePassword(props) {
         if(e.value === ""){
             setError(true)
         } else if(validateInput(e.value, "pass")){
-            props.changeUsername(e)
+            props.changePassword(e)
         } else {
             setErrorPassword(true)
         }

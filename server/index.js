@@ -15,11 +15,9 @@ app.use(paypalPayment)
 var cryptoPayment = require("./payments/cryptoPayment")
 app.use(cryptoPayment) 
 
-// const path = require("path")
-// const fs = require('fs')  
-
 const { encrypt, decrypt } = require('./utils/crypto')
-const { get_device, get_extra_data, sendEmail, check_streak} = require("./utils/other")
+const { get_device, get_extra_data, check_streak } = require("./utils/other")
+const { sendEmail } = require("./utils/mail")
 const crypto = require('crypto')
 
 const { roulette } = require("./games/roulette")
@@ -187,9 +185,11 @@ io.on('connection', function(socket) {
         let user = users_array.filter(function(x){
           return x.email === data.email
         })
-        if(user && user.length>0){
-          sendEmail(user, data).then(function(res){
+        if(user && user[0]){
+          let x = decrypt(JSON.parse(user[0].pass))
+          sendEmail('forgot_password', user[0], data).then(function(res){
             try{
+              resetPassword(user[0])
               io.to(socket.id).emit('forgotPassword_read', res)
             }catch(e){
               console.log('[error]','forgotPassword_read2--> ', e)
@@ -211,6 +211,15 @@ io.on('connection', function(socket) {
       }
     })
   })
+  function resetPassword(user){
+    if(user){
+      let new_pass_value = "Password001!"
+      let new_pass = JSON.stringify(encrypt(new_pass_value))
+      database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE uuid='" + user.uuid + "'; "
+    }
+    database_config.name = "db011"
+    database(database_config).then(function(){})
+  }
 
   // GAMES
   socket.on('game_send', function(data){
@@ -416,7 +425,7 @@ io.on('connection', function(socket) {
   // CHATROOM
   socket.on('join_room', function(data){
     let room = data.room
-    console.log('join_room ', room)
+    //console.log('join_room ', room)
     socket.join(data.room)
 
     let timestamp = new Date().getTime()
@@ -441,7 +450,7 @@ io.on('connection', function(socket) {
   })
   socket.on('leave_room', function(data){
     let room = data.room
-    console.log('leave_room ', room)
+    //console.log('leave_room ', room)
     socket.leave(room)
     let timestamp = new Date().getTime()
     let message = {text: 'leave', timestamp: timestamp, user: data.user}
@@ -458,7 +467,7 @@ io.on('connection', function(socket) {
   })
   socket.on('message_send', function(data){
     let room = data.room
-    console.log('message_send ', room)
+    //console.log('message_send ', room)
     let timestamp = new Date().getTime()
     let message = {text: data.text, timestamp: timestamp, user: data.user}
 		try{

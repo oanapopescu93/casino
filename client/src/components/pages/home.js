@@ -38,7 +38,7 @@ function Home(props) {
             postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{ //test --> /api/paypal/success?paymentId=oaie&PayerID=porc
                 if (data) {                
                     if (data.result === "error") {
-                        console.error('checkPaypalPaymentStatus--> ', data)
+                        //console.error('checkPaypalPaymentStatus--> ', data)
                         let payload = {
                             open: true,
                             template: "error",
@@ -47,7 +47,7 @@ function Home(props) {
                         }
                         dispatch(changePopup(payload))
                     } else {                    
-                        console.log('checkPaypalPaymentStatus--> ', data)
+                        //console.log('checkPaypalPaymentStatus--> ', data)
                         let payload = {
                             open: true,
                             template: "success",

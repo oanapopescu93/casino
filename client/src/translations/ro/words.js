@@ -103,10 +103,11 @@ var word_bank = {
     forgot_password_title: "Ți-ai uitat parola?",
     forgot_password_text: "Introdu adresa ta de email cu care te-ai înregistrat. Noi îți vom trimite parola nouă pe această adresă.",
     send: "Trimite",
-    email_send: "Emailul a fost trimis",
-    email_no_send: "Emailul nu a fost trimis",
+    email_send: "E-mailul a fost trimis. Verificați contul dvs. Mailtrap.",
+    email_no_send: "Emailul nu a fost trimis.",
     subject: "Subiect",
     message: "Mesaj",
+    sending: "Trimite...",
 
     incorrect_email: "Emailul este incorect",
     empty_input_subject: "Câmpul Subiect este gol",

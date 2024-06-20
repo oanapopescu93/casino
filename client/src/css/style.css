@@ -8,6 +8,8 @@
   --darkred: darkred;
   --green: green;
   --darkgreen: darkgreen;
+  --green_transparent_3: rgba(0, 128, 0, 0.3);
+  --red_transparent_3 : rgba(255, 0, 0, 0.3);
 
   --padding: 10px;
   --padding_small: 5px;
@@ -483,18 +485,22 @@ textarea {
   margin-top: var(--padding);
 }
 .alert.alert-success {
-  background-color: rgba(0, 128, 0, 0.3);
+  background-color: var(--green_transparent_3);
   border: solid 1px var(--green);
   color: var(--green);
 }
 .alert.alert-danger {
-  background-color: rgba(255, 0, 0, 0.3);
+  background-color: var(--red_transparent_3);
   border: solid 1px var(--red);
   color: var(--red);
 }
 .modal-body .alert{
   margin-top: 0px;
   margin-bottom: var(--padding);
+}
+.forgotPassword .alert{
+  margin-bottom: 0px;
+  margin-top: var(--padding_small);
 }
 
 .page_exit{
@@ -683,8 +689,8 @@ textarea {
   align-items: center;
 }
 .modal-content input{
-  background-color: var(--bg);
-  color: var(--color);
+  border: solid 1px var(--bg);
+  color: var(--bg);
 }
 
 #myModal_gift .modal-content{
@@ -990,11 +996,6 @@ textarea {
 
 .changeUsername_box, .changePassword_box{
   margin-bottom: var(--padding_small);
-}
-.changeUsername_box .input_light, .changePassword_box .input_light{
-  background-color: transparent;
-  border: solid 1px var(--bg);
-  color: var(--bg);
 }
 
 .error .modal-content{
@@ -2069,8 +2070,9 @@ textarea {
   margin-top: var(--padding);
 }
 .dashboard_box .cart_list{
-  max-height: 200px;
+  max-height: 210px;
   overflow: auto;
+  border-bottom: solid 1px var(--color);
 }
 .cart_image, .cart_info, .cart_buttons{
   display: inline-block;
@@ -2083,6 +2085,18 @@ textarea {
 }
 .cart_buttons{
   text-align: right;
+}
+.dashboard_box .cart_image{
+  width: 15%;
+}
+.dashboard_box .cart_info{
+  width: 60%;
+}
+.dashboard_box .cart_buttons{
+  width: 25%;
+}
+.dashboard_box .cart_buttons h4{
+  margin-bottom: var(--padding_small);
 }
 .crop_vegetables{
 	width: 40px;
@@ -2495,12 +2509,12 @@ textarea {
   margin-bottom: var(--padding_small);
 }
 .status .status_box.succeeded{
-  background-color: rgba(0, 128, 0, 0.3);
+  background-color: var(--green_transparent_3);
   border: solid 1px var(--green);
   color: var(--green);
 }
 .status .status_box{
-  background-color: rgba(255, 0, 0, 0.3);
+  background-color: var(--red_transparent_3);
   border: solid 1px var(--red);
   color: var(--red);
   border-radius: var(--radius);
@@ -3122,7 +3136,7 @@ textarea {
 }
 .how_to_play_titles{
   text-align: center;
-  max-height: 360px;
+  max-height: 400px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -3466,6 +3480,10 @@ textarea {
   }
   .keno_rules{
     max-height: 400px;
+  }
+
+  .how_to_play_titles{
+    max-height: 390px;
   }
 }
 @media (max-width:600px) {	

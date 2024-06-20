@@ -26,6 +26,8 @@ var word_bank = {
     american: "Americano",
     reel_3: "3 Rulli",
     reel_5: "5 Rulli",
+    poker_texas_holdem: "Texas hold'em",
+    poker_5_card_draw: "5 Card Draw",
 
     error: "Errore",
     all_rights_reserved: "Tutti i diritti riservati",
@@ -101,10 +103,11 @@ var word_bank = {
     forgot_password_title: "Hai dimenticato la password",
     forgot_password_text: "Inserisci l'indirizzo email utilizzato per la registrazione. Ti invieremo la tua nuova password a quell'indirizzo.",
     send: "Invia",
-    email_send: "Email inviata",
+    email_send: "Email inviata. Controlla il tuo account Mailtrap.",
     email_no_send: "Email non inviata",
     subject: "Oggetto",
     message: "Messaggio",
+    sending: "Invio in corso...",
 
     incorrect_email: "L'email non è corretta",
     empty_input_subject: "Il campo oggetto è vuoto",

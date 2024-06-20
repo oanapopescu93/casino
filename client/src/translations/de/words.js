@@ -102,10 +102,11 @@ var word_bank = {
     forgot_password_title: "Passwort vergessen",
     forgot_password_text: "Bitte gib die E-Mail-Adresse ein, mit der du dich registriert hast. Wir senden dir dein neues Passwort an diese Adresse.",
     send: "Senden",
-    email_send: "E-Mail wurde gesendet",
-    email_no_send: "E-Mail wurde nicht gesendet",
+    email_send: "Die E-Mail wurde gesendet. Überprüfen Sie Ihr Mailtrap-Konto.",
+    email_no_send: "E-Mail wurde nicht gesendet.",
     subject: "Betreff",
     message: "Nachricht",
+    sending: "Senden...",
     
     incorrect_email: "Die E-Mail ist falsch",
     empty_input_subject: "Das Betreff-Feld ist leer",

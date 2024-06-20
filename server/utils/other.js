@@ -1,14 +1,4 @@
 const axios = require('axios')
-var nodemailer = require('nodemailer')
-var constants = require('../var/constants')
-var transport = nodemailer.createTransport({
-	host: "smtp.mailtrap.io",
-	port: 2525,
-	auth: {
-	  user: constants.AUTH_USER,
-	  pass: constants.AUTH_PASS
-	}
-})
 
 function sort_array_obj(array, sort_by){
 	let sorted = false
@@ -101,69 +91,9 @@ function get_extra_data(){
 	})
 }
 
-function sendEmail(data){ //send an email with instructions to reset token
-    let lang = data.lang ? data.lang : 'ENG'
-    let user = data.user
-    let email = data.email
-
-    let subject = ''
-    let html = ''
-	switch (lang) {
-		case "DE":
-			subject = 'BunnyBet Passwort zurücksetzen'
-			html = html + '<p>Hallo ' + user + '</p>'
-			html = html + '<p>Sie haben eine Passwortrücksetzung angefordert.</p>'
-			break
-		case "ES":
-			subject = 'BunnyBet restablecer contraseña'
-			html = html + '<p>Hola ' + user + '</p>'
-			html = html + '<p>Has solicitado restablecer tu contraseña.</p>'
-			break
-		case "FR":
-			subject = 'BunnyBet réinitialiser le mot de passe'
-			html = html + '<p>Bonjour ' + user + '</p>'
-			html = html + '<p>Vous avez demandé à réinitialiser votre mot de passe.</p>'
-			break
-		case "IT":
-			subject = 'BunnyBet reimposta password'
-			html = html + '<p>Ciao ' + user + '</p>'
-			html = html + '<p>Hai richiesto di resettare la tua password.</p>'
-			break
-		case "RO":
-			subject = 'BunnyBet resetare parola'
-			html = html + '<p>Buna ' + user + '</p>'
-			html = html + '<p>Ai cerut resetarea parolei tale.</p>'
-			break
-		case "ENG":
-		default:
-			subject = 'BunnyBet reset password'
-			html = html + '<p>Hi ' + user + '</p>'
-			html = html + '<p>You requested to reset your password.</p>'
-			break
-	}
-
-    let mailOptions = {
-      from: constants.AUTH_FROM,
-      to: email,
-      subject: subject,
-      html: html
-    }
-    return new Promise(function(resolve, reject){
-      transport.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log('error--> ', error, mailOptions)
-          resolve({send: "email_no_send"})
-        } else {
-          resolve({send: "email_send"})
-        }
-      })
-    })
-}
-
 module.exports = {
 	sort_array_obj,
 	get_device,
 	check_streak,
 	get_extra_data,
-	sendEmail,
 }

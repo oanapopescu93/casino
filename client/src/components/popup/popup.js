@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Modal} from "react-bootstrap"
 
 import { changePopup } from "../../reducers/popup"
-import { changeIsMinor } from "../../reducers/auth"
+import { changeIsMinor, changeUser } from "../../reducers/auth"
 import { validateInput } from "../../utils/validate"
 import { translate } from "../../translations/translate"
 
@@ -30,15 +30,17 @@ function Popup(props){
     let data = useSelector(state => state.popup.data)
     let size = useSelector(state => state.popup.size)
     let sticky = useSelector(state => state.popup.sticky)
-    let dispatch = useDispatch()
-    const [forgotPasswordResult, setForgotPasswordResult] = useState('')
+    let dispatch = useDispatch()    
     let currencies = home.currencies
     let title = translate({lang: lang, info: popup_title})
+    const [forgotPasswordResult, setForgotPasswordResult] = useState('')
+    const [forgotPasswordSending, setForgotPasswordSending] = useState(false)
 
   	function closeModal(){
         if(template !== "isMinor"){ //prevents modal from closing without making a choice
             dispatch(changePopup(false))
         }
+        setForgotPasswordResult('')
 	}
 
     function isMinorClick(e){
@@ -48,14 +50,21 @@ function Popup(props){
 
     function forgotPasswordClick(e){
         if(validateInput(e, "email")){
+            setForgotPasswordSending(true)
             socket.emit('forgotPassword_send', {lang: lang, email: e})   
         } else {
             setForgotPasswordResult(translate({lang: lang, info: "error"}))
         }
     }
 
-    function dashboardChanges(x){
-        socket.emit('dashboardChanges_send', x)
+    function dashboardChanges(e){
+        if(e.type && e.value){
+            switch(e.type){
+                case "user":
+                    dispatch(changeUser({user: e.value}))
+            }
+            socket.emit('dashboardChanges_send', e)
+        }
         closeModal()
     }
 
@@ -67,7 +76,8 @@ function Popup(props){
     }
 
     socket.on('forgotPassword_read', function(res){
-        setForgotPasswordResult(translate({lang: lang, info: res.send}))      
+        setForgotPasswordResult(res.send)
+        setForgotPasswordSending(false)
     })
 
     return <>
@@ -90,6 +100,7 @@ function Popup(props){
                                 text={data} 
                                 forgotPasswordClick={(e)=>forgotPasswordClick(e)} 
                                 forgotPasswordResult={forgotPasswordResult}
+                                forgotPasswordSending={forgotPasswordSending}
                             ></ForgotPassword>
                         case "isMinor":
                             return <IsMinor lang={lang} text={data} isMinorClick={(e)=>isMinorClick(e)} />
