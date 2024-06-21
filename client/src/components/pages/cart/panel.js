@@ -37,7 +37,7 @@ function Panel(props){
         if(typeof props.handleContinueShopping === "function"){
             props.handleContinueShopping()
         }
-    }    
+    }
 
     return <div id="cart_panel" className="cart_box shadow_concav">
         <div className="cart_total_price">

@@ -12,7 +12,7 @@ cryptoPayment.post("/api/crypto", jsonParser, (req, res, next) => {
     if(typeof amount != "undefined" && amount != "null" && amount != null && amount != ""  && amount > 0){
         createCryptoInvoice(amount).then(function(data) {
             res.json(data)
-        })  
+        })
     } else {
         res.json({payload: 'no amount', result: "error"}) 
     }
@@ -23,7 +23,7 @@ cryptoPayment.post("/api/crypto_pay", jsonParser, (req, res, next) => {
     if(typeof iid != "undefined" && iid != "null" && iid != null && iid != ""  && iid > 0){
         createCryptoPayment(iid).then(function(data) {
             res.json(data)
-        })  
+        })
     } else {
         res.json({payload: 'no iid', result: "error"}) 
     }
@@ -51,7 +51,7 @@ cryptoPayment.post("/api/crypto_get_payment", jsonParser, (req, res, next) => {
     if(typeof payment_id != "undefined" && payment_id != "null" && payment_id != null && payment_id != ""  && payment_id > 0){
         getCryptoPaymentByID(payment_id).then(function(data) {
             res.json(data)
-        })  
+        })
     } else {
         res.json({payload: 'no amount', result: "error"}) 
     } 
@@ -63,7 +63,7 @@ cryptoPayment.post("/api/crypto_min", jsonParser, (req, res, next) => {
             data.payload.fiat_equivalent = data.payload.fiat_equivalent.toFixed(1)
         }
         res.json(data)
-    })   
+    })
 })
 
 cryptoPayment.post("/api/crypto_status", jsonParser, (req, res, next) => {
@@ -71,7 +71,7 @@ cryptoPayment.post("/api/crypto_status", jsonParser, (req, res, next) => {
     if(typeof paymentId != "undefined" && paymentId != "null" && paymentId != null && paymentId != ""  && paymentId > 0){
         checkPaymentStatus(paymentId).then(function(data) {
             res.json({payload: data.payload.data, result: data.result})
-        })  
+        })
     } else {
         res.json({payload: "paymentId", result: "error"})
     } 
@@ -114,11 +114,11 @@ function createCryptoPayment(iid) {
                 iid: iid,
                 pay_currency: 'BTC',
                 order_description: "BunnyBet",
-            }        
+            }
             const headers = {
                 'x-api-key': apiKey,
                 'Content-Type': 'application/json',
-            }        
+            }
             axios.post(`${apiUrl}/invoice-payment`, payload, { headers }).then(function(response){
                 resolve({payload: response.data, result: "success", url: "invoice-payment"})
             }).catch(function(err){

@@ -25,8 +25,8 @@ function Payment(props){
     let payment_details = useSelector(state => state.paymentDetails)
 
     const [qty, setQty] = useState(1)
-    const [amount, setAmount] = useState(price_per_carrot)       
-    const [month, setMonth] = useState(payment_details.month !== -1 ? payment_details.month : -1)    
+    const [amount, setAmount] = useState(price_per_carrot)
+    const [month, setMonth] = useState(payment_details.month !== -1 ? payment_details.month : -1)
     const [year, setYear] = useState(payment_details.year !== "" ? payment_details.year : "")
     const [country, setCountry] = useState(payment_details.country !== "" ? payment_details.country : "")
     const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
@@ -53,7 +53,7 @@ function Payment(props){
     let total_promo = total
     if(promo && Object.keys(promo).length>0){
         total_promo = (total_promo - (total_promo * promo.discount)/100).toFixed(2)
-    }    
+    }
     function totalPriceSum(){
         let total = 0
         for(let i in cart){
@@ -69,7 +69,7 @@ function Payment(props){
         let url = "/api/crypto_min"
         let payload = {
             amount: total_promo
-        }        
+        }
         postData(url, payload).then((res) => {
             setCryptoData(res.payload)
         })
@@ -207,10 +207,10 @@ function Payment(props){
             }
             if(!validateCard(data.cardNumber)){ // test card details --> 4242424242424242
                 errors.cardNumber.validate = false
-            }            
+            }
             if(parseInt(month) === -1){
                 errors.month.fill = false
-            }            
+            }
             if(isEmpty(year)){
                 errors.year.fill = false
             }
@@ -279,7 +279,7 @@ function Payment(props){
             }
             let payload = {...paymentDetails}
             payload.amount = total_promo
-            //console.log('sendPayload1--> ', gateway, payload, url)   
+            //console.log('sendPayload1--> ', gateway, payload, url)
             if(!isEmpty(url)){
                 postData(url, payload).then((data) => {                    
                     if(data && data.result && data.result === "success"){
@@ -312,8 +312,8 @@ function Payment(props){
                                                 data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
                                             }
                                             dispatch(changePopup(payload))
-                                        }                                    
-                                    })                                
+                                        }
+                                    })
                                 }
                                 break 
                             default:
@@ -403,16 +403,16 @@ function Payment(props){
             {...props} 
             paymentDetails={paymentDetails}
             totalPromo={total_promo}
-            gatewayDetails={gatewayDetails}            
+            gatewayDetails={gatewayDetails}
             gateway={gateway}
-            sendPayment={()=>sendPayment(paymentDetails)}  
-            handleBack={()=>handleBack()}          
+            sendPayment={()=>sendPayment(paymentDetails)}
+            handleBack={()=>handleBack()}
         /> : <>
             <Col sm={8}>
                 <PaymentForm 
                     {...props} 
                     getChanges={(e)=>getChanges(e)}
-                    paymentError={paymentError}            
+                    paymentError={paymentError}
                     cryptoData={cryptoData}
                     totalPromo={total_promo}
                     gateway={gateway}
@@ -432,7 +432,7 @@ function Payment(props){
                                 default:  
                                     return                               
                             }
-                        })()}                    
+                        })()}
                     </Col>
                 </Row>
                 <Row>
@@ -450,7 +450,7 @@ function Payment(props){
                     </Col>
                 </Row>
             </Col>
-        </>}        
+        </>}
     </Row>
 }
 export default Payment

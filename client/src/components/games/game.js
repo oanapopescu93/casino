@@ -98,8 +98,8 @@ function Game(props){
                 setChatRoomUsers(res)
             })
             dispatch(changeRoom(null))
-		} 
-    }, [socket])      
+		}
+    }, [socket])
 
     return <>
         <div className="content_wrap">
@@ -142,7 +142,7 @@ function Game(props){
                                     <img src={craps_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
                                 </>
-                            }                        
+                            }
                         case "race":
                             if(room){
                                 return <Race {...props} results={(e)=>results(e)} />
@@ -151,7 +151,7 @@ function Game(props){
                                     <img src={race_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
                                 </>
-                            }                        
+                            }
                         case "keno":
                             if(room){
                                 return <Keno {...props} results={(e)=>results(e)} />
@@ -160,7 +160,7 @@ function Game(props){
                                     <img src={keno_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
                                 </>
-                            }  
+                            }
                         case "poker":
                             if(room){
                                 return <Poker {...props} results={(e)=>results(e)} />
@@ -169,7 +169,7 @@ function Game(props){
                                     <img src={poker_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
                                 </>
-                            }    
+                            }
                         case "whack_a_rabbit":
                             if(room){
                                 return <WhackARabbit {...props} results={(e)=>results(e)} /> 
@@ -178,9 +178,7 @@ function Game(props){
                                     <img src={whack_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
                                 </>
-                            }            
-                        default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            }
                     }
                 })()}
             </div> : <>

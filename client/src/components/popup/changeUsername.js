@@ -7,7 +7,7 @@ function ChangeUsername(props) {
     const {lang} = props
     const [choice, setChoice] = useState("")
     const [error, setError] = useState(false)
-    let user = useSelector(state => state.auth.user)    
+    let user = useSelector(state => state.auth.user)
 
     function handleChange(e){
         setError(false)
@@ -27,7 +27,7 @@ function ChangeUsername(props) {
         </div>
         {error ? <div className="alert alert-danger">
             <p className="text_red">{translate({lang: lang, info: "empty_input_change_username"})}</p>
-        </div> : null}        
+        </div> : null}
         <div className="changeUsername_buttons">
             <Button type="button" id="changeUsername_btn_ok" className="mybutton button_fullcolor_dark" onClick={()=>handleSendChange({value: choice, uuid: user.uuid, type: "user"})}>
                 {translate({lang: lang, info: "change"})}

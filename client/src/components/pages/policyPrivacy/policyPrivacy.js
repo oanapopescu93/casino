@@ -48,7 +48,7 @@ function PolicyPrivacy(props){
                         default:
                             return <PolicyPrivacyEng/>
                     }
-                })()}         
+                })()}
             </div>
         </div>
         <div className="text_center">

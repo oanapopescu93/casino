@@ -10,7 +10,7 @@ function RaceTables(props){
     const {lang, home} = props
     let race_bets = useSelector(state => state.games.race.bets) 
     let money = props.user.money ? decryptData(props.user.money) : 0
-    let dispatch = useDispatch()   
+    let dispatch = useDispatch()
 
     let race_array = []
 	if(home.race_rabbits && home.race_rabbits.length>0){
@@ -69,7 +69,7 @@ function RaceTables(props){
                 settings: {
                     slidesToShow: 1,
                 }
-            }            
+            }
         ]
     }
 
@@ -79,7 +79,7 @@ function RaceTables(props){
             template="race" 
             options={race_carousel_options} 
             lang={lang} 
-            itemList={race_array}    
+            itemList={race_array}
         />
         <div className="game_start">
             <Button 

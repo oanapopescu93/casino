@@ -52,7 +52,7 @@
 .shadow {
     animation: shrink 3s ease-out infinite;
     transform-origin: center center; 
-    background-color: transparent;   
+    background-color: transparent; 
     box-shadow: none!important;
     width: 50px;
     height: 25px;
@@ -111,25 +111,25 @@ ellipse {
     border-radius: 50%/60% 60% 40% 40%;
     overflow: hidden;
     display: inline-block;
-}  
+}
 .stripe {
     height: 20%;
-}  
+}
 /* .stripe:not(:first-child) {
     border-top: 2px solid var(--egg_stripe_color01);
-}   */
+}  */
 .stripe:nth-child(1) {
     background-color: var(--egg_stripe_color02);
-}  
+}
 .stripe:nth-child(2) {
     background-color: var(--egg_stripe_color03);
-}  
+}
 .stripe:nth-child(3) {
     background-color: var(--egg_stripe_color04);
-}  
+}
 .stripe:nth-child(4) {
     background-color: var(--egg_stripe_color05);
-}  
+}
 .stripe:nth-child(5) {
     background-color: var(--egg_stripe_color06);
 }
@@ -320,7 +320,7 @@ ellipse {
 	z-index: 1;
 	display: inline-block;
 	margin-right: 70px;
-}  
+}
 .light-bulb:last-child{
 	margin-right: 0px;
 }
@@ -347,7 +347,7 @@ ellipse {
 	border-bottom: 2px solid #666;
 	border-radius: 50%;
 	z-index: -1;
-}  
+}
 .light-bulb:last-of-type::after {
 	border: none;
 }
@@ -355,22 +355,22 @@ ellipse {
 	background: red;
 	box-shadow: 0 1px 13px 3px red;
 	border: solid 1px darkred;
-}  
+}
 .light-bulb.theme-color-two {
 	background: orange;
 	box-shadow: 0 1px 13px 3px orange;
 	border: solid 1px rgb(185, 103, 2);
-}  
+}
 .light-bulb.theme-color-three {
 	background: yellow;
 	box-shadow: 0 1px 13px 3px yellow;
 	border: solid 1px #b5b501;
-}  
+}
 .light-bulb.theme-color-four {
 	background: green;
 	box-shadow: 0 1px 13px 3px green;
 	border: solid 1px #005c00;
-}  
+}
 .light-bulb.theme-color-five {
 	background: #1b1bff;
 	box-shadow: 0 1px 13px 3px #1b1bff;

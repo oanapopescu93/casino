@@ -64,7 +64,7 @@ function PaymentCart(props){
                     </div>
                 </Col>
             </Row> 
-        </> : null}      
+        </> : null}
     </>
 }
 export default PaymentCart

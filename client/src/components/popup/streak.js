@@ -15,7 +15,7 @@ function Streak(props){
                     active = "active"
                 }
                 return <div key={i} className={"bubble "+active}>{item}</div>
-            })}     
+            })}
         </div>
         <div className="streak_text">
             {prize>0 ? <p>{translate({lang: lang, info: "prize"})}: <span>{prize}</span><img alt="carrot_img" className="currency_img" src={carrot_img}/></p> : null}

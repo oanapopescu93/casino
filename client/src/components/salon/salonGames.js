@@ -16,7 +16,7 @@ function SalonGames(props){
     const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
     const [index, setIndex] = useState(0)
     const [titleDropdown, setTitleDropdown] = useState("")
-    let dispatch = useDispatch()    
+    let dispatch = useDispatch()
     const [showWinter, setShowWinter] = useState(false)
     const salon_carousel_options = {
         infinite: true,
@@ -47,7 +47,7 @@ function SalonGames(props){
                 settings: {
                     slidesToShow: 1,
                 }
-            }          
+            }
         ]
     }
 
@@ -102,9 +102,9 @@ function SalonGames(props){
 				}
         } 
         setCasinoGames(casino_games)
-        setCasinoGamesTitle(casino_games_title)  
+        setCasinoGamesTitle(casino_games_title)
         setTitleDropdown(translate({lang: props.lang, info: casino_games_title[0]}))
-    }    
+    }
 
     function handleSelect(x){
         let i = casinoGamesTitle.indexOf(x)
@@ -152,7 +152,7 @@ function SalonGames(props){
                                     options={salon_carousel_options} 
                                     lang={lang} 
                                     itemList={casinoGames[t]} 
-                                    getItem={(e)=>gameChoice(e)}   
+                                    getItem={(e)=>gameChoice(e)}
                                 />
                             </div>
                         </div>

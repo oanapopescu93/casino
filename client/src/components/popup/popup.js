@@ -51,7 +51,7 @@ function Popup(props){
     function forgotPasswordClick(e){
         if(validateInput(e, "email")){
             setForgotPasswordSending(true)
-            socket.emit('forgotPassword_send', {lang: lang, email: e})   
+            socket.emit('forgotPassword_send', {lang: lang, email: e})
         } else {
             setForgotPasswordResult(translate({lang: lang, info: "error"}))
         }
@@ -65,7 +65,7 @@ function Popup(props){
                     socket.emit('dashboardChanges_send', e)
                 default:
                     break
-            }            
+            }
         }
         closeModal()
     }
@@ -91,7 +91,7 @@ function Popup(props){
                     <span>X</span>
                 </div> : null}
                 <Modal.Title>{title}</Modal.Title>
-            </Modal.Header> : null}  
+            </Modal.Header> : null}
             <Modal.Body>
                 {title === "" && !sticky ? <div className="closeButton" onClick={closeModal}>
                     <span>X</span>

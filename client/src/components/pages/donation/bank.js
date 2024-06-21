@@ -10,7 +10,7 @@ function BankDonation(props){
             <div className="iban">
                 <strong>{bankDonation.title}:</strong> {bankDonation.text}
             </div>
-        </> : null}        
+        </> : null}
     </>
 }
 export default BankDonation

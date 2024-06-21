@@ -9,7 +9,7 @@ function Stars(props){
     let stars = []
     for(let i =1; i<=max; i++){
         let x = parseInt(i)
-        let t = Math.floor(score)  
+        let t = Math.floor(score)
         if(x<score){
             stars.push(2)
         } else {
@@ -18,7 +18,7 @@ function Stars(props){
             } else {
                 stars.push(0)
             }
-        }        
+        }
     }
 	return <div className="stars">
         {stars.map(function(item, i){
@@ -29,7 +29,7 @@ function Stars(props){
                     return <img key={i} src={star_half} alt="star_half" className="star" />
                 default: 
                     return <img key={i} src={star_empty} alt="star_empty" className="star" />
-            }                    
+            }
         })}
 	</div>
 }

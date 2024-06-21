@@ -20,7 +20,7 @@ function Footer(props){
 		if(winter && getWindowDimensions().width >= 960){ // will appear only on winter months and only if the width is more than 960
 			setShowWinter(true)
 		}
-    }, [])    
+    }, [])
 
     function handleDate(){
         let my_date = new Date()

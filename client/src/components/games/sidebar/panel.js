@@ -14,7 +14,7 @@ function Panel(props){
     const [panelUser, setPanelUser] = useState("active")
     const [panelChat, setPanelChat] = useState("")
     const [showWinter, setShowWinter] = useState(false)
-    const wrapperRef = useRef(null)    
+    const wrapperRef = useRef(null)
 
     function handleToggle(type){
         if(panel === type){
@@ -51,7 +51,7 @@ function Panel(props){
         if (wrapperRef && wrapperRef.current && !wrapperRef.current.contains(e.target)){
             setOpen('')
         }
-    }    
+    }
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -90,7 +90,7 @@ function Panel(props){
                     <FontAwesomeIcon icon={faComments} />
                     <span className="panel_button_text">{translate({lang: lang, info: "Chat"})}</span>
                 </p>
-            </div> : null}            
+            </div> : null}
         </div>
         <div id="user_panel_box" className={"panel_box " + panelUser}> 
             <User {...props} />

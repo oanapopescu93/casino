@@ -11,7 +11,7 @@ function Header(props){
     const {lang, template, details} = props
     let title = props.title ? props.title : "BunnyBet"  
     const [showEaster, setShowEaster] = useState(false)
-	const [showHalloween, setShowHalloween] = useState(false)   
+	const [showHalloween, setShowHalloween] = useState(false)
 
     useEffect(() => {
         // special occasions
@@ -56,7 +56,7 @@ function Header(props){
                             } 
                             if(table_id){
                                 title = title + ' ' + table_id
-                            }                            
+                            }
                             return <div id="header_game" className="header">
                                 <TransparentText text={title} />
                             </div>
@@ -106,7 +106,7 @@ function Header(props){
                             </div> : null}
                         </div>
                 }
-            }            
+            }
         })()}
     </div>
 }

@@ -15,7 +15,7 @@ import Loader from '../partials/loader'
 
 function Sign(props) {
     let dispatch = useDispatch()
-    let page = useSelector(state => state.page.page)    
+    let page = useSelector(state => state.page.page)
     let isMinor = useSelector(state => state.auth.isMinor)
     const [visible, setVisible] = useState('signIn')
     const [errorEmail, setErrorEmail] = useState(false)
@@ -33,7 +33,7 @@ function Sign(props) {
         setErrorUser(false)
         setErrorPass(false)
         setErrorAgree(false)
-        setVisible(choice)    
+        setVisible(choice)
         if(choice === "signIn"){
 			setSignIn('active')
 			setSignUp('')
@@ -69,7 +69,7 @@ function Sign(props) {
             if(typeof data.email != "undefined" && (data.email === "")){
                 error = true
                 setErrorEmail(true)
-            }            
+            }
             if(!checkboxOne){
                 error = true
                 setErrorAgree(true)
@@ -102,7 +102,7 @@ function Sign(props) {
                 default:
                     break
             }
-        }       
+        }
     } 
 
     useEffect(() => {
@@ -165,7 +165,7 @@ function Sign(props) {
     }
 
     useEffect(() => {
-        handleDate()        
+        handleDate()
     }, []) 
 
     return <>
@@ -214,7 +214,7 @@ function Sign(props) {
                                                 </div>
                                                 </>}
                                             </div>
-                                        </>}                                  
+                                        </>}
                                     </div>
                                 </div> 
                                 {(() => {
@@ -222,11 +222,11 @@ function Sign(props) {
                                         return <div className="alert alert-danger">
                                             {errorEmail ? <p className="text_red">{translate({lang: props.lang, info: "incorrect_email"})}</p> : null}
                                             {errorUser ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_subject"})}</p> : null}
-                                            {errorPass ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_message"})}</p> : null}  
-                                            {errorAgree ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_agree"})}</p> : null}  
+                                            {errorPass ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_message"})}</p> : null}
+                                            {errorAgree ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_agree"})}</p> : null}
                                         </div>
                                     }
-                                })()}                           
+                                })()}
                             </div>
                             <div className="sign_footer">
                                 <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: props.lang, info: "all_rights_reserved"})}.</h6>

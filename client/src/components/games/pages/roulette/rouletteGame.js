@@ -374,7 +374,7 @@ function roulette_game(props){
 			}
 	  	}
 
-	  	spin_roulette()  
+	  	spin_roulette()
 	}
 
     this.rotateWheel = function(x) {

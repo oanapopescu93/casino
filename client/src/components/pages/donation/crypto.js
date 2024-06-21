@@ -19,7 +19,7 @@ function CryptoDonation(props){
                     ))
                 }
             </ul>
-        </> : null}        
+        </> : null}
     </>
 }
 export default CryptoDonation

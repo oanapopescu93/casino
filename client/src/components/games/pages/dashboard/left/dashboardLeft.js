@@ -84,7 +84,7 @@ function DashboardLeft(props){
                 payload.data = data
             }
             dispatch(changePopup(payload))
-        }        
+        }
 	}
 
     return <div id="dashboard_left" className="dashboard_box shadow_concav">

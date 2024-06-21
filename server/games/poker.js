@@ -13,7 +13,7 @@ function poker(data, user_join){
             break
         default: //ex: poker_5_card_draw
             how_many_cards = 5
-    }    
+    }
 
     switch (data.action) {
         case 'start':
@@ -24,7 +24,7 @@ function poker(data, user_join){
             
             // a certain number of cards are dealt to each player, only the user will see his own cards, the rest will be hidden
             poker_deck = createDeck(10000) 
-            poker_players = dealHands("players")  
+            poker_players = dealHands("players")
             poker_hidden_players = createHiddenPlayers() 
             
             // calculate pot
@@ -60,7 +60,7 @@ function poker(data, user_join){
             return payload
         case "call": 
         case "raise":
-            let result = handleCallRaise(data.bet)  
+            let result = handleCallRaise(data.bet)
             if(result && result.error){
                 return {action: payload.action, error: result.error}
             } 
@@ -70,7 +70,7 @@ function poker(data, user_join){
             if(data.stage === "turn" || data.stage === "river"){
                 poker_dealer = addCardsDealer() 
             }
-            payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}  
+            payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
             return payload
         case "showdown":
             poker_players = evaluateHands(poker_players)
@@ -299,7 +299,7 @@ function poker(data, user_join){
             if (poker_players[i].bet > bet){
                 bet = poker_players[i].bet
             }
-        }      
+        }
         return bet
     }
 
@@ -341,7 +341,7 @@ function poker(data, user_join){
             showdown = true
         }
         return showdown
-    }    
+    }
 
     function calculatePot(){
         let players = [...poker_players]
@@ -390,7 +390,7 @@ function poker(data, user_join){
         const values = hand.map((card) => card.Value)
         const royalFlush = royalFlushValues.every((value) => values.includes(value))
         return royalFlush
-    }    
+    }
     function isStraightFlush(hand){
         return isStraight(hand) && isFlush(hand)
     }
@@ -410,23 +410,23 @@ function poker(data, user_join){
             }
         }
         return true
-    }  
+    }
     function isThreeOfAKind(hand){
         return countDuplicates(hand, 3)
     }
     function isTwoPair(hand){
         const pairs = countPairs(hand)
         return pairs === 2
-    }  
+    }
     function isOnePair(hand){
         return countPairs(hand) === 1
-    }  
+    }
     function countDuplicates(hand, count){
         const values = hand.map((card) => card.Value)
         const valueCounts = {}
         for (const value of values) {
             valueCounts[value] = (valueCounts[value] || 0) + 1
-        }    
+        }
         return Object.values(valueCounts).includes(count)
     }
     function countPairs(hand){
@@ -434,7 +434,7 @@ function poker(data, user_join){
         const valueCounts = {}
         for (const value of values) {
             valueCounts[value] = (valueCounts[value] || 0) + 1
-        }    
+        }
         const pairs = Object.values(valueCounts).filter((count) => count === 2)
         return pairs.length
     }

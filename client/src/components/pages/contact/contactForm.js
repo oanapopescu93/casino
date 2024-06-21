@@ -104,7 +104,7 @@ function ContactForm(props){
                         <p className="text_red">{translate({lang: lang, info: sendResults})}</p>
                     </div>
                 }
-            })()}   
+            })()}
             <Row>
                 <Col>
                     <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor shadow_convex">

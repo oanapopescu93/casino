@@ -24,7 +24,7 @@ function keno_game(props){
         self.createCanvas(canvas_width, canvas_height)
         self.createBallArray()
         self.drawBigCircle()
-        self.move()             
+        self.move()
     }
 
     this.createCanvas = function(canvas_width, canvas_height){	
@@ -68,7 +68,7 @@ function keno_game(props){
             if(Math.round(Math.random())>0.5){
                 dir = -dir
             }
-            ballsArray[i].xspeed = dir * Math.floor((Math.random()*ballSpeed[1])+ballSpeed[0])            
+            ballsArray[i].xspeed = dir * Math.floor((Math.random()*ballSpeed[1])+ballSpeed[0])
             dir = (Math.random() * 1) + 0
             if(Math.round(Math.random())>0.5){
                 dir = -dir
@@ -99,12 +99,12 @@ function keno_game(props){
     this.drawBigCircle = function() {
         ctx.clearRect(0,0,canvas.height, canvas.width)
         draw_dot(ctx, canvas.width/2, canvas.height/2, radiusBig, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, "gold")	
-	}    	
-
+	}
+    
     this.move = function(){
         setTimeout(function(){
             self.animation(duration)
-       }, 500)  
+       }, 500)
     }
 
     this.animation = function(time){ 
@@ -173,7 +173,7 @@ function keno_game(props){
             }
 	  	}
 
-	  	run()  
+	  	run()
 	}
 }
 
@@ -192,7 +192,7 @@ function KenoAnimation(props){
                 max: howManyBalls,
                 no_of_games: no_of_games
             }
-            props.socket.emit('keno_send', keno_payload_server)            
+            props.socket.emit('keno_send', keno_payload_server)
 		})
 	}
 
@@ -258,7 +258,7 @@ function KenoAnimation(props){
                             list={list} 
                             no_of_games={no_of_games}
                             price_per_game={price_per_game}
-                            results={resultsPayload}                            
+                            results={resultsPayload}
                         />
                     </Col>
                     <Col sm={12} className="button_action_group">

@@ -17,7 +17,7 @@ function Contact(props){
     const [contactElement, setContactElement] = useState(null)
     let dispatch = useDispatch() 
     const [mapCenter, setMapCenter] = useState(locations[0][props.lang].map)
-    const [markerPosition, setMarkerPosition] = useState(locations[0][props.lang].marker)    
+    const [markerPosition, setMarkerPosition] = useState(locations[0][props.lang].marker)
     const [country, setCountry] = useState(locations[0][props.lang].country)
     const [city, setCity] = useState(locations[0][props.lang].city) 
     const [zoom, setZoom] = useState(10)
@@ -36,7 +36,7 @@ function Contact(props){
             let location = locations[i][props.lang]
             setContactElement(x)
             setCountry(location.country)
-            setCity(location.city)            
+            setCity(location.city)
             setMapCenter(location.map)
             setMarkerPosition(location.marker)
             setZoom(10) 
@@ -44,7 +44,7 @@ function Contact(props){
     }
 
     function handleResize() {
-        setWidth(getWindowDimensions().width)     
+        setWidth(getWindowDimensions().width)
     }
 
     useEffect(() => {
@@ -58,9 +58,9 @@ function Contact(props){
     useEffect(() => {
         let location = locations[index][props.lang]
         setCountry(location.country)
-        setCity(location.city)            
+        setCity(location.city)
         setMapCenter(location.map)
-        setMarkerPosition(location.marker)     
+        setMarkerPosition(location.marker)
     }, [props.lang])
 
     return <div className="content_wrap">
@@ -78,7 +78,7 @@ function Contact(props){
                     /> : <ContactDetails 
                         lang={props.lang} 
                         item={locations[0]} 
-                    />}  
+                    />}
                     {locations && locations.length === 1 && width >= 960 ?<>
                         {width >= 960 ? <ContactMap 
                             lang={props.lang} 
@@ -89,7 +89,7 @@ function Contact(props){
                             city={city}
                             zoom={zoom}
                         /> : null} 
-                    </> : null}           
+                    </> : null}
                 </Col>
             </Row>
             {locations && locations.length>1 && width >= 960 ? <Row>
@@ -104,7 +104,7 @@ function Contact(props){
                         zoom={zoom}
                     />
                 </Col>
-            </Row> : null}                     
+            </Row> : null}
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

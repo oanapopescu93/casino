@@ -12,7 +12,7 @@ import Page from "./components/pages/page"
 
 const socket = io()
 
-function App() {
+function App(){
 	let lang = useSelector(state => state.settings.lang)
 	let date = useSelector(state => state.settings.date)
 	let currency = useSelector(state => state.settings.currency)
@@ -27,9 +27,9 @@ function App() {
 		}	
 		function disable(){
 			oldConsole = console.log
-			window['console']['log'] = function() {}
-			window['console']['warn'] = function() {}
-			window['console']['error'] = function() {}
+			window['console']['log'] = function(){}
+			window['console']['warn'] = function(){}
+			window['console']['error'] = function(){}
 		}	
 		return {enable, disable}
 	}()
@@ -39,10 +39,10 @@ function App() {
 		socket.connect()		
 		return () => {
 			socket.disconnect()
-		}  
-	}, []) 
+		}
+	}, [])
 
-  	setInterval(function () {		  
+  	setInterval(function(){		  
     	socket.emit('heartbeat', { data: "ping" })
   	}, 15000)
 

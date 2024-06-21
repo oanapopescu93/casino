@@ -14,7 +14,7 @@ function Craps(props){
         return () => {
             dispatch(changeCrapsBets({bets: null, lucky_bet: null, result: null}))
         }
-	}, []) 
+	}, [])
 
     function getData(x){
         dispatch(changeCrapsBets(x))

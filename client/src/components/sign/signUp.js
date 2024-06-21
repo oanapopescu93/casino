@@ -72,13 +72,19 @@ function SignUp(props) {
                     <input className="input_light" type="password" value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
                 </Col>
             </Row>
-            {isMinor ? null : <Row>
-                <Col>
-                    <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor">
-                        {translate({lang: props.lang, info: "sign_up"})}
-                    </Button>
-                </Col>
-            </Row>}                        
+            {(() => {
+                if(isMinor  === "false" || isMinor === false) {                    
+                    return <Row>
+                        <Col>
+                            <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor">
+                                {translate({lang: props.lang, info: "sign_up"})}
+                            </Button>
+                        </Col>
+                    </Row>
+                } else {                    
+                    return null
+                }	
+            })()}
         </Form>
     </div>
 }

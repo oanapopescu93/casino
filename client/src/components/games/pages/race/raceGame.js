@@ -31,7 +31,7 @@ function Landscape(config){
 	self.height = {
 		min: config.height.min,
     	max: config.height.max
-	}  
+	}
 	self.speed = config.speed
 	self.color = config.color
 	self.color_stroke = config.color_stroke

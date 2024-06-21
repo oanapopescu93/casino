@@ -103,7 +103,7 @@ function Craps(props){
 
     let craps_board = useRef(null)
 	const dice1 = useRef(null)
-	const dice2 = useRef(null)  
+	const dice2 = useRef(null)
 	let dice_array = [dice1, dice2]
 	let dicesNumber = [] 
 	

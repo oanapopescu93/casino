@@ -14,7 +14,7 @@ let L = Leaflet.noConflict()
 function MapChild(props){
     const {markerOptions, popupOptions, country, city, zoom} = props 
     const map = useMap()
-    const leafletRef = useRef()    
+    const leafletRef = useRef()
 
     useEffect(() => {
         map.setView(markerOptions.position, zoom)

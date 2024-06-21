@@ -30,7 +30,7 @@ function* fetchBringPayload(){
         yield put(showPayload(output))
     } catch(error){
         console.log('fetchBringThemAll1--> ', error)
-    }   
+    }
 }
 
 export function* homeRegister() {

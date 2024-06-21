@@ -13,7 +13,7 @@ import {faCartShopping, faArrowRotateLeft} from '@fortawesome/free-solid-svg-ico
 function Market(props){
     const {lang, home} = props
     let market = home.market ? home.market : []
-	let shader_style = {backgroundImage: `url(${shop})`}    
+	let shader_style = {backgroundImage: `url(${shop})`}
     const market_carousel_options = {
         infinite: true,
         speed: 500,

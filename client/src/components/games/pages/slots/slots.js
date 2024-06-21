@@ -492,7 +492,7 @@ function Slots(props){
                     data: translate({lang: props.lang, info: "no_bets"})
                 }
                 dispatch(changePopup(payload))
-            }            
+            }
         }
     }
 

@@ -65,8 +65,8 @@ function Cell(props) {
                     let payload_race = {table_name, table_type, table_id}
                     props.getItem(payload_race)
                     break
-            }            
-        }        
+            }
+        }
     }
 
     const handleMouseDown = (e) => {
@@ -135,7 +135,7 @@ function Cell(props) {
                                         case "ENG":
                                         default:
                                             return <h4>{data.name_eng}</h4>
-                                    } 
+                                    }
                                 })()}
                                 <p>{translate({lang: lang, info: "price"})}: {data.price}</p>
                                 <Counter update={(e)=>updateQtyMarket(e)} />
@@ -215,7 +215,7 @@ function Cell(props) {
                     let style = ''
                     if(index-1 === selected){
                         style = ' selected'
-                    } 
+                    }
                     return <div 
                         className={"crop_profile_pic_box"+style}
                         onMouseDown={handleMouseDown}
@@ -231,7 +231,7 @@ function Cell(props) {
                 default:
                     return <div key={index}>{translate({lang: lang, info: "error"})}</div>
             }
-        })()}        
+        })()}
     </>
 }
 

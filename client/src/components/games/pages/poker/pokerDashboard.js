@@ -142,8 +142,8 @@ function PokerDashboard(props){
                     props.socket.emit('poker_send', poker_payload_server)
                     break
             }
-        }       
-    }   
+        }
+    }
 
     function updateBets(e){
         props.updateBets(e)
@@ -153,7 +153,7 @@ function PokerDashboard(props){
         <canvas id="poker_canvas" />
         {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
             <div className="poker_pot">{translate({lang: props.lang, info: "total_pot"})}: {pot}</div>
-        </div> : null}        
+        </div> : null}
         {!startGame ? <div className="game_start">
             <Button type="button" onClick={()=>choice({action: 'start', stage: 'start'})} className="mybutton round button_fullcolor shadow_convex">
                 {translate({lang: props.lang, info: "start"})}

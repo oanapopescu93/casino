@@ -351,7 +351,7 @@ function blackjack_game(props){
 				card_list[i].draw_box(ctx)
 			}
 		}
-	}    
+	}
 
     this.action = function(data){
 		if(data.action){
@@ -436,7 +436,7 @@ function Blackjack(props){
 		setStartGame(false)
 	}
     let options = {...props, dispatch, getResults, clear}
-    let my_blackjack = new blackjack_game(options)    
+    let my_blackjack = new blackjack_game(options)
 
     function ready(){
         if(my_blackjack && document.getElementById("blackjack_canvas")){
@@ -511,7 +511,7 @@ function Blackjack(props){
 								setStartGame(true)
 							}
 						}
-					}                    
+					}
                     break
                 case "hit":	
                     if(my_blackjack){

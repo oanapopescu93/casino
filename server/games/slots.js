@@ -7,7 +7,7 @@ function slots(data){
 
     for(let i=0; i < 19; i++){
         matrix.push(slot_matrix(i, [data.lines, 3]))
-    }    
+    }
     for(let i=0; i < data.lines; i++){
         let array_small = Array.from(Array(items).keys())
         array_small = shuffleArray(array_small)

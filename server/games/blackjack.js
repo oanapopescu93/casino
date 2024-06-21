@@ -59,7 +59,7 @@ function blackjack(data, user_join){
                 }
             } else {
                 return {action: 'not_current_player'} 
-            }  
+            }
         case 'stand':
             blackjack_players = data.players
             let index_stand = blackjack_players.findIndex((x) => x.uuid === data.uuid)

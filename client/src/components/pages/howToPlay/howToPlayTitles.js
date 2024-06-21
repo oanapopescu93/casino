@@ -40,8 +40,8 @@ function HowToPlayTitles(props){
                                     return  <img src={poker_icon} alt="game_icon" />
                                 default:
                                     return null
-                            }  
-                        })()}                        
+                            }
+                        })()}
                     </div>
                     <div className="cell_text shadow_convex">{translate({lang: props.lang, info: t})}</div>
                 </div>

@@ -44,11 +44,6 @@ function ChangeProfilePic(props) {
             setIndex(i)
             setChoice(item.id)
         }
-        // } else if(parseInt(i) !== parseInt(picId)){  
-        //     console.log('handlePic2 ', i, item)          
-        //     setIndex(i)
-        //     setChoice(item.id)      
-        // }
     }
 
     function choosePic(e){

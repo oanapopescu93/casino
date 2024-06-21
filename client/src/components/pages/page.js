@@ -22,7 +22,7 @@ function Page(props) {
     const [progressNumber, setProgressNumber] = useState(0)
     let dispatch = useDispatch() 
     const [showWinter, setShowWinter] = useState(false)
-	const [showChristmas, setShowChristmas] = useState(false)   
+	const [showChristmas, setShowChristmas] = useState(false)
 
     useEffect(() => {
 		dispatch(bringPayload())	
@@ -72,7 +72,7 @@ function Page(props) {
                     return <Sign {...props} />
                 } else {
                     return <Splash {...props} progressNumber={progressNumber} />
-                }                
+                }
             } else {
                 if(home.loaded){              
                     return <Home {...props} home={home} page={page} user={user} cookies={cookies} />

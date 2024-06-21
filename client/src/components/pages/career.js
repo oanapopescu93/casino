@@ -28,7 +28,7 @@ function CareerList(props){
             if(type !== mylist[i].type){
                 type = mylist[i].type
                 header.push(type)
-            }                                    
+            }
         }
         if(header.length>0){
             header = ['all'].concat(header)
@@ -78,9 +78,9 @@ function CareerList(props){
                                             return <div key={i} id={'career_header_box_'+t} className={"career_header_box " + open}  onClick={()=>handleDropdown(t, i)}>{translate({lang: lang, info: t})}</div>
                                         })}
                                     </>
-                                }                                                    
+                                }
                             }
-                        })()}   
+                        })()}
                     </div>
                     <div className="career_container">
                         <div className="career_scroll">
@@ -147,7 +147,7 @@ function Career(props){
                 } else {
                     return <p className="text_center">{translate({lang: props.lang, info: "error"})}</p>
                 }
-            })()}    
+            })()}
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

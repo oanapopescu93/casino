@@ -49,7 +49,7 @@ function Card(config){
                 let cards_number = self.hand.length
                 let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
                 self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(ctx, title, self.text_x-hand_length/2, self.text_y, 90, 12)                    
+                self.draw_card_text(ctx, title, self.text_x-hand_length/2, self.text_y, 90, 12)
             } else {
                 //bot
                 self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, self.hand)
@@ -126,7 +126,7 @@ function Card(config){
                 case "K":
                     img_index = img_index + 12					
                     break			
-            }           
+            }
             
             if(self.id !== -1){                
                 //player
@@ -142,7 +142,7 @@ function Card(config){
                 ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i * (self.space + w), y, w, h)
                 self.updateHand(i, x + i * (self.space + w), y, w, h)
             }
-        }        
+        }
 	}
 
     self.draw_card_text = function(ctx, text, x, y, w, h){	
@@ -166,7 +166,7 @@ function Card(config){
     }
 
     self.updateSelected = function(x){ 
-        let index = self.selectedCards.findIndex((i) => i === x)     
+        let index = self.selectedCards.findIndex((i) => i === x)
         if(index === -1){
             self.selectedCards.push(x)
         } else {
@@ -225,7 +225,7 @@ export const poker_game = function(props){
                 }
             } else {
                 self.fold()
-            }           
+            }
 		}
     }
 
@@ -300,7 +300,7 @@ export const poker_game = function(props){
         ctx.shadowOffsetY = 0
         ctx.fillStyle = "green"
         ctx.beginPath()
-        ctx.ellipse(canvas.width/2, canvas.height/2, canvas.width/2-4*card_base.space, canvas.height/2-3*card_base.space, 0, 0, 2 * Math.PI)  
+        ctx.ellipse(canvas.width/2, canvas.height/2, canvas.width/2-4*card_base.space, canvas.height/2-3*card_base.space, 0, 0, 2 * Math.PI)
         ctx.fill()
     }
 
@@ -332,7 +332,7 @@ export const poker_game = function(props){
                 }
                 if(typeof props.getCardList === "function"){
                     props.getCardList(card_list[i].selectedCards)
-                }                
+                }
             }
 		}
     }
@@ -366,7 +366,7 @@ export const poker_game = function(props){
                     hand: poker_data.dealer.hand,
                     bet: null
                 }))	
-            }            
+            }
             
             //players
             for(let i = 0; i < how_many_players; i++){
@@ -493,7 +493,7 @@ export const poker_game = function(props){
                 bet,
                 winner,
                 pot
-            }            
+            }
             
             if(typeof props.getResults === "function"){
                 props.getResults(poker_payload)

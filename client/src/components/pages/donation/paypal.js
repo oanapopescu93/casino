@@ -19,7 +19,7 @@ function PaypalDonation(props){
                     ))
                 }
             </ul>
-        </> : null}        
+        </> : null}
     </>
 }
 export default PaypalDonation

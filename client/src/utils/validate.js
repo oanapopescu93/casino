@@ -49,10 +49,10 @@ export const validateCard = function(val) {
 
   // loop through values starting at the rightmost side
   for (let i = value.length - 1; i >= 0; i--) {
-    let digit = parseInt(value.charAt(i))  
+    let digit = parseInt(value.charAt(i))
     if (shouldDouble) {
       if ((digit *= 2) > 9) digit -= 9
-    }  
+    }
     sum += digit
     shouldDouble = !shouldDouble
   }

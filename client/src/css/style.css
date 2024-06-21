@@ -209,7 +209,7 @@ textarea:focus, input:focus{
   z-index: 1;
   top: 50%;
   left: 50%;
-  padding: var(--padding);  
+  padding: var(--padding);
   font-size: 14px;
   line-height: 14px;
 }
@@ -227,7 +227,7 @@ textarea:focus, input:focus{
   z-index: 1;
 }
 .sign_box.isMinor_sign{
-  padding: 50px;  
+  padding: 50px;
 }
 .sign_box.isMinor_sign p{
   position: absolute;
@@ -315,7 +315,7 @@ textarea:focus, input:focus{
   border: solid 1px var(--color);
 }
 .checkbox_radio_container input[type="radio"]{
-	border-radius: 100%!important;  
+	border-radius: 100%!important;
 }
 .checkbox_radio_container input[type="checkbox"] {
 	border-radius: var(--radius_small)!important;
@@ -463,7 +463,7 @@ input, textarea{
   background-color: transparent;
 }
 .input_light{
-  border: solid 1px var(--color);  
+  border: solid 1px var(--color);
   color: var(--color);
 }
 .input_dark{
@@ -576,7 +576,7 @@ textarea {
 
 /* dropdown */
 .dropdown{
-  border-radius: var(--radius);  
+  border-radius: var(--radius);
 }
 .dropdown .dropdown-toggle, .dropdown .dropdown-toggle:hover, .dropdown .dropdown-toggle:active, .dropdown .dropdown-toggle:focus{
   background-color: transparent;
@@ -603,7 +603,7 @@ textarea {
   width: 100%;
   border-radius: var(--radius);
   max-height: 200px;
-  overflow-x: hidden;  
+  overflow-x: hidden;
 	overflow-y: auto;
   padding: var(--padding_small);
 }
@@ -644,14 +644,13 @@ textarea {
 }
 .modal-header{
   padding: var(--padding_small) var(--padding);
-  background: var(--bg);  
+  background: var(--bg);
   color: var(--color);
-  /* border: solid 0px transparent; */
   border: solid 1px var(--color);
 }
 .closeButton{
   background: var(--color);
-  border: solid 1px var(--bg);  
+  border: solid 1px var(--bg);
   color: var(--bg);
   border-radius: 100%;
   width: 25px;
@@ -673,7 +672,7 @@ textarea {
 .closeButton:hover{
   background: var(--bg);
   color: var(--color);
-  border: solid 1px var(--color);  
+  border: solid 1px var(--color);
 }
 .popup_body{
   color: var(--bg);
@@ -1008,13 +1007,13 @@ textarea {
 }
 .error .closeButton{
   background: var(--red);
-  border: solid 1px var(--red);  
+  border: solid 1px var(--red);
   color: var(--bg);
 }
 .error .closeButton:hover{
   background: var(--darkred);
-  border: solid 1px var(--red);  
-  color: var(--bg);  
+  border: solid 1px var(--red);
+  color: var(--bg);
 }
 .success .modal-content{
   background-color: var(--green);
@@ -1026,13 +1025,13 @@ textarea {
 }
 .success .closeButton{
   background: var(--green);
-  border: solid 1px var(--green);  
+  border: solid 1px var(--green);
   color: var(--bg);
 }
 .success .closeButton:hover{
   background: var(--darkgreen);
-  border: solid 1px var(--green);  
-  color: var(--bg);  
+  border: solid 1px var(--green);
+  color: var(--bg);
 }
 
 /* COOKIES */
@@ -1053,7 +1052,7 @@ textarea {
   background: var(--color);	
   border-radius: var(--radius);
   padding: 20px;
-  border: solid 1px var(--color);    
+  border: solid 1px var(--color);
 }
 .cookies_text {
   width: 75%;
@@ -1151,7 +1150,7 @@ textarea {
   color: var(--color);
   padding: var(--padding) var(--padding) var(--padding_small) var(--padding);
   border-radius: var(--radius) var(--radius) 0px 0px;
-  display: inline-block;  
+  display: inline-block;
   position: relative;
   top: 2px;
 }
@@ -1959,7 +1958,7 @@ textarea {
 .progress_box_container{
   background-color: transparent;
   border: solid 1px var(--color);
-  padding: var(--padding_small);  
+  padding: var(--padding_small);
 }
 .progress_box{
   border: solid 1px var(--color);
@@ -2528,8 +2527,8 @@ textarea {
 	display: inline-block;
   position: relative;
   z-index: 1;
-  text-align: center;    
-  border: var(--padding) solid;    
+  text-align: center;
+  border: var(--padding) solid;
   border-radius: var(--padding_small);
   background: white;
 	border-color: var(--dark_color) var(--color);
@@ -2580,7 +2579,7 @@ textarea {
   vertical-align: top;
 	height: 310px;
   max-width: 110px;
-	border: var(--padding_small) solid;    
+	border: var(--padding_small) solid;
   border-color: var(--dark_color) var(--color) var(--dark_color) var(--dark_color);
 }
 .slot_machine .box:last-child{
@@ -2610,7 +2609,7 @@ textarea {
 .slots_rules_box td{
   width: 30px;
   height: 30px;
-  border: solid 1px var(--bg);  
+  border: solid 1px var(--bg);
 }
 .slots_rules_box td.selected{
   background-color: var(--bg);
@@ -2638,7 +2637,7 @@ textarea {
 	width: 100px;
 	height: 100px;
 	transform-style: preserve-3d;
-	transition: transform 1s;  
+	transition: transform 1s;
 }
 .dice_box_shadow{
 	position: absolute;
@@ -2718,7 +2717,7 @@ textarea {
   -moz-transform: rotateX(720deg) translateZ(-720deg);
   -ms-transform: rotateX(720deg) translateZ(-720deg);
   -o-transform: rotateX(720deg) translateZ(-720deg);
-	transform: rotateX(720deg) rotateZ(-720deg);  
+	transform: rotateX(720deg) rotateZ(-720deg);
 }
 .show_2 {
 	-webkit-transform: rotateX(-900deg) translateZ(1080deg);
@@ -2862,7 +2861,7 @@ textarea {
   left: 0px;
   right: 0px;
   width: 100%;
-  text-align: center;  
+  text-align: center;
 }
 #race_order{
   display: inline-block;
@@ -2939,7 +2938,7 @@ textarea {
 .keno_spot{
   padding: 2px;
   display: inline-block;
-  vertical-align: middle;  
+  vertical-align: middle;
 }
 .keno_spot .keno_spot_box{
   border: solid 1px var(--color);
@@ -3337,7 +3336,7 @@ textarea {
   }
   .career_scroll{
     height: 380px;
-  }  
+  }
 
   /* SPLASH SCREEN */
   #splash_screen .splash_screen_container{
@@ -3396,7 +3395,7 @@ textarea {
   }
   .progress_container{
     max-width: 250px;
-  }  
+  }
   .progress_text{
     width: 100% !important;
   }
@@ -3613,7 +3612,7 @@ textarea {
   }
   .sign_container ul li:first-child{    
     margin-bottom: var(--padding_small);
-  }  
+  }
 }
 @media (max-width:360px) {
   #splash_screen .mid-diamond-left{

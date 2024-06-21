@@ -104,7 +104,7 @@ function whack_game(props){
 			self.start()
 			self.handleClick()
 		}
-	}    
+	}
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
@@ -145,14 +145,14 @@ function whack_game(props){
                     lastSpawn=time
                     spawnRate = Math.round(Math.random() * (2000 - 1000) + 1000)
                     self.drawAll()
-                }            
+                }
 				window.requestAnimationFrame(run)
 			} else {
                 window.cancelAnimationFrame(run)
             }
 	  	}
 
-	  	run()  
+	  	run()
 	}
 
     this.createTarget = function(){
@@ -245,7 +245,7 @@ function whack_game(props){
     this.end = function(){
         startGameWhack = true
         ctx.clearRect(0,0, canvas_width, canvas_height)
-        self.win_lose()        
+        self.win_lose()
     }
 
     this.win_lose = function(){

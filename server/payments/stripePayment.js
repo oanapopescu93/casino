@@ -93,7 +93,7 @@ function createNewCustomer(data){
             resolve(null)
         }) 
     })
-}  
+}
 function addNewCard(data){
     // Create a card token
     return new Promise(function(resolve, reject){
@@ -123,4 +123,4 @@ function createCharge(data){
             resolve(res)
         }).catch(err => console.error('error-addNewCard--> ' + err)) 
     })
-}  
+}

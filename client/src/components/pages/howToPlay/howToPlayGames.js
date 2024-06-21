@@ -223,8 +223,8 @@ function HowToPlayGames(props){
                         default:
                             return <p>{translate({lang: lang, info: "error"})}</p>
                     }
-            }            
-        })()}       
+            }
+        })()}
     </div>
 }
 export default HowToPlayGames

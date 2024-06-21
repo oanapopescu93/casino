@@ -62,7 +62,7 @@ function Keno(props){
                 }
             } else {
                 pay = pay - keno_bets
-            }       
+            }
             
             let keno_payload = {
                 uuid: props.user.uuid,
@@ -101,13 +101,13 @@ function Keno(props){
                 data: translate({lang: props.lang, info: "no_selections"})
             }
             dispatch(changePopup(payload))
-        }        
+        }
     }
 
     function getData(x){
         setData(x)
         dataUpdate = x
-    }    
+    }
 
     function handleShowPrizes(){
         let payload = {
@@ -127,7 +127,7 @@ function Keno(props){
     return <>
         {start ? <KenoAnimation 
             {...props} 
-            data={data}            
+            data={data}
             handleShowPrizes={()=>handleShowPrizes()}
             getResults={(e)=>getResults(e)}
             resultsPayload={resultsPayload}

@@ -32,7 +32,7 @@ function KenoSpot(config){
 function KenoBoard(props){
     const [kenoSpots, setKenoSpots] = useState([])
     const [titleDropdown1, setTitleDropdown1] = useState(1)
-    const [titleDropdown2, setTitleDropdown2] = useState(1)  
+    const [titleDropdown2, setTitleDropdown2] = useState(1)
     const [quickPickLength, setQuickPickLength] = useState(1)
     let howManySpots = 80 
     const chunkSize = 10
@@ -50,7 +50,7 @@ function KenoBoard(props){
             let kenoSpot = new KenoSpot({number: i})
             array.push(kenoSpot)
         }
-        setKenoSpots(array)        
+        setKenoSpots(array)
     }, [])
 
     function handleClick(item){
@@ -101,7 +101,7 @@ function KenoBoard(props){
     function handleQuickPick(){
         resetKenoSpots()
         let array = [...kenoSpots]
-        let arr = generatePick(quickPickLength, howManySpots)        
+        let arr = generatePick(quickPickLength, howManySpots)
         for(let i in array){  
             for(let j in arr){  
                 if(array[i].get_number() === arr[j]){

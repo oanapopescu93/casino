@@ -35,7 +35,7 @@ function OtherPages(props) {
                             list_career = home.career[0][lang]
                         } else {
                             list_career = home.career[0]["ENG"]
-                        }                  
+                        }
                     }
                     return <Career {...props} list={list_career} />
                 case "Questions":
@@ -45,7 +45,7 @@ function OtherPages(props) {
                             list_questions = home.questions[0][lang]
                         } else {
                             list_questions = home.questions[0]["ENG"]
-                        }                  
+                        }
                     }
                     return <Questions {...props} list={list_questions} />
                 case "Contact":
@@ -65,7 +65,7 @@ function OtherPages(props) {
                 default:
                     return <p>{translate({lang: props.lang, info: "error"})}</p>
             }
-        })()}  
+        })()}
     </>
 }
 

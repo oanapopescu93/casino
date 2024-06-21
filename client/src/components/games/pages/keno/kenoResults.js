@@ -59,11 +59,11 @@ function KenoResults(props){
                                 </ul>
                             } else {
                                 return <p>{translate({lang: lang, info: "no_match"})}</p>
-                            }    
-                        })()}   
+                            }
+                        })()}
                     </div>
                 </div>
-            </> : null}          
+            </> : null}
         </div>
     </div>
 }

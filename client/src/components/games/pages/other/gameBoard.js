@@ -66,7 +66,7 @@ function GameBoard(props){
                                     </Button>
                                 </div>
                             </Col>
-                        </>}                    
+                        </>}
                     </Row>
                 case "slots":
                     return <Row>
@@ -87,7 +87,7 @@ function GameBoard(props){
                 default: 
                     return null
             }
-        })()}        
+        })()}
     </div>
 }
 

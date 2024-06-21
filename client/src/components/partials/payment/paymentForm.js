@@ -82,7 +82,7 @@ function PaymentForm(props){
                     props.getChanges({type: 'gateway', value: 'stripe'})
                 }
                 break
-        }  
+        }
     }
 
     function handleCountryChange(e) {
@@ -99,7 +99,7 @@ function PaymentForm(props){
 
         if(cityDropdownRef && cityDropdownRef.current){
             cityDropdownRef.current.scrollIntoView({ behavior: 'smooth' })
-        }       
+        }
     }
 
     function handleCityChange(e) {
@@ -123,7 +123,7 @@ function PaymentForm(props){
         const filtered = cities.filter(city => city.toLowerCase().includes(e.toLowerCase()))
         setFilteredCities(filtered)
         setFilteredCity(e)
-    }  
+    }
 
     return <form id="payment_form">
         <Row>
@@ -147,7 +147,7 @@ function PaymentForm(props){
                                     {translate({lang: props.lang, info: paymentError.name.validate_message})}
                                 </p>
                             </div> : null}
-                        </>}                        
+                        </>}
                     </Col>
                     <Col sm={12} md={4}>
                         <label htmlFor="email">{translate({lang: props.lang, info: "email"})} {gatewayDetailsMandatory[gateway].includes("email") ? <>*</> : null}</label>
@@ -162,7 +162,7 @@ function PaymentForm(props){
                                     {translate({lang: props.lang, info: paymentError.email.validate_message})}
                                 </p>
                             </div> : null}
-                        </>}                        
+                        </>}
                     </Col>
                     <Col sm={12} md={4}>
                         <label htmlFor="phone">{translate({lang: props.lang, info: "phone"})} {gatewayDetailsMandatory[gateway].includes("phone") ? <>*</> : null}</label>
@@ -177,7 +177,7 @@ function PaymentForm(props){
                                     {translate({lang: props.lang, info: paymentError.phone.validate_message})}
                                 </p>
                             </div> : null}
-                        </>}                        
+                        </>}
                     </Col>
                 </Row>
             </Col>
@@ -191,7 +191,7 @@ function PaymentForm(props){
                                     id="searchCountry" 
                                     className="input_light shadow_concav" 
                                     type="text" 
-                                    placeholder={translate({lang: props.lang, info: "search"})}                                     
+                                    placeholder={translate({lang: props.lang, info: "search"})}
                                     value={filteredCountry}
                                     onChange={(e) => handleFilterCountries(e.target.value)}
                                 />
@@ -210,7 +210,7 @@ function PaymentForm(props){
                                     {translate({lang: props.lang, info: paymentError.country.validate_message})}
                                 </p>
                             </div> : null}
-                        </>}                        
+                        </>}
                     </Col>
                     <Col sm={12} md={6}>
                         <label htmlFor="city">{translate({lang: props.lang, info: "city"})} {gatewayDetailsMandatory[gateway].includes("city") ? <>*</> : null}</label>
@@ -220,7 +220,7 @@ function PaymentForm(props){
                                     id="searchCity" 
                                     className="input_light shadow_concav" 
                                     type="text" 
-                                    placeholder={translate({lang: props.lang, info: "search"})}                                     
+                                    placeholder={translate({lang: props.lang, info: "search"})}
                                     value={filteredCity}
                                     onChange={(e) => handleFilterCities(e.target.value)}
                                 />
@@ -239,7 +239,7 @@ function PaymentForm(props){
                                     {translate({lang: props.lang, info: paymentError.city.validate_message})}
                                 </p>
                             </div> : null}
-                        </>}                        
+                        </>}
                     </Col>
                 </Row> 
             </Col>
@@ -284,7 +284,7 @@ function PaymentForm(props){
                                         {translate({lang: props.lang, info: paymentError.cardNumber.validate_message})}
                                     </p>
                                 </div> : null}
-                            </>}                            
+                            </>}
                         </Col>
                     </Row>
                     <Row>
@@ -305,7 +305,7 @@ function PaymentForm(props){
                                         {translate({lang: props.lang, info: paymentError.month.validate_message})}
                                     </p>
                                 </div> : null}
-                            </>}                            
+                            </>}
                         </Col>
                         <Col sm={4}>
                             <label>{translate({lang: props.lang, info: "year"})} {gatewayDetailsMandatory[gateway].includes("year") ? <>*</> : null}</label>
@@ -324,7 +324,7 @@ function PaymentForm(props){
                                         {translate({lang: props.lang, info: paymentError.year.validate_message})}
                                     </p>
                                 </div> : null}
-                            </>}                            
+                            </>}
                         </Col>
                         <Col sm={4}>
                             <label htmlFor="cvv">{translate({lang: props.lang, info: "cvv"})} {gatewayDetailsMandatory[gateway].includes("cvv") ? <>*</> : null}</label>
@@ -339,10 +339,10 @@ function PaymentForm(props){
                                         {translate({lang: props.lang, info: paymentError.cvv.validate_message})}
                                     </p>
                                 </div> : null}
-                            </>}                            
+                            </>}
                         </Col>
                     </Row>
-                </> : null}    
+                </> : null}
                 {radioThree ? <>
                     <Row>
                         <Col sm={12}>
@@ -362,7 +362,7 @@ function PaymentForm(props){
                                                         {translate({lang: props.lang, info: paymentError.bitcoinAddress.validate_message})}
                                                     </p>
                                                 </div> : null}
-                                            </>}                                            
+                                            </>}
                                         </>
                                     } else {
                                         return <>
@@ -372,11 +372,11 @@ function PaymentForm(props){
                                     }
                                 } else {
                                     return <p>{translate({lang: props.lang, info: "error"})}</p>
-                                }                                
+                                }
                             })()}
                         </Col>
                     </Row>
-                </> : null}                       
+                </> : null}
             </Col>
         </Row>
     </form>

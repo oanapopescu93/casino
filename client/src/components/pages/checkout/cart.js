@@ -18,7 +18,7 @@ function Cart(props){
             if(index !== -1){
                 let elem = {...market[index], qty: cart[i].qty, cardId: cart[i].cartId}
                 array.push(elem)
-            }            
+            }
         }
         return array
     }

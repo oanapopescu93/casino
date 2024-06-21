@@ -64,7 +64,7 @@ io.on('connection', function(socket) {
             let date01 = new Date().setHours(0, 0, 0, 0)
             let date02 = new Date(parseInt(x.login_date)).setHours(0, 0, 0, 0)
             return x.user_id === user_found[0].id && date01 === date02
-          })   
+          })
   
           //emit
           let obj = {
@@ -91,7 +91,7 @@ io.on('connection', function(socket) {
                 country: res.data.country_name ? res.data.country_name : "",
                 ip_address: res.data.ip? res.data.ip : "",
               }
-            }   				
+            }				
             let timestamp = new Date().getTime() + ""
             
             //update user and login tables
@@ -144,16 +144,16 @@ io.on('connection', function(socket) {
         } 
   
         get_extra_data().then(function(res) {  
-          let extra_data = extra_data = {city: "", country: "", ip_address: ""} 
+          let extra_data = {city: "", country: "", ip_address: ""} 
           if(res && res.data){
             extra_data = {
               city: res.data.city ? res.data.city : "",
               country: res.data.country_name ? res.data.country_name : "",
               ip_address: res.data.ip? res.data.ip : "",
             }
-          }  
+          }
           let timestamp = new Date().getTime() + ""   
-          let pass = JSON.stringify(encrypt(data.pass))   
+          let pass = JSON.stringify(encrypt(data.pass))
 
           //insert new user in users and login tables
           database_config.sql = "INSERT INTO casino_user (uuid, user, email, pass, account_type, money, signup) VALUES (?, ?, ?, ?, ?, ?, ?)"
@@ -173,7 +173,7 @@ io.on('connection', function(socket) {
         } catch(e){
           console.log('[error]','signup_read :', e)
         }
-      }  
+      }
     }) 
   })
   socket.on('forgotPassword_send', (data) => {
@@ -249,7 +249,7 @@ io.on('connection', function(socket) {
   function updateStreak(user_found, login_user){
     let streak = 1
     if(user_found[0]){
-      let logs = login_user.filter((x) => x.user_id === user_found[0].id)   
+      let logs = login_user.filter((x) => x.user_id === user_found[0].id)
       streak = check_streak(logs)
     }
     let prize = 0
@@ -405,8 +405,8 @@ io.on('connection', function(socket) {
         }
         database_config.name = "db010"
         database(database_config).then(function(){})
-    }   
-  })  
+    }
+  })
   socket.on('promo_send', function(text){
     let coupon = {}
     for(let i in coupons){

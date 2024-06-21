@@ -105,7 +105,7 @@ function User(props){
         <ul id="user_list">
             {page.game || page.game_page ? <li onClick={()=>{handleChange('salon')}}>
                 <span><FontAwesomeIcon icon={faHouse} />{translate({lang: lang, info: "salon"})}</span>
-            </li> : null}            
+            </li> : null}
             <li onClick={()=>{handleChange('cart')}}>
                 <span><FontAwesomeIcon icon={faCartShopping} />{translate({lang: lang, info: "cart"})}</span>
             </li>

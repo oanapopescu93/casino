@@ -58,7 +58,7 @@ function Home(props) {
                     }
                 }
             })
-        }        
+        }
     }
 
     return <div id="page-container">
@@ -95,11 +95,11 @@ function Home(props) {
                             </>
                         default:
                             return <Salon {...props} user={user} home={home} page={page} />
-                    }                    
+                    }
                 default:
                     return <Salon {...props} user={user} home={home} page={page} />
             }
-        })()}        
+        })()}
         {cookies !== '1' ? <Cookies lang={props.lang} cookiesClick={()=>handleCookiesClick()} /> : null}
         <ButtonDonation handleDonationClick={()=>handleDonationClick()}/>
         <Footer lang={props.lang} />
