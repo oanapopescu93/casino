@@ -46,7 +46,7 @@ function App() {
     	socket.emit('heartbeat', { data: "ping" })
   	}, 15000)
 
-	return <Page socket={socket} lang={lang} date={date} currency={currency}></Page>
+	return <Page socket={socket} lang={lang} date={date} currency={currency} />
 }
 
 export default App

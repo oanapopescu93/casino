@@ -71,7 +71,7 @@ function ChangeProfilePic(props) {
                     money={money}
                     account_type={account_type}
                     selected={index}
-                ></Carousel>
+                />
             </> : <>
                 {translate({lang: lang, info: "error"})}
             </>}

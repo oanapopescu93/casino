@@ -30,8 +30,8 @@ function Craps(props){
     }
 
     return <div className='game_container'>
-        <CrapsGame {...props} bets={bets} openTable={()=>openTable()} results={(e)=>results(e)}></CrapsGame>
-        <GameBets {...props} open={open} getData={(e)=>getData(e)} closeTable={()=>closeTable()}></GameBets>
+        <CrapsGame {...props} bets={bets} openTable={()=>openTable()} results={(e)=>results(e)} />
+        <GameBets {...props} open={open} getData={(e)=>getData(e)} closeTable={()=>closeTable()} />
     </div>
 }
 

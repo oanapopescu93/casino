@@ -569,8 +569,8 @@ function Blackjack(props){
     }
 
     return <div className="game_container blackjack_container">
-        <canvas id="blackjack_canvas"></canvas>
-        <GameBoard template="blackjack" {...props} startGame={startGame} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)}></GameBoard>
+        <canvas id="blackjack_canvas" />
+        <GameBoard template="blackjack" {...props} startGame={startGame} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
     </div>
 }
 

@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PokerFr(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introduction</h3></Col>
@@ -31,7 +31,7 @@ function PokerFr(){
                 <Col sm={12}>
                     <p>Le poker implique généralement plusieurs tours de mises, où les joueurs placent des mises en fonction de la force de leur main ou de leur stratégie de bluff.</p>
                     <p>Les types de jeux de poker les plus courants comprennent le Texas Hold'em, l'Omaha, le Seven-Card Stud et le Five-Card Draw.</p>
-                </Col>                
+                </Col>
             </Row>
             <Row>
                 <Col sm={6}>
@@ -110,7 +110,7 @@ function PokerFr(){
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

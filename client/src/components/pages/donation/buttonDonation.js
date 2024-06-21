@@ -16,8 +16,6 @@ function ButtonDonation(props){
         }
     }
 
-	return <div id="donate" className={open} onClick={()=>handleClick()}>
-        <Bitcoin></Bitcoin>
-    </div>
+	return <div id="donate" className={open} onClick={()=>handleClick()}><Bitcoin /></div>
 }
 export default ButtonDonation

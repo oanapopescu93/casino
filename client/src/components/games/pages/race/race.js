@@ -42,13 +42,7 @@ function Race(props){
     }
 
     return <>
-        {(() => {
-            if (startRace) {
-                return <RaceGame {...props} bets={bets} resetBets={()=>resetBets()}></RaceGame>
-            } else {
-                return <RaceTables {...props} getData={(x)=>getData(x)}></RaceTables>
-            }	
-        })()}
+        {startRace ? <RaceGame {...props} bets={bets} resetBets={()=>resetBets()} /> : <RaceTables {...props} getData={(x)=>getData(x)} />}
     </>
 }
 

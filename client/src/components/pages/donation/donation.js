@@ -30,11 +30,11 @@ function Donation(props){
     }
 
     return <div className="content_wrap">
-        <Header template="donation" title={translate({lang: props.lang, info: "donation"})}></Header>
+        <Header template="donation" title={translate({lang: props.lang, info: "donation"})} />
         <div className="page_content">
             {(() => {
                 if(list && list.length>0){
-                    return <div className="donation_container">                        
+                    return <div className="donation_container">
                         <div className="deco">
                             <div className="donation_box">
                                 <div className="donation_box_tabs">
@@ -49,7 +49,7 @@ function Donation(props){
                                             </li>
                                         })}
                                     </ul>
-                                </div>                                
+                                </div>
                                 <div className="donation_box_content">
                                     {(() => {					
                                         switch (visible) {
@@ -63,13 +63,13 @@ function Donation(props){
                                                 return <p>{translate({lang: props.lang, info: "error"})}</p>
                                         }
                                     })()}
-                                </div>                                
+                                </div>
                                 <p>{translate({lang: props.lang, info: "donation_footer_text"})}</p>
                             </div>
                         </div>
                         <div className="donation_ukraine">
                             <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine">
-                                {translate({lang: props.lang, info: "donation_ukraine"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine}></img>
+                                {translate({lang: props.lang, info: "donation_ukraine"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine} />
                             </a>
                         </div>
                     </div>

@@ -50,7 +50,7 @@ function PaymentDetails(props){
     return <>
         {paymentDetails ? <>
             <Row>
-                <Col lg={2}></Col>
+                <Col lg={2} />
                 <Col lg={8}>
                     <Row id="payment_details">
                         <Col sm={8}>
@@ -77,7 +77,7 @@ function PaymentDetails(props){
                                             <p><strong>{translate({ lang: lang, info: "card_number" })}:</strong> {filteredDetails["card_number"] ? filteredDetails["card_number"] : '-'}</p>
                                             <p><strong>{translate({ lang: lang, info: "month" })}:</strong> {filteredDetails["month"] ? filteredDetails["month"] : '-'}</p>
                                             <p><strong>{translate({ lang: lang, info: "year" })}:</strong> {filteredDetails["year"] ? filteredDetails["year"] : '-'}</p>
-                                            <p><strong>{translate({ lang: lang, info: "cvv" })}:</strong> {filteredDetails["cvv"] ? filteredDetails["cvv"] : '-'}</p>                                        
+                                            <p><strong>{translate({ lang: lang, info: "cvv" })}:</strong> {filteredDetails["cvv"] ? filteredDetails["cvv"] : '-'}</p>
                                         </> : null}
                                     </div>
                                 </Col>
@@ -121,7 +121,7 @@ function PaymentDetails(props){
                         </Col>
                     </Row>
                 </Col>
-                <Col lg={2}></Col>
+                <Col lg={2} />
             </Row>
         </> : <p>{translate({lang: lang, info: "error"})}</p>} 
     </>

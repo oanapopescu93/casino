@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PokerIt(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introduzione</h3></Col>
@@ -31,7 +31,7 @@ function PokerIt(){
                 <Col sm={12}>
                     <p>Il poker coinvolge tipicamente più fasi di scommessa, in cui i giocatori piazzano scommesse in base alla forza della loro mano o alla loro strategia di bluff.</p>
                     <p>I tipi più comuni di giochi di poker includono Texas Hold'em, Omaha, Seven-Card Stud e Five-Card Draw.</p>
-                </Col>                
+                </Col>
             </Row>
             <Row>
                 <Col sm={6}>
@@ -110,7 +110,7 @@ function PokerIt(){
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

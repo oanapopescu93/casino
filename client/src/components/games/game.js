@@ -103,13 +103,13 @@ function Game(props){
 
     return <>
         <div className="content_wrap">
-            <Header template="game" details={page} lang={lang}></Header>
+            <Header template="game" details={page} lang={lang} />
             {!game_page ? <div className='game_container'>
                 {(() => {
                     switch (title) {
                         case "roulette":
                             if(room){
-                                return <Roulette {...props} streak={streak} results={(e)=>results(e)}></Roulette>
+                                return <Roulette {...props} streak={streak} results={(e)=>results(e)} />
                             } else {
                                 return <>
                                     <img src={roulette_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -118,7 +118,7 @@ function Game(props){
                             }
                         case "blackjack":
                             if(room){
-                                return <Blackjack {...props} results={(e)=>results(e)}></Blackjack>
+                                return <Blackjack {...props} results={(e)=>results(e)} />
                             } else {
                                 return <>
                                     <img src={blackjack_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -127,7 +127,7 @@ function Game(props){
                             }
                         case "slots":
                             if(room){
-                                return <Slots {...props} results={(e)=>results(e)}></Slots>
+                                return <Slots {...props} results={(e)=>results(e)} />
                             } else {
                                 return <>
                                     <img src={slots_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -136,7 +136,7 @@ function Game(props){
                             }
                         case "craps":
                             if(room){
-                                return <Craps {...props} results={(e)=>results(e)}></Craps>
+                                return <Craps {...props} results={(e)=>results(e)} />
                             } else {
                                 return <>
                                     <img src={craps_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -145,7 +145,7 @@ function Game(props){
                             }                        
                         case "race":
                             if(room){
-                                return <Race {...props} results={(e)=>results(e)}></Race>
+                                return <Race {...props} results={(e)=>results(e)} />
                             } else {
                                 return <>
                                     <img src={race_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -154,16 +154,16 @@ function Game(props){
                             }                        
                         case "keno":
                             if(room){
-                                return <Keno {...props} results={(e)=>results(e)}></Keno>
+                                return <Keno {...props} results={(e)=>results(e)} />
                             } else {
                                 return <>
                                     <img src={keno_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
-                                </>                                
+                                </>
                             }  
                         case "poker":
                             if(room){
-                                return <Poker {...props} results={(e)=>results(e)}></Poker>
+                                return <Poker {...props} results={(e)=>results(e)} />
                             } else {
                                 return <>
                                     <img src={poker_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -172,7 +172,7 @@ function Game(props){
                             }    
                         case "whack_a_rabbit":
                             if(room){
-                                return <WhackARabbit {...props} results={(e)=>results(e)}></WhackARabbit>  
+                                return <WhackARabbit {...props} results={(e)=>results(e)} /> 
                             } else {
                                 return <>
                                     <img src={whack_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -187,9 +187,9 @@ function Game(props){
                 {(() => {
                     switch (game_page) {
                         case "dashboard":
-                            return <Dashboard {...props}></Dashboard>
+                            return <Dashboard {...props} />
                         case "market":
-                            return <Market {...props}></Market>
+                            return <Market {...props} />
                         default:
                             return <p>{translate({lang: props.lang, info: "error"})}</p>
                     }
@@ -201,7 +201,7 @@ function Game(props){
                 </Button>
             </div>
         </div>
-        <Panel {...props} streak={streak} chatRoomUsers={chatRoomUsers}></Panel>
+        <Panel {...props} streak={streak} chatRoomUsers={chatRoomUsers} />
     </>
 }
 

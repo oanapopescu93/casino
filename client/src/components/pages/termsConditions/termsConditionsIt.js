@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function TermsConditionsEng(){
     return <Row id="terms_conditions" className="other_page_container">
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <p>Si prega di leggere attentamente questi Termini e Condizioni prima di utilizzare i nostri servizi di casinò online.</p>
             
@@ -53,7 +53,7 @@ function TermsConditionsEng(){
 
             <p>Utilizzando il nostro Servizio, riconosci di aver letto, compreso e accettato di essere vincolato da questi Termini e Condizioni.</p>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 export default TermsConditionsEng

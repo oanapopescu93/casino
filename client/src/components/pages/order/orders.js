@@ -20,12 +20,12 @@ function Orders(props){
     }
 
     return <>
-        {selectedOrder ? <Order order={selectedOrder} lang={lang} handleBackToList={()=>handleBackToList()}></Order> : <>            
+        {selectedOrder ? <Order order={selectedOrder} lang={lang} handleBackToList={()=>handleBackToList()} /> : <>
             {orders.map(function(item, i){
                 let timestamp = 1000 * item.created
                 let date = formatDate(timestamp)
                 let order_amount = roundNumber(item.amount)
-                return <Row key={i} className='order_item'>                    
+                return <Row key={i} className='order_item'>
                     <Col sm={8}>
                         <p>{date}</p>
                         <h4>{item.description}</h4>

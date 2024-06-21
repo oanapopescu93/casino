@@ -30,14 +30,14 @@ function Dashboard(props){
 
     return <div className="dashboard_container">
         <Row>
-			<Col sm={2}></Col>
+			<Col sm={2} />
 			<Col sm={8}>					
 				<Row>				
 					<Col sm={12}><h2>Dashboard</h2></Col>
 				</Row>
 				<Row>
 					<Col lg={4}>
-						<DashboardLeft {...props}></DashboardLeft>
+						<DashboardLeft {...props} />
 					</Col>
 					<Col lg={8}>
 						<DashboardRight 
@@ -48,11 +48,11 @@ function Dashboard(props){
 							cartRemoveProduct={(e)=>cartRemoveProduct(e)}
 							updateQtyProduct={(e)=>updateQtyProduct(e)}
 							handleCheckout={()=>handleCheckout()}
-						></DashboardRight>
+						/>
 					</Col>
 				</Row>
 			</Col>
-			<Col sm={2}></Col>
+			<Col sm={2} />
 		</Row>
     </div>
 }

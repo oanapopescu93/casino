@@ -25,7 +25,7 @@ function api(){
 }
 
 function* fetchBringPayload(){
-    try{        
+    try{
         const output = yield call(request)
         yield put(showPayload(output))
     } catch(error){

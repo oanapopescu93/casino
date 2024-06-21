@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function RaceFr(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introduction</h3></Col>
@@ -26,7 +26,7 @@ function RaceFr(){
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 export default RaceFr

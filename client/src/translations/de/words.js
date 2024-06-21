@@ -6,7 +6,7 @@ var word_bank = {
     policy_privacy: "Datenschutzrichtlinie",
     contact: "Kontakt",
     career: "Karriere",
-    info: "Info",    
+    info: "Info",
     back: "Zurück",
     bet_type: "Wettart",
     and: "und",
@@ -31,7 +31,7 @@ var word_bank = {
 
     error: "Fehler",
     all_rights_reserved: "Alle Rechte vorbehalten",   
-    no_career: "Keine Stellen verfügbar. Aber senden Sie uns gerne Ihren Lebenslauf.",    
+    no_career: "Keine Stellen verfügbar. Aber senden Sie uns gerne Ihren Lebenslauf.",
     
     cookies_modal_title: "Cookie-Benachrichtigung",
     cookies_modal_text: "Um Ihnen die relevantesten Informationen und eine optimale Systemleistung bieten zu können, verwenden wir Cookies, die Informationen über Ihre Spielaktivitäten sammeln.",
@@ -76,7 +76,7 @@ var word_bank = {
     location: "Ort",
     requirements: "Anforderungen",
     responsabilities: "Verantwortlichkeiten", 
-    marketing: "Marketing",        
+    marketing: "Marketing",
     
     under_construction: "Im Aufbau",
     
@@ -125,14 +125,14 @@ var word_bank = {
     
     language: "Sprache",
     date_calendar: "Datum",
-    currency: "Währung",     
+    currency: "Währung", 
     
     choose_profile_pic: "Profilbild wählen",
     animal: "Tier",
     carrots: "Karotten",
     change_username: "Benutzernamen ändern",
     change_password: "Passwort ändern",
-    buy_carrots: "Karotten kaufen",    
+    buy_carrots: "Karotten kaufen",
     choose: "Wählen",
     change: "Ändern",
     profile_grey: "Um dieses Bild zu haben, benötigst du mehr als 1000 Karotten",

@@ -15,7 +15,7 @@ const cartWishlistSlice = createSlice({
             const itemInCart = state.cart.find((item) => item.id === payload.id)
 			if (itemInCart) {	
 				itemInCart.qty = itemInCart.qty + qty
-			} else {                
+			} else {
 				state.cart.push({ ...payload, qty: qty, cartId: state.cart.length })
 			}
             setCookie("casino_cart", JSON.stringify(state.cart))
@@ -31,7 +31,7 @@ const cartWishlistSlice = createSlice({
             const removeItem = state.cart.filter((item) => item.id !== payload.id)
       		state.cart = removeItem
             setCookie("casino_cart", JSON.stringify(state.cart))
-        },        
+        },
         cartRemoveAll: (state) => {
             state.cart = []
             setCookie("casino_cart", JSON.stringify(state.cart))

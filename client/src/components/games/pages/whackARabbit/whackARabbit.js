@@ -326,8 +326,8 @@ function WhackARabbit(props){
     return <>
         <p id="whack_a_rabbit_timer">00:{time}</p>
         <div className="whack_a_rabbit_container">
-            <canvas id="whack_canvas" className="shadow_concav"></canvas>
-            <canvas id="whack_canvas_hammer"></canvas>
+            <canvas id="whack_canvas" className="shadow_concav" />
+            <canvas id="whack_canvas_hammer" />
         </div>
     </>
 }

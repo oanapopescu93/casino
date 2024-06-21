@@ -25,7 +25,7 @@ function PolicyPrivacy(props){
     }
 
     return <div className="content_wrap">
-        <Header template="policy_privacy" title={translate({lang: props.lang, info: "policy_privacy"})}></Header>        
+        <Header template="policy_privacy" title={translate({lang: props.lang, info: "policy_privacy"})} />
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {

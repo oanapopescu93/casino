@@ -24,7 +24,7 @@ function About(props){
         dispatch(changeGamePage(null))
     }
     return <div className="content_wrap">
-        <Header template="about" title={translate({lang: props.lang, info: "about"})}></Header>
+        <Header template="about" title={translate({lang: props.lang, info: "about"})} />
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {
@@ -48,7 +48,7 @@ function About(props){
                             return <AboutEng lang={props.lang} casino_name={casino_name} />
                     }
                 })()} 
-            </div>   
+            </div>
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

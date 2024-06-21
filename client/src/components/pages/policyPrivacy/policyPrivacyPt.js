@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PolicyPrivacyPt(){
     return <Row id="policy_privacy" className="other_page_container">
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <h3>Introduction</h3>
             <p>This Policy Privacy document outlines how we collect, use, disclose, and protect personal information obtained from users of our casino website. We are committed to ensuring the privacy and security of all personal information provided to us. By using our website, you consent to the practices described in this document.</p>
@@ -54,7 +54,7 @@ function PolicyPrivacyPt(){
             <h3>Contact Us</h3>
             <p>If you have any questions, concerns, or requests regarding this Policy Privacy or the handling of your personal information, please contact us.</p>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 export default PolicyPrivacyPt

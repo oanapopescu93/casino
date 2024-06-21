@@ -5,8 +5,8 @@ var word_bank = {
     terms_cond: "Terms and conditions",
     policy_privacy: "Policy privacy",
     contact: "Contact",
-    career: "Career",    
-    info: "Info",    
+    career: "Career",
+    info: "Info",
     back: "Back",
     bet_type: "Bet type",
     and: "and",
@@ -31,7 +31,7 @@ var word_bank = {
 
     error: "Error",
     all_rights_reserved: "All rights reserved",   
-    no_career: "No jobs available. But feel free to send us your CV.",    
+    no_career: "No jobs available. But feel free to send us your CV.",
 
     cookies_modal_title: "Cookies Notification",
     cookies_modal_text: "In order to offer you the most relevant information and for optimal system performance, we use cookies that collect information from your game activity.",
@@ -76,7 +76,7 @@ var word_bank = {
     location: "Location",
     requirements: "Requirements",
     responsabilities: "Responsabilities",  
-    marketing: "Marketing",       
+    marketing: "Marketing",   
 
     under_construction: "Under construction",
 
@@ -125,14 +125,14 @@ var word_bank = {
 
     language: "Language",
     date_calendar: "Date",
-    currency: "Currency",      
+    currency: "Currency",  
     
     choose_profile_pic: "Choose profile pic",
     animal: "Animal",
     carrots: "Carrots",
     change_username: "Change username",
     change_password: "Change password",
-    buy_carrots: "Buy carrots",    
+    buy_carrots: "Buy carrots",
     choose: "Choose",
     change: "Change",
     profile_grey: "To have this pic you need to have more than 1000 carrots",
@@ -162,7 +162,7 @@ var word_bank = {
     coupon_not_valid: "Your coupon is not valid",
 
     //checkout"
-    customer_info: "Customer info",    
+    customer_info: "Customer info",
     name: "Name",
     email: "Email",
     phone: "Phone",
@@ -197,7 +197,7 @@ var word_bank = {
     september: "September",
     october: "October",
     november: "November",
-    december: "December",    
+    december: "December",
     bitcoin_address: "Bitcoin address",
     fill_field: "Please fill out this field",
     validate_message_name: "This is not a name",

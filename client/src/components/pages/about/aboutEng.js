@@ -15,8 +15,8 @@ function AboutEng(props){
         dispatch(changeGamePage(null))
     }
     return <Row id="about" className="other_page_container">
-        <Col lg={2}></Col>
-        <Col lg={8}>            
+        <Col lg={2} />
+        <Col lg={8}>
             <p>Welcome to {casino_name}, a labor of love brought to life by a group of casino enthusiasts who are dedicated to sharing their passion for gaming with the world. While we're not a commercial casino (at least, not yet), our mission is to provide a unique and enjoyable gaming experience for our fellow gaming enthusiasts.</p>
             <h3>Our Story:</h3>
             <p>{casino_name} began as a pet project, born from our deep-seated love for all things casino. As avid players ourselves, we've always dreamed of creating a space where people can enjoy the thrill of casino gaming without the pressure of commercial interests. This project is a testament to our commitment to the world of gaming and our desire to build something truly special.</p>
@@ -34,7 +34,7 @@ function AboutEng(props){
             <p>Thank you for being a part of our {casino_name} journey. We look forward to sharing many memorable moments in the world of gaming together.</p>
             <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: props.lang, info: "how_to_play"})}</p>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 export default AboutEng

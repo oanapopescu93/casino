@@ -72,7 +72,7 @@ function User(props){
 	}, [page.game_page])
 
     return <>
-        <Header template="panel_user" details={page} lang={lang}></Header>
+        <Header template="panel_user" details={page} lang={lang} />
         <div id="user_subtitle">
             <div className="user_subtitle_left">
                 <span id="user_name">{user.user ? decryptData(user.user) : "-"}</span>
@@ -101,7 +101,7 @@ function User(props){
             <div className={"user_list_button " + buttonMarket} onClick={()=>{handleChange('market')}}>
                 <span><FontAwesomeIcon icon={faStore} />{translate({lang: lang, info: "market"})}</span>
             </div>
-        </div>        
+        </div>
         <ul id="user_list">
             {page.game || page.game_page ? <li onClick={()=>{handleChange('salon')}}>
                 <span><FontAwesomeIcon icon={faHouse} />{translate({lang: lang, info: "salon"})}</span>

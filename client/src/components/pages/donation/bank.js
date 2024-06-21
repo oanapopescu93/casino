@@ -9,7 +9,7 @@ function BankDonation(props){
             <p>{translate({lang: lang, info: "bank_donation_text"})}</p>
             <div className="iban">
                 <strong>{bankDonation.title}:</strong> {bankDonation.text}
-            </div>       
+            </div>
         </> : null}        
     </>
 }

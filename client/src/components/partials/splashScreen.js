@@ -37,7 +37,7 @@ function Splash(props) {
                         <h1 className="splash_title">
                             <TransparentText text={"BunnyBet"} height={height} size={height} />
                         </h1>
-                    </div>                    
+                    </div>
                 </div>
                 <div className="progress_container">
                     <div className="progress_box_container">
@@ -49,7 +49,7 @@ function Splash(props) {
                         <span>{props.progressNumber} %</span>
                     </div>
                 </div>
-            </div>              
+            </div>
             
             <div className="main-diamond-outer">
                 <div className="main-diamond-inner"></div>

@@ -513,23 +513,23 @@ function Slots(props){
 
     return <div className="game_container">
         <div id="slot_machine" className={"slot_machine " + "slot_machine_" + lines}>
-            <canvas id="slot_machine_lines"></canvas>
+            <canvas id="slot_machine_lines" />
             {(() => {
                 switch(lines) {
 					case 3:
 						return <>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_1'></canvas></div>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_2'></canvas></div>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_3'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_1' /></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_2' /></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_3' /></div>
 						</>
 					case 5:
 					default: 
 						return <>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_1'></canvas></div>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_2'></canvas></div>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_3'></canvas></div>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_4'></canvas></div>
-							<div className="box"><canvas className="slot_canvas" id='slot_canvas_5'></canvas></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_1' /></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_2' /></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_3' /></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_4' /></div>
+							<div className="box"><canvas className="slot_canvas" id='slot_canvas_5' /></div>
 						</>
 					}
             })()}
@@ -538,7 +538,7 @@ function Slots(props){
         	</div> : null}			
         </div>		
         <div className="slot_machine_board">
-            <GameBoard template="slots" {...props} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)}></GameBoard>
+            <GameBoard template="slots" {...props} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
         </div>
 		{getWindowDimensions().width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
             {translate({lang: props.lang, info: "prizes"})}

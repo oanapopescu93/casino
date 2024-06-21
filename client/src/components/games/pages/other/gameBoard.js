@@ -52,13 +52,13 @@ function GameBoard(props){
                                     <Button type="button" onClick={()=>handleClick('surrender')} className="mybutton button_fullcolor shadow_convex">
                                         {translate({lang: lang, info: "surrender"})}
                                     </Button>
-                                </div>                                    
+                                </div>
                             </Col>
                         </> : <>
                             <Col xs={4}>
-                                <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
+                                <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                             </Col>
-                            <Col xs={4}></Col>
+                            <Col xs={4} />
                             <Col xs={4}>
                                 <div  className="button_box">
                                     <Button type="button" onClick={()=>handleClick('start')} className="mybutton button_fullcolor shadow_convex">
@@ -71,7 +71,7 @@ function GameBoard(props){
                 case "slots":
                     return <Row>
                         <Col xs={8}>
-                                <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
+                                <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                         </Col>
                         <Col xs={4}>
                             <div  className="button_box">
@@ -83,7 +83,7 @@ function GameBoard(props){
                     </Row>
                 case "poker_texas_holdem":
                 case "poker_5_card_draw":
-                    return <PokerBoard {...props} handleClick={(e)=>handleClick(e)} updateQtyMarket={(e)=>updateQtyMarket(e)}></PokerBoard>
+                    return <PokerBoard {...props} handleClick={(e)=>handleClick(e)} updateQtyMarket={(e)=>updateQtyMarket(e)} />
                 default: 
                     return null
             }

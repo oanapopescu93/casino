@@ -104,7 +104,7 @@ export const checkOccasion = function(type){
         if(today >= date_from && today <= date_to){
             occasion = true
         }
-    }    
+    }
   
     return occasion
 }

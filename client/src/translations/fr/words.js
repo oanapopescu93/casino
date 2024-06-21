@@ -133,7 +133,7 @@ var word_bank = {
     carrots: "Carottes",
     change_username: "Changer de nom d'utilisateur",
     change_password: "Changer de mot de passe",
-    buy_carrots: "Acheter des carottes",    
+    buy_carrots: "Acheter des carottes",
     choose: "Choisir",
     change: "Changer",
     pprofile_grey: "Pour avoir cette photo, vous devez avoir plus de 1000 carottes",

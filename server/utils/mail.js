@@ -115,7 +115,7 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
                         break
                 }
                 break
-            case "contact":                
+            case "contact":
                 subject = e.subject
                 html = html + e.message
         }			
@@ -126,7 +126,7 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
 			subject: subject,
 			html: html
 		}
-    
+        
 		transport.sendMail(mailOptions, function(error, info){
 			if (error) {
 			console.log('error--> ', error, mailOptions)

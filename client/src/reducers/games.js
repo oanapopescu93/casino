@@ -36,7 +36,7 @@ const gamesSlice = createSlice({
                 if(place){
                     item.place = place  
                 }
-			} else {                
+			} else {
 				state.race.bets.push({ ...payload, bet: bet, raceId: state.race.bets.length })
 			}
         },

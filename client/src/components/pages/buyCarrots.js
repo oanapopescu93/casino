@@ -5,9 +5,9 @@ import Header from '../partials/header'
 
 function BuyCarrots(props){
     return <div className="content_wrap">
-        <Header template="buy_carrots" title={translate({lang: props.lang, info: "buy_carrots"})}></Header>
+        <Header template="buy_carrots" title={translate({lang: props.lang, info: "buy_carrots"})} />
         <div className="page_content">
-            <Payment {...props} template="buy_carrots"></Payment>  
+            <Payment {...props} template="buy_carrots" /> 
         </div>
     </div>
 }

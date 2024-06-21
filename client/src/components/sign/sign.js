@@ -172,29 +172,29 @@ function Sign(props) {
         {(() => {
             switch (page) {
                 case "terms_cond":
-                    return <TermsConditions lang={props.lang}></TermsConditions>
+                    return <TermsConditions lang={props.lang} />
                 case "policy_privacy":
-                    return <PolicyPrivacy lang={props.lang}></PolicyPrivacy>                
+                    return <PolicyPrivacy lang={props.lang} />
                 case "Salon":
                 default:
                     return <>
                         {loaded ? <>
-                            <Language title={props.lang}></Language>
+                            <Language title={props.lang} />
                             <div className="sign_container">
                                 <div className="sign_container_box">
-                                    <div className="deco">      
+                                    <div className="deco">
                                         {isMinor === "true" ? <div className="sign_box isMinor_sign">
                                             <p>{translate({lang: props.lang, info: "isMinor_sign"})}</p>
                                         </div> : <>
-                                            <Header template="sign" lang={props.lang}></Header>
+                                            <Header template="sign" lang={props.lang} />
                                             <div className="sign_box">
                                                 <ul>
                                                     <li id="signin_tab" className={signIn} onClick={()=>{handleClick('signIn')}}><span>{translate({lang: props.lang, info: "sign_in"})}</span></li>
                                                     <li id="signup_tab" className={signUp} onClick={()=>{handleClick('signUp')}}><span>{translate({lang: props.lang, info: "sign_up"})}</span></li>
                                                 </ul>
-                                                {visible === "signIn" ? <SignIn signSubmit={(e)=>{signSubmit(e)}} lang={props.lang} socket={props.socket}></SignIn> : 
-                                                <SignUp signSubmit={(e)=>{signSubmit(e)}} lang={props.lang} socket={props.socket}></SignUp>}
-                                            </div>  
+                                                {visible === "signIn" ? <SignIn signSubmit={(e)=>{signSubmit(e)}} lang={props.lang} socket={props.socket} /> : 
+                                                <SignUp signSubmit={(e)=>{signSubmit(e)}} lang={props.lang} socket={props.socket} />}
+                                            </div>
                                             <div className="sign_extra_info">
                                                 {visible === "signIn" ? <p onClick={()=>handleForgotPassword()}>{translate({lang: props.lang, info: "signin_forgot_password"})}</p> : <>
                                                 <div className="checkbox_radio_container">
@@ -215,7 +215,7 @@ function Sign(props) {
                                                 </>}
                                             </div>
                                         </>}                                  
-                                    </div>                                
+                                    </div>
                                 </div> 
                                 {(() => {
                                     if(errorEmail || errorUser || errorPass || errorAgree){
@@ -230,8 +230,8 @@ function Sign(props) {
                             </div>
                             <div className="sign_footer">
                                 <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: props.lang, info: "all_rights_reserved"})}.</h6>
-                            </div>                            
-                        </> : <Loader></Loader>}
+                            </div>
+                        </> : <Loader />}
                     </>
             }
         })()}

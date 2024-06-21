@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function KenoIt(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introduzione</h3></Col>
@@ -37,7 +37,7 @@ function KenoIt(){
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

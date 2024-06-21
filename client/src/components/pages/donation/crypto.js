@@ -18,7 +18,7 @@ function CryptoDonation(props){
                         </li>
                     ))
                 }
-            </ul>    
+            </ul>
         </> : null}        
     </>
 }

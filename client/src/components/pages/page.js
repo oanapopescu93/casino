@@ -69,29 +69,29 @@ function Page(props) {
         {(() => {
             if(isEmpty(uuid)){
                 if(loaded){
-                    return <Sign {...props}></Sign>
+                    return <Sign {...props} />
                 } else {
-                    return <Splash {...props} progressNumber={progressNumber}></Splash>
+                    return <Splash {...props} progressNumber={progressNumber} />
                 }                
             } else {
                 if(home.loaded){              
-                    return <Home {...props} home={home} page={page} user={user} cookies={cookies}></Home>
+                    return <Home {...props} home={home} page={page} user={user} cookies={cookies} />
                 } else {
-                    return <Loader></Loader>
+                    return <Loader />
                 }
             }
         })()} 
         {(() => {
             if((isEmpty(uuid) && loaded) || (!isEmpty(uuid) && home.loaded)){ //this is only for Sign or Home
                 return <>
-                    {showWinter ? <Snowflakes></Snowflakes> : null}
-                    {showChristmas ? <Lights></Lights> : null}
+                    {showWinter ? <Snowflakes /> : null}
+                    {showChristmas ? <Lights /> : null}
                 </>
             } else {
                 return null
             }
         })()} 
-        <Popup {...props} home={home}></Popup>
+        <Popup {...props} home={home} />
     </>
 }
 

@@ -25,7 +25,7 @@ module.exports = function database(database_config, params){
                             } else {
                                 resolve(result)
                                 con.end()
-                            }                            
+                            }
                         })
                     } else {
                         con.query(database_config.sql, function (err, result, fields) {
@@ -39,7 +39,7 @@ module.exports = function database(database_config, params){
                         })
                     }	
                 }
-            })            
+            })
         } catch(err){
 			console.error('err0--> ', err)
             resolve(null)

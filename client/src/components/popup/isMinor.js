@@ -4,7 +4,7 @@ import { translate } from '../../translations/translate'
 
 function IsMinor(props) {
     return <div className="isMinor">
-        <div className="isMinor_text">                    
+        <div className="isMinor_text">
             <p>{translate({lang: props.lang, info: "isMinor_text"})}</p>
         </div>							
         <div className="isMinor_buttons">

@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function SlotsFr(){
     return <Row>
-        <Col sm={2}></Col>
+        <Col lg={2} />
         <Col sm={8}>
             <Row>
                 <Col sm={12}><h3>Introduction</h3></Col>
@@ -33,7 +33,7 @@ function SlotsFr(){
                 </Col>
             </Row>
         </Col>
-        <Col sm={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

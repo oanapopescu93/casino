@@ -121,7 +121,7 @@ function SalonGames(props){
 
     return <div className="salon_games">
         <Row>
-            <Col sm={2}></Col>
+            <Col sm={2} />
             <Col sm={8}>
                 {width < 960 ? <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "snow" : ""} onSelect={handleSelect}>
                     {casinoGamesTitle.map(function(t, i){
@@ -129,10 +129,10 @@ function SalonGames(props){
                     })}
                 </DropdownButton> : null}
             </Col>
-            <Col sm={2}></Col>
+            <Col sm={2} />
         </Row>
         <Row>
-            <Col sm={2}></Col>
+            <Col sm={2} />
             <Col sm={8}>
                 {casinoGamesTitle.map(function(t, i){
                     let box = ""
@@ -153,13 +153,13 @@ function SalonGames(props){
                                     lang={lang} 
                                     itemList={casinoGames[t]} 
                                     getItem={(e)=>gameChoice(e)}   
-                                ></Carousel>
+                                />
                             </div>
                         </div>
                     </div>
                 })}
-            </Col>            
-            <Col sm={2}></Col>
+            </Col>
+            <Col sm={2} />
         </Row>
     </div>
 }

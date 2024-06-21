@@ -31,14 +31,14 @@ function ChangePassword(props) {
             <input className="input_light" type="text" value={choice} onChange={(e)=>{handleChange(e)}}/>
         </div>
         {error ? <div className="alert alert-danger">
-            <p className="text_red">{translate({lang: lang, info: "empty_input_change_username"})}</p>              
+            <p className="text_red">{translate({lang: lang, info: "empty_input_change_username"})}</p>
         </div> : null}  
         {errorPassword ? <div className="alert alert-danger">
             <p className="text_red">{translate({lang: lang, info: "password_rule01"})}</p> 
             <p className="text_red">{translate({lang: lang, info: "password_rule02"})}</p> 
             <p className="text_red">{translate({lang: lang, info: "password_rule03"})}</p> 
             <p className="text_red">{translate({lang: lang, info: "password_rule04"})}</p> 
-            <p className="text_red">{translate({lang: lang, info: "password_rule05"})}</p>              
+            <p className="text_red">{translate({lang: lang, info: "password_rule05"})}</p>
         </div> : null}  
         <div className="changePassword_buttons">
             <Button type="button" id="changePassword_btn_ok" className="mybutton button_fullcolor_dark" onClick={()=>handleSendChange({value: choice, uuid: user.uuid, type: "pass"})}>

@@ -18,7 +18,7 @@ function PaypalDonation(props){
                         </li>
                     ))
                 }
-            </ul>         
+            </ul>
         </> : null}        
     </>
 }

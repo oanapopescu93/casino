@@ -15,8 +15,8 @@ function AboutFr(props){
         dispatch(changeGamePage(null))
     }
     return <Row id="about" className="other_page_container">
-    <Col lg={2}></Col>
-    <Col lg={8}>        
+    <Col lg={2} />
+    <Col lg={8}>
         <p>Bienvenue à {casino_name}, un projet personnel né de l'amour du jeu, concrétisé par un groupe d'enthousiastes de casino dédiés à partager leur passion avec le monde. Nous ne sommes pas encore un casino commercial (du moins, pas encore), mais notre mission est de fournir une expérience de jeu unique et divertissante à nos compagnons passionnés de jeu.</p>
         <h3>Notre Histoire :</h3>
         <p>{casino_name} a débuté comme un projet personnel, issu de notre profonde passion pour tout ce qui touche au casino. En tant que joueurs passionnés, nous avons toujours rêvé de créer un espace où les gens pourraient profiter de l'excitation du jeu de casino sans la pression des intérêts commerciaux. Ce projet est le témoignage de notre engagement envers le monde du jeu et notre désir de construire quelque chose de vraiment spécial.</p>
@@ -34,7 +34,7 @@ function AboutFr(props){
         <p>Merci d'être une partie de notre aventure chez {casino_name}. Nous sommes impatients de partager de nombreux moments mémorables dans le monde du jeu ensemble.</p>
         <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: props.lang, info: "how_to_play"})}</p>
     </Col>
-    <Col lg={2}></Col>
+    <Col lg={2} />
 </Row>
 }
 export default AboutFr

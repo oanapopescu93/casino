@@ -101,7 +101,7 @@ function ContactForm(props){
                     </div>
                 } else if(sendResults === "email_no_send"){
                     return <div className="alert alert-danger">
-                        <p className="text_red">{translate({lang: lang, info: sendResults})}</p>              
+                        <p className="text_red">{translate({lang: lang, info: sendResults})}</p>
                     </div>
                 }
             })()}   

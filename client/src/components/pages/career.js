@@ -135,12 +135,12 @@ function Career(props){
     }
 
     return <div className="content_wrap">
-        <Header template="career" title={translate({lang: props.lang, info: "career"})}></Header>
+        <Header template="career" title={translate({lang: props.lang, info: "career"})} />
         <div className="page_content">
             {(() => {
                 if(props.list){
                     if(props.list.length>0){                        
-                        return <CareerList lang={props.lang} list={props.list}></CareerList>
+                        return <CareerList lang={props.lang} list={props.list} />
                     } else {
                         return <p className="text_center">{translate({lang: props.lang, info: "no_career"})}</p>
                     }

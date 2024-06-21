@@ -35,9 +35,9 @@ function HowToPlay(props){
     }
 
     return <div className="content_wrap">
-        <Header template="how_to_play" title={translate({lang: props.lang, info: "how_to_play"})}></Header>
-        <div className="page_content">            
-            {!game ? <HowToPlayTitles lang={props.lang} handleChoice={(e)=>handleChoice(e)}></HowToPlayTitles> : <HowToPlayGames game={game} lang={props.lang}></HowToPlayGames>}
+        <Header template="how_to_play" title={translate({lang: props.lang, info: "how_to_play"})} />
+        <div className="page_content">
+            {!game ? <HowToPlayTitles lang={props.lang} handleChoice={(e)=>handleChoice(e)} /> : <HowToPlayGames game={game} lang={props.lang} />}
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

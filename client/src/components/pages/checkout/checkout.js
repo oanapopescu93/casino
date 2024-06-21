@@ -5,9 +5,9 @@ import Header from '../../partials/header'
 
 function Checkout(props){
     return <div className="content_wrap">
-        <Header template="checkout" title={translate({lang: props.lang, info: "checkout"})}></Header>      
+        <Header template="checkout" title={translate({lang: props.lang, info: "checkout"})} />
         <div className="page_content">
-           <Payment {...props} template="checkout"></Payment>
+           <Payment {...props} template="checkout" />
         </div>
     </div>
 }

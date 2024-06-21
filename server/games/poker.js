@@ -16,7 +16,7 @@ function poker(data, user_join){
     }    
 
     switch (data.action) {
-        case 'start':    
+        case 'start':
             resetGameState() 
             
             // a certain number of players sit at the table 
@@ -33,11 +33,11 @@ function poker(data, user_join){
             payload = {action: "preflop_betting", players: poker_hidden_players, pot: poker_pot}
             return payload
         case "bet":  
-        case "check":                    
+        case "check":
             poker_players = preflop_betting(data.action)
             poker_hidden_players = createHiddenPlayers()
             poker_dealer = dealHands("dealer") 
-            poker_pot = calculatePot()            
+            poker_pot = calculatePot()
             payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
             if(data.stage === "draw"){
                 payload.action = data.stage  
@@ -59,14 +59,14 @@ function poker(data, user_join){
             }
             return payload
         case "call": 
-        case "raise":        
+        case "raise":
             let result = handleCallRaise(data.bet)  
             if(result && result.error){
                 return {action: payload.action, error: result.error}
             } 
             poker_players = result
             poker_hidden_players = createHiddenPlayers()
-            poker_pot = calculatePot()    
+            poker_pot = calculatePot()
             if(data.stage === "turn" || data.stage === "river"){
                 poker_dealer = addCardsDealer() 
             }
@@ -83,7 +83,7 @@ function poker(data, user_join){
         poker_dealer = null
         poker_deck = []
         poker_hidden_players = []
-        poker_current_player = 0    
+        poker_current_player = 0
         poker_current_round = 0 
         poker_pot = 0 
     }
@@ -97,13 +97,13 @@ function poker(data, user_join){
                 switch(values[i]){
                     case "J":
                         weight = 11
-                        break    
+                        break
                     case "Q":
                         weight = 12
-                        break    
+                        break
                     case "K":
                         weight = 13
-                        break    
+                        break
                     case "A":
                         weight = 14
                         break 
@@ -127,7 +127,7 @@ function poker(data, user_join){
         return poker_deck
     }
 
-    function createPlayers(){        
+    function createPlayers(){
         let players = []
         for(let i=0; i<how_many_players;i++){
             let player = {uuid: "player_"+i, user: "player_"+i, type: "bot", money: 100, fold: false, bet: 0}
@@ -159,7 +159,7 @@ function poker(data, user_join){
                         }	
                         players[j].hand.push(card)
                     }
-                }                
+                }
                 players.sort((a, b) => b.Weight - a.Weight) //sort hand after the value of the card
                 return players
             case "dealer":
@@ -176,9 +176,9 @@ function poker(data, user_join){
             return []
         }
         let players = [...poker_players] 
-        let hidden_players = []       
+        let hidden_players = []
         for(let i in players){
-            if(data.uuid === players[i].uuid){                
+            if(data.uuid === players[i].uuid){
                 if(players[i].hand){
                     players[i].handStrength = evaluateHand(players[i].hand)
                 }
@@ -199,7 +199,7 @@ function poker(data, user_join){
                 players[index].bet = 0
                 if(action !== "check"){
                     players[index].bet = data.bet
-                }          
+                }
             } else {
                 let choice = 'bet'
                 let number = Math.floor(Math.random() * 10) + 1
@@ -216,13 +216,13 @@ function poker(data, user_join){
                 }
                 players[i] = botChoice(choice, players[i])
             }
-        }        
+        }
         return players
     }
-    function botChoice(x, player){        
+    function botChoice(x, player){
         switch(x){
             case "bet":
-                if(player.hand){                    
+                if(player.hand){
                     let handStrength = evaluateHand(player.hand)
                     if (handStrength.strength >= 9) {
                         player.bet = player.bet + 1
@@ -294,7 +294,7 @@ function poker(data, user_join){
         }
     }
     function getBet() {
-        let bet = 0      
+        let bet = 0
         for (let i in poker_players) {
             if (poker_players[i].bet > bet){
                 bet = poker_players[i].bet
@@ -343,7 +343,7 @@ function poker(data, user_join){
         return showdown
     }    
 
-    function calculatePot(){        
+    function calculatePot(){
         let players = [...poker_players]
         let pot = 0
         for(let i in players){
@@ -354,7 +354,7 @@ function poker(data, user_join){
         return pot
     }
 
-    function evaluateHands(array){        
+    function evaluateHands(array){
         for(let i in array){
             if(array[i].hand){
                 array[i].handStrength = evaluateHand(array[i].hand)
@@ -423,7 +423,7 @@ function poker(data, user_join){
     }  
     function countDuplicates(hand, count){
         const values = hand.map((card) => card.Value)
-        const valueCounts = {}    
+        const valueCounts = {}
         for (const value of values) {
             valueCounts[value] = (valueCounts[value] || 0) + 1
         }    
@@ -431,7 +431,7 @@ function poker(data, user_join){
     }
     function countPairs(hand){
         const values = hand.map((card) => card.Value)
-        const valueCounts = {}    
+        const valueCounts = {}
         for (const value of values) {
             valueCounts[value] = (valueCounts[value] || 0) + 1
         }    

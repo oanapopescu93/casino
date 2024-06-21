@@ -19,15 +19,15 @@ function Salon(props) {
     }
 
     return <>
-        {page.game ? <Game {...props}></Game> : <>  
-            <Language title={lang}></Language>          
-            <div className="content_wrap">                
-                <Header template="salon" lang={lang}></Header>
-                <SalonGames lang={lang} items={home.products}></SalonGames>                
+        {page.game ? <Game {...props} /> : <>
+            <Language title={lang} />
+            <div className="content_wrap">
+                <Header template="salon" lang={lang} />
+                <SalonGames lang={lang} items={home.products} />
             </div>
-            <SalonSidebarLeft lang={lang}></SalonSidebarLeft>
-            <Panel {...props}></Panel>
-            <div style={{'display': 'none'}}onClick={()=>handleWhack()}>whack</div>
+            <SalonSidebarLeft lang={lang} />
+            <Panel {...props} />
+            <div style={{'display': 'none'}}onClick={()=>handleWhack()}>test whack</div>
         </>}
     </>
 }

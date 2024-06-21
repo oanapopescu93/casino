@@ -126,7 +126,7 @@ function CrapsTable(props){
 		}
     }, [clear])
 
-    return <canvas id="craps_bets_canvas"></canvas>	
+    return <canvas id="craps_bets_canvas" />
 }
 
 export default CrapsTable

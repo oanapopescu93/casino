@@ -89,14 +89,14 @@ function Panel(props){
                 <p>
                     <FontAwesomeIcon icon={faComments} />
                     <span className="panel_button_text">{translate({lang: lang, info: "Chat"})}</span>
-                </p>                
+                </p>
             </div> : null}            
         </div>
         <div id="user_panel_box" className={"panel_box " + panelUser}> 
-            <User {...props}></User>
+            <User {...props} />
         </div>
         {page.game && !page.game_page ? <div id="chat_panel_box" className={"panel_box " + panelChat }>
-            <Chat {...props}></Chat>
+            <Chat {...props} />
         </div> : null}
     </div>
 }

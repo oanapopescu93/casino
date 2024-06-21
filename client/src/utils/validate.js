@@ -77,7 +77,7 @@ export const validateCVV = function(my_card, my_cvv){
   }
   // remove all non digit characters
   let creditCard = my_card.replace(/\D/g, '')
-  let cvv = my_cvv.replace(/\D/g, '')    
+  let cvv = my_cvv.replace(/\D/g, '')
   if ((acceptedCreditCards.amex).test(creditCard)) {
     return (/^\d{4}$/).test(cvv) // American Express CVV is 4 digits
   } else {

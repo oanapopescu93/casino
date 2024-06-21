@@ -418,7 +418,7 @@ function Payment(props){
                     gateway={gateway}
                     gatewayDetailsMandatory={gatewayDetailsMandatory}
                     paymentDetails={payment_details}
-                />                     
+                />
             </Col>
             <Col sm={4}>
                 <Row>
@@ -426,9 +426,9 @@ function Payment(props){
                         {(() => {
                             switch(template) {
                                 case "buy_carrots":
-                                    return <Counter num={1} max={max_bet} update={(e)=>updateQty(e)}></Counter>
+                                    return <Counter num={1} max={max_bet} update={(e)=>updateQty(e)} />
                                 case "checkout":
-                                    return <PaymentCart {...props}></PaymentCart>
+                                    return <PaymentCart {...props} />
                                 default:  
                                     return                               
                             }
@@ -446,7 +446,7 @@ function Payment(props){
                             type="button"  
                             className="mybutton button_fullcolor shadow_convex"
                             onClick={()=>handleBack()}
-                        ><FontAwesomeIcon icon={faStore} /> {translate({lang: lang, info: "market"})}</Button>                    
+                        ><FontAwesomeIcon icon={faStore} /> {translate({lang: lang, info: "market"})}</Button>
                     </Col>
                 </Row>
             </Col>

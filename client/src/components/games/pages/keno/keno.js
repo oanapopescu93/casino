@@ -131,11 +131,11 @@ function Keno(props){
             handleShowPrizes={()=>handleShowPrizes()}
             getResults={(e)=>getResults(e)}
             resultsPayload={resultsPayload}
-        ></KenoAnimation> : <KenoBoard 
+        /> : <KenoBoard 
             {...props} 
             startGame={()=>startGame()}
             getData={(e)=>getData(e)}
-        ></KenoBoard>}
+        />}
     </>
 }
 

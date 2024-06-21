@@ -37,8 +37,7 @@ function Home(props) {
         if(paymentId && payerId){
             postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{ //test --> /api/paypal/success?paymentId=oaie&PayerID=porc
                 if (data) {                
-                    if (data.result === "error") {
-                        //console.error('checkPaypalPaymentStatus--> ', data)
+                    if (data.result === "error"){                        
                         let payload = {
                             open: true,
                             template: "error",
@@ -46,13 +45,14 @@ function Home(props) {
                             data: translate({lang: props.lang, info: "error_charge"})
                         }
                         dispatch(changePopup(payload))
-                    } else {                    
-                        //console.log('checkPaypalPaymentStatus--> ', data)
+                        console.error('checkPaypalPaymentStatus--> ', data)
+                    } else {
                         let payload = {
                             open: true,
                             template: "success",
                             title: translate({lang: props.lang, info: "payment_success"}),
-                            data: translate({lang: props.lang, info: "payment_success_text"})
+                            data: translate({lang: props.lang, info: "payment_success_text"}),
+                            details: data
                         }
                         dispatch(changePopup(payload))
                     }
@@ -61,7 +61,7 @@ function Home(props) {
         }        
     }
 
-    return <div id="page-container">        
+    return <div id="page-container">
         {(() => {
             switch (page.page) {
                 case "About":                    
@@ -76,33 +76,33 @@ function Home(props) {
                 case "Order":                    
                 case "BuyCarrots":                    
                 case "how_to_play":  
-                    return <OtherPages {...props}/>                   
+                    return <OtherPages {...props}/>
                 case "Salon":
                     switch (page.game_page) {
                         case "dashboard":
                             return <>
                                 <div className="content_wrap">
-                                    <Dashboard {...props}></Dashboard>
+                                    <Dashboard {...props} />
                                 </div>
-                                <Panel {...props}></Panel>
+                                <Panel {...props} />
                             </>
                         case "market":
                             return <>
                                 <div className="content_wrap">
-                                    <Market {...props}></Market>
+                                    <Market {...props} />
                                 </div>
-                                <Panel {...props}></Panel>
+                                <Panel {...props} />
                             </>
                         default:
-                            return <Salon {...props} user={user} home={home} page={page}></Salon>
+                            return <Salon {...props} user={user} home={home} page={page} />
                     }                    
                 default:
-                    return <Salon {...props} user={user} home={home} page={page}></Salon>
+                    return <Salon {...props} user={user} home={home} page={page} />
             }
         })()}        
-        {cookies !== '1' ? <Cookies lang={props.lang} cookiesClick={()=>handleCookiesClick()}></Cookies> : null}
+        {cookies !== '1' ? <Cookies lang={props.lang} cookiesClick={()=>handleCookiesClick()} /> : null}
         <ButtonDonation handleDonationClick={()=>handleDonationClick()}/>
-        <Footer lang={props.lang}></Footer>
+        <Footer lang={props.lang} />
     </div>
 }
 

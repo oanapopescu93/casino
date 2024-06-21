@@ -90,7 +90,7 @@ function DashboardLeft(props){
     return <div id="dashboard_left" className="dashboard_box shadow_concav">
         <Row>
             <Col sm={12} className="dashboard_user_pic">
-                <Picture profiles={profiles} pic_id={picId} choice={(e)=>handleChoice(e)}></Picture>
+                <Picture profiles={profiles} pic_id={picId} choice={(e)=>handleChoice(e)} />
             </Col>
             <Col sm={12} className="dashboard_user_info">
                 <p className="dashboard_user">

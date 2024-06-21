@@ -35,7 +35,7 @@ function List(props){
                             <Row>
                                 <Col xs={6} sm={4} className="cart_image">
                                     <div className="crop_vegetables">
-                                        <img alt="vegetable" className={'vegetable '+item.id} src={vegetables_yellow}></img>
+                                        <img alt="vegetable" className={'vegetable '+item.id} src={vegetables_yellow} />
                                     </div>
                                 </Col>
                                 <Col xs={6} sm={8} className="cart_info">
@@ -61,12 +61,12 @@ function List(props){
                                         } 
                                     })()}
                                     <p><b>{translate({lang: lang, info: "price"})}</b>: {item.price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
-                                    <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>                                    
+                                    <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col xs={12}>
-                                    <Counter num={item.qty} max={max} update={(e)=>updateQtyProduct(e, item)}></Counter>      
+                                    <Counter num={item.qty} max={max} update={(e)=>updateQtyProduct(e, item)}></Counter>
                                 </Col>
                             </Row>
                         </Col>
@@ -81,7 +81,7 @@ function List(props){
                     </Row>
                 </div>
             })}
-        </div>        
+        </div>
     </div>
 }
 export default List

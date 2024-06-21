@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PokerEng(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introduction</h3></Col>
@@ -31,7 +31,7 @@ function PokerEng(){
                 <Col sm={12}>
                     <p>Poker typically involves multiple betting rounds, where players place bets based on the strength of their hand or their bluffing strategy.</p>
                     <p>The most common types of poker games include Texas Hold'em, Omaha, Seven-Card Stud and Five-Card Draw.</p>
-                </Col>                
+                </Col>
             </Row>
             <Row>
                 <Col sm={6}>
@@ -110,7 +110,7 @@ function PokerEng(){
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

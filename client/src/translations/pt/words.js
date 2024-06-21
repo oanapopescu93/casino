@@ -31,7 +31,7 @@ var word_bank = {
 
     error: "Erro",
     all_rights_reserved: "Todos os direitos reservados",   
-    no_career: "Não há vagas disponíveis. Mas sinta-se à vontade para enviar-nos seu currículo.",    
+    no_career: "Não há vagas disponíveis. Mas sinta-se à vontade para enviar-nos seu currículo.",
 
     cookies_modal_title: "Notificação de Cookies",
     cookies_modal_text: "Para oferecer as informações mais relevantes e obter o melhor desempenho do sistema, utilizamos cookies que coletam informações de sua atividade no jogo.",
@@ -77,7 +77,7 @@ var word_bank = {
     location: "Localização",
     requirements: "Requisitos",
     responsabilities: "Responsabilidades", 
-    marketing: "Marketing",        
+    marketing: "Marketing",
 
     under_construction: "Em construção",
 
@@ -99,7 +99,7 @@ var word_bank = {
     yes: "Sim",
     no: "Não",
     isMinor_sign: "Você não pode entrar porque é menor de idade.",
-    
+
     forgot_password_title: "Esqueceu sua senha",
     forgot_password_text: "Por favor, insira o endereço de e-mail utilizado no registro. Enviaremos a nova senha para esse endereço.",
     send: "Enviar",
@@ -126,14 +126,14 @@ var word_bank = {
 
     language: "Idioma",
     date_calendar: "Data",
-    currency: "Moeda",      
+    currency: "Moeda",  
     
     choose_profile_pic: "Escolha a foto de perfil",
     animal: "Animal",
     carrots: "Cenouras",
     change_username: "Alterar nome de usuário",
     change_password: "Alterar senha",
-    buy_carrots: "Comprar cenouras",    
+    buy_carrots: "Comprar cenouras",
     choose: "Escolher",
     change: "Alterar",
     profile_grey: "Para ter esta imagem, você precisa ter mais de 1000 cenouras",

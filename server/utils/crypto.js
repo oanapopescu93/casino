@@ -29,7 +29,7 @@ const decrypt = (hash) => {
         return decrpyted.toString()
     } catch(e){
         console.log('[error]','decrypt :', e)
-    }    
+    }
 }
 
 const encrypt_jwt = (text) => {

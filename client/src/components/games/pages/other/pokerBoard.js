@@ -22,7 +22,7 @@ function PokerBoard(props){
         }
     }
 
-    return <Row>        
+    return <Row>
         {(() => {
             switch(action) {
                 case "preflop_betting":
@@ -33,7 +33,7 @@ function PokerBoard(props){
                     return <>
                         {/* <Col xs={12}>1. {action} / {payload1}</Col> */}
                         <Col xs={4}>
-                            <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
+                            <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                         </Col>
                         <Col xs={8}>
                             <div className="button_box">
@@ -47,12 +47,12 @@ function PokerBoard(props){
                                     {translate({lang: lang, info: "fold"})}
                                 </Button>
                             </div>
-                        </Col>                        
+                        </Col>
                     </>
                 case "draw":
                     return <>
                         {/* <Col xs={12}>2. {action} / draw</Col> */}
-                        <Col xs={4}></Col>
+                        <Col xs={4} />
                         <Col xs={8}>
                             <div className="button_box">
                                 <Button type="button" onClick={() => handleClick({ action: action, stage: 'confirm_draw' })} className="mybutton button_fullcolor shadow_convex">
@@ -62,7 +62,7 @@ function PokerBoard(props){
                                     {translate({ lang: lang, info: "cancel" })}
                                 </Button>
                             </div>
-                        </Col>                        
+                        </Col>
                     </>
                 case "postflop_betting":
                 case "turn":                
@@ -73,7 +73,7 @@ function PokerBoard(props){
                     return <>
                         {/* <Col xs={12}>3. {action} / {payload2}</Col> */}
                         <Col xs={4}>
-                            <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)}></Counter>
+                            <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                         </Col>
                         <Col xs={8}>
                             <div className="button_box">
@@ -87,12 +87,12 @@ function PokerBoard(props){
                                     {translate({lang: lang, info: "fold"})}
                                 </Button>
                             </div>
-                        </Col>                        
+                        </Col>
                     </>
                 case "river":
                     return <>
                         {/* <Col xs={12}>4. {action} / showdown</Col> */}
-                        <Col xs={4}></Col>
+                        <Col xs={4} />
                         <Col xs={8}>
                             <div className="button_box">
                                 <Button type="button" onClick={()=>handleClick({action: 'showdown', stage: "showdown"})} className="mybutton button_fullcolor shadow_convex">
@@ -102,8 +102,8 @@ function PokerBoard(props){
                                     {translate({lang: lang, info: "fold"})}
                                 </Button>
                             </div>
-                        </Col>                        
-                    </>                
+                        </Col>
+                    </>
                 default:
                     return <>
                         <p>{translate({lang: lang, info: "error"})}</p>

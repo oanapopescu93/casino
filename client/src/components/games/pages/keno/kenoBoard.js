@@ -146,28 +146,28 @@ function KenoBoard(props){
         }
     }
     
-    return <div className="keno_board_container">        
+    return <div className="keno_board_container">
         {kenoSpots && kenoSpots.length>0 ? <>
             <p>{translate({lang: props.lang, info: "keno_instructions"})}</p>
             <Row id="keno_form" className="keno_form">
-                <Col sm={2}></Col>
+                <Col sm={2} />
                 <Col sm={8}>
                     <Row>
                         <Col sm={6}>
-                            <Counter num={1} max={10} update={(e)=>updateQuickPickLength(e)}></Counter>
+                            <Counter num={1} max={10} update={(e)=>updateQuickPickLength(e)} />
                         </Col>
                         <Col sm={6}>
                             <Button 
                                 type="button"  
                                 className="mybutton button_transparent shadow_convex remove"
                                 onClick={()=>{handleQuickPick()}}
-                            ><span>{translate({lang: props.lang, info: "quick_pick"})}</span></Button>  
+                            ><span>{translate({lang: props.lang, info: "quick_pick"})}</span></Button>
                         </Col>
                     </Row>
                     
                 </Col>
-                <Col sm={2}></Col>   
-            </Row>            
+                <Col sm={2} />
+            </Row>
             <div className="keno_board shadow_convex">
                 {chunkedKenoSpots.map((chunk, rowIndex) => (
                     <div key={rowIndex} className="keno_row">
@@ -182,7 +182,7 @@ function KenoBoard(props){
                 ))}
             </div>
             <Row className="keno_options">
-                <Col sm={2}></Col>
+                <Col sm={2} />
                 <Col sm={8}>
                     <Row>
                         <Col xs={4} md={4} lg={5}>
@@ -210,11 +210,11 @@ function KenoBoard(props){
                                 type="button"  
                                 className="mybutton round button_transparent shadow_convex remove"
                                 onClick={()=>{handleStart()}}
-                            ><span>{translate({lang: props.lang, info: "start"})}</span></Button>  
+                            ><span>{translate({lang: props.lang, info: "start"})}</span></Button>
                         </Col>
                     </Row>
                 </Col>
-                <Col sm={2}></Col>   
+                <Col sm={2} /> 
             </Row>
         </> : null}
     </div>

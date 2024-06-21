@@ -23,7 +23,7 @@ function TermsConditions(props){
         dispatch(changeGamePage(null))
     }
     return <div className="content_wrap">
-        <Header template="terms_cond" title={translate({lang: props.lang, info: "terms_cond"})}></Header>     
+        <Header template="terms_cond" title={translate({lang: props.lang, info: "terms_cond"})} />
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {

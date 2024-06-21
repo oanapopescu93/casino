@@ -64,11 +64,11 @@ function Contact(props){
     }, [props.lang])
 
     return <div className="content_wrap">
-        <Header template="contact" title={translate({lang: props.lang, info: "contact"})}></Header>        
+        <Header template="contact" title={translate({lang: props.lang, info: "contact"})} />
         <div className="page_content">
             <Row>
                 <Col sm={4} md={4} lg={4}>
-                    <ContactForm lang={props.lang} socket={props.socket}></ContactForm>
+                    <ContactForm lang={props.lang} socket={props.socket} />
                 </Col>
                 <Col sm={8} md={8} lg={8}>
                     {locations && locations.length>1 ? <ContactList 
@@ -88,7 +88,7 @@ function Contact(props){
                             country={country}
                             city={city}
                             zoom={zoom}
-                        ></ContactMap> : null} 
+                        /> : null} 
                     </> : null}           
                 </Col>
             </Row>
@@ -102,7 +102,7 @@ function Contact(props){
                         country={country}
                         city={city}
                         zoom={zoom}
-                    ></ContactMap>
+                    />
                 </Col>
             </Row> : null}                     
         </div>

@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PokerRo(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introducere</h3></Col>
@@ -31,7 +31,7 @@ function PokerRo(){
                 <Col sm={12}>
                     <p>Pokerul implică în mod obișnuit mai multe runde de pariere, în care jucătorii plasează pariuri în funcție de puterea mâinii lor sau de strategia de bluff.</p>
                     <p>Tipurile cele mai comune de jocuri de poker includ Texas Hold'em, Omaha, Seven-Card Stud și Five-Card Draw.</p>
-                </Col>                
+                </Col>
             </Row>
             <Row>
                 <Col sm={6}>
@@ -110,7 +110,7 @@ function PokerRo(){
                 </Col>
             </Row>
         </Col>
-        <Col sm={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

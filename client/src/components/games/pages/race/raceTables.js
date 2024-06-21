@@ -80,7 +80,7 @@ function RaceTables(props){
             options={race_carousel_options} 
             lang={lang} 
             itemList={race_array}    
-        ></Carousel>
+        />
         <div className="game_start">
             <Button 
                 type="button"  

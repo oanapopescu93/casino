@@ -51,7 +51,7 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
                     addNewCard(cardInfo).then(function(res2) {
                         if(res2){
                             card_token = res2
-                            // Attach the card to the customer    
+                            // Attach the card to the customer
                             createSource(customer.id, card_token.id).then(function(res3) {
                                 if(res3){
                                     card = res3
@@ -75,7 +75,7 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
             })
         } catch (error) {
             res.json({type: "stripe", result: "error", payload: 'error_charge', details: error})
-        }        
+        }
     } else {
         res.json({type: "stripe", result: "error", payload: 'no_money'})
     }
@@ -88,7 +88,7 @@ function createNewCustomer(data){
     return new Promise(function(resolve, reject){
         stripe.customers.create(data).then(function(res){
             resolve(res)
-        }).catch((err) => {            
+        }).catch((err) => {
             console.error('error-createNewCustomer--> ' + err)
             resolve(null)
         }) 
@@ -99,7 +99,7 @@ function addNewCard(data){
     return new Promise(function(resolve, reject){
         stripe.tokens.create(data).then(function(res){
             resolve(res)
-        }).catch((err) => {            
+        }).catch((err) => {
             console.error('error-addNewCard--> ' + err)
             resolve(null)
         })
@@ -110,7 +110,7 @@ function createSource(customer_id, card_token_id){
     return new Promise(function(resolve, reject){
         stripe.customers.createSource(customer_id, {source: card_token_id }).then(function(res){
             resolve(res)
-        }).catch((err) => {            
+        }).catch((err) => {
             console.error('error-createSource--> ' + err)
             resolve(null)
         })

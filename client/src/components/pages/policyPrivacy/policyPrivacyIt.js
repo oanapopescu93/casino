@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PolicyPrivacyDe(){
     return <Row id="policy_privacy" className="other_page_container">
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <h3>Introduzione</h3>
             <p>Questo documento sulla Privacy descrive come raccogliamo, utilizziamo, divulghiamo e proteggiamo le informazioni personali ottenute dagli utenti del nostro sito web del casinò. Ci impegniamo a garantire la privacy e la sicurezza di tutte le informazioni personali fornite. Utilizzando il nostro sito web, acconsenti alle pratiche descritte in questo documento.</p>
@@ -54,7 +54,7 @@ function PolicyPrivacyDe(){
             <h3>Contattaci</h3>
             <p>Se hai domande, preoccupazioni o richieste riguardo a questa Politica sulla Privacy o all'elaborazione delle tue informazioni personali, ti preghiamo di contattarci.</p>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 export default PolicyPrivacyDe

@@ -11,7 +11,7 @@ const initialState = {
     month: getCookie("casino_payment_month") !== "" ? getCookie("casino_payment_month") : -1,
     year: getCookie("casino_payment_year") !== "" ? getCookie("casino_payment_year") : "",
     name: getCookie("casino_payment_name") !== "" ? getCookie("casino_payment_name") : "",
-    phone: getCookie("casino_payment_phone") !== "" ? getCookie("casino_payment_phone") : "",    
+    phone: getCookie("casino_payment_phone") !== "" ? getCookie("casino_payment_phone") : "",
     option: getCookie("casino_payment_option") !== "" ? getCookie("casino_payment_option") : "1",   // 1 = card, 2 = paypal, 3 = crypto
 }
 

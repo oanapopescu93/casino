@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { translate } from '../../translations/translate'
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row } from 'react-bootstrap'
 
 function SignIn(props) {
     const [user, setUser] = useState('')

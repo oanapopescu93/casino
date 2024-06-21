@@ -54,7 +54,7 @@ function SalonSidebarLeft(props){
                     <FontAwesomeIcon icon={faFaceSmile} />
                     <span className="salon_button_text">{translate({lang: lang, info: "games"})}</span>
                 </p>										
-            </div>            
+            </div>
             <div 
                 id="salon_buton_race" 
                 className={showWinter ? "salon_button shadow_convex snow_small" : "salon_button shadow_convex"} 

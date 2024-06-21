@@ -67,7 +67,7 @@ var word_bank = {
     paypal_donation_text: "Si prega di utilizzare i seguenti link per effettuare una donazione tramite PayPal. Una volta completata la donazione, potrebbe richiedere del tempo per essere elaborata.",
     bank_donation_title: "Dona tramite Bonifico Bancario",
     bank_donation_text: "Si prega di inviare la tua donazione al seguente conto bancario. Una volta trasferita la donazione, potrebbe richiedere del tempo per essere riflessa sul conto.",
-    donation_footer_text: "Grazie per la tua generosità!",    
+    donation_footer_text: "Grazie per la tua generosità!",
     donation_ukraine: "Donazione per l'Ucraina",
 
 
@@ -99,7 +99,7 @@ var word_bank = {
     yes: "Sì",
     no: "No",
     isMinor_sign: "Non puoi entrare perché sei minorenne.",
-        
+
     forgot_password_title: "Hai dimenticato la password",
     forgot_password_text: "Inserisci l'indirizzo email utilizzato per la registrazione. Ti invieremo la tua nuova password a quell'indirizzo.",
     send: "Invia",
@@ -133,7 +133,7 @@ var word_bank = {
     carrots: "Carote",
     change_username: "Cambia nome utente",
     change_password: "Cambia password",
-    buy_carrots: "Acquista carote",    
+    buy_carrots: "Acquista carote",
     choose: "Scegli",
     change: "Modifica",
     profile_grey: "Per avere questa immagine devi avere più di 1000 carote",
@@ -142,7 +142,7 @@ var word_bank = {
     password_rule02: "Almeno una lettera minuscola",
     password_rule03: "Almeno una cifra",
     password_rule04: "Almeno un carattere speciale",
-    password_rule05: "Lunghezza minima di otto caratteri",    
+    password_rule05: "Lunghezza minima di otto caratteri",
 
     //cart
     price: "Prezzo",

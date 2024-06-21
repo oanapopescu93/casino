@@ -71,12 +71,12 @@ function Market(props){
             <Col sm={12}><h2>Market</h2></Col>
         </Row>
         <Row>
-            <Col sm={2}></Col>
+            <Col sm={2} />
             <Col sm={8}><div style={shader_style} className="shop_shader"></div></Col>
-            <Col sm={2}></Col>
+            <Col sm={2} />
         </Row>
         <Row className="item_container">
-            <Col sm={2}></Col>
+            <Col sm={2} />
             <Col sm={8} style={{textAlign:"center"}}>
                 <Carousel 
                     id="carousel_market"
@@ -85,9 +85,9 @@ function Market(props){
                     lang={lang} 
                     itemList={market} 
                     getItem={(e)=>marketChoice(e)}
-                ></Carousel>
+                />
             </Col>
-            <Col sm={2}></Col>
+            <Col sm={2} />
         </Row>
         <Row>
             <Col sm={12} className="button_action_group">

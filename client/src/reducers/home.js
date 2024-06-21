@@ -36,8 +36,8 @@ function getRaceRabbits(rabbit_race){
 
     let x = 0
     while(x<colors.length){
-        let t = Math.floor(Math.random() * rabbit_race.length)        
-        if(!rabbit_race[t].participating){            
+        let t = Math.floor(Math.random() * rabbit_race.length)
+        if(!rabbit_race[t].participating){
             rabbit_race[t].participating = true
             rabbit_race[t].name = colors[x]
             rabbit_race[t].color = colors[x]

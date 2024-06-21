@@ -83,14 +83,14 @@ io.on('connection', function(socket) {
             console.log('[error]','signin_read :', e)
           }
   
-          get_extra_data().then(function(res) {          
+          get_extra_data().then(function(res) {  
             let extra_data = {}
             if(res && res.data){
               extra_data = {
                 city: res.data.city ? res.data.city : "",
                 country: res.data.country_name ? res.data.country_name : "",
                 ip_address: res.data.ip? res.data.ip : "",
-              }            
+              }
             }   				
             let timestamp = new Date().getTime() + ""
             
@@ -123,7 +123,7 @@ io.on('connection', function(socket) {
 		database(database_config).then(function(result){
       if(result && result.length == 0){
         //no user was found --> new user --> he must sign up
-        users_array = result        
+        users_array = result
         let uuid = crypto.randomBytes(20).toString('hex')
         let device = get_device(socket.request.headers) // 0 = computer, 1 = mobile, 2 = other
   
@@ -150,7 +150,7 @@ io.on('connection', function(socket) {
               city: res.data.city ? res.data.city : "",
               country: res.data.country_name ? res.data.country_name : "",
               ip_address: res.data.ip? res.data.ip : "",
-            }            
+            }
           }  
           let timestamp = new Date().getTime() + ""   
           let pass = JSON.stringify(encrypt(data.pass))   
@@ -164,7 +164,7 @@ io.on('connection', function(socket) {
             database_config.sql = 'INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (' + insertId + ', "' + timestamp + '", ' + device + ', "' + extra_data.ip_address + '", "' + extra_data.city + '", "' + extra_data.country + '");'
             database_config.name = "db04"
             database(database_config).then(function(result){})
-          })                           
+          })
         })
       } else {
         //the user already exists --> old user --> he must sign in
@@ -176,7 +176,7 @@ io.on('connection', function(socket) {
       }  
     }) 
   })
-  socket.on('forgotPassword_send', (data) => {    
+  socket.on('forgotPassword_send', (data) => {
     database_config.sql = "SELECT * FROM casino_user"
     database_config.name = "db05"
 		database(database_config).then(function(result){
@@ -227,20 +227,20 @@ io.on('connection', function(socket) {
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.sql += "SELECT * FROM login_user;"
       database_config.name = "db06"
-      database(database_config).then(function(result){     
+      database(database_config).then(function(result){ 
         let payload = {streak: 1, prize: 0}
         if(result){
           users_array = result[0]
           login_user = result[1]
-          if(users_array && users_array.length>0 && login_user && login_user.length>0){            
+          if(users_array && users_array.length>0 && login_user && login_user.length>0){
             try{
-              let user_found = users_array.filter((x) => x.uuid === data.uuid)              
-              payload = updateStreak(user_found, login_user)        
+              let user_found = users_array.filter((x) => x.uuid === data.uuid)
+              payload = updateStreak(user_found, login_user)
               io.to(socket.id).emit('game_read', payload)
               updateMoney(user_found, payload)
             } catch(e){
               console.log('[error]','roulette_read--> ', e)
-            }            
+            }
           }
         }
       })
@@ -314,7 +314,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('slots_send', function(data){    
+  socket.on('slots_send', function(data){
 		if(data.uuid){
       let room = data.room
 			let payload = slots(data)
@@ -364,7 +364,7 @@ io.on('connection', function(socket) {
       database(database_config).then(function(result){
         if(result){
           users_array = result
-          if(users_array && users_array.length>0){            
+          if(users_array && users_array.length>0){
             try{
               let user_found = users_array.filter((x) => x.uuid === data.uuid) 
               if(user_found && user_found.length>0){
@@ -381,7 +381,7 @@ io.on('connection', function(socket) {
               }
             } catch(e){
               console.log('[error]','game_results_read--> ', e)
-            }            
+            }
           }
         }
       })
@@ -392,7 +392,7 @@ io.on('connection', function(socket) {
   socket.on('dashboardChanges_send', function(data){
     if(data.uuid){
         switch(data.type) {
-          case "pic":            
+          case "pic":
             database_config.sql = "UPDATE casino_user SET profile_pic='" + data.value + "' WHERE uuid='" + data.uuid + "'; "
             break
           case "user":

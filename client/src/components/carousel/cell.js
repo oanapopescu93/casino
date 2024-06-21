@@ -114,9 +114,9 @@ function Cell(props) {
                         <div className="cell_market shadow_concav">
                             <div className="cell_info">
                                 <div className="crop_vegetables">
-                                    <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow}></img>
+                                    <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow} />
                                 </div>
-                                {(() => {                                    
+                                {(() => {
                                     switch (props.lang) {
                                         case "DE":
                                             return <h4>{data.name_de}</h4>
@@ -138,8 +138,8 @@ function Cell(props) {
                                     } 
                                 })()}
                                 <p>{translate({lang: lang, info: "price"})}: {data.price}</p>
-                                <Counter update={(e)=>updateQtyMarket(e)}></Counter>
-                            </div>                            
+                                <Counter update={(e)=>updateQtyMarket(e)} />
+                            </div>
                             <div className="cell_button">
                                 <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>
                                     <FontAwesomeIcon icon={faBasketShopping} />
@@ -153,7 +153,7 @@ function Cell(props) {
                             <Row>
                                 <Col sm={6}>
                                     <div className="rabbit_box_pic">
-                                        <div className={"rabbit_box_nr shadow_convex "+data.color}>{index}</div>                                   
+                                        <div className={"rabbit_box_nr shadow_convex "+data.color}>{index}</div>
                                         <div className="box_pic shadow_convex">	
                                             <img src={data.img} alt={data.breed} />																			
                                         </div>															
@@ -165,11 +165,11 @@ function Cell(props) {
                                         <p><span>{translate({lang: lang, info: "breed"})}: </span>{data.breed}</p>
                                         {/* <p><span>{translate({lang: lang, info: "delay"})}: </span>{data.delay}</p> */}
                                         <p><span>{translate({lang: lang, info: "health"})}: </span>{data.health}</p>
-                                        <Stars score={data.health} max={data.health_max}></Stars>
+                                        <Stars score={data.health} max={data.health_max} />
                                     </div>
                                     <div className="rabbit_box_bet">
                                         <p>{translate({lang: lang, info: "bet"})}:</p>
-                                        <Counter num={0} max={max_bet} update={(e)=>updateRaceBet(e, index)}></Counter>
+                                        <Counter num={0} max={max_bet} update={(e)=>updateRaceBet(e, index)} />
                                     </div>
                                     <div className="rabbit_box_place">
                                         <DropdownButton title={titleDropdown} id="language_button" onSelect={(e)=>handleDropdown(e, index)}>
@@ -177,7 +177,7 @@ function Cell(props) {
                                             <Dropdown.Item eventKey={2}>{translate({lang: lang, info: 'place_02'})}</Dropdown.Item>
                                             <Dropdown.Item eventKey={3}>{translate({lang: lang, info: 'place_03'})}</Dropdown.Item>
                                         </DropdownButton>
-                                    </div>                                
+                                    </div>
                                 </Col>
                             </Row>
                         </div>
@@ -226,7 +226,7 @@ function Cell(props) {
                     <div className="crop_profile_pic shadow_convex">
                         <img alt="profile_pic" className={"profile_pic pic_"+data.id+show} src={profilePic}/>
                     </div>										
-                    <p>{data[item_name_lang]}</p>                    
+                    <p>{data[item_name_lang]}</p>
                 </div>
                 default:
                     return <div key={index}>{translate({lang: lang, info: "error"})}</div>

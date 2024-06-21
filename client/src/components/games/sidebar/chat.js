@@ -34,7 +34,7 @@ function ChatMessages(props){
                 case "leave":
                     return <div key={i} className='message'>
                         <p>{user} {translate({lang: props.lang, info: "left_the_chat"})}</p>
-                    </div>        
+                    </div>
                 default:
                     return <div key={i} className="message">
                         <div className="chat_header">
@@ -76,7 +76,7 @@ function Chat(props){
         socket.on('message_read', function(res){
             setMessages((state) => [...state, res])
         })
-    }, [socket])    
+    }, [socket])
 
     function handleChange(e){
         setInput(e.target.value)
@@ -96,17 +96,17 @@ function Chat(props){
     }
 
     return <>
-        <Header template="panel_user" details={page} lang={lang}></Header>
-        <Form className="chat_form">            
+        <Header template="panel_user" details={page} lang={lang} />
+        <Form className="chat_form">
             <div id="chatmessages" className="input_light">
-                <ChatMessages messages={messages} lang={lang} height={height}></ChatMessages>
+                <ChatMessages messages={messages} lang={lang} height={height} />
             </div>
             <input className="input_light" type="text" value={input} onChange={(e)=>{handleChange(e)}}/>
             <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor shadow_convex">
                 {translate({lang: lang, info: "send"})}
             </Button>
         </Form>
-        <ChatList list={chatRoomUsers}></ChatList>
+        <ChatList list={chatRoomUsers} />
     </>
 }
 export default Chat

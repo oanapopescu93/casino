@@ -46,18 +46,18 @@ function PaymentCart(props){
             {cart && cart.length>0 ? <>
                 <Row>
                     <Col sm={12}>
-                        <h3 className="cart_header">{translate({lang: props.lang, info: "cart"})}</h3>  
+                        <h3 className="cart_header">{translate({lang: props.lang, info: "cart"})}</h3>
                     </Col>
-                    <Col sm={12}>                        
+                    <Col sm={12}>
                         <Cart {...props} cart={cart}></Cart>
-                    </Col>                    
-                </Row>   
+                    </Col>
+                </Row>
             </> : null} 
             <Row>
                 <Col sm={12}>
                     <div className="cart_total_price">
                         {promo && Object.keys(promo).length>0 ? <>
-                            <p><b>{translate({lang: lang, info: "price"})}</b>: {total}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>            
+                            <p><b>{translate({lang: lang, info: "price"})}</b>: {total}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
                             <p><b>{translate({lang: lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
                             <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {total_promo}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h3>
                         </> : <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {total}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h3>}

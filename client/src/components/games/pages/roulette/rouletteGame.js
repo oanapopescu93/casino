@@ -694,7 +694,7 @@ function RouletteGame(props){
     }
 
     return <div className="roulette_container">
-        <canvas id="roulette_canvas"></canvas>
+        <canvas id="roulette_canvas" />
         <div className="game_start">
             <Button 
                 type="button"  

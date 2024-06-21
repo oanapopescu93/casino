@@ -371,7 +371,7 @@ function RouletteTable(props){
 		}
     }, [clear])
 
-    return <canvas id="roulette_bets_canvas"></canvas>	
+    return <canvas id="roulette_bets_canvas" />
 }
 
 export default RouletteTable

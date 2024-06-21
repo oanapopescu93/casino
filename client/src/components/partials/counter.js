@@ -34,7 +34,7 @@ function Counter(props){
     </div>
     <div className="counter_input_box">
         <input className="input_light counter_input shadow_convex" type="text" value={num} onChange={(e)=>{handleChange(e)}}/>
-    </div>    
+    </div>
     <div className="counter_plus_box">
         <div className="counter_plus shadow_convex" onClick={()=>increase()}>+</div>
     </div>

@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PokerEs(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Introducción</h3></Col>
@@ -31,7 +31,7 @@ function PokerEs(){
                 <Col sm={12}>
                     <p>El póker generalmente involucra múltiples rondas de apuestas, donde los jugadores realizan apuestas basadas en la fuerza de su mano o su estrategia de farol.</p>
                     <p>Los tipos más comunes de juegos de póker incluyen Texas Hold'em, Omaha, Seven-Card Stud y Five-Card Draw.</p>
-                </Col>                
+                </Col>
             </Row>
             <Row>
                 <Col sm={6}>
@@ -49,9 +49,7 @@ function PokerEs(){
                         </Col>
                         <Col sm={12}><h3>Flop</h3></Col>
                         <Col sm={12}>
-                            <p>Después de la ronda de apuestas pre-flop,
-
- se reparten tres cartas comunitarias boca arriba en la mesa. Esto se llama flop.</p>
+                            <p>Después de la ronda de apuestas pre-flop, se reparten tres cartas comunitarias boca arriba en la mesa. Esto se llama flop.</p>
                             <p>Se lleva a cabo otra ronda de apuestas, comenzando por el jugador a la izquierda del repartidor.</p>
                         </Col>
                         <Col sm={12}><h3>Turn</h3></Col>
@@ -93,9 +91,7 @@ function PokerEs(){
                         <Col sm={12}><h3>Fase de Cambio</h3></Col>
                         <Col sm={12}>
                             <p>Después de la primera ronda de apuestas, los jugadores tienen la opción de intercambiar algunas o todas sus cartas por otras nuevas.</p>
-                            <p>Comenzando por el jugador a la izquierda del repartidor, cada jugador puede descartar cualquier número de sus cartas y recibir un número igual de cartas de reempl
-
-azo del mazo.</p>
+                            <p>Comenzando por el jugador a la izquierda del repartidor, cada jugador puede descartar cualquier número de sus cartas y recibir un número igual de cartas de reemplazo del mazo.</p>
                             <p>En la mayoría de los juegos, las cartas descartadas se colocan boca abajo, y las cartas de reemplazo se reparten boca abajo también.</p>
                         </Col>
                         <Col sm={12}><h3>Segunda Ronda de Apuestas</h3></Col>
@@ -114,7 +110,7 @@ azo del mazo.</p>
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

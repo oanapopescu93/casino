@@ -15,7 +15,7 @@ cryptoPayment.post("/api/crypto", jsonParser, (req, res, next) => {
         })  
     } else {
         res.json({payload: 'no amount', result: "error"}) 
-    }    
+    }
 })
 
 cryptoPayment.post("/api/crypto_pay", jsonParser, (req, res, next) => {
@@ -26,7 +26,7 @@ cryptoPayment.post("/api/crypto_pay", jsonParser, (req, res, next) => {
         })  
     } else {
         res.json({payload: 'no iid', result: "error"}) 
-    }    
+    }
 })
 
 function getCryptoPaymentByID(payment_id){
@@ -86,11 +86,11 @@ function createCryptoInvoice(amount, currency = 'USD') {
                 pay_currency: 'BTC',
                 order_description: "BunnyBet",
                 ipn_callback_url: 'https://your-server-url.com/ipn'
-            }        
+            }
             const headers = {
                 'x-api-key': apiKey,
                 'Content-Type': 'application/json',
-            }        
+            }
             axios.post(`${apiUrl}/invoice`, payload, { headers }).then(function(response){
                 let iid = response.data.id
                 if(typeof iid != "undefined" && iid != "null" && iid != null && iid != ""  && iid > 0){
@@ -135,7 +135,7 @@ function checkPaymentStatus(paymentId) {
         try {
             const headers = {
                 'x-api-key': apiKey,
-            }        
+            }
             axios.get(`${apiUrl}/payment/${paymentId}`, { headers }).then(function(response){
                 resolve({payload: response, result: "success"})
             }).catch(function(err){

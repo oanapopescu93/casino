@@ -128,7 +128,7 @@ function PaymentForm(props){
     return <form id="payment_form">
         <Row>
             <Col sm={12}>
-                <h3>{translate({lang: props.lang, info: "customer_info"})}</h3>  
+                <h3>{translate({lang: props.lang, info: "customer_info"})}</h3>
             </Col>
         </Row>
         <Row>
@@ -195,7 +195,7 @@ function PaymentForm(props){
                                     value={filteredCountry}
                                     onChange={(e) => handleFilterCountries(e.target.value)}
                                 />
-                            </div>                            
+                            </div>
                             {filteredCountries.map(function(country, i){
                                 return <Dropdown.Item key={i} eventKey={country}><span>{country}</span></Dropdown.Item>
                             })}
@@ -242,8 +242,8 @@ function PaymentForm(props){
                         </>}                        
                     </Col>
                 </Row> 
-            </Col>            
-        </Row>       
+            </Col>
+        </Row>
         <Row>
             <Col sm={12}>
                 <h3>{translate({lang: props.lang, info: "payment_info"})}</h3>
@@ -294,7 +294,7 @@ function PaymentForm(props){
                                 {months.map(function(x, i){
                                     return <Dropdown.Item key={i} eventKey={x}>{translate({lang: props.lang, info: monthOptions[x]})}</Dropdown.Item>
                                 })}
-                            </DropdownButton>                                    
+                            </DropdownButton>
                             {!paymentError.month.fill ? <div className="alert alert-danger">
                                 <p className="text_red">
                                     {translate({lang: props.lang, info: paymentError.month.fill_message})}
@@ -378,7 +378,7 @@ function PaymentForm(props){
                     </Row>
                 </> : null}                       
             </Col>
-        </Row>                                    
+        </Row>
     </form>
 }
 export default PaymentForm

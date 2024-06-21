@@ -12,7 +12,7 @@ function ContactList(props){
         <div className="contact_list">
             {list.map(function(item, i){
                 return <div key={i} className='contact_list_item_container'>
-                    <ListCell item={item} lang={lang} handleClick={(e)=>handleClick(e, i)}></ListCell>
+                    <ListCell item={item} lang={lang} handleClick={(e)=>handleClick(e, i)} />
                 </div>
             })}
         </div>

@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal} from "react-bootstrap"
 
@@ -22,7 +22,7 @@ import WhackARabbit from "./whackARabbit"
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import SlotsPrizeTable from "./slotsPrizeTable"
 
-function Popup(props){    
+function Popup(props){
     const {lang, date, currency, socket, home} = props
     let open = useSelector(state => state.popup.open)
     let popup_title = useSelector(state => state.popup.title)
@@ -30,7 +30,7 @@ function Popup(props){
     let data = useSelector(state => state.popup.data)
     let size = useSelector(state => state.popup.size)
     let sticky = useSelector(state => state.popup.sticky)
-    let dispatch = useDispatch()    
+    let dispatch = useDispatch()
     let currencies = home.currencies
     let title = translate({lang: lang, info: popup_title})
     const [forgotPasswordResult, setForgotPasswordResult] = useState('')
@@ -62,8 +62,10 @@ function Popup(props){
             switch(e.type){
                 case "user":
                     dispatch(changeUser({user: e.value}))
-            }
-            socket.emit('dashboardChanges_send', e)
+                    socket.emit('dashboardChanges_send', e)
+                default:
+                    break
+            }            
         }
         closeModal()
     }
@@ -75,17 +77,19 @@ function Popup(props){
         closeModal()
     }
 
-    socket.on('forgotPassword_read', function(res){
-        setForgotPasswordResult(res.send)
-        setForgotPasswordSending(false)
-    })
+    useEffect(() => {
+        socket.on('forgotPassword_read', function(res){
+            setForgotPasswordResult(res.send)
+            setForgotPasswordSending(false)
+        })
+    }, [socket])
 
     return <>
         {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + template} show={open} onHide={closeModal} size={size} centered> 
             {title !== "" ? <Modal.Header>
                 {!sticky ? <div className="closeButton closeButtonHeader" onClick={closeModal}>
                     <span>X</span>
-                </div> : null}                
+                </div> : null}
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header> : null}  
             <Modal.Body>
@@ -93,7 +97,7 @@ function Popup(props){
                     <span>X</span>
                 </div> : null}
                 {(() => {					
-                    switch (template) {                        
+                    switch (template) {
                         case "forgotPassword":
                             return <ForgotPassword 
                                 lang={lang} 
@@ -101,7 +105,7 @@ function Popup(props){
                                 forgotPasswordClick={(e)=>forgotPasswordClick(e)} 
                                 forgotPasswordResult={forgotPasswordResult}
                                 forgotPasswordSending={forgotPasswordSending}
-                            ></ForgotPassword>
+                            />
                         case "isMinor":
                             return <IsMinor lang={lang} text={data} isMinorClick={(e)=>isMinorClick(e)} />
                         case "settings":
@@ -124,17 +128,11 @@ function Popup(props){
                             return <WhackARabbit lang={lang} handleClick={()=>handleWhackARabbit()} />
                         case "error":
                         default:
-                            return <>{typeof data === "string" ? <Default lang={lang} text={data} /> : null}</>                            
+                            return <>{typeof data === "string" ? <Default lang={lang} text={data} /> : null}</>
                     }
                 })()}
             </Modal.Body>
-            {(() => {
-                if((template === "game_results" && data.status === "win") || (template === "streak" && data > 0)){
-                    return <div className="firework"></div>
-                } else {
-                    return null
-                }
-            })()}
+            {(template === "game_results" && data.status === "win") || (template === "streak" && data > 0) ? <div className="firework"></div> : null}
         </Modal> : <Modal id="myModal_gift" className={"mymodal " + template} show={open} onHide={closeModal} size={size} centered> 
             <Modal.Body>
                 <Welcome lang={lang} />

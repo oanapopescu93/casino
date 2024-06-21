@@ -22,26 +22,26 @@ module.exports = Object.freeze({
         {table_id: '020', table_name: "poker", table_type: "poker_5_card_draw"},
     ],
     MARKET: [
-        {id: "carrot", name_eng: "carrot", name_ro: "morcov", name_fr: "carotte", name_de: "karotte", name_es: "zanahoria", name_it: "carota", name_pt: "cenoura", name_ru: "морковь", price: 1},    
+        {id: "carrot", name_eng: "carrot", name_ro: "morcov", name_fr: "carotte", name_de: "karotte", name_es: "zanahoria", name_it: "carota", name_pt: "cenoura", name_ru: "морковь", price: 1},
         {id: "garlic", name_eng: "garlic", name_ro: "usturoi", name_fr: "ail", name_de: "knoblauch", name_es: "ajo", name_it: "aglio", name_pt: "alho", name_ru: "чеснок", price: 2},
         {id: "onion", name_eng: "onion", name_ro: "ceapa", name_fr: "oignon", name_de: "zwiebel", name_es: "cebolla", name_it: "cipolla", name_pt: "cebola", name_ru: "лук", price: 3},
-        {id: "radish", name_eng: "radish", name_ro: "ridiche", name_fr: "radis", name_de: "radieschen", name_es: "rábano", name_it: "ravanello", name_pt: "rabanete", name_ru: "редис", price: 5},        
+        {id: "radish", name_eng: "radish", name_ro: "ridiche", name_fr: "radis", name_de: "radieschen", name_es: "rábano", name_it: "ravanello", name_pt: "rabanete", name_ru: "редис", price: 5},
         {id: "turnip", name_eng: "turnip", name_ro: "nap", name_fr: "navet", name_de: "steckrübe", name_es: "nabo", name_it: "rape", name_pt: "nabo", name_ru: "репа", price: 10},
         {id: "potato", name_eng: "potato", name_ro: "cartof", name_fr: "pomme de terre", name_de: "kartoffel", name_es: "patata", name_it: "patata", name_pt: "batata", name_ru: "картофель", price: 20},
         {id: "cabbage", name_eng: "cabbage", name_ro: "varza", name_fr: "chou", name_de: "kohl", name_es: "col", name_it: "cavolo", name_pt: "repolho", name_ru: "капуста", price: 30},
-    ],    
-    CURRENCIES: [
-        {id: "carrot", name_eng: "carrot", name_ro: "morcov", name_fr: "carotte", name_de: "karotte", name_es: "zanahoria", name_it: "carota", name_pt: "cenoura", name_ru: "морковь", price: 1},    
     ],
-    PROFILES: [        
+    CURRENCIES: [
+        {id: "carrot", name_eng: "carrot", name_ro: "morcov", name_fr: "carotte", name_de: "karotte", name_es: "zanahoria", name_it: "carota", name_pt: "cenoura", name_ru: "морковь", price: 1},
+    ],
+    PROFILES: [
         {id: 1, name_eng: "weasel", name_ro: "nevastuica", name_fr: "belette", name_de: "wiesel", name_es: "comadreja", name_it: "donnola", name_pt: "doninha", name_ru: "ласка", free: true},
         {id: 2, name_eng: "fox", name_ro: "vulpe", name_fr: "renard", name_de: "fuchs", name_es: "zorro", name_it: "volpe", name_pt: "raposa", name_ru: "лиса", free: false},
         {id: 3, name_eng: "wolf", name_ro: "lup", name_fr: "loup", name_de: "wolf", name_es: "lobo", name_it: "lupo", name_pt: "lobo", name_ru: "волк", free: false},
         {id: 4, name_eng: "lynx", name_ro: "ras", name_fr: "lynx", name_de: "luchs", name_es: "lince", name_it: "lince", name_pt: "lince", name_ru: "рысь", free: false},
         {id: 5, name_eng: "ferret", name_ro: "dihor", name_fr: "furet", name_de: "frettchen", name_es: "hurón", name_it: "furetto", name_pt: "furão", name_ru: "хорёк", free: true},
         {id: 6, name_eng: "marten", name_ro: "jder", name_fr: "martre", name_de: "marder", name_es: "marta", name_it: "martora", name_pt: "marta", name_ru: "кунгуря", free: true},
-    ],    
-    DONATIONS: [        
+    ],
+    DONATIONS: [
         {type: "crypto", title: "Bitcoin", text: "bc1qhpj7gpflqumppla8p9rk6f3fsq2qrmslakgmha", link: "bitcoin:bc1qhpj7gpflqumppla8p9rk6f3fsq2qrmslakgmha"},
         {type: "crypto", title: "Ethereum", text: "-"},
         {type: "crypto", title: "Litecoin", text: "-"},
@@ -52,7 +52,7 @@ module.exports = Object.freeze({
         {type: "bank", title: "IBAN", text: "RO93BTRLRONCRT0316896401"}
     ],
     SLOT_PRIZES: [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3],
-    RACE_RABBITS: [        
+    RACE_RABBITS: [
         {id: 1, participating: false, name: "Bunny_01", breed: "American Fuzzy Lop", img: "/img/rabbit_list/american_fuzzy_lop.png"},
         {id: 2, participating: false, name: "Bunny_02", breed: "American", img: "/img/rabbit_list/american.png"},
         {id: 3, participating: false, name: "Bunny_03", breed: "Belgian Hare", img: "/img/rabbit_list/belgian_hare.png"},

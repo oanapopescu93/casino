@@ -248,7 +248,7 @@ function KenoAnimation(props){
     return <>
         <Row>
             <Col sm={8}>
-                <canvas id="keno_canvas"></canvas>
+                <canvas id="keno_canvas" />
             </Col>
             <Col sm={4}>
                 <Row>
@@ -259,7 +259,7 @@ function KenoAnimation(props){
                             no_of_games={no_of_games}
                             price_per_game={price_per_game}
                             results={resultsPayload}                            
-                        ></KenoResults>
+                        />
                     </Col>
                     <Col sm={12} className="button_action_group">
                         <Button type="button" onClick={()=>handleShowPrizes()} className="mybutton button_transparent shadow_convex">
@@ -267,7 +267,7 @@ function KenoAnimation(props){
                         </Button>	
                     </Col>
                 </Row>
-            </Col>            
+            </Col>
         </Row>
     </>
 }

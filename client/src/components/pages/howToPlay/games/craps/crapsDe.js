@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function CrapsDe(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Einführung</h3></Col>
@@ -46,7 +46,7 @@ function CrapsDe(){
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

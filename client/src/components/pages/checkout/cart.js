@@ -31,7 +31,7 @@ function Cart(props){
                     <Row>
                         <Col xs={6} sm={12} md={4} className="cart_image">
                             <div className="crop_vegetables">
-                                <img alt="vegetable" className={'vegetable '+item.id} src={vegetables_yellow}></img>
+                                <img alt="vegetable" className={'vegetable '+item.id} src={vegetables_yellow} />
                             </div>
                         </Col>
                         <Col xs={6} sm={12} md={8} className="cart_info">
@@ -56,7 +56,7 @@ function Cart(props){
                                         return <h4>{item.name_eng}</h4>
                                 }
                             })()}
-                            <p><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>                                   
+                            <p><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
                         </Col>
                     </Row>
                 </div>

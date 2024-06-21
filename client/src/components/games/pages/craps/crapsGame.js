@@ -571,23 +571,23 @@ function Craps(props){
 			</Col>
 		</Row>
         <Row>
-            <Col sm={2}></Col>
+            <Col sm={2} />
             <Col sm={8}>
 				<Row>
 					<Col sm={6} className="dice_container">
-						<Dice innerRef={dice1} number={1}></Dice>
-						<Dice innerRef={dice2} number={2}></Dice>
+						<Dice innerRef={dice1} number={1} />
+						<Dice innerRef={dice2} number={2} />
 					</Col>
 					<Col sm={6} className="craps_board_container">
 						<div className="craps_board_box">
 							<div readOnly id="craps_board" className="craps_board" ref={craps_board}>
-								<CrapsBoardText list={crapsBoardList}></CrapsBoardText>
+								<CrapsBoardText list={crapsBoardList} />
 							</div>
 						</div>
 					</Col>
 				</Row>
             </Col>
-            <Col sm={2}></Col>
+            <Col sm={2} />
         </Row>
 	</>	
 }
@@ -670,7 +670,7 @@ function CrapsGame(props){
 	}
 
     return <div className="game_container craps_container">
-		<Craps {...props} startGame={start} winLose={(e)=>winLose(e)}></Craps>
+		<Craps {...props} startGame={start} winLose={(e)=>winLose(e)} />
 		<Row>
 			<Col sm={12} className="game_start">
 				<Button 

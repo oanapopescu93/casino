@@ -16,8 +16,8 @@ function AboutPT(props){
     }
     return (
         <Row id="about" className="other_page_container">
-            <Col lg={2}></Col>
-            <Col lg={8}>            
+            <Col lg={2} />
+            <Col lg={8}>
                 <p>Bem-vindo ao {casino_name}, um projeto feito com amor por um grupo de entusiastas de cassino dedicados a compartilhar sua paixão pelo jogo com o mundo. Embora não sejamos um cassino comercial (pelo menos, ainda não), nossa missão é fornecer uma experiência de jogo única e agradável para nossos colegas entusiastas de jogos.</p>
                 <h3>Nossa História:</h3>
                 <p>{casino_name} começou como um projeto pessoal, nascido de nosso amor profundo por tudo que diz respeito a cassinos. Como jogadores ávidos, sempre sonhamos em criar um espaço onde as pessoas possam desfrutar da emoção dos jogos de cassino sem a pressão de interesses comerciais. Este projeto é um testemunho de nosso compromisso com o mundo dos jogos e nossa vontade de construir algo realmente especial.</p>
@@ -35,7 +35,7 @@ function AboutPT(props){
                 <p>Obrigado por fazer parte de nossa jornada em {casino_name}. Estamos ansiosos para compartilhar muitos momentos memoráveis no mundo dos jogos juntos.</p>
                 <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: props.lang, info: "how_to_play"})}</p>
             </Col>
-            <Col lg={2}></Col>
+            <Col lg={2} />
         </Row>
     )
 }

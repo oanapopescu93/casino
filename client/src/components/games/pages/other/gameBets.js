@@ -34,9 +34,9 @@ function GameBets(props){
                 {(() => {
                     switch (template) {
                         case "craps":
-                            return <CrapsTable {...props} clear={clear} getData={(e)=>getData(e)}></CrapsTable>
+                            return <CrapsTable {...props} clear={clear} getData={(e)=>getData(e)} />
                         case "roulette":
-                            return <RouletteTable {...props} clear={clear} getData={(e)=>getData(e)}></RouletteTable>               
+                            return <RouletteTable {...props} clear={clear} getData={(e)=>getData(e)} />
                         default:
                             return null
                     }

@@ -14,7 +14,7 @@ export const translate = function (data){
     let lang = data.lang ? data.lang : "ENG"
     let info = data.info
     let capitalize_first_letter = data.capitalize_first_letter ? data.capitalize_first_letter : false
-    let word = wordsEng(info)    
+    let word = wordsEng(info)
     switch(lang){
         case "DE":
             word = wordsDe(info)

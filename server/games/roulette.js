@@ -8,7 +8,7 @@ function roulette(data, how_lucky){
     
     if(monkey_roulette){ // it means the player must lose
         monkey = get_monkey_for_roulette(data.bet)
-    }    
+    }
     
     let spin_time = Math.floor(Math.random() * (800 - 300)) + 300
     let ball_speed = 0.06

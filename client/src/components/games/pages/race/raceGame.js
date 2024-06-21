@@ -982,7 +982,7 @@ function RaceGame(props){
 		<div className="race_order_container">
 			<div id="race_order"></div>
 		</div>
-        <canvas id="race_canvas" className="shadow_convex"></canvas>
+        <canvas id="race_canvas" className="shadow_convex" />
     </div>
 }
 

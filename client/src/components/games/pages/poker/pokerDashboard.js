@@ -150,7 +150,7 @@ function PokerDashboard(props){
     }
 
     return <div className="game_container poker_container">
-        <canvas id="poker_canvas"></canvas>
+        <canvas id="poker_canvas" />
         {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
             <div className="poker_pot">{translate({lang: props.lang, info: "total_pot"})}: {pot}</div>
         </div> : null}        
@@ -165,7 +165,7 @@ function PokerDashboard(props){
             action={action}
             choice={(e)=>choice(e)} 
             updateBets={(e)=>updateBets(e)}
-        ></GameBoard>}        
+            />}
         </>}
     </div>
 }

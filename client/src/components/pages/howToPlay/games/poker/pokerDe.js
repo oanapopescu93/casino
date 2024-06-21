@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 function PokerDe(){
     return <Row>
-        <Col lg={2}></Col>
+        <Col lg={2} />
         <Col lg={8}>
             <Row>
                 <Col sm={12}><h3>Einführung</h3></Col>
@@ -31,7 +31,7 @@ function PokerDe(){
                 <Col sm={12}>
                     <p>Poker beinhaltet in der Regel mehrere Einsatzrunden, bei denen die Spieler basierend auf der Stärke ihrer Hand oder ihrer Bluffstrategie Einsätze platzieren.</p>
                     <p>Die gängigsten Arten von Pokerspielen sind Texas Hold'em, Omaha, Seven-Card Stud und Five-Card Draw.</p>
-                </Col>                
+                </Col>
             </Row>
             <Row>
                 <Col sm={6}>
@@ -110,7 +110,7 @@ function PokerDe(){
                 </Col>
             </Row>
         </Col>
-        <Col lg={2}></Col>
+        <Col lg={2} />
     </Row>
 }
 

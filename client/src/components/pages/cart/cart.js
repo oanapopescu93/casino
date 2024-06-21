@@ -66,7 +66,7 @@ function Cart(props){
     }
 
     return <div className="content_wrap">
-        <Header template="cart" title={translate({lang: props.lang, info: "cart"})}></Header>    
+        <Header template="cart" title={translate({lang: props.lang, info: "cart"})} /> 
         <div className="page_content">
             {list && list.length>0 ? <Row>
                 <Col sm={8}>
@@ -75,7 +75,7 @@ function Cart(props){
                         list={list} 
                         updateQtyProduct={(e)=>updateQtyProduct(e)}
                         removeProduct={(e)=>removeProduct(e)}
-                    ></List>                    
+                    />
                 </Col>
                 <Col sm={4}>
                     <Panel 
@@ -86,11 +86,11 @@ function Cart(props){
                         handleBack={()=>handleBack()}
                         handleCheckout={()=>handleCheckout()}
                         handleContinueShopping={()=>handleContinueShopping()}
-                    ></Panel>
+                    />
                     <Promo 
                         {...props} 
                         updatePromo={(e)=>updatePromo(e)}
-                    ></Promo>
+                    />
                 </Col>
             </Row> : 
             <Row>

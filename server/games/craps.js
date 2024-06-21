@@ -3,12 +3,12 @@ function craps(data, how_lucky){
     let is_lucky = Math.floor(Math.random() * 100)
     if(is_lucky % how_lucky === 0){
         monkey_craps = true
-    }    
+    }
     let how_many_dices = data.how_many_dices
     let numbers = []
     let point = data.point
     let before = data.before
-    let array = [2, 3, 7, 12]    
+    let array = [2, 3, 7, 12]
     numbers = set_numbers()
     
     while(numbers[0] == before[0] && numbers[1] == before[1]){

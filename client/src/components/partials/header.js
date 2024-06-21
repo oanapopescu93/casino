@@ -37,12 +37,12 @@ function Header(props){
                             <h1>{title}</h1>
                             <h3>{translate({lang: lang, info: "salon_subtitle"})}</h3> 
                             {showEaster ? <div className="easter_eggs easter_eggs_salon">
-                                <EasterEgg></EasterEgg>
-                                <EasterEgg></EasterEgg>
+                                <EasterEgg />
+                                <EasterEgg />
                             </div> : null}
                             {showHalloween ? <div className="halloween_container halloween_container_salon">
-                                <Ghost></Ghost>
-                                <Ghost></Ghost>
+                                <Ghost />
+                                <Ghost />
                             </div> : null}
                         </div> 
                     case "game":
@@ -62,7 +62,7 @@ function Header(props){
                             </div>
                         } else {
                             return <div id="header" className="header">
-                                <TransparentText text={title} />                           
+                                <TransparentText text={title} />
                             </div>
                         }
                     case "panel_user":                        
@@ -87,8 +87,8 @@ function Header(props){
                         return <div id="header_sign" className="header">
                             <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                             <h1>{title}</h1>
-                            <h3>{translate({lang: lang, info: "subtitle"})}</h3>                                    
-                        </div>          
+                            <h3>{translate({lang: lang, info: "subtitle"})}</h3>
+                        </div>
                     default:
                         let style = ""
                         if(template === "donation"){
@@ -97,12 +97,12 @@ function Header(props){
                         return <div className="header">
                             <h1 className="title">{title}</h1>
                             {showEaster ? <div className={"easter_eggs" + style}>
-                                <EasterEgg></EasterEgg>
-                                <EasterEgg></EasterEgg>
+                                <EasterEgg />
+                                <EasterEgg />
                             </div> : null}
                             {showHalloween ? <div className="halloween_container halloween_container_salon">
-                                <Ghost></Ghost>
-                                <Ghost></Ghost>
+                                <Ghost />
+                                <Ghost />
                             </div> : null}
                         </div>
                 }

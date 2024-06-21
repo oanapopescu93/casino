@@ -18,16 +18,16 @@ import { translate } from '../../translations/translate'
 function OtherPages(props) {
     const {lang, page, home} = props
 
-    return <>        
-        <Language title={lang}></Language>          
+    return <>
+        <Language title={lang} />
         {(() => {
             switch (page.page) {
                 case "About":
-                    return <About {...props}></About>
+                    return <About {...props} />
                 case "terms_cond":
-                    return <TermsConditions {...props}></TermsConditions>
+                    return <TermsConditions {...props} />
                 case "policy_privacy":
-                    return <PolicyPrivacy {...props}></PolicyPrivacy>         
+                    return <PolicyPrivacy {...props} />
                 case "Career":
                     let list_career = []                  
                     if(home && home.career && home.career[0]){
@@ -37,7 +37,7 @@ function OtherPages(props) {
                             list_career = home.career[0]["ENG"]
                         }                  
                     }
-                    return <Career {...props} list={list_career}></Career>           
+                    return <Career {...props} list={list_career} />
                 case "Questions":
                     let list_questions = []                  
                     if(home && home.questions && home.questions[0]){
@@ -47,21 +47,21 @@ function OtherPages(props) {
                             list_questions = home.questions[0]["ENG"]
                         }                  
                     }
-                    return <Questions {...props} list={list_questions}></Questions>
+                    return <Questions {...props} list={list_questions} />
                 case "Contact":
-                    return <Contact {...props}></Contact>
+                    return <Contact {...props} />
                 case "Donation":
-                    return <Donation {...props} list={home.donations}></Donation>
+                    return <Donation {...props} list={home.donations} />
                 case "Cart":
-                    return <Cart {...props}></Cart>
+                    return <Cart {...props} />
                 case "Checkout":
-                    return <Checkout {...props}></Checkout>
+                    return <Checkout {...props} />
                 case "Order":
-                    return <Orders {...props}></Orders>
+                    return <Orders {...props} />
                 case "BuyCarrots":
-                    return <BuyCarrots {...props}></BuyCarrots>
+                    return <BuyCarrots {...props} />
                 case "how_to_play": 
-                    return <HowToPlay {...props}></HowToPlay>                                   
+                    return <HowToPlay {...props} />
                 default:
                     return <p>{translate({lang: props.lang, info: "error"})}</p>
             }

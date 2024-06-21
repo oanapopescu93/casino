@@ -70,7 +70,7 @@ function ContactMap(props){
         className: 'markerTooltipContainer',
     }
 
-    return <div id="contact_map" className="contact_box shadow_concav">        
+    return <div id="contact_map" className="contact_box shadow_concav">
         <MapContainer {...mapOptions}>
             <MapChild markerOptions={markerOptions} popupOptions={popupOptions} country={country} city={city} zoom={zoom}></MapChild>
         </MapContainer>

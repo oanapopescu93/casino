@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import { translate } from '../../translations/translate'
 import { useDispatch, useSelector } from 'react-redux'
-import { changePopup } from '../../reducers/popup';
-import { isEmpty } from '../../utils/utils';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { changePopup } from '../../reducers/popup'
+import { isEmpty } from '../../utils/utils'
+import { Form, Button, Col, Row } from 'react-bootstrap'
 
 function SignUp(props) {
     let isMinor = useSelector(state => state.auth.isMinor)
     const [email, setEmail] = useState('')
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
-    let dispatch = useDispatch()    
+    let dispatch = useDispatch()
 
     function handleChange(type, e){
         switch(type) {
@@ -72,7 +72,7 @@ function SignUp(props) {
                     <input className="input_light" type="password" value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
                 </Col>
             </Row>
-            {!isMinor ? null : <Row>
+            {isMinor ? null : <Row>
                 <Col>
                     <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor">
                         {translate({lang: props.lang, info: "sign_up"})}
