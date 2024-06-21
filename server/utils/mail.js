@@ -32,10 +32,14 @@ const transports = {
 
 function getTransport(email) {
     const domain = email.split('@')[1]
-    if (domain.includes('gmail.com')) {
-        return transports.default
-    } else if (domain.includes('yahoo.com')) {
-        return transports.default
+    if(domain){
+        if (domain.includes('gmail.com')){
+            return transports.default
+        } else if (domain.includes('yahoo.com')) {
+            return transports.default
+        } else {
+            return transports.default
+        }
     } else {
         return transports.default
     }

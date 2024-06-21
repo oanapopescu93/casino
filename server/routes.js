@@ -27,9 +27,9 @@ router.post("/api/home", jsonParser, (req, res, next) => {
   res.send(JSON.stringify(payload))
 })
 router.post("/api/contact", jsonParser, (req, res, next) => {
-  sendEmail('contact', req.body).then(function(){
+  sendEmail('contact', req.body).then(function(data){
     try{
-      res.send({send: "email_send"})
+      res.send(data)
     }catch(e){
       console.log('[error]','contact--> ', e)
       res.send({send: "email_no_send"})

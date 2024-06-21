@@ -43,7 +43,7 @@ function ContactForm(props){
                 if(data && data.send){
                     setSendResults(data.send)
                 }
-            });
+            })
         } else {
             if(subject === ""){
                 setErrorSubject(true)
