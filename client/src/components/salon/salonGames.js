@@ -107,7 +107,8 @@ function SalonGames(props){
     }
 
     function handleSelect(x){
-        let i = casinoGamesTitle.indexOf(x)
+        let xLowerCase = x.toLowerCase()
+        let i = casinoGamesTitle.indexOf(xLowerCase)
         if(i !== -1){
             setIndex(i)
         }
