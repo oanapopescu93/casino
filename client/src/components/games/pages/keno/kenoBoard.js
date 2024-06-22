@@ -137,7 +137,7 @@ function KenoBoard(props){
         setQuickPickLength(e)
     }
 
-    function handleStart(){        
+    function handleStart(){
         if(typeof props.startGame !== "undefined"){
             if(typeof props.getData === "function"){
                 props.getData({list: getSelections(kenoSpots), price_per_game: parseInt(titleDropdown1), no_of_games: parseInt(titleDropdown2)})

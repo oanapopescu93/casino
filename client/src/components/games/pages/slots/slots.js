@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import { draw_dot, getRoom, get_slots_images } from '../../../../utils/games'
@@ -24,6 +24,7 @@ function slots_game(props, id){
 	let spin_time_reel = spin_time/5 // how long each slot spins at minimum
 	let slot_speed = [] // how many pixels per second slots roll
 	let speed = 10
+	let border = 5
 	
 	this.state = 0
 	this.images = []
@@ -45,7 +46,7 @@ function slots_game(props, id){
             promises.push(self.preaload_images(items[i]))
         }
 
-        Promise.all(promises).then(function(result){            
+        Promise.all(promises).then(function(result){
             self.images = result	
             slots_canvas = []
             for(let i in reel){	
@@ -93,24 +94,52 @@ function slots_game(props, id){
 		image_size_canvas = [290, 290, 5, 5, 80, 80]
 		speed = 10
 		slot_speed = []
-		if (window.innerWidth < 768){
-			image_size = [50, 50]
-			image_size_canvas = [290, 290, 3, 3, 40, 40]
+		border = 5
+		if (window.innerWidth < 767){
 			speed = 5
 		}
-		if (props.lines > 3 && window.innerWidth < 480){
-			image_size = [40, 40]
-			image_size_canvas = [290, 290, 3, 3, 30, 30]
+		if (window.innerWidth < 480){
+			border = 3
 		}
-		if (props.lines > 3 && window.innerWidth < 360){
-			image_size = [30, 30]
-			image_size_canvas = [290, 290, 3, 3, 20, 20]
+		switch(props.lines){
+			case 3:	
+				if (window.innerWidth < 480){
+					image_size = [70, 70]
+					image_size_canvas = [290, 290, 3, 3, 60, 60]
+				}
+				if (window.innerWidth < 360){
+					image_size = [50, 50]
+					image_size_canvas = [290, 290, 3, 3, 40, 40]
+				}
+				break
+			case 5:
+				if (window.innerWidth < 767){
+					image_size = [70, 70]
+					image_size_canvas = [290, 290, 3, 3, 60, 60]
+				}
+				if (window.innerWidth < 600){
+					image_size = [60, 60]
+					image_size_canvas = [290, 290, 3, 3, 50, 50]
+				}
+				if (window.innerWidth < 480){
+					image_size = [50, 50]
+					image_size_canvas = [290, 290, 3, 3, 40, 40]
+				}
+				if (window.innerWidth < 400){
+					image_size = [40, 40]
+					image_size_canvas = [290, 290, 3, 3, 30, 30]
+				}
+				if (window.innerWidth < 321){
+					image_size = [30, 30]
+					image_size_canvas = [290, 290, 3, 3, 20, 20]
+				}
+				break
+			default:
 		}			
 	}
 
 	this.create_slot_machine_lines = function(){
-		if(reel){	
-			let border = 5
+		if(reel){
 			let canvas_lines = $('#slot_machine_lines')[0]			
 			let width = reel.length * (image_size[0] + 2 * border) 
 			let height = 3 * image_size[1] + 2 * border 
@@ -278,7 +307,7 @@ function slots_game(props, id){
 		}
 	}
 
-    this.rotate = function(i, slot_speed){        
+    this.rotate = function(i, slot_speed){
 		self.offset[i] = self.offset[i] - slot_speed
 		let max_height = -(reel[i][0].height - items.length * image_size[1])
 		if(self.offset[i] < max_height){
@@ -414,24 +443,25 @@ let slots_data = null
 let slots_bets = 0
 let slots_status = false
 function Slots(props){
-    let dispatch = useDispatch() 
+    let dispatch = useDispatch()
+	const [width, setWidth] = useState(getWindowDimensions().width)
     let game = props.page.game
     let game_type = game.table_type
-	let money = props.user.money ? decryptData(props.user.money) : 0 
+	let money = props.user.money ? decryptData(props.user.money) : 0
     let lines = 5
     switch(game_type) {
         case "reel_3":
             lines = 3
             break
         case "reel_5":
-        default: 
+        default:
             lines = 5
             break
     }
     let items = get_slots_images()
 	function clear(bet){
 		slots_bets = bet
-		if(slots_bets > 0 && slots_status){			
+		if(slots_bets > 0 && slots_status){		
 			let slots_payload = {
 				uuid: props.user.uuid,
 				game: game,
@@ -445,7 +475,19 @@ function Slots(props){
 		}
 	}
     let options = {...props, lines, items, dispatch, clear}
-    let my_slots = new slots_game(options)	
+    let my_slots = new slots_game(options)
+
+	function handleResize(){
+        setWidth(getWindowDimensions().width)
+    }
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.addEventListener("resize", handleResize)
+            handleResize()
+            return () => window.removeEventListener("resize", handleResize)
+        }
+	}, [])
 
     useEffect(() => {
         let payload = {uuid: props.user.uuid, lines, room: getRoom(game), items: items}	
@@ -512,6 +554,7 @@ function Slots(props){
 	}
 
     return <div className="game_container">
+		{width}
         <div id="slot_machine" className={"slot_machine " + "slot_machine_" + lines}>
             <canvas id="slot_machine_lines" />
             {(() => {
@@ -533,14 +576,14 @@ function Slots(props){
 						</>
 					}
             })()}
-			{getWindowDimensions().width >= 600 ? <div id="slots_prizes" className="desktop" onClick={()=>handleShowPrizes()}>
+			{width >= 600 ? <div id="slots_prizes" className="desktop" onClick={()=>handleShowPrizes()}>
             	{translate({lang: props.lang, info: "prizes"})}
         	</div> : null}			
         </div>		
         <div className="slot_machine_board">
             <GameBoard template="slots" {...props} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
         </div>
-		{getWindowDimensions().width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
+		{width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
             {translate({lang: props.lang, info: "prizes"})}
         </div> : null}
     </div>

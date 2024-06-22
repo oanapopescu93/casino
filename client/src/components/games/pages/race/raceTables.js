@@ -19,7 +19,7 @@ function RaceTables(props){
 		})
 	}
 
-    function getData(){        
+    function getData(){
         const sum = race_bets.reduce((total, current) => total + current.bet, 0)
         if(money >= sum){ //the user has enough money to make all these bets
             props.getData(race_bets)

@@ -139,7 +139,7 @@ function Career(props){
         <div className="page_content">
             {(() => {
                 if(props.list){
-                    if(props.list.length>0){                        
+                    if(props.list.length>0){
                         return <CareerList lang={props.lang} list={props.list} />
                     } else {
                         return <p className="text_center">{translate({lang: props.lang, info: "no_career"})}</p>

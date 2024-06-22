@@ -21,7 +21,7 @@ function Home(props) {
     function handleCookiesClick(){
         dispatch(changeCookies())
     }
-    function handleDonationClick(){        
+    function handleDonationClick(){
         dispatch(changePage('Donation'))
     } 
     
@@ -36,8 +36,8 @@ function Home(props) {
 
         if(paymentId && payerId){
             postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{ //test --> /api/paypal/success?paymentId=oaie&PayerID=porc
-                if (data) {                
-                    if (data.result === "error"){                        
+                if (data) {
+                    if (data.result === "error"){
                         let payload = {
                             open: true,
                             template: "error",

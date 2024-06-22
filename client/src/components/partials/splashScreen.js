@@ -7,7 +7,7 @@ function Splash(props) {
     const [height, setHeight] = useState(getHeightBasedOnWidth(getWindowDimensions().width))
 
     function getHeightBasedOnWidth(width){
-        if (width >= 960) {
+        if(width >= 960){
           return 72
         } else if (width >= 600) {
           return 50
@@ -20,8 +20,8 @@ function Splash(props) {
         setHeight(getHeightBasedOnWidth(getWindowDimensions().width))
     }
 
-    useEffect(() => {        
-        if (typeof window !== "undefined") {
+    useEffect(() => {    
+        if(typeof window !== "undefined"){
             window.addEventListener("resize", handleResize)
             handleResize()
             return () => window.removeEventListener("resize", handleResize)

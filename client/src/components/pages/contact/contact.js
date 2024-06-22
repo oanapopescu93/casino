@@ -30,7 +30,7 @@ function Contact(props){
         dispatch(changeGamePage(null))
     }
 
-    function handleChooseContactElement(x, i){        
+    function handleChooseContactElement(x, i){
         if(x){
             setIndex(i)
             let location = locations[i][props.lang]

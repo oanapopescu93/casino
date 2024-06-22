@@ -39,7 +39,7 @@ function Promo(props){
                 className="mybutton button_transparent shadow_convex remove"
                 onClick={()=>{handleClick()}}
             ><span>{translate({lang: lang, info: "apply_coupon"})}</span></Button>
-            {(() => {                 
+            {(() => {
                 if(!isEmpty(coupon)){
                     if(Object.keys(coupon).length>0){
                         return <p className="alert alert-success">

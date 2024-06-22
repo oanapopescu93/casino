@@ -30,7 +30,7 @@ function Card(config){
     self.bet = config.bet ? config.bet : 0
     self.last_choice = config.last_choice ? config.last_choice : null
 
-	self.show_cards = function(ctx, data, template){        
+	self.show_cards = function(ctx, data, template){
         if(self.id !== -1){
             //player
             if(self.fold){ //if the player folded, his cards will be grey
@@ -128,7 +128,7 @@ function Card(config){
                     break			
             }
             
-            if(self.id !== -1){                
+            if(self.id !== -1){
                 //player
                 if(self.uuid === self.props.user.uuid){
                     ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i * (self.space + w), y, w, h)
@@ -158,7 +158,7 @@ function Card(config){
 		ctx.closePath()
 	}
 
-    self.updateHand = function(i, x, y, w, h){        
+    self.updateHand = function(i, x, y, w, h){
         self.hand[i].x = x
         self.hand[i].y = y
         self.hand[i].width = w
@@ -431,7 +431,7 @@ export const poker_game = function(props){
 
     this.draw_cards = function(){
 		if(poker_data){
-			for(let i in card_list){                
+			for(let i in card_list){
 				card_list[i].show_cards(ctx, poker_data, props.template)
 			}
 		}

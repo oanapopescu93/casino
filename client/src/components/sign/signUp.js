@@ -73,7 +73,7 @@ function SignUp(props) {
                 </Col>
             </Row>
             {(() => {
-                if(isMinor  === "false" || isMinor === false) {                    
+                if(isMinor  === "false" || isMinor === false) {
                     return <Row>
                         <Col>
                             <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor">
@@ -81,7 +81,7 @@ function SignUp(props) {
                             </Button>
                         </Col>
                     </Row>
-                } else {                    
+                } else {
                     return null
                 }	
             })()}

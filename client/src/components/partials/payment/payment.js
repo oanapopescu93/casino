@@ -281,13 +281,13 @@ function Payment(props){
             payload.amount = total_promo
             //console.log('sendPayload1--> ', gateway, payload, url)
             if(!isEmpty(url)){
-                postData(url, payload).then((data) => {                    
+                postData(url, payload).then((data) => {
                     if(data && data.result && data.result === "success"){
                         //console.log('sendPayload2--> ', data)
                         switch(gateway){
                             case "stripe":
                             case "paypal":
-                                if(data.payload.receipt_url){                                    
+                                if(data.payload.receipt_url){
                                     window.open(data.payload.receipt_url,'_blank')
                                 }
                                 break
@@ -319,7 +319,7 @@ function Payment(props){
                             default:
                                 break
                         }
-                    } else {                        
+                    } else {
                         let payload = {
                             open: true,
                             template: "error",

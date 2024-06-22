@@ -37,7 +37,7 @@ function PaymentForm(props){
 
     const cityDropdownRef = useRef(null)
     
-    useEffect(() => {        
+    useEffect(() => {
         const countryNames = Object.keys(countriesData)
         setCountries(countryNames)
         setFilteredCountries(countryNames)
@@ -56,7 +56,7 @@ function PaymentForm(props){
         }
     }
     function handleChangeCheck(x){
-        switch(x){            
+        switch(x){
             case "radio3":	
                 setRadioOne(false)			
                 setRadioTwo(false)
@@ -346,7 +346,7 @@ function PaymentForm(props){
                 {radioThree ? <>
                     <Row>
                         <Col sm={12}>
-                            {(() => {                        
+                            {(() => {
                                 if(cryptoData && totalPromo > 0){
                                     if(parseInt(cryptoData.fiat_equivalent) <= parseInt(totalPromo)){
                                         return <>

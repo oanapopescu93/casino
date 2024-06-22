@@ -370,7 +370,7 @@ textarea:focus, input:focus{
   line-height: 12px;
   padding: var(--padding_small) var(--padding);
   border-radius: 10px;
-  height: 30px;
+  height: 25px;
   width: 100%;
   cursor: pointer;
 }
@@ -2193,7 +2193,7 @@ textarea {
   width: 50%;
 }
 .cart .cart_button .mybutton{
-  height: 32px;
+  height: 35px;
 }
 .cart .remove{
   width: 40px!important;
@@ -2620,6 +2620,49 @@ textarea {
   vertical-align: top;
   padding: 0px var(--padding_small);
 }
+@media (max-width: 767px) {	
+  .slot_machine .box{
+    height: 220px;
+  }
+  .slot_machine.slot_machine_3 .box {
+    height: 310px;
+  }
+}
+@media (max-width: 600px) {	
+  .slot_machine .box{
+    height: 190px;
+  }
+  .slot_machine.slot_machine_3 .box {
+    height: 310px;
+  }
+}
+@media (max-width: 480px) {
+  .slot_machine{
+    border: var(--padding_small) solid;
+    border-color: var(--dark_color) var(--color);
+  }
+  .slot_machine .box {
+    border: 3px solid;
+    border-color: var(--dark_color) var(--color) var(--dark_color) var(--dark_color);
+  }
+  .slot_machine .box {
+    height: 155px;
+  }
+  .slot_machine.slot_machine_3 .box {
+    height: 215px;
+  }
+}
+@media (max-width: 400px) {
+  .slot_machine .box{
+    height: 125px;
+  }
+}
+@media (max-width: 360px) {
+  .slot_machine.slot_machine_3 .box {
+    height: 155px;
+  }
+}
+
 /* CRAPS */
 .craps_subtitle{
   margin-bottom: var(--padding);
@@ -3278,6 +3321,7 @@ textarea {
     max-height: 400px;
   }
 }
+
 @media (max-width: 767px) {	
   .shop_shader {
     height: 45px;
@@ -3312,10 +3356,6 @@ textarea {
   .footer_container.up .footer_body{
     height: 170px;
   }
-  /* .mybutton{
-    height: 20px;
-    line-height: 8px;
-  } */
   .mybutton.round{
     width: 50px;
     height: 50px;
@@ -3436,12 +3476,7 @@ textarea {
   /* ORDER */
   .order_details{
     min-height: auto;
-  }
-
-  /* SLOTS */
-  .slot_machine .box{
-    height: 160px;
-  }
+  } 
 
   /* CRAPS */
   .dice {
@@ -3587,14 +3622,7 @@ textarea {
     border-bottom: solid 1px var(--color);
   }
 }
-@media (max-width:480px) {
-  /* SLOTS */
-  .slot_machine .box {
-    height: 130px;
-  }
-  .slot_machine.slot_machine_3 .box {
-    height: 160px;
-  }
+@media (max-width:480px) {  
   /* KENO */
   .keno_spot .keno_spot_box{
     width: 25px;

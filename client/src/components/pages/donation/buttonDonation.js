@@ -10,7 +10,7 @@ function ButtonDonation(props){
         }, 500)
 	}, [])
     
-    function handleClick(){        
+    function handleClick(){
         if(typeof props.handleDonationClick === "function"){
             props.handleDonationClick()
         }

@@ -39,7 +39,7 @@ function List(props){
                                     </div>
                                 </Col>
                                 <Col xs={6} sm={8} className="cart_info">
-                                    {(() => {                                        
+                                    {(() => {
                                         switch (props.lang) {
                                             case "DE":
                                                 return <h4>{item.name_de}</h4>

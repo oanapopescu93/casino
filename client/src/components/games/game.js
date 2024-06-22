@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { translate } from '../../translations/translate'
-import { changePage, changeGame, changeGamePage, changeRoom } from '../../reducers/page'
-
-import Header from '../partials/header'
 
 import Roulette from './pages/roulette/roulette'
 import Blackjack from './pages/blackjack/blackjack'
@@ -13,9 +9,11 @@ import Craps from './pages/craps/craps'
 import Poker from './pages/poker/poker'
 import Race from './pages/race/race'
 import Keno from './pages/keno/keno'
-import Panel from './sidebar/panel'
-import { getRoom } from '../../utils/games'
+import Dashboard from './pages/dashboard/dashboard'
+import Market from './pages/market/market'
 import WhackARabbit from './pages/whackARabbit/whackARabbit'
+import Panel from './sidebar/panel'
+import Header from '../partials/header'
 
 import roulette_loading_icon from '../../img/icons_other/icons/yellow/roulette.png'
 import blackjack_loading_icon from '../../img/icons_other/icons/yellow/blackjack.png'
@@ -26,11 +24,14 @@ import keno_loading_icon from '../../img/icons_other/icons/yellow/keno.png'
 import poker_loading_icon from '../../img/icons_other/icons/yellow/carribean.png'
 import whack_loading_icon from '../../img/whack_a_rabbit/whack_a_rabbit_icon.png'
 
-import Dashboard from './pages/dashboard/dashboard'
-import Market from './pages/market/market'
 import { changePopup } from '../../reducers/popup'
-import { getCookie, isEmpty, setCookie } from '../../utils/utils'
 import { changeMoney } from '../../reducers/auth'
+import { changePage, changeGame, changeGamePage, changeRoom } from '../../reducers/page'
+import { getCookie, isEmpty, setCookie } from '../../utils/utils'
+import { getRoom } from '../../utils/games'
+import { translate } from '../../translations/translate'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Game(props){
     const {lang, page, socket} = props
@@ -194,8 +195,8 @@ function Game(props){
                 })()}
             </>}
             <div className="page_exit">
-                <Button id="exit_salon" type="button" onClick={()=>handleExit()} className="mybutton button_transparent shadow_convex">
-                    {translate({lang: lang, info: "exit_game"})}
+                <Button type="button" onClick={()=>handleExit()} className="mybutton round button_transparent shadow_convex">
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
                 </Button>
             </div>
         </div>

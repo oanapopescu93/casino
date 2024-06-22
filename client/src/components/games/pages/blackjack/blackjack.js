@@ -172,8 +172,6 @@ function blackjack_game(props){
 
 	let canvas
 	let ctx
-	let canvas_width = 900
-	let canvas_height = 500
 	
 	let card_list = []
 	let card_base = {}
@@ -189,7 +187,7 @@ function blackjack_game(props){
     this.ready = function(){
         resize++
 		card_list = []
-		self.createCanvas(canvas_width, canvas_height)
+		self.createCanvas()
         if(!blackjack_status && resize === 1){
             //first time entering
             let promises = []
@@ -208,63 +206,53 @@ function blackjack_game(props){
         }
 	}
 
-	this.createCanvas = function(canvas_width, canvas_height){		
+	this.createCanvas = function(){
         canvas = document.getElementById("blackjack_canvas")
-		ctx = canvas.getContext("2d")	
-
-		if(window.innerWidth <= 480){
-			if(window.innerHeight < window.innerWidth){
-				//extra small landscape				
-				canvas.width = 400
-				canvas.height = 200
-				card_base = {x: 5, y:120, width: 46, height: 70, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:20}
-				card = {width: 33, height: 50}
-				player_nr = [12, 12]
-			} else {
-				//extra small portrait
-				canvas.width = 300
-				canvas.height = 200
-			}			
+		ctx = canvas.getContext("2d")
+		canvas.width = 1200
+		canvas.height = 500
+		card_base = {x: 20, y:260, width: 120, height: 180, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
+		card = {width: 100, height: 150}
+		player_nr = [20, 20]
+		font_bold_12 = 'bold 12px sans-serif'
+		font_bold_14 = 'bold 14px sans-serif'
+		if (window.innerWidth <= 960){
 			font_bold_12 = 'bold 10px sans-serif'
 			font_bold_14 = 'bold 12px sans-serif'
-		} else if (window.innerWidth <= 960){
-			if(window.innerHeight < window.innerWidth){
-				//small landscape				
-				canvas.width = 480
-				canvas.height = 220
-				card_base = {x: 5, y:120, width: 53, height: 80, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:20}
-				card = {width: 40, height: 60}
-				player_nr = [12, 12]
-			} else {
-				//small portrait
-				canvas.width = 300
-				canvas.height = 200
-			}			
-			font_bold_12 = 'bold 10px sans-serif'
-			font_bold_14 = 'bold 12px sans-serif'	
-		} else if (window.innerWidth <= 1200){
+		}
+
+		if (window.innerWidth <= 1200){
 			//big
 			canvas.width = 900
 			canvas.height = 450
 			card_base = {x: 20, y:240, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
 			card = {width: 80, height: 120}
 			player_nr = [20, 20]
-			font_bold_12 = 'bold 12px sans-serif'
-			font_bold_14 = 'bold 14px sans-serif'
-		} else {
-			//extra big
-			canvas.width = 1200
-			canvas.height = 500
-			card_base = {x: 20, y:260, width: 120, height: 180, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
-			card = {width: 100, height: 150}
-			player_nr = [20, 20]
-			font_bold_12 = 'bold 12px sans-serif'
-			font_bold_14 = 'bold 14px sans-serif'
 		}
-		
-		canvas_width = canvas.width
-		canvas_height = canvas.height	
-		canvas.height = canvas_height
+		if (window.innerWidth <= 960){
+			//medium
+			canvas.width = 480
+			canvas.height = 220
+			card_base = {x: 5, y:120, width: 53, height: 80, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:20}
+			card = {width: 40, height: 60}
+			player_nr = [12, 12]				
+		}
+		if(window.innerWidth <= 600){
+			//small
+			canvas.width = 400
+			canvas.height = 200
+			card_base = {x: 5, y:120, width: 46, height: 70, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:20}
+			card = {width: 33, height: 50}
+			player_nr = [12, 12]
+		}
+		if(window.innerWidth <= 480){
+			//extra small
+			canvas.width = 300
+			canvas.height = 200
+			card_base = {x: 5, y:120, width: 38, height: 60, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:30}
+			card = {width: 25, height: 38}
+			player_nr = [10, 10]
+		}
 	}
 
     this.preaload_images = function(item){
@@ -504,7 +492,7 @@ function Blackjack(props){
 						}
 						dispatch(changePopup(payload))
 					} else {
-						if(my_blackjack){                    
+						if(my_blackjack){
 							if(!blackjack_status){
 								props.socket.emit('blackjack_send', blackjack_payload_server)
 								blackjack_status = true

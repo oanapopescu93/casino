@@ -54,7 +54,7 @@ function Sign(props) {
         }
     }
 
-    function checkPayload(data){        
+    function checkPayload(data){
         let error = false
         if(typeof data.user != "undefined" && (data.user === "")){
             error = true

@@ -17,7 +17,7 @@ function User(props){
     const [buttonMarket, setButtonMarket] = useState('')
 
     function handleChange(choice){
-        switch (choice) {           
+        switch(choice){
 			case "dashboard":
 			case "market":
                 dispatch(changeGamePage(choice))

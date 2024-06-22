@@ -110,7 +110,7 @@ function CrapsTable(props){
 	let options = {...props, bet}
     let my_craps_bets = new craps_bets(options)
 
-    useEffect(() => {        
+    useEffect(() => {
         if(my_craps_bets){
             my_craps_bets.ready()
         }

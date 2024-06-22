@@ -74,7 +74,7 @@ function Page(props) {
                     return <Splash {...props} progressNumber={progressNumber} />
                 }
             } else {
-                if(home.loaded){              
+                if(home.loaded){
                     return <Home {...props} home={home} page={page} user={user} cookies={cookies} />
                 } else {
                     return <Loader />

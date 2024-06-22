@@ -143,7 +143,7 @@ function keno_game(props){
                     for(let i in ballsArray){
                         let point01 = {x: ballsArray[i].xpos, y: ballsArray[i].ypos}
                         let point02 = {x: canvas.width/2, y: canvas.height/2}
-                        if (getDistance_between_entities(point01, point02) + ballsArray[i].radius >= radiusBig) {                             
+                        if (getDistance_between_entities(point01, point02) + ballsArray[i].radius >= radiusBig) {
                             let nx_o = canvas.width/2 -  ballsArray[i].xpos
                             let ny_o = canvas.width/2 -  ballsArray[i].ypos
                     
@@ -184,7 +184,7 @@ function KenoAnimation(props){
     let price_per_game = data.price_per_game
     let howManyBalls = 80
 
-    let generatePick = function(){        
+    let generatePick = function(){
         return new Promise(function(resolve, reject){
 			let keno_payload_server = {
                 uuid: props.user.uuid,

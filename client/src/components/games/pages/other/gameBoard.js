@@ -9,7 +9,7 @@ function GameBoard(props){
     const {template, lang, user, startGame} = props
     let max_bet = user.money ? decryptData(user.money) : 0
 
-    function handleClick(e){        
+    function handleClick(e){
         if(typeof props.choice === "function"){
             props.choice(e)
         }
@@ -55,11 +55,11 @@ function GameBoard(props){
                                 </div>
                             </Col>
                         </> : <>
-                            <Col xs={4}>
+                            <Col xs={8} sm={4}>
                                 <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                             </Col>
-                            <Col xs={4} />
-                            <Col xs={4}>
+                            <Col xs={4} sm={4} className="d-none d-sm-block"/>
+                            <Col xs={4} sm={4}>
                                 <div  className="button_box">
                                     <Button type="button" onClick={()=>handleClick('start')} className="mybutton button_fullcolor shadow_convex">
                                         {translate({lang: lang, info: "start"})}

@@ -26,10 +26,10 @@ function KenoResults(props){
                 <div className="KenoResults_box">
                     <h4>{translate({lang: lang, info: "lucky_numbers"})}: </h4>
                     <div className="KenoResults_matrix 111">
-                        {list_results.map(function(items, i){                                     
+                        {list_results.map(function(items, i){
                             if(items && items.length>0){
                                 return <ul key={i}>
-                                    {items.map(function(item, j){                                                 
+                                    {items.map(function(item, j){
                                         let comma = ", "
                                         if(j === items.length-1){ //last element from the list will not have a comma
                                             comma = ""

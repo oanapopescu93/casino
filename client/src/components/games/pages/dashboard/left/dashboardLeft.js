@@ -53,7 +53,7 @@ function DashboardLeft(props){
     })
 
     function handleChoice(choice){
-        if(choice === "buy_carrots"){            
+        if(choice === "buy_carrots"){
             dispatch(changePage('BuyCarrots'))
             dispatch(changeGame(null))
             dispatch(changeGamePage(null))
@@ -98,8 +98,8 @@ function DashboardLeft(props){
                 </p>										
                 <p className="dashboard_animal">
                     <b>{translate({lang: lang, info: "animal"})}: </b>
-                    {(() => {                        
-                        if(animal && animal[0]){                            
+                    {(() => {
+                        if(animal && animal[0]){
                             switch (props.lang) {
                                 case "DE":
                                     return <>{animal[0].name_de}</>

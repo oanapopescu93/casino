@@ -25,7 +25,7 @@ var word_bank = {
     european: "European",
     american: "American",
     reel_3: "3 Reels",
-    reel_5: "3 Reels",
+    reel_5: "5 Reels",
     poker_texas_holdem: "Texas hold'em",
     poker_5_card_draw: "5 Card Draw",
 
