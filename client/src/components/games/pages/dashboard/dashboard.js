@@ -1,11 +1,12 @@
 import React from 'react'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import DashboardLeft from './left/dashboardLeft'
 import DashboardRight from './right/dashboardRight'
 import { useDispatch, useSelector } from 'react-redux'
 import { cartRemove, cartUpdate, cartRemoveAll } from '../../../../reducers/cart'
 import { changePage, changeGame, changeGamePage } from '../../../../reducers/page'
+import { Row, Col, Button } from 'react-bootstrap'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Dashboard(props){
 	let dispatch = useDispatch()
@@ -38,6 +39,13 @@ function Dashboard(props){
 				<Row>
 					<Col lg={4}>
 						<DashboardLeft {...props} />
+						<div className="dashboard_left_buttons d-none d-lg-block">
+							<Button 
+								type="button"
+								className="mybutton round button_transparent shadow_convex"
+								onClick={()=>handleShowPrizes()}                        
+							><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
+						</div>
 					</Col>
 					<Col lg={8}>
 						<DashboardRight 
@@ -49,6 +57,13 @@ function Dashboard(props){
 							updateQtyProduct={(e)=>updateQtyProduct(e)}
 							handleCheckout={()=>handleCheckout()}
 						/>
+						<div className="dashboard_left_buttons d-block d-lg-none">
+							<Button 
+								type="button"
+								className="mybutton round button_transparent shadow_convex"
+								onClick={()=>handleShowPrizes()}                        
+							><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
+						</div>
 					</Col>
 				</Row>
 			</Col>

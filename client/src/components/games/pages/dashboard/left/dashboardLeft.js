@@ -1,15 +1,13 @@
 import React from 'react'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { decryptData } from '../../../../../utils/crypto'
 import { translate } from '../../../../../translations/translate'
 import profilePic from '../../../../../img/profile/predators.jpg'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser, faUpload} from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../../reducers/popup'
 import { changePage, changeGame, changeGamePage } from '../../../../../reducers/page'
-import { Button } from 'react-bootstrap'
+import { Row, Col, Button } from 'react-bootstrap'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faUser, faUpload} from '@fortawesome/free-solid-svg-icons'
 
 function Picture(props){
 	let picId = props.pic_id
