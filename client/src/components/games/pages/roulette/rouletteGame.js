@@ -3,27 +3,25 @@ import { useDispatch} from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import { Button } from 'react-bootstrap'
 import { changePopup } from '../../../../reducers/popup'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faRotate, faCarrot} from '@fortawesome/free-solid-svg-icons'
 import { draw_dot, getDistance_between_entities, getRoom } from '../../../../utils/games'
-import $ from 'jquery'
 import { decryptData } from '../../../../utils/crypto'
 import { changeRouletteLuckyBet } from '../../../../reducers/games'
+import $ from 'jquery'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faRotate, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function roulette_game(props){
     let self = this	
     let canvas
     let ctx    
 	const dispatch = props.dispatch	
-	let canvas_width = 900
-	let canvas_height = 800
 
     let start_game = false
     let bet_x = 0
     let bet_square = 0
 
-    let roulette_radius_x = canvas_width/2
-	let roulette_radius_y = 250
+    let roulette_radius_x = 240
+	let roulette_radius_y = 240
     let numbers = [] 
 	let colors = []
 	let startAngle = -1.65
@@ -51,12 +49,12 @@ function roulette_game(props){
 	let text_offset = 0   
 
     this.ready = function(){
-        self.createCanvas(canvas_width, canvas_height)
+        self.createCanvas()
 		self.choose_roulette_type()
         self.start()
     }
 
-    this.createCanvas = function(canvas_width, canvas_height){	
+    this.createCanvas = function(){	
 		canvas = document.getElementById("roulette_canvas")	
 		ctx = canvas.getContext("2d")
 		
@@ -64,37 +62,30 @@ function roulette_game(props){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape
 				canvas.width = 290
-				canvas.height = 300
+				canvas.height = 290
 
 				roulette_radius_x = 150
 				roulette_radius_y = 150
 				outsideRadius = 120
-				textRadius = outsideRadius-15
-				insideRadius = outsideRadius-20
-
-				radiantLine01 = [-65, 15]
-				radiantLine02 = [-65, -32]
-				radiantLine03 = [-105, -80]
-				
-				bet_x = 330
-				bet_square = 30
 			} else {
 				//small portrait
-				canvas.width = 260
-				canvas.height = 260
-				roulette_radius_x = 130
-				roulette_radius_y = 130
-				outsideRadius = 100
-				textRadius = outsideRadius-15
-				insideRadius = outsideRadius-20
-
-				radiantLine01 = [-65, 15]
-				radiantLine02 = [-105, -35]
-				radiantLine03 = [-105, -85]
-				
-				bet_x = 330
-				bet_square = 30	
+				canvas.width = 250
+				canvas.height = 250
+				roulette_radius_x = 125
+				roulette_radius_y = 125
+				outsideRadius = 100					
 			}
+			
+			textRadius = outsideRadius-15
+			insideRadius = outsideRadius-20
+
+			radiantLine01 = [-65, 15]
+			radiantLine02 = [-105, -35]
+			radiantLine03 = [-105, -85]
+			
+			bet_x = 330
+			bet_square = 30
+
             circle = {radius: textRadius-15, angle:0}
 			ball = {x:70, y:roulette_radius_x, speed:0.05, width:6}
 
@@ -104,11 +95,11 @@ function roulette_game(props){
 			text_offset = 15	
 		} else {
 			//big
-			canvas.width = 900
+			canvas.width = 480
 			canvas.height = 480
 			
-			roulette_radius_x = canvas_width/2
-			roulette_radius_y = 250
+			roulette_radius_x = canvas.width/2
+			roulette_radius_y = 240
 			outsideRadius = 200
 			textRadius = outsideRadius-20
 			insideRadius = outsideRadius-30
@@ -128,9 +119,6 @@ function roulette_game(props){
 			radiantLine03 = [-160, -200]
 			text_offset = 25
 		}
-        canvas_width = canvas.width
-		canvas_height = canvas.height	
-		canvas.height = canvas_height
 		spin_clear = [0, 0, canvas.width, canvas.height]
 	}
 	
@@ -147,7 +135,7 @@ function roulette_game(props){
 	}
 
 	this.start = function(){			
-		ctx.clearRect(0,0, canvas_width, canvas_height)
+		ctx.clearRect(0,0, canvas.width, canvas.height)
 
         ctx.font = font_bold_10
 		ctx.shadowColor = "black"
@@ -694,19 +682,22 @@ function RouletteGame(props){
     }
 
     return <div className="roulette_container">
-        <canvas id="roulette_canvas" />
-        <div className="game_start">
-            <Button 
-                type="button"  
-                className="mybutton round button_transparent shadow_convex"
-                onClick={()=>gameStart()}
-            ><FontAwesomeIcon icon={faRotate} /></Button>
-            <Button 
-                type="button"  
-                className="mybutton round button_transparent shadow_convex"
-                onClick={()=>openTable()}
-            ><FontAwesomeIcon icon={faCarrot} /></Button>
-        </div>
+		<canvas id="roulette_canvas" /> 
+		<div className="game_start">
+			<Button 
+				type="button"  
+				className="mybutton round button_transparent shadow_convex"
+				onClick={()=>gameStart()}
+			><FontAwesomeIcon icon={faRotate} /></Button>
+			<Button 
+				type="button"  
+				className="mybutton round button_transparent shadow_convex"
+				onClick={()=>openTable()}
+			><FontAwesomeIcon icon={faCarrot} /></Button>
+			<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
+				<FontAwesomeIcon icon={faArrowRotateLeft} />
+			</Button>
+		</div>    
     </div>
 }
 

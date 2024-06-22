@@ -2,11 +2,14 @@ import React, {useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import { draw_dot, getRoom, get_slots_images } from '../../../../utils/games'
-import $ from 'jquery'
 import { getWindowDimensions, sortList } from '../../../../utils/utils'
 import GameBoard from '../other/gameBoard'
 import { changePopup } from '../../../../reducers/popup'
 import { decryptData } from '../../../../utils/crypto'
+import $ from 'jquery'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { Button } from 'react-bootstrap'
 
 var images_pos = []
 function slots_game(props, id){
@@ -585,6 +588,11 @@ function Slots(props){
 		{width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
             {translate({lang: props.lang, info: "prizes"})}
         </div> : null}
+		<div className="page_exit">
+			<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
+				<FontAwesomeIcon icon={faArrowRotateLeft} />
+			</Button>
+		</div>
     </div>
 }
 

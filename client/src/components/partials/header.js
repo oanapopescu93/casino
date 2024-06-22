@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { translate } from '../../translations/translate'
 import logo_icon from '../../img/logo.png'
-import { capitalizeFirstLetter, isEmpty } from '../../utils/utils'
+import { capitalizeFirstLetter, getWindowDimensions, isEmpty } from '../../utils/utils'
 import TransparentText from './transparentText'
 import { checkEaster, checkOccasion } from '../../utils/special_occasions'
 import EasterEgg from './special_occasions/easter/egg'
@@ -12,6 +12,27 @@ function Header(props){
     let title = props.title ? props.title : "BunnyBet"  
     const [showEaster, setShowEaster] = useState(false)
 	const [showHalloween, setShowHalloween] = useState(false)
+    const [height, setHeight] = useState(getHeightBasedOnWidth(getWindowDimensions().width))
+
+    function getHeightBasedOnWidth(width){
+        if(width >= 600){
+          return 30
+        } else {
+          return 25
+        }
+    }
+
+    function handleResize(){
+        setHeight(getHeightBasedOnWidth(getWindowDimensions().width))
+    }
+
+    useEffect(() => {    
+        if(typeof window !== "undefined"){
+            window.addEventListener("resize", handleResize)
+            handleResize()
+            return () => window.removeEventListener("resize", handleResize)
+        }
+	}, [])
 
     useEffect(() => {
         // special occasions
@@ -58,25 +79,25 @@ function Header(props){
                                 title = title + ' ' + table_id
                             }
                             return <div id="header_game" className="header">
-                                <TransparentText text={title} />
+                                <TransparentText text={title} height={height} size={height} />
                             </div>
                         } else {
                             return <div id="header" className="header">
-                                <TransparentText text={title} />
+                                <TransparentText text={title} height={height} size={height} />
                             </div>
                         }
                     case "panel_user":                        
                         if(details && details.game){
                             if(details.game_page){
                                 //ex: dashboard, market
-                                return <TransparentText text={translate({lang: lang, info: details.game_page})} />
+                                return <TransparentText text={translate({lang: lang, info: details.game_page})}  height={height} size={height}/>
                             } else {
                                 //game
                                 let table_name = details.game.table_name
                                 let table_id = details.game.table_id
                                 let title = capitalizeFirstLetter(table_name) + ' ' + table_id
                                 return <h3 id="user_title">
-                                    <TransparentText text={title} />
+                                    <TransparentText text={title}  height={height} size={height} />
                                 </h3>
                             }
                         } else {

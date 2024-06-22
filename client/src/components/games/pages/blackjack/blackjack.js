@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import GameBoard from '../other/gameBoard'
-import $ from 'jquery'
 import { draw_rect, getRoom, get_cards } from '../../../../utils/games'
 import { changePopup } from '../../../../reducers/popup'
 import { decryptData } from '../../../../utils/crypto'
+import $ from 'jquery'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { Button } from 'react-bootstrap'
 
 function Card(config){
 	let self = this
@@ -559,7 +562,12 @@ function Blackjack(props){
     return <div className="game_container blackjack_container">
         <canvas id="blackjack_canvas" />
         <GameBoard template="blackjack" {...props} startGame={startGame} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
-    </div>
+		<div className="page_exit">
+			<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
+				<FontAwesomeIcon icon={faArrowRotateLeft} />
+			</Button>
+		</div>
+	</div>
 }
 
 export default Blackjack

@@ -4,6 +4,8 @@ import { draw_dot, getDistance_between_entities } from '../../../../utils/games'
 import { Row, Col, Button } from 'react-bootstrap'
 import { translate } from '../../../../translations/translate'
 import KenoResults from './kenoResults'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function keno_game(props){
     let self = this	
@@ -262,9 +264,18 @@ function KenoAnimation(props){
                         />
                     </Col>
                     <Col sm={12} className="button_action_group">
-                        <Button type="button" onClick={()=>handleShowPrizes()} className="mybutton button_transparent shadow_convex">
-                            {translate({lang: props.lang, info: "keno_prizes"})}
-                        </Button>	
+                        <Button 
+                            type="button"
+                            className="mybutton button_transparent shadow_convex"
+                            onClick={()=>handleShowPrizes()}                   
+                        >{translate({lang: props.lang, info: "keno_prizes"})}</Button>	
+                    </Col>
+                    <Col sm={12} className="page_exit">
+                        <Button 
+                            type="button"
+                            className="mybutton round button_transparent shadow_convex"
+                            onClick={()=>handleShowPrizes()}                        
+                        ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
                     </Col>
                 </Row>
             </Col>

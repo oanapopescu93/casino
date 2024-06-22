@@ -1531,16 +1531,6 @@ textarea {
 #roulette_bets_canvas{
   cursor: pointer;
 }
-.roulette_container{
-  position: relative;
-  z-index: 1;
-}
-.roulette_container .game_start{
-  position: absolute;
-  z-index: 1;
-  top: var(--padding);
-  right: var(--padding_big);
-}
 
 /* POKER */
 .game_container.poker_container{
@@ -3615,11 +3605,6 @@ textarea {
   #splash_screen .small-diamond-right-bottom {
     top: 118px;
     right:-36px;
-  }
-
-  /* ROULETTE */
-  .roulette_container .game_start{
-    position: static;
   }
 
   /* KENO */

@@ -9,6 +9,8 @@ import { translate } from '../../../../translations/translate'
 import { changePopup } from '../../../../reducers/popup'
 import { poker_game } from './pokerGame'
 import { getWindowDimensions } from '../../../../utils/utils'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 let replaceCards = null
 
@@ -167,6 +169,11 @@ function PokerDashboard(props){
             updateBets={(e)=>updateBets(e)}
             />}
         </>}
+        <div className="page_exit">
+            <Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
+            </Button>
+        </div>
     </div>
 }
 

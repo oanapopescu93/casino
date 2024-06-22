@@ -1,10 +1,12 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { useSelector,useDispatch } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import Carousel from '../../../carousel/carousel'
-import { useSelector,useDispatch } from 'react-redux'
 import { decryptData } from '../../../../utils/crypto'
 import { changePopup } from '../../../../reducers/popup'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { Button } from 'react-bootstrap'
 
 function RaceTables(props){
     const {lang, home} = props
@@ -87,6 +89,11 @@ function RaceTables(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>getData()}
             >{translate({lang: lang, info: "start"})}</Button>
+            <Button 
+                type="button" 
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>props.handleHandleExit()} 
+            ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
         </div>
     </div>
 }

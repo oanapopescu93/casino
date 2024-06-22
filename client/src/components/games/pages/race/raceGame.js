@@ -1,11 +1,14 @@
 import React, {useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { draw_dot, draw_rect } from '../../../../utils/games'
-import $ from 'jquery'
 import rabbit_sit from '../../../../img/rabbit_move/rabbit000.png'
 import rabbit_move from '../../../../img/rabbit_move/rabbit_move_colored.png'
 import obstacle from '../../../../img/icons/obstacle.png'
 import { decryptData } from '../../../../utils/crypto'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { Button } from 'react-bootstrap'
+import $ from 'jquery'
 
 function Land(config) {
 	let self = this
@@ -978,12 +981,19 @@ function RaceGame(props){
         }
     }, [props.socket])
 
-    return <div className="game_container race_game_container">
-		<div className="race_order_container">
-			<div id="race_order"></div>
+    return <>
+		<div className="game_container race_game_container">
+			<div className="race_order_container">
+				<div id="race_order"></div>
+			</div>
+			<canvas id="race_canvas" className="shadow_convex" />
 		</div>
-        <canvas id="race_canvas" className="shadow_convex" />
-    </div>
+		<div className="page_exit">
+		<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
+			<FontAwesomeIcon icon={faArrowRotateLeft} />
+		</Button>
+	</div>
+	</>
 }
 
 export default RaceGame

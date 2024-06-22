@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Roulette from './pages/roulette/roulette'
@@ -30,8 +29,6 @@ import { changePage, changeGame, changeGamePage, changeRoom } from '../../reduce
 import { getCookie, isEmpty, setCookie } from '../../utils/utils'
 import { getRoom } from '../../utils/games'
 import { translate } from '../../translations/translate'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Game(props){
     const {lang, page, socket} = props
@@ -110,7 +107,7 @@ function Game(props){
                     switch (title) {
                         case "roulette":
                             if(room){
-                                return <Roulette {...props} streak={streak} results={(e)=>results(e)} />
+                                return <Roulette {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             } else {
                                 return <>
                                     <img src={roulette_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -119,7 +116,7 @@ function Game(props){
                             }
                         case "blackjack":
                             if(room){
-                                return <Blackjack {...props} results={(e)=>results(e)} />
+                                return <Blackjack {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             } else {
                                 return <>
                                     <img src={blackjack_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -128,7 +125,7 @@ function Game(props){
                             }
                         case "slots":
                             if(room){
-                                return <Slots {...props} results={(e)=>results(e)} />
+                                return <Slots {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             } else {
                                 return <>
                                     <img src={slots_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -137,16 +134,25 @@ function Game(props){
                             }
                         case "craps":
                             if(room){
-                                return <Craps {...props} results={(e)=>results(e)} />
+                                return <Craps {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             } else {
                                 return <>
                                     <img src={craps_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
                                 </>
                             }
+                        case "poker":
+                            if(room){
+                                return <Poker {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                            } else {
+                                return <>
+                                    <img src={poker_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
+                                    <p>Loading...</p>
+                                </>
+                            }
                         case "race":
                             if(room){
-                                return <Race {...props} results={(e)=>results(e)} />
+                                return <Race {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             } else {
                                 return <>
                                     <img src={race_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -155,25 +161,16 @@ function Game(props){
                             }
                         case "keno":
                             if(room){
-                                return <Keno {...props} results={(e)=>results(e)} />
+                                return <Keno {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             } else {
                                 return <>
                                     <img src={keno_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
                                     <p>Loading...</p>
                                 </>
-                            }
-                        case "poker":
-                            if(room){
-                                return <Poker {...props} results={(e)=>results(e)} />
-                            } else {
-                                return <>
-                                    <img src={poker_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                                    <p>Loading...</p>
-                                </>
-                            }
+                            }                        
                         case "whack_a_rabbit":
                             if(room){
-                                return <WhackARabbit {...props} results={(e)=>results(e)} /> 
+                                return <WhackARabbit {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} /> 
                             } else {
                                 return <>
                                     <img src={whack_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
@@ -186,19 +183,14 @@ function Game(props){
                 {(() => {
                     switch (game_page) {
                         case "dashboard":
-                            return <Dashboard {...props} />
+                            return <Dashboard {...props} handleHandleExit={()=>handleExit()} />
                         case "market":
-                            return <Market {...props} />
+                            return <Market {...props} handleHandleExit={()=>handleExit()} />
                         default:
                             return <p>{translate({lang: props.lang, info: "error"})}</p>
                     }
                 })()}
             </>}
-            <div className="page_exit">
-                <Button type="button" onClick={()=>handleExit()} className="mybutton round button_transparent shadow_convex">
-                    <FontAwesomeIcon icon={faArrowRotateLeft} />
-                </Button>
-            </div>
         </div>
         <Panel {...props} streak={streak} chatRoomUsers={chatRoomUsers} />
     </>

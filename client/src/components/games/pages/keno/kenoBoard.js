@@ -7,6 +7,8 @@ import Counter from '../../../partials/counter'
 import { decryptData } from '../../../../utils/crypto'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function KenoSpot(config){
 	let self = this
@@ -185,7 +187,7 @@ function KenoBoard(props){
                 <Col sm={2} />
                 <Col sm={8}>
                     <Row>
-                        <Col xs={4} md={4} lg={5}>
+                        <Col xs={4}>
                             <p>{translate({lang: props.lang, info: "price_per_game"})}</p>
                             <DropdownButton title={titleDropdown1} id="keno_price_per_game" onSelect={(e)=>handleDropdown("price_per_game", e)}>
                                 <Dropdown.Item eventKey={1}>1</Dropdown.Item>
@@ -195,7 +197,7 @@ function KenoBoard(props){
                                 <Dropdown.Item eventKey={10}>10</Dropdown.Item>
                             </DropdownButton>
                         </Col>
-                        <Col xs={4} md={4} lg={5}>
+                        <Col xs={4}>
                             <p>{translate({lang: props.lang, info: "no_of_games"})}</p>
                             <DropdownButton title={titleDropdown2} id="keno_no_of_games" onSelect={(e)=>handleDropdown("no_of_games", e)}>
                                 <Dropdown.Item eventKey={1}>1</Dropdown.Item>
@@ -205,12 +207,19 @@ function KenoBoard(props){
                                 <Dropdown.Item eventKey={10}>10</Dropdown.Item>
                             </DropdownButton>
                         </Col>
-                        <Col xs={4} md={4} lg={2}>
-                            <Button 
-                                type="button"  
-                                className="mybutton round button_transparent shadow_convex remove"
-                                onClick={()=>{handleStart()}}
-                            ><span>{translate({lang: props.lang, info: "start"})}</span></Button>
+                        <Col xs={4}>
+                            <div className="button_action_group">
+                                <Button 
+                                    type="button"  
+                                    className="mybutton round button_transparent shadow_convex remove"
+                                    onClick={()=>{handleStart()}}
+                                ><span>{translate({lang: props.lang, info: "start"})}</span></Button>
+                                <Button 
+                                    type="button"
+                                    className="mybutton round button_transparent shadow_convex"
+                                    onClick={()=>props.handleHandleExit()} 
+                                ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+                            </div>                            
                         </Col>
                     </Row>
                 </Col>

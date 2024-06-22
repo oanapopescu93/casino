@@ -1,14 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { translate } from '../../../../translations/translate'
 import { Button, Row, Col } from 'react-bootstrap'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faRotate, faCarrot} from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { getRoom } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
-import { getWindowDimensions } from '../../../../utils/utils'
 import $ from "jquery"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faRotate, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Dice(props){	
 	let number = props.number
@@ -94,7 +93,7 @@ function CrapsBoardText(props){
 }
 
 function Craps(props){
-	const {startGame, lang, socket, bets, page, handleGameStart, handleOpenTable} = props
+	const {startGame, lang, socket, bets, page} = props
     const [crapsBoardText, setCrapsBoardText] = useState(null)
 	const [crapsBoardList, setCrapsBoardList] = useState([])
 	let game_type = bets ? bets.game_type : "pass line"
@@ -586,13 +585,18 @@ function Craps(props){
 									<Button 
 										type="button"  
 										className="mybutton round button_transparent shadow_convex"
-										onClick={()=>handleGameStart()}
+										onClick={()=>props.handleGameStart()}
 									><FontAwesomeIcon icon={faRotate} /></Button>
 									<Button 
 										type="button"  
 										className="mybutton round button_transparent shadow_convex"
-										onClick={()=>handleOpenTable()}
+										onClick={()=>props.handleOpenTable()}
 									><FontAwesomeIcon icon={faCarrot} /></Button>
+									<Button 
+										type="button" 
+										className="mybutton round button_transparent shadow_convex"
+										onClick={()=>props.handleHandleExit()}										
+									><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
 								</div>
 							</Col>
 						</Row>
