@@ -1,7 +1,7 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import DashboardLeft from './left/dashboardLeft'
 import DashboardRight from './right/dashboardRight'
-import { useDispatch, useSelector } from 'react-redux'
 import { cartRemove, cartUpdate, cartRemoveAll } from '../../../../reducers/cart'
 import { changePage, changeGame, changeGamePage } from '../../../../reducers/page'
 import { Row, Col, Button } from 'react-bootstrap'
@@ -43,7 +43,7 @@ function Dashboard(props){
 							<Button 
 								type="button"
 								className="mybutton round button_transparent shadow_convex"
-								onClick={()=>handleShowPrizes()}                        
+								onClick={()=>props.handleHandleExit()}                        
 							><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
 						</div>
 					</Col>
@@ -61,7 +61,7 @@ function Dashboard(props){
 							<Button 
 								type="button"
 								className="mybutton round button_transparent shadow_convex"
-								onClick={()=>handleShowPrizes()}                        
+								onClick={()=>props.handleHandleExit()}                        
 							><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
 						</div>
 					</Col>
