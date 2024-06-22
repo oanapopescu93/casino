@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { getRoom } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
+import { getWindowDimensions } from '../../../../utils/utils'
 import $ from "jquery"
 
 function Dice(props){	
@@ -93,7 +94,7 @@ function CrapsBoardText(props){
 }
 
 function Craps(props){
-	const {startGame, lang, socket, bets, page} = props
+	const {startGame, lang, socket, bets, page, handleGameStart, handleOpenTable} = props
     const [crapsBoardText, setCrapsBoardText] = useState(null)
 	const [crapsBoardList, setCrapsBoardList] = useState([])
 	let game_type = bets ? bets.game_type : "pass line"
@@ -562,7 +563,7 @@ function Craps(props){
 					}
 			}
 		}
-	}	
+	}
 	
 	return <>
 		<Row>
@@ -574,11 +575,29 @@ function Craps(props){
             <Col sm={2} />
             <Col sm={8}>
 				<Row>
-					<Col sm={6} className="dice_container">
-						<Dice innerRef={dice1} number={1} />
-						<Dice innerRef={dice2} number={2} />
+					<Col lg={6} className="dice_container">
+						<Row>
+							<Col sm={12} md={8} lg={12}>
+								<Dice innerRef={dice1} number={1} />
+								<Dice innerRef={dice2} number={2} />
+							</Col>
+							<Col sm={12} md={4} lg={12}>
+								<div className="game_start">
+									<Button 
+										type="button"  
+										className="mybutton round button_transparent shadow_convex"
+										onClick={()=>handleGameStart()}
+									><FontAwesomeIcon icon={faRotate} /></Button>
+									<Button 
+										type="button"  
+										className="mybutton round button_transparent shadow_convex"
+										onClick={()=>handleOpenTable()}
+									><FontAwesomeIcon icon={faCarrot} /></Button>
+								</div>
+							</Col>
+						</Row>
 					</Col>
-					<Col sm={6} className="craps_board_container">
+					<Col lg={6} className="craps_board_container">
 						<div className="craps_board_box">
 							<div readOnly id="craps_board" className="craps_board" ref={craps_board}>
 								<CrapsBoardText list={crapsBoardList} />
@@ -670,21 +689,13 @@ function CrapsGame(props){
 	}
 
     return <div className="game_container craps_container">
-		<Craps {...props} startGame={start} winLose={(e)=>winLose(e)} />
-		<Row>
-			<Col sm={12} className="game_start">
-				<Button 
-					type="button"  
-					className="mybutton round button_transparent shadow_convex"
-					onClick={()=>gameStart()}
-				><FontAwesomeIcon icon={faRotate} /></Button>
-				<Button 
-					type="button"  
-					className="mybutton round button_transparent shadow_convex"
-					onClick={()=>openTable()}
-				><FontAwesomeIcon icon={faCarrot} /></Button>
-			</Col>
-		</Row>
+		<Craps 
+			{...props} 
+			startGame={start} 
+			winLose={(e)=>winLose(e)} 
+			handleGameStart={()=>gameStart()}
+			handleOpenTable={()=>openTable()}
+		/>
     </div>
 }
 

@@ -554,7 +554,6 @@ function Slots(props){
 	}
 
     return <div className="game_container">
-		{width}
         <div id="slot_machine" className={"slot_machine " + "slot_machine_" + lines}>
             <canvas id="slot_machine_lines" />
             {(() => {

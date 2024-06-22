@@ -1531,6 +1531,16 @@ textarea {
 #roulette_bets_canvas{
   cursor: pointer;
 }
+.roulette_container{
+  position: relative;
+  z-index: 1;
+}
+.roulette_container .game_start{
+  position: absolute;
+  z-index: 1;
+  top: var(--padding);
+  right: var(--padding_big);
+}
 
 /* POKER */
 .game_container.poker_container{
@@ -1607,8 +1617,8 @@ textarea {
 #donate{
 	opacity: 0;
 	position: fixed;
-  bottom: 10px;
-  left: 10px;
+  bottom: var(--padding);
+  left: var(--padding);
   z-index: 999999;
   width: 36px;
   height: 36px;
@@ -2691,6 +2701,8 @@ textarea {
 	border-radius: var(--radius_small);
 	background: var(--transparent_5);
   box-shadow: 4px 4px 8px 2px var(--transparent_5);
+  width: 100px;
+	height: 100px;
 }
 .dot {
 	position: absolute;
@@ -2965,8 +2977,7 @@ textarea {
 }
 #race_canvas{
 	border:solid 1px var(--color);
-	border-radius:10px;
-	/* background-color: rgba(255, 215, 0, 0.5); */
+	border-radius: var(--radius);
 	background-image: radial-gradient(transparent, black);
 }
 
@@ -3483,7 +3494,7 @@ textarea {
 		width: 60px;
 		height: 60px;
 	}
-	.dice_shadow{
+	.dice_box_shadow{
 		width: 60px;
 		height: 60px;
 	}
@@ -3505,6 +3516,9 @@ textarea {
   #craps_board{
 		height: 110px;
 	}
+  .craps_container .game_start{
+    margin: var(--padding_small) 0px;
+  }
 
   /* KENO */
   .keno_spot .keno_spot_box{
@@ -3601,7 +3615,12 @@ textarea {
   #splash_screen .small-diamond-right-bottom {
     top: 118px;
     right:-36px;
-  } 
+  }
+
+  /* ROULETTE */
+  .roulette_container .game_start{
+    position: static;
+  }
 
   /* KENO */
   .keno_spot .keno_spot_box{

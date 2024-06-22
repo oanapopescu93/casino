@@ -6,6 +6,7 @@ import { formatDate, isEmpty } from '../../../utils/utils'
 import { decryptData } from '../../../utils/crypto'
 import { getRoom } from '../../../utils/games'
 import { useSelector } from 'react-redux'
+import { getWindowDimensions } from '../../../utils/utils'
 
 function ChatMessages(props){
     const messagesEndRef = React.createRef()
@@ -70,7 +71,27 @@ function Chat(props){
     let chatRoomUsers = props.chatRoomUsers ? props.chatRoomUsers : []
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
-    const [height] = useState(100)
+    const [height, setHeight] = useState(getWindowDimensions().height)
+
+    function getHeight(x){
+        if(x >= 500){
+          return 200
+        } else {
+          return 100
+        }
+    }
+
+    function handleResize(){
+        setHeight(getHeight(getWindowDimensions().height))
+    }
+
+    useEffect(() => {    
+        if(typeof window !== "undefined"){
+            window.addEventListener("resize", handleResize)
+            handleResize()
+            return () => window.removeEventListener("resize", handleResize)
+        }
+	}, [])
 
     useEffect(() => {
         socket.on('message_read', function(res){

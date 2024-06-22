@@ -63,12 +63,12 @@ function roulette_game(props){
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape
-				canvas.width = 260
+				canvas.width = 290
 				canvas.height = 300
 
-				roulette_radius_x = 130
-				roulette_radius_y = 130
-				outsideRadius = 100
+				roulette_radius_x = 150
+				roulette_radius_y = 150
+				outsideRadius = 120
 				textRadius = outsideRadius-15
 				insideRadius = outsideRadius-20
 
@@ -80,11 +80,11 @@ function roulette_game(props){
 				bet_square = 30
 			} else {
 				//small portrait
-				canvas.width = 290
-				canvas.height = 300
-				roulette_radius_x = 150
-				roulette_radius_y = 150
-				outsideRadius = 120
+				canvas.width = 260
+				canvas.height = 260
+				roulette_radius_x = 130
+				roulette_radius_y = 130
+				outsideRadius = 100
 				textRadius = outsideRadius-15
 				insideRadius = outsideRadius-20
 
