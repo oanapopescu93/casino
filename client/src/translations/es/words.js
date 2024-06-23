@@ -1,3 +1,4 @@
+var admin_email = "oanapopescu93@gmail.com"
 var word_bank = {
     salon: "Salón",
     about: "Acerca de",
@@ -39,7 +40,9 @@ var word_bank = {
     sign_in: "Iniciar sesión",
     sign_up: "Registrarse",
     signin_error: "El usuario no existe",
-    signup_error: "El usuario ya existe",
+    signup_error: "Ha habido un error al registrarte. Por favor, envía este error a " + admin_email + " o inténtalo de nuevo más tarde.",
+    email_yes_user_no_error: "Este correo electrónico ya ha sido utilizado",
+    email_yes_user_yes_error: "El usuario ya existe",
     user: "Usuario",
     password: "Contraseña",
     sign_in_email_empty: "El correo electrónico está vacío",
@@ -103,7 +106,8 @@ var word_bank = {
     forgot_password_title: "¿Olvidaste tu contraseña?",
     forgot_password_text: "Por favor, ingresa la dirección de correo electrónico utilizada para registrarte. Te enviaremos tu nueva contraseña a esa dirección.",
     send: "Enviar",
-    email_send: "El correo electrónico ha sido enviado. Verifique su cuenta de Mailtrap.",
+    email_send_mailtrap: "El correo electrónico ha sido enviado. Verifique su cuenta de Mailtrap.",
+    email_send: "El correo electrónico ha sido enviado.",
     email_no_send: "No se ha enviado el correo electrónico.",
     subject: "Asunto",
     message: "Mensaje",

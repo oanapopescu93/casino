@@ -1,3 +1,4 @@
+var admin_email = "oanapopescu93@gmail.com"
 var word_bank = {
     salon: "Salon",
     about: "Despre",
@@ -39,7 +40,9 @@ var word_bank = {
     sign_in: "Logare",
     sign_up: "Înregistrare",
     signin_error: "User-ul nu există",
-    signup_error: "User-ul deja există",
+    signup_error: "A apărut o eroare la înregistrare. Vă rugăm să trimiteți această eroare la " + admin_email + " sau încercați din nou mai târziu.",
+    email_yes_user_no_error: "Acest email a fost deja folosit",
+    email_yes_user_yes_error: "User-ul există deja",
     user: "Utilizator",
     password: "Parolă",
     sign_in_email_empty: "Email-ul este gol",
@@ -103,7 +106,8 @@ var word_bank = {
     forgot_password_title: "Ți-ai uitat parola?",
     forgot_password_text: "Introdu adresa ta de email cu care te-ai înregistrat. Noi îți vom trimite parola nouă pe această adresă.",
     send: "Trimite",
-    email_send: "E-mailul a fost trimis. Verificați contul dvs. Mailtrap.",
+    email_send_mailtrap: "E-mailul a fost trimis. Verificați contul dvs. Mailtrap.",
+    email_send: "E-mailul a fost trimis.",
     email_no_send: "Emailul nu a fost trimis.",
     subject: "Subiect",
     message: "Mesaj",

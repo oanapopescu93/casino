@@ -6,7 +6,6 @@ import { postData } from '../../../utils/utils'
 
 function ContactForm(props){
     const {lang} = props
-    let mailtrap_link = "https://www.mailtrap.io"
 
     const [email, setEmail] = useState('')
     const [subject, setSubject] = useState('')
@@ -16,6 +15,7 @@ function ContactForm(props){
     const [errorSubject, setErrorSubject] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [sendResults, setSendResults] = useState(null)
+    const [emailSending, setEmailSending] = useState(false)
 
     function handleChange(type, e){
         switch(type) {
@@ -37,11 +37,16 @@ function ContactForm(props){
         setErrorSubject(false)
         setErrorMessage(false)
         setErrorEmail(false)
+        setEmailSending(true)
         
         if(subject !== "" && message !== "" && validateInput('email', email)){
             postData("/api/contact", {subject, message, email}).then((data) => {
+                setEmailSending(false)
                 if(data && data.send){
                     setSendResults(data.send)
+                    setTimeout(() => {
+                        setSendResults(null)
+                    }, 1500)
                 }
             })
         } else {
@@ -91,12 +96,13 @@ function ContactForm(props){
                         {errorMessage ? <p className="text_red">{translate({lang: lang, info: "empty_input_message"})}</p> : null}
                     </div>
                 }
-            })()} 
-            {(() => {
+            })()}
+            {emailSending ? <p style={{marginBottom : "5px", textAlign: "center"}}>{translate({lang: lang, info: "sending"})}</p> : null}
+            {(() => {                
                 if(sendResults === "email_send"){
                     return <div className="alert alert-success">
                         <a href="https://www.mailtrap.io" className="text_green">
-                            {translate({lang: lang, info: sendResults})} {mailtrap_link}
+                            {translate({lang: lang, info: sendResults})}
                         </a>
                     </div>
                 } else if(sendResults === "email_no_send"){

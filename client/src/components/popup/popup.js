@@ -32,7 +32,7 @@ function Popup(props){
     let sticky = useSelector(state => state.popup.sticky)
     let dispatch = useDispatch()
     let currencies = home.currencies
-    let title = translate({lang: lang, info: popup_title})
+    let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
     const [forgotPasswordResult, setForgotPasswordResult] = useState('')
     const [forgotPasswordSending, setForgotPasswordSending] = useState(false)
 

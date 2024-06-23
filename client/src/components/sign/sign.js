@@ -113,21 +113,23 @@ function Sign(props) {
                 if(typeof data.obj.logs !== "undefined" && data.obj.logs !== "null" && data.obj.logs !== null && data.obj.logs === 0){
                     let payload = {
                         open: true,
+                        title: null,
                         template: "whack_a_rabbit",
                     }
                     dispatch(changePopup(payload))
                 }
             } else {
                 dispatch(changePopup({
-                    open: true, 
+                    open: true,                     
                     template: "error", 
+                    title: "error",
                     data: translate({lang: props.lang, info: "signin_error"})
                 }))
             } 
         }
         const handleSignUpRead = function(data) {
             setLoaded(true)
-            if(data && !data.exists && data.obj && Object.keys(data.obj).length>0){
+            if(data && data.obj && Object.keys(data.obj).length>0){
                 dispatch(changeUser(data.obj))
                 if(!isEmpty(data.obj.uuid)){
                     setCookie("casino_uuid", data.obj.uuid)
@@ -141,12 +143,13 @@ function Sign(props) {
                 }
                 dispatch(changePopup(payload))
             } else {
+                let info = data.details ? data.details : "signup_error"                
                 let payload = {
                     open: true,
                     template: "signup",
                     title: "error",
-                    data: translate({lang: props.lang, info: "signup_error"})
-                }
+                    data: translate({lang: props.lang, info})
+                }                
                 dispatch(changePopup(payload))
             }
         }

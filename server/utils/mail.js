@@ -56,55 +56,56 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
 
 		let subject = ''
 		let html = ''
+        let success_message = "email_send"
         switch (reason) {
             case "forgot_password":
-                let lang1 = data.lang || 'ENG'
-                switch (lang1) {
+                let lang = data.lang || 'ENG'
+                switch (lang) {
                     case "DE":
                         subject = 'BunnyBet Passwort zurücksetzen'
-                        html = html + "<p>Hallo ' + user + '</p>"
+                        html = html + "<p>Hallo " + user + "</p>"
                         html = html + "<p>Sie haben eine Passwortrücksetzung angefordert.</p>"
                         html = html + "<p>Ihr neues Passwort ist: <b>Password001!</b></p>"
                         html = html + "<p>Nachdem Sie sich angemeldet haben, setzen Sie bitte dieses Passwort auf Ihr eigenes zurück.</p>"
                         break
                     case "ES":
                         subject = 'BunnyBet restablecer contraseña'
-                        html = html + "<p>Hola ' + user + '</p>"
+                        html = html + "<p>Hola " + user + "</p>"
                         html = html + "<p>Has solicitado restablecer tu contraseña.</p>"
                         html = html + "<p>Su nueva contraseña es: <b>Password001!</b></p>"
                         html = html + "<p>Después de iniciar sesión, por favor restablezca esta contraseña con la suya propia.</p>"
                         break
                     case "FR":
                         subject = 'BunnyBet réinitialiser le mot de passe'
-                        html = html + "<p>Bonjour ' + user + '</p>"
+                        html = html + "<p>Bonjour " + user + "</p>"
                         html = html + "<p>Vous avez demandé à réinitialiser votre mot de passe.</p>"
                         html = html + "<p>Votre nouveau mot de passe est : <b>Password001!</b></p>"
                         html = html + "<p>Après vous être connecté, veuillez réinitialiser ce mot de passe avec le vôtre.</p>"
                         break
                     case "IT":
                         subject = 'BunnyBet reimposta password'
-                        html = html + "<p>Ciao ' + user + '</p>"
+                        html = html + "<p>Ciao " + user + "</p>"
                         html = html + "<p>Hai richiesto di resettare la tua password.</p>"
                         html = html + "<p>La tua nuova password è: <b>Password001!</b></p>"
                         html = html + "<p>Dopo aver effettuato l'accesso, si prega di reimpostare questa password con la propria.</p>"
                         break
                     case "PT":
                         subject = 'BunnyBet redefinir senha'
-                        html = html + "<p>Olá ' + user + '</p>"
+                        html = html + "<p>Olá " + user + "</p>"
                         html = html + "<p>Você solicitou a redefinição de sua senha.</p>"
                         html = html + "<p>Sua nova senha é: <b>Password001!</b></p>"
                         html = html + "<p>Depois de fazer login, por favor redefina esta senha com a sua própria.</p>"
                         break
                     case "RO":
                         subject = 'BunnyBet resetare parolă'
-                        html = html + "<p>Bună ' + user + '</p>"
+                        html = html + "<p>Bună " + user + "</p>"
                         html = html + "<p>Ai cerut resetarea parolei tale.</p>"
                         html = html + "<p>Noua ta parolă este: <b>Password001!</b></p>"
                         html = html + "<p>După autentificare, vă rugăm să resetați această parolă cu cea proprie.</p>"
                         break
                     case "RU":
                         subject = 'BunnyBet сброс пароля'
-                        html = html + "<p>Привет ' + user + '</p>"
+                        html = html + "<p>Привет " + user + "</p>"
                         html = html + "<p>Вы запросили сброс пароля.</p>"
                         html = html + "<p>Ваш новый пароль: <b>Password001!</b>.</p>"
                         html = html + "<p>После входа в систему, пожалуйста, сбросьте этот пароль на свой собственный.</p>"
@@ -112,16 +113,18 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
                     case "ENG":
                     default:
                         subject = 'BunnyBet reset password'
-                        html = html + "<p>Hi ' + user + '</p>"
+                        html = html + "<p>Hi " + user + "</p>"
                         html = html + "<p>You requested to reset your password.</p>"
                         html = html + "<p>You new password is: <b>Password001!</b>.</p>"
                         html = html + "<p>After you login, please reset this password with your own.</p>"
                         break
                 }
+                success_message = "email_send_mailtrap"
                 break
             case "contact":
                 subject = e.subject
                 html = html + e.message
+                success_message = "email_send"
         }			
 
 		let mailOptions = {
@@ -133,10 +136,10 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
         
 		transport.sendMail(mailOptions, function(error, info){
 			if (error) {
-			console.log('error--> ', error, mailOptions)
+			    console.log('error--> ', error, mailOptions)
 				resolve({send: "email_no_send"})
 			} else {
-				resolve({send: "email_send"})
+				resolve({send: success_message})
 			}
 		})
     })

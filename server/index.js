@@ -118,7 +118,7 @@ io.on('connection', function(socket) {
     }) 
   })
   socket.on('signup_send', (data) => {  
-    database_config.sql = 'SELECT * FROM casino_user WHERE user = "' + data.user + '" AND email = "' + data.email + '"'
+    database_config.sql = 'SELECT * FROM casino_user WHERE email = "' + data.email + '"'
     database_config.name = "db02"
 		database(database_config).then(function(result){
       if(result && result.length == 0){
@@ -166,13 +166,25 @@ io.on('connection', function(socket) {
             database(database_config).then(function(result){})
           })
         })
-      } else {
-        //the user already exists --> old user --> he must sign in
-        try{
-          io.emit('signup_read', {exists: false, obj: {}})
-        } catch(e){
-          console.log('[error]','signup_read :', e)
-        }
+      } else {        
+        let array = result.filter(function(x){ //check if there already is an email with same username
+          return x.user === data.user
+        })
+        if(array && array.length == 0){
+          //email exists, username is different --> he lust signup with different email
+          try{
+            io.emit('signup_read', {exists: false, obj: {}, details: "email_yes_user_no_error"})
+          } catch(e){
+            console.log('[error]','signup_read :', e)
+          }
+        } else {
+          //email exists, username is same --> he must signin
+          try{
+            io.emit('signup_read', {exists: true, obj: {}, details: "email_yes_user_yes_error"})
+          } catch(e){
+            console.log('[error]','signup_read :', e)
+          }
+        }        
       }
     }) 
   })
@@ -186,7 +198,8 @@ io.on('connection', function(socket) {
           return x.email === data.email
         })
         if(user && user[0]){
-          let x = decrypt(JSON.parse(user[0].pass))
+          //let pass = decrypt(JSON.parse(user[0].pass))
+          //console.log(user, pass, data)
           sendEmail('forgot_password', user[0], data).then(function(res){
             try{
               resetPassword(user[0])

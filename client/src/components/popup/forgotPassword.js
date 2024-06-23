@@ -22,7 +22,7 @@ function ForgotPassword(props) {
             </Button>
             {forgotPasswordSending ? <p style={{marginTop : "5px"}}>{translate({lang: lang, info: "sending"})}</p> : null}
             {(() => {
-                if(forgotPasswordResult === "email_send"){
+                if(forgotPasswordResult === "email_send_mailtrap"){
                     return <div className="alert alert-success">
                         <a href="https://www.mailtrap.io" className="text_green">
                             {translate({lang: lang, info: forgotPasswordResult})} {mailtrap_link}
