@@ -40,11 +40,11 @@ function GameBets(props){
                         default:
                             return null
                     }
-                })()}
-                <div className="game_bets_clear">
-                    <div id="game_bets_clear" className="shadow_convex" onClick={()=>handleClear()}>
-                        <FontAwesomeIcon icon={faTrashCan}/>
-                    </div>
+                })()}                
+            </div>
+            <div className="game_bets_clear">
+                <div id="game_bets_clear" className="shadow_convex" onClick={()=>handleClear()}>
+                    <FontAwesomeIcon icon={faTrashCan}/>
                 </div>
             </div>
         </div>

@@ -1497,7 +1497,7 @@ textarea {
 }
 .game_bets_box{
 	overflow: auto;
-  max-height: 350px;
+  max-height: 300px;
 }
 .game_bets_clear{
   padding-top: var(--padding_small);
@@ -2664,6 +2664,11 @@ textarea {
 }
 
 /* CRAPS */
+.craps_bets_container{
+  height: 220px;
+  overflow: auto;
+  margin-bottom: var(--padding_small);
+}
 .craps_subtitle{
   margin-bottom: var(--padding);
 }

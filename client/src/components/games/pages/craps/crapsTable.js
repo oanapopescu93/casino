@@ -8,8 +8,6 @@ function craps_bets(props){
 	let reason = ""
 	let canvas
 	let ctx
-	let canvas_width_bets = 900
-	let canvas_height_bets = 450
 	let items = get_craps_bets()
 	let craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450] //sx,sy,swidth,sheight,x,y,width,height	
 	let game_type = "pass line"
@@ -20,22 +18,17 @@ function craps_bets(props){
 		canvas = document.getElementById("craps_bets_canvas")	
 		if(canvas){
 			reason = r
-			self.createCanvas(canvas_width_bets, canvas_height_bets)
+			self.createCanvas()
 			self.getImage(reason)
 			self.handleClick()
 		}
     }
 
-    this.createCanvas = function(canvas_width_bets, canvas_height_bets){
+    this.createCanvas = function(){
 		ctx = canvas.getContext("2d")
-		
 		canvas.width = 900
 		canvas.height = 450
 		craps_bets_coord = [0, 0, 2243, 1191, 0, 0, 900, 450]
-		
-		canvas_width_bets = canvas.width
-		canvas_height_bets = canvas.height	
-		canvas.height = canvas_height_bets
 	}
 
 	this.getImage = function(reason){
@@ -71,7 +64,6 @@ function craps_bets(props){
 
 	this.draw_craps_bets = function(img){
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
-		//ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
 		ctx.drawImage(img, craps_bets_coord[0], craps_bets_coord[1], craps_bets_coord[2], craps_bets_coord[3], craps_bets_coord[4], craps_bets_coord[5], craps_bets_coord[6], craps_bets_coord[7])
 	}
 
@@ -95,11 +87,6 @@ function craps_bets(props){
 				}
 				break
 			}
-			// ctx.beginPath()
-			// ctx.lineWidth = "1"
-			// ctx.strokeStyle = "blue"
-			// ctx.rect(items[i].x, items[i].y, items[i].width, items[i].height)
-			// ctx.stroke()
 		}
 	}
 }
@@ -126,7 +113,9 @@ function CrapsTable(props){
 		}
     }, [clear])
 
-    return <canvas id="craps_bets_canvas" />
+    return <div className="craps_bets_container">
+		<canvas id="craps_bets_canvas" />
+	</div>
 }
 
 export default CrapsTable
