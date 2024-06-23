@@ -9,10 +9,10 @@ import Dashboard from '../games/pages/dashboard/dashboard'
 import Panel from '../games/sidebar/panel'
 import OtherPages from './otherPages'
 import ButtonDonation from './donation/buttonDonation'
-import { changePage } from '../../reducers/page'
 import { postData } from '../../utils/utils'
 import { translate } from '../../translations/translate'
 import { changePopup } from '../../reducers/popup'
+import { changePage, changeGame, changeGamePage } from '../../reducers/page'
 
 function Home(props) {
     const {home, page, user, cookies} = props
@@ -61,6 +61,12 @@ function Home(props) {
         }
     }
 
+    function handleExit(){
+        dispatch(changePage('Salon'))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
+    }
+
     return <div id="page-container">
         {(() => {
             switch (page.page) {
@@ -82,14 +88,14 @@ function Home(props) {
                         case "dashboard":
                             return <>
                                 <div className="content_wrap">
-                                    <Dashboard {...props} />
+                                    <Dashboard {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />
                             </>
                         case "market":
                             return <>
                                 <div className="content_wrap">
-                                    <Market {...props} />
+                                    <Market {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />
                             </>
