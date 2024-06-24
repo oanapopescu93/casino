@@ -1662,7 +1662,7 @@ textarea {
   background: var(--transparent_color);
 }
 .donation_box_content{
-  height: 150px;
+  height: 200px;
 }
 .donation_box_content h2{
   margin-bottom: var(--padding);
