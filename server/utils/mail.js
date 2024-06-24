@@ -123,7 +123,8 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
                 break
             case "contact":
                 subject = e.subject
-                html = html + e.message
+                html = html + "<p><b>About: </b> " + e.about + "</p>"
+                html = html + "<p><b>Message: </b> " + e.message + "</p>"
                 success_message = "email_send"
         }			
 

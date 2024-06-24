@@ -114,8 +114,13 @@ var word_bank = {
 
     incorrect_email: "Неверный адрес электронной почты",
     empty_input_subject: "Поле темы пусто",
+    empty_input_about: "Поле 'О нас' пусто",
     empty_input_message: "Поле сообщения пусто",
     empty_input_agree: "Вы не согласились с Условиями и политикой конфиденциальности",
+    account_issues: "Проблемы с аккаунтом", 
+    payments_and_withdrawals: "Платежи и снятия", 
+    game_issues: "Проблемы с игрой", 
+    hiring: "Найм на работу", 
 
     market: "Рынок",
     settings: "Настройки",

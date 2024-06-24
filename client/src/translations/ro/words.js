@@ -115,8 +115,13 @@ var word_bank = {
 
     incorrect_email: "Emailul este incorect",
     empty_input_subject: "Câmpul Subiect este gol",
+    empty_input_about: "Câmpul despre este gol",
     empty_input_message: "Câmpul Mesaj este gol",
     empty_input_agree: "Nu ai fost de acord cu Termenii și condițiile și Politicile de confidențialitate",
+    account_issues: "Probleme cu contul", 
+    payments_and_withdrawals: "Plăți și retrageri", 
+    game_issues: "Probleme cu jocurile", 
+    hiring: "Angajare", 
 
     market: "Market",
     settings: "Setări",

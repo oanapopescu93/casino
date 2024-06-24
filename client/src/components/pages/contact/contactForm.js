@@ -3,6 +3,8 @@ import { translate } from '../../../translations/translate'
 import { Form, Button, Col, Row } from 'react-bootstrap'
 import { validateInput } from '../../../utils/validate'
 import { postData } from '../../../utils/utils'
+import Dropdown from 'react-bootstrap/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
 
 function ContactForm(props){
     const {lang} = props
@@ -13,9 +15,17 @@ function ContactForm(props){
 
     const [errorEmail, setErrorEmail] = useState(false)
     const [errorSubject, setErrorSubject] = useState(false)
+    const [errorAbout, setErrorAbout] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [sendResults, setSendResults] = useState(null)
     const [emailSending, setEmailSending] = useState(false)
+    
+    const [about, setAbout] = useState('')
+    let questions = ['account_issues', 'payments_and_withdrawals', 'game_issues', 'hiring', 'other']
+
+    function handleDropdown(x){
+        setAbout(translate({lang, info: x}))
+    }
 
     function handleChange(type, e){
         switch(type) {
@@ -35,12 +45,13 @@ function ContactForm(props){
     function handleSubmit(e){
         e.preventDefault()
         setErrorSubject(false)
+        setErrorAbout(false)
         setErrorMessage(false)
         setErrorEmail(false)
         setEmailSending(true)
         
-        if(subject !== "" && message !== "" && validateInput('email', email)){
-            postData("/api/contact", {subject, message, email}).then((data) => {
+        if(subject !== "" && message !== "" && about !== "" && validateInput('email', email)){
+            postData("/api/contact", {subject, about, message, email}).then((data) => {
                 setEmailSending(false)
                 if(data && data.send){
                     setSendResults(data.send)
@@ -52,6 +63,9 @@ function ContactForm(props){
         } else {
             if(subject === ""){
                 setErrorSubject(true)
+            }
+            if(about === ""){
+                setErrorAbout(true)
             }
             if(message === ""){
                 setErrorMessage(true)
@@ -82,6 +96,20 @@ function ContactForm(props){
             </Row>
             <Row>
                 <Col sm={12} className="label_container">
+                    <div className="label">{translate({lang: lang, info: "about"})}</div>
+                </Col>
+                <Col sm={12} className="label_container">
+                    <DropdownButton title={about} id="question_button" className="shadow_concav" onSelect={(e)=>handleDropdown(e)}>
+                        {questions.map((item, i) => (
+                            <Dropdown.Item key={i} eventKey={item}>
+                                {translate({ lang: lang, info: item })}
+                            </Dropdown.Item>
+                        ))}
+                    </DropdownButton>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={12} className="label_container">
                     <div className="label">{translate({lang: lang, info: "message"})}</div>
                 </Col>
                 <Col sm={12}>
@@ -93,6 +121,7 @@ function ContactForm(props){
                     return <div className="alert alert-danger">
                         {errorEmail ? <p className="text_red">{translate({lang: lang, info: "incorrect_email"})}</p> : null}
                         {errorSubject ? <p className="text_red">{translate({lang: lang, info: "empty_input_subject"})}</p> : null}
+                        {errorAbout ? <p className="text_red">{translate({lang: lang, info: "empty_input_about"})}</p> : null}
                         {errorMessage ? <p className="text_red">{translate({lang: lang, info: "empty_input_message"})}</p> : null}
                     </div>
                 }

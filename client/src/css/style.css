@@ -2052,6 +2052,11 @@ textarea {
 #contact_map .leaflet-touch .leaflet-control-layers, #contact_map .leaflet-touch .leaflet-bar{
   border: none;
 }
+#contact_form .dropdown .dropdown-toggle{
+  width: 100%;
+  height: 25px;
+  line-height: 14px;
+}
 
 /* DASHBOARD */
 .dashboard_box{

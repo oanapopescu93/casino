@@ -115,8 +115,13 @@ var word_bank = {
 
     incorrect_email: "O e-mail está incorreto",
     empty_input_subject: "O campo de assunto está vazio",
+    empty_input_about: "O campo sobre está vazio",
     empty_input_message: "O campo de mensagem está vazio",
     empty_input_agree: "Você não concordou com os Termos e Condições e a Política de Privacidade",
+    account_issues: "Problemas na conta", 
+    payments_and_withdrawals: "Pagamentos e saques", 
+    game_issues: "Problemas no jogo", 
+    hiring: "Contratação", 
 
     market: "Mercado",
     settings: "Configurações",
