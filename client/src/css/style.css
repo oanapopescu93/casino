@@ -1362,6 +1362,10 @@ textarea {
   width: 8px;
   margin: -4px 5px 0;
 }
+.cell_market .currency_img{
+  display: inline-block;
+  margin: 0px;
+}
 .user_list_button {
   display: inline-block;
   padding: var(--padding_small) var(--padding);
@@ -2074,10 +2078,13 @@ textarea {
   text-align: center;
   margin-top: var(--padding);
 }
-.dashboard_box .cart_list{
-  max-height: 210px;
+.dashboard_box .cart_list, .dashboard_box .order_list{
+  max-height: 205px;
   overflow: auto;
   border-bottom: solid 1px var(--color);
+}
+.dashboard_box .order_list{
+  border-bottom: none;
 }
 .cart_image, .cart_info, .cart_buttons{
   display: inline-block;
@@ -2181,12 +2188,12 @@ textarea {
   margin-left: -80px;
 }
 
-.cart_header, .cart_item{
+.cart_header, .cart_item,
+.order_header, .order_item{
   border-bottom: solid 1px var(--color);
   padding: var(--padding_small) 15px;
 }
-.cart_item:last-child{
-  margin-bottom: var(--padding);
+.cart_item:last-child, .order_item:last-child{
   border-bottom: solid 0 transparent;
 }
 .cart_footer{
@@ -2204,6 +2211,38 @@ textarea {
 }
 .cart_action h4{
   margin-bottom: var(--padding_small);
+}
+
+.order_list {
+  overflow-x: auto;
+}
+.order_list table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+.order_list th, .order_list td {
+  padding: 12px 15px;
+  border: 1px solid var(--color);
+  white-space: nowrap;
+}
+.order_list th {
+  background-color: var(--color);
+  color: var(--bg);
+  font-weight: bold;
+  border-right: 1px solid var(--bg);
+}
+.order_list th:last-child {
+  border-right: 1px solid var(--color);
+}
+.order_item_chargeId {
+  width: 30%;
+}
+.order_item_method {
+  width: 35%;
+}
+.order_item_amount {
+  width: 15%;
 }
 
 /* Profile pics */
@@ -2447,7 +2486,7 @@ textarea {
   margin-bottom: var(--padding);
 }
 .cart_list_items{
-  max-height: 320px;
+  max-height: 310px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -3480,7 +3519,7 @@ textarea {
 
   /* CART */
   .cart_list_items{
-    max-height: 150px;
+    max-height: 200px;
   }
 
   /* ORDER */

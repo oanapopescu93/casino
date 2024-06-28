@@ -239,6 +239,8 @@ var word_bank = {
     order_description: "Описание заказа",
     order_date: "Дата заказа",
     postal_code: "Почтовый индекс",
+    chargeId: "ID",
+    method: "Метод",
 
     // blackjack
     start: "Начать",

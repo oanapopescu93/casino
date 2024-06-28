@@ -4,7 +4,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../../../../img/icons/vegetables_yellow.png'
 import Counter from '../../../../partials/counter'
-import carrot_img from '../../../../../img/icons/carrot_icon.png'
 import { Button } from 'react-bootstrap'
 import { decryptData } from '../../../../../utils/crypto'
 
@@ -86,13 +85,13 @@ function Cart(props){
                                         return <h4>{product[0].name_eng}</h4>
                                 } 
                             })()}
-                            <p><b>{translate({lang: lang, info: "price"})}</b>: {product[0].price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
+                            <p><b>{translate({lang: lang, info: "price"})}</b>: ${product[0].price}</p>
                             <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>
                             <Counter num={item.qty} max={max} update={(e)=>updateQtyProduct(e, item)} />
                             
                         </div>
                         <div className="cart_buttons">
-                            <h4><b>{translate({lang: lang, info: "price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h4> 
+                            <h4><b>{translate({lang: lang, info: "price"})}</b>: ${cart_item_total_price}</h4> 
                             <Button 
                                 type="button"  
                                 className="mybutton round button_transparent shadow_convex remove"
@@ -104,7 +103,7 @@ function Cart(props){
             </div>
             <div className="cart_footer">
                 <div className="cart_total_price">
-                    <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {total}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h3>
+                    <h3><b>{translate({lang: lang, info: "total_price"})}</b>: ${total}</h3>
                 </div>
                 <div className="cart_button">
                     <Button 

@@ -4,24 +4,13 @@ import { translate } from '../../../translations/translate'
 import vegetables_yellow from '../../../img/icons/vegetables_yellow.png'
 import { Row, Col } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import { getProducts } from '../../../utils/utils'
 
 function Cart(props){
     const {lang, home} = props
     let market = home.market ? home.market : []
     let cart = useSelector(state => state.cart.cart)
-    let list = getProducts(cart) 
-
-    function getProducts(cart){
-        let array = []
-        for(let i in cart){
-            let index = market.findIndex((x) => x.id === cart[i].id)
-            if(index !== -1){
-                let elem = {...market[index], qty: cart[i].qty, cardId: cart[i].cartId}
-                array.push(elem)
-            }
-        }
-        return array
-    }
+    let list = getProducts(cart, market) 
 
     return <div className="cart_list">
         <div className="cart_list_items 2">

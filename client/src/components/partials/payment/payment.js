@@ -6,7 +6,7 @@ import Counter from '../counter'
 import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
-import { isEmpty, paymentErrors, postData } from '../../../utils/utils'
+import { getProducts, isEmpty, paymentErrors, postData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
@@ -14,6 +14,7 @@ import PaymentDetails from './paymentDetails'
 import { updatePaymentDetails } from '../../../reducers/paymentDetails'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import { orderAdd } from '../../../reducers/order'
 
 function Payment(props){
     const {lang, template, home} = props
@@ -282,22 +283,59 @@ function Payment(props){
             }
             let payload = {...paymentDetails}
             payload.amount = amount
+            if(template === "buy_carrots"){
+                payload.products = [{name_eng: "Carrot", price: price_per_carrot, qty}]
+                payload.description = "Buy carrots"
+            }
+            if(template === "checkout"){
+                payload.products = getProducts(cart, home.market ? home.market : [])
+                payload.description = "Buy vegetables"
+            }
             //console.log('sendPayload1--> ', gateway, payload, url)
             if(!isEmpty(url)){
                 postData(url, payload).then((data) => {
                     if(data && data.result && data.result === "success"){
-                        //console.log('sendPayload2--> ', data)
+                        console.log('sendPayload2--> ', data)
                         switch(gateway){
                             case "stripe":
                             case "paypal":
-                                if(data.payload.receipt_url){
+                                if(data.payload && data.payload.receipt_url){
                                     window.open(data.payload.receipt_url,'_blank')
+                                    if(gateway === "stripe"){
+                                        const chargeId = data.payload.id
+                                        if(chargeId){
+                                            dispatch(orderAdd({chargeId, method: gateway, description: data.payload.description, amount: data.payload.amount/100}))
+                                        }
+                                        let payload = {
+                                            open: true,
+                                            template: "success",
+                                            title: translate({lang: props.lang, info: "payment_success"}),
+                                            data: translate({lang: props.lang, info: "payment_success_text"})
+                                        }
+                                        dispatch(changePopup(payload))
+                                    }
+                                } else {
+                                    let payload = {
+                                        open: true,
+                                        template: "error",
+                                        title: translate({lang: props.lang, info: "error"}),
+                                        data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
+                                    }
+                                    dispatch(changePopup(payload))
                                 }
                                 break
                             case "crypto": 
                                 let iid = data.iid
-                                if(data.payload.invoice_url){
+                                if(data.payload && data.payload.invoice_url){
                                     window.open(data.payload.invoice_url,'_blank')
+                                } else {
+                                    let payload = {
+                                        open: true,
+                                        template: "error",
+                                        title: translate({lang: props.lang, info: "error"}),
+                                        data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
+                                    }
+                                    dispatch(changePopup(payload))
                                 }
                                 //console.log('sendPayload3--> ', data, iid)
                                 if(typeof iid !== "undefined" && iid !== "null" && iid !== null && iid !== ""  && iid > 0){

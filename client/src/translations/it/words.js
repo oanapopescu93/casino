@@ -240,6 +240,8 @@ var word_bank = {
     order_description: "Descrizione dell'ordine",
     order_date: "Data dell'ordine",
     postal_code: "Codice postale",
+    chargeId: "ID",
+    method: "Metodo",
 
     // blackjack
     start: "Inizia",

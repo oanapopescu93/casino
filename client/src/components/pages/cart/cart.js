@@ -10,25 +10,14 @@ import { translate } from '../../../translations/translate'
 import Header from '../../partials/header'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { getProducts } from '../../../utils/utils'
 
 function Cart(props){
     let market = props.home.market
     let cart = useSelector(state => state.cart.cart) 
     const [promo, setPromo] = useState(null) 
     let dispatch = useDispatch()
-    let list = getProducts(cart)
-
-    function getProducts(cart){
-        let array = []
-        for(let i in cart){
-            let index = market.findIndex((x) => x.id === cart[i].id)
-            if(index !== -1){
-                let elem = {...market[index], qty: cart[i].qty, cardId: cart[i].cartId}
-                array.push(elem)
-            }
-        }
-        return array
-    }
+    let list = getProducts(cart, market)
 
     function updatePromo(x){
       setPromo(x)

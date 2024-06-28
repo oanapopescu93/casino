@@ -189,3 +189,15 @@ export const paymentErrors = function(){
     bitcoinAddress: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_bitcoinAddress" }
   }
 }
+
+export const getProducts = function(cart, market){
+  let array = []
+  for(let i in cart){
+      let index = market.findIndex((x) => x.id === cart[i].id)
+      if(index !== -1){
+          let elem = {...market[index], qty: cart[i].qty, cardId: cart[i].cartId}
+          array.push(elem)
+      }
+  }
+  return array
+}

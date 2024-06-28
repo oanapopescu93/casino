@@ -8,6 +8,7 @@ import { changePage, changeGame, changeGamePage } from '../../../../../reducers/
 import { Row, Col, Button } from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faUser, faUpload} from '@fortawesome/free-solid-svg-icons'
+import carrot_img from '../../../../../img/icons/carrot_icon.png'
 
 function Picture(props){
 	let picId = props.pic_id
@@ -123,7 +124,7 @@ function DashboardLeft(props){
                     })()}
                 </p>
                 <p className="dashboard_money">
-                    <b>{translate({lang: lang, info: "carrots"})}: </b>{money}
+                    <b>{translate({lang: lang, info: "carrots"})}: </b>{money} <img alt="carrot_img" className="currency_img" src={carrot_img}/>
                 </p>
             </Col>
         </Row>	

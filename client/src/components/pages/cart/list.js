@@ -4,7 +4,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
 import { translate } from '../../../translations/translate'
 import vegetables_yellow from '../../../img/icons/vegetables_yellow.png'
-import carrot_img from '../../../img/icons/carrot_icon.png'
 import Counter from '../../partials/counter'
 import { decryptData } from '../../../utils/crypto'
 
@@ -60,7 +59,7 @@ function List(props){
                                                 return <h4>{item.name_eng}</h4>
                                         } 
                                     })()}
-                                    <p><b>{translate({lang: lang, info: "price"})}</b>: {item.price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
+                                    <p><b>{translate({lang: lang, info: "price"})}</b>: ${item.price}</p>
                                     <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>
                                 </Col>
                             </Row>
@@ -71,7 +70,7 @@ function List(props){
                             </Row>
                         </Col>
                         <Col xs={4} className="cart_action">
-                            <h4><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price}<img alt="carrot_img" className="currency_img" src={carrot_img}/></h4>
+                            <h4><b>{translate({lang: lang, info: "total_price"})}</b>: ${cart_item_total_price}</h4>
                             <Button 
                                 type="button"  
                                 className="mybutton round button_transparent shadow_convex remove"

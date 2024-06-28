@@ -12,6 +12,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBasketShopping} from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
 import profilePic from '../../img/profile/predators.jpg'
+import carrot_img from '../../img/icons/carrot_icon.png'
 
 function Cell(props) {
     const {lang, index, selected, data, template} = props
@@ -137,7 +138,7 @@ function Cell(props) {
                                             return <h4>{data.name_eng}</h4>
                                     }
                                 })()}
-                                <p>{translate({lang: lang, info: "price"})}: {data.price}</p>
+                                <p>{translate({lang: lang, info: "price"})}: {data.price} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
                                 <Counter update={(e)=>updateQtyMarket(e)} />
                             </div>
                             <div className="cell_button">

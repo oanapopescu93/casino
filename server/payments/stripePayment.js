@@ -9,19 +9,32 @@ const stripe = require('stripe')("sk_test_51Mdvu1CWq9uV6YuM2iH4wZdBXlSMfexDymB6h
 const MINIMUM_AMOUNT_USD = 50
 
 stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
-    const { name, email, country, city, phone, cardNumber, month, year, cvv, amount } = req.body
+    const { name, email, country, city, phone, cardNumber, month, year, cvv, amount, products, description } = req.body
 
     if (!name || !email || !cardNumber || !month || !year || !cvv) {
         res.json({type: "stripe", result: "error", payload: 'error_charge'})
     }
 
     if(amount){
-        if (amount < MINIMUM_AMOUNT_USD) {
+        if (amount * 100 < MINIMUM_AMOUNT_USD) {
             return res.json({type: "stripe", result: "error", payload: 'amount_too_low'})
         }
+
+        //create items
+        const lineItems = products.map((product)=>{
+            return {
+                name: product.name_eng,                
+                quantity: product.qty,
+                price: Math.round(product.price * 100), // price in cents
+            }
+        })
         
         let customer = null
-        let customerInfo = {name, email, phone, description: "stripe customer", address: {country, city}}
+        let customerInfo = {
+            name, email, phone, 
+            description: "BunnyBet customer", 
+            address: {country, city},
+        }
 
         let card_token = null
         let card = null
@@ -34,12 +47,17 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
                 name: name,
             },
         }
-
-        let chargeInfo = {
-          receipt_email: "oanapopescu93@gmail.com",
-          amount: amount * 100,
-          currency: 'usd',
-          description: 'bunnybet',
+          
+        const metadata = {}
+        lineItems.forEach((item, index) => {
+            metadata[`product_${index + 1}`] = JSON.stringify(item)
+        })
+        let chargeInfo = {          
+            amount: amount * 100,
+            currency: 'usd',
+            description: description,
+            receipt_email: email,
+            metadata: metadata
         }
 
         try {
