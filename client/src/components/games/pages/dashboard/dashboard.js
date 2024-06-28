@@ -7,6 +7,7 @@ import { changePage, changeGame, changeGamePage } from '../../../../reducers/pag
 import { Row, Col, Button } from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { translate } from '../../../../translations/translate'
 
 function Dashboard(props){
 	let dispatch = useDispatch()
@@ -34,7 +35,7 @@ function Dashboard(props){
 			<Col sm={2} />
 			<Col sm={8}>					
 				<Row>				
-					<Col sm={12}><h2>Dashboard</h2></Col>
+					<Col sm={12}><h2>{translate({lang: props.lang, info: "dashboard"})}</h2></Col>
 				</Row>
 				<Row>
 					<Col lg={4}>

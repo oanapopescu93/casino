@@ -39,7 +39,7 @@ function Panel(props){
         }
     }
 
-    return <div id="cart_panel" className="cart_box shadow_concav">
+    return <div id="cart_panel">
         <div className="cart_total_price">
             {promo && Object.keys(promo).length>0 ? <>
                 <p><b>{translate({lang: lang, info: "price"})}</b>: {total}<img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
@@ -50,19 +50,19 @@ function Panel(props){
         <div className="button_action_group">
             <Button 
                 type="button"  
-                className="mybutton button_transparent shadow_convex remove"
+                className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>handleCheckout()}
-            ><FontAwesomeIcon icon={faCartShopping}/><span>{translate({lang: lang, info: "checkout"})}</span></Button>
+            ><FontAwesomeIcon icon={faCartShopping}/><span>{translate({lang: lang, info: "checkout"})}</span></Button>            
             <Button 
                 type="button"  
-                className="mybutton button_transparent shadow_convex remove"
-                onClick={()=>removeAll()}
-            ><FontAwesomeIcon icon={faTrashCan}/><span>{translate({lang: lang, info: "remove_all"})}</span></Button>
-            <Button 
-                type="button"  
-                className="mybutton button_transparent shadow_convex remove"
+                className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>handleContinueShopping()}
             ><FontAwesomeIcon icon={faCartShopping}/><span>{translate({lang: lang, info: "continue_shopping"})}</span></Button>
+            <Button 
+                type="button"  
+                className="mybutton button_fullcolor shadow_convex"
+                onClick={()=>removeAll()}
+            ><FontAwesomeIcon icon={faTrashCan}/><span>{translate({lang: lang, info: "remove_all"})}</span></Button>
         </div>
     </div>
 }

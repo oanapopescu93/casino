@@ -1,0 +1,7 @@
+//test checkout form
+
+Card Number: 4242 4242 4242 4242
+Expiry Date: Any future date (e.g., 12/34)
+CVV: Any 3-digit number (e.g., 123)
+
+Bitcoin address: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa

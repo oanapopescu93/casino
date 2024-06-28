@@ -137,6 +137,7 @@ var word_bank = {
     date_calendar: "Data",
     currency: "Moeda",  
     
+    dashboard: "Dashboard",
     choose_profile_pic: "Escolha a foto de perfil",
     animal: "Animal",
     carrots: "Cenouras",
@@ -192,6 +193,7 @@ var word_bank = {
     addNewCard_error: "Falha ao criar um token de cartão.",
     createNewCustomer_error: "Falha ao criar um novo cliente.",
     submit: "Enviar",
+    pay: "Pagamento",
     min_amount: "Valor mínimo",
     fiat_equivalent: "Valor equivalente em moeda fiduciária",
     payment_details: "Detalhes do pagamento",

@@ -137,6 +137,7 @@ var word_bank = {
     date_calendar: "Data calendaristică",
     currency: "Monedă",
 
+    dashboard: "Dashboard",
     choose_profile_pic: "Alege imaginea de profil",
     animal: "Animal",
     carrots: "Morcovi",
@@ -192,6 +193,7 @@ var word_bank = {
     addNewCard_error: "Eroare la crearea unui token de card.",
     createNewCustomer_error: "Eroare la crearea unui nou client.",
     submit: "Finalizează comandă",
+    pay: "Plată",
     min_amount: "Suma minimă",
     fiat_equivalent: "Echivalent în valută",
     payment_details: "Detalii de plată",

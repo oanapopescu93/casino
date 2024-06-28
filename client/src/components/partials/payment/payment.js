@@ -6,7 +6,6 @@ import Counter from '../counter'
 import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
-import { decryptData } from '../../../utils/crypto'
 import { isEmpty, paymentErrors, postData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
@@ -14,15 +13,17 @@ import PaymentCart from './paymentCart'
 import PaymentDetails from './paymentDetails'
 import { updatePaymentDetails } from '../../../reducers/paymentDetails'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faStore, faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import {faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 function Payment(props){
-    const {lang, user, template, home} = props
+    const {lang, template, home} = props
     let dispatch = useDispatch()
-    let max_bet = user.money ? decryptData(user.money) : 0
+    let max_amount = 100
     let price_per_carrot = 1
 
     let payment_details = useSelector(state => state.paymentDetails)
+    let cart = useSelector(state => state.cart.cart) 
+    let promo = useSelector(state => state.cart.promo) 
 
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(price_per_carrot)
@@ -46,15 +47,24 @@ function Payment(props){
         crypto: ["payment_methode", "bitcoin_address"]
     }
 
-    let market = home.market ? home.market : []
-    let cart = useSelector(state => state.cart.cart) 
-    let promo = useSelector(state => state.cart.promo) 
-    let total = totalPriceSum()
-    let total_promo = total
-    if(promo && Object.keys(promo).length>0){
-        total_promo = (total_promo - (total_promo * promo.discount)/100).toFixed(2)
-    }
+    useEffect(() => {
+        let pay = 0
+        switch(template){
+            case "buy_carrots":
+                pay = qty * price_per_carrot
+                break
+            case "checkout":
+                pay = totalPriceSum()
+                if(promo && Object.keys(promo).length>0){
+                    pay = (pay - (pay * promo.discount)/100).toFixed(2)
+                }
+                break
+        }
+        setAmount(parseFloat(pay))
+    }, [])
+
     function totalPriceSum(){
+        let market = home.market ? home.market : [] 
         let total = 0
         for(let i in cart){
             let product = market.filter(a => a.id === cart[i].id)
@@ -68,7 +78,7 @@ function Payment(props){
     useEffect(() => {
         let url = "/api/crypto_min"
         let payload = {
-            amount: total_promo
+            amount: amount
         }
         postData(url, payload).then((res) => {
             setCryptoData(res.payload)
@@ -119,10 +129,10 @@ function Payment(props){
         setAmount(x * price_per_carrot)
     }
 
-    function handleBack(){
+    function handleBack(choice){
         dispatch(changePage('Salon'))
         dispatch(changeGame(null))
-        dispatch(changeGamePage('market'))
+        dispatch(changeGamePage(choice))
     }
 
     function getFormDetails(){
@@ -189,7 +199,7 @@ function Payment(props){
         let pay_crypto = data.option === "3" ? true : false    
         let errors = paymentErrors()
 
-        if(pay_card){ //"name", "email", "payment_methode", "card_number", "year", "month", "cvv"
+        if(pay_card){
             if(isEmpty(data.name)){
                 errors.name.fill = false
             }
@@ -225,13 +235,7 @@ function Payment(props){
                 errors.cvv.validate = false
             }
         }
-        if(pay_paypal){ //"name", "email", "payment_methode"
-            if(isEmpty(data.name)){
-                errors.name.fill = false
-            }
-            if(!validateInput(data.name, "name")){
-                errors.name.validate = false
-            }
+        if(pay_paypal){
             if(isEmpty(data.email)){
                 errors.email.fill = false
             }
@@ -239,11 +243,11 @@ function Payment(props){
                 errors.email.validate = false
             }
         }
-        if(pay_crypto){ //"payment_methode", "bitcoin_address"
+        if(pay_crypto){
             if(isEmpty(data.bitcoin_address)){
                 errors.bitcoinAddress.fill = false
             }
-            if(!validateInput(data.bitcoin_address, "bitcoin_address")){ //test bitcoin address--> 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+            if(!validateInput(data.bitcoin_address, "bitcoin_address")){
                 errors.bitcoinAddress.validate = false
             }
         }
@@ -251,7 +255,6 @@ function Payment(props){
 
         // Check if there is any problem (fill or validate errors for at least one element in error array)
         let problem = Object.values(errors).some(error => !error.fill || !error.validate)
-        
         if(!problem){
             sendPayload(data)
             dispatch(updatePaymentDetails(data))
@@ -263,7 +266,7 @@ function Payment(props){
     }
 
     function sendPayment(){
-        if(typeof total_promo !== "undefined" && total_promo !== "" && total_promo !== "null" && total_promo !== null && amount > 0){ // something is wrong and we can't charge client (ex: somehow the cart is empty, so, the total amount is 0)
+        if(amount > 0){
             let url = ""
             switch(gateway){
                 case "stripe":
@@ -278,7 +281,7 @@ function Payment(props){
                 default:                    
             }
             let payload = {...paymentDetails}
-            payload.amount = total_promo
+            payload.amount = amount
             //console.log('sendPayload1--> ', gateway, payload, url)
             if(!isEmpty(url)){
                 postData(url, payload).then((data) => {
@@ -398,15 +401,15 @@ function Payment(props){
     }
 
     return<Row>
-        <p>{translate({lang: props.lang, info: "under_construction"})}</p>
         {paymentDetails ? <PaymentDetails 
             {...props} 
             paymentDetails={paymentDetails}
-            totalPromo={total_promo}
+            amount={amount}
             gatewayDetails={gatewayDetails}
             gateway={gateway}
+            template={template}
             sendPayment={()=>sendPayment(paymentDetails)}
-            handleBack={()=>handleBack()}
+            handleBack={(e)=>handleBack(e)}
         /> : <>
             <Col sm={8}>
                 <PaymentForm 
@@ -414,7 +417,7 @@ function Payment(props){
                     getChanges={(e)=>getChanges(e)}
                     paymentError={paymentError}
                     cryptoData={cryptoData}
-                    totalPromo={total_promo}
+                    amount={amount}
                     gateway={gateway}
                     gatewayDetailsMandatory={gatewayDetailsMandatory}
                     paymentDetails={payment_details}
@@ -426,7 +429,14 @@ function Payment(props){
                         {(() => {
                             switch(template) {
                                 case "buy_carrots":
-                                    return <Counter num={1} max={max_bet} update={(e)=>updateQty(e)} />
+                                    return <>
+                                        <Counter num={1} max={max_amount} update={(e)=>updateQty(e)} />
+                                        <div className="payment_details_total_price">
+                                            <h3>
+                                                <b>{translate({lang: lang, info: "total_price"})}</b>: ${amount}
+                                            </h3>
+                                        </div>
+                                    </>
                                 case "checkout":
                                     return <PaymentCart {...props} />
                                 default:  
@@ -442,11 +452,25 @@ function Payment(props){
                             className="mybutton button_fullcolor shadow_convex"
                             onClick={()=>handleSubmit()}
                         ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "continue"})}</Button>
-                        <Button 
-                            type="button"  
-                            className="mybutton button_fullcolor shadow_convex"
-                            onClick={()=>handleBack()}
-                        ><FontAwesomeIcon icon={faStore} /> {translate({lang: lang, info: "market"})}</Button>
+                        {(() => {
+                            let choice = null
+                            let icon = null
+                            switch(template) {
+                                case "buy_carrots":
+                                    choice = "dashboard"
+                                    icon = faUser
+                                    break
+                                case "checkout":
+                                    choice = "market"
+                                    icon = faStore
+                                    break                                                          
+                            }
+                            return <>{choice && icon ? <Button 
+                                type="button"  
+                                className="mybutton button_fullcolor shadow_convex"
+                                onClick={()=>handleBack(choice)}
+                            ><FontAwesomeIcon icon={icon} /> {translate({lang: lang, info: choice})}</Button> : null}</>
+                        })()}
                     </Col>
                 </Row>
             </Col>

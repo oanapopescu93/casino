@@ -136,6 +136,7 @@ var word_bank = {
     date_calendar: "Дата",
     currency: "Валюта",
 
+    dashboard: "Дашборд",
     choose_profile_pic: "Выберите фото профиля",
     animal: "Животное",
     carrots: "Морковь",
@@ -191,6 +192,7 @@ var word_bank = {
     addNewCard_error: "Ошибка при создании токена карты.",
     createNewCustomer_error: "Ошибка при создании нового клиента.",
     submit: "Отправить",
+    pay: "Плата",
     min_amount: "Минимальная сумма",
     fiat_equivalent: "Эквивалент в фиатных деньгах",
     payment_details: "Детали оплаты",

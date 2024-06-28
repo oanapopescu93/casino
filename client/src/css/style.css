@@ -311,7 +311,7 @@ textarea:focus, input:focus{
 	display: grid;
   place-content: center;
   cursor: pointer;
-  margin: 0px;
+  margin: 0px !important;
   border: solid 1px var(--color);
 }
 .checkbox_radio_container input[type="radio"]{
@@ -353,7 +353,7 @@ textarea:focus, input:focus{
 	display: inline-flex;
   grid-template-columns: 20px auto;
   gap: 10px;
-	margin:var(--padding_small)!important;
+	margin:0px var(--padding_small)!important;
 }
 .checkbox_radio_container label h6{
   text-align: left;
@@ -369,8 +369,8 @@ textarea:focus, input:focus{
   font-size: 12px;
   line-height: 12px;
   padding: var(--padding_small) var(--padding);
-  border-radius: 10px;
-  height: 25px;
+  border-radius: var(--padding_big);
+  height: 35px;
   width: 100%;
   cursor: pointer;
 }
@@ -1601,6 +1601,7 @@ textarea {
   width: 100%;
   max-width: 150px;
   margin-right: var(--padding_small);
+  height: 25px;
 }
 
 /* DONATE */
@@ -2197,9 +2198,6 @@ textarea {
   padding: var(--padding_small);
   width: 50%;
 }
-.cart .cart_button .mybutton{
-  height: 35px;
-}
 .cart .remove{
   width: 40px!important;
   height: 40px!important;
@@ -2458,10 +2456,11 @@ textarea {
 }
 #cart_panel .mybutton{
   height: 35px;
+  margin-bottom: var(--padding);
 }
 
 /* CHECKOUT */
-#payment_form h3, #payment_details .payment_details_title h3{
+#payment_form h3, #payment_details .payment_details_title h3, #payment_form .checkbox_radio_container{
   padding: var(--padding_small);
   margin-bottom: var(--padding_small);
   border-bottom: solid 1px var(--color);
