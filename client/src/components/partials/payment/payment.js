@@ -375,7 +375,7 @@ function Payment(props){
                 dispatch(changePopup(payload))
             }
         } else {
-            showError(data)
+            showError()
         }
     }
     
