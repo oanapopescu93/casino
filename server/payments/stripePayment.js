@@ -2,143 +2,138 @@ var express = require("express")
 var bodyParser = require('body-parser')
 var stripePayment = express.Router()
 
-var jsonParser = bodyParser.json() 
-// require('dotenv').config()
-// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+var jsonParser = bodyParser.json()
 const stripe = require('stripe')("sk_test_51Mdvu1CWq9uV6YuM2iH4wZdBXlSMfexDymB6hHwpmH3J9Dm7owHNBhq4l4wawzFV9dXL3xrYGbhO74oc8OeQn5uJ00It2XDg9U")
 const MINIMUM_AMOUNT_USD = 50
 
 stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
     const { name, email, country, city, phone, cardNumber, month, year, cvv, amount, products, description } = req.body
 
-    if (!name || !email || !cardNumber || !month || !year || !cvv) {
-        res.json({type: "stripe", result: "error", payload: 'error_charge'})
+    if(!name || !email || !cardNumber || !month || !year || !cvv){
+        return res.json({ type: "stripe", result: "error", payload: 'error_charge' })
     }
 
-    if(amount){
+    if (amount) {
         if (amount * 100 < MINIMUM_AMOUNT_USD) {
-            return res.json({type: "stripe", result: "error", payload: 'amount_too_low'})
+            return res.json({ type: "stripe", result: "error", payload: 'amount_too_low' })
         }
 
         //create items
-        const lineItems = products.map((product)=>{
+        const lineItems = products.map((product) => {
             return {
                 name: product.name_eng,                
                 quantity: product.qty,
                 price: Math.round(product.price * 100), // price in cents
-            }
-        })
+            };
+        });
         
-        let customer = null
-        let customerInfo = {
-            name, email, phone, 
-            description: "BunnyBet customer", 
-            address: {country, city},
-        }
+        const metadata = {};
+        lineItems.forEach((item, index) => {
+            metadata[`product_${index + 1}`] = `${item.name}: ${item.quantity} x ${item.price / 100} USD`
+        })
 
-        let card_token = null
-        let card = null
-        let cardInfo = {
+        let customer = null
+        let card = {
+            type: 'card',
             card: {
                 number: cardNumber,
                 exp_month: parseInt(month),
                 exp_year: parseInt(year),
                 cvc: cvv,
-                name: name,
             },
-        }
-          
-        const metadata = {}
-        lineItems.forEach((item, index) => {
-            metadata[`product_${index + 1}`] = JSON.stringify(item)
-        })
-        let chargeInfo = {          
+        }        
+        let paymentMethod = null
+        let paymentIntent = {
             amount: amount * 100,
             currency: 'usd',
             description: description,
             receipt_email: email,
+            confirm: true, // Automatically confirm the payment
+            off_session: true, // Indicate that the payment is happening off-session
             metadata: metadata
         }
 
         try {
-            // Create a new customer
-            createNewCustomer(customerInfo).then(function(res1){ 
+            createNewCustomer({ name, email, phone, description: "BunnyBet customer", address: { country, city } }).then((res1)=>{
                 if(res1){
                     customer = res1
-                    // Create a card token
-                    addNewCard(cardInfo).then(function(res2) {
+                    createPaymentMethod(card).then((res2)=>{
                         if(res2){
-                            card_token = res2
-                            // Attach the card to the customer
-                            createSource(customer.id, card_token.id).then(function(res3) {
+                            paymentMethod = res2
+                            attachPaymentMethod(paymentMethod.id, customer.id).then((res3)=>{
                                 if(res3){
-                                    card = res3
-                                    chargeInfo.source = card.id
-                                    chargeInfo.customer = customer.id
-                                    // Create a charge
-                                    createCharge(chargeInfo).then(function(res4) {
-                                        res.json({type: "stripe", result: "success", payload: res4})
+                                    paymentIntent.customer = customer.id
+                                    paymentIntent.payment_method = paymentMethod.id
+                                    paymentIntents(paymentIntent).then((res4)=>{
+                                        res.json({ type: "stripe", result: "success", payload: res4 })
+                                    }).catch((err)=>{
+                                        res.json({ type: "stripe", result: "error", payload: 'error_paymentIntent', details: err.message });
                                     })
                                 } else {
-                                    res.json({type: "stripe", result: "error", payload: 'createSource_error'})
+                                    res.json({ type: "stripe", result: "error", payload: 'attachPaymentMethod_error' })
                                 }
+                            }).catch((err)=>{
+                                res.json({ type: "stripe", result: "error", payload: 'attachPaymentMethod_error', details: err.message });
                             })
                         } else {
-                            res.json({type: "stripe", result: "error", payload: 'addNewCard_error'})
+                            res.json({ type: "stripe", result: "error", payload: 'createPaymentMethod_error' })
                         }
+                    }).catch((err)=>{
+                        res.json({ type: "stripe", result: "error", payload: 'createPaymentMethod_error', details: err.message })
                     })
                 } else {
-                    res.json({type: "stripe", result: "error", payload: 'createNewCustomer_error'})
+                    res.json({ type: "stripe", result: "error", payload: 'createNewCustomer_error' })
                 }
+            }).catch((err)=>{
+                res.json({ type: "stripe", result: "error", payload: 'createNewCustomer_error', details: err.message })
             })
         } catch (error) {
-            res.json({type: "stripe", result: "error", payload: 'error_charge', details: error})
+            res.json({ type: "stripe", result: "error", payload: 'error_charge', details: error.message })
         }
     } else {
-        res.json({type: "stripe", result: "error", payload: 'no_money'})
+        res.json({ type: "stripe", result: "error", payload: 'no_money' })
     }
 })
 
 module.exports = stripePayment
 
 function createNewCustomer(data){
-    // Create a new customer
-    return new Promise(function(resolve, reject){
-        stripe.customers.create(data).then(function(res){
+    return new Promise((resolve, reject)=>{
+        stripe.customers.create(data).then((res)=>{
             resolve(res)
         }).catch((err) => {
             console.error('error-createNewCustomer--> ' + err)
-            resolve(null)
-        }) 
-    })
-}
-function addNewCard(data){
-    // Create a card token
-    return new Promise(function(resolve, reject){
-        stripe.tokens.create(data).then(function(res){
-            resolve(res)
-        }).catch((err) => {
-            console.error('error-addNewCard--> ' + err)
-            resolve(null)
+            reject(err)
         })
     })
 }
-function createSource(customer_id, card_token_id){
-    // Attach the card to the customer
-    return new Promise(function(resolve, reject){
-        stripe.customers.createSource(customer_id, {source: card_token_id }).then(function(res){
+function createPaymentMethod(data){
+    return new Promise((resolve, reject)=>{
+        stripe.paymentMethods.create(data).then(function (res) {
             resolve(res)
-        }).catch((err) => {
-            console.error('error-createSource--> ' + err)
-            resolve(null)
+        }).catch(err => {
+            console.error('error-createPaymentMethod--> ' + err)
+            reject(err);
         })
     })
-} 
-function createCharge(data){
-    // Create a charge
-    return new Promise(function(resolve, reject){
-        stripe.charges.create(data).then(function(res){
+}
+function attachPaymentMethod(paymentMethod_id, customer_id){
+    return new Promise(function (resolve, reject) {
+        stripe.paymentMethods.attach(paymentMethod_id, { customer: customer_id }).then((res)=>{
             resolve(res)
-        }).catch(err => console.error('error-addNewCard--> ' + err)) 
+        }).catch((err) => {
+            console.error('error-attachPaymentMethod--> ' + err)
+            reject(err)
+        })
+    })
+}
+function paymentIntents(data){
+    return new Promise((resolve, reject)=>{
+        stripe.paymentIntents.create(data).then((res)=>{
+            resolve(res)
+        }).catch(err => {
+            console.error('error-paymentIntents--> ' + err)
+            reject(err)
+        })
     })
 }

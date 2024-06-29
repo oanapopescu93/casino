@@ -19,8 +19,9 @@ import GameResults from "./gameResults"
 import Welcome from "./welcome"
 import Streak from "./streak"
 import WhackARabbit from "./whackARabbit"
-import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import SlotsPrizeTable from "./slotsPrizeTable"
+import PaymentSuccess from "./paymentSuccess"
+import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 
 function Popup(props){
     const {lang, date, currency, socket, home} = props
@@ -35,6 +36,10 @@ function Popup(props){
     let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
     const [forgotPasswordResult, setForgotPasswordResult] = useState('')
     const [forgotPasswordSending, setForgotPasswordSending] = useState(false)
+    let style = template
+    if(template === "paymentSuccess"){
+        style = "success"
+    }
 
   	function closeModal(){
         if(template !== "isMinor"){ //prevents modal from closing without making a choice
@@ -85,7 +90,7 @@ function Popup(props){
     }, [socket])
 
     return <>
-        {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + template} show={open} onHide={closeModal} size={size} centered> 
+        {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + style} show={open} onHide={closeModal} size={size} centered> 
             {title !== "" ? <Modal.Header>
                 {!sticky ? <div className="closeButton closeButtonHeader" onClick={closeModal}>
                     <span>X</span>
@@ -126,6 +131,8 @@ function Popup(props){
                             return <Streak lang={lang} data={data} />
                         case "whack_a_rabbit":
                             return <WhackARabbit lang={lang} handleClick={()=>handleWhackARabbit()} />
+                        case "paymentSuccess":
+                            return <PaymentSuccess lang={lang} data={data} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default lang={lang} text={data} /> : null}</>

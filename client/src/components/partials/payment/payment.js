@@ -266,6 +266,16 @@ function Payment(props){
         setPaymentDetails(e)
     }
 
+    function showError(data={}){
+        let payload = {
+            open: true,
+            template: "error",
+            title: translate({lang: props.lang, info: "error"}),
+            data: translate({lang: props.lang, info: typeof data.payload === "string" ? data.payload : "error_charge"})
+        }
+        dispatch(changePopup(payload))
+    }
+
     function sendPayment(){
         if(amount > 0){
             let url = ""
@@ -291,40 +301,40 @@ function Payment(props){
                 payload.products = getProducts(cart, home.market ? home.market : [])
                 payload.description = "Buy vegetables"
             }
-            //console.log('sendPayload1--> ', gateway, payload, url)
+            
             if(!isEmpty(url)){
                 postData(url, payload).then((data) => {
-                    if(data && data.result && data.result === "success"){
-                        console.log('sendPayload2--> ', data)
+                    if(data && data.result && data.result === "success"){                        
                         switch(gateway){
                             case "stripe":
-                            case "paypal":
-                                if(data.payload && data.payload.receipt_url){
-                                    window.open(data.payload.receipt_url,'_blank')
-                                    if(gateway === "stripe"){
-                                        const chargeId = data.payload.id
-                                        if(chargeId){
-                                            dispatch(orderAdd({chargeId, method: gateway, description: data.payload.description, amount: data.payload.amount/100}))
-                                        }
-                                        let payload = {
-                                            open: true,
-                                            template: "success",
-                                            title: translate({lang: props.lang, info: "payment_success"}),
-                                            data: translate({lang: props.lang, info: "payment_success_text"})
-                                        }
-                                        dispatch(changePopup(payload))
-                                    }
-                                } else {
+                                if(data.payload && data.result === "success"){
                                     let payload = {
                                         open: true,
-                                        template: "error",
-                                        title: translate({lang: props.lang, info: "error"}),
-                                        data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
+                                        template: "paymentSuccess",
+                                        title: translate({lang: props.lang, info: "payment_success"}),
+                                        data: {
+                                            id: data.payload.id,
+                                            amount: (data.payload.amount / 100).toFixed(2),
+                                            created: data.payload.created,
+                                            gateway
+                                        },
+                                        size: 'lg',
                                     }
                                     dispatch(changePopup(payload))
+                                } else {
+                                    showError(data)
+                                }
+                                break
+                            case "paypal":
+                                //console.log('sendPayload2--> ', data)
+                                if(data.payload && data.payload.receipt_url){
+                                    window.open(data.payload.receipt_url,'_blank')
+                                } else {
+                                    showError(data)
                                 }
                                 break
                             case "crypto": 
+                                //console.log('sendPayload2--> ', data)
                                 let iid = data.iid
                                 if(data.payload && data.payload.invoice_url){
                                     window.open(data.payload.invoice_url,'_blank')
@@ -333,41 +343,26 @@ function Payment(props){
                                         open: true,
                                         template: "error",
                                         title: translate({lang: props.lang, info: "error"}),
-                                        data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
+                                        data: translate({lang: props.lang, info: typeof data.payload === "string" ? data.payload : "error_charge"})
                                     }
                                     dispatch(changePopup(payload))
-                                }
-                                //console.log('sendPayload3--> ', data, iid)
+                                }                                
                                 if(typeof iid !== "undefined" && iid !== "null" && iid !== null && iid !== ""  && iid > 0){
-                                    postData('/api/crypto_pay', {iid}).then((data) => {
-                                        let payment_id = data.payload.payment_id
-                                        //console.log('sendPayload4--> ', data, payment_id)
-                                        
-                                        if (payment_id) {
-                                            checkCryptoPaymentStatus(iid, payment_id)
+                                    postData('/api/crypto_pay', {iid}).then((data) => {                              
+                                        if (data.payload.payment_id) {
+                                            checkCryptoPaymentStatus(iid, data.payload.payment_id)
                                         } else {
-                                            let payload = {
-                                                open: true,
-                                                template: "error",
-                                                title: translate({lang: props.lang, info: "error"}),
-                                                data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
-                                            }
-                                            dispatch(changePopup(payload))
+                                            showError(data)
                                         }
                                     })
                                 }
                                 break 
                             default:
+                                showError()
                                 break
                         }
                     } else {
-                        let payload = {
-                            open: true,
-                            template: "error",
-                            title: translate({lang: props.lang, info: "error"}),
-                            data: translate({lang: props.lang, info: data.payload ? data.payload : "error_charge"})
-                        }
-                        dispatch(changePopup(payload))
+                        showError()
                     }
                 })
             } else {
@@ -380,13 +375,7 @@ function Payment(props){
                 dispatch(changePopup(payload))
             }
         } else {
-            let payload = {
-                open: true,
-                template: "error",
-                title: translate({lang: props.lang, info: "error"}),
-                data: translate({lang: props.lang, info: "error_charge"})
-            }
-            dispatch(changePopup(payload))
+            showError(data)
         }
     }
     
@@ -398,13 +387,7 @@ function Payment(props){
         let tt = setInterval(() => {
             if (counter >= maxChecks) {
                 clearInterval(tt)
-                let payload = {
-                    open: true,
-                    template: "error",
-                    title: translate({lang: props.lang, info: "error"}),
-                    data: translate({lang: props.lang, info: "error_charge"})
-                }
-                dispatch(changePopup(payload))
+                showError()
             } else {
                 counter++
                 postData('/api/crypto_status', { paymentId: payment_id }).then((data) => {
@@ -417,9 +400,15 @@ function Payment(props){
                             clearInterval(tt)
                             let payload = {
                                 open: true,
-                                template: "success",
+                                template: "paymentSuccess",
                                 title: translate({lang: props.lang, info: "payment_success"}),
-                                data: translate({lang: props.lang, info: "payment_success_text"})
+                                data: {
+                                    id: data.payload.id,
+                                    amount: data.payload.amount,
+                                    created: 'date will come here',
+                                    gateway
+                                },
+                                size: 'lg',
                             }
                             dispatch(changePopup(payload))
                         }

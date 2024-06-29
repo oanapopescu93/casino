@@ -14,7 +14,7 @@ cryptoPayment.post("/api/crypto", jsonParser, (req, res, next) => {
             res.json(data)
         })
     } else {
-        res.json({payload: 'no amount', result: "error"}) 
+        res.json({type: "crypto", payload: 'no amount', result: "error"}) 
     }
 })
 
@@ -25,7 +25,7 @@ cryptoPayment.post("/api/crypto_pay", jsonParser, (req, res, next) => {
             res.json(data)
         })
     } else {
-        res.json({payload: 'no iid', result: "error"}) 
+        res.json({type: "crypto", payload: 'no iid', result: "error"}) 
     }
 })
 
@@ -36,12 +36,12 @@ function getCryptoPaymentByID(payment_id){
                 'x-api-key': apiKey,
             } 
             axios.get(`${apiUrl}/payment/${payment_id}`, { headers }).then(function(response){
-                resolve({payload: response.data, result: "crypto_payment"})
+                resolve({payload: response.data, result: "crypto_payment_get_id"})
             }).catch(function(err){
-                resolve({payload: err, result: "error"})
+                resolve({type: "crypto", payload: err, result: "error"})
             })
         } catch (err) {
-            resolve({payload: err, result: "error"})
+            resolve({type: "crypto", payload: err, result: "error"})
         }
     })
 }
@@ -51,9 +51,10 @@ cryptoPayment.post("/api/crypto_get_payment", jsonParser, (req, res, next) => {
     if(typeof payment_id != "undefined" && payment_id != "null" && payment_id != null && payment_id != ""  && payment_id > 0){
         getCryptoPaymentByID(payment_id).then(function(data) {
             res.json(data)
+            res.json({type: "crypto", payload: data, result: "crypto_payment_get"})
         })
     } else {
-        res.json({payload: 'no amount', result: "error"}) 
+        res.json({type: "crypto", payload: 'no amount', result: "error"}) 
     } 
 })
 
@@ -70,10 +71,10 @@ cryptoPayment.post("/api/crypto_status", jsonParser, (req, res, next) => {
     let paymentId = req.body.paymentId
     if(typeof paymentId != "undefined" && paymentId != "null" && paymentId != null && paymentId != ""  && paymentId > 0){
         checkPaymentStatus(paymentId).then(function(data) {
-            res.json({payload: data.payload.data, result: data.result})
+            res.json({type: "crypto", payload: data.payload.data, result: data.result})
         })
     } else {
-        res.json({payload: "paymentId", result: "error"})
+        res.json({type: "crypto", payload: "paymentId", result: "error"})
     } 
 })
 
