@@ -105,9 +105,7 @@ function PokerBoard(props){
                         </Col>
                     </>
                 default:
-                    return <>
-                        <p>{translate({lang: lang, info: "error"})}</p>
-                    </>
+                    return <p>{translate({lang: lang, info: "error"})}</p>
             }
         })()}
     </Row>

@@ -3,7 +3,6 @@ import { Button } from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import { translate } from '../../../translations/translate'
-import carrot_img from '../../../img/icons/carrot_icon.png'
 
 function Panel(props){
     const {list, lang, promo} = props

@@ -94,6 +94,8 @@ function PokerDashboard(props){
                                 break
                             case "showdown":
                                 setShowDown(true)
+                                break
+                            default:
                         }
                         if(data.pot){
                             setPot(data.pot)

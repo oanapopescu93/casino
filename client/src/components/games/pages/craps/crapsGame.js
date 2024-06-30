@@ -97,7 +97,7 @@ function Craps(props){
     const [crapsBoardText, setCrapsBoardText] = useState(null)
 	const [crapsBoardList, setCrapsBoardList] = useState([])
 	let game_type = bets ? bets.game_type : "pass line"
-	let game_odds = bets ? bets.game_odds : 2
+	// let game_odds = bets ? bets.game_odds : 2
 	let game = page.game
 	let room = getRoom(game)
 
@@ -203,7 +203,7 @@ function Craps(props){
 		let sum
 		let myArray
 		let value
-		let time = 2000
+		// let time = 2000
 		let firstTime = 100
 		let subsequentTime = 2000
 		setCrapsBoardText(null)
@@ -360,6 +360,7 @@ function Craps(props){
 							check_win_lose('lose')
 							clearInterval(timer)
 							break
+						default:
 					}
 					break
 				case "6 big 8":
@@ -393,6 +394,7 @@ function Craps(props){
 							check_win_lose('lose')
 							clearInterval(timer)
 							break
+						default:
 					}
 					break
 				case "come":
@@ -432,6 +434,7 @@ function Craps(props){
 							check_win_lose('lose')
 							clearInterval(timer)
 							break
+						default:
 					}
 					break
 				case "don't come":
@@ -472,6 +475,7 @@ function Craps(props){
 							check_win_lose('lose')
 							clearInterval(timer)
 							break
+						default:
 					}
 					break
 				case "don't pass line":
@@ -516,6 +520,7 @@ function Craps(props){
 							check_win_lose('lose')
 							clearInterval(timer)
 							break
+						default:
 					}
 					break
 				default:
@@ -559,6 +564,7 @@ function Craps(props){
 							check_win_lose('lose')
 							clearInterval(timer)
 							break
+						default:
 					}
 			}
 		}

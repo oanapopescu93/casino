@@ -68,6 +68,7 @@ function Popup(props){
                 case "user":
                     dispatch(changeUser({user: e.value}))
                     socket.emit('dashboardChanges_send', e)
+                    break
                 default:
                     break
             }
