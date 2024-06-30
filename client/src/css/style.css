@@ -1537,7 +1537,7 @@ textarea {
 }
 
 /* POKER */
-.game_container.poker_container{
+.game_container.poker_container .game_box_poker{
   position: relative;
   z-index: 1;
 }
@@ -1593,6 +1593,10 @@ textarea {
 }
 .gameboard .button_box {
   padding: var(--padding_small) 0px;
+  text-align: center;
+}
+.gameboard .button_box.button_box_start, .gameboard .button_box.button_box_start .tooltip{
+  width: 100%;
   text-align: center;
 }
 .gameboard .button_fullcolor:hover{
@@ -3436,6 +3440,10 @@ textarea {
   .box_scroll{
     max-height: 400px;
   }
+
+  .tooltip .tooltiptext{
+    opacity: 0!important;
+  }
 }
 
 @media (max-width: 767px) {	
@@ -3776,8 +3784,16 @@ textarea {
   }
 }
 
-@media (max-width: 960px) and (orientation: landscape) {}
-@media (max-width: 768px) and (orientation: landscape){}
+@media (max-width: 960px) and (orientation: landscape){}
+@media (max-width: 768px) and (orientation: landscape){
+  /* SALON */
+  .salon_button, .panel_button {
+    height: 35px;
+  }
+  .salon_button span, .panel_button span{
+    display: none;
+  }
+}
 
 @media (max-height: 500px){
 	.header_container.game{

@@ -696,15 +696,7 @@ function RouletteGame(props){
 			><FontAwesomeIcon icon={faCarrot} /></Button>
 			<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
 				<FontAwesomeIcon icon={faArrowRotateLeft} />
-			</Button>
-			{/* <div className="tooltip">
-				<Button 
-					type="button"  
-					className="mybutton round button_transparent shadow_convex"
-					onClick={() => gameStart()}
-				><FontAwesomeIcon icon={faRotate} /></Button>
-				<span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
-			</div> */}
+			</Button>			
 		</div>    
     </div>
 }

@@ -59,7 +59,7 @@ function Card(config){
             ctx.filter = 'grayscale(0)'
         } else {
             //dealer
-            if(template !== "poker_5_card_draw"){ //in texas hold'em we have community cards, in 5 card draw we don't                
+            if(template !== "poker_5_card_draw"){ //in texas hold'em we have community cards, in 5 card draw we don't
                 let cards_number = data.dealer.hand.length
                 let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
                 self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, data.dealer.hand, "dealer")
@@ -194,6 +194,7 @@ export const poker_game = function(props){
     let how_many_cards = 5
     
     let items = get_cards()
+    let game_status = false
 
     this.ready = function(r){
         self.createCanvas()
@@ -220,6 +221,7 @@ export const poker_game = function(props){
             if(data.action !== "fold"){
                 self.create_cards()
                 self.draw_cards()
+                game_status = true
                 if(data.action === "showdown"){
                     self.showdown()
                 }
@@ -442,6 +444,8 @@ export const poker_game = function(props){
             return x.uuid === props.user.uuid
         })
         if(player && player[0] && player[0].bet){
+            game_status = false
+
             let bet = player[0].bet
             let pot = poker_data.pot
             let status = 'lose'
@@ -464,6 +468,14 @@ export const poker_game = function(props){
         }
     }
 
+    this.get_status_game = function(){
+        return game_status
+    }
+
+    this.leave = function(){
+        self.fold() // if the user leaves the game, if he bet, he will lose the bets
+    }
+
     this.showdown = function(){
         let winner = self.determineWinner(poker_data.players)
         let player = poker_data.players.filter(function(x){
@@ -471,6 +483,8 @@ export const poker_game = function(props){
         })
         
         if(player && player[0] && player[0].bet){
+            game_status = false
+
             let bet = player[0].bet
             let pot = poker_data.pot
             let game = props.page.game

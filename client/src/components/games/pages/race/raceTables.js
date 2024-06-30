@@ -1,12 +1,12 @@
 import React from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { translate } from '../../../../translations/translate'
-import Carousel from '../../../carousel/carousel'
 import { decryptData } from '../../../../utils/crypto'
 import { changePopup } from '../../../../reducers/popup'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
+import Carousel from '../../../carousel/carousel'
 
 function RaceTables(props){
     const {lang, home} = props
@@ -84,11 +84,14 @@ function RaceTables(props){
             itemList={race_array}
         />
         <div className="game_start">
-            <Button 
-                type="button"  
-                className="mybutton round button_transparent shadow_convex"
-                onClick={()=>getData()}
-            >{translate({lang: lang, info: "start"})}</Button>
+            <div className="tooltip">
+				<Button 
+					type="button"  
+					className="mybutton round button_transparent shadow_convex"
+					onClick={() => getData()}
+				><FontAwesomeIcon icon={faPlay} /></Button>
+				<span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+			</div>
             <Button 
                 type="button" 
                 className="mybutton round button_transparent shadow_convex"

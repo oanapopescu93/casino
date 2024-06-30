@@ -129,7 +129,7 @@ function Craps(props){
 							let roll = res[i]			
 							animate(dice, roll)
 						}
-				   	}					
+					}					
 					dicesNumber = res
 					resolve(res)
 				} else {
@@ -583,12 +583,12 @@ function Craps(props){
 							<Col sm={12} md={4} lg={12}>
 								<div className="game_start">
 									<Button 
-										type="button"  
+										type="button"
 										className="mybutton round button_transparent shadow_convex"
 										onClick={()=>props.handleGameStart()}
 									><FontAwesomeIcon icon={faRotate} /></Button>
 									<Button 
-										type="button"  
+										type="button"
 										className="mybutton round button_transparent shadow_convex"
 										onClick={()=>props.handleOpenTable()}
 									><FontAwesomeIcon icon={faCarrot} /></Button>

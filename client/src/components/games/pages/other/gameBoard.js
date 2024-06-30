@@ -1,8 +1,10 @@
 import React from 'react'
 import { translate } from '../../../../translations/translate'
-import { Button, Row, Col } from 'react-bootstrap'
 import Counter from '../../../partials/counter'
 import { decryptData } from '../../../../utils/crypto'
+import { Button, Row, Col } from 'react-bootstrap'
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faPlay} from '@fortawesome/free-solid-svg-icons'
 import PokerBoard from './pokerBoard'
 
 function GameBoard(props){
@@ -60,10 +62,15 @@ function GameBoard(props){
                             </Col>
                             <Col xs={4} sm={4} className="d-none d-sm-block"/>
                             <Col xs={4} sm={4}>
-                                <div  className="button_box">
-                                    <Button type="button" onClick={()=>handleClick('start')} className="mybutton button_fullcolor shadow_convex">
-                                        {translate({lang: lang, info: "start"})}
-                                    </Button>
+                                <div  className="button_box button_box_start">
+                                    <div className="tooltip">
+                                        <Button 
+                                            type="button"
+                                            className="mybutton button_fullcolor shadow_convex"
+                                            onClick={()=>handleClick('start')}
+                                        ><FontAwesomeIcon icon={faPlay} /></Button>
+                                        <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+                                    </div>
                                 </div>
                             </Col>
                         </>}
