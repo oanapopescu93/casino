@@ -229,6 +229,7 @@ var word_bank = {
     
     // order
     order: "Pedido",
+    orders: "Pedidos",
     order_message: "¡Tu pedido se realizó correctamente!",
     order_details: "Detalles del pedido",
     customer: "Cliente",

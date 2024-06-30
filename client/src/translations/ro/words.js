@@ -229,6 +229,7 @@ var word_bank = {
 
     // order
     order: "Comandă",
+    orders: "Comenzi",  
     order_message: "Comanda dumneavoastră a fost făcută cu succes!",
     order_details: "Detalii comandă",
     customer: "Client",

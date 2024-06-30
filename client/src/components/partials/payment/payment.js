@@ -321,6 +321,7 @@ function Payment(props){
                                         size: 'lg',
                                     }
                                     dispatch(changePopup(payload))
+                                    dispatch(orderAdd(data))
                                 } else {
                                     showError(data)
                                 }

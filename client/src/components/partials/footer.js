@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../reducers/page'
 import { translate } from '../../translations/translate'
@@ -13,6 +13,7 @@ function Footer(props){
     const [date, setDate] = useState('')
     const [up, setUp] = useState('')
     const [showWinter, setShowWinter] = useState(false)
+    const wrapperRef = useRef(null)
 
     useEffect(() => {
         handleDate()
@@ -42,7 +43,18 @@ function Footer(props){
         }
     }
 
-    return <div className={"footer_container " + up}>
+    useEffect(() => {
+		document.addEventListener("click", handleClickOutside)
+        return () => document.removeEventListener("click", handleClickOutside)
+	}, []) 
+
+    function handleClickOutside(e){
+        if (wrapperRef && wrapperRef.current && !wrapperRef.current.contains(e.target)){
+            setUp('')
+        }
+    }
+
+    return <div ref={wrapperRef} className={"footer_container " + up}>
         <div className="footer_button_container">
             <div className={showWinter ? "footer_button snow_small" : "footer_button"} onClick={()=>handleFooterUp()}>
                 <span><FontAwesomeIcon icon={up === "up" ? faChevronDown : faChevronUp} /></span>

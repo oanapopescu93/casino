@@ -228,6 +228,7 @@ var word_bank = {
 
     // order
     order: "Bestellung",
+    orders: "Bestellungen", 
     order_message: "Deine Bestellung wurde erfolgreich aufgegeben!",
     order_details: "Bestelldetails",
     customer: "Kunde",
