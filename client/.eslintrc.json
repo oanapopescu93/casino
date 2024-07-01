@@ -15,7 +15,9 @@
       "no-mixed-spaces-and-tabs": "warn",
       "no-unused-vars": "warn",
       "react/prop-types": "off",
-      "no-case-declarations": "warn"
+      "no-case-declarations": "warn",
+      "react/react-in-jsx-scope": "off",
+      "react/no-unescaped-entities": "off"
   },
   "settings": {
       "react": {
