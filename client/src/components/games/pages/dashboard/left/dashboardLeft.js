@@ -47,7 +47,7 @@ function DashboardLeft(props){
     let money = user.money ? decryptData(user.money) : 0
     let profiles = home.profiles
     let picId = user.profile_pic ? decryptData(user.profile_pic) : 1
-    let animal = profiles.filter(function(x){
+    let animal = profiles.filter((x)=>{
         return x.id === parseInt(picId)
     })
 

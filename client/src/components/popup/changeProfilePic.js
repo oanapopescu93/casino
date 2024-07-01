@@ -37,7 +37,7 @@ function ChangeProfilePic(props) {
         setError(false)
         if(!item.free && money < 1000 && account_type === 1){
             setError(true)
-            setTimeout(function(){ 
+            setTimeout(()=>{ 
                 setError(false)
             }, 3000)
         } else {

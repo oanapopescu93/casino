@@ -85,11 +85,7 @@ function slots_game(props, id){
 	}
 
     this.get_offset = function(reel){
-        let offset = []
-		for(let i in reel){
-            offset.push(0)
-        }
-		return offset
+        return reel.map(() => 0)
 	}
 
     this.fit = function(){		
@@ -262,10 +258,10 @@ function slots_game(props, id){
 		slot_speed = []
         reel = self.get_reel(props.lines)
         self.offset = self.get_offset(reel)
-		for(let i in reel){
+		reel.forEach(() => {
 			self.stopped.push(false)
 			slot_speed.push(speed)
-		}
+		})
 		let canvas_lines = $('#slot_machine_lines')[0]
 		let ctx_lines = canvas_lines.getContext("2d")
 		ctx_lines.clearRect(0, 0, canvas_lines.width, canvas_lines.height)

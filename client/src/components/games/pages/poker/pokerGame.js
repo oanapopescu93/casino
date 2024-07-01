@@ -85,6 +85,8 @@ function Card(config){
                 case "Clubs":
                     img_index = 40							
                     break
+                default:
+                    break
             }		  
             switch (hand[i].Value) {
                 case "A":
@@ -125,7 +127,9 @@ function Card(config){
                     break
                 case "K":
                     img_index = img_index + 12					
-                    break			
+                    break
+                default:
+                    break		
             }
             
             if(self.id !== -1){

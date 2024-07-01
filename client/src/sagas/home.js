@@ -2,13 +2,13 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { bringPayload, showPayload } from "../reducers/home";
 
 function request(){
-    return api().then(function(res){
+    return api().then((res)=>{
         return res
     })
 }
 
 function api(){
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve, reject)=>{
         fetch('/api/home', {
             method: 'POST',
             mode: 'cors',

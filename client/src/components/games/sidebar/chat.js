@@ -23,7 +23,7 @@ function ChatMessages(props){
 	}, [props.messages]) 
 
     return <div className="messages" style={{height: props.height+'px'}}>
-        {props.messages.map(function(message, i){
+        {props.messages.map((message, i)=>{
             let text = message.text
             let user = message.user ? decryptData(message.user) : "" 
             let date = formatDate(message.timestamp, date_format)
@@ -55,7 +55,7 @@ function ChatMessages(props){
 function ChatList(props){
     let date_format = useSelector(state => state.settings.date)
     return <ul className="chat_list">
-        {props.list.map(function(item, i){
+        {props.list.map((item, i)=>{
             let date = formatDate(item.timestamp, date_format)
             return <li key={i}>
                 <span className="left">{decryptData(item.user)}</span>
@@ -94,7 +94,7 @@ function Chat(props){
 	}, [])
 
     useEffect(() => {
-        socket.on('message_read', function(res){
+        socket.on('message_read', (res)=>{
             setMessages((state) => [...state, res])
         })
     }, [socket])

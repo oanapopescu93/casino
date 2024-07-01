@@ -37,7 +37,6 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
     "react-redux": "^8.0.5",
-    "react-scripts": "5.0.1",
     "react-slick": "^0.30.2",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
@@ -50,7 +49,9 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "proxy": "http://localhost:1111",
   "eslintConfig": {
@@ -70,5 +71,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "react-scripts": "^5.0.1"
   }
 }

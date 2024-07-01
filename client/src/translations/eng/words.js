@@ -296,11 +296,12 @@ var word_bank = {
 
     welcome: "Welcome",
     welcome_gift: "Welcome gift",
+    welcome_text: "Free 100 carrots!",
     prize: "Prize",
     prizes: "Prizes",
     our_casino: "our Casino",
 }
 
-export const wordsEng = function(info){
+export const wordsEng = (info)=>{
     return word_bank[info]
 }

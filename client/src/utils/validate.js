@@ -1,4 +1,4 @@
-export const validateInput = function(input="", type){
+export const validateInput = (input="", type)=>{
     let regex = ''
     switch(type){
       case "name":
@@ -37,7 +37,7 @@ export const validateInput = function(input="", type){
     return pass_result
 }
   
-export const validateCard = function(val) {
+export const validateCard = (val)=>{
   if(!val){
     return false
   }
@@ -61,7 +61,7 @@ export const validateCard = function(val) {
   let accepted = false
   
   // loop through the keys (visa, mastercard, amex, etc.)
-  Object.keys(acceptedCreditCards).forEach(function(key) {
+  Object.keys(acceptedCreditCards).forEach((key)=>{
     let regex = acceptedCreditCards[key]
     if (regex.test(value)) {
       accepted = true
@@ -71,7 +71,7 @@ export const validateCard = function(val) {
   return valid && accepted
 }
   
-export const validateCVV = function(my_card, my_cvv){
+export const validateCVV = (my_card, my_cvv)=>{
   if(!my_card || !my_cvv){
     return false
   }
@@ -94,7 +94,7 @@ var acceptedCreditCards = {
   jcb: /^(?:2131|1800|35[0-9]{3})[0-9]{11}$/,
 }
 
-export const validateCardMonthYear = function(year, month) {
+export const validateCardMonthYear = (year, month)=>{
   // Ensure exYear and exMonth are numbers and within valid range
   if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
     return false

@@ -46,7 +46,7 @@ function getTransport(email) {
 }
 
 function sendEmail(reason, e, data){ //send an email with instructions to reset token
-	return new Promise(function(resolve, reject){
+	return new Promise((resolve, reject)=>{
 		if(!e.email){
 			resolve({send: "email_no_send"})
 		}		
@@ -135,7 +135,7 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
 			html: html
 		}
         
-		transport.sendMail(mailOptions, function(error, info){
+		transport.sendMail(mailOptions, (error, info)=>{
 			if (error) {
 			    console.log('error--> ', error, mailOptions)
 				resolve({send: "email_no_send"})

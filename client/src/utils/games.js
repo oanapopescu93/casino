@@ -96,17 +96,17 @@ import 	whack_a_rabbit03 from '../img/whack_a_rabbit/whack_a_rabbit03.png'
 import 	hammer01 from '../img/whack_a_rabbit/hammer01.png'
 import 	hammer02 from '../img/whack_a_rabbit/hammer02.png'
 
-export const getMousePos = function(canvas, event) {
+export const getMousePos = (canvas, event)=>{
 	let rect = canvas.getBoundingClientRect()
 	return {
 		x: event.clientX - rect.left,
 		y: event.clientY - rect.top
 	}
 }	
-export const isInside = function(mousePos, obj){
+export const isInside = (mousePos, obj)=>{
 	return mousePos.x > obj.x && mousePos.x < obj.x + obj.width && mousePos.y < obj.y + obj.height && mousePos.y > obj.y
 }
-export const draw_dot = function(ctx, x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle){
+export const draw_dot = (ctx, x, y, r,sAngle,eAngle,counterclockwise, fillStyle, lineWidth, strokeStyle)=>{
 	if(ctx){
 		ctx.beginPath()
 		ctx.arc(x, y, r, sAngle, eAngle, counterclockwise)
@@ -120,7 +120,7 @@ export const draw_dot = function(ctx, x, y, r,sAngle,eAngle,counterclockwise, fi
 		ctx.closePath()
 	}
 }
-export const draw_rect = function(ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle){
+export const draw_rect = (ctx, x, y, width, height, fillStyle, lineWidth, strokeStyle)=>{
 	if(ctx){
 		ctx.beginPath()
 		ctx.rect(x, y, width, height)
@@ -133,13 +133,13 @@ export const draw_rect = function(ctx, x, y, width, height, fillStyle, lineWidth
 		ctx.fill()
 	}
 }
-export const getDistance_between_entities = function(entity01, entity02){
+export const getDistance_between_entities = (entity01, entity02)=>{
     let distance_x = entity01.x - entity02.x
     let distance_y = entity01.y - entity02.y
     return Math.sqrt(distance_x * distance_x + distance_y * distance_y)
 }
 
-export const getRoom = function(game){
+export const getRoom = (game)=>{
 	let room = game.table_name
 	if(game.table_id){
 		room = room + '_' + game.table_id
@@ -150,7 +150,7 @@ export const getRoom = function(game){
 	return room
 }
 
-export const get_roulette_bets = function(){
+export const get_roulette_bets = ()=>{
 	return [
 	  	{id: 'european', src: roulette_bets_european},
 	  	{id: 'european_small', src: roulette_bets_european_small},
@@ -159,7 +159,7 @@ export const get_roulette_bets = function(){
 	]
 }
 
-export const get_cards = function() {
+export const get_cards = ()=>{
 	return [
 	  {suit: '', value: '', src: card_back}, 
 	  {suit: 'Hearts', value: 'A', src: card_0}, 
@@ -217,7 +217,7 @@ export const get_cards = function() {
 	]
 }
 
-export const get_slots_images = function(){
+export const get_slots_images = ()=>{
 	return [
 	  {id: 'carrot', src: slots_image, coord:[0, 0]},
 	  {id: 'onion', src: slots_image, coord:[300, 0]},
@@ -229,7 +229,7 @@ export const get_slots_images = function(){
 	]
 }
 
-export const get_craps_bets = function(){
+export const get_craps_bets = ()=>{
 	return [ 
 	  {id: 'craps', src: craps_bets},
 	  {x: 5, y: 5, width:40, height:400, text: "pass line", id: "pass_line", src: craps_pass_line, odds: 2},
@@ -266,7 +266,7 @@ export const get_craps_bets = function(){
 	]
 }
 
-export const get_what_a_rabbit_img = function(){
+export const get_what_a_rabbit_img = ()=>{
 	return [
 	  	{id: 0, src: whack_a_rabbit00},
 	  	{id: 1, src: whack_a_rabbit01},

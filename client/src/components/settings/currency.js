@@ -43,7 +43,7 @@ function Currency(props) {
 
   return <div className="currency">
     <DropdownButton title={title} id="currency_button"  className="shadow_convex" onSelect={handleSelect}>
-      {currencies.map(function(item, i){
+      {currencies.map((item, i)=>{
         return <Dropdown.Item key={i} eventKey={item.id}><span>{item[item_name_lang]}</span></Dropdown.Item>
       })}
     </DropdownButton>

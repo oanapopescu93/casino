@@ -110,7 +110,7 @@ function PaymentDetails(props){
                             {(() => {
                                 let choice = null
                                 let icon = null
-                                switch(template) {
+                                switch(template){
                                     case "buy_carrots":
                                         choice = "dashboard"
                                         icon = faUser
@@ -118,7 +118,7 @@ function PaymentDetails(props){
                                     case "checkout":
                                         choice = "market"
                                         icon = faStore
-                                        break                                                          
+                                        break                                                 
                                 }
                                 return <>{choice && icon ? <Button 
                                     type="button"  

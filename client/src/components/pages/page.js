@@ -42,7 +42,7 @@ function Page(props) {
 	}, [])
 
     function splash_screen(){	
-		setTimeout(function(){
+		setTimeout(()=>{
 			progress_move(200, 1000)
 		}, 500)
 	}
@@ -56,7 +56,7 @@ function Page(props) {
             if (width >= 100){
                 setProgressNumber(100)
                 clearInterval(id)
-                setTimeout(function(){
+                setTimeout(()=>{
                     setLoaded(true) //comment this to observe the splash screen
                 }, progress_timeout)
             } else {

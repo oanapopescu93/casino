@@ -10,15 +10,15 @@ module.exports = function database(database_config, params){
 	});
 	let sql_result = "hello friend!"
 
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve, reject)=>{
         try{
-            con.connect(function(err) {
+            con.connect((err)=>{
 				if (err) {
                     console.error('err1--> ', err)
 					resolve(null)
 				} else {
                     if(params){
-                        con.query(database_config.sql, params, function (err, result, fields) {
+                        con.query(database_config.sql, params, (err, result, fields)=>{
                             if (err) {
                                 console.error('err2a--> ', err)
 					            resolve(null)
@@ -28,7 +28,7 @@ module.exports = function database(database_config, params){
                             }
                         })
                     } else {
-                        con.query(database_config.sql, function (err, result, fields) {
+                        con.query(database_config.sql, (err, result, fields)=>{
                             if (err) {
                                 console.error('err2b--> ', err, database_config.sql)
 					            resolve(null)

@@ -13,7 +13,7 @@ function KenoResults(props){
                 <h4>{translate({lang: lang, info: "price_per_game"})}: <span>{price_per_game ? price_per_game : 1}</span></h4>
                 <h4>{translate({lang: lang, info: "your_numbers"})}: </h4>
                 {list && list.length>0 ? <ul>
-                    {list.map(function(item, i){
+                    {list.map((item, i)=>{
                         let comma = ", "
                         if(i === list.length-1){ //last element from the list will not have a comma
                             comma = ""
@@ -26,10 +26,10 @@ function KenoResults(props){
                 <div className="KenoResults_box">
                     <h4>{translate({lang: lang, info: "lucky_numbers"})}: </h4>
                     <div className="KenoResults_matrix 111">
-                        {list_results.map(function(items, i){
+                        {list_results.map((items, i)=>{
                             if(items && items.length>0){
                                 return <ul key={i}>
-                                    {items.map(function(item, j){
+                                    {items.map((item, j)=>{
                                         let comma = ", "
                                         if(j === items.length-1){ //last element from the list will not have a comma
                                             comma = ""
@@ -49,7 +49,7 @@ function KenoResults(props){
                         {(() => {
                             if(list_filtered && list_filtered[0] && list_filtered[0].length>0){
                                 return <ul>
-                                    {list_filtered[0].map(function(item, i){
+                                    {list_filtered[0].map((item, i)=>{
                                         let comma = ", "                                                
                                         if(i === list_filtered[0].length-1){ //last element from the list will not have a comma
                                             comma = ""

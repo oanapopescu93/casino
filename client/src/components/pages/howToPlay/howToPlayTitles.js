@@ -18,7 +18,7 @@ function HowToPlayTitles(props){
     }
 
     return <div className="how_to_play_titles">
-        {list_games.map(function(t, i){
+        {list_games.map((t, i)=>{
             return <div key={i} className="cell_howToPlay_container" onClick={()=>handleChoice(t)}>
                 <div className="cell_howToPlay shadow_concav">
                     <div className="cell_info">

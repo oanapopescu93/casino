@@ -19,9 +19,9 @@ function Promo(props){
     }
 
     useEffect(() => {
-		socket.on('promo_read', function(res){
+		socket.on('promo_read', (res)=>{
 			setCoupon(res)
-            setTimeout(function(){
+            setTimeout(()=>{
                 setCoupon(null)
             }, 3000)
             if(res && typeof props.updatePromo === "function"){

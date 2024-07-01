@@ -84,7 +84,7 @@ function Popup(props){
     }
 
     useEffect(() => {
-        socket.on('forgotPassword_read', function(res){
+        socket.on('forgotPassword_read', (res)=>{
             setForgotPasswordResult(res.send)
             setForgotPasswordSending(false)
         })

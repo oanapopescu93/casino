@@ -54,7 +54,7 @@ function Cart(props){
                 <h3>{translate({lang: lang, info: "cart"})}</h3>
             </div>
             <div className="cart_list">
-                {cart.map(function(item, i){
+                {cart.map((item, i)=>{
                     let product = market.filter(a => a.id === item.id)
                     let cart_item_total_price = (item.qty * product[0].price).toFixed(2)
                     return <div key={i} className='cart_item'>

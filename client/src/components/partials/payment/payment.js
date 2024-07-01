@@ -60,6 +60,8 @@ function Payment(props){
                     pay = (pay - (pay * promo.discount)/100).toFixed(2)
                 }
                 break
+            default:
+                break
         }
         setAmount(parseFloat(pay))
     }, [])
@@ -122,6 +124,7 @@ function Payment(props){
                 setGateway(value)
                 break
             default:
+                break
         }
     }
 
@@ -289,7 +292,8 @@ function Payment(props){
                 case "crypto":
                     url = "/api/crypto"
                     break
-                default:                    
+                default:
+                    break           
             }
             let payload = {...paymentDetails}
             payload.amount = amount
@@ -491,7 +495,8 @@ function Payment(props){
                                 case "checkout":
                                     choice = "market"
                                     icon = faStore
-                                    break                                                          
+                                    break
+                                default:                                                      
                             }
                             return <>{choice && icon ? <Button 
                                 type="button"  

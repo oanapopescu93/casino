@@ -80,7 +80,7 @@ function get_geolocation(apiKey) {
 	return "https://api.ipgeolocation.io/ipgeo?apiKey=" + apiKey
 }
 function get_extra_data(){
-	return new Promise(function(resolve, reject){
+	return new Promise((resolve, reject)=>{
 		let url = get_geolocation('3b154170258741fb81976e7f34d61938')
 		axios.get(url).then(response => {
 			resolve(response)	

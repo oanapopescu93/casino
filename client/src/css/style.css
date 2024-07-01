@@ -203,7 +203,7 @@ textarea:focus, input:focus{
 /* FORMS, BUTTONS, INPUTS, TEXTAREA */
 .sign_container{
   width: 100%;
-  max-width: 600px;
+  max-width: 480px;
   transform: translate(-50%, -50%);
   position: absolute;
   z-index: 1;
@@ -239,9 +239,11 @@ textarea:focus, input:focus{
 }
 .sign_container input{
   margin-bottom: var(--padding_small);
+  width: 100%;
+  max-width: 205px;
 }
 .sign_container ul{
-  margin-bottom: var(--padding);
+  margin-bottom: var(--padding_big);
 }
 .sign_container ul li{
   padding: var(--padding_small);
@@ -263,7 +265,11 @@ textarea:focus, input:focus{
   border-radius: 0px var(--radius) var(--radius) 0px;
 }
 .sign_container button{
-  margin-top: var(--padding_small);
+  margin-top: var(--padding);
+  border-radius: var(--padding);
+  height: 25px;
+  width: 100%;
+  max-width: 150px;
 }
 .sign_container form{
   margin-top: var(--padding);
@@ -271,6 +277,9 @@ textarea:focus, input:focus{
 .sign_container .label_container{
   text-align: right;
   padding-top: var(--padding_small);
+}
+.sign_container .input_container{
+  text-align: left;
 }
 .sign_container_error{
   padding: var(--padding);
@@ -281,6 +290,7 @@ textarea:focus, input:focus{
   font-size: 12px;
   line-height: 12px;
   padding: var(--padding_small);
+  margin-top: var(--padding);
   height: 40px;
 }
 .sign_extra_info span{
@@ -520,9 +530,6 @@ textarea {
 #header_sign{
   margin: var(--padding);
 }
-/* .header h3{
-  font-family: 'Grenadier';
-} */
 
 .cell_salon_container, .cell_market_container{
   padding: var(--padding);
@@ -607,7 +614,7 @@ textarea {
 	overflow-y: auto;
   padding: var(--padding_small);
 }
-.salon_games .dropdown .dropdown-menu{
+.dropdown .dropdown-menu{
   max-height: 150px;
 }
 .dropdown-item{
@@ -621,6 +628,7 @@ textarea {
 }
 .language .dropdown .dropdown-menu{
   min-width: auto;
+  max-height: 100px;
 }
 .language .dropdown .dropdown-toggle{
   font-size: 12px;
@@ -751,25 +759,25 @@ textarea {
   font-size: 24px;
   line-height: 24px;
 }
-#welcome_popup .box_body:hover {
+#welcome_popup .box_body.active {
   cursor: pointer;
   -webkit-animation: box-body 1s forwards ease-in-out;
   animation: box-body 1s forwards ease-in-out;
 }
-#welcome_popup .box_body:hover .img{
+#welcome_popup .box_body.active .img{
   opacity: 1;
   z-index: 0;
   transform: translateY(-100px);
 }
-#welcome_popup .box_body:hover .box_lid {
+#welcome_popup .box_body.active .box_lid {
   -webkit-animation: box-lid 1s forwards ease-in-out;
   animation: box-lid 1s forwards ease-in-out;
 }
-#welcome_popup .box_body:hover .box-bowtie::before {
+#welcome_popup .box_body.active .box-bowtie::before {
   -webkit-animation: box-bowtie-left 1.1s forwards ease-in-out;
   animation: box-bowtie-left 1.1s forwards ease-in-out;
 }
-#welcome_popup .box_body:hover .box-bowtie::after {
+#welcome_popup .box_body:active .box-bowtie::after {
   -webkit-animation: box-bowtie-right 1.1s forwards ease-in-out;
   animation: box-bowtie-right 1.1s forwards ease-in-out;
 }
@@ -980,7 +988,7 @@ textarea {
   #welcome_popup .box_lid::after {
     width: 25px;
   }
-  #welcome_popup .box_body:hover .img{
+  #welcome_popup .box_body:active .img{
     transform: translateY(-65px);
   }
   #welcome_popup .box_body .gift_text span:first-child{
@@ -1326,8 +1334,10 @@ textarea {
 }
 #user_title{
   font-family: 'Grenadier';
-  font-size: 30px;
   margin-bottom: var(--padding);
+}
+#user_title h3{
+  font-size: 25px;
 }
 #user_subtitle{
 	padding-left: var(--padding_small);
@@ -2007,25 +2017,27 @@ textarea {
 .contact_form .input_light{
   margin-bottom: var(--padding_small)!important;
 }
-.contact_list{
-  padding: var(--padding);
-  height: 360px;
-  overflow-x: hidden;
-  overflow-y: auto;
+.contact_dropdown{
+  width: 100%;
+  max-width: 150px;
+}
+.contact_dropdown .dropdown .dropdown-toggle {
+  font-size: 12px;
+  line-height: 12px;
+  width: 100%;
+}
+.contact_dropdown .dropdown .dropdown-menu{
+  min-width: auto;
 }
 .contact_list_item{
-  padding: var(--padding);
-  border-radius: var(--radius);
-  border: solid 1px var(--color);
-  margin-bottom: var(--padding);
-  cursor: pointer;
-  text-align: left;
+  padding: var(--padding) var(--padding_big);
+  margin-top: var(--padding);
 }
-.contact_list_item_container:last-child .contact_list_item{
-  margin-bottom: 0px;
-}
-.contact_form .label_container, .contact_form input{
+.contact_form .label_container, .contact_form input, .contact_list_item li{
   margin-bottom: var(--padding_small);
+}
+.contact_list_item li:last-child{
+  margin-bottom: 0px;
 }
 .contact_box .alert{
   margin-bottom: var(--padding);
@@ -2033,8 +2045,8 @@ textarea {
 .contact_box input, .contact_box textarea{
   background-color: var(--transparent_2);
 }
-#contact_list{
-  background-color: var(--transparent_2);
+.contact_box textarea{
+  min-height: 140px;
 }
 #contact_map{
   background-color: var(--transparent_2);
@@ -2746,6 +2758,9 @@ textarea {
   margin-bottom: var(--padding_small);
 }
 .craps_subtitle{
+  margin-bottom: var(--padding_big);
+}
+.dice_container, .craps_container .button_action_group{
   margin-bottom: var(--padding);
 }
 .dice_box {
@@ -3480,10 +3495,12 @@ textarea {
   .footer_container.up .footer_body{
     height: 170px;
   }
-  .mybutton.round{
-    width: 50px;
-    height: 50px;
-    line-height: 12px;
+  .mybutton.round,#game_bets_clear{
+    width: 40px;
+    height: 40px;
+  }
+  #game_bets_clear svg{
+    font-size: 18px;
   }
   input, textarea, #payment_form .dropdown .dropdown-toggle{
     font-size: 12px;
@@ -3572,18 +3589,6 @@ textarea {
 		width:100px;
 	}
 
-  /* CONTACT */
-  .contact_box textarea{
-    min-height: 100px;
-  }
-  .contact_box{
-    padding: var(--padding_small);
-  }
-  .contact_list{
-    padding: var(--padding_small);
-    height: 110px;
-  }
-
   /* GAME */
   .content_wrap{
     padding: var(--padding) 40px;
@@ -3650,20 +3655,19 @@ textarea {
 @media (max-width:600px) {	
   /* SIGN */
   .sign_container_box{
-    height: 480px;
+    height: 420px;
   }
   .sign_box{
-    height: 260px;
-  }
-	.sign_container .label_container {
-    text-align: left;
-    padding-bottom: var(--padding_small);
+    height: 200px;
   }
   #splash_screen #logo_splash{
     width: 30px;
   }
   .progress_box_container{
     display: none;
+  }
+  .sign_container input{
+    max-width: 100%;
   }
 
   /* SALON */
@@ -3763,6 +3767,7 @@ textarea {
   /* SIGN */
   .sign_container ul li{    
     width: 100%;
+    max-width: 200px;
     border-radius: var(--radius)!important;
   }
   .sign_container ul li:first-child{    
@@ -3795,6 +3800,30 @@ textarea {
   }
 }
 
+@media (max-height: 400px){
+	#roulette_canvas, .game_start{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  #roulette_canvas{
+    margin-right: var(--padding_small);
+  }
+  .game_start{
+    max-width: 70px;
+  }
+  .craps_bets_container{
+    height: 180px;
+  }  
+  #user_title h3{
+    font-size: 20px;
+  }
+  #user_tags, #user_list {
+    margin-top: var(--padding_small);
+  }
+  #user_list li{
+    padding: 8px var(--padding);
+  }
+}
 @media (max-height: 500px){
 	.header_container.game{
     display: none;
@@ -3802,6 +3831,16 @@ textarea {
   .gameboard{
     padding: 0px var(--padding_small);
   }
+  #craps_board{
+    height: 150px;
+  }
+  .dice_container, .craps_container .button_action_group{
+    display: inline-block;
+    vertical-align: middle;    
+  }
+  .dice_container{
+    margin-right: var(--padding_big);
+  }  
 }
 
 ::-webkit-scrollbar{

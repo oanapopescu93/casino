@@ -16,7 +16,7 @@ function RaceTables(props){
 
     let race_array = []
 	if(home.race_rabbits && home.race_rabbits.length>0){
-		race_array = home.race_rabbits.filter(function(x){
+		race_array = home.race_rabbits.filter((x)=>{
 			return x.participating
 		})
 	}

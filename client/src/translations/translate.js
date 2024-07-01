@@ -1,13 +1,14 @@
 import { capitalizeFirstLetter } from '../utils/utils'
 
 import { wordsDe } from './de/words'
+import { wordsEng } from './eng/words'
 import { wordsEs } from './es/words'
 import { wordsFr } from './fr/words'
 import { wordsIt } from './it/words'
+import { wordsPt } from './pt/words'
 import { wordsRo } from './ro/words'
 import { wordsRu } from './ru/words'
-import { wordsEng } from './eng/words'
-import { wordsPt } from './pt/words'
+import { wordsZh } from './zh/words'
 
 export const translate = function (data){
     if(!data) return
@@ -36,6 +37,9 @@ export const translate = function (data){
             break
         case "RU":
             word = wordsRu(info)
+            break
+        case "ZH":
+            word = wordsZh(info)
             break
         case "ENG":
         default:

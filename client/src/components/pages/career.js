@@ -45,7 +45,7 @@ function CareerList(props){
         setIndexHeader(i)
         if(choice !== 'all'){
             let mylist = sortList(list, 'type')
-            mylist = mylist.filter(function(elem){
+            mylist = mylist.filter((elem)=>{
                 return elem.type === choice
             })
             setFilter(mylist)
@@ -64,13 +64,13 @@ function CareerList(props){
                             if (header.length>0) {
                                 if (window.innerWidth < 960) {
                                     return <DropdownButton title={titleDropdown} id="language_button" onSelect={handleDropdown}>
-                                        {header.map(function(t, i){
+                                        {header.map((t, i)=>{
                                             return <Dropdown.Item key={i} eventKey={t}>{translate({lang: lang, info: t})}</Dropdown.Item>
                                         })}
                                     </DropdownButton>
                                 } else {
                                     return <>
-                                        {header.map(function(t, i){
+                                        {header.map((t, i)=>{
                                             let open = ""
                                             if(i === indexHeader){
                                                 open = "open"
@@ -87,7 +87,7 @@ function CareerList(props){
                             {(() => {
                                 if(filter.length>0){
                                     return <>
-                                        {filter.map(function(item, i){
+                                        {filter.map((item, i)=>{
                                                 let requirements = item.requirements
                                                 let responsabilities = item.responsabilities
                                                 return <div className="career_box" key={i}>
@@ -96,7 +96,7 @@ function CareerList(props){
                                                     <div className="career_info career_requirements">
                                                         <h4><b>{translate({lang: lang, info: 'requirements'})}: </b></h4>
                                                         <ul>
-                                                            {requirements.map(function(item1, j){
+                                                            {requirements.map((item1, j)=>{
                                                                 return <li key={j}>{item1}</li>
                                                             })}
                                                         </ul>
@@ -104,7 +104,7 @@ function CareerList(props){
                                                     <div className="career_info career_responsabilities">
                                                         <h4><b>{translate({lang: lang, info: 'responsabilities'})}: </b></h4>
                                                         <ul>
-                                                            {responsabilities.map(function(item2, k){
+                                                            {responsabilities.map((item2, k)=>{
                                                                 return <li key={k}> {item2}</li>
                                                             })}
                                                         </ul>

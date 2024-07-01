@@ -106,7 +106,7 @@ function Sign(props) {
     } 
 
     useEffect(() => {
-        const handleSignInRead = function(data) {
+        const handleSignInRead = (data)=>{
             setLoaded(true)
             if(data && data.exists && data.obj && Object.keys(data.obj).length>0){
                 dispatch(changeUser(data.obj))
@@ -119,38 +119,19 @@ function Sign(props) {
                     dispatch(changePopup(payload))
                 }
             } else {
-                dispatch(changePopup({
-                    open: true,                     
-                    template: "error", 
-                    title: "error",
-                    data: translate({lang: props.lang, info: "signin_error"})
-                }))
+                handleErrors("error", "signup_error")
             } 
         }
-        const handleSignUpRead = function(data) {
+        const handleSignUpRead = (data)=>{
             setLoaded(true)
             if(data && data.obj && Object.keys(data.obj).length>0){
                 dispatch(changeUser(data.obj))
                 if(!isEmpty(data.obj.uuid)){
                     setCookie("casino_uuid", data.obj.uuid)
-                }
-                //first time sign up - you get a popup gift
-                let payload = {
-                    open: true,
-                    template: "welcome",
-                    title: "welcome",
-                    size: 'lg',
-                }
-                dispatch(changePopup(payload))
-            } else {
-                let info = data.details ? data.details : "signup_error"                
-                let payload = {
-                    open: true,
-                    template: "signup",
-                    title: "error",
-                    data: translate({lang: props.lang, info})
                 }                
-                dispatch(changePopup(payload))
+                handleWelcome() //first time sign up - you get a popup gift
+            } else {
+                handleErrors("signup", data.details ? data.details : "signup_error")
             }
         }
 		props.socket.on('signin_read', handleSignInRead)
@@ -160,16 +141,38 @@ function Sign(props) {
             props.socket.off('signup_read', handleSignUpRead)
         }
     }, [props.socket])
+
+    function handleWelcome(){
+        //first time sign up - you get a popup gift
+        let payload = {
+            open: true,
+            template: "welcome",
+            title: "welcome",
+            size: 'lg',
+        }
+        dispatch(changePopup(payload))
+    }
+
+    function handleErrors(template="error", error){
+        let payload = {
+            open: true,
+            template: template,
+            title: "error",
+            data: translate({lang: props.lang, error})
+        }                
+        dispatch(changePopup(payload))
+    }
     
     function handleDate(){
         let my_date = new Date()
 		my_date = my_date.getFullYear()
         setDate(my_date)
     }
+    
 
     useEffect(() => {
         handleDate()
-    }, []) 
+    }, [])
 
     return <>
         {(() => {

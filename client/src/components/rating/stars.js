@@ -21,7 +21,7 @@ function Stars(props){
         }
     }
 	return <div className="stars">
-        {stars.map(function(item, i){
+        {stars.map((item, i)=>{
             switch(item) {
                 case 2:
                     return <img key={i} src={star_full} alt="star_full" className="star" />

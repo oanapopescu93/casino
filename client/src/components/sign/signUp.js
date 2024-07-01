@@ -29,7 +29,9 @@ function SignUp(props) {
 
     function handleSubmit(e){
         e.preventDefault()
-        props.signSubmit({emit: 'signup_send', payload: {email, user, pass}})
+        if(typeof props.signSubmit === "function"){
+            props.signSubmit({emit: 'signup_send', payload: {email, user, pass}})
+        }
     }
 
     useEffect(() => {
@@ -49,27 +51,27 @@ function SignUp(props) {
     return <div className="sign_up_container">
         <Form>
             <Row>
-                <Col sm={4} className="label_container">
+                <Col sm={4} className="label_container d-none d-sm-block">
                     <div className="label">{translate({lang: props.lang, info: "email"})}</div>
                 </Col>
-                <Col sm={8}>
-                    <input className="input_light" type="text" value={email} onChange={(e)=>{handleChange('email', e)}}/>
+                <Col sm={8} className="input_container">
+                    <input placeholder={translate({lang: props.lang, info: "email"})} className="input_light" type="text" value={email} onChange={(e)=>{handleChange('email', e)}}/>
                 </Col>
             </Row>
             <Row>
-                <Col sm={4} className="label_container">
+                <Col sm={4} className="label_container d-none d-sm-block">
                     <div className="label">{translate({lang: props.lang, info: "user"})}</div>
                 </Col>
-                <Col sm={8}>
-                    <input className="input_light" type="text" value={user} onChange={(e)=>{handleChange('user', e)}}/>
+                <Col sm={8} className="input_container">
+                    <input placeholder={translate({lang: props.lang, info: "user"})} className="input_light" type="text" value={user} onChange={(e)=>{handleChange('user', e)}}/>
                 </Col>
             </Row>
             <Row>
-                <Col sm={4} className="label_container">
+                <Col sm={4} className="label_container d-none d-sm-block">
                     <div className="label">{translate({lang: props.lang, info: "password"})}</div>
                 </Col>
-                <Col sm={8}>
-                    <input className="input_light" type="password" value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
+                <Col sm={8} className="input_container">
+                    <input placeholder={translate({lang: props.lang, info: "password"})} className="input_light" type="password" value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
                 </Col>
             </Row>
             {(() => {

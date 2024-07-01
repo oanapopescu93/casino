@@ -64,7 +64,7 @@ function Game(props){
         let streak = getCookie("casino_streak")
         if(isEmpty(streak)){ // check if popup streak has already been shown
             socket.emit('game_send', {uuid: props.user.uuid}) 
-            socket.on('game_read', function(res){
+            socket.on('game_read', (res)=>{
                 if(res && res.streak){
                     setStreak(res.streak)
                     if(!isEmpty(streak)){
@@ -86,13 +86,13 @@ function Game(props){
 
         let room = getRoom(game)
         socket.emit('join_room', {room: room, uuid: props.user.uuid, user: props.user.user}) 
-        socket.on('chatroom_users_read', function(res){
+        socket.on('chatroom_users_read', (res)=>{
             setChatRoomUsers(res)
             dispatch(changeRoom(room))
         })
         return () => {
 			socket.emit('leave_room', {room: room, uuid: props.user.uuid, user: props.user.user}) 
-            socket.on('chatroom_users_read', function(res){
+            socket.on('chatroom_users_read', (res)=>{
                 setChatRoomUsers(res)
             })
             dispatch(changeRoom(null))

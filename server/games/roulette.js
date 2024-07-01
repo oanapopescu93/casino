@@ -63,7 +63,7 @@ function roulette(data, how_lucky){
             }
         }
     
-        const difference = array.filter(function(el){
+        const difference = array.filter((el)=>{
             return subarray.indexOf(el) < 0
         })
         return difference

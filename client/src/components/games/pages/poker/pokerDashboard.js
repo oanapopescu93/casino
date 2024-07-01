@@ -25,7 +25,7 @@ function PokerDashboard(props){
     let [pot, setPot] = useState(0)
     let [action, setAction]= useState(null)
     
-    let clear = function(bet){
+    let clear = (bet)=>{
 		if(bet > 0 && startGame){			
 			let payload = {
 				uuid: props.user.uuid,
@@ -38,10 +38,10 @@ function PokerDashboard(props){
 		}
 	}
 
-    let getResults = function(payload){		
+    let getResults = (payload)=>{		
         props.results(payload)
 	}
-    let getCardList = function(payload){
+    let getCardList = (payload)=>{
         replaceCards = payload
 	}
     let options = {...props, dispatch, getResults, getCardList, clear}
@@ -72,7 +72,7 @@ function PokerDashboard(props){
     }, [])
 
     useEffect(() => {
-        const handlePokerRead = function(data) {
+        const handlePokerRead = (data)=>{
             if (my_poker && data){
                 if(data.action){
                     setAction(data.action)

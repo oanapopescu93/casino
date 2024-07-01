@@ -14,7 +14,7 @@ function KenoSpot(config){
 	let self = this
 	self.number = config.number
     self.status = false // true = selected, false = unselected
-	self.change_status = function(status){
+	self.change_status = (status)=>{
         if(status === "selected"){
             self.status = true            
         } else if(status === "deselected"){
@@ -23,10 +23,10 @@ function KenoSpot(config){
             self.status = !self.status
         }
 	}
-    self.get_number = function(){
+    self.get_number = ()=>{
 		return self.number
 	}
-    self.get_status = function(){
+    self.get_status = ()=>{
 		return self.status
 	}
 }

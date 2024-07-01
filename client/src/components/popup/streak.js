@@ -9,7 +9,7 @@ function Streak(props){
 
     return <div id="streak" className="streak">
         <div className="progress_bubble_container">
-            {streakPeriod.map(function(item, i){
+            {streakPeriod.map((item, i)=>{
                 let active = ""
                 if(streak >= item){
                     active = "active"

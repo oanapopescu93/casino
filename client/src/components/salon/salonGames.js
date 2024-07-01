@@ -125,7 +125,7 @@ function SalonGames(props){
             <Col sm={2} />
             <Col sm={8}>
                 {width < 960 ? <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "snow" : ""} onSelect={handleSelect}>
-                    {casinoGamesTitle.map(function(t, i){
+                    {casinoGamesTitle.map((t, i)=>{
                         return <Dropdown.Item key={i} eventKey={translate({lang: props.lang, info: t})}>{translate({lang: props.lang, info: t})}</Dropdown.Item>
                     })}
                 </DropdownButton> : null}
@@ -135,7 +135,7 @@ function SalonGames(props){
         <Row>
             <Col sm={2} />
             <Col sm={8}>
-                {casinoGamesTitle.map(function(t, i){
+                {casinoGamesTitle.map((t, i)=>{
                     let box = ""
                     if(i === index){ box = "open" }
                     return <div key={i}>

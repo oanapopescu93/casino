@@ -5,8 +5,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { changeLanguage } from '../../reducers/settings';
 
 function Language(props) {  
-	let dispatch = useDispatch()
-  // let language_array = ["ENG", "ES", "DE", "FR", "IT", "RU", "PT", "RO"]
+	let dispatch = useDispatch()  
   let language_array = [
     {id: "ENG", text: "English", icon: ""},
     {id: "ES", text: "Español", icon: ""},
@@ -16,6 +15,7 @@ function Language(props) {
     {id: "RU", text: "Русский", icon: ""},
     {id: "PT", text: "Português", icon: ""},
     {id: "RO", text: "Română", icon: ""},
+    {id: "ZH", text: "中文", icon: ""},
   ]
   let chosen_language = language_array.filter((x)=>{
     return x.id === props.title
@@ -31,7 +31,7 @@ function Language(props) {
 
   return <div className="language">
     <DropdownButton title={title} id="language_button"  className="shadow_convex" onSelect={handleSelect}>
-      {language_array.map(function(item, i){
+      {language_array.map((item, i)=>{
           return <Dropdown.Item key={i} eventKey={item.id}>
             <span>{item.text}</span>
           </Dropdown.Item>

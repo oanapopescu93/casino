@@ -48,6 +48,7 @@ function Header(props){
 
 	return <div className={"header_container "+template}>
         {(() => {
+            let easter_eggs_salon = ""
             if(isEmpty(template)){
                 return <div className="header"><h2 className="title">{title}</h2></div>
             } else {
@@ -79,26 +80,27 @@ function Header(props){
                                 title = title + ' ' + table_id
                             }
                             return <div id="header_game" className="header">
-                                <TransparentText text={title} height={height} size={height} />
+                                <h2>{title}</h2>
                             </div>
                         } else {
-                            return <div id="header" className="header">
-                                <TransparentText text={title} height={height} size={height} />
-                            </div>
+                            return
                         }
                     case "panel_user":                        
                         if(details && details.game){
                             if(details.game_page){
                                 //ex: dashboard, market
-                                return <TransparentText text={translate({lang: lang, info: details.game_page})}  height={height} size={height}/>
+                                return <div id="panel_user" className="header">
+                                    <h2>{translate({lang: lang, info: details.game_page})}</h2>
+                                </div>
                             } else {
-                                //game
-                                let table_name = details.game.table_name
-                                let table_id = details.game.table_id
-                                let title = capitalizeFirstLetter(table_name) + ' ' + table_id
-                                return <h3 id="user_title">
-                                    <TransparentText text={title}  height={height} size={height} />
-                                </h3>
+                                //game                                
+                                let title = capitalizeFirstLetter(details.game.table_name)
+                                if(details.game.table_id){
+                                    title = title + ' ' + details.game.table_id
+                                }
+                                return <div id="user_title">
+                                    <h3>{title}</h3>
+                                </div>
                             }
                         } else {
                             //salon panel
@@ -111,13 +113,12 @@ function Header(props){
                             <h3>{translate({lang: lang, info: "subtitle"})}</h3>
                         </div>
                     default:
-                        let style = ""
                         if(template === "donation"){
-                            style = " easter_eggs_salon"
+                            easter_eggs_salon = " easter_eggs_salon"
                         }
                         return <div className="header">
                             <h1 className="title">{title}</h1>
-                            {showEaster ? <div className={"easter_eggs" + style}>
+                            {showEaster ? <div className={"easter_eggs" + easter_eggs_salon}>
                                 <EasterEgg />
                                 <EasterEgg />
                             </div> : null}

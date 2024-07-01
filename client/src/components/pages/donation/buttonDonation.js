@@ -5,7 +5,7 @@ function ButtonDonation(props){
     const [open, setOpen] = useState("")
 
     useEffect(() => {
-        setTimeout(function(){
+        setTimeout(()=>{
             setOpen("open")
         }, 500)
 	}, [])

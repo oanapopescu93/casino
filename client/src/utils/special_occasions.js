@@ -1,4 +1,4 @@
-export const checkWinterMonths = function(){
+export const checkWinterMonths = ()=>{
     let winter = false
     let today = new Date()
     if(today.getMonth() === 0 || today.getMonth() === 1 || today.getMonth() === 11){ // january, february or december
@@ -7,7 +7,7 @@ export const checkWinterMonths = function(){
     return winter
 }
 
-export const checkEaster = function(){
+export const checkEaster = ()=>{
     let easter = false
     let today = new Date()
     let currentYear = today.getFullYear()
@@ -69,7 +69,7 @@ function Easter(year, type="catholic") {
     
 }
 
-export const checkOccasion = function(type){
+export const checkOccasion = (type)=>{
     let occasion = false
     let today = new Date()
     let day = -1

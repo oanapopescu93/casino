@@ -12,6 +12,8 @@ function TransparentText(props){
     let y = props.y ? props.y : "50%"
     let size = props.size ? props.size : "30"
 
+    console.log(props,fill, opacity)
+
     return <div className="transparent_text">
         <svg width={width} height={height}>
             <text fontSize={size} fill={fill} fillOpacity={opacity} x={x} y={y} dominantBaseline="middle" textAnchor="middle" stroke={stroke}>

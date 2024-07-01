@@ -217,7 +217,7 @@ function PaymentForm(props){
                                                 onChange={(e) => handleFilterCountries(e.target.value)}
                                             />
                                         </div>
-                                        {filteredCountries.map(function(country, i){
+                                        {filteredCountries.map((country, i)=>{
                                             return <Dropdown.Item key={i} eventKey={country}><span>{country}</span></Dropdown.Item>
                                         })}
                                     </DropdownButton>
@@ -246,7 +246,7 @@ function PaymentForm(props){
                                                 onChange={(e) => handleFilterCities(e.target.value)}
                                             />
                                         </div>
-                                        {filteredCities.map(function(city, i) {
+                                        {filteredCities.map((city, i)=>{
                                             return <Dropdown.Item key={i} eventKey={city}><span>{city}</span></Dropdown.Item>
                                         })}
                                     </DropdownButton>
@@ -291,7 +291,7 @@ function PaymentForm(props){
                         <Col sm={4}>
                             <label>{translate({lang: props.lang, info: "month"})} {gatewayDetailsMandatory[gateway].includes("month") ? <>*</> : null}</label>
                             <DropdownButton title={monthOptions[month] ? translate({lang: props.lang, info: monthOptions[month]}) : translate({lang: props.lang, info: "month"})} onSelect={(e)=>changeMonth(e)} className="shadow_concav">
-                                {months.map(function(x, i){
+                                {months.map((x, i)=>{
                                     return <Dropdown.Item key={i} eventKey={x}>{translate({lang: props.lang, info: monthOptions[x]})}</Dropdown.Item>
                                 })}
                             </DropdownButton>
@@ -310,7 +310,7 @@ function PaymentForm(props){
                         <Col sm={4}>
                             <label>{translate({lang: props.lang, info: "year"})} {gatewayDetailsMandatory[gateway].includes("year") ? <>*</> : null}</label>
                             <DropdownButton title={year ? year : translate({lang: props.lang, info: "year"})} onSelect={(e)=>changeYear(e)} className="shadow_concav">
-                                {yearOptions.map(function(x, i){
+                                {yearOptions.map((x, i)=>{
                                     return <Dropdown.Item key={i} eventKey={x}>{x}</Dropdown.Item>
                                 })}
                             </DropdownButton>

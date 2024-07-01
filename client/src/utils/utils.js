@@ -1,4 +1,4 @@
-export const isEmpty = function(element){
+export const isEmpty = (element)=>{
   let empty = true
   if(typeof element !== "undefined" && element !== 'null' && element !== null && element !== '' && element !== 'N/A'){
     empty = false
@@ -6,7 +6,7 @@ export const isEmpty = function(element){
   return empty
 }
 
-export const formatDate = function(date, format = 'd.m.Y H:i'){	//d.m.Y H:i, d-m-Y H:i, m/d/Y H:i, d-m-Y h:i A, m/d/Y h:i A
+export const formatDate = (date, format = 'd.m.Y H:i')=>{	//d.m.Y H:i, d-m-Y H:i, m/d/Y H:i, d-m-Y h:i A, m/d/Y h:i A
   let d = new Date(date)
   const pad = (num) => (num < 10 ? '0' : '') + num // Helper function to pad numbers with leading zeros
 
@@ -32,18 +32,18 @@ export const formatDate = function(date, format = 'd.m.Y H:i'){	//d.m.Y H:i, d-m
   return formattedDate
 }
 
-export const roundNumber = function(number, precision = 1000){
+export const roundNumber = (number, precision = 1000)=>{
   var result = Math.round(number / precision) *  precision
   return result
 }
 
-export const setCookie = function(cname, cvalue, hours=12){
+export const setCookie = (cname, cvalue, hours=12)=>{
   let d = new Date()
   d.setTime(d.getTime() + (hours * 60 * 60 * 1000))
   let expires = "expires=" + d.toGMTString()
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/"
 }
-export const getCookie = function(cname){
+export const getCookie = (cname)=>{
   let name = cname + "="
   let decodedCookie = decodeURIComponent(document.cookie)
   let ca = decodedCookie.split(';')
@@ -59,7 +59,7 @@ export const getCookie = function(cname){
   return ""
 }
 
-export const sortList = function(arrayForSort=[], sort_by="", asc=true){
+export const sortList = (arrayForSort=[], sort_by="", asc=true)=>{
   let list = [...arrayForSort]
   if(list && list.length>0){
     if(sort_by === ""){
@@ -121,23 +121,23 @@ export const sortList = function(arrayForSort=[], sort_by="", asc=true){
   return list
 }
 
-export const getWindowDimensions = function(){
+export const getWindowDimensions = ()=>{
   const { innerWidth: width, innerHeight: height } = window
   return {width, height}
 }
 
-export const capitalizeFirstLetter = function(string){
+export const capitalizeFirstLetter = (string)=>{
   if(string){
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
   return string
 }
 
-export const randomIntFromInterval = function(min, max) { // min and max included 
+export const randomIntFromInterval = (min, max)=>{ // min and max included 
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-export const postData = async function (url = "", data = {}) {
+export const postData = async (url = "", data = {})=>{
   const response = await fetch(url, {
       method: "POST",
       mode: "cors",
@@ -153,7 +153,7 @@ export const postData = async function (url = "", data = {}) {
   return response.json()
 }
 
-export const getData = async function (url = "") {
+export const getData = async (url = "")=>{
   const response = await fetch(url, {
       method: "GET",
       mode: "cors",
@@ -168,14 +168,14 @@ export const getData = async function (url = "") {
   return response.json()
 }
 
-export const checkoutData = function(){	
+export const checkoutData = ()=>{	
   const monthOptions = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   let date = new Date().getFullYear()-1
   const yearOptions = Array.from({length: 10}, (_, i) => i + date)
   return {monthOptions, yearOptions}
 }
 
-export const paymentErrors = function(){	
+export const paymentErrors = ()=>{	
   return {
     name: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_name" },
     email: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_email" },
@@ -190,7 +190,7 @@ export const paymentErrors = function(){
   }
 }
 
-export const getProducts = function(cart, market){
+export const getProducts = (cart, market)=>{
   let array = []
   for(let i in cart){
       let index = market.findIndex((x) => x.id === cart[i].id)

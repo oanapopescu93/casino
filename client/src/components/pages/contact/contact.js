@@ -8,18 +8,18 @@ import ContactList from './contactList'
 import ContactMap from './contactMap'
 import { getWindowDimensions } from '../../../utils/utils'
 import Header from '../../partials/header'
-import ContactDetails from './contactDetails'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Contact(props){
     let locations = props.home.contact    
     const [contactElement, setContactElement] = useState(null)
-    let dispatch = useDispatch() 
-    const [mapCenter, setMapCenter] = useState(locations[0][props.lang].map)
-    const [markerPosition, setMarkerPosition] = useState(locations[0][props.lang].marker)
-    const [country, setCountry] = useState(locations[0][props.lang].country)
-    const [city, setCity] = useState(locations[0][props.lang].city) 
+    let dispatch = useDispatch()
+    let default_location = locations[0][props.lang] ? locations[0][props.lang] : locations[0]["ENG"]
+    const [mapCenter, setMapCenter] = useState(default_location.map)
+    const [markerPosition, setMarkerPosition] = useState(default_location.marker)
+    const [country, setCountry] = useState(default_location.country)
+    const [city, setCity] = useState(default_location.city) 
     const [zoom, setZoom] = useState(10)
     const [width, setWidth] = useState(getWindowDimensions().width)
     const [index, setIndex] = useState(0)
@@ -66,34 +66,16 @@ function Contact(props){
     return <div className="content_wrap">
         <Header template="contact" title={translate({lang: props.lang, info: "contact"})} />
         <div className="page_content">
-            <Row>
-                <Col sm={4} md={4} lg={4}>
+            {width >= 768 ? <Row>
+                <Col md={4}>
                     <ContactForm lang={props.lang} socket={props.socket} />
                 </Col>
-                <Col sm={8} md={8} lg={8}>
-                    {locations && locations.length>1 ? <ContactList 
+                <Col md={8}>
+                    <ContactList 
                         lang={props.lang} 
                         list={locations} 
                         handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
-                    /> : <ContactDetails 
-                        lang={props.lang} 
-                        item={locations[0]} 
-                    />}
-                    {locations && locations.length === 1 && width >= 960 ?<>
-                        {width >= 960 ? <ContactMap 
-                            lang={props.lang} 
-                            contactElement={contactElement}
-                            mapCenter={mapCenter}
-                            markerPosition={markerPosition}
-                            country={country}
-                            city={city}
-                            zoom={zoom}
-                        /> : null} 
-                    </> : null}
-                </Col>
-            </Row>
-            {locations && locations.length>1 && width >= 960 ? <Row>
-                <Col sm={12}>
+                    />
                     <ContactMap 
                         lang={props.lang} 
                         contactElement={contactElement}
@@ -104,7 +86,18 @@ function Contact(props){
                         zoom={zoom}
                     />
                 </Col>
-            </Row> : null}
+            </Row> : <Row>                
+                <Col md={8}>
+                    <ContactList 
+                        lang={props.lang} 
+                        list={locations} 
+                        handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
+                    />
+                </Col>
+                <Col md={4}>
+                    <ContactForm lang={props.lang} socket={props.socket} />
+                </Col>
+            </Row>}
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

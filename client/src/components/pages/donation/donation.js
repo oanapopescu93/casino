@@ -39,7 +39,7 @@ function Donation(props){
                             <div className="donation_box">
                                 <div className="donation_box_tabs">
                                     <ul>
-                                        {donation_type.map(function(item, i){
+                                        {donation_type.map((item, i)=>{
                                             let active = ""
                                             if(parseInt(i) === index){
                                                 active = "active"

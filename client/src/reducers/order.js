@@ -39,7 +39,7 @@ const orderSlice = createSlice({
                         amount: (payload.payload.amount / 100).toFixed(2)
                     }
                     break
-
+                default:
             }
             if(order){
                 state.order.push({ ...order, orderId: state.order.length })

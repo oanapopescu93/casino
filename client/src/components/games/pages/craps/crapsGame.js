@@ -62,7 +62,7 @@ function Dice(props){
 function CrapsBoardText(props){
 	return <>
 		{props.list && props.list.length>0 ? <>
-			{props.list.map(function(item, i){
+			{props.list.map((item, i)=>{
 					let dices = item.dices
 					let point = item.point
 					let sum = item.sum
@@ -120,8 +120,8 @@ function Craps(props){
 	}, [crapsBoardText]) 
 
 	function roll(point){
-		return new Promise(function(resolve, reject){
-			getNumbers(point).then(function(res){
+		return new Promise((resolve, reject)=>{
+			getNumbers(point).then((res)=>{
 				if(dice_array && dice_array.length>0 && res && res.length>0){
 					for(let i in res){
 						if(dice_array[i] && dice_array[i].current){
@@ -140,12 +140,12 @@ function Craps(props){
 	}
 
 	function getNumbers(point){
-		return new Promise(function(resolve, reject){
+		return new Promise((resolve, reject)=>{
 			let dice_number1 = getDiceNumber(dice_array[0])
 			let dice_number2 = getDiceNumber(dice_array[1])
 			let payload={uuid: props.user.uuid, room: room, how_many_dices: 2, point: point, before: [dice_number1, dice_number2]}
 			socket.emit('craps_send', payload)
-			socket.on('craps_read', function(data){
+			socket.on('craps_read', (data)=>{
 				if(data){
 					resolve(data)
 				}
@@ -210,7 +210,7 @@ function Craps(props){
 		setCrapsBoardList([])
 		switch(game_type) {
 			case "any 7":
-					roll(point).then(function(){ // one roll, sum must be 7
+					roll(point).then(()=>{ // one roll, sum must be 7
 						sum = dicesNumber[0] + dicesNumber[1]
 						if(sum === 7){
 							check_win_lose('win')
@@ -252,7 +252,7 @@ function Craps(props){
 					default: 
 						value = null
 				}
-				roll(point).then(function(){
+				roll(point).then(()=>{
 					sum = dicesNumber[0] + dicesNumber[1]
 					if(sum === value){
 						check_win_lose('win')
@@ -263,7 +263,7 @@ function Craps(props){
 				break
 
 			case "any craps":
-				roll(point).then(function(){ // one roll, wins if a 2, 3 or 12
+				roll(point).then(()=>{ // one roll, wins if a 2, 3 or 12
 					sum = dicesNumber[0] + dicesNumber[1]
 					if(sum === 2 || sum === 3 || sum === 12){
 						check_win_lose('win')
@@ -282,7 +282,7 @@ function Craps(props){
 			case "field bet 12":
 				myArray = game_type.split("field bet ")
 				value = parseInt(myArray[1])
-				roll(point).then(function(){ // one roll bet for 2, 3, 4, 9, 10, 11, 12
+				roll(point).then(()=>{ // one roll bet for 2, 3, 4, 9, 10, 11, 12
 					sum = dicesNumber[0] + dicesNumber[1]
 					if(sum === value){
 						check_win_lose('win')
@@ -313,7 +313,7 @@ function Craps(props){
 		}
 
 		function gameStrategy(type){
-			setTimeout(function() {
+			setTimeout(()=>{
 				gameLogic(type)					
 				timer = setInterval(gameLogic, subsequentTime) // Set up subsequent calls with setInterval for 2000ms
 			}, firstTime)
@@ -324,7 +324,7 @@ function Craps(props){
 				case "place bet":
 					switch(state) {
 						case 1:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === value){
 									state = 2
@@ -342,7 +342,7 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum)
 								if (sum === value) {
@@ -366,7 +366,7 @@ function Craps(props){
 				case "6 big 8":
 					switch(state) {
 						case 1:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === 6|| sum === 8){
 									state = 2
@@ -382,7 +382,7 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum)
 								if (sum === 7) {
@@ -400,7 +400,7 @@ function Craps(props){
 				case "come":
 					switch(state) {
 						case 1:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === 7|| sum === 11){
 									state = 2
@@ -416,7 +416,7 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
 								if (sum === point) {
@@ -440,7 +440,7 @@ function Craps(props){
 				case "don't come":
 					switch(state) {
 						case 1:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]	
 								if(sum === 2 || sum === 3){
 									state = 2
@@ -456,7 +456,7 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
 								if (sum !== point) {
@@ -481,7 +481,7 @@ function Craps(props){
 				case "don't pass line":
 					switch(state) {
 						case 1:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]		
 								if(sum === 2 || sum === 3){
 									//Natural
@@ -499,7 +499,7 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
 								if (sum !== point) {
@@ -526,7 +526,7 @@ function Craps(props){
 				default:
 					switch(state) {
 						case 1:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === 7|| sum === 11){
 									//Natural
@@ -544,7 +544,7 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then(function(res){
+							roll(point).then((res)=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
 								if (sum === point) {
@@ -580,32 +580,28 @@ function Craps(props){
             <Col sm={2} />
             <Col sm={8}>
 				<Row>
-					<Col lg={6} className="dice_container">
-						<Row>
-							<Col sm={12} md={8} lg={12}>
-								<Dice innerRef={dice1} number={1} />
-								<Dice innerRef={dice2} number={2} />
-							</Col>
-							<Col sm={12} md={4} lg={12}>
-								<div className="game_start">
-									<Button 
-										type="button"
-										className="mybutton round button_transparent shadow_convex"
-										onClick={()=>props.handleGameStart()}
-									><FontAwesomeIcon icon={faRotate} /></Button>
-									<Button 
-										type="button"
-										className="mybutton round button_transparent shadow_convex"
-										onClick={()=>props.handleOpenTable()}
-									><FontAwesomeIcon icon={faCarrot} /></Button>
-									<Button 
-										type="button" 
-										className="mybutton round button_transparent shadow_convex"
-										onClick={()=>props.handleHandleExit()}										
-									><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-								</div>
-							</Col>
-						</Row>
+					<Col lg={6}>
+						<div className="dice_container">
+							<Dice innerRef={dice1} number={1} />
+							<Dice innerRef={dice2} number={2} />
+						</div>
+						<div className="button_action_group">
+							<Button 
+								type="button"
+								className="mybutton round button_transparent shadow_convex"
+								onClick={()=>props.handleGameStart()}
+							><FontAwesomeIcon icon={faRotate} /></Button>
+							<Button 
+								type="button"
+								className="mybutton round button_transparent shadow_convex"
+								onClick={()=>props.handleOpenTable()}
+							><FontAwesomeIcon icon={faCarrot} /></Button>
+							<Button 
+								type="button" 
+								className="mybutton round button_transparent shadow_convex"
+								onClick={()=>props.handleHandleExit()}										
+							><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+						</div>
 					</Col>
 					<Col lg={6} className="craps_board_container">
 						<div className="craps_board_box">

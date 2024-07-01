@@ -21,12 +21,12 @@ function QuestionList(props){
         <Row>
             <Col lg={2} />
             <Col sm={8}>
-                {list_title.map(function(x, i){
+                {list_title.map((x, i)=>{
                     let title = capitalizeFirstLetter(x.split('_').join(' '))
                     let sublist = list[x]
                     return <div key={i} className="question_subcategory">
                         <h2>{title}</h2>
-                        {sublist.map(function(item, j){
+                        {sublist.map((item, j)=>{
                             let question = item.question
                             let answer = item.answer
                             return <div key={j} className="question_box">

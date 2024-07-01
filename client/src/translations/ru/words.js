@@ -112,7 +112,7 @@ var word_bank = {
     message: "Сообщение",
     sending: "Отправка...",
 
-    incorrect_email: "Неверный адрес электронной почты",
+    incorrect_email: "Неверный адрес имейл",
     empty_input_subject: "Поле темы пусто",
     empty_input_about: "Поле 'О нас' пусто",
     empty_input_message: "Поле сообщения пусто",
@@ -174,7 +174,7 @@ var word_bank = {
     //checkout"
     customer_info: "Информация о покупателе",
     name: "Имя",
-    email: "Email",
+    email: "имейл",
     phone: "Телефон",
     payment_info: "Информация об оплате",
     cash_on_delivery: "Наличные при доставке",
@@ -296,11 +296,12 @@ var word_bank = {
 
     welcome: "Добро пожаловать",
     welcome_gift: "Подарок за регистрацию",
+    welcome_text: "Бесплатно 100 морковок!",
     prize: "Приз",
     prizes: "Призы ",
     our_casino: "Наше казино",
 }
 
-export const wordsRu = function(info){
+export const wordsRu = (info)=>{
     return word_bank[info]
 }
