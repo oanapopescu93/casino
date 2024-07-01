@@ -151,7 +151,7 @@ function KenoBoard(props){
     return <div className="keno_board_container">
         {kenoSpots && kenoSpots.length>0 ? <>
             <p>{translate({lang: props.lang, info: "keno_instructions"})}</p>
-            <Row id="keno_form" className="keno_form">
+            <Row className="keno_form">
                 <Col sm={2} />
                 <Col sm={8}>
                     <Row>

@@ -13,6 +13,7 @@ import { postData } from '../../utils/utils'
 import { translate } from '../../translations/translate'
 import { changePopup } from '../../reducers/popup'
 import { changePage, changeGame, changeGamePage } from '../../reducers/page'
+import Header from '../partials/header'
 
 function Home(props) {
     const {home, page, user, cookies} = props
@@ -88,6 +89,7 @@ function Home(props) {
                         case "dashboard":
                             return <>
                                 <div className="content_wrap">
+                                    <Header template="page" details={page} lang={props.lang} />
                                     <Dashboard {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />
@@ -95,6 +97,7 @@ function Home(props) {
                         case "market":
                             return <>
                                 <div className="content_wrap">
+                                    <Header template="page" details={page} lang={props.lang} />
                                     <Market {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />

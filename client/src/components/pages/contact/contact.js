@@ -66,38 +66,44 @@ function Contact(props){
     return <div className="content_wrap">
         <Header template="contact" title={translate({lang: props.lang, info: "contact"})} />
         <div className="page_content">
-            {width >= 768 ? <Row>
-                <Col md={4}>
-                    <ContactForm lang={props.lang} socket={props.socket} />
+            <Row>
+                <Col lg={2} />
+                <Col lg={8}>
+                    {width >= 768 ? <Row>
+                        <Col md={4}>
+                            <ContactForm lang={props.lang} socket={props.socket} />
+                        </Col>
+                        <Col md={8}>
+                            <ContactList 
+                                lang={props.lang} 
+                                list={locations} 
+                                handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
+                            />
+                            <ContactMap 
+                                lang={props.lang} 
+                                contactElement={contactElement}
+                                mapCenter={mapCenter}
+                                markerPosition={markerPosition}
+                                country={country}
+                                city={city}
+                                zoom={zoom}
+                            />
+                        </Col>
+                    </Row> : <Row>                
+                        <Col md={8}>
+                            <ContactList 
+                                lang={props.lang} 
+                                list={locations} 
+                                handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
+                            />
+                        </Col>
+                        <Col md={4}>
+                            <ContactForm lang={props.lang} socket={props.socket} />
+                        </Col>
+                    </Row>}
                 </Col>
-                <Col md={8}>
-                    <ContactList 
-                        lang={props.lang} 
-                        list={locations} 
-                        handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
-                    />
-                    <ContactMap 
-                        lang={props.lang} 
-                        contactElement={contactElement}
-                        mapCenter={mapCenter}
-                        markerPosition={markerPosition}
-                        country={country}
-                        city={city}
-                        zoom={zoom}
-                    />
-                </Col>
-            </Row> : <Row>                
-                <Col md={8}>
-                    <ContactList 
-                        lang={props.lang} 
-                        list={locations} 
-                        handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
-                    />
-                </Col>
-                <Col md={4}>
-                    <ContactForm lang={props.lang} socket={props.socket} />
-                </Col>
-            </Row>}
+                <Col lg={2} />    
+            </Row> 
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

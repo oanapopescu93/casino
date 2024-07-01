@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import { translate } from '../../translations/translate'
 import logo_icon from '../../img/logo.png'
 import { capitalizeFirstLetter, getWindowDimensions, isEmpty } from '../../utils/utils'
-import TransparentText from './transparentText'
 import { checkEaster, checkOccasion } from '../../utils/special_occasions'
 import EasterEgg from './special_occasions/easter/egg'
 import Ghost from './special_occasions/halloween/ghost'
@@ -12,27 +11,6 @@ function Header(props){
     let title = props.title ? props.title : "BunnyBet"  
     const [showEaster, setShowEaster] = useState(false)
 	const [showHalloween, setShowHalloween] = useState(false)
-    const [height, setHeight] = useState(getHeightBasedOnWidth(getWindowDimensions().width))
-
-    function getHeightBasedOnWidth(width){
-        if(width >= 600){
-          return 30
-        } else {
-          return 25
-        }
-    }
-
-    function handleResize(){
-        setHeight(getHeightBasedOnWidth(getWindowDimensions().width))
-    }
-
-    useEffect(() => {    
-        if(typeof window !== "undefined"){
-            window.addEventListener("resize", handleResize)
-            handleResize()
-            return () => window.removeEventListener("resize", handleResize)
-        }
-	}, [])
 
     useEffect(() => {
         // special occasions
@@ -80,17 +58,17 @@ function Header(props){
                                 title = title + ' ' + table_id
                             }
                             return <div id="header_game" className="header">
-                                <h2>{title}</h2>
+                                <h1>{title}</h1>
                             </div>
                         } else {
                             return
                         }
-                    case "panel_user":                        
+                    case "panel_user":                     
                         if(details && details.game){
                             if(details.game_page){
                                 //ex: dashboard, market
-                                return <div id="panel_user" className="header">
-                                    <h2>{translate({lang: lang, info: details.game_page})}</h2>
+                                return <div id={"panel_user_"+details.game_page} className="header">
+                                    <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
                                 </div>
                             } else {
                                 //game                                
@@ -106,6 +84,11 @@ function Header(props){
                             //salon panel
                             return
                         }
+                    case "page":
+                        //ex: dashboard, market
+                        return <div id={"panel_user_"+details.game_page} className="header">
+                            <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
+                        </div>
                     case "sign":
                         return <div id="header_sign" className="header">
                             <img id="logo_icon" alt="logo_icon" src={logo_icon} />

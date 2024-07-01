@@ -7,8 +7,8 @@ import { useDispatch } from 'react-redux'
 import { cartAdd } from '../../../../reducers/cart'
 import { Button } from 'react-bootstrap'
 import { changePage, changeGame, changeGamePage } from '../../../../reducers/page'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCartShopping, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faCartShopping, faUser, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Market(props){
     const {lang, home} = props
@@ -27,15 +27,21 @@ function Market(props){
         swipeThreshold: 20,
         responsive: [
             {
-                breakpoint: 1200,
+                breakpoint: 1400,
                 settings: {
                     slidesToShow: 4,
                 }
             },
             {
-                breakpoint: 960,
+                breakpoint: 1200,
                 settings: {
                     slidesToShow: 3,
+                }
+            }, 
+            {
+                breakpoint: 960,
+                settings: {
+                    slidesToShow: 2,
                 }
             }, 
             {
@@ -53,7 +59,10 @@ function Market(props){
     }
 
     function handleGoTo(x){
-        switch (x) {  
+        switch (x) {
+            case "user":
+                dispatch(changePage('dashboard'))
+                break 
             case "cart":
                 dispatch(changePage('Cart'))
                 break
@@ -66,10 +75,7 @@ function Market(props){
         dispatch(changeGamePage(null))
     }
 
-    return <div className="market_container">
-        <Row>
-            <Col sm={12}><h2>Market</h2></Col>
-        </Row>
+    return <div className="market_container">        
         <Row>
             <Col sm={2} />
             <Col sm={8}><div style={shader_style} className="shop_shader"></div></Col>
@@ -93,7 +99,10 @@ function Market(props){
             <Col sm={12} className="button_action_group">
                 <Button type="button" onClick={()=>handleGoTo('cart')} className="mybutton round button_transparent shadow_convex">
                     <FontAwesomeIcon icon={faCartShopping}/>
-                </Button>	
+                </Button>
+                <Button type="button" onClick={()=>handleGoTo('user')} className="mybutton round button_transparent shadow_convex">
+                    <FontAwesomeIcon icon={faUser}/>
+                </Button>
                 <Button type="button" onClick={()=>handleGoTo('back')} className="mybutton round button_transparent shadow_convex">
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                 </Button>	

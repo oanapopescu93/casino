@@ -101,8 +101,8 @@ function Game(props){
 
     return <>
         <div className="content_wrap">
-            <Header template="game" details={page} lang={lang} />
-            {!game_page ? <div className='game_container'>
+            <Header template={"game"} details={page} lang={lang} />
+            {!game_page ? <>
                 {(() => {
                     switch (title) {
                         case "roulette":
@@ -179,7 +179,7 @@ function Game(props){
                             }
                     }
                 })()}
-            </div> : <>
+            </> : <>
                 {(() => {
                     switch (game_page) {
                         case "dashboard":

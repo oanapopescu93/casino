@@ -1015,7 +1015,7 @@ textarea {
 }
 .error .closeButton{
   background: var(--red);
-  border: solid 1px var(--red);
+  border: solid 1px var(--bg);
   color: var(--bg);
 }
 .error .closeButton:hover{
@@ -1033,7 +1033,7 @@ textarea {
 }
 .success .closeButton{
   background: var(--green);
-  border: solid 1px var(--green);
+  border: solid 1px var(--bg);
   color: var(--bg);
 }
 .success .closeButton:hover{
@@ -1137,6 +1137,11 @@ textarea {
   margin-bottom: var(--padding);
   border-bottom: solid 1px var(--color);
   font-family: 'Grenadier';
+}
+#panel_user_market .title{
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  border-bottom: none;
 }
 .footer_container {
   position: fixed;
@@ -2131,6 +2136,8 @@ textarea {
   margin-bottom: var(--padding);
   border-bottom: solid 1px var(--color);
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 .dashboard_right_buttons{
   padding-top: var(--padding);
@@ -2142,18 +2149,35 @@ textarea {
 .dashboard_right_button{
   display: inline-block;
   vertical-align: top;
-  padding: var(--padding_small);
+  padding: var(--padding_small) var(--padding);
   background-color: transparent;
   color: var(--color);
   border: solid 1px var(--color);
+  border-bottom: none;
   border-radius: var(--radius) var(--radius) 0px 0px;
-  width: 80px;
+  width: 100px;
   margin-right: var(--padding_small);
   text-align: center;
 }
 .dashboard_right_button:hover, .dashboard_right_button.active{
   background-color: var(--color);
   color: var(--bg);
+}
+.dashboard_right_market{
+  position: absolute;
+  z-index: 1;
+  bottom: 0px;
+  right: 0px;
+  background-color: var(--color);
+  color: var(--bg);
+  border: solid 1px var(--color);
+  border-bottom: none;
+  text-align: center;
+  padding: var(--padding_small) var(--padding);
+  border-radius: var(--radius) 0px 0px 0px;
+}
+.dashboard_right_button svg, .dashboard_right_market svg{
+  margin-right: 5px;
 }
 .crop_vegetables{
 	width: 40px;
@@ -2715,6 +2739,15 @@ textarea {
   .slot_machine.slot_machine_3 .box {
     height: 310px;
   }
+  .dashboard_right_button{
+    width: auto;
+  }
+  .dashboard_right_button svg, .dashboard_right_market svg{
+    margin-right: 0px;
+  }
+  .dashboard_right_button span, .dashboard_right_market span{
+    display: none;
+  }
 }
 @media (max-width: 600px) {	
   .slot_machine .box{
@@ -3106,6 +3139,10 @@ textarea {
 }
 .keno_form .mybutton{
   margin-top: 6px;
+  height: 25px;
+}
+.keno_options .mybutton.round{
+  margin: var(--padding_small)!important;
 }
 .keno_rules{
   padding: var(--padding_small);
@@ -3431,9 +3468,19 @@ textarea {
 }
 
 /* media */
-@media (max-width: 1200px){
+@media (max-width: 1600px){
 	.shop_shader{
 		height:100px;
+	}
+}
+@media (max-width: 1400px){
+	.shop_shader{
+		height:85px;
+	}
+}
+@media (max-width: 1200px){
+	.shop_shader{
+		height:70px;
 	}
   .poker_pot_container{ 
     top: 150px;
@@ -3441,12 +3488,12 @@ textarea {
 }
 @media (max-width: 1024px){
 	.shop_shader{
-		height:80px;
+		height:60px;
 	}
 }
 @media (max-width: 960px){
 	.shop_shader{
-		height:60px;
+		height:50px;
 	}
   .progress_bubble_container{
     max-height: 205px;
@@ -3672,7 +3719,7 @@ textarea {
 
   /* SALON */
   .salon_button, .panel_button {
-    height: 35px;
+    height: 40px;
   }
   .salon_button span, .panel_button span{
     display: none;
@@ -3753,7 +3800,7 @@ textarea {
     border-bottom: solid 1px var(--color);
   }
 }
-@media (max-width:480px) {  
+@media (max-width:480px) {
   /* KENO */
   .keno_spot .keno_spot_box{
     width: 25px;
@@ -3773,6 +3820,18 @@ textarea {
   .sign_container ul li:first-child{    
     margin-bottom: var(--padding_small);
   }
+
+  .shop_shader {
+    height: 30px;
+  }
+}
+@media (max-width:380px) {
+  .keno_spot .keno_spot_box{
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 20px;
+  }
 }
 @media (max-width:360px) {
   #splash_screen .mid-diamond-left{
@@ -3786,6 +3845,11 @@ textarea {
     height: 30px;
     right: -40px;
     top: 85px;
+  }  
+}
+@media (max-width:340px) {
+  .content_wrap {
+    padding: var(--padding) 30px;
   }
 }
 
@@ -3793,7 +3857,7 @@ textarea {
 @media (max-width: 768px) and (orientation: landscape){
   /* SALON */
   .salon_button, .panel_button {
-    height: 35px;
+    height: 40px;
   }
   .salon_button span, .panel_button span{
     display: none;
@@ -3840,7 +3904,10 @@ textarea {
   }
   .dice_container{
     margin-right: var(--padding_big);
-  }  
+  } 
+  .how_to_play_titles{
+    max-height: 200px;
+  }
 }
 
 ::-webkit-scrollbar{
