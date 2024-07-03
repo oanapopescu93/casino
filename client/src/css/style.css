@@ -21,7 +21,8 @@
   --transparent_2: rgba(0, 0, 0, 0.2);
 	--transparent_5: rgba(0, 0, 0, 0.5);
 	--transparent_8: rgba(0, 0, 0, 0.8);
-	--transparent_color: rgba(255, 215, 0, 0.2);
+	--transparent_color_1: rgba(255, 215, 0, 0.1);
+  --transparent_color: rgba(255, 215, 0, 0.2);
 
   --firework_color: red;
 }
@@ -1494,7 +1495,7 @@ textarea {
 	bottom:0px;
 	right:100%;
 	width:100%;
-	padding:0px 50px;
+	padding:0px 60px;
 	-webkit-transition:0.7s;
   -moz-transition:0.7s;
 	-o-transition: 0.7s;
@@ -1507,16 +1508,27 @@ textarea {
 	position: relative;
 	z-index:1;
 	top:50%;
+  left: 50%;
 	width:100%;
-	transform: translate(0px, -50%);
+	transform: translate(-50%, -50%);
 	border:solid 1px var(--color);
 	border-radius:var(--radius);
 	padding:var(--padding);
 	background: black;
 }
+.keno_game .game_bets{
+  max-width: 300px;
+}
 .game_bets_box{
 	overflow: auto;
-  max-height: 300px;
+  max-height: 260px;
+}
+#keno_game_bets .game_bets_box{
+  overflow: visible;
+  max-height: none;
+}
+#keno_game_bets p{
+  margin-bottom: var(--padding);
 }
 .game_bets_clear{
   padding-top: var(--padding_small);
@@ -3102,47 +3114,67 @@ textarea {
 
 /* KENO */
 .keno_board{
+  display: inline-block;
   background-color: var(--transparent_5);
   border: solid 1px var(--color);
-  border-radius: var(--radius_small);
+  border-radius: var(--radius);
   padding: 2px;
-  display: inline-block;
+  text-align: center;
 }
+
 .keno_spot{
-  padding: 2px;
   display: inline-block;
   vertical-align: middle;
+  padding: 2px;
 }
-.keno_spot .keno_spot_box{
-  border: solid 1px var(--color);
+.keno_spot_box{
+  border: 1px solid var(--color);
   border-radius: var(--radius_small);
-  padding: var(--padding);
-  cursor: pointer;
   width: 60px;
   height: 60px;
+  font-size: 20px;
   line-height: 40px;
+  padding: 10px;
+  padding: var(--padding);
+  cursor: pointer;
 }
-.keno_spot .keno_spot_box:hover{
+.keno_spot_box:hover{
   background-color: var(--transparent_color);
 }
-.keno_spot.selected .keno_spot_box{
-  background-color: var(--transparent_color);
+.keno_spot_box.selected{
+  background-color: var(--color);
+  color: var(--bg);
 }
-.keno_form, .keno_options{
-  margin: var(--padding) 0px;
+.keno_board_container{
+  margin-bottom: var(--padding_big);
 }
-.keno_options .dropdown .dropdown-toggle{
+.keno_buttons_container, .keno_prize_container, .keno_quickpick_container, .keno_bets_container{
+  margin-bottom: var(--padding);
+}
+.keno_buttons_container{
+  text-align: right;
+}
+.keno_prize_container{
+  margin-top: var(--padding);
+  text-align: left;
+}
+.keno_prize_container button{
+  width: 100%;
+  max-width: 200px;
+}
+.keno_bets{
+  display: inline-block;
+  vertical-align: top;
+  padding: 0px var(--padding_small);
+  width: 50%;
+}
+.keno_bets .dropdown{
+  margin-top: var(--padding);
+}
+.keno_bets .dropdown .dropdown-toggle, .keno_bets .dropdown .dropdown-toggle{
   width: 100%;
   height: 25px;
   line-height: 12px;
-  margin: var(--padding) 0px;
-}
-.keno_form .mybutton{
-  margin-top: 6px;
-  height: 25px;
-}
-.keno_options .mybutton.round{
-  margin: var(--padding_small)!important;
 }
 .keno_rules{
   padding: var(--padding_small);
@@ -3165,6 +3197,15 @@ textarea {
   border-top: solid 0px transparent;
   border-radius: 0px 0px var(--radius) var(--radius);
 }
+.keno_rules_items {
+  background-color: transparent;
+}
+.keno_rules_items:hover{
+  background-color: var(--transparent_2);
+}
+.keno_rules_items:first-child:hover {
+  background-color: transparent;
+}
 .keno_rules_item{
   display: inline-block;
   vertical-align: top;
@@ -3178,33 +3219,25 @@ textarea {
 .keno_rules_items:first-child .keno_rules_item{
   border-bottom: solid 1px var(--bg);
 }
-.KenoResults_container{
-  background-color: var(--transparent_5);
-  padding: var(--padding);
-  border: solid 1px var(--color);
-  border-radius: var(--radius);
-  text-align: left;
-  margin-bottom: var(--padding);
+.keno_spot_box.loser {
+  background-color: var(--red_transparent_3);
+  border: solid 1px var(--red);
+  color: var(--red);
 }
-.KenoResults{  
-  max-height: 400px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: var(--padding);
+.keno_spot_box.winner {
+  background-color: var(--green_transparent_3);
+  border: solid 1px var(--green);
+  color: var(--green);
 }
-.KenoResults_box{
-  margin-bottom: var(--padding);
-}
-.KenoResults_box:last-child{
-  margin-bottom: 0px;
-}
-.KenoResults_box ul li{
+.keno_animation_tube, .keno_animation_balls{
   display: inline-block;
   vertical-align: middle;
-  margin-right: var(--padding_small);
+  padding: var(--padding);
 }
-.KenoResults_box ul li:last-child{
-  margin-right: 0px;
+#keno_tube_canvas{
+  background-color: var(--transparent_color_1);
+  border: solid 1px var(--color);
+  border-radius: 20px;
 }
 
 /* FIREWORKS */
@@ -3492,6 +3525,7 @@ textarea {
 	}
 }
 @media (max-width: 960px){
+  /* MARKET */
 	.shop_shader{
 		height:50px;
 	}
@@ -3508,7 +3542,20 @@ textarea {
   }
 }
 
-@media (max-width: 767px) {	
+@media (max-width: 767px) {
+  /* KENO */
+  .keno_spot_box{
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 30px;
+    padding: var(--padding_small);
+  }
+  .keno_prize_container {
+    margin-top: var(--padding_small);
+  }
+
+  /* MARKET */
   .shop_shader {
     height: 45px;
   }
@@ -3683,23 +3730,27 @@ textarea {
 	}
   .craps_container .game_start{
     margin: var(--padding_small) 0px;
-  }
-
-  /* KENO */
-  .keno_spot .keno_spot_box{
-    width: 40px;
-    height: 40px;
-    line-height: 20px;
-  }
-  .keno_rules{
-    max-height: 400px;
-  }
+  }  
 
   .how_to_play_titles{
     max-height: 390px;
   }
 }
-@media (max-width:600px) {	
+@media (max-width:600px) {
+  /* KENO */
+  .keno_board{
+    width: 100%;
+    overflow: auto;
+    height: 310px;
+    padding: var(--padding_small);
+  }
+  .keno_buttons_container, .keno_prize_container{
+    text-align: center;
+  }
+  .keno_prize_container button{
+    height: 25px;
+  }
+
   /* SIGN */
   .sign_container_box{
     height: 420px;
@@ -3781,17 +3832,6 @@ textarea {
     right:-36px;
   }
 
-  /* KENO */
-  .keno_spot .keno_spot_box{
-    width: 30px;
-    height: 30px;
-    line-height: 28px;
-    padding: 0px;
-  }
-  .keno_rules{
-    max-height: 200px;
-  }
-
   /* CHECKOUT */
   .payment_details_box{
     text-align: center;
@@ -3801,13 +3841,6 @@ textarea {
   }
 }
 @media (max-width:480px) {
-  /* KENO */
-  .keno_spot .keno_spot_box{
-    width: 25px;
-    height: 25px;
-    font-size: 12px;
-    line-height: 24px;
-  }
   .welcome_popup img{
     width:150px;
   }
@@ -3825,14 +3858,6 @@ textarea {
     height: 30px;
   }
 }
-@media (max-width:380px) {
-  .keno_spot .keno_spot_box{
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    line-height: 20px;
-  }
-}
 @media (max-width:360px) {
   #splash_screen .mid-diamond-left{
     width: 30px;
@@ -3848,6 +3873,8 @@ textarea {
   }  
 }
 @media (max-width:340px) {
+  /* KENO */
+
   .content_wrap {
     padding: var(--padding) 30px;
   }
@@ -3889,6 +3916,14 @@ textarea {
   }
 }
 @media (max-height: 500px){
+  /* KENO */
+  .keno_board{
+    width: 100%;
+    overflow: auto;
+    height: 210px;
+    padding: var(--padding_small);
+  }
+
 	.header_container.game{
     display: none;
   }

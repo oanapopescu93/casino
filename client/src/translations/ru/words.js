@@ -95,6 +95,7 @@ var word_bank = {
     no_order: "Нет заказов",
     no_selections: "Выберите хотя бы одно поле в Keno, чтобы начать игру",
     no_match: "Совпадений нет",
+    keno_too_many_selected: "Слишком много выбранных точек",
 
     isMinor_title: "Проверка возраста",
     isMinor_text: "Вам есть 18 лет?",

@@ -96,6 +96,7 @@ var word_bank = {
     no_order: "Nu există comenzi",
     no_selections: "Selectează măcar un Keno Spot pentru a începe jocul",
     no_match: "Nicio potrivire",
+    keno_too_many_selected: "Prea multe puncte selectate",
 
     isMinor_title: "Verificare vârstă",
     isMinor_text: "Ai peste 18 ani?",

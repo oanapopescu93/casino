@@ -96,6 +96,7 @@ var word_bank = {
     no_order: "Sem pedidos",
     no_selections: "Selecione pelo menos um ponto Keno para iniciar o jogo",
     no_match: "Sem correspondência",
+    keno_too_many_selected: "Demasiados pontos selecionados",
 
     isMinor_title: "Verificação de idade",
     isMinor_text: "Você tem mais de 18 anos?",

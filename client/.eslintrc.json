@@ -17,7 +17,8 @@
       "react/prop-types": "off",
       "no-case-declarations": "warn",
       "react/react-in-jsx-scope": "off",
-      "react/no-unescaped-entities": "off"
+      "react/no-unescaped-entities": "off",
+      "no-unreachable": "off",
   },
   "settings": {
       "react": {

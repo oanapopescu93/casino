@@ -95,6 +95,7 @@ var word_bank = {
     no_order: "没有订单",
     no_selections: "选择至少一个Keno点开始游戏",
     no_match: "没有匹配",
+    keno_too_many_selected: "选择了太多点",
 
     isMinor_title: "年龄验证",
     isMinor_text: "您是否年满18岁？",

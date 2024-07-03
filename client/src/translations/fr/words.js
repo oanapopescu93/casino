@@ -96,6 +96,7 @@ var word_bank = {
     no_order: "Aucune commande",
     no_selections: "Sélectionnez au moins un spot Keno pour commencer le jeu",
     no_match: "Aucune correspondance",
+    keno_too_many_selected: "Trop de spots sélectionnés",
 
     isMinor_title: "Vérification de l'âge",
     isMinor_text: "Êtes-vous majeur ?",

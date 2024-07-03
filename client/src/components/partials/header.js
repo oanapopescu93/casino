@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { translate } from '../../translations/translate'
 import logo_icon from '../../img/logo.png'
-import { capitalizeFirstLetter, getWindowDimensions, isEmpty } from '../../utils/utils'
+import { capitalizeFirstLetter, isEmpty } from '../../utils/utils'
 import { checkEaster, checkOccasion } from '../../utils/special_occasions'
 import EasterEgg from './special_occasions/easter/egg'
 import Ghost from './special_occasions/halloween/ghost'

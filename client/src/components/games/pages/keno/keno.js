@@ -1,112 +1,172 @@
 import React, {useState, useEffect} from 'react'
-import { useDispatch } from 'react-redux'
-import { translate } from '../../../../translations/translate'
 import KenoAnimation from './kenoAnimation'
-import KenoBoard from './kenoBoard'
+import KenoGame from './KenoGame'
+import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
+import { translate } from '../../../../translations/translate'
 import { decryptData } from '../../../../utils/crypto'
 
-var keno_status = false
-function Keno(props){    
-    let dispatch = useDispatch()
-    const [start, setStart] = useState(false)
-    const [data, setData] = useState(null)
-    const [resultsPayload, setResultsPayload] = useState(null)
-    let money = props.user.money ? decryptData(props.user.money) : 0
+function Keno(props){
     let game = props.page.game
-    let dataUpdate = null
+    let money = props.user.money ? decryptData(props.user.money) : 0
+    let dispatch = useDispatch()
+
+    const [kenoSpots, setKenoSpots] = useState([])
+    const [kenoSpotsSelectedArray, setKenoSpotsSelectedArray] = useState([])
+    const [kenoSpotsResult, setKenoSpotsResult] = useState([])
+    const [start, setStart] = useState(false)
+    const [maxSelected, setMaxSelected] = useState(10)
+    const [pricePerGame, setPricePerGame] = useState(1)
+    const [noOfGames, setNoOfGames] = useState(1)
+
+    let flaskAnimationFinished = false
+    let ballsAnimationFinished = false
 
     useEffect(() => {
-		return () => {
-            if(keno_status){
-                let keno_bets = 1
-                let keno_payload = {
-                    uuid: props.user.uuid,
-                    game: game,
-                    status: 'lose',
-                    bet: keno_bets,
-                    money: money - keno_bets
-                }
-                
-                props.results(keno_payload)
-                setStart(false)
-                keno_status = false
-                setResultsPayload(null)
-            }
+        createKenoMatrix(80)
+        return () => {            
+			setKenoSpots([])
+            setKenoSpotsSelectedArray([])
+            setKenoSpotsResult([])
+            setStart(false)
+            setMaxSelected(10)
+            setPricePerGame(1)
+            setNoOfGames(1)
 		}
     }, [])
 
-    useEffect(() => {
-        if(data){
-            let keno_bets = data.no_of_games * data.price_per_game
-            let status = 'lose'
-            let pay = money
-            let numbers_matched = 0
-            if(resultsPayload && resultsPayload.list_filtered && resultsPayload.list_filtered.length>0){
-                numbers_matched = resultsPayload.list_filtered.length
+    function createKenoMatrix(){
+        const matrix = []
+        let index = 1
+        for (let i = 0; i < 8; i++) {
+            const row = []
+            for (let j = 0; j < 10; j++) {
+                row.push({ id: index, selected: false })
+                index++
             }
-            
-            if(numbers_matched>0){
-                let win = 0
-                for(let i in resultsPayload.list_filtered){
-                    if(resultsPayload.list_filtered[i].numbers_matched === numbers_matched){
-                        win = resultsPayload.list_filtered[i].win
-                        break
-                    }
-                }
-                if(win>0){
-                    pay = pay + win
-                    status = 'win'
-                } else {
-                    pay = pay - keno_bets
-                }
-            } else {
-                pay = pay - keno_bets
-            }
-            
-            let keno_payload = {
-                uuid: props.user.uuid,
-                game: game,
-                status: status,
-                bet: keno_bets,
-                money: pay
-            }
-            
-            props.results(keno_payload)
-            setStart(false)
-            keno_status = false
-            setResultsPayload(null)
+            matrix.push(row)
         }
-    }, [resultsPayload])
+        setKenoSpots(matrix)
+    }
 
-    function startGame(){
-        if(dataUpdate && dataUpdate.list && dataUpdate.list.length>0){ 
-            if(dataUpdate.price_per_game>0){
-                setStart(true)
-                keno_status = true
-            } else {
-                let payload = {
-                    open: true,
-                    template: "error",
-                    title: "error",
-                    data: translate({lang: props.lang, info: "no_bets"})
-                }
-                dispatch(changePopup(payload))
-            }
+    function handleClickSpot(row, id){
+        let selectedCount = 0
+
+        const updatedSpots = kenoSpots.map((r, rowIndex) => 
+            rowIndex === row ? 
+                r.map(spot => {
+                    if (spot.id === id) {
+                        selectedCount += !spot.selected ? 1 : -1;
+                        return { ...spot, selected: !spot.selected }
+                    }
+                    if (spot.selected) selectedCount++;
+                    return spot;
+                }) : 
+                r.map(spot => {
+                    if (spot.selected) selectedCount++;
+                    return spot;
+                })
+        )
+
+        if (selectedCount > maxSelected) {
+            showError("keno_too_many_selected")
         } else {
-            let payload = {
-                open: true,
-                template: "error",
-                title: "error",
-                data: translate({lang: props.lang, info: "no_selections"})
-            }
-            dispatch(changePopup(payload))
+            setKenoSpots(updatedSpots)
         }
     }
 
-    function getData(x){
-        setData(x)
-        dataUpdate = x
+    function showError(text){
+        let payload = {
+            open: true,
+            template: "error",
+            title: "error",
+            data: translate({lang: props.lang, info: text}),
+            size: 'sm',
+        }
+        dispatch(changePopup(payload))
+    }
+
+    function handleQuickPick(e){
+        randomSelectSpots(e)
+    }
+
+    function randomSelectSpots(how_many){
+        setMaxSelected(how_many)
+        let flatSpots = kenoSpots.flat()
+        flatSpots = flatSpots.sort(() => 0.5 - Math.random()) // Shuffle the spots
+        const selectedSpots = flatSpots.slice(0, how_many) // Select the first how_many spots
+
+        const updatedSpots = kenoSpots.map(row =>
+            row.map(spot =>
+                selectedSpots.find(selected => selected.id === spot.id)
+                    ? { ...spot, selected: true }
+                    : { ...spot, selected: false }
+            )
+        )
+        
+        setKenoSpots(updatedSpots)
+    }
+
+    function resetKenoSpots() {
+        setKenoSpots(prevSpots =>
+            prevSpots.map(row =>
+                row.map(spot => {
+                    const { isWinner, isLoser, ...rest } = spot
+                    return { ...rest, selected: false }
+                })
+            )
+        )
+        setMaxSelected(10)
+        setPricePerGame(1)
+        setNoOfGames(1)
+    }    
+
+    function getSelectedKenoIds() {
+        return kenoSpots.flat().filter(spot => spot.selected).map(spot => spot.id)
+    }
+
+    function updateKenoBets(type, e){
+        let newValue = parseInt(e)
+        switch(type){
+            case "price_per_game":
+                if (calculateTotalCost(newValue, noOfGames) <= money) {
+                    setPricePerGame(newValue)
+                } else {
+                    showError("not_enough_money")
+                }
+                break
+            case "no_of_games":
+                if (calculateTotalCost(pricePerGame, newValue) <= money) {
+                    setNoOfGames(newValue)
+                } else {
+                    showError("not_enough_money")
+                }
+                break
+            default:
+        }
+    }
+
+    function calculateTotalCost(price, qty){
+        return price * qty
+    }
+
+    function gameStart(){
+        if(kenoSpotsResult && kenoSpotsResult.length > 0){
+            setKenoSpotsResult([])
+            resetKenoSpots()
+        } else {
+            let selectedArray = getSelectedKenoIds()
+            setKenoSpotsSelectedArray(selectedArray)
+            if(selectedArray.length > 0){            
+                handleStartGame()
+            } else {
+                showError("no_bets")
+            }
+        }
+    }
+
+    function handleBack(){
+        props.handleHandleExit()
     }
 
     function handleShowPrizes(){
@@ -120,21 +180,142 @@ function Keno(props){
         dispatch(changePopup(payload))
     }
 
-    function getResults(x){
-        setResultsPayload(x)
-    } 
+    function handleStartGame(){
+        setStart(true)
+        sendKenoData()
+    }
+
+    function sendKenoData(){
+        let selectedArray = getSelectedKenoIds()
+        setKenoSpotsSelectedArray(selectedArray)
+        let keno_payload_server = {
+            uuid: props.user.uuid,
+            length: selectedArray.length, 
+            max: calculateTotalSpots(kenoSpots),
+            no_of_games: noOfGames
+        }        
+        props.socket.emit('keno_send', keno_payload_server)
+    }
+
+    function calculateTotalSpots(array) {
+        let totalSpots = 0
+        array.forEach(row => {
+            totalSpots += row.length
+        })        
+        return totalSpots
+    }
+
+    useEffect(() => {
+        const handleKenoRead = (data)=>{
+            if(data && data[0] && data[0].length > 0){
+                setKenoSpotsResult(data[0])
+            }
+        }
+		props.socket.on('keno_read', handleKenoRead)
+		return () => {
+            props.socket.off('keno_read', handleKenoRead)
+        }
+    }, [props.socket])
+
+    function animationFinished(e){
+        switch(e){
+            case "flask":
+                flaskAnimationFinished = true
+                break
+            case "balls":
+                ballsAnimationFinished = true
+                break
+            default:
+                flaskAnimationFinished = true
+                ballsAnimationFinished = true
+        }        
+        if(flaskAnimationFinished && ballsAnimationFinished){
+            setStart(false)
+            winLose()
+        }  
+    }
+
+    function winLose(){
+        let keno_prizes = props.home.keno_prizes
+        let totalWinnings = 0
+        let selectedSpotsCount = 0
+        let matchedNumbers = 0
+
+        // Count selected spots and matched numbers
+        kenoSpots.forEach((spotSet) => {
+            spotSet.forEach((spot) => {
+                if (spot.selected) {
+                    selectedSpotsCount++
+                    if (spot.isWinner) {
+                        matchedNumbers++
+                    }
+                }
+            })
+        })
+
+        // Determine the prize based on selectedSpotsCount and matchedNumbers
+        if (selectedSpotsCount > 0 && selectedSpotsCount <= keno_prizes.length) {
+            let prizeList = keno_prizes[selectedSpotsCount - 1]
+            prizeList.forEach((prize) => {
+                if (prize.numbers_matched === matchedNumbers) {
+                    totalWinnings = prize.win
+                }
+            })
+        }
+        
+        let bet = pricePerGame * noOfGames
+        let status = totalWinnings > 0 ? "win" : "lose"        
+        let keno_payload = {
+            uuid: props.user.uuid,
+            game,
+            status,
+            bet,
+            money: (money - bet) + (totalWinnings * noOfGames)
+        }
+        props.results(keno_payload)
+    }
+
+    useEffect(() => {
+        if(kenoSpotsResult && kenoSpotsResult.length > 0){
+            updateKenoSpots()
+        }        
+    }, [kenoSpotsResult])
+
+    function updateKenoSpots() {
+        const updatedMatrix = kenoSpots.map(row =>
+            row.map(spot => ({
+                ...spot,
+                isWinner: kenoSpotsResult.includes(spot.id) && spot.selected,
+                isLoser: kenoSpotsResult.includes(spot.id) && !spot.selected,
+            }))
+        );
+        setKenoSpots(updatedMatrix)
+    }
 
     return <>
         {start ? <KenoAnimation 
             {...props} 
-            data={data}
-            handleShowPrizes={()=>handleShowPrizes()}
-            getResults={(e)=>getResults(e)}
-            resultsPayload={resultsPayload}
-        /> : <KenoBoard 
+            kenoSpots={kenoSpots}
+            kenoSpotsSelectedArray={kenoSpotsSelectedArray}
+            kenoSpotsResult={kenoSpotsResult}
+            pricePerGame={pricePerGame}
+            noOfGames={noOfGames}
+            animationFinished={(e)=>animationFinished(e)}
+        /> : <KenoGame 
             {...props} 
-            startGame={()=>startGame()}
-            getData={(e)=>getData(e)}
+            start={start}
+            kenoSpots={kenoSpots}
+            kenoSpotsSelectedArray={kenoSpotsSelectedArray}
+            pricePerGame={pricePerGame}
+            noOfGames={noOfGames}
+            kenoSpotsResult={kenoSpotsResult}
+            handleClickSpot={(row, id)=>handleClickSpot(row, id)}
+            handleQuickPick={(e)=>handleQuickPick(e)}
+            updateKenoBets={(type, e)=>updateKenoBets(type, e)}
+            handleShowPrizes={()=>handleShowPrizes()}
+            resetKenoSpots={()=>resetKenoSpots()}
+            gameStart={()=>gameStart()}
+            handleBack={()=>handleBack()}
         />}
     </>
 }
