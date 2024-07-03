@@ -8,7 +8,7 @@ import { decryptData } from '../../../../utils/crypto'
 import { changeRouletteLuckyBet } from '../../../../reducers/games'
 import $ from 'jquery'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faRotate, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import {faPlay, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function roulette_game(props){
     let self = this	
@@ -684,19 +684,30 @@ function RouletteGame(props){
     return <div className="roulette_container">
 		<canvas id="roulette_canvas" /> 
 		<div className="game_start">
-			<Button 
-				type="button"  
-				className="mybutton round button_transparent shadow_convex"
-				onClick={()=>gameStart()}
-			><FontAwesomeIcon icon={faRotate} /></Button>
-			<Button 
-				type="button"  
-				className="mybutton round button_transparent shadow_convex"
-				onClick={()=>openTable()}
-			><FontAwesomeIcon icon={faCarrot} /></Button>
-			<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
-				<FontAwesomeIcon icon={faArrowRotateLeft} />
-			</Button>			
+			<div className="tooltip">
+				<Button 
+					type="button"  
+					className="mybutton round button_transparent shadow_convex"
+					onClick={()=>gameStart()}
+				><FontAwesomeIcon icon={faPlay} /></Button>
+                <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+            </div>
+			<div className="tooltip">
+				<Button 
+					type="button"  
+					className="mybutton round button_transparent shadow_convex"
+					onClick={()=>openTable()}
+				><FontAwesomeIcon icon={faCarrot} /></Button>
+                <span className="tooltiptext">{translate({lang: props.lang, info: "settings"})}</span>
+            </div>
+			<div className="tooltip">
+				<Button 
+					type="button" 
+					className="mybutton round button_transparent shadow_convex"
+					onClick={()=>props.handleHandleExit()} 					
+				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
+                <span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+            </div>	
 		</div>    
     </div>
 }

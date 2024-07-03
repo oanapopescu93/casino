@@ -9,6 +9,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
 import $ from 'jquery'
+import { translate } from '../../../../translations/translate'
 
 function Land(config) {
 	let self = this
@@ -127,7 +128,7 @@ function Rabbit(config){
 	self.h = config.h
 	self.y_original = config.y
 	self.x_starting = config.x
-	self.y_starting = config.y
+	self.y_starting = config.y + 10
 
 	self.frameWidth = 672
 	self.frameHeight = 592
@@ -146,10 +147,7 @@ function Rabbit(config){
 	}
 
 	self.draw_starting = function(ctx, x, y, width, height, r, sAngle, eAngle, counterclockwise, fillStyle, lineWidth, strokeStyle){
-		draw_rect(ctx, 0, self.y_starting-5, width, height, fillStyle, lineWidth, strokeStyle)
-		draw_dot(ctx, 5, self.y_starting+height/2-10, r, sAngle, eAngle, counterclockwise, fillStyle, lineWidth, strokeStyle)
-		let font_obstacle = '10px sans-serif'
-		self.add_text(ctx, self.id, 5, self.y_starting+height/2-6, font_obstacle, strokeStyle, "center")
+		draw_rect(ctx, 0, self.y_starting, width, height, fillStyle, lineWidth, strokeStyle)
 	}
 
 	self.run = function(canvas, ctx, nr, finish_line_x){
@@ -438,8 +436,6 @@ function race_game(props){
     
     let canvas
     let ctx
-	let canvas_width = 900
-	let canvas_height = 800		
 	let font_counter = 'bold 40px sans-serif'
 
 	let landscape = []
@@ -461,16 +457,15 @@ function race_game(props){
 	let finish_line
 	let finish_line_x = 0
 	let race_interval = 800
-	// let race_interval = 20
 	let game_status = false
 		
 	this.ready = function(reason){
 		startGameRace = false //the game immediately begins		
-		self.createCanvas(canvas_width, canvas_height)	
+		self.createCanvas()	
 		self.start(reason)
 	}
 
-	this.createCanvas = function(canvas_width, canvas_height){	
+	this.createCanvas = function(){	
 		canvas = document.getElementById("race_canvas")	
 		ctx = canvas.getContext("2d")
 		
@@ -499,46 +494,27 @@ function race_game(props){
 				//big
 				canvas.width = 900
 				canvas.height = 600
-				draw_road_height = canvas.height/2 - 80
-				rabbit_size = [10, 160, 80, 80, -10]
-				lanscape_config = {
-					y: 250,
-					width: [1, 25, 1, 35],
-					height: [100, 20, 150, 20],
-					sun: [50, 50, 30],
-				}
 			} else if (window.innerWidth < 1400){
 				//biger
 				canvas.width = 1000
-				canvas.height = 800
-				draw_road_height = canvas.height/2
-				rabbit_size = [10, 350, 80, 80, -10]
-				lanscape_config = {
-					y: 500,
-					width: [1, 50, 1, 70],
-					height: [200, 40, 300, 40],
-					sun: [50, 50, 30],
-				}
+				canvas.height = 600
 			} else {
 				//the biggest
 				canvas.width = 1200
-				canvas.height = 800
-				draw_road_height = canvas.height/2
-				rabbit_size = [10, 350, 80, 80, -10]
-				lanscape_config = {
-					y: 500,
-					width: [1, 50, 1, 70],
-					height: [200, 40, 300, 40],
-					sun: [50, 50, 30],
-				}
+				canvas.height = 600
+			}
+			draw_road_height = canvas.height/2 - 100
+			rabbit_size = [10, 160, 80, 80, -10]
+			lanscape_config = {
+				y: 250,
+				width: [1, 25, 1, 35],
+				height: [100, 20, 150, 20],
+				sun: [50, 50, 30],
 			}
 			font_counter = 'bold 40px sans-serif'
 			obstacle_size = [20, 20]
-		}		
-		canvas_width = canvas.width
-		canvas_height = canvas.height		
-		canvas.height = canvas_height
-		finish_line_x = canvas_width
+		}
+		finish_line_x = canvas.width
 	}
 
 	this.start = function(reason){
@@ -712,7 +688,8 @@ function race_game(props){
 		if($('#race_order')){
 			$('#race_order').empty()
 			for(let i in list){
-				$('#race_order').append('<div class="rabbit_box_nr shadow_convex '+list[i].color+'">'+list[i].id+'</div>')
+				let place = parseInt(i) + 1
+				$('#race_order').append('<div class="rabbit_box_nr shadow_convex '+list[i].color+'">'+ place + '</div>')
 			}
 		}
 	}
@@ -989,10 +966,15 @@ function RaceGame(props){
 			<canvas id="race_canvas" className="shadow_convex" />
 		</div>
 		<div className="page_exit">
-		<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
-			<FontAwesomeIcon icon={faArrowRotateLeft} />
-		</Button>
-	</div>
+			<div className="tooltip">
+                <Button 
+                    type="button" 
+                    className="mybutton round button_transparent shadow_convex"
+                    onClick={()=>props.handleHandleExit()} 
+                ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+                <span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+            </div>
+		</div>
 	</>
 }
 

@@ -85,18 +85,21 @@ function RaceTables(props){
         />
         <div className="game_start">
             <div className="tooltip">
-				<Button 
-					type="button"  
-					className="mybutton round button_transparent shadow_convex"
-					onClick={() => getData()}
-				><FontAwesomeIcon icon={faPlay} /></Button>
-				<span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
-			</div>
-            <Button 
-                type="button" 
-                className="mybutton round button_transparent shadow_convex"
-                onClick={()=>props.handleHandleExit()} 
-            ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+                    <Button 
+                        type="button"  
+                        className="mybutton round button_transparent shadow_convex"
+                        onClick={() => getData()}
+                    ><FontAwesomeIcon icon={faPlay} /></Button>
+                    <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                </div>
+            <div className="tooltip">
+                <Button 
+                    type="button" 
+                    className="mybutton round button_transparent shadow_convex"
+                    onClick={()=>props.handleHandleExit()} 
+                ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            </div>
         </div>
     </div>
 }

@@ -42,7 +42,7 @@ function Game(props){
 
     function results(res){
         if(res && res.bet && res.bet>0){ //send results to server only if he bet
-            socket.emit('game_results_send', res)
+            //socket.emit('game_results_send', res)
             let payload = {
                 open: true,
                 template: "game_results",

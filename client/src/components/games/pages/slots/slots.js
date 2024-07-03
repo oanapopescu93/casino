@@ -585,9 +585,14 @@ function Slots(props){
             {translate({lang: props.lang, info: "prizes"})}
         </div> : null}
 		<div className="page_exit">
-			<Button type="button" onClick={()=>props.handleHandleExit()} className="mybutton round button_transparent shadow_convex">
-				<FontAwesomeIcon icon={faArrowRotateLeft} />
-			</Button>
+			<div className="tooltip">
+				<Button 
+					type="button"
+					className="mybutton round button_transparent shadow_convex"
+					onClick={()=>props.handleHandleExit()}
+				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+				<span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+			</div>
 		</div>
     </div>
 }

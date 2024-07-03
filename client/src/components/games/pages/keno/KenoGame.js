@@ -101,26 +101,38 @@ function KenoButtons(props){
     }
 
     return <div className="button_action_group keno_buttons_container">
-        <Button 
-            type="button"  
-            className="mybutton round button_transparent shadow_convex"
-            onClick={()=>gameStart()}
-        ><FontAwesomeIcon icon={faPlay} /></Button>
-        {props.kenoSpotsResult && props.kenoSpotsResult.length > 0 ? null : <Button 
-            type="button"  
-            className="mybutton round button_transparent shadow_convex"
-            onClick={()=>openTable()}
-        ><FontAwesomeIcon icon={faGear} /></Button>}
-        {props.kenoSpotsResult && props.kenoSpotsResult.length > 0 ? null : <Button 
-            type="button"  
-            className="mybutton round button_transparent shadow_convex"
-            onClick={()=>{resetKenoSpots()}}
-        ><FontAwesomeIcon icon={faTrashCan} /></Button>}        
-        <Button 
-            type="button"  
-            className="mybutton round button_transparent shadow_convex"
-            onClick={()=>{handleBack()}}
-        ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+        <div className="tooltip">
+            <Button 
+                type="button"  
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>gameStart()}
+            ><FontAwesomeIcon icon={faPlay} /></Button>
+            <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+        </div>
+        {props.kenoSpotsResult && props.kenoSpotsResult.length > 0 ? null : <div className="tooltip">
+            <Button 
+                type="button"  
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>openTable()}
+            ><FontAwesomeIcon icon={faGear} /></Button>
+            <span className="tooltiptext">{translate({lang: props.lang, info: "settings"})}</span>
+        </div>}
+        {props.kenoSpotsResult && props.kenoSpotsResult.length > 0 ? null : <div className="tooltip">
+            <Button 
+                type="button"  
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>resetKenoSpots()}
+            ><FontAwesomeIcon icon={faTrashCan} /></Button>
+            <span className="tooltiptext">{translate({lang: props.lang, info: "reset"})}</span>
+        </div>}
+        <div className="tooltip">
+            <Button 
+                type="button"  
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>{handleBack()}}
+            ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+            <span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+        </div>
     </div>
 }
 

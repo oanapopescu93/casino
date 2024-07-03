@@ -1484,6 +1484,44 @@ textarea {
   padding: 0 var(--padding_small);
 }
 
+/* TOOLTIP BUTTON */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  opacity: 1!important;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: var(--color);
+  color: var(--bg);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color) transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
 /* GAMES */
 .game_container{
   text-align: center;
@@ -3462,44 +3500,6 @@ textarea {
   text-decoration: underline;
 }
 
-/* TOOLTIP BUTTON */
-.tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  opacity: 1!important;
-}
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: var(--color);
-  color: var(--bg);
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: var(--color) transparent transparent transparent;
-}
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
 /* media */
 @media (max-width: 1600px){
 	.shop_shader{
@@ -3537,6 +3537,7 @@ textarea {
     max-height: 400px;
   }
 
+  /* TOOLTIP */
   .tooltip .tooltiptext{
     opacity: 0!important;
   }

@@ -7,7 +7,7 @@ import { getRoom } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 import $ from "jquery"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faRotate, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import {faPlay, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Dice(props){	
 	let number = props.number
@@ -586,21 +586,30 @@ function Craps(props){
 							<Dice innerRef={dice2} number={2} />
 						</div>
 						<div className="button_action_group">
-							<Button 
-								type="button"
-								className="mybutton round button_transparent shadow_convex"
-								onClick={()=>props.handleGameStart()}
-							><FontAwesomeIcon icon={faRotate} /></Button>
-							<Button 
-								type="button"
-								className="mybutton round button_transparent shadow_convex"
-								onClick={()=>props.handleOpenTable()}
-							><FontAwesomeIcon icon={faCarrot} /></Button>
-							<Button 
-								type="button" 
-								className="mybutton round button_transparent shadow_convex"
-								onClick={()=>props.handleHandleExit()}										
-							><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+							<div className="tooltip">
+								<Button 
+									type="button"
+									className="mybutton round button_transparent shadow_convex"
+									onClick={()=>props.handleGameStart()}
+								><FontAwesomeIcon icon={faPlay} /></Button>
+								<span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+							</div>
+							<div className="tooltip">
+								<Button 
+									type="button"
+									className="mybutton round button_transparent shadow_convex"
+									onClick={()=>props.handleOpenTable()}
+								><FontAwesomeIcon icon={faCarrot} /></Button>
+								<span className="tooltiptext">{translate({lang: props.lang, info: "settings"})}</span>
+							</div>
+							<div className="tooltip">
+								<Button 
+									type="button"
+									className="mybutton round button_transparent shadow_convex"
+									onClick={()=>props.handleHandleExit()}
+								><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+								<span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+							</div>
 						</div>
 					</Col>
 					<Col lg={6} className="craps_board_container">

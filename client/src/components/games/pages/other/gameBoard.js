@@ -81,10 +81,15 @@ function GameBoard(props){
                                 <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                         </Col>
                         <Col xs={4}>
-                            <div  className="button_box">
-                                <Button type="button" onClick={()=>handleClick('start')} className="mybutton button_fullcolor shadow_convex">
-                                    {translate({lang: lang, info: "start"})}
-                                </Button>
+                            <div className="button_box button_box_start">
+                                <div className="tooltip">
+                                    <Button 
+                                        type="button"
+                                        className="mybutton button_fullcolor shadow_convex"
+                                        onClick={()=>handleClick('start')}
+                                    ><FontAwesomeIcon icon={faPlay} /></Button>
+                                    <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+                                </div>
                             </div>
                         </Col>
                     </Row>
