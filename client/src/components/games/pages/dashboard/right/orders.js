@@ -1,8 +1,23 @@
 import React from 'react'
 import { translate } from '../../../../../translations/translate'
+import { useDispatch } from 'react-redux'
+import { changePopup } from '../../../../../reducers/popup'
 
 function Orders(props){
     const {lang, order} = props
+    let dispatch = useDispatch()
+
+    function handleClickOrder(order){
+        let payload = {
+            open: true,
+            template: "orderDetails",
+            title: translate({lang: props.lang, info: "order"}) + ' #' + order.orderId,
+            data: order,
+            size: 'lg',
+        }
+        dispatch(changePopup(payload))
+    }
+
     return <div className="order box">								
         {order && order.length>0 ? <>
             <div className="order_header">
@@ -13,21 +28,26 @@ function Orders(props){
                     <thead>
                         <tr>
                             <th></th>
-                            <th>{translate({lang: lang, info: "chargeId"})}</th>
+                            <th>{translate({lang: lang, info: "payment_id"})}</th>
                             <th>{translate({lang: lang, info: "order_description"})}</th>
                             <th>{translate({lang: lang, info: "price"})}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {order.map((item, i) => {
-                            return <tr key={i} className="order_item">
-                                <td className="order_item_element order_item_no">{i}</td>
-                                <td className="order_item_element order_item_chargeId">{item.chargeId}</td>
-                                <td className="order_item_element order_item_description">
-                                    <p>{translate({lang: lang, info: "method"})}: {item.type}</p>                                    
-                                    {item.description ? <p>{item.description}</p> : null}
+                            return <tr key={i} className="order_item" onClick={()=>handleClickOrder(item)}>
+                                <td className="order_item_element order_item_no">{i+1}</td>
+                                <td className="order_item_element order_item_id">
+                                    {item.payment_id ? <span>{item.payment_id}</span> : <span>-</span>}
                                 </td>
-                                <td className="order_item_element order_item_amount">${item.amount}</td>
+                                <td className="order_item_element order_item_description">                                 
+                                    {item.description ? <span>{item.description}</span> : <span>-</span>}
+                                </td>
+                                <td className="order_item_element order_item_amount">
+                                    {item.amount ? <span>
+                                        {item.amount} {item.currency}
+                                    </span> : <span>-</span>}
+                                </td>
                             </tr>
                         })}
                     </tbody>

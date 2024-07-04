@@ -12,8 +12,8 @@ import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
 import PaymentDetails from './paymentDetails'
 import { updatePaymentDetails } from '../../../reducers/paymentDetails'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import { orderAdd } from '../../../reducers/order'
 
 function Payment(props){
@@ -24,7 +24,8 @@ function Payment(props){
 
     let payment_details = useSelector(state => state.paymentDetails)
     let cart = useSelector(state => state.cart.cart) 
-    let promo = useSelector(state => state.cart.promo) 
+    let promo = useSelector(state => state.cart.promo)
+    let user = useSelector(state => state.auth.user)
 
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(price_per_carrot)
@@ -32,6 +33,7 @@ function Payment(props){
     const [year, setYear] = useState(payment_details.year !== "" ? payment_details.year : "")
     const [country, setCountry] = useState(payment_details.country !== "" ? payment_details.country : "")
     const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
+    const [phone, setPhone] = useState(payment_details.phone !== "" ? payment_details.phone : "")
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
     const [paymentDetails, setPaymentDetails] = useState(null)
@@ -312,20 +314,32 @@ function Payment(props){
                         switch(gateway){
                             case "stripe":
                                 if(data.payload && data.result === "success"){
+                                    let details = {
+                                        method: "stripe",
+                                        user_uid: props.user.uuid,
+                                        payment_id: data.payload.id,
+                                        customer_id: data.payload.customer,
+                                        order_date: data.payload.created * 1000,
+                                        amount: parseFloat((data.payload.amount / 100).toFixed(2)),                                        
+                                        payment_method: data.payload.payment_details.payment_type,
+                                        status: data.payload.status,
+                                        country: data.payload.payment_details.country,
+                                        city: data.payload.payment_details.city,
+                                        email: data.payload.payment_details.email,
+                                        phone: data.payload.payment_details.phone,
+                                        description: data.payload.description,
+                                        currency: data.payload.currency,
+                                        items: data.payload.metadata                  
+                                    }
                                     let payload = {
                                         open: true,
                                         template: "paymentSuccess",
                                         title: translate({lang: props.lang, info: "payment_success"}),
-                                        data: {
-                                            id: data.payload.id,
-                                            amount: (data.payload.amount / 100).toFixed(2),
-                                            created: data.payload.created,
-                                            gateway
-                                        },
+                                        data: details,
                                         size: 'lg',
                                     }
                                     dispatch(changePopup(payload))
-                                    dispatch(orderAdd(data))
+                                    dispatch(orderAdd(details))
                                 } else {
                                     showError(data)
                                 }

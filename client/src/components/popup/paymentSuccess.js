@@ -5,13 +5,17 @@ import { translate } from '../../translations/translate'
 
 function PaymentSuccess(props) {
     const { lang, data } = props
-    const {id, amount, created} = data
+    const {payment_id, amount, order_date} = data
     let date_format = useSelector(state => state.settings.date)
-    let date = formatDate(created * 1000, date_format)
+    let date = formatDate(order_date, date_format)
     return <div className="paymentSuccess">
         <p>{translate({lang: lang, info: 'payment_success_text'})}</p>
-        <p>{translate({lang: lang, info: 'amount'})}: ${amount}</p>
-        <h6>{translate({lang: lang, info: 'payment_id'})}: {id}, {date}</h6>
+        <h3>{translate({lang: lang, info: 'amount'})}: ${amount}</h3>
+        <h6>
+            <span>{translate({lang: lang, info: 'payment'})}:</span>
+            <span>{payment_id}</span>
+            <span>({date})</span>
+        </h6>
     </div>
 }
 export default PaymentSuccess

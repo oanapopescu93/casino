@@ -10,6 +10,7 @@
   --darkgreen: darkgreen;
   --green_transparent_3: rgba(0, 128, 0, 0.3);
   --red_transparent_3 : rgba(255, 0, 0, 0.3);
+  --orange: orange;
 
   --padding: 10px;
   --padding_small: 5px;
@@ -108,29 +109,29 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p, address {
 }
 h1 {
 	font-size: 50px;
-	line-height: 50px;
+	line-height: 54px;
   font-family: 'Grenadier';
 }
 h2 {
 	font-size: 30px;
-	line-height: 30px;
+	line-height: 34px;
   font-family: 'Grenadier';
 }
 h3 {
 	font-size: 20px;
-	line-height: 20px;
+	line-height: 24px;
 }
 h4 {
 	font-size: 16px;
-	line-height: 16px;
+	line-height: 18px;
 }
 h5 {
 	font-size: 14px;
-	line-height: 14px;
+	line-height: 16px;
 }
 h6 {
   font-size: 12px;
-  line-height: 12px;
+  line-height: 14px;
 }
 
 ul{
@@ -645,6 +646,12 @@ textarea {
 /* POPUP */
 .mymodal{
   z-index: 9999;
+}
+.modal-dialog{
+  padding: 0px var(--padding);
+}
+.modal-body{
+  padding: var(--padding_big);
 }
 .modal-content{
   background-color: var(--color);
@@ -2142,15 +2149,22 @@ textarea {
   padding: var(--padding);
   margin-top: var(--padding);
 }
+#dashboard_right_cart, #dashboard_right_orders{
+  margin-top: 0px;
+  border-radius: 0px 0px var(--radius) var(--radius);
+}
 .dashboard_left_buttons .mybutton{
   margin-top: var(--padding);
+}
+#dashboard_left .mybutton{
+  height: 25px;
 }
 .dashboard_user_info{
   text-align: center;
   margin-top: var(--padding);
 }
 .dashboard_box .cart_list, .dashboard_box .order_list{
-  max-height: 205px;
+  max-height: 212px;
   overflow: auto;
   border-bottom: solid 1px var(--color);
 }
@@ -2183,17 +2197,9 @@ textarea {
   margin-bottom: var(--padding_small);
 }
 .dashboard_right_buttons{
-  margin-bottom: var(--padding);
-  border-bottom: solid 1px var(--color);
-  cursor: pointer;
   position: relative;
   z-index: 1;
-}
-.dashboard_right_buttons{
-  padding-top: var(--padding);
-  margin-bottom: var(--padding);
-  border-bottom: solid 1px var(--color);
-  cursor: pointer;
+  padding-top: var(--padding);  
   text-align: left;
 }
 .dashboard_right_button{
@@ -2205,9 +2211,10 @@ textarea {
   border: solid 1px var(--color);
   border-bottom: none;
   border-radius: var(--radius) var(--radius) 0px 0px;
-  width: 100px;
+  width: 130px;
   margin-right: var(--padding_small);
   text-align: center;
+  cursor: pointer;
 }
 .dashboard_right_button:hover, .dashboard_right_button.active{
   background-color: var(--color);
@@ -2225,6 +2232,7 @@ textarea {
   text-align: center;
   padding: var(--padding_small) var(--padding);
   border-radius: var(--radius) 0px 0px 0px;
+  cursor: pointer;
 }
 .dashboard_right_button svg, .dashboard_right_market svg{
   margin-right: 5px;
@@ -2354,14 +2362,62 @@ textarea {
 .order_list th:last-child {
   border-right: 1px solid var(--color);
 }
-.order_item_chargeId {
+.order_item{
+  cursor: pointer;
+}
+.order_item_id {
   width: 30%;
 }
-.order_item_method {
+.order_item_description {
   width: 35%;
 }
-.order_item_amount {
+.order_item_price {
   width: 15%;
+}
+
+/* ORDER DETAILS */
+.orderDetails_popup{
+  text-align: left;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.orderDetails_popup .value{
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+.orderDetails_order_info, .orderDetails_customer_info{
+  margin-bottom: var(--padding);
+}
+.orderDetails_order_info h3, .orderDetails_customer_info h3, .orderDetails_order_detail_items h3{
+  padding-bottom: var(--padding_small);
+  margin-bottom: var(--padding_small);
+  border-bottom: solid 1px var(--bg);
+}
+.orderDetails_popup .label, .orderDetails_footer .label{
+  margin-right: var(--padding_small);
+}
+.order_detail_status, .order_detail_status.default{
+  color: var(--bg);
+}
+.order_detail_status.green{
+  color: var(--green);
+}
+.order_detail_status.orange{
+  color: var(--orange);
+}
+.order_detail_status.red{
+  color: var(--red);
+}
+.orderDetails_footer{
+  text-align: right;
+  margin-top: var(--padding);
+  padding-top: var(--padding);
+  border-top: solid 1px var(--bg);
+}
+.orderDetails_footer h3{
+  font-weight: bold;
 }
 
 /* Profile pics */
@@ -2645,6 +2701,12 @@ textarea {
 .payment_details_body, .payment_details_total_price{
   padding: var(--padding_small);
   margin-bottom: var(--padding_small);
+}
+.paymentSuccess p, .paymentSuccess h3{
+  margin-bottom: var(--padding_small);
+}
+.paymentSuccess h6 span{
+  margin-right: var(--padding_small);
 }
 
 /* ORDER */
@@ -3519,6 +3581,7 @@ textarea {
     top: 150px;
   }
 }
+
 @media (max-width: 1024px){
 	.shop_shader{
 		height:60px;
@@ -3544,6 +3607,9 @@ textarea {
 }
 
 @media (max-width: 767px) {
+  .modal-body{
+    padding: var(--padding);
+  }
   /* KENO */
   .keno_spot_box{
     width: 40px;
@@ -3565,23 +3631,23 @@ textarea {
   }
 	h1 {
 		font-size: 30px;
-		line-height: 30px;
+		line-height: 32px;
 	}
 	h2 {
 		font-size: 18px;
-		line-height: 18px;
+		line-height: 20px;
 	}
 	h3 {
 		font-size: 16px;
-		line-height: 16px;
+		line-height: 18px;
 	}
 	h4 {
 		font-size: 14px;
-		line-height: 14px;
+		line-height: 16px;
 	}	
 	h6 {
 		font-size: 10px;
-		line-height: 10px;
+		line-height: 12px;
 	}
   .footer_list li{
     width: 100%;
@@ -3686,7 +3752,7 @@ textarea {
 
   /* GAME */
   .content_wrap{
-    padding: var(--padding) 40px;
+    padding: var(--padding) 45px;
   }
   .game_loading_icon{
     width: 150px;
@@ -3696,10 +3762,19 @@ textarea {
   .cart_list_items{
     max-height: 200px;
   }
+  .cart .cart_button span{
+    display: none;
+  }
+  .dashboard_box .cart_list{
+    max-height: 104px;
+  }  
 
   /* ORDER */
   .order_details{
     min-height: auto;
+  } 
+  .dashboard_box .order_list{
+    max-height: 177px;
   } 
 
   /* CRAPS */
@@ -3855,8 +3930,20 @@ textarea {
     margin-bottom: var(--padding_small);
   }
 
+  /* MARKET */
   .shop_shader {
     height: 30px;
+  }
+
+  /* CART */
+  .dashboard_box .cart_image{
+    display: none;
+  }
+  .dashboard_box .cart_info{
+    width: 70%;
+  }
+  .dashboard_box .cart_buttons{
+    width: 30%;
   }
 }
 @media (max-width:360px) {
@@ -3873,13 +3960,7 @@ textarea {
     top: 85px;
   }  
 }
-@media (max-width:340px) {
-  /* KENO */
-
-  .content_wrap {
-    padding: var(--padding) 30px;
-  }
-}
+@media (max-width:340px) {}
 
 @media (max-width: 960px) and (orientation: landscape){}
 @media (max-width: 768px) and (orientation: landscape){

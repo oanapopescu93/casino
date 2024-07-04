@@ -65,7 +65,23 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
                                     paymentIntent.customer = customer.id
                                     paymentIntent.payment_method = paymentMethod.id
                                     paymentIntents(paymentIntent).then((res4)=>{
-                                        res.json({ type: "stripe", result: "success", payload: res4 })
+                                        let payload = res4
+                                        payload.payment_details = {
+                                            type: 'stripe',
+                                            payment_type: card.type,
+                                            card: {
+                                                last4: res2.card.last4,
+                                                brand: res2.card.brand,
+                                                exp_month: res2.card.exp_month,
+                                                exp_year: res2.card.exp_year
+                                            },
+                                            name: name,
+                                            email: email,
+                                            phone: phone,
+                                            country: country,
+                                            city: city
+                                        }
+                                        res.json({ type: "stripe", result: "success", payload })
                                     }).catch((err)=>{
                                         res.json({ type: "stripe", result: "error", payload: 'error_paymentIntent', details: err.message });
                                     })

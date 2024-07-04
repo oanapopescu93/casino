@@ -20,6 +20,8 @@ function User(props){
         switch(choice){
 			case "dashboard":
 			case "market":
+                dispatch(changePage('Salon'))
+                dispatch(changeGame(null))
                 dispatch(changeGamePage(choice))
 				break
             case "salon":
@@ -37,6 +39,7 @@ function User(props){
                     open: true,
                     template: "settings",
                     title: "settings",
+                    size: "sm"
                 }
                 dispatch(changePopup(payload))
 				break

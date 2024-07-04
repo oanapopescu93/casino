@@ -10,37 +10,7 @@ const orderSlice = createSlice({
     initialState,
     reducers: {
         orderAdd: (state, { payload }) => {
-            let order = null
-            switch(payload.type){
-                case "stripe":
-                    order = {
-                        chargeId: payload.payload.id, 
-                        type: payload.type, 
-                        timestamp: payload.payload.created * 1000, 
-                        description: payload.payload.description,
-                        amount: (payload.payload.amount / 100).toFixed(2)
-                    }
-                    break
-                case "paypal":
-                    order = {
-                        chargeId: payload.payload.id, 
-                        type: payload.type, 
-                        timestamp: payload.payload.created * 1000, 
-                        description: payload.payload.description,
-                        amount: (payload.payload.amount / 100).toFixed(2)
-                    }
-                    break
-                case "crypto":
-                    order = {
-                        chargeId: payload.payload.id, 
-                        type: payload.type, 
-                        timestamp: payload.payload.created * 1000, 
-                        description: payload.payload.description,
-                        amount: (payload.payload.amount / 100).toFixed(2)
-                    }
-                    break
-                default:
-            }
+            let order = payload
             if(order){
                 state.order.push({ ...order, orderId: state.order.length })
                 setCookie("casino_order", JSON.stringify(state.order))

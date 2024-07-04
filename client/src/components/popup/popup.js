@@ -22,6 +22,7 @@ import WhackARabbit from "./whackARabbit"
 import SlotsPrizeTable from "./slotsPrizeTable"
 import PaymentSuccess from "./paymentSuccess"
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
+import OrderDetails from "./orderDetails"
 
 function Popup(props){
     const {lang, date, currency, socket, home} = props
@@ -134,6 +135,8 @@ function Popup(props){
                             return <WhackARabbit lang={lang} handleClick={()=>handleWhackARabbit()} />
                         case "paymentSuccess":
                             return <PaymentSuccess lang={lang} data={data} />
+                        case "orderDetails":
+                            return <OrderDetails lang={lang} data={data} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default lang={lang} text={data} /> : null}</>

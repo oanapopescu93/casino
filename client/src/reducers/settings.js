@@ -3,7 +3,7 @@ import { getCookie, setCookie } from '../utils/utils'
 
 const initialState = {
     lang: getCookie("casino_language") !== "" ? getCookie("casino_language") : "ENG",
-    currency: getCookie("casino_currency") !== "" ? getCookie("casino_currency") : "carrot",
+    currency: getCookie("casino_currency") !== "" ? getCookie("casino_currency") : "USD",
     date: getCookie("casino_date") !== "" ? getCookie("casino_date") : "d.m.Y H:i",
     cookies: getCookie("casino_cookies") !== "" ? getCookie("casino_cookies") : "0",
 }
