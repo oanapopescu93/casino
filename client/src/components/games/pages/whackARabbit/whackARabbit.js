@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch} from 'react-redux'
 import $ from 'jquery'
-import { getMousePos, get_what_a_rabbit_img, isInside } from '../../../../utils/games'
+import { get_whack_a_rabbit_img, isInside } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 import { changeGame, changeGamePage, changePage } from '../../../../reducers/page'
 
@@ -17,6 +17,7 @@ function Target(config){
 	self.frameWidth = 250
 	self.frameHeight = 250
     self.active = config.active
+    self.killed = false
 
 	self.draw = function(ctx){
         if(self.active){
@@ -25,88 +26,88 @@ function Target(config){
             ctx.drawImage(self.hole, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
         }
 	}
-
     self.change_active = function(status){
 		self.active = status
+	}
+    self.change_killed = function(status){
+		self.killed = status
 	}
 }
 
 function whack_game(props){
-    let self = this	
+    let self = this
+    this.images = []
+
+    this.secs = 10
+    let duration = 1000
+    let lastSpawn = Date.now()  
+    let spawnRate = Math.round(Math.random() * (2000 - 1000) + 1000)
+
     let canvas
     let canvas_hammer
     let ctx
     let ctx_hammer
-	let canvas_width = 900
-	let canvas_height = 800
+
+    let items = props.items
+    let target_size = []
     let target_array = []
-    let target_array_killed = []
-    let spawnRate=1500
-    let lastSpawn=-1
-    let target_size = [20, 20]
-    let items = get_what_a_rabbit_img()
-    this.images = []
-    let reason = ""
+
     let dispatch = props.dispatch
 
-    this.ready = function(r){
-        reason = r
-        startGameWhack = false //the game immediately begins  
-        canvas = document.getElementById("whack_canvas")
-        canvas_hammer = document.getElementById("whack_canvas_hammer")
-        if(canvas && canvas_hammer && !startGameWhack){
-            self.createCanvas(canvas_width, canvas_height)
-            self.getImage(reason)
+    this.ready = function(reason){
+        if(reason !== "resize"){            
+            canvas = document.getElementById("whack_canvas")
+            canvas_hammer = document.getElementById("whack_canvas_hammer")
+            self.getImage().then((res)=>{
+                self.images = res
+            })
+        }
+        if(canvas && canvas_hammer){
+            self.createCanvas()
+            self.start()
+            self.drawHammer()
+            self.handleClick()
         }
     }
 
-    this.createCanvas = function(canvas_width, canvas_height){	
+    this.createCanvas = function(){	
 		ctx = canvas.getContext("2d")
         ctx_hammer = canvas_hammer.getContext("2d")
 		
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape
-				canvas.width = canvas_hammer.width = 260
+				canvas.width = canvas_hammer.width = 400
 				canvas.height = canvas_hammer.height = 300
 			} else {
 				//small portrait
-				canvas.width = canvas_hammer.width = 290
+				canvas.width = canvas_hammer.width = 280
 				canvas.height = canvas_hammer.height = 300
 			}
-            target_size = [50, 50]
+            target_size = [70, 70]
 		} else {
 			//big
 			canvas.width = canvas_hammer.width = 900
 			canvas.height = canvas_hammer.height = 480
             target_size = [100, 100]
 		}
-        canvas_width = canvas.width
-		canvas_height = canvas.height	
-		canvas.height = canvas_hammer.height = canvas_height
-        if($('.whack_a_rabbit_container')){
-            $('.whack_a_rabbit_container').height(canvas_height)
+        if(props.whack_a_rabbit_container_ref && props.whack_a_rabbit_container_ref.current){
+            let height = canvas.height + 10
+            props.whack_a_rabbit_container_ref.current.style.height = height + 'px'
         }
 	}
-
-    this.getImage = function(reason){
-		if(reason !== "resize"){
-			let promises = []
-			for(let i in items){				
-				promises.push(self.preaload_images(items[i]))
-			}
-			Promise.all(promises).then(function(result){
-				self.images = result
-				self.start()
-				self.handleClick()
-			})
-		} else {
-			self.start()
-			self.handleClick()
-		}
+    this.getImage = function(){
+        return new Promise(function(resolve, reject){
+            let promises = []
+            for(let i in items){				
+                promises.push(self.preaload_images(items[i]))
+            }
+            Promise.all(promises).then(function(result){
+                resolve(result)
+            })
+		})
 	}
-
-	this.preaload_images = function(item){
+    this.preaload_images = function(item){
 		return new Promise(function(resolve, reject){
 			let image = new Image()
 			image.id = item.id
@@ -116,19 +117,34 @@ function whack_game(props){
 			}, false)
 		})
 	}
-
-	this.start = function(){			
-		ctx.clearRect(0,0, canvas_width, canvas_height)
-        self.animation()
-	}
-
-    this.drawAll = function(){
-        self.createTarget()
-        self.drawBackground()
-        self.drawTarget()
+    this.drawHammer = function(){
+        if(ctx_hammer){
+            canvas_hammer.addEventListener("mousemove", function(event) {
+                const rect = canvas_hammer.getBoundingClientRect()
+                const mouseX = event.clientX - rect.left
+                const mouseY = event.clientY - rect.top
+                ctx_hammer.clearRect(0, 0, canvas_hammer.width, canvas_hammer.height)
+                self.drawHammerAtPosition(mouseX, mouseY)
+            })
+        }
+    }
+    this.drawHammerAtPosition = function(x, y){        
+        let hammer_x = x - target_size[0]/2
+        let hammer_y = y - target_size[1]/2
+        ctx_hammer.drawImage(self.images[4], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
     }
 
-    this.animation = function(){ 
+    this.getTimer = function(secs){
+        self.secs = secs
+    }
+    this.start = function(){
+		ctx.clearRect(0,0, canvas.width, canvas.height)
+        self.animation(duration)
+	}
+    this.animation = function(time){ 
+		let spin_nr = 0
+		let spin_time = time        
+
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame	||
 			window.webkitRequestAnimationFrame		||
@@ -139,14 +155,24 @@ function whack_game(props){
 	    })()
 	  
 	    function run() {
-			if(!startGameWhack){
-                let time=Date.now()
-                if(time>(lastSpawn+spawnRate)){
-                    lastSpawn=time
-                    spawnRate = Math.round(Math.random() * (2000 - 1000) + 1000)
-                    self.drawAll()
-                }
-				window.requestAnimationFrame(run)
+			if(ctx){
+				let stop = false
+				if (spin_nr > spin_time) {
+					stop = true
+				} else {
+					spin_nr++					
+					stop = false
+                    if(self.secs === 0){
+                        stop = true
+                    }
+				}
+                self.play(stop)		
+            
+				if(!stop){
+					window.requestAnimationFrame(run)
+				} else {
+					window.cancelAnimationFrame(run)
+				}
 			} else {
                 window.cancelAnimationFrame(run)
             }
@@ -154,7 +180,24 @@ function whack_game(props){
 
 	  	run()
 	}
-
+    this.play = function(stop){
+        if(!stop){
+            let currentTime = Date.now()
+            if (currentTime > (lastSpawn + spawnRate)) {
+                lastSpawn = currentTime
+                spawnRate = Math.round(Math.random() * (2000 - 1000) + 1000)
+                self.drawAll()
+            }
+        } else {
+            self.win_lose() //the game ended
+        }
+        
+    }
+    this.drawAll = function(){
+        ctx.clearRect(0,0, canvas.width, canvas.height)
+		self.createTarget()
+        self.drawTarget()
+	}
     this.createTarget = function(){
         let x = Math.round(Math.random() * (canvas.width - 2*target_size[0]) + target_size[0])
         let y = Math.round(Math.random() * (canvas.height - 2*target_size[1]) + target_size[1])
@@ -171,113 +214,105 @@ function whack_game(props){
         })
         target_array.push(target)
 	}
-
-    this.drawBackground = function(){
-		ctx.clearRect(0,0, canvas_width, canvas_height)
-	}
-
     this.drawTarget = function(){
-        for(let i in target_array){
+		for(let i in target_array){
             target_array[i].change_active(false)
-            if(parseInt(i) === target_array.length-1){
-                target_array[i].change_active(true)
+            if(parseInt(i) === target_array.length-1){ //meaning it's the last rabbit to spawn
+                target_array[i].change_active(true) //it will be shown (the rest will only show a hole)
             }
-
             target_array[i].draw(ctx)
         }
 	}
 
     this.handleClick = function(){
-        if($('#whack_canvas_hammer')){
-            $('#whack_canvas_hammer').off('click').on('click', function(event) {
-                let mousePos = getMousePos(canvas_hammer, event)
-                self.canvas_click(mousePos)
+		if(ctx_hammer){
+            canvas_hammer.addEventListener("click", function(event) {
+                const rect = canvas_hammer.getBoundingClientRect()
+                self.canvas_click({
+                    x: event.clientX - rect.left,
+                    y: event.clientY - rect.top
+                })
             })
-        }	
-    }
-
-    this.canvas_click = function(mouse){ 
+        }
+	}
+    this.canvas_click = function(mouse){
         for(let i in target_array){
             let obj = {x: target_array[i].x, y: target_array[i].y, width: target_array[i].w, height: target_array[i].h}
-			if(isInside(mouse, obj) && target_array[i].active){
-                target_array_killed.push(target_array[i])
-                self.hammer(target_array[i])
+			if(isInside(mouse, obj) && target_array[i].active && !target_array[i].killed){
+                target_array[i].change_killed(true)
+                self.hammerAnimation(mouse)
             }
         }
     }
-
-    this.hammer = function(obj){
-        hammer01(obj).then(function() {
-            ctx_hammer.clearRect(0,0, canvas_width, canvas_height)
-			hammer02(obj).then(function() {
-                ctx_hammer.clearRect(0,0, canvas_width, canvas_height)
-				hammer01(obj).then(function() {
-                    ctx_hammer.clearRect(0,0, canvas_width, canvas_height)
+    this.hammerAnimation = function(obj){
+        hammerUp(obj).then(function() {
+            ctx_hammer.clearRect(0, 0, canvas_hammer.width, canvas_hammer.height)
+			hammerDown(obj).then(function() {
+                ctx_hammer.clearRect(0, 0, canvas_hammer.width, canvas_hammer.height)
+				hammerUp(obj).then(function() {
+                    ctx_hammer.clearRect(0, 0, canvas_hammer.width, canvas_hammer.height)
                 })
 			})
 		})
     }
-
-    function hammer01(obj){
+    function hammerUp(obj){
         return new Promise(function(resolve, reject){
-            ctx_hammer.drawImage(self.images[4], 0, 0, 260, 260, obj.x, obj.y, obj.w, obj.h)
+            let hammer_x = obj.x - target_size[0]/2
+            let hammer_y = obj.y - target_size[1]/2
+            ctx_hammer.drawImage(self.images[4], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
             setTimeout(function(){
                 resolve(true)					
             }, 100)
         })
-    }
-    
-    function hammer02(obj){
+    }    
+    function hammerDown(obj){
         return new Promise(function(resolve, reject){
-            ctx_hammer.drawImage(self.images[5], 0, 0, 260, 260, obj.x, obj.y, obj.w, obj.h)
+            let hammer_x = obj.x - target_size[0]/2
+            let hammer_y = obj.y - target_size[1]/2
+            ctx_hammer.drawImage(self.images[5], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
             setTimeout(function(){
                 resolve(true)
             }, 100)
         })
     }
 
-    this.leave = function(){
-		startGameWhack = true
-        target_array = []
-        target_array_killed = []
-	}
-
-    this.end = function(){
-        startGameWhack = true
-        ctx.clearRect(0,0, canvas_width, canvas_height)
-        self.win_lose()
-    }
-
     this.win_lose = function(){
-        let game = null
-		if(props.page && props.page.game){
-			game = props.page.game
-		}
-        let money = props.user.money ? decryptData(props.user.money) : 0 
+        const target_array_killed = target_array.filter(item => item.killed).length
+        if(target_array_killed > 0){
+            let game = null
+            if(props.page && props.page.game){
+                game = props.page.game
+            }
+            let money = props.user.money ? decryptData(props.user.money) : 0 
 
-        let whack_payload = {
-			uuid: props.user.uuid,
-			game: game,
-			money: money + target_array_killed.length,
-			status: 'win',
-			bet: target_array_killed.length
-		}
+            let whack_payload = {
+                uuid: props.user.uuid,
+                game: game,
+                money: money + target_array_killed,
+                status: 'win',
+                bet: target_array_killed
+            }
 
-		if(typeof props.results === "function"){
-            props.results(whack_payload)
+            if(typeof props.results === "function"){
+                props.results(whack_payload)
+            }
+
+            dispatch(changePage('Salon'))
+            dispatch(changeGame(null))
+            dispatch(changeGamePage(null))
         }
-
-        dispatch(changePage('Salon'))
-        dispatch(changeGame(null))
-        dispatch(changeGamePage(null))
+    }
+    this.leave = function(){ // in this game if you leave, you don't lose anything
+        target_array = []
     }
 }
 
-var startGameWhack = true
-
 function WhackARabbit(props){  
     let dispatch = useDispatch()
-    let options = {...props, dispatch}
+    let whack_a_rabbit_container_ref = useRef(null)
+    let items = get_whack_a_rabbit_img()
+
+    let options = {...props, dispatch, whack_a_rabbit_container_ref, items}
     let my_whack = new whack_game(options)
     let limit = 10
     const [time, setTime] = useState(limit)
@@ -297,10 +332,13 @@ function WhackARabbit(props){
                 text = "0"+text
             }
             setTime(text)
+            if(my_whack){
+                my_whack.getTimer(sec)
+            }            
             if(sec <= 0){
                 clearInterval(timer)
                 if(my_whack){
-                    my_whack.end()
+                    my_whack.win_lose()
                 }
             }
         }, 1000)
@@ -325,7 +363,7 @@ function WhackARabbit(props){
 
     return <>
         <p id="whack_a_rabbit_timer">00:{time}</p>
-        <div className="whack_a_rabbit_container">
+        <div className="whack_a_rabbit_container" ref={whack_a_rabbit_container_ref}>
             <canvas id="whack_canvas" className="shadow_concav" />
             <canvas id="whack_canvas_hammer" />
         </div>

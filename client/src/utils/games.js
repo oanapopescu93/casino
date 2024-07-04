@@ -266,13 +266,12 @@ export const get_craps_bets = ()=>{
 	]
 }
 
-export const get_what_a_rabbit_img = ()=>{
+export const get_whack_a_rabbit_img = ()=>{
 	return [
 	  	{id: 0, src: whack_a_rabbit00},
 	  	{id: 1, src: whack_a_rabbit01},
 		{id: 2, src: whack_a_rabbit02},
 		{id: 3, src: whack_a_rabbit03},
-
 		{id: 4, src: hammer01},
 		{id: 5, src: hammer02},
 	]
