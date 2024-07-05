@@ -35,7 +35,7 @@ function Picture(props){
                     <FontAwesomeIcon icon={faUser}/>
                 </div>
             }	
-        })()}
+        })()}        
     </div>
 }
 
@@ -90,21 +90,23 @@ function DashboardLeft(props){
         <Row>
             <Col sm={12} md={4} lg={12} className="dashboard_user_pic">
                 <Picture profiles={profiles} pic_id={picId} choice={(e)=>handleChoice(e)} />
+                <div className="profile_pic_name shadow_convex">
+                    <span>{name}</span>
+                </div>
             </Col>
             <Col sm={12} md={8} lg={12} className="dashboard_user_info">
                 <Row>
                     <Col sm={12}>
-                        <div className="dashboard_user_info_left">
-                            <p><b>{translate({lang: lang, info: "user"})}: </b><span>{name}</span></p>
+                        <div className="dashboard_user_info_left">                            
                             <p>
                                 <b>{translate({lang: lang, info: "animal"})}: </b>
                                 {animal && animal[0] ? <span>{animal[0]["name_" + props.lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
                             </p>
                             <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>                            
                         </div>
-                        <div className="dashboard_user_info_right">
-                        <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
-                        <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
+                        <div className="dashboard_user_info_right">                            
+                            <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
+                            <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
                         </div>                                               
                     </Col>
                     <Col sm={12}>

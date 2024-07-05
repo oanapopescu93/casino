@@ -3,6 +3,8 @@ import { translate } from '../../../../../translations/translate'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../../reducers/popup'
 import { convertCurrency } from '../../../../../utils/utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleInfo, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
 
 function Orders(props){
     const {lang, order, currency, exchange_rates} = props
@@ -28,24 +30,24 @@ function Orders(props){
                 <table>
                     <thead>
                         <tr>
-                            <th>{translate({lang: lang, info: "id"})}</th>
-                            <th>{translate({lang: lang, info: "payment_id"})}</th>
-                            <th>{translate({lang: lang, info: "order_description"})}</th>
-                            <th>{translate({lang: lang, info: "price"})}</th>
+                            <th className="order_item_row order_item_no">{translate({lang: lang, info: "id"})}</th>
+                            <th className="order_item_row order_item_description">{translate({lang: lang, info: "order_description"})}</th>
+                            <th className="order_item_row order_item_amount">{translate({lang: lang, info: "price"})}</th>
+                            <th className="order_item_row order_item_buttons"><FontAwesomeIcon icon={faCircleInfo} /></th>
                         </tr>
                     </thead>
                     <tbody>
                         {order.map((item, i) => {
                             let price = convertCurrency(item.amount, currency, exchange_rates) + " " + currency                            
-                            return <tr key={i} className="order_item" onClick={()=>handleClickOrder(item)}>
-                                <td className="order_item_element order_item_no">#{i+1}</td>
-                                <td className="order_item_element order_item_id">
-                                    {item.payment_id ? <span>{item.payment_id}</span> : <span>-</span>}
-                                </td>
+                            return <tr key={i} className="order_item">
+                                <td className="order_item_element order_item_no">#{i+1}</td>                                
                                 <td className="order_item_element order_item_description">                                 
                                     {item.description ? <span>{item.description}</span> : <span>-</span>}
                                 </td>
                                 <td className="order_item_element order_item_amount"><span>{price}</span></td>
+                                <td className="order_item_element order_item_buttons" onClick={()=>handleClickOrder(item)}>
+                                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                                </td>
                             </tr>
                         })}
                     </tbody>

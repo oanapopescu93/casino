@@ -2165,9 +2165,12 @@ textarea {
 .dashboard_user_info_left, .dashboard_user_info_right{
   display: inline-block;
   vertical-align: top;
-  padding: 0px var(--padding_small);
+  padding: 0px var(--padding);
   text-align: left;
   width: 50%;
+}
+.dashboard_user_info_left{
+  border-right: solid 1px var(--color);
 }
 .dashboard_box .cart_list, .dashboard_box .order_list{
   max-height: 236px;
@@ -2346,7 +2349,7 @@ textarea {
 }
 
 .order_list {
-  overflow-x: auto;
+  overflow-x: auto;  
 }
 .order_list table {
   width: 100%;
@@ -2357,6 +2360,11 @@ textarea {
   padding: 12px 15px;
   border: 1px solid var(--color);
   white-space: nowrap;
+  text-align: left;
+}
+.order_list th.order_item_no, .order_list td.order_item_no,
+.order_list th.order_item_buttons, .order_list td.order_item_buttons {
+  text-align: center;
 }
 .order_list th {
   background-color: var(--color);
@@ -2367,17 +2375,22 @@ textarea {
 .order_list th:last-child {
   border-right: 1px solid var(--color);
 }
-.order_item{
-  cursor: pointer;
-}
-.order_item_id {
-  width: 30%;
+.order_item_no {
+  width: 10%;
+  min-width: 50px;
 }
 .order_item_description {
-  width: 35%;
+  width: 60%;
+  min-width: 200px;
 }
 .order_item_price {
-  width: 15%;
+  width: 20%;
+  min-width: 100px;
+}
+.order_item_buttons{
+  width: 10%;
+  min-width: 50px;
+  cursor: pointer;
 }
 
 /* ORDER DETAILS */
@@ -2465,6 +2478,22 @@ textarea {
 }
 .profile_pic_container:hover .profile_pic_default{
 	opacity: 1;
+}
+.profile_pic_name{
+  position: relative;
+  z-index: 1;
+  background-color: var(--color);
+  border: solid 1px var(--color);
+  border-radius: var(--radius_big);
+  color: var(--bg);  
+  width: 100%;
+  max-width: 150px;
+  height: 25px;
+  padding: var(--padding_small) var(--padding);
+  margin: 0px auto;
+  top: -20px;
+  margin-bottom: -20px;
+  white-space: nowrap;
 }
 .profile_pic_input{
 	opacity: 0;
@@ -3587,6 +3616,7 @@ textarea {
   .dashboard_user_info_left, .dashboard_user_info_right{
     text-align: center;  
     width: 100%;
+    border: none;
   }
 }
 
