@@ -77,10 +77,10 @@ function RaceTables(props){
 
     return <div className="game_container race_tables_container">
         <Carousel 
+            {...props}
             id="carousel_race"
             template="race" 
-            options={race_carousel_options} 
-            lang={lang} 
+            options={race_carousel_options}             
             itemList={race_array}
         />
         <div className="game_start">

@@ -6,7 +6,7 @@ import Counter from '../counter'
 import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
-import { getProducts, isEmpty, paymentErrors, postData } from '../../../utils/utils'
+import { convertCurrency, getProducts, isEmpty, paymentErrors, postData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
@@ -17,7 +17,7 @@ import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icon
 import { orderAdd } from '../../../reducers/order'
 
 function Payment(props){
-    const {lang, template, home} = props
+    const {lang, template, home, currency, exchange_rates} = props
     let dispatch = useDispatch()
     let max_amount = 100
     let price_per_carrot = 1
@@ -25,15 +25,13 @@ function Payment(props){
     let payment_details = useSelector(state => state.paymentDetails)
     let cart = useSelector(state => state.cart.cart) 
     let promo = useSelector(state => state.cart.promo)
-    let user = useSelector(state => state.auth.user)
 
     const [qty, setQty] = useState(1)
-    const [amount, setAmount] = useState(price_per_carrot)
+    const [amount, setAmount] = useState(1)
     const [month, setMonth] = useState(payment_details.month !== -1 ? payment_details.month : -1)
     const [year, setYear] = useState(payment_details.year !== "" ? payment_details.year : "")
     const [country, setCountry] = useState(payment_details.country !== "" ? payment_details.country : "")
     const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
-    const [phone, setPhone] = useState(payment_details.phone !== "" ? payment_details.phone : "")
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
     const [paymentDetails, setPaymentDetails] = useState(null)
@@ -52,12 +50,15 @@ function Payment(props){
 
     useEffect(() => {
         let pay = 0
+        let payExchange = 0
         switch(template){
             case "buy_carrots":
                 pay = qty * price_per_carrot
+                payExchange = qty * convertCurrency(price_per_carrot, currency, exchange_rates)
                 break
             case "checkout":
-                pay = totalPriceSum()
+                pay = totalPriceSum(true)
+                payExchange = totalPriceSum()
                 if(promo && Object.keys(promo).length>0){
                     pay = (pay - (pay * promo.discount)/100).toFixed(2)
                 }
@@ -68,16 +69,20 @@ function Payment(props){
         setAmount(parseFloat(pay))
     }, [])
 
-    function totalPriceSum(){
+    function totalPriceSum(exchange=false){
         let market = home.market ? home.market : [] 
         let total = 0
         for(let i in cart){
             let product = market.filter(a => a.id === cart[i].id)
             if(product && product[0] && product[0].price){
-                total = total + product[0].price * cart[i].qty
+                if(exchange){
+                    total = total + convertCurrency(product[0].price, "USD", exchange_rates) * cart[i].qty
+                } else {
+                    total = total + convertCurrency(product[0].price, currency, exchange_rates) * cart[i].qty
+                }
             }
         }
-        return total.toFixed(2)
+        return total
     }
 
     useEffect(() => {
@@ -320,7 +325,7 @@ function Payment(props){
                                         payment_id: data.payload.id,
                                         customer_id: data.payload.customer,
                                         order_date: data.payload.created * 1000,
-                                        amount: parseFloat((data.payload.amount / 100).toFixed(2)),                                        
+                                        amount: parseFloat((data.payload.amount / 100).toFixed(2)),           
                                         payment_method: data.payload.payment_details.payment_type,
                                         status: data.payload.status,
                                         country: data.payload.payment_details.country,
@@ -328,15 +333,17 @@ function Payment(props){
                                         email: data.payload.payment_details.email,
                                         phone: data.payload.payment_details.phone,
                                         description: data.payload.description,
-                                        currency: data.payload.currency,
-                                        items: data.payload.metadata                  
+                                        currency: data.payload.currency.toUpperCase(),
+                                        currencyExchange: currency,
+                                        items: data.payload.metadata,
+                                        exchange_rates,               
                                     }
                                     let payload = {
                                         open: true,
                                         template: "paymentSuccess",
                                         title: translate({lang: props.lang, info: "payment_success"}),
                                         data: details,
-                                        size: 'lg',
+                                        size: 'md',
                                     }
                                     dispatch(changePopup(payload))
                                     dispatch(orderAdd(details))
@@ -477,9 +484,9 @@ function Payment(props){
                                 case "buy_carrots":
                                     return <>
                                         <Counter num={1} max={max_amount} update={(e)=>updateQty(e)} />
-                                        <div className="payment_details_total_price">
+                                        <div className="payment_details_total_price 1">
                                             <h3>
-                                                <b>{translate({lang: lang, info: "total_price"})}</b>: ${amount}
+                                                <b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(amount, currency, exchange_rates)} {currency}
                                             </h3>
                                         </div>
                                     </>

@@ -13,9 +13,10 @@ import {faBasketShopping} from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
 import profilePic from '../../img/profile/predators.jpg'
 import carrot_img from '../../img/icons/carrot_icon.png'
+import { convertCurrency } from '../../utils/utils'
 
 function Cell(props) {
-    const {lang, index, selected, data, template} = props
+    const {index, selected, data, template, lang, currency, exchange_rates} = props
     const [qty, setQty] = useState(1)
     let place = translate({lang: lang, info: 'place'})
     const [titleDropdown, setTitleDropdown] = useState(place)
@@ -117,28 +118,9 @@ function Cell(props) {
                                 <div className="crop_vegetables">
                                     <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow} />
                                 </div>
-                                {(() => {
-                                    switch (props.lang) {
-                                        case "DE":
-                                            return <h4>{data.name_de}</h4>
-                                        case "ES":
-                                            return <h4>{data.name_es}</h4>
-                                        case "FR":
-                                            return <h4>{data.name_fr}</h4>
-                                        case "IT":
-                                            return <h4>{data.name_it}</h4>
-                                        case "PT":
-                                            return <h4>{data.name_pt}</h4>
-                                        case "RO":
-                                            return <h4>{data.name_ro}</h4>
-                                        case "RU":
-                                            return <h4>{data.name_ru}</h4>
-                                        case "ENG":
-                                        default:
-                                            return <h4>{data.name_eng}</h4>
-                                    }
-                                })()}
-                                <p>{translate({lang: lang, info: "price"})}: {data.price} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
+                                <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
+                                <p>{translate({lang: lang, info: "value"})}: {data.price} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
+                                <p>{translate({lang: lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
                                 <Counter update={(e)=>updateQtyMarket(e)} />
                             </div>
                             <div className="cell_button">
@@ -164,8 +146,8 @@ function Cell(props) {
                                 <Col sm={6}>
                                     <div className="rabbit_box_info">
                                         <p><span>{translate({lang: lang, info: "breed"})}: </span>{data.breed}</p>
-                                        {/* <p><span>{translate({lang: lang, info: "delay"})}: </span>{data.delay}</p> */}
-                                        <p><span>{translate({lang: lang, info: "health"})}: </span>{data.health}</p>
+                                        <p><span>{translate({lang: lang, info: "health"})}: </span>{data.delay}</p>
+                                        {/* <p><span>{translate({lang: lang, info: "health"})}: </span>{data.health}</p> */}
                                         <Stars score={data.health} max={data.health_max} />
                                     </div>
                                     <div className="rabbit_box_bet">
@@ -187,38 +169,13 @@ function Cell(props) {
                     let show = '' 
                     if(!data.free && props.money < 1000 && props.account_type === 1){
                         show = ' grey_image'
-                    }
-                    let item_name_lang = "name_eng"
-                    switch (lang) {
-                        case "DE":
-                            item_name_lang = "name_de"
-                            break
-                        case "ES":
-                            item_name_lang = "name_es"
-                            break
-                        case "FR":
-                            item_name_lang = "name_fr"
-                            break
-                        case "IT":
-                            item_name_lang = "name_it"
-                            break
-                        case "RO":
-                            item_name_lang = "name_ro"
-                            break
-                        case "RU":
-                            item_name_lang = "name_ru"
-                            break
-                        case "ENG":
-                        default:
-                            item_name_lang = "name_eng"
-                            break
-                    }
+                    }                    
                     let style = ''
                     if(index-1 === selected){
                         style = ' selected'
                     }
                     return <div 
-                        className={"crop_profile_pic_box"+style}
+                        className={"crop_profile_pic_box" + style}
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
@@ -227,7 +184,7 @@ function Cell(props) {
                     <div className="crop_profile_pic shadow_convex">
                         <img alt="profile_pic" className={"profile_pic pic_"+data.id+show} src={profilePic}/>
                     </div>										
-                    <p>{data[item_name_lang]}</p>
+                    <p>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</p>
                 </div>
                 default:
                     return <div key={index}>{translate({lang: lang, info: "error"})}</div>

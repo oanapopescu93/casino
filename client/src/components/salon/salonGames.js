@@ -147,11 +147,11 @@ function SalonGames(props){
                         <div box={t} className={"casino_games_table_container "+box}>
                             <div className="casino_games_table">
                                 <Carousel 
+                                    {...props}
                                     id={"carousel_salon_"+t}
                                     template="salon" 
                                     type={t}
                                     options={salon_carousel_options} 
-                                    lang={lang} 
                                     itemList={casinoGames[t]} 
                                     getItem={(e)=>gameChoice(e)}
                                 />

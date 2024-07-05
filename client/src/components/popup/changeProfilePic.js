@@ -57,10 +57,10 @@ function ChangeProfilePic(props) {
         <div className="changeProfilePic_box">
             {profiles && profiles.length>0 ? <>
                 <Carousel 
+                    {...props}
                     id="carousel_profile"
                     template="profile" 
                     options={profile_carousel_options} 
-                    lang={lang} 
                     itemList={profiles} 
                     handlePic={(item, i)=>handlePic(item, i)}
                     money={money}

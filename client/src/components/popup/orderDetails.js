@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { formatDate } from '../../utils/utils'
+import { convertCurrency, formatDate } from '../../utils/utils'
 import { translate } from '../../translations/translate'
 import { Row, Col } from 'react-bootstrap'
 
@@ -11,8 +11,7 @@ function OrderDetails(props) {
         payment_id, 
         customer_id, 
         order_date, 
-        amount, 
-        currency,
+        amount,
         payment_method,
         status,
         country, 
@@ -20,7 +19,9 @@ function OrderDetails(props) {
         email,
         phone,
         description,
-        items
+        items,
+        currencySettings,
+        exchange_rates
     } = data
     let date_format = useSelector(state => state.settings.date)
     let date = formatDate(order_date, date_format)
@@ -43,6 +44,8 @@ function OrderDetails(props) {
             status_color = "default"
             break
     }
+
+    let orderDetails_footer = convertCurrency(amount, currencySettings,exchange_rates) + " " + currencySettings
 
     return <>
         <div className="orderDetails_popup">
@@ -112,10 +115,7 @@ function OrderDetails(props) {
         <Row>
             <Col sm={12}>
                 <div className="orderDetails_footer">
-                    <h3>
-                        <span className="label">{translate({lang: lang, info: 'amount'})}:</span>
-                        <span className="value">{amount} {currency}</span>
-                    </h3>
+                    <h3>{orderDetails_footer}</h3>
                 </div>                
             </Col>
         </Row>

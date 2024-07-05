@@ -11,7 +11,7 @@ import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faCartShopping, faUser, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Market(props){
-    const {lang, home} = props
+    const {home} = props
     let market = home.market ? home.market : []
 	let shader_style = {backgroundImage: `url(${shop})`}
     const market_carousel_options = {
@@ -61,18 +61,22 @@ function Market(props){
     function handleGoTo(x){
         switch (x) {
             case "user":
-                dispatch(changePage('dashboard'))
+                dispatch(changePage('Salon'))
+                dispatch(changeGame(null))
+                dispatch(changeGamePage('dashboard'))
                 break 
             case "cart":
                 dispatch(changePage('Cart'))
+                dispatch(changeGame(null))
+                dispatch(changeGamePage(null))
                 break
             case "back":
             default:
                 dispatch(changePage('Salon'))
+                dispatch(changeGame(null))
+                dispatch(changeGamePage(null))
                 break
-		}
-        dispatch(changeGame(null))
-        dispatch(changeGamePage(null))
+		}        
     }
 
     return <div className="market_container">        
@@ -85,10 +89,10 @@ function Market(props){
             <Col sm={2} />
             <Col sm={8} style={{textAlign:"center"}}>
                 <Carousel 
+                    {...props}
                     id="carousel_market"
                     template="market" 
-                    options={market_carousel_options} 
-                    lang={lang} 
+                    options={market_carousel_options}
                     itemList={market} 
                     getItem={(e)=>marketChoice(e)}
                 />

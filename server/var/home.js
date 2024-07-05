@@ -30,7 +30,7 @@ module.exports = Object.freeze({
         {id: "potato", name_eng: "potato", name_ro: "cartof", name_fr: "pomme de terre", name_de: "kartoffel", name_es: "patata", name_it: "patata", name_pt: "batata", name_ru: "картофель", price: 20},
         {id: "cabbage", name_eng: "cabbage", name_ro: "varza", name_fr: "chou", name_de: "kohl", name_es: "col", name_it: "cavolo", name_pt: "repolho", name_ru: "капуста", price: 30},
     ],
-    CURRENCIES: ['USD', 'EUR'],
+    CURRENCIES: ['USD', 'EUR', 'GBP', 'CHF', 'RON'],
     PROFILES: [
         {id: 1, name_eng: "weasel", name_ro: "nevastuica", name_fr: "belette", name_de: "wiesel", name_es: "comadreja", name_it: "donnola", name_pt: "doninha", name_ru: "ласка", free: true},
         {id: 2, name_eng: "fox", name_ro: "vulpe", name_fr: "renard", name_de: "fuchs", name_es: "zorro", name_it: "volpe", name_pt: "raposa", name_ru: "лиса", free: false},

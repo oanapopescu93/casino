@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import { isEmpty } from '../../utils/utils'
+import { getCookie, isEmpty, postData, setCookie } from '../../utils/utils'
 import Popup from '../popup/popup'
 import Sign from '../sign/sign'
 import Home from './home'
@@ -23,6 +23,7 @@ function Page(props) {
     let dispatch = useDispatch() 
     const [showWinter, setShowWinter] = useState(false)
 	const [showChristmas, setShowChristmas] = useState(false)
+    const [exchangeRates, setExchangeRates] = useState(null)
 
     useEffect(() => {
 		dispatch(bringPayload())	
@@ -65,6 +66,36 @@ function Page(props) {
         }
     }
 
+    useEffect(() => {  
+        getExchangeRates()
+    }, [])
+
+    function getExchangeRates(){
+        //the exchange rates will be updated once per day when the user logs in the morning, for the rest we will use cookies
+        try {
+            let exchange_rates = getCookie("casino_exchange_rates")            
+            if (isEmpty(exchange_rates)){
+                try {
+                    postData('/api/exchange_rates', {}).then((res)=>{
+                        const jsonString = JSON.stringify(res.conversion_rates)
+                        setCookie('casino_exchange_rates', jsonString)
+                        setExchangeRates(JSON.parse(jsonString))
+                    })                    
+                } catch (error) {
+                    console.error("exchange_rates-error01", error)
+                }
+            } else {
+                try {
+                    setExchangeRates(JSON.parse(exchange_rates))
+                } catch (error) {
+                    console.error("exchange_rates-error02", exchange_rates, error)
+                }
+            }
+        } catch (error) {
+            console.error("exchange_rates-error03", error)
+        }
+    }    
+
     return <>
         {(() => {
             if(isEmpty(uuid)){
@@ -75,7 +106,7 @@ function Page(props) {
                 }
             } else {
                 if(home.loaded){
-                    return <Home {...props} home={home} page={page} user={user} cookies={cookies} />
+                    return <Home {...props} home={home} page={page} user={user} cookies={cookies} exchange_rates={exchangeRates}/>
                 } else {
                     return <Loader />
                 }
@@ -91,7 +122,7 @@ function Page(props) {
                 return null
             }
         })()} 
-        <Popup {...props} home={home} />
+        <Popup {...props} home={home} exchange_rates={exchangeRates}/>
     </>
 }
 

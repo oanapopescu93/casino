@@ -3,9 +3,10 @@ import { Button } from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import { translate } from '../../../translations/translate'
+import { convertCurrency } from '../../../utils/utils'
 
 function Panel(props){
-    const {list, lang, promo} = props
+    const {list, lang, promo, currency, exchange_rates} = props
     let total = totalPriceSum()
     let total_promo = total
     if(promo && Object.keys(promo).length>0){
@@ -39,12 +40,12 @@ function Panel(props){
     }
 
     return <div id="cart_panel">
-        <div className="cart_total_price">
+        <div className="cart_total_price 2">
             {promo && Object.keys(promo).length>0 ? <>
-                <p><b>{translate({lang: lang, info: "price"})}</b>: ${total}</p>
+                <p><b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</p>
                 <p><b>{translate({lang: lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
-                <h3><b>{translate({lang: lang, info: "total_price"})}</b>: ${total_promo}</h3>
-            </> : <h3><b>{translate({lang: lang, info: "total_price"})}</b>: ${total}</h3>}
+                <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total_promo, currency, exchange_rates)} {currency}</h3>
+            </> : <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>}
         </div>
         <div className="button_action_group">
             <Button 

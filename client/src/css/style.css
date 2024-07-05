@@ -2159,12 +2159,18 @@ textarea {
 #dashboard_left .mybutton{
   height: 25px;
 }
-.dashboard_user_info{
-  text-align: center;
+.dashboard_user_info, .dashboard_buttons{  
   margin-top: var(--padding);
 }
+.dashboard_user_info_left, .dashboard_user_info_right{
+  display: inline-block;
+  vertical-align: top;
+  padding: 0px var(--padding_small);
+  text-align: left;
+  width: 50%;
+}
 .dashboard_box .cart_list, .dashboard_box .order_list{
-  max-height: 212px;
+  max-height: 236px;
   overflow: auto;
   border-bottom: solid 1px var(--color);
 }
@@ -2188,10 +2194,10 @@ textarea {
   width: 15%;
 }
 .dashboard_box .cart_info{
-  width: 60%;
+  width: 40%;
 }
 .dashboard_box .cart_buttons{
-  width: 25%;
+  width: 45%;
 }
 .dashboard_box .cart_buttons h4{
   margin-bottom: var(--padding_small);
@@ -2315,10 +2321,9 @@ textarea {
   margin-left: -80px;
 }
 
-.cart_header, .cart_item,
-.order_header, .order_item{
+.cart_header, .cart_item, .order_header, .order_item{
   border-bottom: solid 1px var(--color);
-  padding: var(--padding_small) 15px;
+  padding: var(--padding_small);
 }
 .cart_item:last-child, .order_item:last-child{
   border-bottom: solid 0 transparent;
@@ -3234,7 +3239,6 @@ textarea {
   height: 60px;
   font-size: 20px;
   line-height: 40px;
-  padding: 10px;
   padding: var(--padding);
   cursor: pointer;
 }
@@ -3474,8 +3478,8 @@ textarea {
 .cell_howToPlay .cell_text{
   position: absolute;
   bottom: -15px;
-  left: 10px;
-  right: 10px;
+  left: var(--padding);
+  right: var(--padding);
   padding: var(--padding_small) var(--padding);
   border-radius: var(--radius_big);
   border: solid 1px var(--color);
@@ -3580,12 +3584,37 @@ textarea {
   .poker_pot_container{ 
     top: 150px;
   }
+  .dashboard_user_info_left, .dashboard_user_info_right{
+    text-align: center;  
+    width: 100%;
+  }
 }
 
 @media (max-width: 1024px){
 	.shop_shader{
 		height:60px;
 	}
+}
+@media (max-width: 992px){
+  /* DASHBOARD */
+  .dashboard_box{
+    background-color: transparent;
+    border: none;
+    border-radius: 0px;
+    box-shadow: none!important;
+    padding: 0px;
+  }
+  #dashboard_left .mybutton{
+    display: inline-block;
+    max-width: 200px;
+  }
+  .dashboard_right_list{
+    border-bottom: solid 1px var(--color);
+    margin-bottom: var(--padding_small);
+  }
+  .dashboard_user_info_left, .dashboard_user_info_right, .dashboard_left_buttons{
+    text-align: left; 
+  }
 }
 @media (max-width: 960px){
   /* MARKET */
@@ -3610,6 +3639,17 @@ textarea {
   .modal-body{
     padding: var(--padding);
   }
+
+  /* DASHBOARD */  
+  .dashboard_user_info, .dashboard_user_info_left, .dashboard_user_info_right, .dashboard_left_buttons{
+    text-align: center;
+  }
+  #dashboard_left .mybutton{
+    display: block;
+    margin: var(--padding_small) auto;
+    max-width: 200px;
+  }
+
   /* KENO */
   .keno_spot_box{
     width: 40px;
@@ -3766,7 +3806,7 @@ textarea {
     display: none;
   }
   .dashboard_box .cart_list{
-    max-height: 104px;
+    max-height: 116px;
   }  
 
   /* ORDER */
@@ -3940,10 +3980,10 @@ textarea {
     display: none;
   }
   .dashboard_box .cart_info{
-    width: 70%;
+    width: 60%;
   }
   .dashboard_box .cart_buttons{
-    width: 30%;
+    width: 40%;
   }
 }
 @media (max-width:360px) {
@@ -3960,7 +4000,11 @@ textarea {
     top: 85px;
   }  
 }
-@media (max-width:340px) {}
+@media (max-width:340px) {
+  .dashboard_box .cart_info, .dashboard_box .cart_buttons{
+    width: 50%;
+  }
+}
 
 @media (max-width: 960px) and (orientation: landscape){}
 @media (max-width: 768px) and (orientation: landscape){

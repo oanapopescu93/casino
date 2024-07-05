@@ -15,6 +15,7 @@ var currencies = require('./var/home').CURRENCIES
 var career = require('./var/career').CAREER_ARRAY
 var questions = require('./var/questions').QUESTION_ARRAY
 const { sendEmail } = require("./utils/mail")
+const { get_exchangerate, filterRates } = require("./utils/other")
 
 var jsonParser = bodyParser.json() 
 router.use(express.static(path.resolve(__dirname, '../client/build')))
@@ -35,6 +36,17 @@ router.post("/api/contact", jsonParser, (req, res, next) => {
       res.send({send: "email_no_send"})
     }
   }) 
+})
+router.post("/api/exchange_rates", jsonParser, (req, res, next) => {
+  get_exchangerate().then((e)=>{
+    if(e && e.data && e.data.conversion_rates){ //base_code: 'USD'
+      const allowedCurrencies = ['USD', 'EUR', 'GBP', 'CHF', 'RON']
+      const filteredRates = filterRates(e.data.conversion_rates, allowedCurrencies)
+      res.send({conversion_rates: filteredRates})
+    } else {
+      res.send({conversion_rates: {}})
+    }
+  })  
 })
 
 module.exports = router

@@ -91,9 +91,35 @@ function get_extra_data(){
 	})
 }
 
+function get_exchangerate_api(apiKey) {
+	return "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/USD"
+}
+function get_exchangerate(){
+	return new Promise((resolve, reject)=>{
+		let url = get_exchangerate_api('3e2179a6f6b4ea34c973f0d5')
+		axios.get(url).then(response => {
+			resolve(response)	
+		}).catch(error => {
+			console.log('get_exchangerate_error--> ', error)
+			resolve(false)
+		})
+	})
+}
+function filterRates(rates, allowedCurrencies){
+	let filteredRates = {}
+    for (let currency of allowedCurrencies) {
+        if (rates[currency] !== undefined) {
+            filteredRates[currency] = rates[currency]
+        }
+    }
+    return filteredRates
+}
+
 module.exports = {
 	sort_array_obj,
 	get_device,
 	check_streak,
 	get_extra_data,
+	get_exchangerate,
+	filterRates,
 }

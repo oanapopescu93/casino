@@ -1,12 +1,12 @@
 import React from 'react'
 import { translate } from '../../../translations/translate'
 import { Row, Col, Button } from 'react-bootstrap'
-import { checkoutData } from '../../../utils/utils'
+import { checkoutData, convertCurrency } from '../../../utils/utils'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 function PaymentDetails(props){
-    const {lang, template, paymentDetails, amount, gateway, gatewayDetails} = props
+    const {lang, template, paymentDetails, amount, gateway, gatewayDetails, currency, exchange_rates} = props 
     const monthOptions = checkoutData().monthOptions
 
     let payment_options = {
@@ -46,8 +46,7 @@ function PaymentDetails(props){
         }
     }
 
-    return <>
-        <p>{translate({lang: props.lang, info: "under_construction"})}</p>
+    return <>        
         {paymentDetails ? <>
             <Row id="payment_details">
                 <Col sm={8}>
@@ -93,9 +92,9 @@ function PaymentDetails(props){
                 <Col sm={4}>
                     <Row>
                         <Col sm={12}>
-                            <div className="payment_details_total_price">
+                            <div className="payment_details_total_price 2">
                                 <h3>
-                                    <b>{translate({lang: lang, info: "total_price"})}</b>: ${amount}
+                                    <b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(amount, currency, exchange_rates)} {currency}
                                 </h3>
                             </div>
                         </Col>

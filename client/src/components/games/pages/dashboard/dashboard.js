@@ -36,7 +36,7 @@ function Dashboard(props){
 				<Row>
 					<Col lg={4}>
 						<DashboardLeft {...props} />
-						<div className="dashboard_left_buttons d-none d-lg-block">
+						<div className="dashboard_buttons d-none d-lg-block">
 							<Button 
 								type="button"
 								className="mybutton round button_transparent shadow_convex"
@@ -54,7 +54,7 @@ function Dashboard(props){
 							updateQtyProduct={(e)=>updateQtyProduct(e)}
 							handleCheckout={()=>handleCheckout()}
 						/>
-						<div className="dashboard_left_buttons d-block d-lg-none">
+						<div className="dashboard_buttons d-block d-lg-none">
 							<Button 
 								type="button"
 								className="mybutton round button_transparent shadow_convex"

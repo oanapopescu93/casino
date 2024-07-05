@@ -2,21 +2,22 @@ import React, {useState} from 'react'
 
 function Counter(props){  
   let [num, setNum]= useState(typeof props.num === "undefined" ? 1 : props.num)
+  let min = props.min ? props.min : 0
   let max = props.max ? props.max : 100
 
   function increase(){
-    if(num<max){
-      setNum(Number(num)+1)
+    if(num < max){
+      setNum(Number(num) + 1)
       if(typeof props.update === "function"){
-          props.update(Number(num)+1)
+          props.update(Number(num) + 1)
       }
     }
   }
   function decrease(){
-    if(num>0){
-        setNum(Number(num)-1)
+    if(num > min){
+        setNum(Number(num) - 1)
         if(typeof props.update === "function"){
-            props.update(Number(num)-1)
+            props.update(Number(num) - 1)
         }
     }
   }

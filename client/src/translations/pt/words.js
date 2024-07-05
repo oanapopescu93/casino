@@ -256,7 +256,7 @@ var word_bank = {
     order_description: "Descrição do pedido",
     order_date: "Data do pedido",
     postal_code: "Código postal",
-    chargeId: "ID",
+    id: "ID",
     method: "Método",
 
     // blackjack

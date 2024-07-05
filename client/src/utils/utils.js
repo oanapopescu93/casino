@@ -201,3 +201,24 @@ export const getProducts = (cart, market)=>{
   }
   return array
 }
+
+export const convertCurrency = (value=0, currency="USD", exchangeRates=null, shorten=true)=>{  
+  if (value <= 0) {
+    console.error("convertCurrency-value-error--> ", value)
+    return value
+  }
+  if(!exchangeRates){
+    console.error("convertCurrency-exchangeRates-error--> ", exchangeRates)
+    return value
+  }
+  const rate = exchangeRates[currency]
+  if(!rate){
+    console.error("convertCurrency-rate-error--> ", rate)
+    return value
+  }
+  let result = parseInt(value) * rate
+  if (shorten) {
+      result = parseFloat(result.toFixed(2))
+  }
+  return result
+}

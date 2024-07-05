@@ -256,7 +256,7 @@ var word_bank = {
     order_description: "Descriere comandă",
     order_date: "Data comandă",
     postal_code: "Cod poștal",
-    chargeId: "ID",
+    id: "ID",
     method: "Metodă",
 
     // blackjack

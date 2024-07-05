@@ -40,7 +40,7 @@ function Picture(props){
 }
 
 function DashboardLeft(props){ 
-    const {home, user, lang} = props
+    const {home, user, lang, currency} = props
     let dispatch = useDispatch()
 
     let name = user.user ? decryptData(user.user) : "-"
@@ -88,57 +88,41 @@ function DashboardLeft(props){
 
     return <div id="dashboard_left" className="dashboard_box shadow_concav">
         <Row>
-            <Col sm={12} className="dashboard_user_pic">
+            <Col sm={12} md={4} lg={12} className="dashboard_user_pic">
                 <Picture profiles={profiles} pic_id={picId} choice={(e)=>handleChoice(e)} />
             </Col>
-            <Col sm={12} className="dashboard_user_info">
-                <p className="dashboard_user">
-                    <b>{translate({lang: lang, info: "user"})}: </b><span id="dashboard_user_text">{name}</span>
-                </p>										
-                <p className="dashboard_animal">
-                    <b>{translate({lang: lang, info: "animal"})}: </b>
-                    {(() => {
-                        if(animal && animal[0]){
-                            switch (props.lang) {
-                                case "DE":
-                                    return <>{animal[0].name_de}</>
-                                case "ES":
-                                    return <>{animal[0].name_es}</>
-                                case "FR":
-                                    return <>{animal[0].name_fr}</>
-                                case "IT":
-                                    return <>{animal[0].name_it}</>
-                                case "PT":
-                                    return <>{animal[0].name_pt}</>
-                                case "RO":
-                                    return <>{animal[0].name_ro}</>
-                                case "RU":
-                                    return <>{animal[0].name_ru}</>
-                                case "ENG":
-                                default:
-                                    return <>{animal[0].name_eng}</>
-                            } 
-                        } else {
-                            return "-"
-                        }
-                    })()}
-                </p>
-                <p className="dashboard_money">
-                    <b>{translate({lang: lang, info: "carrots"})}: </b>{money} <img alt="carrot_img" className="currency_img" src={carrot_img}/>
-                </p>
-            </Col>
-        </Row>	
-        <Row>
-            <Col sm={12} className="dashboard_left_buttons">
-                <Button type="button" onClick={()=>handleChoice("change_username")} className="mybutton button_fullcolor shadow_convex">
-                    {translate({lang: lang, info: "change_username"})}
-                </Button>	
-                <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
-                    {translate({lang: lang, info: "change_password"})}
-                </Button>	
-                <Button type="button" onClick={()=>handleChoice("buy_carrots")} className="mybutton button_fullcolor shadow_convex">
-                    {translate({lang: lang, info: "buy_carrots"})}
-                </Button>	
+            <Col sm={12} md={8} lg={12} className="dashboard_user_info">
+                <Row>
+                    <Col sm={12}>
+                        <div className="dashboard_user_info_left">
+                            <p><b>{translate({lang: lang, info: "user"})}: </b><span>{name}</span></p>
+                            <p>
+                                <b>{translate({lang: lang, info: "animal"})}: </b>
+                                {animal && animal[0] ? <span>{animal[0]["name_" + props.lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
+                            </p>
+                            <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>                            
+                        </div>
+                        <div className="dashboard_user_info_right">
+                        <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
+                        <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
+                        </div>                                               
+                    </Col>
+                    <Col sm={12}>
+                        <Row>
+                            <Col sm={12} className="dashboard_left_buttons">
+                                <Button type="button" onClick={()=>handleChoice("change_username")} className="mybutton button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "change_username"})}
+                                </Button>	
+                                <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "change_password"})}
+                                </Button>	
+                                <Button type="button" onClick={()=>handleChoice("buy_carrots")} className="mybutton button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "buy_carrots"})}
+                                </Button>	
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>                
             </Col>
         </Row>
     </div>
