@@ -1,28 +1,29 @@
 {
-  "extends": [
+    "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
       "plugin:react-hooks/recommended"
-  ],
-  "plugins": [
+    ],
+    "plugins": [
       "react",
       "react-hooks"
-  ],
-  "rules": {
+    ],
+    "rules": {
       "react-hooks/rules-of-hooks": "off",
       "react-hooks/exhaustive-deps": "off",
       "react/no-unknown-property": "off",
-      "no-mixed-spaces-and-tabs": "warn",
+      "no-mixed-spaces-and-tabs": "off",
       "no-unused-vars": "warn",
       "react/prop-types": "off",
       "no-case-declarations": "warn",
       "react/react-in-jsx-scope": "off",
       "react/no-unescaped-entities": "off",
-      "no-unreachable": "off",
-  },
-  "settings": {
+      "no-unreachable": "off"
+    },
+    "settings": {
       "react": {
-          "version": "detect"
+        "version": "detect"
       }
+    }
   }
-}
+  
