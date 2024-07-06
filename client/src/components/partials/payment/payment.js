@@ -15,6 +15,7 @@ import { updatePaymentDetails } from '../../../reducers/paymentDetails'
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import { orderAdd } from '../../../reducers/order'
+import { cartRemoveAll } from '../../../reducers/cart'
 
 function Payment(props){
     const {lang, template, home, currency, exchange_rates} = props
@@ -345,8 +346,14 @@ function Payment(props){
                                         data: details,
                                         size: 'md',
                                     }
-                                    dispatch(changePopup(payload))
-                                    dispatch(orderAdd(details))
+                                    dispatch(changePopup(payload)) //show success popup
+                                    dispatch(cartRemoveAll()) //remove all from cart
+                                    dispatch(orderAdd(details)) // add payment to order list
+
+                                    //go to dashboard
+                                    dispatch(changePage('Salon')) 
+                                    dispatch(changeGame(null))
+                                    dispatch(changeGamePage('dashboard'))
                                 } else {
                                     showError(data)
                                 }
