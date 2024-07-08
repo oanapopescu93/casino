@@ -1,10 +1,21 @@
 const express = require("express")
-require('dotenv').config()
-const PORT = process.env.PORT || 1111
 const app = express()
+const bodyParser = require('body-parser')
 
 var http = require('http').createServer(app)
 var io = require('socket.io')(http)
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false })) 
+
+const dotenv = require('dotenv')
+const path = require('path')
+var NODE_ENV = process.env.NODE_ENV.trim() 
+dotenv.config({
+  path: path.resolve(__dirname, `.env.${NODE_ENV}`)
+})
+
+const PORT = process.env.PORT || 1111
 
 var routes = require("./routes")
 app.use(routes) 

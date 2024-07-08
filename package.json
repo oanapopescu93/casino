@@ -4,10 +4,11 @@
   "description": "server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
-    "server": "nodemon server/index.js",
+    "start": "set NODE_ENV=production && nodemon server/index.js",
+    "server": "set NODE_ENV=production && nodemon server/index.js",
+    "server:dev": "set NODE_ENV=development && nodemon server/index.js",
     "client": "npm start --prefix client",
-    "dev": "cls && concurrently \"npm run server\" \"npm run client",
+    "dev": "cls && concurrently \"npm run server:dev\" \"npm run client\"",
     "build": "npm install && cd client && npm install && npm run build"
   },
   "repository": {

@@ -81,7 +81,10 @@ function Home(props) {
         }
     }
     const checkPaypalPaymentCancel = async () => {
-        postData('/api/paypal/cancel', {}).then((data)=>{
+        const url = new URL(window.location.href)
+        let token = url.searchParams.get('token')
+
+        postData('/api/paypal/cancel', {token}).then((data)=>{
             if(data && data.result === "cancel"){
                 let payload = {
                     open: true,

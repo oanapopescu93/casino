@@ -2,7 +2,7 @@ var express = require("express")
 var bodyParser = require('body-parser')
 var paypalPayment = express.Router()
 
-var { PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = require('../var/constants');
+var { PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = require('../var/constants')
 
 var jsonParser = bodyParser.json() 
 const paypal = require('paypal-rest-sdk')
@@ -13,9 +13,14 @@ paypal.configure({
 })
 const MINIMUM_AMOUNT_USD = 0.01
 let amountPaypal = 0
+const BASE_URL = process.env.BASE_URL
 
 paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
   const { amount, products, description } = req.body
+
+  if(!BASE_URL){
+    return res.json({ type: "paypal", result: "error", payload: 'BASE_URL' })
+  }
 
   if(amount){
     // Calculate total amount based on lineItems
@@ -43,8 +48,8 @@ paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
         payment_method: "paypal",
       },
       redirect_urls: {
-        return_url: `http://localhost:8088/api/paypal/success`,
-        cancel_url: "http://localhost:8088/api/paypal/cancel",
+        return_url: BASE_URL + "/api/paypal/success",
+        cancel_url: BASE_URL + "api/paypal/cancel",
       },
       transactions: [
         {
@@ -83,7 +88,7 @@ paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
 })
 
 paypalPayment.post('/api/paypal/success', jsonParser, (req, res) => {
-  const { payerId, paymentId} = req.body 
+  const { payerId, paymentId } = req.body 
 
   if(!payerId || !paymentId){
     return res.json({ type: "paypal", result: "error", payload: 'error_charge' })
@@ -112,7 +117,10 @@ paypalPayment.post('/api/paypal/success', jsonParser, (req, res) => {
 })
 
 paypalPayment.post('/api/paypal/cancel', jsonParser, (req, res) => {
-  res.json({ type: "paypal", result: "cancel"}) 
+  const { token } = req.body 
+  if(token){
+    res.json({ type: "paypal", result: "cancel"}) 
+  }
 })
 
 module.exports = paypalPayment

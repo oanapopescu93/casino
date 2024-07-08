@@ -54,15 +54,12 @@ function Payment(props){
 
     useEffect(() => {
         let pay = 0
-        let payExchange = 0
         switch(template){
             case "buy_carrots":
                 pay = qty * price_per_carrot
-                payExchange = qty * convertCurrency(price_per_carrot, currency, exchange_rates)
                 break
             case "checkout":
                 pay = totalPriceSum(true)
-                payExchange = totalPriceSum()
                 if(promo && Object.keys(promo).length>0){
                     pay = (pay - (pay * promo.discount)/100).toFixed(2)
                 }
@@ -394,7 +391,7 @@ function Payment(props){
                                 break
                             case "paypal":                                
                                 if(data.payload && data.payload.receipt_url){
-                                    window.open(data.payload.receipt_url,'_blank') // test--> email: sb-k6qar10423936@business.example.com pass: Ea$CGwt5
+                                    window.open(data.payload.receipt_url,'_blank')
                                 } else {
                                     showError(data)
                                 }
