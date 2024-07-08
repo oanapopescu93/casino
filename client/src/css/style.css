@@ -282,6 +282,15 @@ textarea:focus, input:focus{
 }
 .sign_container .input_container{
   text-align: left;
+  position: relative;
+  z-index: 1;
+}
+.sign_container .input_container .input_eye{
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  right: 65px;
+  cursor: pointer;
 }
 .sign_container_error{
   padding: var(--padding);

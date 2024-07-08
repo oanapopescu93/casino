@@ -86,6 +86,17 @@ function DashboardLeft(props){
         }
 	}
 
+    function handleWithdrawal(){
+        let payload = {
+            open: true,
+            template: "withdrawal",
+            title: "withdrawal",
+            size: "sm",
+            data: translate({lang: props.lang, info: "under_construction"})
+        }
+        dispatch(changePopup(payload))
+    }
+
     return <div id="dashboard_left" className="dashboard_box shadow_concav">
         <Row>
             <Col sm={12} md={4} lg={12} className="dashboard_user_pic">
@@ -114,13 +125,16 @@ function DashboardLeft(props){
                             <Col sm={12} className="dashboard_left_buttons">
                                 <Button type="button" onClick={()=>handleChoice("change_username")} className="mybutton button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "change_username"})}
-                                </Button>	
+                                </Button>
                                 <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "change_password"})}
-                                </Button>	
+                                </Button>
                                 <Button type="button" onClick={()=>handleChoice("buy_carrots")} className="mybutton button_fullcolor shadow_convex">
                                     {translate({lang: lang, info: "buy_carrots"})}
-                                </Button>	
+                                </Button>
+                                <Button type="button" onClick={()=>handleWithdrawal()} className="mybutton button_fullcolor shadow_convex">
+                                    {translate({lang: lang, info: "withdrawal"})}
+                                </Button>
                             </Col>
                         </Row>
                     </Col>

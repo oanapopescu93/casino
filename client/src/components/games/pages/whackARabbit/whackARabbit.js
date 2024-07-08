@@ -60,14 +60,15 @@ function whack_game(props){
             canvas_hammer = document.getElementById("whack_canvas_hammer")
             self.getImage().then((res)=>{
                 self.images = res
+                if(canvas && canvas_hammer){
+                    self.start()
+                }
             })
-        }
-        if(canvas && canvas_hammer){
-            self.createCanvas()
-            self.start()
-            self.drawHammer()
-            self.handleClick()
-        }
+        } else {
+            if(canvas && canvas_hammer){
+                self.start()
+            }
+        }       
     }
 
     this.createCanvas = function(){	
@@ -137,8 +138,11 @@ function whack_game(props){
     this.getTimer = function(secs){
         self.secs = secs
     }
-    this.start = function(){
-		ctx.clearRect(0,0, canvas.width, canvas.height)
+    this.start = function(){		
+        self.createCanvas()
+        self.drawHammer()
+        self.handleClick()
+        ctx.clearRect(0,0, canvas.width, canvas.height)
         self.animation(duration)
 	}
     this.animation = function(time){ 

@@ -121,6 +121,7 @@ var word_bank = {
     empty_input_agree: "Non hai accettato i Termini e condizioni e la Politica sulla privacy",
     account_issues: "Problemi dell'account", 
     payments_and_withdrawals: "Pagamenti e prelievi", 
+    withdrawal: "Ritiro",
     game_issues: "Problemi di gioco", 
     hiring: "Assunzione", 
 

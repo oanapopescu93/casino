@@ -120,6 +120,7 @@ var word_bank = {
     empty_input_agree: "您没有同意条款和隐私政策",
     account_issues: "账户问题", 
     payments_and_withdrawals: "支付和提款", 
+    withdrawal: "撤退",
     game_issues: "游戏问题", 
     hiring: "招聘", 
 

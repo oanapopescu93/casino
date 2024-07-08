@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changePopup } from '../../reducers/popup'
 import { isEmpty } from '../../utils/utils'
 import { Form, Button, Col, Row } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 function SignUp(props) {
     let isMinor = useSelector(state => state.auth.isMinor)
     const [email, setEmail] = useState('')
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
+    const [visible, setVisible] = useState(false)
     let dispatch = useDispatch()
 
     function handleChange(type, e){
@@ -48,6 +51,10 @@ function SignUp(props) {
         }
 	}, [isMinor]) 
 
+    function handleVisible(){
+        setVisible(!visible)
+    }
+
     return <div className="sign_up_container">
         <Form>
             <Row>
@@ -71,7 +78,10 @@ function SignUp(props) {
                     <div className="label">{translate({lang: props.lang, info: "password"})}</div>
                 </Col>
                 <Col sm={8} className="input_container">
-                    <input placeholder={translate({lang: props.lang, info: "password"})} className="input_light" type="password" value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
+                    <input placeholder={translate({lang: props.lang, info: "password"})} className="input_light" type={visible ? "text" : "password"} value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
+                    <div className="input_eye" onClick={()=>handleVisible()}>
+                        {visible ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}                        
+                    </div>
                 </Col>
             </Row>
             {(() => {

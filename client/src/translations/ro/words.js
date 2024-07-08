@@ -121,6 +121,7 @@ var word_bank = {
     empty_input_agree: "Nu ai fost de acord cu Termenii și condițiile și Politicile de confidențialitate",
     account_issues: "Probleme cu contul", 
     payments_and_withdrawals: "Plăți și retrageri", 
+    withdrawal: "Retragere",
     game_issues: "Probleme cu jocurile", 
     hiring: "Angajare", 
 

@@ -103,7 +103,7 @@ function Sign(props) {
                     break
             }
         }
-    } 
+    }
 
     useEffect(() => {
         const handleSignInRead = (data)=>{

@@ -120,6 +120,7 @@ var word_bank = {
     empty_input_agree: "You didn't agree with the Terms and contitions and the Policy privacy",
     account_issues: "Account issues", 
     payments_and_withdrawals: "Payments and withdrawals", 
+    withdrawal: "Withdrawal",
     game_issues: "Game issues", 
     hiring: "Hiring", 
 
