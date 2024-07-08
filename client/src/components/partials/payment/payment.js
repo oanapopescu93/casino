@@ -27,6 +27,9 @@ function Payment(props){
     let cart = useSelector(state => state.cart.cart) 
     let promo = useSelector(state => state.cart.promo)
 
+    const [radioOne, setRadioOne] = useState(payment_details.option === "1" ? true : false)
+    const [radioTwo, setRadioTwo] = useState(payment_details.option === "2" ? true : false)
+    const [radioThree, setRadioThree] = useState(payment_details.option === "3" ? true : false)
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(1)
     const [month, setMonth] = useState(payment_details.month !== -1 ? payment_details.month : -1)
@@ -84,6 +87,36 @@ function Payment(props){
             }
         }
         return total
+    }
+
+    function handleChangeCheck(x){
+        switch(x){
+            case "radio3":	
+                setRadioOne(false)			
+                setRadioTwo(false)
+                setRadioThree(true)		
+                if(typeof props.getChanges === "function"){
+                    props.getChanges({type: 'gateway', value: 'crypto'})
+                }
+                break
+            case "radio2":	
+                setRadioOne(false)			
+                setRadioTwo(true)
+                setRadioThree(false)		
+                if(typeof props.getChanges === "function"){
+                    props.getChanges({type: 'gateway', value: 'paypal'})
+                }
+                break
+            case "radio1":	
+            default:
+                setRadioOne(true)			
+                setRadioTwo(false)
+                setRadioThree(false)		
+                if(typeof props.getChanges === "function"){
+                    props.getChanges({type: 'gateway', value: 'stripe'})
+                }
+                break
+        }
     }
 
     useEffect(() => {
@@ -282,7 +315,8 @@ function Payment(props){
             open: true,
             template: "error",
             title: translate({lang: props.lang, info: "error"}),
-            data: translate({lang: props.lang, info: typeof data.payload === "string" ? data.payload : "error_charge"})
+            data: translate({lang: props.lang, info: typeof data.payload === "string" ? data.payload : "error_charge"}),
+            size: 'sm',
         }
         dispatch(changePopup(payload))
     }
@@ -358,37 +392,15 @@ function Payment(props){
                                     showError(data)
                                 }
                                 break
-                            case "paypal":
-                                //console.log('sendPayload2--> ', data)
+                            case "paypal":                                
                                 if(data.payload && data.payload.receipt_url){
-                                    window.open(data.payload.receipt_url,'_blank')
+                                    window.open(data.payload.receipt_url,'_blank') // test--> email: sb-k6qar10423936@business.example.com pass: Ea$CGwt5
                                 } else {
                                     showError(data)
                                 }
                                 break
                             case "crypto": 
-                                //console.log('sendPayload2--> ', data)
-                                let iid = data.iid
-                                if(data.payload && data.payload.invoice_url){
-                                    window.open(data.payload.invoice_url,'_blank')
-                                } else {
-                                    let payload = {
-                                        open: true,
-                                        template: "error",
-                                        title: translate({lang: props.lang, info: "error"}),
-                                        data: translate({lang: props.lang, info: typeof data.payload === "string" ? data.payload : "error_charge"})
-                                    }
-                                    dispatch(changePopup(payload))
-                                }                                
-                                if(typeof iid !== "undefined" && iid !== "null" && iid !== null && iid !== ""  && iid > 0){
-                                    postData('/api/crypto_pay', {iid}).then((data) => {                              
-                                        if (data.payload.payment_id) {
-                                            checkCryptoPaymentStatus(iid, data.payload.payment_id)
-                                        } else {
-                                            showError(data)
-                                        }
-                                    })
-                                }
+                                //console.log('sendPayload2--> ', data)                                
                                 break 
                             default:
                                 showError()
@@ -410,54 +422,6 @@ function Payment(props){
         } else {
             showError()
         }
-    }
-    
-    function checkCryptoPaymentStatus(iid, payment_id){
-        let counter = 0
-        let maxChecks = 10
-        let interval = 60000 // 1 minute
-
-        let tt = setInterval(() => {
-            if (counter >= maxChecks) {
-                clearInterval(tt)
-                showError()
-            } else {
-                counter++
-                postData('/api/crypto_status', { paymentId: payment_id }).then((data) => {
-                    //console.log('sendPayload5--> ', iid, payment_id, data)
-                    if (data && data.result === "success") {
-                        const paymentStatus = data.payload.payment_status
-                        const actuallyPaid = data.payload.actually_paid
-                        const payAmount = data.payload.pay_amount
-                        if ((paymentStatus === 'confirmed' || paymentStatus === 'finished') && actuallyPaid >= payAmount) {
-                            clearInterval(tt)
-                            let payload = {
-                                open: true,
-                                template: "paymentSuccess",
-                                title: translate({lang: props.lang, info: "payment_success"}),
-                                data: {
-                                    id: data.payload.id,
-                                    amount: data.payload.amount,
-                                    created: 'date will come here',
-                                    gateway
-                                },
-                                size: 'lg',
-                            }
-                            dispatch(changePopup(payload))
-                        }
-                    } else {
-                        console.error("Error checking payment status", data.payload)
-                        let payload = {
-                            open: true,
-                            template: "error",
-                            title: translate({lang: props.lang, info: "error"}),
-                            data: translate({lang: props.lang, info: "error_charge"})
-                        }
-                        dispatch(changePopup(payload))
-                    }
-                });
-            }
-        }, interval)
     }
 
     return<Row>
@@ -481,6 +445,10 @@ function Payment(props){
                     gateway={gateway}
                     gatewayDetailsMandatory={gatewayDetailsMandatory}
                     paymentDetails={payment_details}
+                    radioOne={radioOne}
+                    radioTwo={radioTwo}
+                    radioThree={radioThree}
+                    handleChangeCheck={(e)=>handleChangeCheck(e)}
                 />
             </Col>
             <Col sm={4}>
@@ -533,7 +501,7 @@ function Payment(props){
                             ><FontAwesomeIcon icon={icon} /> {translate({lang: lang, info: choice})}</Button> : null}</>
                         })()}
                     </Col>
-                </Row>
+                </Row>               
             </Col>
         </>}
     </Row>

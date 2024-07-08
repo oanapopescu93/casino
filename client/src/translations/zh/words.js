@@ -227,6 +227,8 @@ var word_bank = {
     save: "保存",
     payment_success: "支付成功",
     payment_success_text: "您已完成支付",
+    payment_cancel: "支付已取消",
+    payment_cancel_text: "您已取消支付",
     order_info: "订单信息",
     payment_id: "支付ID",
     date: "日期",

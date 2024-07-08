@@ -228,6 +228,8 @@ var word_bank = {
     save: "Salvează",
     payment_success: "Plată reușită",
     payment_success_text: "Ați finalizat plata",
+    payment_cancel: "Plata anulată",
+    payment_cancel_text: "Ați anulat plata",
     order_info: "Informații despre comandă",
     payment_id: "ID plată",
     date: "Dată",

@@ -28,18 +28,24 @@ function OrderDetails(props) {
     let status_color = "default"
     switch(status) {
         case 'succeeded':
+        case 'approved':
+        case 'completed':
             status_color = "green"
-            break;
+            break
         case 'requires_action':
+        case 'pending':
             status_color = "orange"
             break
         case 'requires_payment_method':
         case 'requires_confirmation':
         case 'requires_capture':
+        case 'failed':
+        case 'denied':
             status_color = "red"
             break
         case 'processing':
         case 'canceled':
+        case 'expired':
         default:
             status_color = "default"
             break
@@ -62,7 +68,7 @@ function OrderDetails(props) {
                     </div>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'payment_method'})}:</span>
-                        <span className="value">{payment_method}</span>
+                        <span className="value">{payment_method ? payment_method : "-"}</span>
                     </div>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'date'})}:</span>
@@ -70,7 +76,7 @@ function OrderDetails(props) {
                     </div>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'description'})}:</span>
-                        <span className="value">{description}</span>
+                        <span className="value">{description ? description : "-"}</span>
                     </div> 
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'status'})}:</span>
@@ -81,34 +87,47 @@ function OrderDetails(props) {
                     <h3>{translate({lang: lang, info: 'customer_info'})}</h3>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'customer_id'})}:</span>
-                        <span className="value">{customer_id}</span>
+                        <span className="value">{customer_id ? customer_id : "-"}</span>
                     </div>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'country'})}:</span>
-                        <span className="value">{country}</span>
+                        <span className="value">{country ? country : "-"}</span>
                     </div>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'city'})}:</span>
-                        <span className="value">{city}</span>
+                        <span className="value">{city ? city : "-"}</span>
                     </div>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'email'})}:</span>
-                        <span className="value">{email}</span>
+                        <span className="value">{email ? email : "-"}</span>
                     </div>
                     <div className="order_detail_item">
                         <span className="label">{translate({lang: lang, info: 'phone'})}:</span>
-                        <span className="value">{phone}</span>
+                        <span className="value">{phone ? phone : "-"}</span>
                     </div>
                 </Col>
             </Row>
             <Row>
                 <Col sm={12} className="orderDetails_order_detail_items">
                     <h3>{translate({lang: lang, info: 'items'})}:</h3>
-                    <ul className="items">
-                        {Object.keys(items).map(key => (
-                            <li key={key} className="item">{items[key]}</li>
-                        ))}
-                    </ul>
+                    {(() => {
+                        switch(method){
+                            case "stripe":
+                                return <ul className="items">
+                                    {Object.keys(items).map(key => (
+                                        <li key={key} className="item">{items[key]}</li>
+                                    ))}
+                                </ul>
+                            case "paypal":
+                                return <ul className="items">
+                                    {items.map((item, index) => (
+                                        <li key={index} className="item">
+                                            {item.name}: {item.quantity} x {item.price} {item.currency}
+                                        </li>
+                                    ))}
+                                </ul>
+                        }
+                    })()}                     
                 </Col>
             </Row>        
         </div>

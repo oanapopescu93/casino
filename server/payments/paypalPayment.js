@@ -12,21 +12,22 @@ paypal.configure({
   'client_secret': PAYPAL_CLIENT_SECRET
 })
 const MINIMUM_AMOUNT_USD = 0.01
-let amount = 0
+let amountPaypal = 0
 
 paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
-  const { email, amount, products, description } = req.body
+  const { amount, products, description } = req.body
 
   if(amount){
     // Calculate total amount based on lineItems
     const totalAmount = products.reduce((acc, product) => {
       return acc + (product.price * product.qty)
     }, 0)
+    amountPaypal = totalAmount
 
     if (totalAmount < MINIMUM_AMOUNT_USD) {
       return res.json({ type: "paypal", result: "error", payload: 'amount_too_low' })
     }
-
+   
     let itemList = products.map(product => {
       return {
         name: product.name_eng,
@@ -42,8 +43,8 @@ paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
         payment_method: "paypal",
       },
       redirect_urls: {
-        return_url: `/api/paypal/success`,
-        cancel_url: "/api/paypal/cancel",
+        return_url: `http://localhost:8088/api/paypal/success`,
+        cancel_url: "http://localhost:8088/api/paypal/cancel",
       },
       transactions: [
         {
@@ -80,46 +81,36 @@ paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
     return res.json({type: "paypal", result: "error", payload: 'no_money'})
   }
 })
-paypalPayment.post('/api/paypal/checkPaypalPaymentStatus', jsonParser, (req, res) => {
-  const { paymentId} = req.body
 
-  if (!paymentId) {
-    res.json({type: "paypal", result: "error", payload: 'error_charge'})
-  }
-
-  paypal.payment.get(paymentId, function (error, payment) {
-    if (error) {
-      res.json({type: "paypal", result: "error", payload: 'error_charge', details: error})
-    } else {
-      res.json({type: "paypal", result: 'success', payment})
-    }
-  })
-})
 paypalPayment.post('/api/paypal/success', jsonParser, (req, res) => {
   const { payerId, paymentId} = req.body 
 
-  if(!payerId || paymentId){
+  if(!payerId || !paymentId){
     return res.json({ type: "paypal", result: "error", payload: 'error_charge' })
   }
-  
-  const execute_payment_json = {
-    payer_id: payerId,
-    transactions: [{
-      amount: {
-        currency: 'USD', 
-        total: amount.toFixed(2), 
-      },
-    }],
-  }
-  
-  paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-    if (error) {
-      res.json({ type: "paypal", result: "error", payload: 'error_charge', details: error.response })
-    } else {
-      res.json({ type: "paypal", result: "success", payload: payment })
-    }
-  })
+
+  if(amountPaypal && amountPaypal > 0){  
+    const execute_payment_json = {
+      payer_id: payerId,
+      transactions: [{
+        amount: {
+          currency: 'USD', 
+          total: amountPaypal.toFixed(2), 
+        },
+      }],
+    }    
+    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+      if (error) {
+        res.json({ type: "paypal", result: "error", payload: 'error_charge', details: error.response })
+      } else {
+        res.json({ type: "paypal", result: "success", payload: payment })
+      }
+    })
+  } else {
+    res.json({ type: "paypal", result: "error", payload: 'error_charge' })
+  }  
 })
+
 paypalPayment.post('/api/paypal/cancel', jsonParser, (req, res) => {
   res.json({ type: "paypal", result: "cancel"}) 
 })

@@ -227,6 +227,8 @@ var word_bank = {
     save: "Speichern",
     payment_success: "Zahlung erfolgreich",
     payment_success_text: "Sie haben Ihre Zahlung abgeschlossen",
+    payment_cancel: "Zahlung abgebrochen",
+    payment_cancel_text: "Sie haben Ihre Zahlung abgebrochen",
     order_info: "Bestellinformation",
     payment_id: "Zahlungs-ID",
     date: "Datum",

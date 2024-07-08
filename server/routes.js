@@ -19,6 +19,11 @@ const { get_exchangerate, filterRates } = require("./utils/other")
 
 var jsonParser = bodyParser.json() 
 router.use(express.static(path.resolve(__dirname, '../client/build')))
+
+router.get('/success', (req, res) => {
+  res.send({send: "success"})
+})
+
 router.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })

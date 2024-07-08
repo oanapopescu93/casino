@@ -228,6 +228,8 @@ var word_bank = {
     save: "Salva",
     payment_success: "Pagamento riuscito",
     payment_success_text: "Hai completato il tuo pagamento",
+    payment_cancel: "Pagamento annullato",
+    payment_cancel_text: "Hai annullato il tuo pagamento",
     order_info: "Informazioni sull'ordine",
     payment_id: "ID di pagamento",
     date: "Data",
