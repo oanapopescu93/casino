@@ -77,7 +77,9 @@ function Home(props) {
                 } else {
                     showError(data)
                 }
-            })
+            }).catch((error) => {
+                console.error('Error:', error)
+            });
         }
     }
     const checkPaypalPaymentCancel = async () => {
