@@ -5,8 +5,8 @@ import rabbit_sit from '../../../../img/rabbit_move/rabbit000.png'
 import rabbit_move from '../../../../img/rabbit_move/rabbit_move_colored.png'
 import obstacle from '../../../../img/icons/obstacle.png'
 import { decryptData } from '../../../../utils/crypto'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
 import $ from 'jquery'
 import { translate } from '../../../../translations/translate'
@@ -430,6 +430,7 @@ function race_game(props){
 			}
 		}
 	}
+	
 	let lane_list = []
 	let rabbit_list = []
 	let money_per_win = 10
@@ -856,6 +857,7 @@ function race_game(props){
 		rabbit_list = self.order_rabbits(rabbit_list)
 		let money_original = props.user.money ? decryptData(props.user.money) : 0 
 		let money_history = money_original
+		
 		for(let i in rabbit_array){
 			if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
 				let bet = rabbit_array[i].bet
@@ -958,24 +960,30 @@ function RaceGame(props){
         }
     }, [props.socket])
 
-    return <>
-		<div className="game_container race_game_container">
-			<div className="race_order_container">
-				<div id="race_order"></div>
-			</div>
-			<canvas id="race_canvas" className="shadow_convex" />
+    return <div className="game_container race_game_container">
+		<div className="race_order_container">
+			<div id="race_order"></div>
 		</div>
-		<div className="page_exit">
+		<canvas id="race_canvas" className="shadow_convex" />
+		<div className="button_action_group">
+			{!props.bets || props.bets.length === 0 ? <div className="tooltip">
+				<Button 
+					type="button" 
+					className="mybutton round button_transparent shadow_convex"
+					onClick={()=>props.handleStartGame()} 
+				><FontAwesomeIcon icon={faPlay} /></Button>
+				<span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+			</div> : null}
 			<div className="tooltip">
-                <Button 
-                    type="button" 
-                    className="mybutton round button_transparent shadow_convex"
-                    onClick={()=>props.handleHandleExit()} 
-                ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
-            </div>
+				<Button 
+					type="button" 
+					className="mybutton round button_transparent shadow_convex"
+					onClick={()=>props.handleHandleExit()} 
+				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+				<span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+			</div>
 		</div>
-	</>
+	</div>
 }
 
 export default RaceGame

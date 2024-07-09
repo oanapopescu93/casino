@@ -63,7 +63,11 @@ const gamesSlice = createSlice({
             state.keno.lucky_bet = payload
         },
 
-        resetAuth: () => initialState,
+        resetGame: (state, { payload }) => {
+            if (initialState[payload]) {
+                state[payload] = initialState[payload]
+            }
+        },
     }
 })
 
@@ -82,6 +86,7 @@ export const {
     changeRaceLuckyBet,
     changeKenoLuckyBet,
     
+    resetGame,
 } = gamesSlice.actions
 
 export default gamesSlice.reducer

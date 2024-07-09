@@ -5,7 +5,7 @@ import { checkoutData } from '../../../../utils/utils'
 import countriesData from '../../../../utils/constants/countries.json'
 
 function Stripe(props) {
-    const {lang, paymentDetails, gateway, gatewayDetailsMandatory, paymentError} = props
+    const {lang, paymentDetails, gateway, gatewayDetailsMandatory, paymentError, minimum_amount_usd} = props
 
     const [name] = useState(paymentDetails.name !== "" ? paymentDetails.name : "")
     const [email] = useState(paymentDetails.email !== "" ? paymentDetails.email : "")
@@ -284,6 +284,11 @@ function Stripe(props) {
                         </p>
                     </div> : null}
                 </>}
+            </Col>
+        </Row>
+        <Row>
+            <Col sm={12}>
+                <p><span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount_usd} USD</span></p>
             </Col>
         </Row>
     </>

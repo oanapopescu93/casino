@@ -6,7 +6,8 @@ import Stripe from './type/stripe'
 import Crypto from './type/crypto'
 
 function PaymentForm(props){
-    const {radioOne, radioTwo, radioThree} = props    
+    const {radioOne, radioTwo, radioThree} = props
+    const minimum_amount_usd = 10
 
     function handleChangeCheck(x){
         if(typeof props.handleChangeCheck === "function"){
@@ -35,13 +36,13 @@ function PaymentForm(props){
         </Row>        
         {(() => {
             if(radioOne){
-                return <Stripe {...props}/>
+                return <Stripe {...props} minimum_amount_usd={minimum_amount_usd}/>
             }
             if(radioTwo){
-                return <Paypal {...props}/>
+                return <Paypal {...props} minimum_amount_usd={minimum_amount_usd}/>
             }
             if(radioThree){
-                return <Crypto {...props} />
+                return <Crypto {...props}/>
             }
         })()}
     </form>

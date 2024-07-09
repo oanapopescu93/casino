@@ -138,7 +138,6 @@ export const randomIntFromInterval = (min, max)=>{ // min and max included
 }
 
 export const postData = async (url = "", data = {})=>{
-  console.log('postData--> ', url, data)
   try {
     const response = await fetch(url, {
         method: "POST",
@@ -164,7 +163,6 @@ export const postData = async (url = "", data = {})=>{
 }
 
 export const getData = async (url = "")=>{
-  console.log('getData--> ', url)
   try {
     const response = await fetch(url, {
         method: "GET",

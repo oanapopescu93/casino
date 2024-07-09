@@ -261,6 +261,9 @@ var word_bank = {
     chargeId: "ID",
     method: "方法",
 
+    // withdraw
+    not_enough_money_withdrawal: "You don't have enough money to make a withdrawal.",
+
     // blackjack
     start: "开始",
     hit: "要牌",
@@ -302,7 +305,7 @@ var word_bank = {
     raise: "加注",
     showdown: "摊牌",
     invalid_raise: "加注无效",
-    no_enough_money: "资金不足",
+    not_enough_money: "资金不足",
 
     // results
     results: "结果",

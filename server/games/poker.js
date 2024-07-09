@@ -278,7 +278,7 @@ function poker(data, user_join){
                 return {error: 'invalid_raise'} //Invalid raise amount. Must raise more than the amount to call.
             }
             if(data.action === "call" && players[index].money < amountToCall) {
-                return {error: 'no_enough_money'} //Insufficient money to call.
+                return {error: 'not_enough_money'} //Insufficient money to call.
             }
             
             // Update the player's bet and pot

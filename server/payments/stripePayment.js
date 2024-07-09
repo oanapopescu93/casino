@@ -4,17 +4,17 @@ var stripePayment = express.Router()
 
 var jsonParser = bodyParser.json()
 const stripe = require('stripe')("sk_test_51Mdvu1CWq9uV6YuM2iH4wZdBXlSMfexDymB6hHwpmH3J9Dm7owHNBhq4l4wawzFV9dXL3xrYGbhO74oc8OeQn5uJ00It2XDg9U")
-const MINIMUM_AMOUNT_USD = 50
+const MINIMUM_AMOUNT_USD = 1000
 
 stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
     const { name, email, country, city, phone, cardNumber, month, year, cvv, amount, products, description } = req.body
 
-    if(!name || !email || !cardNumber || !month || !year || !cvv){
+    if(!name || !email || !cardNumber || !month || !year || !cvv){        
         return res.json({ type: "stripe", result: "error", payload: 'error_charge' })
-    }
+    }    
 
     if (amount) {
-        if (amount * 100 < MINIMUM_AMOUNT_USD) {
+        if (amount * 100 < MINIMUM_AMOUNT_USD) {            
             return res.json({ type: "stripe", result: "error", payload: 'amount_too_low' })
         }
 

@@ -11,7 +11,7 @@ paypal.configure({
   'client_id': PAYPAL_CLIENT_ID,
   'client_secret': PAYPAL_CLIENT_SECRET
 })
-const MINIMUM_AMOUNT_USD = 0.01
+const MINIMUM_AMOUNT_USD = 10
 let amountPaypal = 0
 const BASE_URL = process.env.BASE_URL
 

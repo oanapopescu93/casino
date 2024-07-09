@@ -2789,6 +2789,32 @@ textarea {
   margin-left: var(--padding_small);
 }
 
+/* WITHDRAW */
+#withdraw_form h3, .checkbox_radio_container.withdraw_details_title{
+  padding: var(--padding_small);
+  margin-bottom: var(--padding_small);
+  border-bottom: solid 1px var(--color);
+}
+#withdraw_form label{
+  margin-bottom: var(--padding_small);
+}
+#withdraw_form .dropdown .dropdown-toggle{
+  height: 25px;
+  width: 100%;
+  font-size: 14px;
+  line-height: 6px;
+}
+#withdraw_form input, #withdraw_form .dropdown{
+  margin-bottom: var(--padding);
+}
+#withdraw_form .alert{
+  margin-top: 0px;
+  margin-bottom: var(--padding);
+}
+#withdraw_form .button_action_group button{
+  margin: var(--padding_small);
+}
+
 /* SLOTS */
 .slot_machine{
 	display: inline-block;
@@ -3253,6 +3279,9 @@ textarea {
 	border:solid 1px var(--color);
 	border-radius: var(--radius);
 	background-image: radial-gradient(transparent, black);
+}
+.race_game_container .button_action_group{
+  margin-top: var(--padding);
 }
 
 /* KENO */
@@ -3769,7 +3798,7 @@ textarea {
   #game_bets_clear svg{
     font-size: 18px;
   }
-  input, textarea, #payment_form .dropdown .dropdown-toggle{
+  input, textarea, #payment_form .dropdown .dropdown-toggle, #withdraw_form .dropdown .dropdown-toggle{
     font-size: 12px;
     line-height: 6px;
     height: 20px;

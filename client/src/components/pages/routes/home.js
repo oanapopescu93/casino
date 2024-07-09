@@ -11,11 +11,12 @@ import OtherPages from '../otherPages'
 import ButtonDonation from '../donation/buttonDonation'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import Header from '../../partials/header'
-import { getData, postData } from '../../../utils/utils'
+import { postData } from '../../../utils/utils'
 import { translate } from '../../../translations/translate'
 import { changePopup } from '../../../reducers/popup'
 import { orderAdd } from '../../../reducers/order'
 import { cartRemoveAll } from '../../../reducers/cart'
+import Withdraw from '../withdraw/withdraw'
 
 function Home(props) {
     const {home, page, user, cookies, currency, exchange_rates} = props
@@ -26,6 +27,8 @@ function Home(props) {
     }
     function handleDonationClick(){
         dispatch(changePage('Donation'))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
     } 
 
     function handleExit(){
@@ -40,52 +43,52 @@ function Home(props) {
     }, [])
 
     const checkPaypalPaymentSuccess = async () => {
-        const url = new URL(window.location.href)
-        let paymentId = url.searchParams.get('paymentId')
-        let payerId = url.searchParams.get('PayerID')
-        if(paymentId && payerId){
-            postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{
-                if(data.payload && data.result === "success"){
-                    let details = {
-                        method: "paypal",
-                        user_uid: user.uuid,
-                        payment_id: data.payload.id,
-                        customer_id: data.payload.payer.payer_info.payer_id,
-                        order_date: data.payload.create_time,
-                        amount: parseFloat(data.payload.transactions[0].amount.total),  
-                        payment_method: data.payload.payer.payment_method,
-                        status: data.payload.state,
-                        country: data.payload.payer.payer_info.country_code,
-                        email: data.payload.payer.payer_info.email,
-                        description: data.payload.transactions[0].description,
-                        currency: data.payload.transactions[0].amount.currency,
-                        currencyExchange: currency,
-                        items: data.payload.transactions[0].item_list.items,
-                        exchange_rates: exchange_rates             
+        if(window.location.pathname.includes('/api/paypal/success')){
+            const url = new URL(window.location.href)
+            let paymentId = url.searchParams.get('paymentId')
+            let payerId = url.searchParams.get('PayerID')
+            if(paymentId && payerId){
+                postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{
+                    if(data.payload && data.result === "success"){
+                        let details = {
+                            method: "paypal",
+                            user_uid: user.uuid,
+                            payment_id: data.payload.id,
+                            customer_id: data.payload.payer.payer_info.payer_id,
+                            order_date: data.payload.create_time,
+                            amount: parseFloat(data.payload.transactions[0].amount.total),  
+                            payment_method: data.payload.payer.payment_method,
+                            status: data.payload.state,
+                            country: data.payload.payer.payer_info.country_code,
+                            email: data.payload.payer.payer_info.email,
+                            description: data.payload.transactions[0].description,
+                            currency: data.payload.transactions[0].amount.currency,
+                            currencyExchange: currency,
+                            items: data.payload.transactions[0].item_list.items,
+                            exchange_rates: exchange_rates             
+                        }
+                        let payload = {
+                            open: true,
+                            template: "paymentSuccess",
+                            title: translate({lang: props.lang, info: "payment_success"}),
+                            data: details,
+                            size: 'md',
+                        }
+                        dispatch(changePopup(payload)) //show success popup
+                        dispatch(cartRemoveAll()) //remove all from cart
+                        dispatch(orderAdd(details)) // add payment to order list
+                    } else {
+                        showError(data)
                     }
-                    let payload = {
-                        open: true,
-                        template: "paymentSuccess",
-                        title: translate({lang: props.lang, info: "payment_success"}),
-                        data: details,
-                        size: 'md',
-                    }
-                    dispatch(changePopup(payload)) //show success popup
-                    dispatch(cartRemoveAll()) //remove all from cart
-                    dispatch(orderAdd(details)) // add payment to order list
-                } else {
-                    showError(data)
-                }
-            }).catch((error) => {
-                console.error('Error:', error)
-            })
-        }
+                }).catch((error) => {
+                    console.error('Error:', error)
+                })
+            }
+        }        
     }
     const checkPaypalPaymentCancel = async () => {
-        const url = new URL(window.location.href)
-        let token = url.searchParams.get('token')
-        if(token){
-            postData('/api/paypal/cancel', {token}).then((data)=>{
+        if(window.location.pathname.includes('/api/paypal/cancel')){
+            postData('/api/paypal/cancel', {}).then((data)=>{
                 if(data && data.result === "cancel"){
                     let payload = {
                         open: true,
@@ -127,6 +130,8 @@ function Home(props) {
                 case "BuyCarrots":                    
                 case "how_to_play":  
                     return <OtherPages {...props}/>
+                case "Withdraw":
+                    return <Withdraw {...props}/>
                 case "Salon":
                     switch (page.game_page) {
                         case "dashboard":

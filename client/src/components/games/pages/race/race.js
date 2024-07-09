@@ -4,6 +4,7 @@ import RaceTables from './raceTables'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { translate } from '../../../../translations/translate'
+import { resetGame } from '../../../../reducers/games'
 
 function Race(props){
     const [startRace, setStartRace] = useState(false)
@@ -37,12 +38,21 @@ function Race(props){
 	}
 
     function resetBets(){
+        dispatch(resetGame("race"))
         setBets([])
+    }
+
+    function handleStartGame(){
         setStartRace(false)
     }
 
     return <>
-        {startRace ? <RaceGame {...props} bets={bets} resetBets={()=>resetBets()} /> : <RaceTables {...props} getData={(x)=>getData(x)} />}
+        {startRace ? <RaceGame 
+            {...props} 
+            bets={bets} 
+            resetBets={()=>resetBets()} 
+            handleStartGame={()=>handleStartGame()}
+        /> : <RaceTables {...props} getData={(x)=>getData(x)} />}
     </>
 }
 

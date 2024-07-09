@@ -237,7 +237,7 @@ function Payment(props){
 
     function validateSubmit(data){
         let pay_card = data.option === "1" ? true : false
-        let pay_paypal = data.option === "2" ? true : false
+        // let pay_paypal = data.option === "2" ? true : false
         let pay_crypto = data.option === "3" ? true : false    
         let errors = paymentErrors()
 
@@ -277,14 +277,7 @@ function Payment(props){
                 errors.cvv.validate = false
             }
         }
-        if(pay_paypal){
-            if(isEmpty(data.email)){
-                errors.email.fill = false
-            }
-            if(!validateInput(data.email, "email")){
-                errors.email.validate = false
-            }
-        }
+        //if(pay_paypal){}
         if(pay_crypto){
             if(isEmpty(data.bitcoin_address)){
                 errors.bitcoinAddress.fill = false
@@ -308,6 +301,7 @@ function Payment(props){
     }
 
     function showError(data={}){
+        console.log('error ', data)
         let payload = {
             open: true,
             template: "error",
@@ -404,7 +398,7 @@ function Payment(props){
                                 break
                         }
                     } else {
-                        showError()
+                        showError(data)
                     }
                 })
             } else {

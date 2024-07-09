@@ -261,6 +261,9 @@ var word_bank = {
     id: "ID",
     method: "Method",
 
+    // withdraw
+    not_enough_money_withdrawal: "You don't have enough money to make a withdrawal.",
+
     // blackjack
     start: "Start",
     hit: "Hit",
@@ -302,7 +305,7 @@ var word_bank = {
     raise: "Raise",
     showdown: "Showdown",
     invalid_raise: "Invalid raise",
-    no_enough_money: "Not enough money",
+    not_enough_money: "Not enough money",
 
     // results
     results: "Results",

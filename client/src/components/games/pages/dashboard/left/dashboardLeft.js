@@ -50,6 +50,7 @@ function DashboardLeft(props){
     let animal = profiles.filter((x)=>{
         return x.id === parseInt(picId)
     })
+    let min_amount_withdraw = 10000
 
     function handleChoice(choice){
         if(choice === "buy_carrots"){
@@ -87,14 +88,24 @@ function DashboardLeft(props){
 	}
 
     function handleWithdrawal(){
-        let payload = {
-            open: true,
-            template: "withdrawal",
-            title: "withdrawal",
-            size: "sm",
-            data: translate({lang: props.lang, info: "under_construction"})
-        }
-        dispatch(changePopup(payload))
+        // dispatch(changePage('Withdraw'))
+        // dispatch(changeGame(null))
+        // dispatch(changeGamePage(null))
+
+        if(money > min_amount_withdraw){
+            dispatch(changePage('Withdraw'))
+            dispatch(changeGame(null))
+            dispatch(changeGamePage(null))
+        } else {
+            let payload = {
+                open: true,
+                template: "error",
+                title: "error",
+                size: "sm",
+                data: translate({lang: props.lang, info: "not_enough_money_withdrawal"})
+            }
+            dispatch(changePopup(payload))
+        }        
     }
 
     return <div id="dashboard_left" className="dashboard_box shadow_concav">

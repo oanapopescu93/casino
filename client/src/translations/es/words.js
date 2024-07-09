@@ -262,6 +262,9 @@ var word_bank = {
     id: "ID",
     method: "Método",
 
+    // withdraw
+    not_enough_money_withdrawal: "You don't have enough money to make a withdrawal.",
+
     // blackjack
     start: "Comenzar",
     hit: "Pedir carta",

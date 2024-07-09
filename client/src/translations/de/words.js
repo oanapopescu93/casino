@@ -260,6 +260,9 @@ var word_bank = {
     postal_code: "Postleitzahl",
     id: "ID",
     method: "Methode",
+    
+    // withdraw
+    not_enough_money_withdrawal: "You don't have enough money to make a withdrawal.",
 
     // blackjack
     start: "Start",
