@@ -35,6 +35,11 @@ function Home(props) {
     }
 
     useEffect(() => {  
+        const url = new URL(window.location.href)
+        let paymentId = url.searchParams.get('paymentId')
+        let payerId = url.searchParams.get('PayerID')
+
+        console.log('home ', url, paymentId, payerId)
         checkPaypalPaymentSuccess()
         checkPaypalPaymentCancel()
     }, [])
