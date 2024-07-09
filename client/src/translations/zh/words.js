@@ -318,6 +318,9 @@ var word_bank = {
     prize: "奖品",
     prizes: "奖品",
     our_casino: "我们的赌场",
+    
+    //401
+    page_not_found_text: "抱歉，您查找的页面不存在。可能已移动或删除，或者您输入了错误的网址。",
 }
 
 export const wordsZh = (info)=>{

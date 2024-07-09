@@ -319,6 +319,9 @@ var word_bank = {
     prize: "Premiu",
     prizes: "Premii",
     our_casino: "casinoul nostru",
+    
+    //401
+    page_not_found_text: "Ne pare rău, pagina pe care o căutați nu există. Este posibil să fi fost mutată sau ștearsă, sau ați introdus URL-ul incorect.",
 }
 
 export const wordsRo = (info)=>{

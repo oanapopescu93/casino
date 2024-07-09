@@ -319,6 +319,9 @@ var word_bank = {
     prize: "Prêmio",
     prizes: "Prêmios",
     our_casino: "Nosso Cassino",
+    
+    //401
+    page_not_found_text: "Desculpe, a página que você está procurando não existe. Pode ter sido movida ou excluída, ou você pode ter digitado o URL incorretamente.",
 }
 
 export const wordsPt = (info)=>{

@@ -85,10 +85,17 @@ function Header(props){
                             return
                         }
                     case "page":
-                        //ex: dashboard, market
-                        return <div id={"panel_user_"+details.game_page} className="header">
-                            <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
-                        </div>
+                        if(details.game_page){
+                            //ex: dashboard, market
+                            return <div id={"panel_user_"+details.game_page} className="header">
+                                <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
+                            </div>
+                        } else {
+                            //just a normal page
+                            return <div className="header">
+                                <h1 className="title">{translate({lang: lang, info: details})}</h1>
+                            </div>
+                        }                        
                     case "sign":
                         return <div id="header_sign" className="header">
                             <img id="logo_icon" alt="logo_icon" src={logo_icon} />

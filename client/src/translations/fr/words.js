@@ -318,7 +318,10 @@ var word_bank = {
     welcome_text: "100 carottes gratuites!",
     prize: "Prix",
     prizes: "Prix",
-    our_casino: "notre casino"
+    our_casino: "notre casino",
+    
+    //401
+    page_not_found_text: "Désolé, la page que vous recherchez n'existe pas. Elle a peut-être été déplacée ou supprimée, ou vous avez peut-être saisi incorrectement l'URL.",
 }
 
 export const wordsFr = (info)=>{

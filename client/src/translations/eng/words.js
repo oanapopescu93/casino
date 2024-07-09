@@ -318,6 +318,9 @@ var word_bank = {
     prize: "Prize",
     prizes: "Prizes",
     our_casino: "our Casino",
+
+    //401
+    page_not_found_text: "Sorry, the page you are looking for does not exist. It might have been moved or deleted, or you might have typed the URL incorrectly."
 }
 
 export const wordsEng = (info)=>{

@@ -46,10 +46,6 @@ router.post("/api/exchange_rates", jsonParser, (req, res, next) => {
   })  
 })
 
-router.get('/success', (req, res) => {
-  res.send({send: "success"})
-})
-
 router.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })

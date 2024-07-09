@@ -3604,6 +3604,33 @@ textarea {
   text-decoration: underline;
 }
 
+/* 401 */
+.page_not_found_box{
+  display: inline-block;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: var(--padding);
+}
+.page_not_found_box table, .page_not_found_box tr{
+  width: 100%;
+}
+.page_not_found_box img{
+  width: 100%;
+}
+.page_not_found_box .title{
+  margin-bottom: var(--padding);
+}
+.page_not_found_box tr{
+  width: 100%;
+}
+.page_not_found_img{
+  width: 20%;
+  max-width: 100px;
+}
+.page_not_found_text .button_action_group{
+  margin-top: var(--padding);
+}
+
 /* media */
 @media (max-width: 1600px){
 	.shop_shader{
