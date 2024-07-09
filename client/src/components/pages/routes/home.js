@@ -44,8 +44,12 @@ function Home(props) {
         let paymentId = url.searchParams.get('paymentId')
         let payerId = url.searchParams.get('PayerID')
 
+        console.log('checkPaypalPaymentSuccess0 ', url, paymentId, payerId)
+
         if(paymentId && payerId){
+            console.log('checkPaypalPaymentSuccess1 ', url, paymentId, payerId)
             postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{
+                console.log('checkPaypalPaymentSuccess2 ', data)
                 if(data.payload && data.result === "success"){
                     let details = {
                         method: "paypal",
