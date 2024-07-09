@@ -94,19 +94,20 @@ function Home(props) {
     const checkPaypalPaymentCancel = async () => {
         const url = new URL(window.location.href)
         let token = url.searchParams.get('token')
-
-        postData('/api/paypal/cancel', {token}).then((data)=>{
-            if(data && data.result === "cancel"){
-                let payload = {
-                    open: true,
-                    template: "paymentCancel",
-                    title: translate({lang: props.lang, info: "payment_cancel"}),
-                    data: translate({lang: props.lang, info: "payment_cancel_text"}),
-                    size: 'sm',
+        if(token){
+            postData('/api/paypal/cancel', {token}).then((data)=>{
+                if(data && data.result === "cancel"){
+                    let payload = {
+                        open: true,
+                        template: "paymentCancel",
+                        title: translate({lang: props.lang, info: "payment_cancel"}),
+                        data: translate({lang: props.lang, info: "payment_cancel_text"}),
+                        size: 'sm',
+                    }
+                    dispatch(changePopup(payload))
                 }
-                dispatch(changePopup(payload))
-            }
-        })
+            })
+        }        
     }
 
     function showError(data={}){

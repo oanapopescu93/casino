@@ -20,14 +20,6 @@ const { get_exchangerate, filterRates } = require("./utils/other")
 var jsonParser = bodyParser.json() 
 router.use(express.static(path.resolve(__dirname, '../client/build')))
 
-router.get('/success', (req, res) => {
-  res.send({send: "success"})
-})
-
-router.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
-})
-
 router.post("/api/home", jsonParser, (req, res, next) => {  
   let payload = {products, market, currencies, profiles, donations, career, questions, slot_prises, race_rabbits, keno_prizes, contact}
   res.send(JSON.stringify(payload))
@@ -52,6 +44,14 @@ router.post("/api/exchange_rates", jsonParser, (req, res, next) => {
       res.send({conversion_rates: {}})
     }
   })  
+})
+
+router.get('/success', (req, res) => {
+  res.send({send: "success"})
+})
+
+router.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
 module.exports = router
