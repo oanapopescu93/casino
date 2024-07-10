@@ -8,7 +8,6 @@ const initialState = {
     donations: [],
     career: [],
     questions: [],
-    slot_prises: [],
     race_rabbits: [],
     keno_prizes: [],
     contact: [],
@@ -65,7 +64,6 @@ const homeSlice = createSlice({
             state.donations = payload.donations
             state.career = payload.career
             state.questions = payload.questions
-            state.slot_prises = payload.slot_prises
             state.race_rabbits = getRaceRabbits(payload.race_rabbits)
             state.keno_prizes = payload.keno_prizes
             state.contact = payload.contact

@@ -262,7 +262,7 @@ var word_bank = {
     method: "Methode",
     
     // withdraw
-    not_enough_money_withdrawal: "You don't have enough money to make a withdrawal.",
+    not_enough_money_withdrawal: "Sie haben nicht genug Geld, um eine Abhebung vorzunehmen.",
 
     // blackjack
     start: "Start",

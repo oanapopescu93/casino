@@ -262,7 +262,7 @@ var word_bank = {
     method: "方法",
 
     // withdraw
-    not_enough_money_withdrawal: "You don't have enough money to make a withdrawal.",
+    not_enough_money_withdrawal: "你没有足够的钱进行提现。",
 
     // blackjack
     start: "开始",

@@ -2,8 +2,7 @@ var constants = require('../var/home')
 function slots(data){
     let array_big = []
     let items = 7
-    let matrix = []
-    let slot_prizes = constants.SLOT_PRIZES
+    let matrix = []    
 
     for(let i=0; i < 19; i++){
         matrix.push(slot_matrix(i, [data.lines, 3]))
@@ -24,12 +23,32 @@ function slots(data){
         return array
     }
 
+    function calculatePrize(matrix){
+        let complexity = 0
+        let rows = matrix.map(coord => coord[0])
+        let uniqueRows = new Set(rows).size
+        complexity += uniqueRows
+
+        let cols = matrix.map(coord => coord[1])
+        let uniqueCols = new Set(cols).size
+        complexity += uniqueCols
+
+        let prize = 1
+        if (complexity > 7) {
+            prize = 3
+        } else if (complexity > 5) {
+            prize = 2
+        }
+
+        return {prize, complexity}
+    }
+
     function slot_matrix(x, size){
         let matrix = []
-        let t = 0
-        let my_prize = slot_prizes[x]
+        let t = 0        
         let length01 = size[0]
         let length02 = size[1]
+
         switch (x) {
             case 0:
             case 1:
@@ -186,10 +205,25 @@ function slots(data){
                 }
                 break
         } 
-        return {matrix_id: x, matrix:matrix, prize:my_prize}
+
+        let my_prize = calculatePrize(matrix) //Calculate prize based on matrix
+
+        return {matrix_id: x, matrix: matrix, prize: my_prize.prize, complexity: my_prize.complexity}
     }
+
+    // Remove duplicate matrices
+    let uniqueMatrices = []
+    let matrixSet = new Set()
+
+    matrix.forEach(item => {
+        let matrixString = JSON.stringify(item.matrix)
+        if (!matrixSet.has(matrixString)) {
+            matrixSet.add(matrixString)
+            uniqueMatrices.push(item)
+        }
+    })
     
-    return {array: array_big, matrix}
+    return {array: array_big, matrix: uniqueMatrices}
 }
 
 module.exports = {slots}

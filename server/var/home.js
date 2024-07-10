@@ -48,8 +48,7 @@ module.exports = Object.freeze({
         {type: "paypal", title: "PaypalMe", link: "https://paypal.me/oanapopescu93?country.x=RO&locale.x=en_US"},
         {type: "paypal", title: "Paypal Donate", link: "https://www.paypal.com/donate/?hosted_button_id=FBUHUHZCKWZRA"},
         {type: "bank", title: "IBAN", text: "RO93BTRLRONCRT0316896401"}
-    ],
-    SLOT_PRIZES: [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3],
+    ],    
     RACE_RABBITS: [
         {id: 1, participating: false, name: "Bunny_01", breed: "American Fuzzy Lop", img: "/img/rabbit_list/american_fuzzy_lop.png"},
         {id: 2, participating: false, name: "Bunny_02", breed: "American", img: "/img/rabbit_list/american.png"},

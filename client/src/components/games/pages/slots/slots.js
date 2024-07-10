@@ -243,6 +243,7 @@ function slots_game(props, id){
 				window.cancelAnimationFrame(spin_slot)
 				if(slots_data){
 					let result = self.win_lose(self.get_results_pos())
+					console.log(slots_data, result)
 					self.drawResultsArray(result)			
 				}
 			}
@@ -365,17 +366,32 @@ function slots_game(props, id){
 	}
 
 	function checkIdentical(array) {
-		if (array.length === 0) {
+		if (array.length === 0) { //something went wrong
 			return false
-		}		
-		let trump_cards = array.length === 3 ? ["carrot", "potato"] : ["carrot"]
-		for (let i = 0; i < array.length-1; i++) {
-			if(array[i] !== array[i+1] && !trump_cards.includes(array[i]) && !trump_cards.includes(array[i+1])){ // if element and the next element are not identical and none of them is a trump card, then no need to check anymore
-				return false
-			}			
 		}
+	
+		let trump_cards = array.length === 3 ? ["carrot"] : ["carrot", "potato"]	
+		
+		let array_small = array.filter(item => !trump_cards.includes(item)) //contains array minus the trump_card elements
+		const allIdentical = array_small.every(item => item === array_small[0]) //Check if array_small has all identical elements
+		if (allIdentical){ //If array_small has all identical elements, return true
+			return true
+		}
+	
+		// If array_small has more than one unique element, return false
+		if (new Set(array_small).size > 1) {
+			return false
+		}
+	
+		// Check specific cases with trump cards
+		for (let i = 0; i < array.length - 1; i++) {
+			if (array[i] !== array[i + 1] && !trump_cards.includes(array[i]) && !trump_cards.includes(array[i + 1])) {
+				return false
+			}
+		}	
+		
 		return true
-	}
+	}	
 
 	this.drawResultsArray = function(results){
 		let canvas = $('#slot_machine_lines')[0]

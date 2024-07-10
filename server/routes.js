@@ -7,7 +7,6 @@ var products = require('./var/home').PRODUCTS
 var market = require('./var/home').MARKET
 var profiles = require('./var/home').PROFILES
 var donations = require('./var/home').DONATIONS
-var slot_prises = require('./var/home').SLOT_PRIZES
 var race_rabbits = require('./var/home').RACE_RABBITS
 var keno_prizes = require('./var/home').KENO_PRIZES
 var contact = require('./var/home').CONTACT
@@ -21,7 +20,7 @@ var jsonParser = bodyParser.json()
 router.use(express.static(path.resolve(__dirname, '../client/build')))
 
 router.post("/api/home", jsonParser, (req, res, next) => {  
-  let payload = {products, market, currencies, profiles, donations, career, questions, slot_prises, race_rabbits, keno_prizes, contact}
+  let payload = {products, market, currencies, profiles, donations, career, questions, race_rabbits, keno_prizes, contact}
   res.send(JSON.stringify(payload))
 })
 router.post("/api/contact", jsonParser, (req, res, next) => {
