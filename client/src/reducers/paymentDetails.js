@@ -13,6 +13,7 @@ const initialState = {
     name: !isEmpty(getCookie("casino_payment_name")) ? getCookie("casino_payment_name") : "",
     phone: !isEmpty(getCookie("casino_payment_phone")) ? getCookie("casino_payment_phone") : "",
     option: !isEmpty(getCookie("casino_payment_option")) ? getCookie("casino_payment_option") : "1",   // 1 = card, 2 = paypal, 3 = crypto
+    crypto: !isEmpty(getCookie("casino_payment_crypto")) ? getCookie("casino_payment_crypto") : "btc"
 }
 
 const paymentDetailsSlice = createSlice({

@@ -40,6 +40,8 @@ function Home(props) {
     useEffect(() => { 
         checkPaypalPaymentSuccess()
         checkPaypalPaymentCancel()
+        checkCryptoPaymentSuccess()
+        checkCryptoPaymentCancel()
     }, [])
 
     const checkPaypalPaymentSuccess = async () => {
@@ -101,6 +103,71 @@ function Home(props) {
                 }
             })
         }        
+    }
+
+    const checkCryptoPaymentSuccess = async () => {
+        if(window.location.pathname.includes('/api/crypto/success')){
+            const url = new URL(window.location.href)
+            let payment_status = url.searchParams.get('payment_status')
+            let order_id = url.searchParams.get('order_id')         
+            let token_id = url.searchParams.get('token_id')
+            if(payment_status && order_id && token_id){
+                postData('/api/crypto/success', {payment_status, order_id, token_id}).then((data)=>{
+                    //console.log(data.payload)
+                    if(data.payload.status === 200){
+                        if(data.payload && data.result === "success"){
+                            let details = {
+                                method: "crypto",
+                                user_uid: user.uuid,
+                                payment_id: data.payload.id,
+                                order_date: data.payload.created_at,
+                                amount: parseFloat(data.payload.price_amount),  
+                                payment_method: "crypto2crypto",
+                                status: "paid",
+                                email: data.payload.customer_email ? data.payload.customer_email : "-",
+                                description: data.payload.order_description,
+                                currency: data.payload.price_currency,
+                                currencyExchange: "-",
+                                items: null,
+                                exchange_rates: exchange_rates             
+                            }
+                            let payload = {
+                                open: true,
+                                template: "paymentSuccess",
+                                title: translate({lang: props.lang, info: "payment_success"}),
+                                data: details,
+                                size: 'md',
+                            }
+                            dispatch(changePopup(payload)) //show success popup
+                            // dispatch(cartRemoveAll()) //remove all from cart
+                            // dispatch(orderAdd(details)) // add payment to order list
+                        } else {
+                            showError(data)
+                        }
+                    } else {
+                        showError()
+                    }                    
+                }).catch((error) => {
+                    console.error('Error:', error)
+                })
+            }
+        }
+    }
+    const checkCryptoPaymentCancel = async () => {
+        if(window.location.pathname.includes('/api/crypto/cancel')){
+            postData('/api/crypto/cancel', {}).then((data)=>{
+                if(data && data.result === "cancel"){
+                    let payload = {
+                        open: true,
+                        template: "paymentCancel",
+                        title: translate({lang: props.lang, info: "payment_cancel"}),
+                        data: translate({lang: props.lang, info: "payment_cancel_text"}),
+                        size: 'sm',
+                    }
+                    dispatch(changePopup(payload))
+                }
+            })
+        }  
     }
 
     function showError(data={}){

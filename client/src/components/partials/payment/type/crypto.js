@@ -1,41 +1,62 @@
-import React, { useState } from 'react'
-import { translate } from "../../../../translations/translate"
+import React from 'react'
 import { Row, Col } from "react-bootstrap"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBitcoinSign, faLitecoinSign } from '@fortawesome/free-solid-svg-icons'
 
 function Crypto(props) {
-    const {lang, paymentDetails, gateway, gatewayDetailsMandatory, paymentError, cryptoData, amount} = props
-    const [bitcoinAddress] = useState(paymentDetails.bitcoin_address !== "" ? paymentDetails.bitcoin_address : "")
+    const { radioBtc, radioLtc, cryptoData } = props
+    let details = null
+    if(cryptoData && cryptoData.length > 0){
+        details = cryptoData.filter((x)=>{
+            if(radioBtc){
+                return x.currency_from === 'btc'
+            }
+            if(radioLtc){
+                return x.currency_from === 'ltc'
+            }
+        })
+    }    
 
-    return <Row>
+    function handleChangeCheck(choice){
+        if(typeof props.handleChangeCheck === "function"){
+            props.handleChangeCheck(choice)
+        }
+    }
+
+    return  <Row id="payment_form_crypto">
         <Col sm={12}>
-            {(() => {
-                if(cryptoData && amount > 0){
-                    if(parseInt(cryptoData.fiat_equivalent) <= amount){
-                        return <>
-                            <label htmlFor="bitcoin_address">{translate({lang: lang, info: "bitcoin_address"})} {gatewayDetailsMandatory[gateway].includes("bitcoin_address") ? <>*</> : null}</label>
-                            <input defaultValue={bitcoinAddress} className="input_light shadow_concav" type="text" placeholder={translate({lang: lang, info: "bitcoin_address"})} id="bitcoin_address" name="bitcoin_address"/>
-                            {!paymentError.bitcoinAddress.fill ? <div className="alert alert-danger">
-                                <p className="text_red">
-                                    {translate({lang: lang, info: paymentError.bitcoinAddress.fill_message})}
-                                </p>
-                            </div> : <>
-                                {!paymentError.bitcoinAddress.validate ? <div className="alert alert-danger">
-                                    <p className="text_red">
-                                        {translate({lang: lang, info: paymentError.bitcoinAddress.validate_message})}
-                                    </p>
-                                </div> : null}
-                            </>}
-                        </>
-                    } else {
-                        return <>
-                            <p><span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{cryptoData.min_amount} {cryptoData.currency_from}</span></p>
-                            <p><span>{translate({lang: lang, info: "or"})} {translate({lang: lang, info: "fiat_equivalent"})}</span>: <span>${cryptoData.fiat_equivalent}</span></p>
-                        </>
-                    }
-                } else {
-                    return <p>{translate({lang: lang, info: "error"})}</p>
-                }
-            })()}
+            <Row>
+                <Col sm={12}>
+                    <div className="checkbox_radio_container payment_details_title">
+                        <label>
+                            <input id="radioBtc" type="radio" name="radioBtc" checked={radioBtc} onChange={()=>{handleChangeCheck("radioBtc")}}/>
+                            Bitcoin
+                        </label>
+                        <label>
+                            <input id="radioLtc" type="radio" name="radioLtc" checked={radioLtc} onChange={()=>{handleChangeCheck("radioLtc")}}/>
+                            Litcoin
+                        </label>
+                    </div>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={12}>
+                    {details && details[0] ? <p>
+                        {(() => {                            
+                            switch (details[0].currency_from){
+                                case "btc":
+                                    return <span><FontAwesomeIcon icon={faBitcoinSign} /> - </span>
+                                case "ltc":
+                                    return <span><FontAwesomeIcon icon={faLitecoinSign} /> - </span>
+                                default:
+                                    return
+                            }
+                        })()}                            
+                        <span>{details[0].min_amount} {details[0].currency_from}</span>&nbsp;
+                        <span>({details[0].fiat_equivalent} USD)</span>
+                    </p> : null}                    
+                </Col>
+            </Row>
         </Col>
     </Row>
 }

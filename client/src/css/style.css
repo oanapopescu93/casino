@@ -2717,11 +2717,20 @@ textarea {
 }
 
 /* CHECKOUT */
-#payment_form h3, #payment_details .payment_details_title h3, #payment_form .checkbox_radio_container{
+#payment_form h3, #payment_details .payment_details_title h3{
   padding: var(--padding_small);
   margin-bottom: var(--padding_small);
   border-bottom: solid 1px var(--color);
 }
+.checkbox_radio_container.payment_details_title{
+  padding: var(--padding_small);
+  margin-bottom: var(--padding_small);
+  border-bottom: solid 1px var(--color);
+}
+.checkbox_radio_container{
+  padding: var(--padding_small);
+}
+
 #payment_form label{
   margin-bottom: var(--padding_small);
 }
@@ -2750,6 +2759,9 @@ textarea {
 }
 .paymentSuccess h6 span{
   margin-right: var(--padding_small);
+}
+#payment_form_crypto .checkbox_radio_container{
+  display: inline-block;
 }
 
 /* ORDER */

@@ -30,6 +30,10 @@ function Payment(props){
     const [radioOne, setRadioOne] = useState(payment_details.option === "1" ? true : false)
     const [radioTwo, setRadioTwo] = useState(payment_details.option === "2" ? true : false)
     const [radioThree, setRadioThree] = useState(payment_details.option === "3" ? true : false)
+
+    const [radioBtc, setRadioBtc] = useState(payment_details.crypto === "btc" ? true : false)
+    const [radioLtc, setRadioLtc] = useState(payment_details.crypto === "ltc" ? true : false)
+
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(1)
     const [month, setMonth] = useState(payment_details.month !== -1 ? payment_details.month : -1)
@@ -38,6 +42,7 @@ function Payment(props){
     const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
+
     const [paymentDetails, setPaymentDetails] = useState(null)
     const [paymentError, setPaymentError] = useState(paymentErrors())
 
@@ -48,8 +53,8 @@ function Payment(props){
     }
     let gatewayDetailsMandatory = {
         stripe: ["name", "email", "payment_methode", "card_number", "year", "month", "cvv"],
-        paypal: ["name", "email", "payment_methode"],
-        crypto: ["payment_methode", "bitcoin_address"]
+        paypal: ["payment_methode"],
+        crypto: ["payment_methode"]
     }
 
     useEffect(() => {
@@ -89,29 +94,38 @@ function Payment(props){
     function handleChangeCheck(x){
         switch(x){
             case "radio3":	
-                setRadioOne(false)			
+                setRadioOne(false)	
                 setRadioTwo(false)
-                setRadioThree(true)		
+                setRadioThree(true)
                 if(typeof props.getChanges === "function"){
                     props.getChanges({type: 'gateway', value: 'crypto'})
                 }
                 break
             case "radio2":	
-                setRadioOne(false)			
+                setRadioOne(false)
                 setRadioTwo(true)
-                setRadioThree(false)		
+                setRadioThree(false)
                 if(typeof props.getChanges === "function"){
                     props.getChanges({type: 'gateway', value: 'paypal'})
                 }
                 break
-            case "radio1":	
-            default:
-                setRadioOne(true)			
+            case "radio1":
+                setRadioOne(true)
                 setRadioTwo(false)
-                setRadioThree(false)		
+                setRadioThree(false)
                 if(typeof props.getChanges === "function"){
                     props.getChanges({type: 'gateway', value: 'stripe'})
                 }
+                break
+            case "radioBtc":
+                setRadioBtc(true)
+                setRadioLtc(false)
+                break
+            case "radioLtc":
+                setRadioBtc(false)
+                setRadioLtc(true)
+                break
+            default:
                 break
         }
     }
@@ -190,12 +204,21 @@ function Payment(props){
         let radio1 = getValueFromForm(form, 'radio1')
         let radio2 = getValueFromForm(form, 'radio2')
         let radio3 = getValueFromForm(form, 'radio3')
+
+        let radioBtc = getValueFromForm(form, 'radioBtc')
+        let radioLtc = getValueFromForm(form, 'radioLtc')
+
         if (radio1 === "on") {
             payload.option = '1'
         } else if (radio2 === "on") {
             payload.option = '2'
         } else if (radio3 === "on") {
             payload.option = '3'
+        }
+        if (radioBtc === "btc") {
+            payload.crypto = 'btc'
+        } else if (radioLtc === "on") {
+            payload.crypto = 'ltc'
         }
 
         let cardNumber = getValueFromForm(form, 'card_number')
@@ -236,9 +259,7 @@ function Payment(props){
     }
 
     function validateSubmit(data){
-        let pay_card = data.option === "1" ? true : false
-        // let pay_paypal = data.option === "2" ? true : false
-        let pay_crypto = data.option === "3" ? true : false    
+        let pay_card = data.option === "1" ? true : false  
         let errors = paymentErrors()
 
         if(pay_card){
@@ -277,15 +298,6 @@ function Payment(props){
                 errors.cvv.validate = false
             }
         }
-        //if(pay_paypal){}
-        if(pay_crypto){
-            if(isEmpty(data.bitcoin_address)){
-                errors.bitcoinAddress.fill = false
-            }
-            if(!validateInput(data.bitcoin_address, "bitcoin_address")){
-                errors.bitcoinAddress.validate = false
-            }
-        }
         setPaymentError(errors)
 
         // Check if there is any problem (fill or validate errors for at least one element in error array)
@@ -298,23 +310,14 @@ function Payment(props){
 
     function sendPayload(e){
         setPaymentDetails(e)
-    }
-
-    function showError(data={}){
-        console.log('error ', data)
-        let payload = {
-            open: true,
-            template: "error",
-            title: translate({lang: props.lang, info: "error"}),
-            data: translate({lang: props.lang, info: typeof data.payload === "string" ? data.payload : "error_charge"}),
-            size: 'sm',
-        }
-        dispatch(changePopup(payload))
-    }
+    }       
 
     function sendPayment(){
         if(amount > 0){
             let url = ""
+            let payload = {...paymentDetails}
+            payload.amount = amount
+
             switch(gateway){
                 case "stripe":
                     url = "/api/stripe"
@@ -324,12 +327,15 @@ function Payment(props){
                     break
                 case "crypto":
                     url = "/api/crypto"
+                    payload.crypto_currency = 'BTC'
+                    if(radioLtc){
+                        payload.crypto_currency = 'LTC'
+                    }
                     break
                 default:
                     break           
             }
-            let payload = {...paymentDetails}
-            payload.amount = amount
+            
             if(template === "buy_carrots"){
                 payload.products = [{name_eng: "Carrot", price: price_per_carrot, qty}]
                 payload.description = "Buy carrots"
@@ -344,54 +350,13 @@ function Payment(props){
                     if(data && data.result && data.result === "success"){                        
                         switch(gateway){
                             case "stripe":
-                                if(data.payload && data.result === "success"){
-                                    let details = {
-                                        method: "stripe",
-                                        user_uid: props.user.uuid,
-                                        payment_id: data.payload.id,
-                                        customer_id: data.payload.customer,
-                                        order_date: data.payload.created * 1000,
-                                        amount: parseFloat((data.payload.amount / 100).toFixed(2)),           
-                                        payment_method: data.payload.payment_details.payment_type,
-                                        status: data.payload.status,
-                                        country: data.payload.payment_details.country,
-                                        city: data.payload.payment_details.city,
-                                        email: data.payload.payment_details.email,
-                                        phone: data.payload.payment_details.phone,
-                                        description: data.payload.description,
-                                        currency: data.payload.currency.toUpperCase(),
-                                        currencyExchange: currency,
-                                        items: data.payload.metadata,
-                                        exchange_rates,               
-                                    }
-                                    let payload = {
-                                        open: true,
-                                        template: "paymentSuccess",
-                                        title: translate({lang: props.lang, info: "payment_success"}),
-                                        data: details,
-                                        size: 'md',
-                                    }
-                                    dispatch(changePopup(payload)) //show success popup
-                                    dispatch(cartRemoveAll()) //remove all from cart
-                                    dispatch(orderAdd(details)) // add payment to order list
-
-                                    //go to dashboard
-                                    dispatch(changePage('Salon')) 
-                                    dispatch(changeGame(null))
-                                    dispatch(changeGamePage('dashboard'))
-                                } else {
-                                    showError(data)
-                                }
+                                handlePaymentStripe(data)                                
                                 break
                             case "paypal":                                
-                                if(data.payload && data.payload.receipt_url){
-                                    window.open(data.payload.receipt_url,'_blank')
-                                } else {
-                                    showError(data)
-                                }
+                                handlePaymentPaypal(data)
                                 break
                             case "crypto": 
-                                //console.log('sendPayload2--> ', data)                                
+                                handlePaymentCrypto(data)                                                             
                                 break 
                             default:
                                 showError()
@@ -402,18 +367,80 @@ function Payment(props){
                     }
                 })
             } else {
-                let payload = {
-                    open: true,
-                    template: "error",
-                    title: translate({lang: props.lang, info: "error"}),
-                    data: translate(translate({lang: lang, info: "no_payment_methods"}))
-                }
-                dispatch(changePopup(payload))
+                showError({payload: "no_payment_methods"})
             }
         } else {
             showError()
         }
     }
+
+    function handlePaymentStripe(data){
+        if(data.payload === "success"){
+            let details = {
+                method: "stripe",
+                user_uid: props.user.uuid,
+                payment_id: data.payload.id,
+                customer_id: data.payload.customer,
+                order_date: data.payload.created * 1000,
+                amount: parseFloat((data.payload.amount / 100).toFixed(2)),           
+                payment_method: data.payload.payment_details.payment_type,
+                status: data.payload.status,
+                country: data.payload.payment_details.country,
+                city: data.payload.payment_details.city,
+                email: data.payload.payment_details.email,
+                phone: data.payload.payment_details.phone,
+                description: data.payload.description,
+                currency: data.payload.currency.toUpperCase(),
+                currencyExchange: currency,
+                items: data.payload.metadata,
+                exchange_rates,               
+            }
+            let payload = {
+                open: true,
+                template: "paymentSuccess",
+                title: translate({lang: props.lang, info: "payment_success"}),
+                data: details,
+                size: 'md',
+            }
+            dispatch(changePopup(payload)) //show success popup
+            dispatch(cartRemoveAll()) //remove all from cart
+            dispatch(orderAdd(details)) // add payment to order list
+    
+            //go to dashboard
+            dispatch(changePage('Salon')) 
+            dispatch(changeGame(null))
+            dispatch(changeGamePage('dashboard'))                      
+        } else {
+            showError(data)
+        }        
+    }
+
+    function handlePaymentPaypal(data){
+        if(data.payload && data.payload.receipt_url){
+            window.open(data.payload.receipt_url,'_blank')
+        } else {
+            showError(data)
+        }
+    }
+
+    function handlePaymentCrypto(data){
+        if(data.payload && data.payload.invoice_url){
+            window.open(data.payload.invoice_url,'_blank')
+        } else {
+            showError(data)
+        }  
+    }
+
+    function showError(data={}){
+        let payload = {
+            open: true,
+            template: "error",
+            title: translate({lang: props.lang, info: "error"}),
+            data: translate({lang: props.lang, info: data.payload && typeof data.payload === "string" ? data.payload : "error_charge"}),
+            size: 'sm',
+        }
+        dispatch(changePopup(payload))
+    } 
 
     return<Row>
         {paymentDetails ? <PaymentDetails 
@@ -439,6 +466,8 @@ function Payment(props){
                     radioOne={radioOne}
                     radioTwo={radioTwo}
                     radioThree={radioThree}
+                    radioBtc={radioBtc}
+                    radioLtc={radioLtc}
                     handleChangeCheck={(e)=>handleChangeCheck(e)}
                 />
             </Col>

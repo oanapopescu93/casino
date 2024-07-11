@@ -48,9 +48,9 @@ function PaymentDetails(props){
 
     return <>        
         {paymentDetails ? <>
-            <Row id="payment_details">
+            <Row id="payment_details">                
                 <Col sm={8}>
-                    {filteredDetails["payment_methode"] !== "pay_crypto" ? <Row>
+                    {filteredDetails["payment_methode"] !== "pay_paypal" && filteredDetails["payment_methode"] !== "pay_crypto" ? <Row>
                         <Col sm={6} className="payment_details_box">
                             <div className="payment_details_title">
                                 <h3>{translate({lang: lang, info: "customer_info"})}</h3>
@@ -84,7 +84,6 @@ function PaymentDetails(props){
                             </div>
                             <div className="payment_details_body">
                                 <p><strong>{translate({ lang: lang, info: "payment_methode" })}:</strong> {filteredDetails["payment_methode"] ? translate({ lang: lang, info: filteredDetails["payment_methode"] }) : '-'}</p>
-                                <p><strong>{translate({ lang: lang, info: "bitcoin_address" })}:</strong> {filteredDetails["bitcoin_address"] ? filteredDetails["bitcoin_address"] : '-'}</p>
                             </div>
                         </Col>
                     </Row>}

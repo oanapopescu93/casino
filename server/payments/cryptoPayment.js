@@ -1,161 +1,105 @@
-var express = require("express")
-var bodyParser = require('body-parser')
-var cryptoPayment = express.Router()
-var jsonParser = bodyParser.json()
+const express = require("express")
+const bodyParser = require('body-parser')
+const cryptoPayment = express.Router()
+const jsonParser = bodyParser.json()
 const axios = require('axios')
 
 const apiKey = "Z1KG9J0-GNHMNQE-PT6HD64-ET6GTWK"
 const apiUrl = 'https://api.nowpayments.io/v1'
+const BASE_URL = process.env.BASE_URL
 
 cryptoPayment.post("/api/crypto", jsonParser, (req, res, next) => {
-    let amount = req.body.amount
-    if(typeof amount != "undefined" && amount != "null" && amount != null && amount != ""  && amount > 0){
-        createCryptoInvoice(amount).then(function(data) {
-            res.json(data)
-        })
-    } else {
-        res.json({type: "crypto", payload: 'no amount', result: "error"}) 
-    }
-})
-
-cryptoPayment.post("/api/crypto_pay", jsonParser, (req, res, next) => {
-    let iid = req.body.iid
-    if(typeof iid != "undefined" && iid != "null" && iid != null && iid != ""  && iid > 0){
-        createCryptoPayment(iid).then(function(data) {
-            res.json(data)
-        })
-    } else {
-        res.json({type: "crypto", payload: 'no iid', result: "error"}) 
-    }
-})
-
-function getCryptoPaymentByID(payment_id){
-    return new Promise(function(resolve, reject){
-        try {
-            const headers = {
-                'x-api-key': apiKey,
-            } 
-            axios.get(`${apiUrl}/payment/${payment_id}`, { headers }).then(function(response){
-                resolve({payload: response.data, result: "crypto_payment_get_id"})
-            }).catch(function(err){
-                resolve({type: "crypto", payload: err, result: "error"})
-            })
-        } catch (err) {
-            resolve({type: "crypto", payload: err, result: "error"})
-        }
-    })
-}
-
-cryptoPayment.post("/api/crypto_get_payment", jsonParser, (req, res, next) => {
-    let payment_id = req.body.payment_id
-    if(typeof payment_id != "undefined" && payment_id != "null" && payment_id != null && payment_id != ""  && payment_id > 0){
-        getCryptoPaymentByID(payment_id).then(function(data) {
-            res.json(data)
-            res.json({type: "crypto", payload: data, result: "crypto_payment_get"})
-        })
-    } else {
-        res.json({type: "crypto", payload: 'no amount', result: "error"}) 
-    } 
-})
-
-cryptoPayment.post("/api/crypto_min", jsonParser, (req, res, next) => {
-    checkMinPayment().then(function(data) {
-        if(data && data.payload && data.payload.fiat_equivalent){
-            data.payload.fiat_equivalent = data.payload.fiat_equivalent.toFixed(1)
-        }
+    const { amount, crypto_currency, description } = req.body
+    createCryptoInvoice(amount, crypto_currency, description).then(function(data) {
         res.json(data)
     })
 })
 
-cryptoPayment.post("/api/crypto_status", jsonParser, (req, res, next) => {
-    let paymentId = req.body.paymentId
-    if(typeof paymentId != "undefined" && paymentId != "null" && paymentId != null && paymentId != ""  && paymentId > 0){
-        checkPaymentStatus(paymentId).then(function(data) {
-            res.json({type: "crypto", payload: data.payload.data, result: data.result})
+cryptoPayment.post("/api/crypto_min", jsonParser, (req, res, next) => {
+    Promise.all([
+        checkMinPayment('btc'),
+        checkMinPayment('ltc')
+    ]).then((data)=>{
+        const response = data.map((x)=>{
+            if (x.result === "crypto_min" && x.payload.fiat_equivalent) {
+                x.payload.fiat_equivalent = x.payload.fiat_equivalent.toFixed(1)
+            }
+            return x.payload
         })
-    } else {
-        res.json({type: "crypto", payload: "paymentId", result: "error"})
-    } 
+        res.json({type: "crypto", payload: response, result: "error"})
+    }).catch(error => {
+        console.error("Error fetching minimum payments:", error);
+        res.json({ type: "crypto", payload: error, result: "error" })
+    })
 })
 
-function createCryptoInvoice(amount, currency = 'USD') {
+cryptoPayment.post('/api/crypto/success', jsonParser, (req, res) => {
+    const { payment_status, order_id, token_id } = req.body
+
+    if(!order_id || !token_id){
+        return res.json({ type: "crypto", result: "error", payload: 'error_charge' })
+    }
+
+    if (payment_status === 'paid') {
+        fetchPaymentDetails(order_id).then((data)=>{
+            res.json({ type: "crypto", result: "success", payload: data.payload })          
+        })
+    } else {
+        res.json({ type: "crypto", result: "error", payload: "error_charge" })
+    }
+})
+  
+cryptoPayment.post('/api/crypto/cancel', jsonParser, (req, res) => {
+    res.json({ type: "crypto", result: "cancel"}) 
+})
+
+function createCryptoInvoice(amount, crypto_currency, description) {
     return new Promise(function(resolve, reject){
         try {
             const payload = {
                 price_amount: amount,
-                price_currency: currency,
-                pay_currency: 'BTC',
-                order_description: "BunnyBet",
-                ipn_callback_url: 'https://your-server-url.com/ipn'
+                price_currency: "usd",
+                pay_currency: crypto_currency,
+                order_description: description,
+                success_url: BASE_URL + "/api/crypto/success",
+                cancel_url: BASE_URL + "/api/crypto/cancel"   
             }
             const headers = {
                 'x-api-key': apiKey,
                 'Content-Type': 'application/json',
             }
             axios.post(`${apiUrl}/invoice`, payload, { headers }).then(function(response){
-                let iid = response.data.id
-                if(typeof iid != "undefined" && iid != "null" && iid != null && iid != ""  && iid > 0){
-                    resolve({iid: iid, payload: response.data, result: "success", url: "invoice"})
-                } else {
-                    resolve({payload: err, result: "error"})
-                }
+                resolve({type: "crypto", result: "success", payload: response.data})
             }).catch(function(err){
-                resolve({payload: err, result: "error"})
+                resolve({type: "crypto", result: "error", payload: err})
             })
         } catch (err) {
-            resolve({payload: err, result: "error"})
+            resolve({type: "crypto", result: "error", payload: err})
         }
     })
 }
 
-function createCryptoPayment(iid) {
-    return new Promise(function(resolve, reject){
-        try {
-            const payload = {
-                iid: iid,
-                pay_currency: 'BTC',
-                order_description: "BunnyBet",
-            }
-            const headers = {
-                'x-api-key': apiKey,
-                'Content-Type': 'application/json',
-            }
-            axios.post(`${apiUrl}/invoice-payment`, payload, { headers }).then(function(response){
-                resolve({payload: response.data, result: "success", url: "invoice-payment"})
-            }).catch(function(err){
-                resolve({payload: err, result: "error"})
-            })
-        } catch (err) {
-            resolve({payload: err, result: "error"})
-        }
-    })
+function checkMinPayment(currency="btc") {
+    const headers = {
+        'x-api-key': apiKey,
+    }
+    return axios.get(`${apiUrl}/min-amount?currency_from=${currency}&fiat_equivalent=usd`, { headers })
+        .then(response => {
+            return { type: "crypto", payload: response.data, result: "crypto_min" }
+        })
+        .catch(error => {
+            return { type: "crypto", payload: error, result: "error" }
+        })
 }
 
-function checkPaymentStatus(paymentId) {
-    return new Promise(function(resolve, reject){
-        try {
-            const headers = {
-                'x-api-key': apiKey,
-            }
-            axios.get(`${apiUrl}/payment/${paymentId}`, { headers }).then(function(response){
-                resolve({payload: response, result: "success"})
-            }).catch(function(err){
-                resolve({payload: err, result: "error"})
-            })
-        } catch (err) {
-            resolve({payload: err, result: "error"})
-        }
-    }) 
-}
-
-function checkMinPayment(){
+function fetchPaymentDetails(order_id){
     return new Promise(function(resolve, reject){
         try {
             const headers = {
                 'x-api-key': apiKey,
             } 
-            axios.get(`${apiUrl}/min-amount?currency_from=btc&fiat_equivalent=usd`, { headers }).then(function(response){
-                resolve({payload: response.data, result: "crypto_min"})
+            axios.get(apiUrl + "/invoice/" + order_id, { headers }).then(function(response){
+                resolve({payload: response.data})
             }).catch(function(err){
                 resolve({payload: err, result: "error"})
             })
