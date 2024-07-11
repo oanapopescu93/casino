@@ -209,8 +209,6 @@ io.on('connection', function(socket) {
           return x.email === data.email
         })
         if(user && user[0]){
-          //let pass = decrypt(JSON.parse(user[0].pass))
-          //console.log(user, pass, data)
           sendEmail('forgot_password', user[0], data).then(function(res){
             try{
               resetPassword(user[0])

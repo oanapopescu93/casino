@@ -64,11 +64,12 @@ function Popup(props){
     }
 
     function dashboardChanges(e){
+        console.log('dashboardChanges ', e)
         if(e.type && e.value){
+            socket.emit('dashboardChanges_send', e)
             switch(e.type){
                 case "user":
-                    dispatch(changeUser({user: e.value}))
-                    socket.emit('dashboardChanges_send', e)
+                    dispatch(changeUser({user: e.value}))                    
                     break
                 default:
                     break
