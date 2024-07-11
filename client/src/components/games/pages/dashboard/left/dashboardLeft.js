@@ -6,8 +6,8 @@ import profilePic from '../../../../../img/profile/predators.jpg'
 import { changePopup } from '../../../../../reducers/popup'
 import { changePage, changeGame, changeGamePage } from '../../../../../reducers/page'
 import { Row, Col, Button } from 'react-bootstrap'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser, faUpload} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser, faUpload,faCrown } from '@fortawesome/free-solid-svg-icons'
 import carrot_img from '../../../../../img/icons/carrot_icon.png'
 
 function Picture(props){
@@ -19,10 +19,10 @@ function Picture(props){
         }
 	}	
 
-	return <div className="profile_pic_container shadow_convex" onClick={()=>choosePic()}>
+	return <div className="profile_pic_container shadow_convex" onClick={()=>choosePic()}>        
         <div className="profile_pic_default">
             <FontAwesomeIcon icon={faUpload} />
-        </div>
+        </div>        
         {(() => {
             if(picId) {
                 return <div className="profile_pic">
@@ -111,6 +111,9 @@ function DashboardLeft(props){
     return <div id="dashboard_left" className="dashboard_box shadow_concav">
         <Row>
             <Col sm={12} md={4} lg={12} className="dashboard_user_pic">
+                {money >= 1000 ? <div className="profile_pic_crown">
+                    <FontAwesomeIcon icon={faCrown} />
+                </div> : null}                
                 <Picture profiles={profiles} pic_id={picId} choice={(e)=>handleChoice(e)} />
                 <div className="profile_pic_name shadow_convex">
                     <span>{name}</span>

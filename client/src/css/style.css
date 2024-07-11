@@ -2448,8 +2448,20 @@ textarea {
 }
 
 /* Profile pics */
+.dashboard_user_pic{
+  position: relative;
+  z-index: 1;
+}
+.profile_pic_crown{
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  left: 15px;
+  font-size: 20px;
+}
 .profile_pic_container{
 	position: relative;
+  z-index: 1;
   width: 120px;
   height: 120px;
   overflow: hidden;
@@ -2464,6 +2476,7 @@ textarea {
 	font-size: 40px;
 	line-height: 120px;
 	position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
 }
@@ -2471,6 +2484,7 @@ textarea {
 	font-size: 40px;
 	line-height: 120px;
 	position: absolute;
+  z-index: 1;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -2482,6 +2496,11 @@ textarea {
 	opacity: 0;
 	transition: .5s ease;
 }
+.profile_pic_container .profile_pic_crown{
+  position: absolute;
+  z-index: 999;
+  background-color: var(--color);
+}
 .profile_pic_container:hover .profile_pic{
 	opacity: 0;
 }
@@ -2490,7 +2509,7 @@ textarea {
 }
 .profile_pic_name{
   position: relative;
-  z-index: 1;
+  z-index: 2;
   background-color: var(--color);
   border: solid 1px var(--color);
   border-radius: var(--radius_big);
