@@ -9,7 +9,8 @@ import { decryptData } from '../../../../../utils/crypto'
 import { convertCurrency } from '../../../../../utils/utils'
 
 function Cart(props){
-    const {lang, cart, home, user, currency, exchange_rates} = props
+    const {cart, home, user, settings, exchange_rates} = props
+    const {lang, currency} = settings
     let market = home.market ? home.market : []
     let total = totalPriceSum().toFixed(2)
     let max = user.money ? decryptData(user.money) : 0
@@ -58,16 +59,17 @@ function Cart(props){
                 {cart.map((item, i)=>{
                     let product = market.filter(a => a.id === item.id)
                     let cart_item_total_price = item.qty * convertCurrency(product[0].price, currency, exchange_rates)
+                    cart_item_total_price = parseFloat(cart_item_total_price.toFixed(2))                    
                     return <div key={i} className='cart_item'>
                         <div className="cart_image">
                             <div className="crop_vegetables">
                                 <img alt="vegetable" className={'vegetable '+item.id} src={vegetables_yellow} />
                             </div>
                         </div>
-                        <div className="cart_info">                            
+                        <div className="cart_info">
                             <h4>{product[0]["name_" + lang.toLowerCase()] || product[0].name_eng.toLowerCase()}</h4>
                             <p><b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(product[0].price, currency, exchange_rates)} {currency}</p>
-                            <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>                                                    
+                            <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>
                         </div>
                         <div className="cart_buttons">
                             <h4><b>{translate({lang: lang, info: "price"})}</b>: {cart_item_total_price} {currency}</h4> 

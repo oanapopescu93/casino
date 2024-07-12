@@ -312,7 +312,7 @@ function Payment(props){
 
     function sendPayload(e){
         setPaymentDetails(e)
-    }       
+    }
 
     function sendPayment(){
         if(amount > 0){
@@ -325,7 +325,7 @@ function Payment(props){
                     url = "/api/stripe"
                     break
                 case "paypal":
-                    url = "/api/paypal"                    
+                    url = "/api/paypal"
                     break
                 case "crypto":
                     url = "/api/crypto"
@@ -335,7 +335,7 @@ function Payment(props){
                     }
                     break
                 default:
-                    break           
+                    break
             }
             
             if(template === "buy_carrots"){
@@ -347,18 +347,18 @@ function Payment(props){
                 payload.description = "Buy vegetables"
             }
             
-            if(!isEmpty(url)){
-                postData(url, payload).then((data) => {
-                    if(data && data.result && data.result === "success"){                        
+            if(!isEmpty(url)){     
+                postData(url, payload).then((data) => {      
+                    if(data && data.result && data.result === "success"){
                         switch(gateway){
                             case "stripe":
-                                handlePaymentStripe(data)                                
+                                handlePaymentStripe(data)
                                 break
-                            case "paypal":                                
+                            case "paypal":
                                 handlePaymentPaypal(data)
                                 break
                             case "crypto": 
-                                handlePaymentCrypto(data)                                                             
+                                handlePaymentCrypto(data)
                                 break 
                             default:
                                 showError()
@@ -377,44 +377,40 @@ function Payment(props){
     }
 
     function handlePaymentStripe(data){
-        if(data.payload === "success"){
-            let details = {
-                method: "stripe",
-                user_uid: props.user.uuid,
-                payment_id: data.payload.id,
-                customer_id: data.payload.customer,
-                order_date: data.payload.created * 1000,
-                amount: parseFloat((data.payload.amount / 100).toFixed(2)),           
-                payment_method: data.payload.payment_details.payment_type,
-                status: data.payload.status,
-                country: data.payload.payment_details.country,
-                city: data.payload.payment_details.city,
-                email: data.payload.payment_details.email,
-                phone: data.payload.payment_details.phone,
-                description: data.payload.description,
-                currency: data.payload.currency.toUpperCase(),
-                currencyExchange: currency,
-                items: data.payload.metadata,
-                exchange_rates,               
-            }
-            let payload = {
-                open: true,
-                template: "paymentSuccess",
-                title: translate({lang: lang, info: "payment_success"}),
-                data: details,
-                size: 'md',
-            }
-            dispatch(changePopup(payload)) //show success popup
-            dispatch(cartRemoveAll()) //remove all from cart
-            dispatch(orderAdd(details)) // add payment to order list
-    
-            //go to dashboard
-            dispatch(changePage('Salon')) 
-            dispatch(changeGame(null))
-            dispatch(changeGamePage('dashboard'))                      
-        } else {
-            showError(data)
-        }        
+        let details = {
+            method: "stripe",
+            user_uid: props.user.uuid,
+            payment_id: data.payload.id,
+            customer_id: data.payload.customer,
+            order_date: data.payload.created * 1000,
+            amount: parseFloat((data.payload.amount / 100).toFixed(2)),
+            payment_method: data.payload.payment_details.payment_type,
+            status: data.payload.status,
+            country: data.payload.payment_details.country,
+            city: data.payload.payment_details.city,
+            email: data.payload.payment_details.email,
+            phone: data.payload.payment_details.phone,
+            description: data.payload.description,
+            currency: data.payload.currency.toUpperCase(),
+            currencyExchange: currency,
+            items: data.payload.metadata,
+            exchange_rates,
+        }
+        let payload = {
+            open: true,
+            template: "paymentSuccess",
+            title: translate({lang: lang, info: "payment_success"}),
+            data: details,
+            size: 'md',
+        }
+        dispatch(changePopup(payload)) //show success popup
+        dispatch(cartRemoveAll()) //remove all from cart
+        dispatch(orderAdd(details)) // add payment to order list
+
+        //go to dashboard
+        dispatch(changePage('Salon'))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage('dashboard'))     
     }
 
     function handlePaymentPaypal(data){
@@ -490,7 +486,7 @@ function Payment(props){
                                 case "checkout":
                                     return <PaymentCart {...props} />
                                 default:  
-                                    return                               
+                                    return
                             }
                         })()}
                     </Col>
@@ -514,7 +510,7 @@ function Payment(props){
                                     choice = "market"
                                     icon = faStore
                                     break
-                                default:                                                      
+                                default:
                             }
                             return <>{choice && icon ? <Button 
                                 type="button"  
@@ -523,7 +519,7 @@ function Payment(props){
                             ><FontAwesomeIcon icon={icon} /> {translate({lang: lang, info: choice})}</Button> : null}</>
                         })()}
                     </Col>
-                </Row>               
+                </Row>
             </Col>
         </>}
     </Row>

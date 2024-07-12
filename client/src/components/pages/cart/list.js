@@ -28,9 +28,9 @@ function List(props){
 
     return <div id="cart_list" className="cart_box shadow_concav">
         <div className="cart_list_items 1">
-            {list.map((item, i)=>{
-                let cart_item_total_price = convertCurrency(item.qty * item.price, currency, exchange_rates)
-                              
+            {list.map((item, i)=>{                
+                let cart_item_total_price = item.qty * convertCurrency(item.price, currency, exchange_rates)
+                cart_item_total_price = parseFloat(cart_item_total_price.toFixed(2))                              
                 return <div key={i} className="cart_item">
                     <Row>
                         <Col xs={8}>

@@ -132,7 +132,6 @@ function Cell(props) {
                         </div>
                     </div>
                 case "race":
-                    console.log(props, data)
                     return <div className={"rabbit_box_container " + index} key={index}>
                         <div className="rabbit_box shadow_concav">
                             <Row>

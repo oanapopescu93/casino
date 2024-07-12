@@ -243,7 +243,6 @@ function slots_game(props, id){
 				window.cancelAnimationFrame(spin_slot)
 				if(slots_data){
 					let result = self.win_lose(self.get_results_pos())
-					console.log(slots_data, result)
 					self.drawResultsArray(result)			
 				}
 			}
