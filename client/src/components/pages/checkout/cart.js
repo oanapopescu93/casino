@@ -6,7 +6,8 @@ import { useSelector } from 'react-redux'
 import { convertCurrency, getProducts } from '../../../utils/utils'
 
 function Cart(props){
-    const {lang, home, currency, exchange_rates} = props
+    const {home, settings, exchange_rates} = props
+    const {lang, currency} = settings
     let market = home.market ? home.market : []
     let cart = useSelector(state => state.cart.cart)
     let list = getProducts(cart, market) 

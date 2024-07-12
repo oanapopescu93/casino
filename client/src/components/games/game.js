@@ -31,7 +31,8 @@ import { getRoom } from '../../utils/games'
 import { translate } from '../../translations/translate'
 
 function Game(props){
-    const {lang, page, socket} = props
+    const {page, user, socket, settings} = props
+    const {lang} = settings
     let game = page.game
     let game_page = page.game_page
     let title = game.table_name ? game.table_name : ""
@@ -63,7 +64,7 @@ function Game(props){
     useEffect(() => {
         let streak = getCookie("casino_streak")
         if(isEmpty(streak)){ // check if popup streak has already been shown
-            socket.emit('game_send', {uuid: props.user.uuid}) 
+            socket.emit('game_send', {uuid: user.uuid}) 
             socket.on('game_read', (res)=>{
                 if(res && res.streak){
                     setStreak(res.streak)
@@ -85,13 +86,13 @@ function Game(props){
         }
 
         let room = getRoom(game)
-        socket.emit('join_room', {room: room, uuid: props.user.uuid, user: props.user.user}) 
+        socket.emit('join_room', {room: room, uuid: user.uuid, user: user.user}) 
         socket.on('chatroom_users_read', (res)=>{
             setChatRoomUsers(res)
             dispatch(changeRoom(room))
         })
         return () => {
-			socket.emit('leave_room', {room: room, uuid: props.user.uuid, user: props.user.user}) 
+			socket.emit('leave_room', {room: room, uuid: user.uuid, user: user.user}) 
             socket.on('chatroom_users_read', (res)=>{
                 setChatRoomUsers(res)
             })
@@ -187,7 +188,7 @@ function Game(props){
                         case "market":
                             return <Market {...props} handleHandleExit={()=>handleExit()} />
                         default:
-                            return <p>{translate({lang: props.lang, info: "error"})}</p>
+                            return <p>{translate({lang: lang, info: "error"})}</p>
                     }
                 })()}
             </>}

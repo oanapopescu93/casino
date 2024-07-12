@@ -8,7 +8,8 @@ import { faPlay} from '@fortawesome/free-solid-svg-icons'
 import PokerBoard from './pokerBoard'
 
 function GameBoard(props){
-    const {template, lang, user, startGame} = props
+    const {template, user, settings, startGame} = props
+    const {lang} = settings
     let max_bet = user.money ? decryptData(user.money) : 0
 
     function handleClick(e){
@@ -69,7 +70,7 @@ function GameBoard(props){
                                             className="mybutton button_fullcolor shadow_convex"
                                             onClick={()=>handleClick('start')}
                                         ><FontAwesomeIcon icon={faPlay} /></Button>
-                                        <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+                                        <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
                                     </div>
                                 </div>
                             </Col>
@@ -88,7 +89,7 @@ function GameBoard(props){
                                         className="mybutton button_fullcolor shadow_convex"
                                         onClick={()=>handleClick('start')}
                                     ><FontAwesomeIcon icon={faPlay} /></Button>
-                                    <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+                                    <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
                                 </div>
                             </div>
                         </Col>

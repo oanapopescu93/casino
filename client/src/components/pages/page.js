@@ -3,7 +3,6 @@ import { useSelector,useDispatch } from 'react-redux'
 import { getCookie, isEmpty, postData, setCookie } from '../../utils/utils'
 import Popup from '../popup/popup'
 import Sign from '../sign/sign'
-import Home from './routes/home'
 import { bringPayload } from '../../reducers/home'
 import Splash from '../partials/splashScreen'
 import Loader from '../partials/loader'
@@ -13,18 +12,20 @@ import Snowflakes from '../partials/special_occasions/winter/snowflakes'
 import Lights from '../partials/special_occasions/christmas/lights'
 import RouterComponent from './routes/router'
 
-function Page(props) {
+function Page(props) {    
     let home = useSelector(state => state.home)
     let user = useSelector(state => state.auth.user)
     let page = useSelector(state => state.page)
-    let cookies = useSelector(state => state.settings.cookies)
-    let uuid = user.uuid ? user.uuid : ''
+    let settings = useSelector(state => state.settings)
+
     const [loaded, setLoaded] = useState(false)
-    const [progressNumber, setProgressNumber] = useState(0)
-    let dispatch = useDispatch() 
+    const [progressNumber, setProgressNumber] = useState(0)     
     const [showWinter, setShowWinter] = useState(false)
 	const [showChristmas, setShowChristmas] = useState(false)
     const [exchangeRates, setExchangeRates] = useState(null)
+
+    let uuid = user.uuid ? user.uuid : ''
+    let dispatch = useDispatch()
 
     useEffect(() => {
 		dispatch(bringPayload())	
@@ -95,19 +96,26 @@ function Page(props) {
         } catch (error) {
             console.error("exchange_rates-error03", error)
         }
-    }    
+    }
 
     return <>
         {(() => {
             if(isEmpty(uuid)){
                 if(loaded){
-                    return <Sign {...props} />
+                    return <Sign {...props} lang={settings.lang} date={settings.date}/>
                 } else {
-                    return <Splash {...props} progressNumber={progressNumber} />
+                    return <Splash {...props} lang={settings.lang} progressNumber={progressNumber} />
                 }
             } else {
                 if(home.loaded){
-                    return <RouterComponent {...props} home={home} page={page} user={user} cookies={cookies} exchange_rates={exchangeRates} />
+                    return <RouterComponent 
+                        {...props} 
+                        home={home} 
+                        page={page} 
+                        user={user} 
+                        settings={settings}
+                        exchange_rates={exchangeRates} 
+                    />
                 } else {
                     return <Loader />
                 }
@@ -123,7 +131,7 @@ function Page(props) {
                 return null
             }
         })()} 
-        <Popup {...props} home={home} exchange_rates={exchangeRates}/>
+        <Popup {...props} home={home} settings={settings} exchange_rates={exchangeRates}/>
     </>
 }
 

@@ -9,7 +9,8 @@ import { decryptData } from '../../../utils/crypto'
 import { convertCurrency } from '../../../utils/utils'
 
 function List(props){
-    const {list, lang, user, currency, exchange_rates} = props
+    const {list, user, settings, exchange_rates} = props
+    const {lang, currency} = settings
     let max = user.money ? decryptData(user.money) : 0
 
     function updateQtyProduct(x, item){
@@ -40,7 +41,7 @@ function List(props){
                                     </div>
                                 </Col>
                                 <Col xs={6} sm={8} className="cart_info">
-                                    <h4>{item["name_" + props.lang.toLowerCase()] || item.name_eng.toLowerCase()}</h4>                                    
+                                    <h4>{item["name_" + lang.toLowerCase()] || item.name_eng.toLowerCase()}</h4>                                    
                                     <p>
                                         <b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(item.price, currency, exchange_rates)} {currency}
                                     </p>

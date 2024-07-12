@@ -12,10 +12,13 @@ import PolicyPrivacyIt from './policyPrivacyIt'
 import PolicyPrivacyPt from './policyPrivacyPt'
 import PolicyPrivacyRo from './policyPrivacyRo'
 import PolicyPrivacyRu from './policyPrivacyRu'
+import PolicyPrivacyZh from './policyPrivacyZh'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function PolicyPrivacy(props){
+    const {settings} = props
+    const {lang} = settings
     let dispatch = useDispatch()
 
     function handleBack(){
@@ -25,11 +28,11 @@ function PolicyPrivacy(props){
     }
 
     return <div className="content_wrap">
-        <Header template="policy_privacy" title={translate({lang: props.lang, info: "policy_privacy"})} />
+        <Header template="policy_privacy" title={translate({lang: lang, info: "policy_privacy"})} />
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {
-                    switch (props.lang) {
+                    switch (lang) {
                         case "DE":
                             return <PolicyPrivacyDe/>
                         case "ES":
@@ -44,6 +47,8 @@ function PolicyPrivacy(props){
                             return <PolicyPrivacyRo/>
                         case "RU":
                             return <PolicyPrivacyRu/>
+                        case "ZH":
+                            return <PolicyPrivacyZh/>
                         case "ENG":
                         default:
                             return <PolicyPrivacyEng/>

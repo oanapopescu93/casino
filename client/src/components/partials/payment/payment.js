@@ -18,7 +18,9 @@ import { orderAdd } from '../../../reducers/order'
 import { cartRemoveAll } from '../../../reducers/cart'
 
 function Payment(props){
-    const {lang, template, home, currency, exchange_rates} = props
+    const {template, home, settings, exchange_rates} = props
+    const {lang, currency} = settings
+
     let dispatch = useDispatch()
     let max_amount = 100
     let price_per_carrot = 1
@@ -398,7 +400,7 @@ function Payment(props){
             let payload = {
                 open: true,
                 template: "paymentSuccess",
-                title: translate({lang: props.lang, info: "payment_success"}),
+                title: translate({lang: lang, info: "payment_success"}),
                 data: details,
                 size: 'md',
             }
@@ -435,8 +437,8 @@ function Payment(props){
         let payload = {
             open: true,
             template: "error",
-            title: translate({lang: props.lang, info: "error"}),
-            data: translate({lang: props.lang, info: data.payload && typeof data.payload === "string" ? data.payload : "error_charge"}),
+            title: translate({lang: lang, info: "error"}),
+            data: translate({lang: lang, info: data.payload && typeof data.payload === "string" ? data.payload : "error_charge"}),
             size: 'sm',
         }
         dispatch(changePopup(payload))

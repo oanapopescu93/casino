@@ -1,12 +1,14 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrashCan, faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { translate } from '../../../translations/translate'
 import { convertCurrency } from '../../../utils/utils'
 
-function Panel(props){
-    const {list, lang, promo, currency, exchange_rates} = props
+function Panel(props){    
+    const {list, promo, settings, exchange_rates} = props
+    const {lang, currency} = settings
+
     let total = totalPriceSum()
     let total_promo = total
     if(promo && Object.keys(promo).length>0){

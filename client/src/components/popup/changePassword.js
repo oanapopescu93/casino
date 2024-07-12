@@ -5,7 +5,8 @@ import { translate } from '../../translations/translate'
 import { validateInput } from '../../utils/validate'
 
 function ChangePassword(props) {
-    const {lang} = props
+    const {settings} = props
+    const {lang} = settings
     const [choice, setChoice] = useState("")
     const [error, setError] = useState(false)
     const [errorPassword, setErrorPassword] = useState(false)

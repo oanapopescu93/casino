@@ -8,8 +8,9 @@ import Panel from '../games/sidebar/panel'
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import { useDispatch } from 'react-redux'
 
-function Salon(props) {
-    const {lang, home, page} = props 
+function Salon(props) {    
+    const {page, settings} = props
+    const {lang} = settings
     let dispatch = useDispatch()
 
     function handleWhack(){
@@ -23,7 +24,7 @@ function Salon(props) {
             <Language title={lang} />
             <div className="content_wrap">
                 <Header template="salon" lang={lang} />
-                <SalonGames lang={lang} items={home.products} />
+                <SalonGames {...props} />
             </div>
             <SalonSidebarLeft lang={lang} />
             <Panel {...props} />

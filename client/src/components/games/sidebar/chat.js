@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { getWindowDimensions } from '../../../utils/utils'
 
 function ChatMessages(props){
+    const {lang, messages, height} = props
     const messagesEndRef = React.createRef()
     let date_format = useSelector(state => state.settings.date)
 
@@ -20,21 +21,21 @@ function ChatMessages(props){
 
     useEffect(() => {
 		scrollToBottom()
-	}, [props.messages]) 
+	}, [messages]) 
 
-    return <div className="messages" style={{height: props.height+'px'}}>
-        {props.messages.map((message, i)=>{
+    return <div className="messages" style={{height: height+'px'}}>
+        {messages.map((message, i)=>{
             let text = message.text
             let user = message.user ? decryptData(message.user) : "" 
             let date = formatDate(message.timestamp, date_format)
             switch (text) {
                 case "join":
                     return <div key={i} className='message'>
-                        <p>{user} {translate({lang: props.lang, info: "joined_the_chat"})}</p>
+                        <p>{user} {translate({lang: lang, info: "joined_the_chat"})}</p>
                     </div>
                 case "leave":
                     return <div key={i} className='message'>
-                        <p>{user} {translate({lang: props.lang, info: "left_the_chat"})}</p>
+                        <p>{user} {translate({lang: lang, info: "left_the_chat"})}</p>
                     </div>
                 default:
                     return <div key={i} className="message">
@@ -53,9 +54,10 @@ function ChatMessages(props){
 }
 
 function ChatList(props){
+    const {list} = props
     let date_format = useSelector(state => state.settings.date)
     return <ul className="chat_list">
-        {props.list.map((item, i)=>{
+        {list.map((item, i)=>{
             let date = formatDate(item.timestamp, date_format)
             return <li key={i}>
                 <span className="left">{decryptData(item.user)}</span>
@@ -66,9 +68,9 @@ function ChatList(props){
 }
 
 function Chat(props){
-    const {lang, socket, page} = props
+    const {page, user, socket, settings, chatRoomUsers} = props
+    const {lang} = settings
     let game = page.game
-    let chatRoomUsers = props.chatRoomUsers ? props.chatRoomUsers : []
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
     const [height, setHeight] = useState(getWindowDimensions().height)
@@ -109,7 +111,7 @@ function Chat(props){
             let payload = {
                 text: input,
                 room: getRoom(game),
-                user: props.user.user
+                user: user.user
             }
             socket.emit('message_send', payload) 
             setInput('')

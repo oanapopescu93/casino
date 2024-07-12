@@ -10,13 +10,13 @@ import Contact from './contact/contact'
 import Donation from './donation/donation'
 import Cart from './cart/cart'
 import Checkout from './checkout/checkout'
-import Orders from './order/orders'
 import BuyCarrots from './buyCarrots'
 import HowToPlay from './howToPlay/howToPlay'
 import { translate } from '../../translations/translate'
 
 function OtherPages(props) {
-    const {lang, page, home} = props
+    const {page, home, settings} = props
+    const {lang} = settings
 
     return <>
         <Language title={lang} />
@@ -56,14 +56,12 @@ function OtherPages(props) {
                     return <Cart {...props} />
                 case "Checkout":
                     return <Checkout {...props} />
-                case "Order":
-                    return <Orders {...props} />
                 case "BuyCarrots":
                     return <BuyCarrots {...props} />
                 case "how_to_play": 
                     return <HowToPlay {...props} />
                 default:
-                    return <p>{translate({lang: props.lang, info: "error"})}</p>
+                    return <p>{translate({lang: lang, info: "error"})}</p>
             }
         })()}
     </>

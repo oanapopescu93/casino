@@ -322,7 +322,7 @@ function roulette_bets(props){
 						open: true,
 						template: "error",
 						title: "error",
-						data: translate({lang: props.lang, info: "no_money"})
+						data: translate({lang: props.setings.lang, info: "no_money"})
 					}
 					props.dispatch(changePopup(payload))
 				} else {
@@ -349,8 +349,8 @@ function roulette_bets(props){
 	}
 }
 
-function RouletteTable(props){    
-    let clear = props.clear
+function RouletteTable(props){ 
+	const {clear} = props
 	let dispatch = useDispatch()
     let options = {...props, dispatch}
     let my_roulette_bets = new roulette_bets(options)

@@ -156,6 +156,7 @@ var word_bank = {
     password_rule05: "Минимум восемь символов в длину",
 
     //cart
+    value: "Значение ",
     price: "Цена",
     qty: "Количество",
     total_price: "Общая стоимость",

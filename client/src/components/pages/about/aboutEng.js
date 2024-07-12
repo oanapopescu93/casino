@@ -7,7 +7,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCircleQuestion} from '@fortawesome/free-solid-svg-icons'
 
 function AboutEng(props){
-    let casino_name = props.casino_name ? props.casino_name : translate({lang: props.lang, info: "our_casino"})
+    const {settings, casino_name} = props
+    const {lang} = settings
     let dispatch = useDispatch()
     function handleHowToPlay(){
         dispatch(changePage("how_to_play"))
@@ -32,7 +33,7 @@ function AboutEng(props){
             <p>We're always open to feedback and suggestions from our players to improve the overall gaming experience. Your input is invaluable as we work towards expanding and enhancing our offerings.</p>
             <p>Join us at {casino_name} and be a part of our growing community of passionate players. While we're not a commercial casino, we are a platform built on love for gaming and the desire to create something truly special. So, grab your virtual chips, roll the dice, and spin the reels for a gaming experience that's all about the pure joy of playing.</p>
             <p>Thank you for being a part of our {casino_name} journey. We look forward to sharing many memorable moments in the world of gaming together.</p>
-            <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: props.lang, info: "how_to_play"})}</p>
+            <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: lang, info: "how_to_play"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

@@ -19,7 +19,8 @@ import { cartRemoveAll } from '../../../reducers/cart'
 import Withdraw from '../withdraw/withdraw'
 
 function Home(props) {
-    const {home, page, user, cookies, currency, exchange_rates} = props
+    const {home, page, user, settings, exchange_rates} = props
+    const {lang, currency, cookies} = settings
     let dispatch = useDispatch()
     
     function handleCookiesClick(){
@@ -72,7 +73,7 @@ function Home(props) {
                         let payload = {
                             open: true,
                             template: "paymentSuccess",
-                            title: translate({lang: props.lang, info: "payment_success"}),
+                            title: translate({lang: lang, info: "payment_success"}),
                             data: details,
                             size: 'md',
                         }
@@ -95,8 +96,8 @@ function Home(props) {
                     let payload = {
                         open: true,
                         template: "paymentCancel",
-                        title: translate({lang: props.lang, info: "payment_cancel"}),
-                        data: translate({lang: props.lang, info: "payment_cancel_text"}),
+                        title: translate({lang: lang, info: "payment_cancel"}),
+                        data: translate({lang: lang, info: "payment_cancel_text"}),
                         size: 'sm',
                     }
                     dispatch(changePopup(payload))
@@ -134,13 +135,13 @@ function Home(props) {
                             let payload = {
                                 open: true,
                                 template: "paymentSuccess",
-                                title: translate({lang: props.lang, info: "payment_success"}),
+                                title: translate({lang: lang, info: "payment_success"}),
                                 data: details,
                                 size: 'md',
                             }
                             dispatch(changePopup(payload)) //show success popup
-                            // dispatch(cartRemoveAll()) //remove all from cart
-                            // dispatch(orderAdd(details)) // add payment to order list
+                            dispatch(cartRemoveAll()) //remove all from cart
+                            dispatch(orderAdd(details)) // add payment to order list
                         } else {
                             showError(data)
                         }
@@ -160,8 +161,8 @@ function Home(props) {
                     let payload = {
                         open: true,
                         template: "paymentCancel",
-                        title: translate({lang: props.lang, info: "payment_cancel"}),
-                        data: translate({lang: props.lang, info: "payment_cancel_text"}),
+                        title: translate({lang: lang, info: "payment_cancel"}),
+                        data: translate({lang: lang, info: "payment_cancel_text"}),
                         size: 'sm',
                     }
                     dispatch(changePopup(payload))
@@ -174,8 +175,8 @@ function Home(props) {
         let payload = {
             open: true,
             template: "error",
-            title: translate({lang: props.lang, info: "error"}),
-            data: translate({lang: props.lang, info: typeof data.payload === "string" ? data.payload : "error_charge"}),
+            title: translate({lang: lang, info: "error"}),
+            data: translate({lang: lang, info: typeof data.payload === "string" ? data.payload : "error_charge"}),
             size: 'sm',
         }
         dispatch(changePopup(payload))
@@ -204,7 +205,7 @@ function Home(props) {
                         case "dashboard":
                             return <>
                                 <div className="content_wrap">
-                                    <Header template="page" details={page} lang={props.lang} />
+                                    <Header template="page" details={page} lang={lang} />
                                     <Dashboard {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />
@@ -212,21 +213,21 @@ function Home(props) {
                         case "market":
                             return <>
                                 <div className="content_wrap">
-                                    <Header template="page" details={page} lang={props.lang} />
+                                    <Header template="page" details={page} lang={lang} />
                                     <Market {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />
                             </>
                         default:
-                            return <Salon {...props} user={user} home={home} page={page} />
+                            return <Salon {...props} user={user} home={home} page={page} settings={settings}/>
                     }
                 default:
-                    return <Salon {...props} user={user} home={home} page={page} />
+                    return <Salon {...props} user={user} home={home} page={page} settings={settings}/>
             }
         })()}
-        {cookies !== '1' ? <Cookies lang={props.lang} cookiesClick={()=>handleCookiesClick()} /> : null}
+        {cookies !== '1' ? <Cookies lang={lang} cookiesClick={()=>handleCookiesClick()} /> : null}
         <ButtonDonation handleDonationClick={()=>handleDonationClick()}/>
-        <Footer lang={props.lang} />
+        <Footer lang={lang} />
     </div>
 }
 

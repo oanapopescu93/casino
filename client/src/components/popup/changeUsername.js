@@ -4,7 +4,8 @@ import { Button } from 'react-bootstrap'
 import { translate } from '../../translations/translate'
 
 function ChangeUsername(props) {
-    const {lang} = props
+    const {settings} = props
+    const {lang} = settings
     const [choice, setChoice] = useState("")
     const [error, setError] = useState(false)
     let user = useSelector(state => state.auth.user)

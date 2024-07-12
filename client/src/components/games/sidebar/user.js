@@ -10,8 +10,9 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faUser, faStore, faHouse, faCartShopping, faGear, faPaperPlane, faPowerOff, faCircleQuestion,faCalendarDays} from '@fortawesome/free-solid-svg-icons'
 import { isEmpty, setCookie } from '../../../utils/utils'
 
-function User(props){
-    const {lang, page, user, streak} = props
+function User(props){    
+    const {page, user, settings, streak} = props
+    const {lang} = settings
     let dispatch = useDispatch()
     const [buttonUser, setButtonUser] = useState('active')
     const [buttonMarket, setButtonMarket] = useState('')
@@ -63,11 +64,11 @@ function User(props){
     }
 
     useEffect(() => {	
-        if(props.page && props.page.game_page){
-            if(props.page.game_page === 'dashboard'){
+        if(page && page.game_page){
+            if(page.game_page === 'dashboard'){
                 setButtonUser('active')
                 setButtonMarket('')
-            } else if(props.page.game_page === 'market'){
+            } else if(page.game_page === 'market'){
                 setButtonUser('')
                 setButtonMarket('active')
             }
@@ -91,7 +92,7 @@ function User(props){
                         <FontAwesomeIcon icon={faCalendarDays} />
                         <span className="my_tooltiptext">
                             <p><b>Streak</b></p>
-                            <p>{translate({lang: props.lang, info: "your_streak"})}</p>
+                            <p>{translate({lang: lang, info: "your_streak"})}</p>
                         </span>
                     </div>
                 </span> : null}

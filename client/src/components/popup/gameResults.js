@@ -3,7 +3,8 @@ import { translate } from '../../translations/translate'
 import carrot_img from '../../img/icons/carrot_icon_black.png'
 
 function GameResults(props) {
-    const {lang, results} = props    
+    const {settings, results} = props
+    const {lang} = settings   
     let table_name = results.game.table_name ? results.game.table_name : results.game
     let table_type = results.game.table_type
     let status = results.status

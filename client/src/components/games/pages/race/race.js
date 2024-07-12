@@ -7,6 +7,8 @@ import { translate } from '../../../../translations/translate'
 import { resetGame } from '../../../../reducers/games'
 
 function Race(props){
+    const {settings} = props
+    const {lang} = settings
     const [startRace, setStartRace] = useState(false)
     const [bets, setBets] = useState([])
     let dispatch = useDispatch()
@@ -31,7 +33,7 @@ function Race(props){
                 open: true,
                 template: "error",
                 title: "error",
-                data: translate({lang: props.lang, info: "no_bets"})
+                data: translate({lang: lang, info: "no_bets"})
             }
             dispatch(changePopup(payload))
         }

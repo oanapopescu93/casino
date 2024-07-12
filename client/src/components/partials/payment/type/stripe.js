@@ -5,7 +5,8 @@ import { checkoutData } from '../../../../utils/utils'
 import countriesData from '../../../../utils/constants/countries.json'
 
 function Stripe(props) {
-    const {lang, paymentDetails, gateway, gatewayDetailsMandatory, paymentError, minimum_amount_usd} = props
+    const {paymentDetails, gateway, gatewayDetailsMandatory, paymentError, settings, minimum_amount_usd} = props
+    const {lang} = settings
 
     const [name] = useState(paymentDetails.name !== "" ? paymentDetails.name : "")
     const [email] = useState(paymentDetails.email !== "" ? paymentDetails.email : "")

@@ -2,7 +2,8 @@ import React from 'react'
 import { translate } from '../../translations/translate'
 
 function KenoPrizeTable(props){    
-    const {lang, kenoPrizes} = props
+    const {settings, kenoPrizes} = props
+    const {lang} = settings
     
     return <div className="keno_rules_container">
         {kenoPrizes && kenoPrizes.length>0 ? <div className="keno_rules">

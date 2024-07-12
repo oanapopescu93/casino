@@ -8,7 +8,8 @@ import { checkWinterMonths } from '../../../utils/special_occasions'
 import { getWindowDimensions } from '../../../utils/utils'
 
 function Panel(props){
-    const {lang, page} = props
+    const {page, settings} = props
+    const {lang} = settings
     const [open, setOpen] = useState('')
     const [panel, setPanel] = useState("user_panel_box")
     const [panelUser, setPanelUser] = useState("active")

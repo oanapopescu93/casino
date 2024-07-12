@@ -458,11 +458,13 @@ let slots_data = null
 let slots_bets = 0
 let slots_status = false
 function Slots(props){
+	const {page, user, bets, settings, socket} = props
+    const {lang} = settings
     let dispatch = useDispatch()
 	const [width, setWidth] = useState(getWindowDimensions().width)
-    let game = props.page.game
+    let game = page.game
     let game_type = game.table_type
-	let money = props.user.money ? decryptData(props.user.money) : 0
+	let money = user.money ? decryptData(user.money) : 0
     let lines = 5
     switch(game_type) {
         case "reel_3":
@@ -478,7 +480,7 @@ function Slots(props){
 		slots_bets = bet
 		if(slots_bets > 0 && slots_status){		
 			let slots_payload = {
-				uuid: props.user.uuid,
+				uuid: user.uuid,
 				game: game,
 				status: 'lose',
 				bet: slots_bets,
@@ -505,8 +507,8 @@ function Slots(props){
 	}, [])
 
     useEffect(() => {
-        let payload = {uuid: props.user.uuid, lines, room: getRoom(game), items: items}	
-        props.socket.emit('slots_send', payload)	        
+        let payload = {uuid: user.uuid, lines, room: getRoom(game), items: items}	
+        socket.emit('slots_send', payload)	        
         $(window).resize(function(){
 			if(my_slots){
                 my_slots.resize()
@@ -530,11 +532,11 @@ function Slots(props){
             }
         }
 
-		props.socket.on('slots_read', handleSlotsRead)
+		socket.on('slots_read', handleSlotsRead)
 		return () => {
-            props.socket.off('slots_read', handleSlotsRead)
+            socket.off('slots_read', handleSlotsRead)
         }
-    }, [props.socket])
+    }, [socket])
 
     function choice(type){		
         if(type === "start" && my_slots){
@@ -545,8 +547,8 @@ function Slots(props){
                 let payload = {
                     open: true,
                     template: "error",
-                    title: translate({lang: props.lang, info: "error"}),
-                    data: translate({lang: props.lang, info: "no_bets"})
+                    title: translate({lang: lang, info: "error"}),
+                    data: translate({lang: lang, info: "no_bets"})
                 }
                 dispatch(changePopup(payload))
             }
@@ -591,14 +593,14 @@ function Slots(props){
 					}
             })()}
 			{width >= 600 ? <div id="slots_prizes" className="desktop" onClick={()=>handleShowPrizes()}>
-            	{translate({lang: props.lang, info: "prizes"})}
+            	{translate({lang: lang, info: "prizes"})}
         	</div> : null}			
         </div>		
         <div className="slot_machine_board">
             <GameBoard template="slots" {...props} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
         </div>
 		{width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
-            {translate({lang: props.lang, info: "prizes"})}
+            {translate({lang: lang, info: "prizes"})}
         </div> : null}
 		<div className="page_exit">
 			<div className="tooltip">
@@ -607,7 +609,7 @@ function Slots(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>props.handleHandleExit()}
 				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-				<span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+				<span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
 			</div>
 		</div>
     </div>

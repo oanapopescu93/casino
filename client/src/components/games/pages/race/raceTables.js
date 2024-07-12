@@ -9,9 +9,11 @@ import { Button } from 'react-bootstrap'
 import Carousel from '../../../carousel/carousel'
 
 function RaceTables(props){
-    const {lang, home} = props
+    const {home, user, settings} = props
+    const {lang} = settings
+    
     let race_bets = useSelector(state => state.games.race.bets) 
-    let money = props.user.money ? decryptData(props.user.money) : 0
+    let money = user.money ? decryptData(user.money) : 0
     let dispatch = useDispatch()
 
     let race_array = []
@@ -30,7 +32,7 @@ function RaceTables(props){
 				open: true,
 				template: "error",
 				title: "error",
-				data: translate({lang: props.lang, info: "no_money"})
+				data: translate({lang: lang, info: "no_money"})
 			}
 			dispatch(changePopup(payload))
         }

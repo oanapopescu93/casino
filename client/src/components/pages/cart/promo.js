@@ -4,7 +4,8 @@ import { isEmpty } from '../../../utils/utils'
 import { Button } from 'react-bootstrap'
 
 function Promo(props){
-    const {lang, socket} = props
+    const {settings, socket} = props
+    const {lang} = settings
     const [value, setValue] = useState('')
     const [coupon, setCoupon] = useState(null)
 
@@ -44,7 +45,7 @@ function Promo(props){
                     if(Object.keys(coupon).length>0){
                         return <p className="alert alert-success">
                             {(() => {
-                                switch (props.lang) {
+                                switch (lang) {
                                     case "DE":
                                         return <span>{coupon.discount}% Rabatt</span>
                                     case "ES":

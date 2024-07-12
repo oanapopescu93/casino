@@ -126,6 +126,8 @@ function CareerList(props){
 }
 
 function Career(props){
+    const {list, settings} = props
+    const {lang} = settings
     let dispatch = useDispatch()
 
     function handleBack(){
@@ -135,17 +137,17 @@ function Career(props){
     }
 
     return <div className="content_wrap">
-        <Header template="career" title={translate({lang: props.lang, info: "career"})} />
+        <Header template="career" title={translate({lang: lang, info: "career"})} />
         <div className="page_content">
             {(() => {
-                if(props.list){
-                    if(props.list.length>0){
-                        return <CareerList lang={props.lang} list={props.list} />
+                if(list){
+                    if(list.length>0){
+                        return <CareerList lang={lang} list={list} />
                     } else {
-                        return <p className="text_center">{translate({lang: props.lang, info: "no_career"})}</p>
+                        return <p className="text_center">{translate({lang: lang, info: "no_career"})}</p>
                     }
                 } else {
-                    return <p className="text_center">{translate({lang: props.lang, info: "error"})}</p>
+                    return <p className="text_center">{translate({lang: lang, info: "error"})}</p>
                 }
             })()}
         </div>

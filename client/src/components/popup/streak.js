@@ -2,7 +2,8 @@ import { translate } from "../../translations/translate"
 import carrot_img from '../../img/icons/carrot_icon_black.png'
 
 function Streak(props){    
-    const {lang, data} = props
+    const {settings, data} = props
+    const {lang} = settings
     let streak = data.streak
     let prize = data.prize
     let streakPeriod = Array.from({length: 100}, (_, i) => i + 1) // an array with 100 numbers starting from 1

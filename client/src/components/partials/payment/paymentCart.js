@@ -6,7 +6,8 @@ import Cart from '../../pages/checkout/cart'
 import { convertCurrency, getWindowDimensions } from '../../../utils/utils'
 
 function PaymentCart(props){
-    const {lang, home, currency, exchange_rates} = props
+    const {home, settings, exchange_rates} = props
+    const {lang, currency} = settings
     let market = home.market ? home.market : []
     let cart = useSelector(state => state.cart.cart) 
     let promo = useSelector(state => state.cart.promo) 
@@ -45,7 +46,7 @@ function PaymentCart(props){
             {cart && cart.length>0 ? <>
                 <Row>
                     <Col sm={12}>
-                        <h3 className="cart_header">{translate({lang: props.lang, info: "cart"})}</h3>
+                        <h3 className="cart_header">{translate({lang: lang, info: "cart"})}</h3>
                     </Col>
                     <Col sm={12}>
                         <Cart {...props} cart={cart}></Cart>

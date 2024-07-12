@@ -12,11 +12,14 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Donation(props){
-    const {lang, list} = props
-    let dispatch = useDispatch()
-    let donation_type = ["crypto", "paypal", "bank"]
+    const {list, settings} = props
+    const {lang} = settings   
+    
     const [visible, setVisible] = useState('crypto')
     const [index, setIndex] = useState(0)
+
+    let donation_type = ["crypto", "paypal", "bank"]
+    let dispatch = useDispatch()
 
     function handleBack(){
         dispatch(changePage('Salon'))
@@ -30,7 +33,7 @@ function Donation(props){
     }
 
     return <div className="content_wrap">
-        <Header template="donation" title={translate({lang: props.lang, info: "donation"})} />
+        <Header template="donation" title={translate({lang: lang, info: "donation"})} />
         <div className="page_content">
             {(() => {
                 if(list && list.length>0){
@@ -45,7 +48,7 @@ function Donation(props){
                                                 active = "active"
                                             }
                                             return <li key={i} className={active} onClick={()=>{handleClick(item, i)}}>
-                                                <span>{translate({lang: props.lang, info: item})}</span>
+                                                <span>{translate({lang: lang, info: item})}</span>
                                             </li>
                                         })}
                                     </ul>
@@ -54,22 +57,22 @@ function Donation(props){
                                     {(() => {					
                                         switch (visible) {
                                             case "crypto":
-                                                return <CryptoDonation lang={props.lang} list={list}/>
+                                                return <CryptoDonation lang={lang} list={list}/>
                                             case "paypal":
-                                                return <PaypalDonation lang={props.lang} list={list}/>
+                                                return <PaypalDonation lang={lang} list={list}/>
                                             case "bank":
-                                                return <BankDonation lang={props.lang} list={list}/>
+                                                return <BankDonation lang={lang} list={list}/>
                                             default:
-                                                return <p>{translate({lang: props.lang, info: "error"})}</p>
+                                                return <p>{translate({lang: lang, info: "error"})}</p>
                                         }
                                     })()}
                                 </div>
-                                <p>{translate({lang: props.lang, info: "donation_footer_text"})}</p>
+                                <p>{translate({lang: lang, info: "donation_footer_text"})}</p>
                             </div>
                         </div>
                         <div className="donation_ukraine">
                             <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine">
-                                {translate({lang: props.lang, info: "donation_ukraine"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine} />
+                                {translate({lang: lang, info: "donation_ukraine"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine} />
                             </a>
                         </div>
                     </div>

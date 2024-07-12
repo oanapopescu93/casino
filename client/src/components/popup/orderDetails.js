@@ -5,7 +5,8 @@ import { translate } from '../../translations/translate'
 import { Row, Col } from 'react-bootstrap'
 
 function OrderDetails(props) {
-    const { lang, data } = props
+    const { settings, data } = props
+    const { lang } = settings
     const {
         method,
         payment_id, 

@@ -9,14 +9,14 @@ import { faPlay, faGear, faTrashCan, faArrowRotateLeft } from '@fortawesome/free
 import { getWindowDimensions } from '../../../../utils/utils'
 
 function KenoBoard(props){
-    const {lang, kenoSpots} = props
+    const {kenoSpots, settings} = props
+    const {lang} = settings
     const [matrixBig, setMatrixBig] = useState([])
     const [matrixSmall, setMatrixSmall] = useState([])
     const [width, setWidth] = useState(getWindowDimensions().width)
 
     useEffect(() => {        
         setMatrixBig(kenoSpots)
-
         let newArray = kenoSpots.map(subArray => {
             const firstHalf = subArray.slice(0, 5)
             const secondHalf = subArray.slice(5, 10)
@@ -79,6 +79,9 @@ function KenoBoard(props){
 }
 
 function KenoButtons(props){
+    const {kenoSpotsResult, settings} = props
+    const {lang} = settings
+
     function gameStart(){
         if(typeof props.gameStart === "function"){
             props.gameStart()
@@ -107,23 +110,23 @@ function KenoButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>gameStart()}
             ><FontAwesomeIcon icon={faPlay} /></Button>
-            <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+            <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
         </div>
-        {props.kenoSpotsResult && props.kenoSpotsResult.length > 0 ? null : <div className="tooltip">
+        {kenoSpotsResult && kenoSpotsResult.length > 0 ? null : <div className="tooltip">
             <Button 
                 type="button"  
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>openTable()}
             ><FontAwesomeIcon icon={faGear} /></Button>
-            <span className="tooltiptext">{translate({lang: props.lang, info: "settings"})}</span>
+            <span className="tooltiptext">{translate({lang: lang, info: "settings"})}</span>
         </div>}
-        {props.kenoSpotsResult && props.kenoSpotsResult.length > 0 ? null : <div className="tooltip">
+        {kenoSpotsResult && kenoSpotsResult.length > 0 ? null : <div className="tooltip">
             <Button 
                 type="button"  
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>resetKenoSpots()}
             ><FontAwesomeIcon icon={faTrashCan} /></Button>
-            <span className="tooltiptext">{translate({lang: props.lang, info: "reset"})}</span>
+            <span className="tooltiptext">{translate({lang: lang, info: "reset"})}</span>
         </div>}
         <div className="tooltip">
             <Button 
@@ -131,12 +134,14 @@ function KenoButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>{handleBack()}}
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-            <span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
         </div>
     </div>
 }
 
 function KenoQuickPick(props){
+    const {settings} = props
+    const {lang} = settings
     const [randomSelections, setRandomSelections] = useState(1)
 
     function updateQuickPickLength(e){
@@ -157,13 +162,14 @@ function KenoQuickPick(props){
                 type="button"  
                 className="mybutton button_transparent shadow_convex"
                 onClick={()=>{handleQuickPick()}}
-            ><span>{translate({lang: props.lang, info: "quick_pick"})}</span></Button>
+            ><span>{translate({lang: lang, info: "quick_pick"})}</span></Button>
         </div>
     </div>
 }
 
 function KenoBets(props){
-    const {lang, pricePerGame, noOfGames} = props
+    const {pricePerGame, noOfGames, settings} = props
+    const {lang} = settings
 
     function updateKenoBets(type, e){
         if(typeof props.updateKenoBets === "function"){
@@ -196,6 +202,8 @@ function KenoBets(props){
 }
 
 function KenoSettings(props){
+    const {kenoSpotsResult, settings} = props
+    const {lang} = settings
     let open = props.open ? "open" : ""
 
     function closeTable(){
@@ -213,11 +221,11 @@ function KenoSettings(props){
         <div className="game_bets shadow_concav">
             <div className="close" onClick={()=>closeTable()}>x</div>
             <div className="game_bets_box">
-                <p>{translate({lang: props.lang, info: "keno_instructions"})}</p>					
+                <p>{translate({lang: lang, info: "keno_instructions"})}</p>					
                 <KenoQuickPick {...props} />
                 <KenoBets {...props} /> 
                 <div className="button_action_group">
-                    {props.kenoSpotsResult && props.kenoSpotsResult.length > 0 ? null : <Button 
+                    {kenoSpotsResult && kenoSpotsResult.length > 0 ? null : <Button 
                         type="button"  
                         className="mybutton round button_transparent shadow_convex"
                         onClick={()=>{resetKenoSpots()}}
@@ -229,6 +237,8 @@ function KenoSettings(props){
 }
 
 function KenoGame(props){
+    const {settings} = props
+    const {lang} = settings
     const [open, setOpen] = useState(false)
 
     function openTable(){setOpen(true)}
@@ -258,7 +268,7 @@ function KenoGame(props){
                                     type="button"
                                     className="mybutton button_transparent shadow_convex"
                                     onClick={()=>handleShowPrizes()}                   
-                                >{translate({lang: props.lang, info: "keno_prizes"})}</Button>	
+                                >{translate({lang: lang, info: "keno_prizes"})}</Button>	
                             </div>
                         </Col>
                     </Row>   

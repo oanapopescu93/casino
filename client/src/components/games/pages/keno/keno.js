@@ -7,8 +7,11 @@ import { translate } from '../../../../translations/translate'
 import { decryptData } from '../../../../utils/crypto'
 
 function Keno(props){
-    let game = props.page.game
-    let money = props.user.money ? decryptData(props.user.money) : 0
+    const {page, home, user, settings, socket} = props
+    const {lang} = settings
+
+    let game = page.game
+    let money = user.money ? decryptData(user.money) : 0
     let dispatch = useDispatch()
 
     const [kenoSpots, setKenoSpots] = useState([])
@@ -80,7 +83,7 @@ function Keno(props){
             open: true,
             template: "error",
             title: "error",
-            data: translate({lang: props.lang, info: text}),
+            data: translate({lang: lang, info: text}),
             size: 'sm',
         }
         dispatch(changePopup(payload))
@@ -174,7 +177,7 @@ function Keno(props){
             open: true,
             template: "keno_prizes",
             title: "keno_prizes",
-            data: props.home.keno_prizes,
+            data: home.keno_prizes,
             size: 'lg',
         }
         dispatch(changePopup(payload))
@@ -189,12 +192,12 @@ function Keno(props){
         let selectedArray = getSelectedKenoIds()
         setKenoSpotsSelectedArray(selectedArray)
         let keno_payload_server = {
-            uuid: props.user.uuid,
+            uuid: user.uuid,
             length: selectedArray.length, 
             max: calculateTotalSpots(kenoSpots),
             no_of_games: noOfGames
         }        
-        props.socket.emit('keno_send', keno_payload_server)
+        socket.emit('keno_send', keno_payload_server)
     }
 
     function calculateTotalSpots(array) {
@@ -211,11 +214,11 @@ function Keno(props){
                 setKenoSpotsResult(data[0])
             }
         }
-		props.socket.on('keno_read', handleKenoRead)
+		socket.on('keno_read', handleKenoRead)
 		return () => {
-            props.socket.off('keno_read', handleKenoRead)
+            socket.off('keno_read', handleKenoRead)
         }
-    }, [props.socket])
+    }, [socket])
 
     function animationFinished(e){
         switch(e){
@@ -236,7 +239,7 @@ function Keno(props){
     }
 
     function winLose(){
-        let keno_prizes = props.home.keno_prizes
+        let keno_prizes = home.keno_prizes
         let totalWinnings = 0
         let selectedSpotsCount = 0
         let matchedNumbers = 0
@@ -266,7 +269,7 @@ function Keno(props){
         let bet = pricePerGame * noOfGames
         let status = totalWinnings > 0 ? "win" : "lose"        
         let keno_payload = {
-            uuid: props.user.uuid,
+            uuid: user.uuid,
             game,
             status,
             bet,

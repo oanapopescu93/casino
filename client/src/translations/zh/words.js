@@ -156,6 +156,7 @@ var word_bank = {
     password_rule05: "至少八个字符",
 
     //cart
+    value: "价值 ",
     price: "价格",
     qty: "数量",
     total_price: "总价",

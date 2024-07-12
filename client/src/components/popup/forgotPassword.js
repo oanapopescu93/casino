@@ -3,7 +3,8 @@ import { Button } from 'react-bootstrap'
 import { translate } from '../../translations/translate'
 
 function ForgotPassword(props) {
-    const {forgotPasswordResult, forgotPasswordSending, lang} = props
+    const {forgotPasswordResult, forgotPasswordSending, settings} = props
+    const {lang} = settings
     const [email, setEmail] = useState("")
     let mailtrap_link = "https://www.mailtrap.io"
 

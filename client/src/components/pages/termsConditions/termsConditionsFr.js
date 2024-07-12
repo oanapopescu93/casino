@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 
-function TermsConditionsEng(){
+function TermsConditionsFr(){
     return <Row id="terms_conditions" className="other_page_container">
         <Col lg={2} />
         <Col lg={8}>
@@ -56,4 +56,4 @@ function TermsConditionsEng(){
         <Col lg={2} />
     </Row>
 }
-export default TermsConditionsEng
+export default TermsConditionsFr

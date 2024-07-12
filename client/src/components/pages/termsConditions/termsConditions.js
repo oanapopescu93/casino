@@ -12,10 +12,13 @@ import TermsConditionsIt from './termsConditionsIt'
 import TermsConditionsPt from './termsConditionsPt'
 import TermsConditionsRo from './termsConditionsRo'
 import TermsConditionsRu from './termsConditionsRu'
+import TermsConditionsZh from './termsConditionsZh'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function TermsConditions(props){
+    const {settings} = props
+    const {lang} = settings
     let dispatch = useDispatch()
     function handleBack(){
         dispatch(changePage('Salon'))
@@ -23,11 +26,11 @@ function TermsConditions(props){
         dispatch(changeGamePage(null))
     }
     return <div className="content_wrap">
-        <Header template="terms_cond" title={translate({lang: props.lang, info: "terms_cond"})} />
+        <Header template="terms_cond" title={translate({lang: lang, info: "terms_cond"})} />
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {
-                    switch (props.lang) {
+                    switch (lang) {
                         case "DE":
                             return <TermsConditionsDe/>
                         case "ES":
@@ -42,6 +45,8 @@ function TermsConditions(props){
                             return <TermsConditionsRo/>
                         case "RU":
                             return <TermsConditionsRu/>
+                        case "ZH":
+                            return <TermsConditionsZh/>
                         case "ENG":
                         default:
                             return <TermsConditionsEng/>

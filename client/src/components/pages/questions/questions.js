@@ -51,6 +51,8 @@ function QuestionList(props){
 }
 
 function Questions(props){
+    const {list, settings} = props
+    const {lang} = settings
     let dispatch = useDispatch()
 
     function handleBack(){
@@ -60,9 +62,9 @@ function Questions(props){
     }
 
     return <div className="content_wrap">
-        <Header template="questions" title={translate({lang: props.lang, info: "questions"})} />
+        <Header template="questions" title={translate({lang: lang, info: "questions"})} />
         <div className="page_content">
-            {props.list ? <QuestionList lang={props.lang} list={props.list} /> : <p>{translate({lang: props.lang, info: "error"})}</p>}
+            {list ? <QuestionList lang={lang} list={list} /> : <p>{translate({lang: lang, info: "error"})}</p>}
         </div>
         <div className="text_center">
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">

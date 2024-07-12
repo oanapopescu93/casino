@@ -13,7 +13,10 @@ import {faStore, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 import { getProducts } from '../../../utils/utils'
 
 function Cart(props){
-    let market = props.home.market
+    const {home, settings} = props
+    const {lang} = settings
+
+    let market = home.market
     let cart = useSelector(state => state.cart.cart) 
     const [promo, setPromo] = useState(null) 
     let dispatch = useDispatch()
@@ -55,7 +58,7 @@ function Cart(props){
     }
 
     return <div className="content_wrap">
-        <Header template="cart" title={translate({lang: props.lang, info: "cart"})} /> 
+        <Header template="cart" title={translate({lang: lang, info: "cart"})} /> 
         <div className="page_content">
             {list && list.length>0 ? <Row>
                 <Col sm={8}>
@@ -84,7 +87,7 @@ function Cart(props){
             </Row> : 
             <Row>
                 <Col sm={12}>
-                    <p style={{paddingBottom: "10px"}}>{translate({lang: props.lang, info: "no_cart"})}</p>
+                    <p style={{paddingBottom: "10px"}}>{translate({lang: lang, info: "no_cart"})}</p>
                 </Col>
                 <Col sm={12} className="button_action_group">
                     <Button type="button" onClick={()=>handleContinueShopping()} className="mybutton round button_transparent shadow_convex">

@@ -16,7 +16,8 @@ import carrot_img from '../../img/icons/carrot_icon.png'
 import { convertCurrency } from '../../utils/utils'
 
 function Cell(props) {
-    const {index, selected, data, template, lang, currency, exchange_rates} = props
+    const {index, selected, data, template, account_type, money, settings, exchange_rates, finances} = props
+    const {lang, currency} = settings
     const [qty, setQty] = useState(1)
     let place = translate({lang: lang, info: 'place'})
     const [titleDropdown, setTitleDropdown] = useState(place)
@@ -131,6 +132,7 @@ function Cell(props) {
                         </div>
                     </div>
                 case "race":
+                    console.log(props, data)
                     return <div className={"rabbit_box_container " + index} key={index}>
                         <div className="rabbit_box shadow_concav">
                             <Row>
@@ -166,7 +168,8 @@ function Cell(props) {
                     </div>
                 case "profile":
                     let show = '' 
-                    if(!data.free && props.money < 1000 && props.account_type === 1){
+                    let min_free = finances.min_free ? finances.min_free : 1000
+                    if(!data.free && money < min_free && account_type === 1){
                         show = ' grey_image'
                     }                    
                     let style = ''

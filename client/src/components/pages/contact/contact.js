@@ -12,10 +12,12 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Contact(props){
-    let locations = props.home.contact    
+    const {socket, home, settings} = props
+    const {lang} = settings
+    let locations = home.contact    
     const [contactElement, setContactElement] = useState(null)
     let dispatch = useDispatch()
-    let default_location = locations[0][props.lang] ? locations[0][props.lang] : locations[0]["ENG"]
+    let default_location = locations[0][lang] ? locations[0][lang] : locations[0]["ENG"]
     const [mapCenter, setMapCenter] = useState(default_location.map)
     const [markerPosition, setMarkerPosition] = useState(default_location.marker)
     const [country, setCountry] = useState(default_location.country)
@@ -33,7 +35,7 @@ function Contact(props){
     function handleChooseContactElement(x, i){
         if(x){
             setIndex(i)
-            let location = locations[i][props.lang]
+            let location = locations[i][lang]
             setContactElement(x)
             setCountry(location.country)
             setCity(location.city)
@@ -56,31 +58,31 @@ function Contact(props){
     }, [])
 
     useEffect(() => {
-        let location = locations[index][props.lang]
+        let location = locations[index][lang]
         setCountry(location.country)
         setCity(location.city)
         setMapCenter(location.map)
         setMarkerPosition(location.marker)
-    }, [props.lang])
+    }, [lang])
 
     return <div className="content_wrap">
-        <Header template="contact" title={translate({lang: props.lang, info: "contact"})} />
+        <Header template="contact" title={translate({lang: lang, info: "contact"})} />
         <div className="page_content">
             <Row>
                 <Col lg={2} />
                 <Col lg={8}>
                     {width >= 768 ? <Row>
                         <Col md={4}>
-                            <ContactForm lang={props.lang} socket={props.socket} />
+                            <ContactForm lang={lang} socket={socket} />
                         </Col>
                         <Col md={8}>
                             <ContactList 
-                                lang={props.lang} 
+                                lang={lang} 
                                 list={locations} 
                                 handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
                             />
                             <ContactMap 
-                                lang={props.lang} 
+                                lang={lang} 
                                 contactElement={contactElement}
                                 mapCenter={mapCenter}
                                 markerPosition={markerPosition}
@@ -92,13 +94,13 @@ function Contact(props){
                     </Row> : <Row>                
                         <Col md={8}>
                             <ContactList 
-                                lang={props.lang} 
+                                lang={lang} 
                                 list={locations} 
                                 handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
                             />
                         </Col>
                         <Col md={4}>
-                            <ContactForm lang={props.lang} socket={props.socket} />
+                            <ContactForm lang={lang} socket={socket} />
                         </Col>
                     </Row>}
                 </Col>

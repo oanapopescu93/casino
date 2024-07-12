@@ -157,6 +157,7 @@ var word_bank = {
     password_rule05: "Mínimo ocho caracteres de longitud",
 
     //cart
+    value: "Valor",
     price: "Precio",
     qty: "Cantidad",
     total_price: "Precio total",

@@ -462,7 +462,7 @@ function Blackjack(props){
 						open: true,
 						template: "error",
 						title: "error",
-						data: translate({lang: props.lang, info: data.action})
+						data: translate({lang: props.settings.lang, info: data.action})
 					}
 					dispatch(changePopup(payload))
 				}
@@ -491,7 +491,7 @@ function Blackjack(props){
 							open: true,
 							template: "error",
 							title: "error",
-							data: translate({lang: props.lang, info: "no_bets"})
+							data: translate({lang: props.settings.lang, info: "no_bets"})
 						}
 						dispatch(changePopup(payload))
 					} else {
@@ -569,7 +569,7 @@ function Blackjack(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>props.handleHandleExit()}
 				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-				<span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+				<span className="tooltiptext">{translate({lang: props.settings.lang, info: "back"})}</span>
 			</div>
 		</div>
 	</div>

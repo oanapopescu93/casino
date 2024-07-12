@@ -6,7 +6,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 function PaymentDetails(props){
-    const {lang, template, paymentDetails, amount, gateway, gatewayDetails, currency, exchange_rates} = props 
+    const {template, paymentDetails, amount, gateway, gatewayDetails, settings, exchange_rates} = props 
+    const {lang, currency} = settings
     const monthOptions = checkoutData().monthOptions
 
     let payment_options = {

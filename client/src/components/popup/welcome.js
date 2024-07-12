@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { translate } from "../../translations/translate"
 
 function Welcome(props){
+    const {settings} = props
+    const {lang} = settings
     const [isActive, setIsActive] = useState(false)
 
     useEffect(() => {
@@ -18,8 +20,8 @@ function Welcome(props){
                 <div className={`box_body ${isActive ? 'active' : ''}`}>
                     <div className="img">
                         <p className="gift_text">
-                            <span>{translate({lang: props.lang, info: "welcome"})}</span>
-                            <span>{translate({lang: props.lang, info: "welcome_text"})}</span>
+                            <span>{translate({lang: lang, info: "welcome"})}</span>
+                            <span>{translate({lang: lang, info: "welcome_text"})}</span>
                         </p>
                     </div>
                     <div className="box_lid">

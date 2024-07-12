@@ -1,6 +1,7 @@
-function Default(props){     
+function Default(props){
+    const {text} = props   
     return <>
-        {props.text ? <div className="popup_body">{props.text}</div> : null}
+        {text ? <div className="popup_body">{text}</div> : null}
     </>
 }
 export default Default

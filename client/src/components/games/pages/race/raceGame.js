@@ -929,6 +929,8 @@ function race_game(props){
 var startGameRace = true
 
 function RaceGame(props){
+	const {settings, bets, socket} = props
+    const {lang} = settings
     let dispatch = useDispatch()	
     let options = {...props, dispatch}
     let my_race = new race_game(options)
@@ -954,11 +956,11 @@ function RaceGame(props){
 
 	useEffect(() => {
 		const handleRaceRead = function(data) {}
-		props.socket.on('race_read', handleRaceRead)
+		socket.on('race_read', handleRaceRead)
 		return () => {
-            props.socket.off('race_read', handleRaceRead)
+            socket.off('race_read', handleRaceRead)
         }
-    }, [props.socket])
+    }, [socket])
 
     return <div className="game_container race_game_container">
 		<div className="race_order_container">
@@ -966,13 +968,13 @@ function RaceGame(props){
 		</div>
 		<canvas id="race_canvas" className="shadow_convex" />
 		<div className="button_action_group">
-			{!props.bets || props.bets.length === 0 ? <div className="tooltip">
+			{!bets || bets.length === 0 ? <div className="tooltip">
 				<Button 
 					type="button" 
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>props.handleStartGame()} 
 				><FontAwesomeIcon icon={faPlay} /></Button>
-				<span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+				<span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
 			</div> : null}
 			<div className="tooltip">
 				<Button 
@@ -980,7 +982,7 @@ function RaceGame(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>props.handleHandleExit()} 
 				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-				<span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+				<span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
 			</div>
 		</div>
 	</div>

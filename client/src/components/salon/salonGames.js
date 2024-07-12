@@ -10,7 +10,9 @@ import { checkWinterMonths } from '../../utils/special_occasions'
 import { translate } from '../../translations/translate'
 
 function SalonGames(props){
-    const {lang, items} = props
+    const {home, settings} = props
+    const {products} = home
+    const {lang} = settings
     const [width, setWidth] = useState(getWindowDimensions().width)
     const [casinoGames, setCasinoGames] = useState(null)
     const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
@@ -80,22 +82,22 @@ function SalonGames(props){
             poker: [],
         }
         let casino_games_title = Object.getOwnPropertyNames(casino_games)
-        for(let i in items){
-            switch (items[i].table_name) {
+        for(let i in products){
+            switch (products[i].table_name) {
 				case "roulette":
-					casino_games.roulette.push(items[i])
+					casino_games.roulette.push(products[i])
 					break
 				case "blackjack":
-					casino_games.blackjack.push(items[i])
+					casino_games.blackjack.push(products[i])
 					break
 				case "slots":
-					casino_games.slots.push(items[i])
+					casino_games.slots.push(products[i])
 					break
 				case "craps":
-					casino_games.craps.push(items[i])
+					casino_games.craps.push(products[i])
 					break
                 case "poker":
-                    casino_games.poker.push(items[i])
+                    casino_games.poker.push(products[i])
                     break
 				default:
 					break						
@@ -103,7 +105,7 @@ function SalonGames(props){
         } 
         setCasinoGames(casino_games)
         setCasinoGamesTitle(casino_games_title)
-        setTitleDropdown(translate({lang: props.lang, info: casino_games_title[0]}))
+        setTitleDropdown(translate({lang: lang, info: casino_games_title[0]}))
     }
 
     function handleSelect(x){
@@ -126,7 +128,7 @@ function SalonGames(props){
             <Col sm={8}>
                 {width < 960 ? <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "snow" : ""} onSelect={handleSelect}>
                     {casinoGamesTitle.map((t, i)=>{
-                        return <Dropdown.Item key={i} eventKey={translate({lang: props.lang, info: t})}>{translate({lang: props.lang, info: t})}</Dropdown.Item>
+                        return <Dropdown.Item key={i} eventKey={translate({lang: lang, info: t})}>{translate({lang: lang, info: t})}</Dropdown.Item>
                     })}
                 </DropdownButton> : null}
             </Col>
@@ -141,7 +143,7 @@ function SalonGames(props){
                     return <div key={i}>
                         {width >= 960 ? <div className={showWinter ? "casino_games_title_container snow" : "casino_games_title_container"}>
                             <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
-                                <h4>{translate({lang: props.lang, info: t})}</h4>
+                                <h4>{translate({lang: lang, info: t})}</h4>
                             </div>
                         </div> : null}
                         <div box={t} className={"casino_games_table_container "+box}>

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     products: [], 
     market: [],
-    currencies: [],
+    finances: {},
     profiles: [],
     donations: [],
     career: [],
@@ -38,11 +38,11 @@ function getRaceRabbits(rabbit_race){
     }
 
     let x = 0
-    while(x<colors.length){
+    while(x < colors.length){
         let t = Math.floor(Math.random() * rabbit_race.length)
         if(!rabbit_race[t].participating){
             rabbit_race[t].participating = true
-            rabbit_race[t].name = colors[x]
+            rabbit_race[t].name = colors[x].charAt(0).toUpperCase() + colors[x].slice(1)
             rabbit_race[t].color = colors[x]
             x++
         }
@@ -59,7 +59,7 @@ const homeSlice = createSlice({
         showPayload: (state, { payload }) => { 
             state.products = payload.products
             state.market = payload.market
-            state.currencies = payload.currencies
+            state.finances = payload.finances
             state.profiles = payload.profiles
             state.donations = payload.donations
             state.career = payload.career

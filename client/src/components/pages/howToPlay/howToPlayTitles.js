@@ -9,6 +9,8 @@ import poker_icon from '../../../img/icons_other/icons/yellow/carribean.png'
 import { translate } from '../../../translations/translate'
 
 function HowToPlayTitles(props){
+    const {settings} = props
+    const {lang} = settings
     let list_games = ["roulette", "blackjack", "slots", "craps", "race", "keno", "poker"]
 
     function handleChoice(x){
@@ -43,7 +45,7 @@ function HowToPlayTitles(props){
                             }
                         })()}
                     </div>
-                    <div className="cell_text shadow_convex">{translate({lang: props.lang, info: t})}</div>
+                    <div className="cell_text shadow_convex">{translate({lang: lang, info: t})}</div>
                 </div>
             </div>
         })}

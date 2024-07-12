@@ -25,18 +25,22 @@ import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import OrderDetails from "./orderDetails"
 
 function Popup(props){
-    const {lang, date, currency, socket, home} = props
+    const {socket, home, settings} = props
+    const {lang} = settings
+
     let open = useSelector(state => state.popup.open)
     let popup_title = useSelector(state => state.popup.title)
     let template = useSelector(state => state.popup.template)
     let data = useSelector(state => state.popup.data)
     let size = useSelector(state => state.popup.size)
     let sticky = useSelector(state => state.popup.sticky)
-    let dispatch = useDispatch()
-    let currencies = home.currencies
-    let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
+
+    let dispatch = useDispatch()    
+
     const [forgotPasswordResult, setForgotPasswordResult] = useState('')
     const [forgotPasswordSending, setForgotPasswordSending] = useState(false)
+
+    let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
     let style = template
     if(template === "paymentSuccess"){
         style = "success"
@@ -64,7 +68,6 @@ function Popup(props){
     }
 
     function dashboardChanges(e){
-        console.log('dashboardChanges ', e)
         if(e.type && e.value){
             socket.emit('dashboardChanges_send', e)
             switch(e.type){
@@ -115,39 +118,39 @@ function Popup(props){
                                 forgotPasswordSending={forgotPasswordSending}
                             />
                         case "isMinor":
-                            return <IsMinor lang={lang} text={data} isMinorClick={(e)=>isMinorClick(e)} />
+                            return <IsMinor settings={settings} text={data} isMinorClick={(e)=>isMinorClick(e)} />
                         case "settings":
-                            return <Settings lang={lang} date={date} currency={currency} currencies={currencies} />
+                            return <Settings settings={settings} home={home} />
                         case "change_pic":
-                            return <ChangeProfilePic lang={lang} profiles={data} choosePic={(e)=>dashboardChanges(e)} />
+                            return <ChangeProfilePic settings={settings} profiles={data} home={home} choosePic={(e)=>dashboardChanges(e)} />
                         case "change_username":
-                            return <ChangeUsername lang={lang} changeUsername={(e)=>dashboardChanges(e)} />
+                            return <ChangeUsername settings={settings} changeUsername={(e)=>dashboardChanges(e)} />
                         case "change_password":
-                            return <ChangePassword lang={lang} changePassword={(e)=>dashboardChanges(e)} />
+                            return <ChangePassword settings={settings} changePassword={(e)=>dashboardChanges(e)} />
                         case "slots_prizes":
-                            return <SlotsPrizeTable lang={lang} slotsPrizes={data}/>
+                            return <SlotsPrizeTable settings={settings} slotsPrizes={data}/>
                         case "keno_prizes":
-                            return <KenoPrizeTable lang={lang} kenoPrizes={data} />
+                            return <KenoPrizeTable settings={settings} kenoPrizes={data} />
                         case "game_results":
-                            return <GameResults lang={lang} results={data} />
+                            return <GameResults settings={settings} results={data} />
                         case "streak":
-                            return <Streak lang={lang} data={data} />
+                            return <Streak settings={settings} data={data} />
                         case "whack_a_rabbit":
-                            return <WhackARabbit lang={lang} handleClick={()=>handleWhackARabbit()} />
+                            return <WhackARabbit settings={settings} handleClick={()=>handleWhackARabbit()} />
                         case "paymentSuccess":
-                            return <PaymentSuccess lang={lang} data={data} />
+                            return <PaymentSuccess settings={settings} data={data} />
                         case "orderDetails":
-                            return <OrderDetails lang={lang} data={data} />
+                            return <OrderDetails settings={settings} data={data} />
                         case "error":
                         default:
-                            return <>{typeof data === "string" ? <Default lang={lang} text={data} /> : null}</>
+                            return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>
                     }
                 })()}
             </Modal.Body>
             {(template === "game_results" && data.status === "win") || (template === "streak" && data > 0) ? <div className="firework"></div> : null}
         </Modal> : <Modal id="myModal_gift" className={"mymodal " + template} show={open} onHide={closeModal} size={size} centered> 
             <Modal.Body>
-                <Welcome lang={lang} />
+                <Welcome settings={settings} />
             </Modal.Body>
         </Modal>}
     </>

@@ -8,6 +8,8 @@ import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faCartShopping, faListUl, faStore } from '@fortawesome/free-solid-svg-icons'
 
 function DashboardRight(props){
+    const {settings} = props
+    const {lang} = settings
     const [choice, setChoice] = useState("cart")
     let dispatch = useDispatch()
 
@@ -26,16 +28,16 @@ function DashboardRight(props){
             <div className="dashboard_right_list">
                 <div className={`dashboard_right_button ${choice === "cart" ? "active" : ""}`} onClick={()=>handleClick("cart")}>
                     <FontAwesomeIcon icon={faCartShopping} />
-                    <span>{translate({lang: props.lang, info: "cart"})}</span>                    
+                    <span>{translate({lang: lang, info: "cart"})}</span>                    
                 </div>
                 <div className={`dashboard_right_button ${choice === "orders" ? "active" : ""}`} onClick={()=>handleClick("orders")}>
                     <FontAwesomeIcon icon={faListUl} />
-                    <span>{translate({lang: props.lang, info: "orders"})}</span>                    
+                    <span>{translate({lang: lang, info: "orders"})}</span>                    
                 </div>
             </div>
             <div className="dashboard_right_market" onClick={()=>handleClick("market")} >
                 <FontAwesomeIcon icon={faStore} />
-                <span>{translate({lang: props.lang, info: "market"})}</span>                
+                <span>{translate({lang: lang, info: "market"})}</span>                
             </div>
         </div>
         {(() => {

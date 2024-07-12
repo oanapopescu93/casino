@@ -2,7 +2,8 @@ import React from 'react'
 import { translate } from '../../translations/translate'
 
 function SlotsPrizeTable(props){    
-    const {lang, slotsPrizes} = props
+    const {settings, slotsPrizes} = props
+    const {lang} = settings
     let matrix = slotsPrizes.matrix
     
     return <div className="slots_rules_container">

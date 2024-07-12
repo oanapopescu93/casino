@@ -584,10 +584,12 @@ function roulette_game(props){
 
 var roulette_bets = []
 function RouletteGame(props){
+	const {page, user, bets, settings, socket} = props
+    const {lang} = settings
     let dispatch = useDispatch()	
     let options = {...props, dispatch}
     let my_roulette = new roulette_game(options)
-	roulette_bets = props.bets
+	roulette_bets = bets
 
 	function ready(){
 		if(my_roulette && document.getElementById("roulette_canvas")){
@@ -627,16 +629,16 @@ function RouletteGame(props){
 				}
 			}
 		}
-		props.socket.on('roulette_read', handleRouletteRead)
+		socket.on('roulette_read', handleRouletteRead)
 		return () => {
-            props.socket.off('roulette_read', handleRouletteRead)
+            socket.off('roulette_read', handleRouletteRead)
         }
-    }, [props.socket])
+    }, [socket])
 
     function openTable(){
         if(my_roulette){
             let status = my_roulette.get_status_game()
-			let money = props.user.money ? decryptData(props.user.money) : 0 
+			let money = user.money ? decryptData(user.money) : 0 
             if(!status && money && money>0){
                 props.openTable()
             } else {
@@ -644,7 +646,7 @@ function RouletteGame(props){
 					open: true,
 					template: "error",
 					title: "error",
-					data: translate({lang: props.lang, info: "no_money"})
+					data: translate({lang: lang, info: "no_money"})
 				}
 				dispatch(changePopup(payload))
             } 
@@ -653,29 +655,29 @@ function RouletteGame(props){
 
     function gameStart(){
         if(my_roulette && document.getElementById("roulette_canvas") && roulette_bets && roulette_bets.length>0){
-			let money = props.user.money ? decryptData(props.user.money) : 0 
+			let money = user.money ? decryptData(user.money) : 0 
 			if(roulette_bets.length > money){ // the user bet more than he has
 				let payload = {
 					open: true,
 					template: "error",
 					title: "error",
-					data: translate({lang: props.lang, info: "no_money"})
+					data: translate({lang: lang, info: "no_money"})
 				}
 				dispatch(changePopup(payload))
 			} else {
 				let roulette_payload_server = {
-					uuid: props.user.uuid,
-					room: getRoom(props.page.game),
+					uuid: user.uuid,
+					room: getRoom(page.game),
 					bet: roulette_bets,
 				}
-				props.socket.emit('roulette_send', roulette_payload_server)
+				socket.emit('roulette_send', roulette_payload_server)
 			}
 		} else {
 			let payload = {
 				open: true,
 				template: "error",
-				title: translate({lang: props.lang, info: "error"}),
-				data: translate({lang: props.lang, info: "no_bets"})
+				title: translate({lang: lang, info: "error"}),
+				data: translate({lang: lang, info: "no_bets"})
 			}
 			dispatch(changePopup(payload))
 		}
@@ -690,7 +692,7 @@ function RouletteGame(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>gameStart()}
 				><FontAwesomeIcon icon={faPlay} /></Button>
-                <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+                <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
             </div>
 			<div className="tooltip">
 				<Button 
@@ -698,7 +700,7 @@ function RouletteGame(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>openTable()}
 				><FontAwesomeIcon icon={faCarrot} /></Button>
-                <span className="tooltiptext">{translate({lang: props.lang, info: "settings"})}</span>
+                <span className="tooltiptext">{translate({lang: lang, info: "settings"})}</span>
             </div>
 			<div className="tooltip">
 				<Button 
@@ -706,7 +708,7 @@ function RouletteGame(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>props.handleHandleExit()} 					
 				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
-                <span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
             </div>	
 		</div>    
     </div>

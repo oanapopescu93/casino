@@ -592,7 +592,7 @@ function Craps(props){
 									className="mybutton round button_transparent shadow_convex"
 									onClick={()=>props.handleGameStart()}
 								><FontAwesomeIcon icon={faPlay} /></Button>
-								<span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+								<span className="tooltiptext">{translate({lang: props.settings.lang, info: "start"})}</span>
 							</div>
 							<div className="tooltip">
 								<Button 
@@ -600,7 +600,7 @@ function Craps(props){
 									className="mybutton round button_transparent shadow_convex"
 									onClick={()=>props.handleOpenTable()}
 								><FontAwesomeIcon icon={faCarrot} /></Button>
-								<span className="tooltiptext">{translate({lang: props.lang, info: "settings"})}</span>
+								<span className="tooltiptext">{translate({lang: props.settings.lang, info: "settings"})}</span>
 							</div>
 							<div className="tooltip">
 								<Button 
@@ -608,7 +608,7 @@ function Craps(props){
 									className="mybutton round button_transparent shadow_convex"
 									onClick={()=>props.handleHandleExit()}
 								><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-								<span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+								<span className="tooltiptext">{translate({lang: props.settings.lang, info: "back"})}</span>
 							</div>
 						</div>
 					</Col>
@@ -662,7 +662,7 @@ function CrapsGame(props){
 				open: true,
 				template: "error",
 				title: "error",
-				data: translate({lang: props.lang, info: "no_bets"})
+				data: translate({lang: props.settings.lang, info: "no_bets"})
 			}
 			dispatch(changePopup(payload))
 		}
@@ -697,7 +697,7 @@ function CrapsGame(props){
 				open: true,
 				template: "error",
 				title: "error",
-				data: translate({lang: props.lang, info: "no_money"})
+				data: translate({lang: props.settings.lang, info: "no_money"})
 			}
 			dispatch(changePopup(payload))
 		}

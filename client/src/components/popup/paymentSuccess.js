@@ -4,7 +4,8 @@ import { convertCurrency, formatDate } from '../../utils/utils'
 import { translate } from '../../translations/translate'
 
 function PaymentSuccess(props) {
-    const { lang, data} = props
+    const {settings, data} = props
+    const {lang} = settings
     const {payment_id, amount, order_date, currencyExchange, exchange_rates} = data
     let date_format = useSelector(state => state.settings.date)
     let date = formatDate(order_date, date_format)

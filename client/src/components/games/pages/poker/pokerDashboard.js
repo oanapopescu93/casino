@@ -15,9 +15,10 @@ import { faPlay, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 let replaceCards = null
 
 function PokerDashboard(props){
-    const {page, bet} = props
+    const {page, bet, user, settings, template, socket} = props
+    const {lang} = settings
     let game = page.game
-	let money = props.user.money ? decryptData(props.user.money) : 0 
+	let money = user.money ? decryptData(user.money) : 0 
     let poker_bets = bet
     let dispatch = useDispatch()
     let [startGame, setStartGame] = useState(false)
@@ -28,7 +29,7 @@ function PokerDashboard(props){
     let clear = (bet)=>{
 		if(bet > 0 && startGame){			
 			let payload = {
-				uuid: props.user.uuid,
+				uuid: user.uuid,
 				game,
 				status: 'lose',
 				bet,
@@ -81,7 +82,7 @@ function PokerDashboard(props){
                             open: true,
                             template: "error",
                             title: "error",
-                            data: translate({lang: props.lang, info: data.error})
+                            data: translate({lang: lang, info: data.error})
                         }
                         dispatch(changePopup(payload))
                     } else {
@@ -106,17 +107,17 @@ function PokerDashboard(props){
                 
             }
         }
-		props.socket.on('poker_read', handlePokerRead)
+		socket.on('poker_read', handlePokerRead)
         return () => {
-            props.socket.off('poker_read', handlePokerRead)
+            socket.off('poker_read', handlePokerRead)
         }
-    }, [props.socket])
+    }, [socket])
 
     function choice(e){
         if(my_poker){
             let poker_payload_server = {
-                game: props.template,
-                uuid: props.user.uuid,
+                game: template,
+                uuid: user.uuid,
                 room: getRoom(game),
                 action: e.action,
                 stage: e.stage,
@@ -124,7 +125,7 @@ function PokerDashboard(props){
             }
             switch(e.action){
                 case "start":
-                    props.socket.emit('poker_send', poker_payload_server)
+                    socket.emit('poker_send', poker_payload_server)
                     break
                 case "bet":
                 case "call":
@@ -134,22 +135,22 @@ function PokerDashboard(props){
                             open: true,
                             template: "error",
                             title: "error",
-                            data: translate({lang: props.lang, info: "no_bets"})
+                            data: translate({lang: lang, info: "no_bets"})
                         }
                         dispatch(changePopup(payload))
                     } else {
                         poker_payload_server.bet = poker_bets
-                        props.socket.emit('poker_send', poker_payload_server)
+                        socket.emit('poker_send', poker_payload_server)
                     }
                     break
                 case "draw":
                     poker_payload_server.replaceCards = replaceCards
-                    props.socket.emit('poker_send', poker_payload_server)
+                    socket.emit('poker_send', poker_payload_server)
                     break
                 case "check":
                 case "fold":
                 case "showdown":
-                    props.socket.emit('poker_send', poker_payload_server)
+                    socket.emit('poker_send', poker_payload_server)
                     break
             }
         }
@@ -163,7 +164,7 @@ function PokerDashboard(props){
         <div className="game_box_poker">
             <canvas id="poker_canvas" />
             {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
-                <div className="poker_pot">{translate({lang: props.lang, info: "total_pot"})}: {pot}</div>
+                <div className="poker_pot">{translate({lang: lang, info: "total_pot"})}: {pot}</div>
             </div> : null}
             {!startGame ? <div className="game_start">
                 <div className="tooltip">
@@ -172,12 +173,12 @@ function PokerDashboard(props){
                         className="mybutton round button_transparent"
                         onClick={()=>choice({action: 'start', stage: 'start'})}
                     ><FontAwesomeIcon icon={faPlay} /></Button>
-                    <span className="tooltiptext">{translate({lang: props.lang, info: "start"})}</span>
+                    <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
                 </div>
             </div> : null}
         </div>
         {startGame && !showdown ? <GameBoard 
-            template={props.template}
+            template={template}
             {...props}
             action={action}
             choice={(e)=>choice(e)} 
@@ -190,7 +191,7 @@ function PokerDashboard(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>props.handleHandleExit()}
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: props.lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
             </div>
         </div>
     </div>

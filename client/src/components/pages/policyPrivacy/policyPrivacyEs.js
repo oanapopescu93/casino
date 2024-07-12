@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 
-function PolicyPrivacyDe(){
+function PolicyPrivacyEs(){
     return <Row id="policy_privacy" className="other_page_container">
         <Col lg={2} />
         <Col lg={8}>
@@ -57,4 +57,4 @@ function PolicyPrivacyDe(){
         <Col lg={2} />
     </Row>
 }
-export default PolicyPrivacyDe
+export default PolicyPrivacyEs

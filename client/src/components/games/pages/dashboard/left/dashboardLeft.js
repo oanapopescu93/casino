@@ -11,7 +11,7 @@ import { faUser, faUpload,faCrown } from '@fortawesome/free-solid-svg-icons'
 import carrot_img from '../../../../../img/icons/carrot_icon.png'
 
 function Picture(props){
-	let picId = props.pic_id
+    const {picId, money} = props
 
 	function choosePic(){
 		if(typeof props.choice === "function"){
@@ -19,28 +19,34 @@ function Picture(props){
         }
 	}	
 
-	return <div className="profile_pic_container shadow_convex" onClick={()=>choosePic()}>        
-        <div className="profile_pic_default">
-            <FontAwesomeIcon icon={faUpload} />
-        </div>        
-        {(() => {
-            if(picId) {
-                return <div className="profile_pic">
-                    <div className="crop_profile_pic">
-                        <img alt="profile_pic" className={"profile_pic pic_"+picId} src={profilePic}/>
+	return <div className="profile_pic_container" onClick={()=>choosePic()}>
+        {money > 1000 ? <div className="profile_pic_crown">
+            <FontAwesomeIcon icon={faCrown} />
+        </div> : null}        
+        <div className="profile_pic_box shadow_convex">
+            <div className="profile_pic_default">
+                <FontAwesomeIcon icon={faUpload} />
+            </div>        
+            {(() => {
+                if(picId) {
+                    return <div className="profile_pic">
+                        <div className="crop_profile_pic">
+                            <img alt="profile_pic" className={"profile_pic pic_" + picId} src={profilePic}/>
+                        </div>
                     </div>
-                </div>
-            } else {
-                return <div className="profile_pic">
-                    <FontAwesomeIcon icon={faUser}/>
-                </div>
-            }	
-        })()}        
+                } else {
+                    return <div className="profile_pic">
+                        <FontAwesomeIcon icon={faUser}/>
+                    </div>
+                }	
+            })()}
+        </div>
     </div>
 }
 
 function DashboardLeft(props){ 
-    const {home, user, lang, currency} = props
+    const {home, user, settings, currency} = props
+    const {lang} = settings
     let dispatch = useDispatch()
 
     let name = user.user ? decryptData(user.user) : "-"
@@ -102,7 +108,7 @@ function DashboardLeft(props){
                 template: "error",
                 title: "error",
                 size: "sm",
-                data: translate({lang: props.lang, info: "not_enough_money_withdrawal"})
+                data: translate({lang: lang, info: "not_enough_money_withdrawal"})
             }
             dispatch(changePopup(payload))
         }        
@@ -111,10 +117,7 @@ function DashboardLeft(props){
     return <div id="dashboard_left" className="dashboard_box shadow_concav">
         <Row>
             <Col sm={12} md={4} lg={12} className="dashboard_user_pic">
-                {money >= 1000 ? <div className="profile_pic_crown">
-                    <FontAwesomeIcon icon={faCrown} />
-                </div> : null}                
-                <Picture profiles={profiles} pic_id={picId} choice={(e)=>handleChoice(e)} />
+                <Picture profiles={profiles} picId={picId} money={money} choice={(e)=>handleChoice(e)} />
                 <div className="profile_pic_name shadow_convex">
                     <span>{name}</span>
                 </div>
@@ -125,7 +128,7 @@ function DashboardLeft(props){
                         <div className="dashboard_user_info_left">                            
                             <p>
                                 <b>{translate({lang: lang, info: "animal"})}: </b>
-                                {animal && animal[0] ? <span>{animal[0]["name_" + props.lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
+                                {animal && animal[0] ? <span>{animal[0]["name_" + lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
                             </p>
                             <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>                            
                         </div>

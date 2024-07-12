@@ -5,8 +5,11 @@ import Header from '../../partials/header'
 import { Col, Row } from 'react-bootstrap'
 
 function Checkout(props){
+    const {settings} = props
+    const {lang} = settings
+
     return <div className="content_wrap">
-        <Header template="checkout" title={translate({lang: props.lang, info: "checkout"})} />
+        <Header template="checkout" title={translate({lang: lang, info: "checkout"})} />
         <div className="page_content">
             <Row>
                 <Col lg={2} />

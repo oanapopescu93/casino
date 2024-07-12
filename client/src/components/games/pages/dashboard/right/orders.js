@@ -7,14 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleInfo, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
 
 function Orders(props){
-    const {lang, order, currency, exchange_rates} = props
+    const {order, settings, exchange_rates} = props
+    const {lang, currency} = settings
     let dispatch = useDispatch()
 
     function handleClickOrder(order){
         let payload = {
             open: true,
             template: "orderDetails",
-            title: translate({lang: props.lang, info: "order"}) + ' #' + order.orderId,
+            title: translate({lang: lang, info: "order"}) + ' #' + order.orderId,
             data: {...order, currencySettings: currency, exchange_rates},
             size: 'lg',
         }

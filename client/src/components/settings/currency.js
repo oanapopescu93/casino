@@ -5,7 +5,8 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import { changeCurrency } from '../../reducers/settings'
 
 function Currency(props) {
-  const {title, currencies} = props  
+  const {title, home} = props
+  let currencies = home.finances.currencies ? home.finances.currencies : []
 	let dispatch = useDispatch()  
 
   function handleSelect(choice){
