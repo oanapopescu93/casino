@@ -7,8 +7,7 @@ import { changePopup } from '../../../../../reducers/popup'
 import { changePage, changeGame, changeGamePage } from '../../../../../reducers/page'
 import { Row, Col, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUpload, faCrown, faKey, faCartShopping, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons'
-import carrot_img from '../../../../../img/icons/carrot_icon.png'
+import { faUser, faUpload, faCrown, faKey, faCartShopping, faMoneyBillTransfer, faCarrot } from '@fortawesome/free-solid-svg-icons'
 
 function Picture(props){
     const {picId, money} = props
@@ -130,7 +129,7 @@ function DashboardLeft(props){
                                 <b>{translate({lang: lang, info: "animal"})}: </b>
                                 {animal && animal[0] ? <span>{animal[0]["name_" + lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
                             </p>
-                            <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>                            
+                            <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>                            
                         </div>
                         <div className="dashboard_user_info_right">                            
                             <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>

@@ -2182,6 +2182,7 @@ textarea {
 }
 .dashboard_user_info_left{
   border-right: solid 1px var(--color);
+  text-align: right;
 }
 .dashboard_box .cart_list, .dashboard_box .order_list{
   max-height: 236px;

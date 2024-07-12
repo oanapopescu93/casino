@@ -8,11 +8,10 @@ import { Button, Row, Col } from 'react-bootstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { decryptData } from '../../utils/crypto'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faBasketShopping} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBasketShopping, faCarrot } from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
 import profilePic from '../../img/profile/predators.jpg'
-import carrot_img from '../../img/icons/carrot_icon.png'
 import { convertCurrency } from '../../utils/utils'
 
 function Cell(props) {
@@ -120,7 +119,7 @@ function Cell(props) {
                                     <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow} />
                                 </div>
                                 <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
-                                <p>{translate({lang: lang, info: "value"})}: {data.price} <img alt="carrot_img" className="currency_img" src={carrot_img}/></p>
+                                <p>{translate({lang: lang, info: "value"})}: {data.price} <FontAwesomeIcon icon={faCarrot} /></p>
                                 <p>{translate({lang: lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
                                 <Counter update={(e)=>updateQtyMarket(e)} />
                             </div>

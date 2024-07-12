@@ -5,9 +5,8 @@ import { changePopup } from '../../../reducers/popup'
 import { translate } from '../../../translations/translate'
 import { decryptData } from '../../../utils/crypto'
 import Header from '../../partials/header'
-import carrot_img from '../../../img/icons/carrot_icon.png'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser, faStore, faHouse, faCartShopping, faGear, faPaperPlane, faPowerOff, faCircleQuestion,faCalendarDays} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faStore, faHouse, faCartShopping, faGear, faPaperPlane, faPowerOff, faCircleQuestion, faCalendarDays, faCarrot} from '@fortawesome/free-solid-svg-icons'
 import { isEmpty, setCookie } from '../../../utils/utils'
 
 function User(props){    
@@ -83,8 +82,7 @@ function User(props){
             </div>
             <div className="user_subtitle_right">
                 <span id="user_money">
-                    <span>{user.money ? decryptData(user.money) : 0}</span>
-                    <img alt="carrot_img" className="currency_img" src={carrot_img}/>
+                    <span>{user.money ? decryptData(user.money) : 0}</span> <FontAwesomeIcon icon={faCarrot} />
                 </span>
                 {!isEmpty(streak) ? <span id="user_streak">
                     <span>{streak}</span>

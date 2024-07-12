@@ -1,5 +1,6 @@
 import { translate } from "../../translations/translate"
-import carrot_img from '../../img/icons/carrot_icon_black.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCarrot } from '@fortawesome/free-solid-svg-icons'
 
 function Streak(props){    
     const {settings, data} = props
@@ -19,7 +20,7 @@ function Streak(props){
             })}
         </div>
         <div className="streak_text">
-            {prize>0 ? <p>{translate({lang: lang, info: "prize"})}: <span>{prize}</span><img alt="carrot_img" className="currency_img" src={carrot_img}/></p> : null}
+            {prize>0 ? <p>{translate({lang: lang, info: "prize"})}: <span>{prize}</span> <FontAwesomeIcon icon={faCarrot} /></p> : null}
         </div> 
   </div>
 }
