@@ -54,6 +54,11 @@ const database = require('./database/mysql')
 var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
+// database_config.sql = "SELECT * FROM order_user;"
+// database(database_config).then(function(result){
+//   console.log(result)
+// })
+
 io.on('connection', function(socket) {
   socket.on('signin_send', (data) => {  
     database_config.sql = "SELECT * FROM casino_user;"
@@ -410,7 +415,7 @@ io.on('connection', function(socket) {
     }
   })
 
-  // DASHBOARD, CART, CHECKOUT
+  // DASHBOARD, CART, ORDER, WITHDRAW
   socket.on('dashboardChanges_send', function(data){
     if(data.uuid){
         switch(data.type) {
@@ -440,8 +445,83 @@ io.on('connection', function(socket) {
     try{				
       io.to(socket.id).emit('promo_read', coupon)
     }catch(e){
-      console.log('[error]','homepage_read--> ', e)
+      console.log('[error]','promo_read--> ', e)
     }
+  })
+  socket.on('order_send', function(details){
+    if(details.user_uid){
+      database_config.sql = "SELECT * FROM casino_user;"
+      database_config.name = "db06"
+      database(database_config).then(function(result){        
+        if(result){
+          users_array = result
+          if(users_array && users_array.length>0){
+            let user_found = users_array.filter((x) => x.uuid === details.user_uid)            
+            if(user_found[0] && user_found[0]){
+              let id = user_found[0].id
+              let orderDate;
+              if (typeof details.order_date === 'number') {
+                  orderDate = details.order_date + ""
+              } else {
+                  orderDate = new Date(details.order_date).getTime() + ""
+              }
+
+              database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+              function getOrDefault(obj, key, defaultValue = '-') {
+                return obj[key] !== undefined ? obj[key] : defaultValue
+              }
+
+              const payload = [
+                  id,
+                  details.payment_id,
+                  getOrDefault(details, 'customer_id'),
+                  orderDate,
+                  details.amount,
+                  details.method,
+                  getOrDefault(details, 'country'),
+                  getOrDefault(details, 'city'),
+                  getOrDefault(details, 'email'),
+                  getOrDefault(details, 'phone'),
+                  details.description,
+                  details.currency
+              ]
+
+              database(database_config, payload).then(function(){
+                try{				
+                  io.to(socket.id).emit('order_read', details)
+                }catch(e){
+                  console.log('[error]','order_read--> ', e)
+                }
+              })
+            }            
+          }
+        }
+      })
+    }    
+  })
+
+  socket.on('withdraw_send', function(details){
+    if(details.user_uid){
+      database_config.sql = "SELECT * FROM casino_user;"
+      database_config.name = "db06"
+      database(database_config).then(function(result){        
+        if(result){
+          users_array = result
+          if(users_array && users_array.length>0){
+            let user_found = users_array.filter((x) => x.uuid === details.user_uid)            
+            if(user_found[0] && user_found[0]){
+              // let id = user_found[0].id
+              try{				
+                io.to(socket.id).emit('withdraw_read', details)
+              }catch(e){
+                console.log('[error]','withdraw_read--> ', e)
+              }
+            }            
+          }
+        }
+      })
+    }    
   })
 
   // CHATROOM

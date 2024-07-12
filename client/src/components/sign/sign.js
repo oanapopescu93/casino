@@ -14,6 +14,7 @@ import { isEmpty, setCookie } from '../../utils/utils'
 import Loader from '../partials/loader'
 
 function Sign(props) {
+    const {lang, socket} = props
     let dispatch = useDispatch()
     let page = useSelector(state => state.page.page)
     let isMinor = useSelector(state => state.auth.isMinor)
@@ -50,7 +51,7 @@ function Sign(props) {
         setErrorAgree(false)
         if(!checkPayload(data.payload)){
             setLoaded(false)
-            props.socket.emit(data.emit, data.payload)
+            socket.emit(data.emit, data.payload)
         }
     }
 
@@ -83,8 +84,8 @@ function Sign(props) {
             open: true,
             template: "forgotPassword",
             title: "forgot_password_title",
-            data: translate({lang: props.lang, info: "forgot_password_text"}),
-            // size: 'lg',
+            data: translate({lang: lang, info: "forgot_password_text"}),
+            size: 'sm',
         }
         dispatch(changePopup(payload))
     }
@@ -134,13 +135,13 @@ function Sign(props) {
                 handleErrors("signup", data.details ? data.details : "signup_error")
             }
         }
-		props.socket.on('signin_read', handleSignInRead)
-        props.socket.on('signup_read', handleSignUpRead)
+		socket.on('signin_read', handleSignInRead)
+        socket.on('signup_read', handleSignUpRead)
 		return () => {
-            props.socket.off('signin_read', handleSignInRead)
-            props.socket.off('signup_read', handleSignUpRead)
+            socket.off('signin_read', handleSignInRead)
+            socket.off('signup_read', handleSignUpRead)
         }
-    }, [props.socket])
+    }, [socket])
 
     function handleWelcome(){
         //first time sign up - you get a popup gift
@@ -158,7 +159,7 @@ function Sign(props) {
             open: true,
             template: template,
             title: "error",
-            data: translate({lang: props.lang, error})
+            data: translate({lang: lang, error})
         }                
         dispatch(changePopup(payload))
     }
@@ -178,42 +179,42 @@ function Sign(props) {
         {(() => {
             switch (page) {
                 case "terms_cond":
-                    return <TermsConditions lang={props.lang} />
+                    return <TermsConditions lang={lang} />
                 case "policy_privacy":
-                    return <PolicyPrivacy lang={props.lang} />
+                    return <PolicyPrivacy lang={lang} />
                 case "Salon":
                 default:
                     return <>
                         {loaded ? <>
-                            <Language title={props.lang} />
+                            <Language title={lang} />
                             <div className="sign_container">
                                 <div className="sign_container_box">
                                     <div className="deco">
                                         {isMinor === "true" ? <div className="sign_box isMinor_sign">
-                                            <p>{translate({lang: props.lang, info: "isMinor_sign"})}</p>
+                                            <p>{translate({lang: lang, info: "isMinor_sign"})}</p>
                                         </div> : <>
-                                            <Header template="sign" lang={props.lang} />
+                                            <Header template="sign" lang={lang} />
                                             <div className="sign_box">
                                                 <ul>
-                                                    <li id="signin_tab" className={signIn} onClick={()=>{handleClick('signIn')}}><span>{translate({lang: props.lang, info: "sign_in"})}</span></li>
-                                                    <li id="signup_tab" className={signUp} onClick={()=>{handleClick('signUp')}}><span>{translate({lang: props.lang, info: "sign_up"})}</span></li>
+                                                    <li id="signin_tab" className={signIn} onClick={()=>{handleClick('signIn')}}><span>{translate({lang: lang, info: "sign_in"})}</span></li>
+                                                    <li id="signup_tab" className={signUp} onClick={()=>{handleClick('signUp')}}><span>{translate({lang: lang, info: "sign_up"})}</span></li>
                                                 </ul>
-                                                {visible === "signIn" ? <SignIn signSubmit={(e)=>{signSubmit(e)}} lang={props.lang} socket={props.socket} /> : 
-                                                <SignUp signSubmit={(e)=>{signSubmit(e)}} lang={props.lang} socket={props.socket} />}
+                                                {visible === "signIn" ? <SignIn signSubmit={(e)=>{signSubmit(e)}} lang={lang} socket={socket} /> : 
+                                                <SignUp signSubmit={(e)=>{signSubmit(e)}} lang={lang} socket={socket} />}
                                             </div>
                                             <div className="sign_extra_info">
-                                                {visible === "signIn" ? <p onClick={()=>handleForgotPassword()}>{translate({lang: props.lang, info: "signin_forgot_password"})}</p> : <>
+                                                {visible === "signIn" ? <p onClick={()=>handleForgotPassword()}>{translate({lang: lang, info: "signin_forgot_password"})}</p> : <>
                                                 <div className="checkbox_radio_container">
                                                     <label>
                                                         <input className="input_light" type="checkbox" name="checkbox1" checked={checkboxOne} onChange={()=>{handleChangeCheck("checkbox1")}}/>
                                                         <h6>
-                                                            {translate({lang: props.lang, info: "i_agree_to"})}&nbsp;
+                                                            {translate({lang: lang, info: "i_agree_to"})}&nbsp;
                                                             <span onClick={()=>handleLink("terms_cond")}>
-                                                                {translate({lang: props.lang, info: "terms_cond"})}
+                                                                {translate({lang: lang, info: "terms_cond"})}
                                                             </span>
-                                                            &nbsp;{translate({lang: props.lang, info: "and"})}&nbsp;
+                                                            &nbsp;{translate({lang: lang, info: "and"})}&nbsp;
                                                             <span onClick={()=>handleLink("policy_privacy")}>
-                                                                {translate({lang: props.lang, info: "policy_privacy"})}
+                                                                {translate({lang: lang, info: "policy_privacy"})}
                                                             </span>
                                                         </h6>
                                                     </label>
@@ -226,16 +227,16 @@ function Sign(props) {
                                 {(() => {
                                     if(errorEmail || errorUser || errorPass || errorAgree){
                                         return <div className="alert alert-danger">
-                                            {errorEmail ? <p className="text_red">{translate({lang: props.lang, info: "incorrect_email"})}</p> : null}
-                                            {errorUser ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_subject"})}</p> : null}
-                                            {errorPass ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_message"})}</p> : null}
-                                            {errorAgree ? <p className="text_red">{translate({lang: props.lang, info: "empty_input_agree"})}</p> : null}
+                                            {errorEmail ? <p className="text_red">{translate({lang: lang, info: "incorrect_email"})}</p> : null}
+                                            {errorUser ? <p className="text_red">{translate({lang: lang, info: "empty_input_subject"})}</p> : null}
+                                            {errorPass ? <p className="text_red">{translate({lang: lang, info: "empty_input_message"})}</p> : null}
+                                            {errorAgree ? <p className="text_red">{translate({lang: lang, info: "empty_input_agree"})}</p> : null}
                                         </div>
                                     }
                                 })()}
                             </div>
                             <div className="sign_footer">
-                                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: props.lang, info: "all_rights_reserved"})}.</h6>
+                                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: lang, info: "all_rights_reserved"})}.</h6>
                             </div>
                         </> : <Loader />}
                     </>

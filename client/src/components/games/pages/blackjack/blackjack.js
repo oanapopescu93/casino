@@ -404,8 +404,10 @@ var blackjack_data = null
 var blackjack_bets = 0
 var blackjack_status = false
 function Blackjack(props){
-	let game = props.page.game
-	let money = props.user.money ? decryptData(props.user.money) : 0
+	const {page, user, socket, settings} = props
+	const {lang} = settings
+	let game = page.game
+	let money = user.money ? decryptData(user.money) : 0
 	let [startGame, setStartGame]= useState(false)
     let dispatch = useDispatch()
 
@@ -413,7 +415,7 @@ function Blackjack(props){
 		blackjack_bets = bet		
 		if(bet > 0 && blackjack_status){			
 			let blackjack_payload = {
-				uuid: props.user.uuid,
+				uuid: user.uuid,
 				game,
 				status: 'lose',
 				bet,
@@ -462,23 +464,23 @@ function Blackjack(props){
 						open: true,
 						template: "error",
 						title: "error",
-						data: translate({lang: props.settings.lang, info: data.action})
+						data: translate({lang: lang, info: data.action})
 					}
 					dispatch(changePopup(payload))
 				}
 				
             }
         }
-		props.socket.on('blackjack_read', handleBlackjackRead)
+		socket.on('blackjack_read', handleBlackjackRead)
 		return () => {
-            props.socket.off('blackjack_read', handleBlackjackRead)
+            socket.off('blackjack_read', handleBlackjackRead)
         }
-    }, [props.socket])
+    }, [socket])
 
     function choice(type){		
         if(type === "start" || type === "hit" || type === "stand" || type === "double_down"  || type === "surrender"){
             let blackjack_payload_server = {
-                uuid: props.user.uuid,
+                uuid: user.uuid,
                 room: getRoom(game),
                 action: type,
                 bet: blackjack_bets
@@ -491,13 +493,13 @@ function Blackjack(props){
 							open: true,
 							template: "error",
 							title: "error",
-							data: translate({lang: props.settings.lang, info: "no_bets"})
+							data: translate({lang: lang, info: "no_bets"})
 						}
 						dispatch(changePopup(payload))
 					} else {
 						if(my_blackjack){
 							if(!blackjack_status){
-								props.socket.emit('blackjack_send', blackjack_payload_server)
+								socket.emit('blackjack_send', blackjack_payload_server)
 								blackjack_status = true
 								setStartGame(true)
 							}
@@ -508,7 +510,7 @@ function Blackjack(props){
                     if(my_blackjack){
                         if(blackjack_status){
 							blackjack_payload_server.players = blackjack_data.players
-                            props.socket.emit('blackjack_send', blackjack_payload_server)
+                            socket.emit('blackjack_send', blackjack_payload_server)
                         }
                     }
                     break	
@@ -516,7 +518,7 @@ function Blackjack(props){
                     if(my_blackjack){
                         if(blackjack_status){
 							blackjack_payload_server.players = blackjack_data.players
-                            props.socket.emit('blackjack_send', blackjack_payload_server)
+                            socket.emit('blackjack_send', blackjack_payload_server)
                         }
                     }
                     break
@@ -526,7 +528,7 @@ function Blackjack(props){
 							blackjack_payload_server.players = blackjack_data.players
 							blackjack_bets = blackjack_bets * 2
 							blackjack_payload_server.bet = blackjack_bets
-                            props.socket.emit('blackjack_send', blackjack_payload_server)
+                            socket.emit('blackjack_send', blackjack_payload_server)
                         }
                     }
                     break
@@ -535,7 +537,7 @@ function Blackjack(props){
                         if(blackjack_status){	
 							blackjack_status = false
                             let blackjack_payload = {
-								uuid: props.user.uuid,
+								uuid: user.uuid,
 								game: game,
 								money: money - blackjack_bets,
 								status: "lose",
@@ -569,7 +571,7 @@ function Blackjack(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>props.handleHandleExit()}
 				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-				<span className="tooltiptext">{translate({lang: props.settings.lang, info: "back"})}</span>
+				<span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
 			</div>
 		</div>
 	</div>

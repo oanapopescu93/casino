@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 function PaymentDetails(props){
-    const {template, paymentDetails, amount, gateway, gatewayDetails, settings, exchange_rates} = props 
+    const {template, paymentDetails, amount, gateway, gatewayDetails, settings, exchange_rates, paymentSending} = props 
     const {lang, currency} = settings
     const monthOptions = checkoutData().monthOptions
 
@@ -36,7 +36,7 @@ function PaymentDetails(props){
         }, {})
 
     function sendPayment(){
-        if(props.sendPayment && typeof props.sendPayment === "function"){
+        if(!paymentSending && props.sendPayment && typeof props.sendPayment === "function"){
             props.sendPayment()
         }
     }
@@ -105,7 +105,11 @@ function PaymentDetails(props){
                                 type="button"  
                                 className="mybutton button_fullcolor shadow_convex"
                                 onClick={()=>sendPayment()}
-                            ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "pay"})}</Button>
+                            >{paymentSending ? <>
+                                Loading...
+                            </> : <>
+                                <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "pay"})}
+                            </>}</Button>
                             {(() => {
                                 let choice = null
                                 let icon = null

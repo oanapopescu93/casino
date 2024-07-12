@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 function Footer(props){
+    const {lang} = props
     let dispatch = useDispatch()
     const [date, setDate] = useState('')
     const [up, setUp] = useState('')
@@ -63,17 +64,17 @@ function Footer(props){
         <div className="footer_body">
             <div className="footer_list">
                 <ul>
-                    <li onClick={()=>{handleClick('About')}}><span>{translate({lang: props.lang, info: "about"})}</span></li>
-                    <li onClick={()=>{handleClick('terms_cond')}}><span>{translate({lang: props.lang, info: "terms_cond"})}</span></li>
-                    <li onClick={()=>{handleClick('policy_privacy')}}><span>{translate({lang: props.lang, info: "policy_privacy"})}</span></li>
-                    <li onClick={()=>{handleClick('Questions')}}><span>{translate({lang: props.lang, info: "questions"})}</span></li>
-                    <li onClick={()=>{handleClick('Career')}}><span>{translate({lang: props.lang, info: "career"})}</span></li>
-                    <li onClick={()=>{handleClick('Contact')}}><span>{translate({lang: props.lang, info: "contact"})}</span></li>
+                    <li onClick={()=>{handleClick('About')}}><span>{translate({lang: lang, info: "about"})}</span></li>
+                    <li onClick={()=>{handleClick('terms_cond')}}><span>{translate({lang: lang, info: "terms_cond"})}</span></li>
+                    <li onClick={()=>{handleClick('policy_privacy')}}><span>{translate({lang: lang, info: "policy_privacy"})}</span></li>
+                    <li onClick={()=>{handleClick('Questions')}}><span>{translate({lang: lang, info: "questions"})}</span></li>
+                    <li onClick={()=>{handleClick('Career')}}><span>{translate({lang: lang, info: "career"})}</span></li>
+                    <li onClick={()=>{handleClick('Contact')}}><span>{translate({lang: lang, info: "contact"})}</span></li>
                     <li><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine"><img id="ukraine_icon" alt="ukraine_icon" src={ukraine}></img></a></li>
                 </ul>
             </div>
             <footer>
-                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: props.lang, info: "all_rights_reserved"})}.</h6>
+                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: lang, info: "all_rights_reserved"})}.</h6>
             </footer>
         </div>
     </div>

@@ -396,6 +396,8 @@ textarea:focus, input:focus{
   cursor: pointer;
 }
 .mybutton svg{
+  display: inline-block;
+  vertical-align: middle;
   font-size: 18px;
   line-height: 18px;
 }
@@ -2167,9 +2169,6 @@ textarea {
 }
 .dashboard_left_buttons .mybutton{
   margin-top: var(--padding);
-}
-#dashboard_left .mybutton{
-  height: 25px;
 }
 .dashboard_user_info, .dashboard_buttons{  
   margin-top: var(--padding);

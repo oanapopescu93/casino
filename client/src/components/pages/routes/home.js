@@ -19,7 +19,7 @@ import { cartRemoveAll } from '../../../reducers/cart'
 import Withdraw from '../withdraw/withdraw'
 
 function Home(props) {
-    const {home, page, user, settings, exchange_rates} = props
+    const {home, page, user, settings, exchange_rates, socket} = props
     const {lang, currency, cookies} = settings
     let dispatch = useDispatch()
     
@@ -80,6 +80,7 @@ function Home(props) {
                         dispatch(changePopup(payload)) //show success popup
                         dispatch(cartRemoveAll()) //remove all from cart
                         dispatch(orderAdd(details)) // add payment to order list
+                        socket.emit('order_send', details)
                     } else {
                         showError(data)
                     }
@@ -131,17 +132,8 @@ function Home(props) {
                                 currencyExchange: "-",
                                 items: null,
                                 exchange_rates: exchange_rates             
-                            }
-                            let payload = {
-                                open: true,
-                                template: "paymentSuccess",
-                                title: translate({lang: lang, info: "payment_success"}),
-                                data: details,
-                                size: 'md',
-                            }
-                            dispatch(changePopup(payload)) //show success popup
-                            dispatch(cartRemoveAll()) //remove all from cart
-                            dispatch(orderAdd(details)) // add payment to order list
+                            }                                                       
+                            socket.emit('order_send', details)
                         } else {
                             showError(data)
                         }
@@ -170,6 +162,31 @@ function Home(props) {
             })
         }  
     }
+
+    useEffect(() => {
+		const handleOrderRead = function(details) {
+            //console.log('order_read', details)
+            let payload = {
+                open: true,
+                template: "paymentSuccess",
+                title: translate({lang: lang, info: "payment_success"}),
+                data: details,
+                size: 'md',
+            } 
+            dispatch(changePopup(payload)) //show success popup
+            dispatch(cartRemoveAll()) //remove all from cart
+            dispatch(orderAdd(details)) // add payment to order list
+
+            //go to dashboard
+            dispatch(changePage('Salon'))
+            dispatch(changeGame(null))
+            dispatch(changeGamePage('dashboard'))
+        }
+		socket.on('order_read', handleOrderRead)
+		return () => {
+            socket.off('order_read', handleOrderRead)
+        }
+    }, [socket])
 
     function showError(data={}){
         let payload = {

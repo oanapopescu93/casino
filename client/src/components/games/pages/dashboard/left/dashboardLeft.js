@@ -7,7 +7,7 @@ import { changePopup } from '../../../../../reducers/popup'
 import { changePage, changeGame, changeGamePage } from '../../../../../reducers/page'
 import { Row, Col, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUpload,faCrown } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faUpload, faCrown, faKey, faCartShopping, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons'
 import carrot_img from '../../../../../img/icons/carrot_icon.png'
 
 function Picture(props){
@@ -141,16 +141,16 @@ function DashboardLeft(props){
                         <Row>
                             <Col sm={12} className="dashboard_left_buttons">
                                 <Button type="button" onClick={()=>handleChoice("change_username")} className="mybutton button_fullcolor shadow_convex">
-                                    {translate({lang: lang, info: "change_username"})}
+                                    <FontAwesomeIcon icon={faUser} /> {translate({lang: lang, info: "change_username"})}
                                 </Button>
                                 <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
-                                    {translate({lang: lang, info: "change_password"})}
+                                    <FontAwesomeIcon icon={faKey} /> {translate({lang: lang, info: "change_password"})}
                                 </Button>
                                 <Button type="button" onClick={()=>handleChoice("buy_carrots")} className="mybutton button_fullcolor shadow_convex">
-                                    {translate({lang: lang, info: "buy_carrots"})}
+                                    <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "buy_carrots"})}
                                 </Button>
                                 <Button type="button" onClick={()=>handleWithdrawal()} className="mybutton button_fullcolor shadow_convex">
-                                    {translate({lang: lang, info: "withdrawal"})}
+                                    <FontAwesomeIcon icon={faMoneyBillTransfer} /> {translate({lang: lang, info: "withdrawal"})}
                                 </Button>
                             </Col>
                         </Row>

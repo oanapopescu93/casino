@@ -14,11 +14,9 @@ import PaymentDetails from './paymentDetails'
 import { updatePaymentDetails } from '../../../reducers/paymentDetails'
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
-import { orderAdd } from '../../../reducers/order'
-import { cartRemoveAll } from '../../../reducers/cart'
 
 function Payment(props){
-    const {template, home, settings, exchange_rates} = props
+    const {template, home, settings, exchange_rates, socket} = props
     const {lang, currency} = settings
 
     let dispatch = useDispatch()
@@ -47,6 +45,8 @@ function Payment(props){
 
     const [paymentDetails, setPaymentDetails] = useState(null)
     const [paymentError, setPaymentError] = useState(paymentErrors())
+
+    const [paymentSending, setPaymentSending] = useState(false)
 
     let gatewayDetails = {
         stripe: ["name", "email", "phone", "country", "city", "payment_methode", "card_number", "year", "month", "cvv"],
@@ -347,7 +347,8 @@ function Payment(props){
                 payload.description = "Buy vegetables"
             }
             
-            if(!isEmpty(url)){     
+            if(!isEmpty(url)){
+                setPaymentSending(true)  
                 postData(url, payload).then((data) => {      
                     if(data && data.result && data.result === "success"){
                         switch(gateway){
@@ -396,21 +397,7 @@ function Payment(props){
             items: data.payload.metadata,
             exchange_rates,
         }
-        let payload = {
-            open: true,
-            template: "paymentSuccess",
-            title: translate({lang: lang, info: "payment_success"}),
-            data: details,
-            size: 'md',
-        }
-        dispatch(changePopup(payload)) //show success popup
-        dispatch(cartRemoveAll()) //remove all from cart
-        dispatch(orderAdd(details)) // add payment to order list
-
-        //go to dashboard
-        dispatch(changePage('Salon'))
-        dispatch(changeGame(null))
-        dispatch(changeGamePage('dashboard'))     
+        socket.emit('order_send', details)
     }
 
     function handlePaymentPaypal(data){
@@ -427,7 +414,7 @@ function Payment(props){
         } else {
             showError(data)
         }  
-    }
+    }    
 
     function showError(data={}){
         let payload = {
@@ -448,6 +435,7 @@ function Payment(props){
             gatewayDetails={gatewayDetails}
             gateway={gateway}
             template={template}
+            paymentSending={paymentSending}
             sendPayment={()=>sendPayment(paymentDetails)}
             handleBack={(e)=>handleBack(e)}
         /> : <>
@@ -465,7 +453,7 @@ function Payment(props){
                     radioTwo={radioTwo}
                     radioThree={radioThree}
                     radioBtc={radioBtc}
-                    radioLtc={radioLtc}
+                    radioLtc={radioLtc}                    
                     handleChangeCheck={(e)=>handleChangeCheck(e)}
                 />
             </Col>
