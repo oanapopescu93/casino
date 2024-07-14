@@ -9,11 +9,15 @@ const orderSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {
-        orderAdd: (state, { payload }) => {
-            let order = payload
-            if(order){
-                state.order.push({ ...order, orderId: state.order.length })
-                setCookie("casino_order", JSON.stringify(state.order))
+        orderAdd: (state, { payload }) => {          
+            if(payload){
+                let order = payload
+                let payment_id = order.payment_id
+                let exists = state.order.some(existingOrder => existingOrder.payment_id === payment_id)
+                if(!exists){
+                    state.order.push({ ...order, orderId: state.order.length })
+                    setCookie("casino_order", JSON.stringify(state.order))
+                }
             }            
         }, 
     }
