@@ -240,3 +240,13 @@ export const convertCurrency = (value=0, currency="USD", exchangeRates=null, sho
   }
   return result
 }
+
+export const showCardNumber = (value)=>{
+  let result = ""
+  if(!value){
+    return result
+  }
+  const lastFourDigits = value.slice(-4)
+  result = "***" + lastFourDigits
+  return result
+}

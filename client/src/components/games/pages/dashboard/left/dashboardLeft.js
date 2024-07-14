@@ -44,8 +44,8 @@ function Picture(props){
 }
 
 function DashboardLeft(props){ 
-    const {home, user, settings, currency} = props
-    const {lang} = settings
+    const {home, user, settings} = props
+    const {lang, currency} = settings
     let dispatch = useDispatch()
 
     let name = user.user ? decryptData(user.user) : "-"
@@ -124,17 +124,15 @@ function DashboardLeft(props){
             <Col sm={12} md={8} lg={12} className="dashboard_user_info">
                 <Row>
                     <Col sm={12}>
-                        <div className="dashboard_user_info_left">                            
+                        <div className="dashboard_user_info_text">
                             <p>
                                 <b>{translate({lang: lang, info: "animal"})}: </b>
                                 {animal && animal[0] ? <span>{animal[0]["name_" + lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
                             </p>
-                            <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>                            
-                        </div>
-                        <div className="dashboard_user_info_right">                            
+                            <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>                                                  
                             <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
                             <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
-                        </div>                                               
+                        </div>
                     </Col>
                     <Col sm={12}>
                         <Row>

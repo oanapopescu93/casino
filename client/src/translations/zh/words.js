@@ -120,7 +120,6 @@ var word_bank = {
     empty_input_agree: "您没有同意条款和隐私政策",
     account_issues: "账户问题", 
     payments_and_withdrawals: "支付和提款", 
-    withdrawal: "撤退",
     game_issues: "游戏问题", 
     hiring: "招聘", 
 
@@ -212,7 +211,6 @@ var word_bank = {
     october: "十月",
     november: "十一月",
     december: "十二月",
-    bitcoin_address: "比特币地址",
     fill_field: "请填写此字段",
     validate_message_name: "这不是一个有效的姓名",
     validate_message_email: "这不是一个有效的电子邮件地址",
@@ -263,7 +261,11 @@ var word_bank = {
     method: "方法",
 
     // withdraw
-    not_enough_money_withdrawal: "你没有足够的钱进行提现。",
+    withdrawal: "取款",
+    withdraw: "提取",
+    withdrawals: "取款记录",
+    no_withdrawal: "没有取款",
+    not_enough_money_withdrawal: "您没有足够的资金进行取款。",
 
     // blackjack
     start: "开始",

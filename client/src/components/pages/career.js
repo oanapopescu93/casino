@@ -144,7 +144,9 @@ function Career(props){
                     if(list.length>0){
                         return <CareerList lang={lang} list={list} />
                     } else {
-                        return <p className="text_center">{translate({lang: lang, info: "no_career"})}</p>
+                        return <div className="career_container">
+                            <p className="text_center">{translate({lang: lang, info: "no_career"})}</p>
+                        </div>
                     }
                 } else {
                     return <p className="text_center">{translate({lang: lang, info: "error"})}</p>

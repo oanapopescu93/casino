@@ -30,9 +30,8 @@ function Payment(props){
     const [radioOne, setRadioOne] = useState(payment_details.option === "1" ? true : false)
     const [radioTwo, setRadioTwo] = useState(payment_details.option === "2" ? true : false)
     const [radioThree, setRadioThree] = useState(payment_details.option === "3" ? true : false)
-
-    const [radioBtc, setRadioBtc] = useState(payment_details.crypto === "btc" ? true : false)
-    const [radioLtc, setRadioLtc] = useState(payment_details.crypto === "ltc" ? true : false)
+    
+    const [cryptoChoice, setCryptoChoice] = useState(payment_details.crypto)
 
     const [qty, setQty] = useState(1)
     const [amount, setAmount] = useState(1)
@@ -47,12 +46,7 @@ function Payment(props){
     const [paymentError, setPaymentError] = useState(paymentErrors())
 
     const [paymentSending, setPaymentSending] = useState(false)
-
-    let gatewayDetails = {
-        stripe: ["name", "email", "phone", "country", "city", "payment_methode", "card_number", "year", "month", "cvv"],
-        paypal: ["name", "email", "phone", "country", "city", "payment_methode"],
-        crypto: ["payment_methode", "bitcoin_address"]
-    }
+    
     let gatewayDetailsMandatory = {
         stripe: ["name", "email", "payment_methode", "card_number", "year", "month", "cvv"],
         paypal: ["payment_methode"],
@@ -119,17 +113,13 @@ function Payment(props){
                     props.getChanges({type: 'gateway', value: 'stripe'})
                 }
                 break
-            case "radioBtc":
-                setRadioBtc(true)
-                setRadioLtc(false)
-                break
-            case "radioLtc":
-                setRadioBtc(false)
-                setRadioLtc(true)
-                break
             default:
                 break
         }
+    }
+
+    function handleCryptoChange(choice){
+        setCryptoChoice(choice)
     }
 
     useEffect(() => {
@@ -201,14 +191,12 @@ function Payment(props){
             phone: getValueFromForm(form, 'phone'),
             country,
             city,
+            crypto: cryptoChoice,
         }
 
         let radio1 = getValueFromForm(form, 'radio1')
         let radio2 = getValueFromForm(form, 'radio2')
         let radio3 = getValueFromForm(form, 'radio3')
-
-        let radioBtc = getValueFromForm(form, 'radioBtc')
-        let radioLtc = getValueFromForm(form, 'radioLtc')
 
         if (radio1 === "on") {
             payload.option = '1'
@@ -216,12 +204,7 @@ function Payment(props){
             payload.option = '2'
         } else if (radio3 === "on") {
             payload.option = '3'
-        }
-        if (radioBtc === "btc") {
-            payload.crypto = 'btc'
-        } else if (radioLtc === "on") {
-            payload.crypto = 'ltc'
-        }
+        }        
 
         let cardNumber = getValueFromForm(form, 'card_number')
         if(cardNumber){
@@ -236,10 +219,6 @@ function Payment(props){
         }
         if(year){
             payload.year = year
-        }
-        let bitcoin_address = getValueFromForm(form, 'bitcoin_address')
-        if(bitcoin_address){
-            payload.bitcoin_address = bitcoin_address
         }
 
         return payload
@@ -329,10 +308,7 @@ function Payment(props){
                     break
                 case "crypto":
                     url = "/api/crypto"
-                    payload.crypto_currency = 'BTC'
-                    if(radioLtc){
-                        payload.crypto_currency = 'LTC'
-                    }
+                    payload.crypto_currency = cryptoChoice.toUpperCase()
                     break
                 default:
                     break
@@ -432,8 +408,6 @@ function Payment(props){
             {...props} 
             paymentDetails={paymentDetails}
             amount={amount}
-            gatewayDetails={gatewayDetails}
-            gateway={gateway}
             template={template}
             paymentSending={paymentSending}
             sendPayment={()=>sendPayment(paymentDetails)}
@@ -451,10 +425,10 @@ function Payment(props){
                     paymentDetails={payment_details}
                     radioOne={radioOne}
                     radioTwo={radioTwo}
-                    radioThree={radioThree}
-                    radioBtc={radioBtc}
-                    radioLtc={radioLtc}                    
+                    radioThree={radioThree} 
+                    cryptoChoice={cryptoChoice}                 
                     handleChangeCheck={(e)=>handleChangeCheck(e)}
+                    handleCryptoChange={(e)=>handleCryptoChange(e)}
                 />
             </Col>
             <Col sm={4}>

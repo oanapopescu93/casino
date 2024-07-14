@@ -120,7 +120,6 @@ var word_bank = {
     empty_input_agree: "Вы не согласились с Условиями и политикой конфиденциальности",
     account_issues: "Проблемы с аккаунтом", 
     payments_and_withdrawals: "Платежи и снятия", 
-    withdrawal: "Вывод",
     game_issues: "Проблемы с игрой", 
     hiring: "Найм на работу", 
 
@@ -212,7 +211,6 @@ var word_bank = {
     october: "Октябрь",
     november: "Ноябрь",
     december: "Декабрь",
-    bitcoin_address: "Биткойн-адрес",
     fill_field: "Пожалуйста, заполните это поле",
     validate_message_name: "Это не имя",
     validate_message_email: "Это не действительный адрес электронной почты",
@@ -263,7 +261,11 @@ var word_bank = {
     method: "Метод",
 
     // withdraw
-    not_enough_money_withdrawal: "У вас недостаточно денег для снятия средств.",
+    withdrawal: "Вывод средств",
+    withdraw: "Вывести средства",
+    withdrawals: "Выводы средств",
+    no_withdrawal: "Нет выводов средств",
+    not_enough_money_withdrawal: "У вас недостаточно денег для вывода средств.",
 
     // blackjack
     start: "Начать",

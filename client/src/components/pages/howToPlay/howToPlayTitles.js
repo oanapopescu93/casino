@@ -9,8 +9,7 @@ import poker_icon from '../../../img/icons_other/icons/yellow/carribean.png'
 import { translate } from '../../../translations/translate'
 
 function HowToPlayTitles(props){
-    const {settings} = props
-    const {lang} = settings
+    const {lang} = props
     let list_games = ["roulette", "blackjack", "slots", "craps", "race", "keno", "poker"]
 
     function handleChoice(x){

@@ -121,7 +121,6 @@ var word_bank = {
     empty_input_agree: "Nu ai fost de acord cu Termenii și condițiile și Politicile de confidențialitate",
     account_issues: "Probleme cu contul", 
     payments_and_withdrawals: "Plăți și retrageri", 
-    withdrawal: "Retragere",
     game_issues: "Probleme cu jocurile", 
     hiring: "Angajare", 
 
@@ -213,7 +212,6 @@ var word_bank = {
     october: "Octombrie",
     november: "Noiembrie",
     december: "Decembrie",
-    bitcoin_address: "Adresă Bitcoin",
     fill_field: "Vă rugăm să completați acest câmp",
     validate_message_name: "Acesta nu este un nume",
     validate_message_email: "Acesta nu este un email valid",
@@ -264,7 +262,11 @@ var word_bank = {
     method: "Metodă",
 
     // withdraw
-    not_enough_money_withdrawal: "Nu aveți suficienți bani pentru a face o retragere.",
+    withdrawal: "Retragere",
+    withdraw: "Retrage",
+    withdrawals: "Retrageri",
+    no_withdrawal: "Fără retrageri",
+    not_enough_money_withdrawal: "Nu ai suficienți bani pentru a face o retragere.",
 
     // blackjack
     start: "Începe",

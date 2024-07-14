@@ -2173,17 +2173,6 @@ textarea {
 .dashboard_user_info, .dashboard_buttons{  
   margin-top: var(--padding);
 }
-.dashboard_user_info_left, .dashboard_user_info_right{
-  display: inline-block;
-  vertical-align: top;
-  padding: 0px var(--padding);
-  text-align: left;
-  width: 50%;
-}
-.dashboard_user_info_left{
-  border-right: solid 1px var(--color);
-  text-align: right;
-}
 .dashboard_box .cart_list, .dashboard_box .order_list{
   max-height: 236px;
   overflow: auto;
@@ -2253,7 +2242,16 @@ textarea {
   text-align: center;
   padding: var(--padding_small) var(--padding);
   border-radius: var(--radius) 0px 0px 0px;
+  text-align: center;
   cursor: pointer;
+}
+.dashboard_right_buttons .dropdown{
+  margin-bottom: var(--padding);  
+}
+.dashboard_right_buttons .dropdown .dropdown-toggle{
+  width: 100%;
+  height: 27px;
+  line-height: 14px;
 }
 .dashboard_right_button svg, .dashboard_right_market svg{
   margin-right: 5px;
@@ -2959,10 +2957,7 @@ textarea {
   }
   .dashboard_right_button svg, .dashboard_right_market svg{
     margin-right: 0px;
-  }
-  .dashboard_right_button span, .dashboard_right_market span{
-    display: none;
-  }
+  }  
 }
 @media (max-width: 600px) {	
   .slot_machine .box{
@@ -3706,16 +3701,23 @@ textarea {
 	}
 }
 @media (max-width: 1200px){
+  .dashboard_right_list{
+    padding-right: 50px;
+  }
+  .dashboard_right_market{
+    border-radius: var(--radius);
+  }
+  .dashboard_right_button span, .dashboard_right_market span{
+    display: none;
+  }
+  .dashboard_right_button svg, .dashboard_right_market svg{
+    margin: 0px;
+  }
 	.shop_shader{
 		height:70px;
 	}
   .poker_pot_container{ 
     top: 150px;
-  }
-  .dashboard_user_info_left, .dashboard_user_info_right{
-    text-align: center;  
-    width: 100%;
-    border: none;
   }
 }
 
@@ -3737,11 +3739,7 @@ textarea {
     display: inline-block;
     max-width: 200px;
   }
-  .dashboard_right_list{
-    border-bottom: solid 1px var(--color);
-    margin-bottom: var(--padding_small);
-  }
-  .dashboard_user_info_left, .dashboard_user_info_right, .dashboard_left_buttons{
+  .dashboard_user_info_text, .dashboard_left_buttons{
     text-align: left; 
   }
 }
@@ -3770,7 +3768,7 @@ textarea {
   }
 
   /* DASHBOARD */  
-  .dashboard_user_info, .dashboard_user_info_left, .dashboard_user_info_right, .dashboard_left_buttons{
+  .dashboard_user_info, .dashboard_user_info_text, .dashboard_left_buttons{
     text-align: center;
   }
   #dashboard_left .mybutton{

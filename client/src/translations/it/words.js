@@ -121,7 +121,6 @@ var word_bank = {
     empty_input_agree: "Non hai accettato i Termini e condizioni e la Politica sulla privacy",
     account_issues: "Problemi dell'account", 
     payments_and_withdrawals: "Pagamenti e prelievi", 
-    withdrawal: "Ritiro",
     game_issues: "Problemi di gioco", 
     hiring: "Assunzione", 
 
@@ -213,7 +212,6 @@ var word_bank = {
     october: "Ottobre",
     november: "Novembre",
     december: "Dicembre",
-    bitcoin_address: "Indirizzo Bitcoin",
     fill_field: "Per favore compila questo campo",
     validate_message_name: "Questo non è un nome",
     validate_message_email: "Questa non è un'email valida",
@@ -264,6 +262,10 @@ var word_bank = {
     method: "Metodo",
 
     // withdraw
+    withdrawal: "Prelievo",
+    withdraw: "Prelevare",
+    withdrawals: "Prelievi",
+    no_withdrawal: "Nessun prelievo",
     not_enough_money_withdrawal: "Non hai abbastanza soldi per fare un prelievo.",
 
     // blackjack

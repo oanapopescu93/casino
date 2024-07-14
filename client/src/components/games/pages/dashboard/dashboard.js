@@ -12,6 +12,7 @@ function Dashboard(props){
 	let dispatch = useDispatch()
 	let cart = useSelector(state => state.cart.cart)
 	let order = useSelector(state => state.order.order)
+	let withdraw = useSelector(state => state.withdraw.withdraw)
 
 	function cartRemoveAllProduct(){
 		dispatch(cartRemoveAll())
@@ -49,6 +50,7 @@ function Dashboard(props){
 							{...props} 
 							cart={cart} 
 							order={order}
+							withdraw={withdraw}
 							cartRemoveAllProduct={()=>cartRemoveAllProduct()}
 							cartRemoveProduct={(e)=>cartRemoveProduct(e)}
 							updateQtyProduct={(e)=>updateQtyProduct(e)}
