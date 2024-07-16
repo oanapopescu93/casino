@@ -1549,7 +1549,7 @@ textarea {
 }
 .game_bets_container{
 	position: fixed;
-	z-index:1;
+	z-index:9999;
 	top:0px;
 	bottom:0px;
 	right:100%;
@@ -3835,6 +3835,9 @@ textarea {
     line-height: 6px;
     height: 20px;
   }
+  .sign_container .input_container .input_eye{
+    top: 3px;
+  }
 
   /* CAREER */
   .career_header_container{
@@ -4009,6 +4012,9 @@ textarea {
   }
   .sign_container input{
     max-width: 100%;
+  }
+  .sign_container .input_container .input_eye{
+    right: 20px;
   }
 
   /* SALON */
