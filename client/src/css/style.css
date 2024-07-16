@@ -1757,7 +1757,7 @@ textarea {
   background: var(--transparent_color);
 }
 .donation_box_content{
-  height: 200px;
+  height: 220px;
 }
 .donation_box_content h2{
   margin-bottom: var(--padding);
@@ -1775,9 +1775,11 @@ textarea {
   vertical-align: middle;
   padding: var(--padding_small);
 }
-.donation_link_paypal a{
-  width: 100%;
+.donation_link_paypal a{  
   display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  height: 25px;
 }
 
 /* CAREER */
@@ -4090,6 +4092,11 @@ textarea {
   }
 }
 @media (max-width:480px) {
+  .donation_box_tabs li{
+    width: 200px;
+    border-radius: var(--radius)!important;
+    margin-bottom: var(--padding_small);
+  }
   .welcome_popup img{
     width:150px;
   }
