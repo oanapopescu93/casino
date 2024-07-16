@@ -28,7 +28,7 @@ function GameBets(props){
 	}, [props.update])
 
     return <div className={"game_bets_container " + open}>
-        <div className="game_bets shadow_concav">
+        <div id={"game_bets_" + template} className="game_bets shadow_concav">
             <div className="close" onClick={()=>handleClose()}>x</div>
             <div className="game_bets_box">						
                 {(() => {

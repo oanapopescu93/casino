@@ -17,8 +17,6 @@ function roulette_game(props){
 	const dispatch = props.dispatch	
 
     let start_game = false
-    let bet_x = 0
-    let bet_square = 0
 
     let roulette_radius_x = 240
 	let roulette_radius_y = 240
@@ -81,10 +79,7 @@ function roulette_game(props){
 
 			radiantLine01 = [-65, 15]
 			radiantLine02 = [-105, -35]
-			radiantLine03 = [-105, -85]
-			
-			bet_x = 330
-			bet_square = 30
+			radiantLine03 = [-105, -85]	
 
             circle = {radius: textRadius-15, angle:0}
 			ball = {x:70, y:roulette_radius_x, speed:0.05, width:6}
@@ -106,9 +101,6 @@ function roulette_game(props){
 			
 			circle = {radius: textRadius-22, angle:0}
 			ball = {x:70, y:roulette_radius_x, speed:0.05, width:10}
-			
-			bet_x = canvas.width/2 - 270
-			bet_square = 40
 			
 			font_bold_10 = 'bold 10px sans-serif'
 			font_bold_12 = 'bold 12px sans-serif'
@@ -409,7 +401,7 @@ function roulette_game(props){
 
         for(let i in elem01){		
 			if(isNaN(elem01[i].text) === false){
-				if(parseInt(elem01[i].text) === parseInt(elem02.nr)){
+				if(elem01[i].text.toString() === elem02.nr.toString()){
 					elem01[i].win = true
 					money_history = money_history + elem01[i].bet_value
 				} else {
@@ -540,7 +532,7 @@ function roulette_game(props){
 				}
 			}
 			elem01[i].money_history = money_history
-		}	
+		}
         self.win_lose(elem01, money_history)
     }
 

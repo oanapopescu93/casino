@@ -1580,7 +1580,7 @@ textarea {
 }
 .game_bets_box{
 	overflow: auto;
-  max-height: 260px;
+  max-height: 280px;
 }
 #keno_game_bets .game_bets_box{
   overflow: visible;

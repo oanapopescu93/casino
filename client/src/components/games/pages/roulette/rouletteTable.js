@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { getMousePos, get_roulette_bets, isInside } from '../../../../utils/games'
+import { draw_rect, getMousePos, get_roulette_bets, isInside } from '../../../../utils/games'
 import $ from 'jquery'
 import carrot_img from '../../../../img/icons/carrot_icon.png'
 import { useDispatch } from 'react-redux'
@@ -52,21 +52,21 @@ function roulette_bets(props){
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 300
-				canvas.height = 150
+				canvas.width = 400
+				canvas.height = 135
 				roulette_bets_coord = [0, 0, 795, 268, 0, 0, 400, 135]
 			} else {
 				//small portrait
-				canvas.width = 150
-				canvas.height = 300
+				canvas.width = 135
+				canvas.height = 400
 				small_image = true
 				roulette_bets_coord = [0, 0, 382, 1136, 0, 0, 191, 568]				
 			}	
 			bet_square = 30		
 		} else {
 			//big
-			canvas.width = 900
-			canvas.height = 280
+			canvas.width = 795
+			canvas.height = 270
 			roulette_bets_coord = [0, 0, 795, 268, 0, 0, 795, 268]
 			bet_square = 40
 		}
@@ -164,7 +164,7 @@ function roulette_bets(props){
 					squares = {
 						a: {x:53, y:0, w:78, h:27}, //0
 						b: {}, //00
-						c: {x:53, y:346, w:27, h:27}, //first square
+						c: {x:27, y:27, w:27, h:26}, //first square
 						d: {x:27, y:27, w:27, h:106}, //first 12
 						e: {x:0, y:27, w:27, h:53}, //1-18
 						f: {x:53, y:345, w:27, h:53}, //2 to 1
@@ -174,7 +174,7 @@ function roulette_bets(props){
 					squares = {
 						a: {x:53, y:0, w:40, h:27}, //0
 						b: {x:93, y:0, w:40, h:27}, //00
-						c: {x:53, y:346, w:27, h:27}, //first square
+						c: {x:27, y:27, w:27, h:26}, //first square
 						d: {x:27, y:27, w:27, h:106}, //first 12
 						e: {x:0, y:27, w:27, h:53}, //1-18
 						f: {x:53, y:345, w:27, h:53}, //2 to 1
@@ -210,12 +210,12 @@ function roulette_bets(props){
 	function my_bets(squares, k, color, up){
 		let a = 0
 		list_bets = []
-		//draw_rect(ctx_bets, squares.a.x, squares.a.y, squares.a.w, squares.a.h, 'transparent', 1, 'red')
-		list_bets.push({x: squares.a.x, y: squares.a.y, width: squares.a.w, height: squares.a.h, color:"green", text: "0"})
+		//draw_rect(ctx, squares.a.x, squares.a.y, squares.a.w, squares.a.h, 'transparent', 1, 'red')
+		list_bets.push({x: squares.a.x, y: squares.a.y, width: squares.a.w, height: squares.a.h, color:"green", text: "0", bet_value: 1})
 		
 		if(Object.keys(squares.b).length !== 0){ // it means it is american roulette and has 00
-			//draw_rect(ctx_bets, squares.b.x, squares.b.y, squares.b.w, squares.b.h, 'transparent', 1, 'red')
-			list_bets.push({x: squares.b.x, y: squares.b.y, width: squares.b.w, height: squares.b.h, color:"green", text: "00"})
+			//draw_rect(ctx, squares.b.x, squares.b.y, squares.b.w, squares.b.h, 'transparent', 1, 'red')
+			list_bets.push({x: squares.b.x, y: squares.b.y, width: squares.b.w, height: squares.b.h, color:"green", text: "00", bet_value: 1})
 		}
 		
 		if(!small_image){
@@ -229,23 +229,23 @@ function roulette_bets(props){
 				} else {
 					squares.c.y = squares.c.y - squares.c.w
 				}
-				//draw_rect(ctx_bets, squares.c.x, squares.c.y, squares.c.w, squares.c.h, 'transparent', 1, 'red')
+				//draw_rect(ctx, squares.c.x, squares.c.y, squares.c.w, squares.c.h, 'transparent', 1, 'red')
 				list_bets.push({x: squares.c.x, y: squares.c.y, width: squares.c.w, height: squares.c.h, color: color[i-1], text: i.toString(), bet_value: 1})
 			}
 
-			// draw_rect(ctx_bets, 0*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 1*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 2*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 0*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 1*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 2*squares.d.w + squares.d.x, squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
 			list_bets.push({x: 0*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "1st 12", bet_value: 1})	
 			list_bets.push({x: 1*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "2st 12", bet_value: 1})	
 			list_bets.push({x: 2*squares.d.w + squares.d.x, y: squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "3st 12", bet_value: 1})	
 		
-			// draw_rect(ctx_bets, 0*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 1*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 2*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 3*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 4*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 5*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')				
+			// draw_rect(ctx, 0*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 1*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 2*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 3*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 4*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 5*squares.e.w + squares.e.x, squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')				
 			list_bets.push({x: 0*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "1-18", bet_value: 1})
 			list_bets.push({x: 1*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Even", bet_value: 1})
 			list_bets.push({x: 2*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "reds", bet_value: 1})
@@ -253,9 +253,9 @@ function roulette_bets(props){
 			list_bets.push({x: 4*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Odd", bet_value: 1})
 			list_bets.push({x: 5*squares.e.w + squares.e.x, y: squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "19-36", bet_value: 1})
 
-			// draw_rect(ctx_bets, squares.f.x, 0*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.f.x, 1*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.f.x, 2*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.f.x, 0*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.f.x, 1*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.f.x, 2*squares.f.h + squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
 			list_bets.push({x: squares.f.x, y: 0*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1a", bet_value: 1})	
 			list_bets.push({x: squares.f.x, y: 1*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1b", bet_value: 1})	
 			list_bets.push({x: squares.f.x, y: 2*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c", bet_value: 1})
@@ -263,43 +263,43 @@ function roulette_bets(props){
 			//small portrait
 			for(let i = 1; i < numbers.length-k; i++) {	
 				a++
-				if(a > 12){
-					squares.c.x = squares.c.x + squares.c.w	
-					squares.c.y = squares.c.y + 11 * squares.c.w
+				if(a > 3){
+					squares.c.x = squares.c.x -  2 * squares.c.w
+					squares.c.y = squares.c.y + squares.c.h
 					a = 1
 				} else {
-					squares.c.y = squares.c.y - squares.c.w
-				}
-				//draw_rect(ctx_bets, squares.c.x, squares.c.y, squares.c.w, squares.c.h, 'transparent', 1, 'red')
-				list_bets.push({x: squares.c.x, y: squares.c.y, width: squares.c.w, height: squares.c.h, color: color[i-1], text: i.toString()})
+					squares.c.x = squares.c.x + squares.c.w	
+				}					
+				//draw_rect(ctx, squares.c.x, squares.c.y, squares.c.w, squares.c.h, 'transparent', 1, 'red')
+				list_bets.push({x: squares.c.x, y: squares.c.y, width: squares.c.w, height: squares.c.h, color: color[i-1], text: i.toString(), bet_value: 1})				
 			}
 
-			// draw_rect(ctx_bets, squares.d.x, 0 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.d.x, 1 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.d.x, 2 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
-			list_bets.push({x: squares.d.x, y: 0 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "1st 12"})
-			list_bets.push({x: squares.d.x, y: 1 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "2st 12"})
-			list_bets.push({x: squares.d.x, y: 2 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "3st 12"})
+			// draw_rect(ctx, squares.d.x, 0 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.d.x, 1 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.d.x, 2 * squares.d.h + squares.d.y, squares.d.w, squares.d.h, 'transparent', 1, 'red')
+			list_bets.push({x: squares.d.x, y: 0 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "1st 12", bet_value: 1})
+			list_bets.push({x: squares.d.x, y: 1 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "2st 12", bet_value: 1})
+			list_bets.push({x: squares.d.x, y: 2 * squares.d.h + squares.d.y, width: squares.d.w, height: squares.d.h, color: "", text: "3st 12", bet_value: 1})
 
-			// draw_rect(ctx_bets, squares.e.x, 0 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.e.x, 1 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.e.x, 2 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.e.x, 3 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.e.x, 4 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, squares.e.x, 5 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')				
-			list_bets.push({x: squares.e.x, y: 0 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "1-18"})	
-			list_bets.push({x: squares.e.x, y: 1 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Even"})
-			list_bets.push({x: squares.e.x, y: 2 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "reds"})
-			list_bets.push({x: squares.e.x, y: 3 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "blacks"})
-			list_bets.push({x: squares.e.x, y: 4 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Odd"})	
-			list_bets.push({x: squares.e.x, y: 5 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "19-36"})
+			// draw_rect(ctx, squares.e.x, 0 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.e.x, 1 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.e.x, 2 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.e.x, 3 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.e.x, 4 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, squares.e.x, 5 * squares.e.h + squares.e.y, squares.e.w, squares.e.h, 'transparent', 1, 'red')				
+			list_bets.push({x: squares.e.x, y: 0 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "1-18", bet_value: 1})	
+			list_bets.push({x: squares.e.x, y: 1 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Even", bet_value: 1})
+			list_bets.push({x: squares.e.x, y: 2 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "reds", bet_value: 1})
+			list_bets.push({x: squares.e.x, y: 3 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "blacks", bet_value: 1})
+			list_bets.push({x: squares.e.x, y: 4 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "Odd", bet_value: 1})	
+			list_bets.push({x: squares.e.x, y: 5 * squares.e.h + squares.e.y, width: squares.e.w, height: squares.e.h, color: "", text: "19-36", bet_value: 1})
 
-			// draw_rect(ctx_bets, 0 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 1 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
-			// draw_rect(ctx_bets, 2 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
-			list_bets.push({x: 0 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1a"})	
-			list_bets.push({x: 1 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1b"})	
-			list_bets.push({x: 2 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c"})
+			// draw_rect(ctx, 0 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 1 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
+			// draw_rect(ctx, 2 * squares.f.w + squares.f.x, squares.f.y, squares.f.w, squares.f.h, 'transparent', 1, 'red')
+			list_bets.push({x: 0 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1a", bet_value: 1})	
+			list_bets.push({x: 1 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1b", bet_value: 1})	
+			list_bets.push({x: 2 * squares.f.w + squares.f.x, y: squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c", bet_value: 1})
 		}
 	}	
 
@@ -316,13 +316,13 @@ function roulette_bets(props){
         for(let i in list_bets){
 			let obj = list_bets[i]			
 			if (isInside(mouse, obj)) {
-				bet_value_sum++				
+				bet_value_sum++
 				if(bet_value_sum > money){
 					let payload = {
 						open: true,
 						template: "error",
 						title: "error",
-						data: translate({lang: props.setings.lang, info: "no_money"})
+						data: translate({lang: props.settings.lang, info: "no_money"})
 					}
 					props.dispatch(changePopup(payload))
 				} else {
@@ -332,7 +332,7 @@ function roulette_bets(props){
 				}				
 				break
 			} 
-		}
+		}		
         props.getData(your_bets)
     }
 
