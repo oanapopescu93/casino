@@ -2187,10 +2187,13 @@ textarea {
   margin-top: 0px;
   border-radius: 0px 0px var(--radius) var(--radius);
 }
+.dashboard_left_buttons{
+  margin: var(--padding) 0px;
+}
 .dashboard_left_buttons .mybutton{
   margin-top: var(--padding);
 }
-.dashboard_user_info, .dashboard_buttons{  
+.dashboard_buttons{  
   margin-top: var(--padding);
 }
 .dashboard_box .cart_list, .dashboard_box .order_list{
@@ -2536,13 +2539,9 @@ textarea {
   border: solid 1px var(--color);
   border-radius: var(--radius_big);
   color: var(--bg);  
-  width: 100%;
-  max-width: 150px;
   height: 25px;
   padding: var(--padding_small) var(--padding);
-  margin: 0px auto;
   top: -20px;
-  margin-bottom: -20px;
   white-space: nowrap;
 }
 .profile_pic_input{
@@ -3734,7 +3733,7 @@ textarea {
 }
 @media (max-width: 1200px){
   .dashboard_right_list{
-    padding-right: 50px;
+    padding: 0px 50px;
   }
   .dashboard_right_market{
     border-radius: var(--radius);
@@ -3770,6 +3769,11 @@ textarea {
   #dashboard_left .mybutton{
     display: inline-block;
     max-width: 200px;
+  }
+  .profile_pic_name{
+    width: 100%;
+    max-width: 200px;
+    margin: 0px auto;
   }
   .dashboard_user_info_text, .dashboard_left_buttons{
     text-align: left; 

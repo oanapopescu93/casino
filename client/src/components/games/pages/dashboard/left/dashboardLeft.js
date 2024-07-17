@@ -115,44 +115,38 @@ function DashboardLeft(props){
 
     return <div id="dashboard_left" className="dashboard_box shadow_concav">
         <Row>
-            <Col sm={12} md={4} lg={12} className="dashboard_user_pic">
-                <Picture profiles={profiles} picId={picId} money={money} choice={(e)=>handleChoice(e)} />
-                <div className="profile_pic_name shadow_convex">
-                    <span>{name}</span>
+            <Col sm={12} md={6} lg={12}>
+                <div className="dashboard_user_pic">
+                    <Picture profiles={profiles} picId={picId} money={money} choice={(e)=>handleChoice(e)} />
+                    <div className="profile_pic_name shadow_convex">
+                        <span>{name}</span>
+                    </div>
+                </div>
+                <div className="dashboard_user_info">
+                    <p>
+                        <b>{translate({lang: lang, info: "animal"})}: </b>
+                        {animal && animal[0] ? <span>{animal[0]["name_" + lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
+                    </p>
+                    <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>                                                  
+                    <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
+                    <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
                 </div>
             </Col>
-            <Col sm={12} md={8} lg={12} className="dashboard_user_info">
-                <Row>
-                    <Col sm={12}>
-                        <div className="dashboard_user_info_text">
-                            <p>
-                                <b>{translate({lang: lang, info: "animal"})}: </b>
-                                {animal && animal[0] ? <span>{animal[0]["name_" + lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
-                            </p>
-                            <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>                                                  
-                            <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
-                            <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
-                        </div>
-                    </Col>
-                    <Col sm={12}>
-                        <Row>
-                            <Col sm={12} className="dashboard_left_buttons">
-                                <Button type="button" onClick={()=>handleChoice("change_username")} className="mybutton button_fullcolor shadow_convex">
-                                    <FontAwesomeIcon icon={faUser} /> {translate({lang: lang, info: "change_username"})}
-                                </Button>
-                                <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
-                                    <FontAwesomeIcon icon={faKey} /> {translate({lang: lang, info: "change_password"})}
-                                </Button>
-                                <Button type="button" onClick={()=>handleChoice("buy_carrots")} className="mybutton button_fullcolor shadow_convex">
-                                    <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "buy_carrots"})}
-                                </Button>
-                                <Button type="button" onClick={()=>handleWithdrawal()} className="mybutton button_fullcolor shadow_convex">
-                                    <FontAwesomeIcon icon={faMoneyBillTransfer} /> {translate({lang: lang, info: "withdrawal"})}
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>                
+            <Col sm={12} md={6} lg={12}>
+                <div className="dashboard_left_buttons">
+                    <Button type="button" onClick={()=>handleChoice("change_username")} className="mybutton button_fullcolor shadow_convex">
+                        <FontAwesomeIcon icon={faUser} /> {translate({lang: lang, info: "change_username"})}
+                    </Button>
+                    <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
+                        <FontAwesomeIcon icon={faKey} /> {translate({lang: lang, info: "change_password"})}
+                    </Button>
+                    <Button type="button" onClick={()=>handleChoice("buy_carrots")} className="mybutton button_fullcolor shadow_convex">
+                        <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "buy_carrots"})}
+                    </Button>
+                    <Button type="button" onClick={()=>handleWithdrawal()} className="mybutton button_fullcolor shadow_convex">
+                        <FontAwesomeIcon icon={faMoneyBillTransfer} /> {translate({lang: lang, info: "withdrawal"})}
+                    </Button>
+                </div> 
             </Col>
         </Row>
     </div>
