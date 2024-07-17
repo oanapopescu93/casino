@@ -11,7 +11,7 @@ import { Button } from 'react-bootstrap'
 import $ from 'jquery'
 import { translate } from '../../../../translations/translate'
 
-function Land(config) {
+function Land(config){
 	let self = this
     self.layer = config.layer
     self.x = config.x
@@ -43,7 +43,7 @@ function Landscape(config){
 	self.populate = function (canvas){
 		let totalWidth = 0
 		let x = 0
-		while (totalWidth <= 2*canvas.width + (10 * self.width.max)) {
+		while (totalWidth <= 2*canvas.width + (10 * self.width.max)){
 			let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min
 			let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min
 			if(self.lands.length !== 0){
@@ -389,7 +389,7 @@ function FinishLine(config){
 	self.y = config.y
 	self.cube = config.cube	
 
-	self.draw = function(canvas, ctx, x){
+	self.draw = function(canvas, ctx){
 		draw_rect(ctx, self.x, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle) //line01
 		
 		//cubes
@@ -473,8 +473,8 @@ function race_game(props){
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape				
-				canvas.width = 300
-				canvas.height = 300			
+				canvas.width = 400
+				canvas.height = 280			
 			} else {
 				//small portrait
 				canvas.width = 280
@@ -544,10 +544,10 @@ function race_game(props){
 	}
 
 	this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve){
 			let image = new Image()
 			image.src = item.src
-			image.addEventListener("load", function() {
+			image.addEventListener("load", function(){
 				resolve(image)
 			}, false)
 		})
@@ -628,7 +628,7 @@ function race_game(props){
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
 		self.draw_sun(canvas, ctx)		
 		let i = landscape.length
-		while (i--) {
+		while(i--){
 			landscape[i].draw(canvas, ctx)
 		}
 		self.draw_road(canvas, ctx, -100, draw_road_height, 2*canvas.width, draw_road_height, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)")		
@@ -672,10 +672,10 @@ function race_game(props){
 	}
 	this.order_rabbits = function(list){
 		let done = false
-		while (!done) { //false
+		while(!done){ //false
 			done = true
-			for (let i = 1; i < list.length; i += 1) {
-				if (list[i - 1].x < list[i].x) {
+			for (let i = 1; i < list.length; i += 1){
+				if (list[i - 1].x < list[i].x){
 					done = false
 					let tmp = list[i - 1]
 					list[i - 1] = list[i]
@@ -763,7 +763,7 @@ function race_game(props){
 			if(!startGameRace){
 				let avg_dist = lane_list[0].rabbit.avg_dist
 
-				if (nr > time) {
+				if(nr > time){
 					rabbit_list = self.order_rabbits(rabbit_list)			
 					let end_rabbit = true
 					let end_finish_line = true
@@ -828,7 +828,7 @@ function race_game(props){
 						}
 					} else {
 						let i = landscape.length			
-						while (i--) {
+						while(i--){
 							landscape[i].update()
 							let my_lands = landscape[i].lands
 							for(let j in my_lands){
@@ -929,7 +929,7 @@ function race_game(props){
 var startGameRace = true
 
 function RaceGame(props){
-	const {settings, bets, socket} = props
+	const {settings, bets} = props
     const {lang} = settings
     let dispatch = useDispatch()	
     let options = {...props, dispatch}
@@ -954,15 +954,15 @@ function RaceGame(props){
 		}
     }, [])
 
-	useEffect(() => {
-		const handleRaceRead = function(data) {}
-		socket.on('race_read', handleRaceRead)
-		return () => {
-            socket.off('race_read', handleRaceRead)
-        }
-    }, [socket])
+	// useEffect(() => {
+	// 	const handleRaceRead = function(data){}
+	// 	socket.on('race_read', handleRaceRead)
+	// 	return () => {
+    //         socket.off('race_read', handleRaceRead)
+    //     }
+    // }, [socket])
 
-    return <div className="game_container race_game_container">
+    return <>
 		<div className="race_order_container">
 			<div id="race_order"></div>
 		</div>
@@ -985,7 +985,7 @@ function RaceGame(props){
 				<span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
 			</div>
 		</div>
-	</div>
+	</>
 }
 
 export default RaceGame

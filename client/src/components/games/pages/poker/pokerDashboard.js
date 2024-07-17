@@ -11,6 +11,7 @@ import { poker_game } from './pokerGame'
 import { getWindowDimensions } from '../../../../utils/utils'
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import Header from '../../../partials/header'
 
 let replaceCards = null
 
@@ -87,7 +88,7 @@ function PokerDashboard(props){
                         dispatch(changePopup(payload))
                     } else {
                         switch(data.action){
-                            case "preflop_betting":                      
+                            case "preflop_betting":
                                 setStartGame(true)
                                 break
                             case "fold":
@@ -160,8 +161,9 @@ function PokerDashboard(props){
         props.updateBets(e)
     }
 
-    return <div className="game_container poker_container">
-        <div className="game_box_poker">
+    return <div id="poker" className="game_container poker_container">
+        <div className="game_box">
+            <Header template={"game"} details={page} lang={lang} />
             <canvas id="poker_canvas" />
             {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
                 <div className="poker_pot">{translate({lang: lang, info: "total_pot"})}: {pot}</div>
@@ -176,22 +178,22 @@ function PokerDashboard(props){
                     <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
                 </div>
             </div> : null}
-        </div>
-        {startGame && !showdown ? <GameBoard 
-            template={template}
-            {...props}
-            action={action}
-            choice={(e)=>choice(e)} 
-            updateBets={(e)=>updateBets(e)}
-        /> : null}
-        <div className="page_exit">
-            <div className="tooltip">
-                <Button 
-                    type="button"
-                    className="mybutton round button_transparent shadow_convex"
-                    onClick={()=>props.handleHandleExit()}
-                ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            {startGame && !showdown ? <GameBoard 
+                template={template}
+                {...props}
+                action={action}
+                choice={(e)=>choice(e)} 
+                updateBets={(e)=>updateBets(e)}
+            /> : null}
+            <div className="page_exit">
+                <div className="tooltip">
+                    <Button 
+                        type="button"
+                        className="mybutton round button_transparent shadow_convex"
+                        onClick={()=>props.handleHandleExit()}
+                    ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+                    <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+                </div>
             </div>
         </div>
     </div>

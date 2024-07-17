@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { draw_rect, getMousePos, get_roulette_bets, isInside } from '../../../../utils/games'
+import { getMousePos, get_roulette_bets, isInside } from '../../../../utils/games'
 import $ from 'jquery'
 import carrot_img from '../../../../img/icons/carrot_icon.png'
 import { useDispatch } from 'react-redux'
@@ -92,11 +92,11 @@ function roulette_bets(props){
 	}
 
 	this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve){
 			let image = new Image()
 			image.id = item.id
 			image.src = item.src
-			image.addEventListener("load", function() {
+			image.addEventListener("load", function(){
 				resolve(image)
 			}, false)
 		})
@@ -207,7 +207,7 @@ function roulette_bets(props){
 		my_bets(squares, k, color)
 	}
 	
-	function my_bets(squares, k, color, up){
+	function my_bets(squares, k, color){
 		let a = 0
 		list_bets = []
 		//draw_rect(ctx, squares.a.x, squares.a.y, squares.a.w, squares.a.h, 'transparent', 1, 'red')
@@ -220,7 +220,7 @@ function roulette_bets(props){
 		
 		if(!small_image){
 			//big or small landscape
-			for(let i = 1; i < numbers.length-k; i++) {	
+			for(let i = 1; i < numbers.length-k; i++){	
 				a++
 				if(a > 3){
 					squares.c.x = squares.c.x + squares.c.w	
@@ -261,7 +261,7 @@ function roulette_bets(props){
 			list_bets.push({x: squares.f.x, y: 2*squares.f.h + squares.f.y, width: squares.f.w, height: squares.f.h, color: "", text: "2 to 1c", bet_value: 1})
 		} else {
 			//small portrait
-			for(let i = 1; i < numbers.length-k; i++) {	
+			for(let i = 1; i < numbers.length-k; i++){	
 				a++
 				if(a > 3){
 					squares.c.x = squares.c.x -  2 * squares.c.w
@@ -305,7 +305,7 @@ function roulette_bets(props){
 
     this.handleClick = function(){
         if($('#roulette_bets_canvas')){
-            $('#roulette_bets_canvas').off('click').on('click', function(event) {
+            $('#roulette_bets_canvas').off('click').on('click', function(event){
                 let mousePos = getMousePos(canvas, event)
                 self.canvas_click(mousePos)
             })
@@ -315,7 +315,7 @@ function roulette_bets(props){
     this.canvas_click = function(mouse){ 
         for(let i in list_bets){
 			let obj = list_bets[i]			
-			if (isInside(mouse, obj)) {
+			if (isInside(mouse, obj)){
 				bet_value_sum++
 				if(bet_value_sum > money){
 					let payload = {
@@ -343,7 +343,7 @@ function roulette_bets(props){
 		let h = bet_square/2+10
 		let img = new Image()
 		img.src = carrot_img
-		img.onload = function() {
+		img.onload = function(){
 			ctx.drawImage(img, x, y, w, h)	
 		}
 	}

@@ -9,6 +9,7 @@ import $ from 'jquery'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
+import Header from '../../../partials/header'
 
 function Card(config){
 	let self = this
@@ -90,7 +91,7 @@ function Card(config){
 		ctx.closePath()
 	}
 
-	self.draw_card_number = function(ctx, text, x, y, w, h){	
+	self.draw_card_number = function(ctx, text, x, y, w){	
 		ctx.beginPath()
 		ctx.fillStyle = "white"
 		ctx.textAlign = "center"
@@ -108,7 +109,7 @@ function Card(config){
 			ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + 5, y + 5 + space, w, h)
 		} else {
 			for(let i in hand){		
-				switch (hand[i].Suit) { 					
+				switch (hand[i].Suit){ 					
 					case "Hearts":
 						img_index = 1		
 						break				
@@ -122,7 +123,7 @@ function Card(config){
 						img_index = 40							
 						break
 				}		  
-				switch (hand[i].Value) {
+				switch (hand[i].Value){
 					case "A":
 						img_index = img_index + 0			
 						break
@@ -172,18 +173,13 @@ function Card(config){
 function blackjack_game(props){
     let self = this	
     let images = []
-
 	let canvas
-	let ctx
-	
+	let ctx	
 	let card_list = []
 	let card_base = {}
 	let card = {}
 	let card_img = {width: 237, height: 365}
-	let player_nr = [20, 20]
-	let font_bold_12 = 'bold 12px sans-serif'
-	let font_bold_14 = 'bold 14px sans-serif'
-    
+	let player_nr = [20, 20]    
     let items = get_cards()
     let resize = 0
 
@@ -217,14 +213,8 @@ function blackjack_game(props){
 		card_base = {x: 20, y:260, width: 120, height: 180, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
 		card = {width: 100, height: 150}
 		player_nr = [20, 20]
-		font_bold_12 = 'bold 12px sans-serif'
-		font_bold_14 = 'bold 14px sans-serif'
-		if (window.innerWidth <= 960){
-			font_bold_12 = 'bold 10px sans-serif'
-			font_bold_14 = 'bold 12px sans-serif'
-		}
 
-		if (window.innerWidth <= 1200){
+		if(window.innerWidth <= 1200){
 			//big
 			canvas.width = 900
 			canvas.height = 450
@@ -232,7 +222,7 @@ function blackjack_game(props){
 			card = {width: 80, height: 120}
 			player_nr = [20, 20]
 		}
-		if (window.innerWidth <= 960){
+		if(window.innerWidth <= 960){
 			//medium
 			canvas.width = 480
 			canvas.height = 220
@@ -259,16 +249,16 @@ function blackjack_game(props){
 	}
 
     this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve){
 			let image = new Image()
 			image.src = item.src
-			image.addEventListener("load", function() {
+			image.addEventListener("load", function(){
 				resolve({suit: item.suit, value: item.value, src: image})
 			}, false)
 		})
 	}
 
-    this.create_cards = function(x){
+    this.create_cards = function(){
 		let space = (canvas.width - (card_base.width*7 + card_base.x*6))/2
 
 		// create dealer
@@ -454,7 +444,7 @@ function Blackjack(props){
     }, [])
 
     useEffect(() => {
-		const handleBlackjackRead = function(data) {
+		const handleBlackjackRead = function(data){
             if(my_blackjack && data){
 				if(data.action === "start" || data.action === "hit" || data.action === "stand" || data.action === "double_down"  || data.action === "surrender"){
 					my_blackjack.action(data)
@@ -486,7 +476,7 @@ function Blackjack(props){
                 bet: blackjack_bets
             }
 			let payload = null
-            switch (type) {
+            switch (type){
                 case "start":
 					if(blackjack_bets === 0){
 						payload = {
@@ -561,7 +551,8 @@ function Blackjack(props){
         blackjack_bets = x
     }
 
-    return <div className="game_container blackjack_container">
+    return <div id="blackjack" className="game_box">
+		<Header template={"game"} details={page} lang={lang} />
         <canvas id="blackjack_canvas" />
         <GameBoard template="blackjack" {...props} startGame={startGame} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
 		<div className="page_exit">

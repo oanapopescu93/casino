@@ -29,7 +29,7 @@ function Craps(props){
         }
     }
 
-    return <div className='game_container'>
+    return <div id="craps" className='game_container'>
         <CrapsGame {...props} bets={bets} openTable={()=>openTable()} results={(e)=>results(e)} />
         <GameBets {...props} open={open} getData={(e)=>getData(e)} closeTable={()=>closeTable()} />
     </div>

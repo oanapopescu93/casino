@@ -9,6 +9,7 @@ import { changeRouletteLuckyBet } from '../../../../reducers/games'
 import $ from 'jquery'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlay, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import Header from '../../../partials/header'
 
 function roulette_game(props){
     let self = this	
@@ -675,7 +676,8 @@ function RouletteGame(props){
 		}
     }
 
-    return <div className="roulette_container">
+    return <div className="game_box">
+		<Header template={"game"} details={page} lang={lang} />
 		<canvas id="roulette_canvas" /> 
 		<div className="game_start">
 			<div className="tooltip">

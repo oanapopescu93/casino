@@ -28,7 +28,7 @@ function Salon(props) {
             </div>
             <SalonSidebarLeft lang={lang} />
             <Panel {...props} />
-            <div style={{'display': 'none'}}onClick={()=>handleWhack()}>test whack</div>
+            <div style={{'display': 'none'}} onClick={()=>handleWhack()}>test whack</div>
         </>}
     </>
 }

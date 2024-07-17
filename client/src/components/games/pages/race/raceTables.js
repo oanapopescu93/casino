@@ -7,9 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
 import Carousel from '../../../carousel/carousel'
+import Header from '../../../partials/header'
 
 function RaceTables(props){
-    const {home, user, settings} = props
+    const {home, page, user, settings} = props
     const {lang} = settings
     
     let race_bets = useSelector(state => state.games.race.bets) 
@@ -77,18 +78,19 @@ function RaceTables(props){
         ]
     }
 
-    return <div className="game_container race_tables_container">
+    return <>
+        <Header template={"game"} details={page} lang={lang} />
         <Carousel 
             {...props}
             id="carousel_race"
             template="race" 
-            options={race_carousel_options}             
+            options={race_carousel_options}
             itemList={race_array}
         />
         <div className="game_start">
             <div className="tooltip">
                     <Button 
-                        type="button"  
+                        type="button"
                         className="mybutton round button_transparent shadow_convex"
                         onClick={() => getData()}
                     ><FontAwesomeIcon icon={faPlay} /></Button>
@@ -103,7 +105,7 @@ function RaceTables(props){
                 <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
             </div>
         </div>
-    </div>
+    </>
 }
 
 export default RaceTables

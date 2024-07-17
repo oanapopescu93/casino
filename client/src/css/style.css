@@ -388,10 +388,10 @@ textarea:focus, input:focus{
 .mybutton{
   text-align: center;
   font-size: 12px;
-  line-height: 12px;
+  line-height: 20px;
   padding: var(--padding_small) var(--padding);
   border-radius: var(--padding_big);
-  height: 35px;
+  height: 30px;
   width: 100%;
   cursor: pointer;
 }
@@ -446,9 +446,6 @@ textarea:focus, input:focus{
 }
 .button_action_group button:last-child{
   margin-bottom: 0px;
-}
-#cart_panel .mybutton svg{
-  margin-right: var(--padding_small);
 }
 .button_action_group .round{
   margin: 0px 5px!important;
@@ -1291,6 +1288,18 @@ textarea {
   margin-top: var(--padding_small);
 }
 
+/* GAME */
+.game_box{
+  padding: var(--padding_big) 40px;
+  transform: translate(0px, -50%);
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 /* GAME PANEL */
 .panel_container{
 	top:0px;
@@ -1546,6 +1555,8 @@ textarea {
 /* GAMES */
 .game_container{
   text-align: center;
+  position: relative;
+  min-height: 100vh;
 }
 .game_bets_container{
 	position: fixed;
@@ -1580,11 +1591,7 @@ textarea {
 }
 .game_bets_box{
 	overflow: auto;
-  max-height: 280px;
-}
-#keno_game_bets .game_bets_box{
-  overflow: visible;
-  max-height: none;
+  max-height: 320px;
 }
 #keno_game_bets p{
   margin-bottom: var(--padding);
@@ -2723,7 +2730,7 @@ textarea {
   border: solid 1px var(--color);
   border-radius: var(--radius);
   padding: var(--padding);
-  margin-bottom: var(--padding);
+  margin: var(--padding) 0px;
 }
 .cart_list_items{
   max-height: 310px;
@@ -2734,7 +2741,6 @@ textarea {
   margin-bottom: var(--padding);
 }
 #cart_panel .mybutton{
-  height: 35px;
   margin-bottom: var(--padding);
 }
 
@@ -2997,11 +3003,6 @@ textarea {
 }
 
 /* CRAPS */
-.craps_bets_container{
-  height: 220px;
-  overflow: auto;
-  margin-bottom: var(--padding_small);
-}
 .craps_subtitle{
   margin-bottom: var(--padding_big);
 }
@@ -3243,7 +3244,7 @@ textarea {
 .race_order_container{
   position: absolute;
   z-index: 1;
-  top: 0px;
+  top: 20px;
   left: 0px;
   right: 0px;
   width: 100%;
@@ -3310,6 +3311,7 @@ textarea {
 	border:solid 1px var(--color);
 	border-radius: var(--radius);
 	background-image: radial-gradient(transparent, black);
+  margin-bottom: var(--padding);
 }
 .race_game_container .button_action_group{
   margin-top: var(--padding);
@@ -3323,6 +3325,7 @@ textarea {
   border-radius: var(--radius);
   padding: 2px;
   text-align: center;
+  margin-bottom: var(--padding);
 }
 
 .keno_spot{
@@ -3632,7 +3635,22 @@ textarea {
   background-color: var(--transparent_2);
 }
 #whack_a_rabbit_timer{
-  margin-bottom: var(--padding);
+  display: inline-block;
+  background-color: var(--color);
+  color: var(--bg);
+  padding: var(--padding_small) var(--padding);
+  border-radius: var(--radius) var(--radius) 0px 0px;
+  font-size: 14px;
+  line-height: 14px;
+  width: 100%;
+  max-width: 100px;
+}
+.whack_a_rabbit_canvas{
+  position: relative;
+  z-index: 1;
+  top: 0px;
+  left: 0px;
+  right: 0px;
 }
 
 /* OTHER PAGES */
@@ -3923,9 +3941,6 @@ textarea {
 	}
 
   /* GAME */
-  .content_wrap{
-    padding: var(--padding) 45px;
-  }
   .game_loading_icon{
     width: 150px;
   }
@@ -3985,6 +4000,17 @@ textarea {
   }
 }
 @media (max-width:600px) {
+  /* RACE */
+  #race_order{
+    padding: var(--padding_small);
+    border-radius: 0px 0px var(--radius) var(--radius);
+  }
+  #race_order .rabbit_box_nr{
+    width: 20px;
+    height: 20px;
+    line-height: 10px;
+  }
+
   /* KENO */
   .keno_board{
     width: 100%;
@@ -4168,9 +4194,6 @@ textarea {
   .game_start{
     max-width: 70px;
   }
-  .craps_bets_container{
-    height: 180px;
-  }  
   #user_title h3{
     font-size: 20px;
   }

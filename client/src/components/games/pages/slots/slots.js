@@ -7,12 +7,13 @@ import GameBoard from '../other/gameBoard'
 import { changePopup } from '../../../../reducers/popup'
 import { decryptData } from '../../../../utils/crypto'
 import $ from 'jquery'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
+import Header from '../../../partials/header'
 
 var images_pos = []
-function slots_game(props, id){
+function slots_game(props){
     let self = this    
 	let items = props.items
     let reel = null
@@ -157,13 +158,13 @@ function slots_game(props, id){
 	}
 
     this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve){
 			let image = new Image()
 			image.id = item.id
 			image.src = item.src
 			image.setAttribute('coord_x', item.coord[0])
 			image.setAttribute('coord_y', item.coord[1])
-			image.addEventListener("load", function() {
+			image.addEventListener("load", function(){
 				resolve(image)
 			}, false)
 		})
@@ -185,7 +186,7 @@ function slots_game(props, id){
 
 		if(typeof assets !== "undefined"){
 			let length = assets.length
-			for (let i = 0 ; i < length ; i++) {			
+			for(let i = 0 ; i < length ; i++){			
 				let img = assets[i]
                 if(resize){
                     img = assets[i].img
@@ -234,7 +235,7 @@ function slots_game(props, id){
 			}
 	  	})()
 
-	  	function spin_slot() {
+	  	function spin_slot(){
 			self.update(self.state)
 			if(self.running){
 				window.requestAnimationFrame(spin_slot)
@@ -269,15 +270,15 @@ function slots_game(props, id){
 
     this.update = function(state){
 		now = new Date()
-		function check_slot() {
-			if ( now - self.lastUpdate > spin_time_reel ) {
+		function check_slot(){
+			if ( now - self.lastUpdate > spin_time_reel ){
 				return true // done
 			}
 			return false
 		}
-		switch (state) {
+		switch(state){
 			case 0: // all slots spinning
-				if (now - self.lastUpdate > spin_time) {
+				if (now - self.lastUpdate > spin_time){
 					self.state = 1
 					self.lastUpdate = now					
 				} 
@@ -287,7 +288,7 @@ function slots_game(props, id){
 				break
 			default: //stop slots one after the other
 				self.stopped[state-1] = check_slot()
-				if (self.stopped[state-1]) {
+				if (self.stopped[state-1]){
 					slot_speed[state-1] = 0
 					self.state++
 					self.lastUpdate = now
@@ -335,9 +336,9 @@ function slots_game(props, id){
 		return splitArray(array, 3) // there are always 3 veggies per column
 	}
 
-	function splitArray(array, chunkSize) {
+	function splitArray(array, chunkSize){
 		const result = []
-		for (let i = 0; i < array.length; i += chunkSize) {
+		for (let i = 0; i < array.length; i += chunkSize){
 			result.push(array.slice(i, i + chunkSize))
 		}
 		return result
@@ -354,18 +355,18 @@ function slots_game(props, id){
 		return win_results
 	}
 
-	function getImgIds(veggy_array, small_matrix) {
+	function getImgIds(veggy_array, small_matrix){
 		const imgIds = []	
-		for (const [j, i] of small_matrix) {
-			if (veggy_array[i] && veggy_array[i][j] && veggy_array[i][j].img && veggy_array[i][j].img.id){
+		for(const [j, i] of small_matrix){
+			if(veggy_array[i] && veggy_array[i][j] && veggy_array[i][j].img && veggy_array[i][j].img.id){
 				imgIds.push(veggy_array[i][j].img.id)
 			}
 		}	
 		return imgIds
 	}
 
-	function checkIdentical(array) {
-		if (array.length === 0) { //something went wrong
+	function checkIdentical(array){
+		if(array.length === 0){ //something went wrong
 			return false
 		}
 	
@@ -373,18 +374,18 @@ function slots_game(props, id){
 		
 		let array_small = array.filter(item => !trump_cards.includes(item)) //contains array minus the trump_card elements
 		const allIdentical = array_small.every(item => item === array_small[0]) //Check if array_small has all identical elements
-		if (allIdentical){ //If array_small has all identical elements, return true
+		if(allIdentical){ //If array_small has all identical elements, return true
 			return true
 		}
 	
 		// If array_small has more than one unique element, return false
-		if (new Set(array_small).size > 1) {
+		if(new Set(array_small).size > 1){
 			return false
 		}
 	
 		// Check specific cases with trump cards
-		for (let i = 0; i < array.length - 1; i++) {
-			if (array[i] !== array[i + 1] && !trump_cards.includes(array[i]) && !trump_cards.includes(array[i + 1])) {
+		for(let i = 0; i < array.length - 1; i++){
+			if(array[i] !== array[i + 1] && !trump_cards.includes(array[i]) && !trump_cards.includes(array[i + 1])){
 				return false
 			}
 		}	
@@ -457,7 +458,7 @@ let slots_data = null
 let slots_bets = 0
 let slots_status = false
 function Slots(props){
-	const {page, user, bets, settings, socket} = props
+	const {page, user, settings, socket} = props
     const {lang} = settings
     let dispatch = useDispatch()
 	const [width, setWidth] = useState(getWindowDimensions().width)
@@ -465,7 +466,7 @@ function Slots(props){
     let game_type = game.table_type
 	let money = user.money ? decryptData(user.money) : 0
     let lines = 5
-    switch(game_type) {
+    switch(game_type){
         case "reel_3":
             lines = 3
             break
@@ -498,7 +499,7 @@ function Slots(props){
     }
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
+        if (typeof window !== "undefined"){
             window.addEventListener("resize", handleResize)
             handleResize()
             return () => window.removeEventListener("resize", handleResize)
@@ -524,7 +525,7 @@ function Slots(props){
     }, [])
 
     useEffect(() => {
-		const handleSlotsRead = function(data) {
+		const handleSlotsRead = function(data){
             if(my_slots && data){
                 slots_data = data
                 my_slots.ready()
@@ -569,11 +570,12 @@ function Slots(props){
         dispatch(changePopup(payload))
 	}
 
-    return <div className="game_container">
+    return <div id="slots" className="game_box">
+		<Header template={"game"} details={page} lang={lang} />
         <div id="slot_machine" className={"slot_machine " + "slot_machine_" + lines}>
             <canvas id="slot_machine_lines" />
             {(() => {
-                switch(lines) {
+                switch(lines){
 					case 3:
 						return <>
 							<div className="box"><canvas className="slot_canvas" id='slot_canvas_1' /></div>

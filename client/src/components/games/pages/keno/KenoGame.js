@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import { translate } from '../../../../translations/translate'
 import Counter from '../../../partials/counter'
@@ -7,6 +7,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faGear, faTrashCan, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { getWindowDimensions } from '../../../../utils/utils'
+import Header from '../../../partials/header'
 
 function KenoBoard(props){
     const {kenoSpots, settings} = props
@@ -14,8 +15,13 @@ function KenoBoard(props){
     const [matrixBig, setMatrixBig] = useState([])
     const [matrixSmall, setMatrixSmall] = useState([])
     const [width, setWidth] = useState(getWindowDimensions().width)
+    let keno_board = useRef(null)
 
-    useEffect(() => {        
+    useEffect(() => {  
+        scrollToTop()
+    }, [])
+
+    useEffect(() => {  
         setMatrixBig(kenoSpots)
         let newArray = kenoSpots.map(subArray => {
             const firstHalf = subArray.slice(0, 5)
@@ -23,11 +29,18 @@ function KenoBoard(props){
             return [firstHalf, secondHalf]
         }).flat()
         setMatrixSmall(newArray)
+        scrollToTop()
     }, [kenoSpots])
 
-    function handleClickSpot(row, id){
+    function scrollToTop(){
+        if(keno_board && keno_board.current){			
+            keno_board.current.scrollTo({ top: 0 })
+		}
+    }
+
+    function handleClickSpot(id){
         if(typeof props.handleClickSpot === "function"){
-            props.handleClickSpot(row, id)
+            props.handleClickSpot(id)
         }
     }
 
@@ -43,8 +56,8 @@ function KenoBoard(props){
         }
     }, [])
 
-    return <div className="keno_board_container">
-        {kenoSpots && kenoSpots.length > 0 ? <div className="keno_board shadow_convex">
+    return <>        
+        {kenoSpots && kenoSpots.length > 0 ? <div ref={keno_board} className="keno_board shadow_convex">
             {width > 600 ? <>
                 {matrixBig.map((row, rowIndex) => (                
                     <div key={rowIndex} className="keno_row">
@@ -53,7 +66,7 @@ function KenoBoard(props){
                                 <div 
                                     id={"keno_spot_box_" + spot.id}
                                     className={`keno_spot_box ${spot.selected ? 'selected' : ''} ${spot.isWinner ? 'winner' : ''} ${spot.isLoser ? 'loser' : ''}`}
-                                    onClick={()=>handleClickSpot(rowIndex, spot.id)}
+                                    onClick={()=>handleClickSpot(spot.id)}
                                 >{spot.id}</div>
                             </div>
                         })}
@@ -67,7 +80,7 @@ function KenoBoard(props){
                                 <div 
                                     id={"keno_spot_box_" + spot.id}
                                     className={`keno_spot_box ${spot.selected ? 'selected' : ''} ${spot.isWinner ? 'winner' : ''} ${spot.isLoser ? 'loser' : ''}`}
-                                    onClick={()=>handleClickSpot(rowIndex, spot.id)}
+                                    onClick={()=>handleClickSpot(spot.id)}
                                 >{spot.id}</div>
                             </div>
                         })}
@@ -75,7 +88,7 @@ function KenoBoard(props){
                 ))}
             </>}            
         </div> : <p>{translate({lang: lang, info: "loading..."})}</p>}
-    </div>
+    </>
 }
 
 function KenoButtons(props){
@@ -237,7 +250,7 @@ function KenoSettings(props){
 }
 
 function KenoGame(props){
-    const {settings} = props
+    const {page, settings} = props
     const {lang} = settings
     const [open, setOpen] = useState(false)
 
@@ -250,34 +263,37 @@ function KenoGame(props){
         }
     }
 
-    return <Row className="keno_game">
-        <Col sm={12}>
-            <KenoBoard {...props} />
-        </Col>
-        <Col sm={12}>
-            <Row>
-                <Col lg={2} />
-                <Col lg={8}>
-                    <Row>
-                        <Col sm={6}>
-                            <KenoButtons {...props} openTable={()=>openTable()}/>
-                        </Col>
-                        <Col sm={6}>
-                            <div className="keno_prize_container button_action_group">
-                                <Button 
-                                    type="button"
-                                    className="mybutton button_transparent shadow_convex"
-                                    onClick={()=>handleShowPrizes()}                   
-                                >{translate({lang: lang, info: "keno_prizes"})}</Button>	
-                            </div>
-                        </Col>
-                    </Row>   
-                </Col>
-                <Col lg={2} />
-            </Row>   
-        </Col>
-        <KenoSettings {...props} open={open} closeTable={()=>closeTable()} />
-    </Row>
+    return <>
+        <Header template={"game"} details={page} lang={lang} />
+        <Row className="keno_game">
+            <Col sm={12}>
+                <KenoBoard {...props} />
+            </Col>
+            <Col sm={12}>
+                <Row>
+                    <Col lg={2} />
+                    <Col lg={8}>
+                        <Row>
+                            <Col sm={6}>
+                                <KenoButtons {...props} openTable={()=>openTable()}/>
+                            </Col>
+                            <Col sm={6}>
+                                <div className="keno_prize_container button_action_group">
+                                    <Button 
+                                        type="button"
+                                        className="mybutton button_transparent shadow_convex"
+                                        onClick={()=>handleShowPrizes()}                   
+                                    >{translate({lang: lang, info: "keno_prizes"})}</Button>	
+                                </div>
+                            </Col>
+                        </Row>  
+                    </Col>
+                    <Col lg={2} />
+                </Row>
+            </Col>
+            <KenoSettings {...props} open={open} closeTable={()=>closeTable()} />
+        </Row>
+    </>
 }
 
 export default KenoGame

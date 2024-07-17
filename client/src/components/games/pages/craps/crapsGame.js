@@ -8,6 +8,7 @@ import { decryptData } from '../../../../utils/crypto'
 import $ from "jquery"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlay, faCarrot, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import Header from '../../../partials/header'
 
 function Dice(props){	
 	let number = props.number
@@ -120,7 +121,7 @@ function Craps(props){
 	}, [crapsBoardText]) 
 
 	function roll(point){
-		return new Promise((resolve, reject)=>{
+		return new Promise((resolve)=>{
 			getNumbers(point).then((res)=>{
 				if(dice_array && dice_array.length>0 && res && res.length>0){
 					for(let i in res){
@@ -140,7 +141,7 @@ function Craps(props){
 	}
 
 	function getNumbers(point){
-		return new Promise((resolve, reject)=>{
+		return new Promise((resolve)=>{
 			let dice_number1 = getDiceNumber(dice_array[0])
 			let dice_number2 = getDiceNumber(dice_array[1])
 			let payload={uuid: props.user.uuid, room: room, how_many_dices: 2, point: point, before: [dice_number1, dice_number2]}
@@ -155,9 +156,9 @@ function Craps(props){
 
 	function animate(dice, roll){
 		if(dice && roll){			
-			for (let i = 1; i <= 6; i++) {
+			for(let i = 1; i <= 6; i++){
 				$(dice).removeClass('show_' + i)
-				if (roll === i) {
+				if(roll === i){
 					$(dice).addClass('show_' + i)
 				}
 			}
@@ -203,12 +204,11 @@ function Craps(props){
 		let sum
 		let myArray
 		let value
-		// let time = 2000
 		let firstTime = 100
 		let subsequentTime = 2000
 		setCrapsBoardText(null)
 		setCrapsBoardList([])
-		switch(game_type) {
+		switch(game_type){
 			case "any 7":
 					roll(point).then(()=>{ // one roll, sum must be 7
 						sum = dicesNumber[0] + dicesNumber[1]
@@ -224,7 +224,7 @@ function Craps(props){
 			case "hardway 2":
 			case "hardway 3":
 			case "hardway 4": // one roll, specific dices
-				switch(game_type) {
+				switch(game_type){
 					case "hardway 1":
 						value = 4
 						break
@@ -320,11 +320,11 @@ function Craps(props){
 		}
 
 		function gameLogic(type){
-			switch(type) {
+			switch(type){
 				case "place bet":
-					switch(state) {
+					switch(state){
 						case 1:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === value){
 									state = 2
@@ -342,14 +342,14 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum)
-								if (sum === value) {
+								if(sum === value){
 									state = 2
-								} else if (sum === 7) {
+								} else if(sum === 7){
 									state = 4
-								} else if (sum === 2 || sum === 3 || sum === 12) {
+								} else if(sum === 2 || sum === 3 || sum === 12){
 									state = 4
 								} else {
 									state = 3
@@ -364,13 +364,13 @@ function Craps(props){
 					}
 					break
 				case "6 big 8":
-					switch(state) {
+					switch(state){
 						case 1:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === 6|| sum === 8){
 									state = 2
-								} else if (sum === 7) {
+								} else if(sum === 7){
 									state = 4
 								} else {
 									state = 3
@@ -382,10 +382,10 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum)
-								if (sum === 7) {
+								if(sum === 7){
 									state = 4
 								}
 							})
@@ -398,9 +398,9 @@ function Craps(props){
 					}
 					break
 				case "come":
-					switch(state) {
+					switch(state){
 						case 1:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === 7|| sum === 11){
 									state = 2
@@ -416,14 +416,14 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
-								if (sum === point) {
+								if(sum === point){
 									state = 2
-								} else if (sum === 7) {
+								} else if(sum === 7){
 									state = 4
-								} else if (sum === 2 || sum === 3 || sum === 12) {
+								} else if(sum === 2 || sum === 3 || sum === 12){
 									state = 4
 								} else {
 									state = 3
@@ -438,9 +438,9 @@ function Craps(props){
 					}
 					break
 				case "don't come":
-					switch(state) {
+					switch(state){
 						case 1:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]	
 								if(sum === 2 || sum === 3){
 									state = 2
@@ -456,15 +456,15 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
-								if (sum !== point) {
+								if(sum !== point){
 									state = 2
-								} else if (sum === 12) {
+								} else if(sum === 12){
 									check_win_lose('push')
 									clearInterval(timer)
-								} else if (sum === 7|| sum === 11) {
+								} else if (sum === 7|| sum === 11){
 									state = 2
 								} else {
 									state = 3
@@ -479,9 +479,9 @@ function Craps(props){
 					}
 					break
 				case "don't pass line":
-					switch(state) {
+					switch(state){
 						case 1:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]		
 								if(sum === 2 || sum === 3){
 									//Natural
@@ -499,15 +499,15 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
-								if (sum !== point) {
+								if(sum !== point){
 									state = 2
-								} else if (sum === 12) {
+								} else if(sum === 12){
 									check_win_lose('push')
 									clearInterval(timer)
-								} else if (sum === 7|| sum === 11) {
+								} else if(sum === 7|| sum === 11){
 									//Craps
 									state = 2
 									show_on_board("Craps!!!", sum)
@@ -524,9 +524,9 @@ function Craps(props){
 					}
 					break
 				default:
-					switch(state) {
+					switch(state){
 						case 1:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === 7|| sum === 11){
 									//Natural
@@ -544,14 +544,14 @@ function Craps(props){
 							clearInterval(timer)
 							break
 						case 3:
-							roll(point).then((res)=>{
+							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
-								if (sum === point) {
+								if(sum === point){
 									state = 2
-								} else if (sum === 7) {
+								} else if(sum === 7){
 									state = 4
-								} else if (sum === 2 || sum === 3 || sum === 12) {
+								} else if(sum === 2 || sum === 3 || sum === 12){
 									//craps
 									state = 4
 									show_on_board("Craps!!!", sum)
@@ -628,6 +628,9 @@ function Craps(props){
 
 let craps_status = false
 function CrapsGame(props){
+	const {page, settings} = props
+    const {lang} = settings
+	
 	let dispatch = useDispatch()
 	const [start, setStart] = useState(false)
 	let money = props.user.money ? decryptData(props.user.money) : 0
@@ -703,7 +706,8 @@ function CrapsGame(props){
 		}
 	}
 
-    return <div className="game_container craps_container">
+    return <div id="craps_game" className="game_box">
+		<Header template={"game"} details={page} lang={lang} />
 		<Craps 
 			{...props} 
 			startGame={start} 

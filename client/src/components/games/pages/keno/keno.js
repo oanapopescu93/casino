@@ -41,9 +41,9 @@ function Keno(props){
     function createKenoMatrix(){
         const matrix = []
         let index = 1
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 8; i++){
             const row = []
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < 10; j++){
                 row.push({ id: index, selected: false })
                 index++
             }
@@ -52,29 +52,30 @@ function Keno(props){
         setKenoSpots(matrix)
     }
 
-    function handleClickSpot(row, id){
+    function handleClickSpot(id){
         let selectedCount = 0
+        const flattenedSpots = kenoSpots.flat() //// Flatten the kenoSpots array to simplify the search process
 
-        const updatedSpots = kenoSpots.map((r, rowIndex) => 
-            rowIndex === row ? 
-                r.map(spot => {
-                    if (spot.id === id) {
-                        selectedCount += !spot.selected ? 1 : -1;
-                        return { ...spot, selected: !spot.selected }
-                    }
-                    if (spot.selected) selectedCount++;
-                    return spot;
-                }) : 
-                r.map(spot => {
-                    if (spot.selected) selectedCount++;
-                    return spot;
-                })
-        )
+        const updatedSpots = flattenedSpots.map(spot => {
+            if(spot.id === id){
+                selectedCount += !spot.selected ? 1 : -1
+                return { ...spot, selected: !spot.selected }
+            }
+            if(spot.selected) selectedCount++
+            return spot
+        })
 
-        if (selectedCount > maxSelected) {
+        const restructuredSpots = []
+        let index = 0
+        for(let row of kenoSpots){
+            restructuredSpots.push(updatedSpots.slice(index, index + row.length))
+            index += row.length
+        }
+
+        if(selectedCount > maxSelected){
             showError("keno_too_many_selected")
         } else {
-            setKenoSpots(updatedSpots)
+            setKenoSpots(restructuredSpots)
         }
     }
 
@@ -110,12 +111,11 @@ function Keno(props){
         setKenoSpots(updatedSpots)
     }
 
-    function resetKenoSpots() {
+    function resetKenoSpots(){
         setKenoSpots(prevSpots =>
             prevSpots.map(row =>
                 row.map(spot => {
-                    const { isWinner, isLoser, ...rest } = spot
-                    return { ...rest, selected: false }
+                    return { ...spot, selected: false }
                 })
             )
         )
@@ -124,7 +124,7 @@ function Keno(props){
         setNoOfGames(1)
     }    
 
-    function getSelectedKenoIds() {
+    function getSelectedKenoIds(){
         return kenoSpots.flat().filter(spot => spot.selected).map(spot => spot.id)
     }
 
@@ -132,14 +132,14 @@ function Keno(props){
         let newValue = parseInt(e)
         switch(type){
             case "price_per_game":
-                if (calculateTotalCost(newValue, noOfGames) <= money) {
+                if(calculateTotalCost(newValue, noOfGames) <= money){
                     setPricePerGame(newValue)
                 } else {
                     showError("not_enough_money")
                 }
                 break
             case "no_of_games":
-                if (calculateTotalCost(pricePerGame, newValue) <= money) {
+                if(calculateTotalCost(pricePerGame, newValue) <= money){
                     setNoOfGames(newValue)
                 } else {
                     showError("not_enough_money")
@@ -200,7 +200,7 @@ function Keno(props){
         socket.emit('keno_send', keno_payload_server)
     }
 
-    function calculateTotalSpots(array) {
+    function calculateTotalSpots(array){
         let totalSpots = 0
         array.forEach(row => {
             totalSpots += row.length
@@ -247,9 +247,9 @@ function Keno(props){
         // Count selected spots and matched numbers
         kenoSpots.forEach((spotSet) => {
             spotSet.forEach((spot) => {
-                if (spot.selected) {
+                if(spot.selected){
                     selectedSpotsCount++
-                    if (spot.isWinner) {
+                    if(spot.isWinner){
                         matchedNumbers++
                     }
                 }
@@ -257,10 +257,10 @@ function Keno(props){
         })
 
         // Determine the prize based on selectedSpotsCount and matchedNumbers
-        if (selectedSpotsCount > 0 && selectedSpotsCount <= keno_prizes.length) {
+        if(selectedSpotsCount > 0 && selectedSpotsCount <= keno_prizes.length){
             let prizeList = keno_prizes[selectedSpotsCount - 1]
             prizeList.forEach((prize) => {
-                if (prize.numbers_matched === matchedNumbers) {
+                if(prize.numbers_matched === matchedNumbers){
                     totalWinnings = prize.win
                 }
             })
@@ -284,7 +284,7 @@ function Keno(props){
         }        
     }, [kenoSpotsResult])
 
-    function updateKenoSpots() {
+    function updateKenoSpots(){
         const updatedMatrix = kenoSpots.map(row =>
             row.map(spot => ({
                 ...spot,
@@ -295,32 +295,34 @@ function Keno(props){
         setKenoSpots(updatedMatrix)
     }
 
-    return <>
-        {start ? <KenoAnimation 
-            {...props} 
-            kenoSpots={kenoSpots}
-            kenoSpotsSelectedArray={kenoSpotsSelectedArray}
-            kenoSpotsResult={kenoSpotsResult}
-            pricePerGame={pricePerGame}
-            noOfGames={noOfGames}
-            animationFinished={(e)=>animationFinished(e)}
-        /> : <KenoGame 
-            {...props} 
-            start={start}
-            kenoSpots={kenoSpots}
-            kenoSpotsSelectedArray={kenoSpotsSelectedArray}
-            pricePerGame={pricePerGame}
-            noOfGames={noOfGames}
-            kenoSpotsResult={kenoSpotsResult}
-            handleClickSpot={(row, id)=>handleClickSpot(row, id)}
-            handleQuickPick={(e)=>handleQuickPick(e)}
-            updateKenoBets={(type, e)=>updateKenoBets(type, e)}
-            handleShowPrizes={()=>handleShowPrizes()}
-            resetKenoSpots={()=>resetKenoSpots()}
-            gameStart={()=>gameStart()}
-            handleBack={()=>handleBack()}
-        />}
-    </>
+    return <div className="game_container keno_board_container">
+        <div className="game_box">
+            {start ? <KenoAnimation 
+                {...props} 
+                kenoSpots={kenoSpots}
+                kenoSpotsSelectedArray={kenoSpotsSelectedArray}
+                kenoSpotsResult={kenoSpotsResult}
+                pricePerGame={pricePerGame}
+                noOfGames={noOfGames}
+                animationFinished={(e)=>animationFinished(e)}
+            /> : <KenoGame 
+                {...props} 
+                start={start}
+                kenoSpots={kenoSpots}
+                kenoSpotsSelectedArray={kenoSpotsSelectedArray}
+                pricePerGame={pricePerGame}
+                noOfGames={noOfGames}
+                kenoSpotsResult={kenoSpotsResult}
+                handleClickSpot={(id)=>handleClickSpot(id)}
+                handleQuickPick={(e)=>handleQuickPick(e)}
+                updateKenoBets={(type, e)=>updateKenoBets(type, e)}
+                handleShowPrizes={()=>handleShowPrizes()}
+                resetKenoSpots={()=>resetKenoSpots()}
+                gameStart={()=>gameStart()}
+                handleBack={()=>handleBack()}
+            />}
+        </div>
+    </div>
 }
 
 export default Keno

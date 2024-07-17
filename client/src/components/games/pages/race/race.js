@@ -48,14 +48,16 @@ function Race(props){
         setStartRace(false)
     }
 
-    return <>
-        {startRace ? <RaceGame 
-            {...props} 
-            bets={bets} 
-            resetBets={()=>resetBets()} 
-            handleStartGame={()=>handleStartGame()}
-        /> : <RaceTables {...props} getData={(x)=>getData(x)} />}
-    </>
+    return <div className="game_container race_tables_container">
+        <div className="game_box">
+            {startRace ? <RaceGame 
+                {...props} 
+                bets={bets} 
+                resetBets={()=>resetBets()} 
+                handleStartGame={()=>handleStartGame()}
+            /> : <RaceTables {...props} getData={(x)=>getData(x)} />}
+        </div>
+    </div>
 }
 
 export default Race

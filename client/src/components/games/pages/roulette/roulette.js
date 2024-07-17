@@ -24,7 +24,7 @@ function Roulette(props){
         }
     }
 
-    return <div className='game_container'>
+    return <div id="roulette" className='game_container'>
         <RouletteGame {...props} bets={bets} openTable={()=>openTable()} results={(e)=>results(e)} />
         <GameBets {...props} open={open} getData={(e)=>getData(e)} closeTable={()=>closeTable()} update={update} />
     </div>

@@ -79,11 +79,11 @@ function whack_game(props){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape
 				canvas.width = canvas_hammer.width = 400
-				canvas.height = canvas_hammer.height = 300
+				canvas.height = canvas_hammer.height = 280
 			} else {
 				//small portrait
 				canvas.width = canvas_hammer.width = 280
-				canvas.height = canvas_hammer.height = 300
+				canvas.height = canvas_hammer.height = 280
 			}
             target_size = [70, 70]
 		} else {
@@ -93,8 +93,7 @@ function whack_game(props){
             target_size = [100, 100]
 		}
         if(props.whack_a_rabbit_container_ref && props.whack_a_rabbit_container_ref.current){
-            let height = canvas.height + 10
-            props.whack_a_rabbit_container_ref.current.style.height = height + 'px'
+            props.whack_a_rabbit_container_ref.current.style.height = canvas.height + 'px'
         }
 	}
     this.getImage = function(){
@@ -365,12 +364,16 @@ function WhackARabbit(props){
         counter()
     }, [])
 
-    return <>
-        <p id="whack_a_rabbit_timer">00:{time}</p>
-        <div className="whack_a_rabbit_container" ref={whack_a_rabbit_container_ref}>
-            <canvas id="whack_canvas" className="shadow_concav" />
-            <canvas id="whack_canvas_hammer" />
+    return <div id="whack_a_rabbit" className='game_container whack_a_rabbit_container'>
+        <div className='game_box'>
+            <div id="whack_a_rabbit_timer">
+                <p>00:{time}</p>
+            </div>
+            <div className="whack_a_rabbit_canvas" ref={whack_a_rabbit_container_ref}>
+                <canvas id="whack_canvas" className="shadow_concav" />
+                <canvas id="whack_canvas_hammer" />
+            </div>
         </div>
-    </>
+    </div>
 }
 export default WhackARabbit
