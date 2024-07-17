@@ -582,6 +582,8 @@ textarea {
   height: 140px;
 }
 .casino_games_title{
+  position: relative;
+  z-index: 1;
   background-color: transparent;
   padding: var(--padding);
   margin-bottom: var(--padding);
@@ -592,6 +594,12 @@ textarea {
 }
 .casino_games_title:hover{
     background-color: var(--transparent_color);
+}
+.casino_games_title .casino_games_title_arrow{
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: 20px;
 }
 
 /* dropdown */
@@ -607,14 +615,6 @@ textarea {
 }
 .dropdown-toggle::after{
   display: none;
-}
-.salon_games .dropdown{
-  z-index: 9999;
-}
-.salon_games .dropdown .dropdown-toggle,
-.page_content.how_to_play .dropdown .dropdown-toggle{
-  width: 100%;
-  border-radius: var(--radius_big);
 }
 .dropdown .dropdown-menu{
   background-color: var(--bg);
@@ -638,6 +638,17 @@ textarea {
 .dropdown-item:focus, .dropdown-item:active, .dropdown-item:hover{
   background-color: var(--color);
   color: var(--bg);
+}
+.salon_games_dropdown{
+  padding: 0px var(--padding);
+}
+.salon_games .dropdown{
+  z-index: 9999;
+}
+.salon_games .dropdown .dropdown-toggle{
+  width: 100%;
+  border-radius: var(--radius_big);
+  background-color: var(--transparent_2);
 }
 .language .dropdown .dropdown-menu{
   min-width: auto;
@@ -3940,7 +3951,7 @@ textarea {
 		width:100px;
 	}
 
-  /* GAME */
+  /* GAMES */
   .game_loading_icon{
     width: 150px;
   }

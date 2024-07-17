@@ -97,7 +97,7 @@ function whack_game(props){
         }
 	}
     this.getImage = function(){
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve){
             let promises = []
             for(let i in items){				
                 promises.push(self.preaload_images(items[i]))
@@ -108,7 +108,7 @@ function whack_game(props){
 		})
 	}
     this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve){
 			let image = new Image()
 			image.id = item.id
 			image.src = item.src
@@ -259,7 +259,7 @@ function whack_game(props){
 		})
     }
     function hammerUp(obj){
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve){
             let hammer_x = obj.x - target_size[0]/2
             let hammer_y = obj.y - target_size[1]/2
             ctx_hammer.drawImage(self.images[4], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
@@ -269,7 +269,7 @@ function whack_game(props){
         })
     }    
     function hammerDown(obj){
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve){
             let hammer_x = obj.x - target_size[0]/2
             let hammer_y = obj.y - target_size[1]/2
             ctx_hammer.drawImage(self.images[5], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])

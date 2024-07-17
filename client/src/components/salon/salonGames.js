@@ -1,25 +1,30 @@
 import React, {useEffect, useState } from 'react'
-import { Row, Col } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { getWindowDimensions } from '../../utils/utils'
-import Carousel from '../carousel/carousel'
-import Dropdown from 'react-bootstrap/Dropdown'
-import DropdownButton from 'react-bootstrap/DropdownButton'
 import { changeGame, changeGamePage } from '../../reducers/page'
 import { checkWinterMonths } from '../../utils/special_occasions'
 import { translate } from '../../translations/translate'
+import { Row, Col } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import Carousel from '../carousel/carousel'
+import Dropdown from 'react-bootstrap/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
 
 function SalonGames(props){
     const {home, settings} = props
     const {products} = home
     const {lang} = settings
+
     const [width, setWidth] = useState(getWindowDimensions().width)
     const [casinoGames, setCasinoGames] = useState(null)
     const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
     const [index, setIndex] = useState(0)
-    const [titleDropdown, setTitleDropdown] = useState("")
-    let dispatch = useDispatch()
+    const [titleDropdown, setTitleDropdown] = useState("")    
     const [showWinter, setShowWinter] = useState(false)
+
+    let dispatch = useDispatch()
+    
     const salon_carousel_options = {
         infinite: true,
         speed: 500,
@@ -126,11 +131,13 @@ function SalonGames(props){
         <Row>
             <Col sm={2} />
             <Col sm={8}>
-                {width < 960 ? <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "snow" : ""} onSelect={handleSelect}>
-                    {casinoGamesTitle.map((t, i)=>{
-                        return <Dropdown.Item key={i} eventKey={translate({lang: lang, info: t})}>{translate({lang: lang, info: t})}</Dropdown.Item>
-                    })}
-                </DropdownButton> : null}
+                {width < 960 ? <div className="salon_games_dropdown">
+                    <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "shadow_convex snow" : "shadow_convex"} onSelect={handleSelect}>
+                        {casinoGamesTitle.map((t, i)=>{
+                            return <Dropdown.Item key={i} eventKey={translate({lang: lang, info: t})}>{translate({lang: lang, info: t})}</Dropdown.Item>
+                        })}
+                    </DropdownButton>
+                </div> : null}
             </Col>
             <Col sm={2} />
         </Row>
@@ -144,6 +151,7 @@ function SalonGames(props){
                         {width >= 960 ? <div className={showWinter ? "casino_games_title_container snow" : "casino_games_title_container"}>
                             <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
                                 <h4>{translate({lang: lang, info: t})}</h4>
+                                <div className="casino_games_title_arrow"><FontAwesomeIcon icon={index !== i ? faChevronDown : faChevronUp} /></div>
                             </div>
                         </div> : null}
                         <div box={t} className={"casino_games_table_container "+box}>
