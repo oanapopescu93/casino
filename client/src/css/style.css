@@ -2266,6 +2266,7 @@ textarea {
   cursor: pointer;
 }
 .dashboard_right_buttons .dropdown{
+  background-color: var(--transparent_2);
   margin-bottom: var(--padding);  
 }
 .dashboard_right_buttons .dropdown .dropdown-toggle{
