@@ -10,13 +10,17 @@ function CryptoDonation(props){
             <ul>
                 {cryptoDonation
                     .filter(item => item.text !== "")
-                    .map((item, i) => (
-                        <li key={i} className="donation_link donation_link_crypto">
-                            {item.link ? <>
-                                <a href={item.link}><strong>{item.title}: </strong> <span>{item.text}</span></a>
-                            </> : <><strong>{item.title}: </strong> <span>{item.text}</span></>}
-                        </li>
-                    ))
+                    .map((item, i) => {
+                        if(item.text !== "-"){
+                            return <li key={i} className="donation_link donation_link_crypto">
+                                {item.link ? <>
+                                    <a href={item.link}><strong>{item.title}: </strong> <span>{item.text}</span></a>
+                                </> : <><strong>{item.title}: </strong> <span>{item.text}</span></>}
+                            </li>
+                        } else {
+                            return
+                        }                        
+                    })
                 }
             </ul>
         </> : null}

@@ -1217,7 +1217,7 @@ textarea {
   height: 50px;
 }
 .footer_list, footer{
-  padding: var(--padding_small) var(--padding);
+  padding: var(--padding_small) var(--padding) 0px var(--padding);
 }
 .footer_list li{
   display: inline-block;
@@ -1785,7 +1785,7 @@ textarea {
   background: var(--transparent_color);
 }
 .donation_box_content{
-  height: 220px;
+  height: 140px;
 }
 .donation_box_content h2{
   margin-bottom: var(--padding);
@@ -1808,6 +1808,8 @@ textarea {
   vertical-align: top;
   width: 100%;
   height: 25px;
+  font-size: 12px;
+  line-height: 23px
 }
 
 /* CAREER */
@@ -2126,6 +2128,7 @@ textarea {
 .contact_dropdown{
   width: 100%;
   max-width: 150px;
+  border-radius: var(--radius);
 }
 .contact_dropdown .dropdown .dropdown-toggle {
   font-size: 12px;
@@ -3701,14 +3704,14 @@ textarea {
 	display: list-item;
   list-style: circle;
 }
-#about_how_to_play{
+#about_how_to_play, #about_contact{
   margin: var(--padding);
   cursor: pointer;
 }
-#about_how_to_play svg{
+#about_how_to_play svg, #about_contact svg{
   margin-right: var(--padding_small);
 }
-#about_how_to_play:hover{
+#about_how_to_play:hover, #about_contact:hover{
   text-decoration: underline;
 }
 

@@ -24,8 +24,8 @@ function ContactList(props){
     }
 
     return <div className="contact_list">
-        <div className="contact_dropdown">
-            <DropdownButton title={titleDropdown} id="language_button" onSelect={(e)=>handleDropdown(e)}>                
+        <div className="contact_dropdown shadow_convex">
+            <DropdownButton title={titleDropdown} id="contact_button" onSelect={(e)=>handleDropdown(e)}>                
                 {list.map((item, i)=>{
                     let country = item[lang] ? item[lang].country : item["ENG"].country
                     return <div key={i} className='contact_list_item_container'>

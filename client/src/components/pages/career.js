@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../reducers/page'
@@ -7,8 +7,8 @@ import { sortList } from '../../utils/utils'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Header from '../partials/header'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 function CareerList(props){
     const {lang} = props
@@ -130,6 +130,12 @@ function Career(props){
     const {lang} = settings
     let dispatch = useDispatch()
 
+    function handleContact(){
+        dispatch(changePage('Contact'))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
+    }
+
     function handleBack(){
         dispatch(changePage('Salon'))
         dispatch(changeGame(null))
@@ -146,6 +152,7 @@ function Career(props){
                     } else {
                         return <div className="career_container">
                             <p className="text_center">{translate({lang: lang, info: "no_career"})}</p>
+                            <p className="text_center" id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
                         </div>
                     }
                 } else {
@@ -153,12 +160,14 @@ function Career(props){
                 }
             })()}
         </div>
-        <div className="text_center">
-            <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                <FontAwesomeIcon icon={faArrowRotateLeft} />
-            </Button>
+        <div className="tooltip">
+            <Button 
+                type="button"
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>handleBack()}
+            ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
         </div>
-        <br/><br/>
     </div>
 }
 export default Career

@@ -56,12 +56,14 @@ function PolicyPrivacy(props){
                 })()}
             </div>
         </div>
-        <div className="text_center">
-            <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                <FontAwesomeIcon icon={faArrowRotateLeft} />
-            </Button>
+        <div className="tooltip">
+            <Button 
+                type="button"
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>handleBack()}
+            ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
         </div>
-        <br/><br/>
     </div>
 }
 export default PolicyPrivacy

@@ -20,7 +20,7 @@ function AboutEng(props){
         <Col lg={8}>
             <p>Welcome to {casino_name}, a labor of love brought to life by a group of casino enthusiasts who are dedicated to sharing their passion for gaming with the world. While we're not a commercial casino (at least, not yet), our mission is to provide a unique and enjoyable gaming experience for our fellow gaming enthusiasts.</p>
             <h3>Our Story:</h3>
-            <p>{casino_name} began as a pet project, born from our deep-seated love for all things casino. As avid players ourselves, we've always dreamed of creating a space where people can enjoy the thrill of casino gaming without the pressure of commercial interests. This project is a testament to our commitment to the world of gaming and our desire to build something truly special.</p>
+            <p>{casino_name} began as a pet project, born from our deep-seated love for all things casino. As avid players ourselves, we've always dreamt of creating a space where people can enjoy the thrill of casino gaming without the pressure of commercial interests. This project is a testament to our commitment to the world of gaming and our desire to build something truly special.</p>
             <h3>Why {casino_name}?</h3>
             <ul>
                 <li><b>Passion-Driven Games: </b>Our games are carefully curated and reflect our passion for quality gameplay. From classic table games to unique, one-of-a-kind experiences, we strive to offer something for every type of gamer.</li>

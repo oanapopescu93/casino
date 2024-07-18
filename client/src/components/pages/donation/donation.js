@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
@@ -8,17 +8,17 @@ import Header from '../../partials/header'
 import BankDonation from './bank'
 import CryptoDonation from './crypto'
 import PaypalDonation from './paypal'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 function Donation(props){
     const {list, settings} = props
     const {lang} = settings   
     
-    const [visible, setVisible] = useState('crypto')
+    const [visible, setVisible] = useState('bank')
     const [index, setIndex] = useState(0)
 
-    let donation_type = ["crypto", "paypal", "bank"]
+    let donation_type = ["bank", "paypal", "crypto"]
     let dispatch = useDispatch()
 
     function handleBack(){
@@ -83,10 +83,13 @@ function Donation(props){
                 }
             })()} 
         </div>
-        <div className="text_center">
-            <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
-                <FontAwesomeIcon icon={faArrowRotateLeft} />
-            </Button>
+        <div className="tooltip">
+            <Button 
+                type="button"
+                className="mybutton round button_transparent shadow_convex"
+                onClick={()=>handleBack}
+            ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
         </div>
     </div>
 }
