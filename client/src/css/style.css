@@ -272,6 +272,8 @@ textarea:focus, input:focus{
   height: 25px;
   width: 100%;
   max-width: 150px;
+  font-size: 14px;
+  line-height: 14px;
 }
 .sign_container form{
   margin-top: var(--padding);

@@ -111,18 +111,19 @@ function Keno(props){
         setKenoSpots(updatedSpots)
     }
 
-    function resetKenoSpots(){
+    function resetKenoSpots() {
         setKenoSpots(prevSpots =>
             prevSpots.map(row =>
                 row.map(spot => {
-                    return { ...spot, selected: false }
+                    const { isWinner, isLoser, ...rest } = spot
+                    return { ...rest, selected: false }
                 })
             )
         )
         setMaxSelected(10)
         setPricePerGame(1)
         setNoOfGames(1)
-    }    
+    }     
 
     function getSelectedKenoIds(){
         return kenoSpots.flat().filter(spot => spot.selected).map(spot => spot.id)

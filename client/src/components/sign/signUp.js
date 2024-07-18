@@ -31,6 +31,18 @@ function SignUp(props) {
           }
     }
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter') {
+                handleSubmit(e)
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [user, pass])
+
     function handleSubmit(e){
         e.preventDefault()
         if(typeof props.signSubmit === "function"){
