@@ -58,7 +58,8 @@ function SignUp(props) {
                 template: "isMinor",
                 title: "isMinor_title",
                 data: translate({lang: lang, info: "isMinor_text"}),
-                sticky: true
+                sticky: true,
+                size: "sm",
             }
             dispatch(changePopup(payload))
         }

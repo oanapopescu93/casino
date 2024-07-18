@@ -665,7 +665,8 @@ function CrapsGame(props){
 				open: true,
 				template: "error",
 				title: "error",
-				data: translate({lang: props.settings.lang, info: "no_bets"})
+				data: translate({lang: props.settings.lang, info: "no_bets"}),
+				size: "sm",
 			}
 			dispatch(changePopup(payload))
 		}
@@ -700,7 +701,8 @@ function CrapsGame(props){
 				open: true,
 				template: "error",
 				title: "error",
-				data: translate({lang: props.settings.lang, info: "no_money"})
+				data: translate({lang: props.settings.lang, info: "no_money"}),
+				size: "sm",
 			}
 			dispatch(changePopup(payload))
 		}

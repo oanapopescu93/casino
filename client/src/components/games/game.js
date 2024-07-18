@@ -39,7 +39,8 @@ function Game(props){
                 open: true,
                 template: "game_results",
                 title: "results",
-                data: res
+                data: res,
+                size: "sm",
             }
             dispatch(changePopup(payload))
             dispatch(changeMoney(res.money))

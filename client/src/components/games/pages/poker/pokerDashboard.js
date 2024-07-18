@@ -83,7 +83,8 @@ function PokerDashboard(props){
                             open: true,
                             template: "error",
                             title: "error",
-                            data: translate({lang: lang, info: data.error})
+                            data: translate({lang: lang, info: data.error}),
+                            size: "sm",
                         }
                         dispatch(changePopup(payload))
                     } else {
@@ -136,7 +137,8 @@ function PokerDashboard(props){
                             open: true,
                             template: "error",
                             title: "error",
-                            data: translate({lang: lang, info: "no_bets"})
+                            data: translate({lang: lang, info: "no_bets"}),
+                            size: "sm",
                         }
                         dispatch(changePopup(payload))
                     } else {
@@ -178,9 +180,9 @@ function PokerDashboard(props){
                     <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
                 </div>
             </div> : null}
-            {startGame && !showdown ? <GameBoard 
-                template={template}
+            {startGame && !showdown ? <GameBoard                 
                 {...props}
+                template={template + "_board"}
                 action={action}
                 choice={(e)=>choice(e)} 
                 updateBets={(e)=>updateBets(e)}

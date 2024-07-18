@@ -548,7 +548,8 @@ function Slots(props){
                     open: true,
                     template: "error",
                     title: translate({lang: lang, info: "error"}),
-                    data: translate({lang: lang, info: "no_bets"})
+                    data: translate({lang: lang, info: "no_bets"}),
+					size: "sm",
                 }
                 dispatch(changePopup(payload))
             }
@@ -598,7 +599,7 @@ function Slots(props){
         	</div> : null}			
         </div>		
         <div className="slot_machine_board">
-            <GameBoard template="slots" {...props} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
+            <GameBoard template="slots_board" {...props} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
         </div>
 		{width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
             {translate({lang: lang, info: "prizes"})}

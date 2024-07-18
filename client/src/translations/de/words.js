@@ -301,13 +301,24 @@ var word_bank = {
     slots_prizes: "Slot-Preise",
 
     // poker
-    total_pot: "Total Pot",
+    total_pot: "Gesamtpot",
     check: "Check",
-    fold: "Fold",
+    check_explanation: "Kein Einsatz, in der Runde bleiben.",
+    fold: "Aussteigen",
+    fold_explanation: "Gib deine Hand jetzt auf.",
     call: "Call",
-    raise: "Raise",
+    call_explanation: "Den aktuellen Höchsteinsatz mitgehen.",
+    raise: "Erhöhen",
+    raise_explanation: "Erhöhe den aktuellen Einsatz.",
+    showdown: "Showdown",
+    showdown_explanation: "Hände zeigen, um den Gewinner zu bestimmen.",
+    draw: "Tauschen",
+    draw_explanation: "Karten gegen neue austauschen.",
+    cancel: "Abbrechen",
+    cancel_explanation: "Du möchtest keine Karten tauschen.",
+    bet_explanation: "Platziere den anfänglichen Wetteinsatz.",
     invalid_raise: "Ungültige Erhöhung",
-    not_enough_money: "Sie haben nicht genug Geld",
+    not_enough_money: "Nicht genug Geld",
 
     // results
     results: "Ergebnisse",

@@ -3,7 +3,8 @@ import { translate } from '../../../translations/translate'
 import { Row, Col, Button } from 'react-bootstrap'
 import { checkoutData, convertCurrency, showCardNumber } from '../../../utils/utils'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import {faStore, faUser, faCartShopping, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import Spinner from '../spinner'
 
 function PaymentDetails(props){
     const {template, paymentDetails, amount, settings, exchange_rates, paymentSending} = props 
@@ -110,7 +111,7 @@ function PaymentDetails(props){
                                 className="mybutton button_fullcolor shadow_convex"
                                 onClick={()=>sendPayment()}
                             >{paymentSending ? <>
-                                Loading...
+                                <Spinner size="small" color="black"/>
                             </> : <>
                                 <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "pay"})}
                             </>}</Button>
@@ -138,6 +139,16 @@ function PaymentDetails(props){
                 </Col>
             </Row>
         </> : <p>{translate({lang: lang, info: "error"})}</p>} 
+        <div className="page_exit">
+			<div className="tooltip">
+				<Button 
+					type="button"
+					className="mybutton round button_transparent shadow_convex"
+					onClick={()=>handleBack()}
+				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
+				<span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+			</div>
+		</div>         
     </>
 }
 export default PaymentDetails

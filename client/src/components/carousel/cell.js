@@ -121,7 +121,7 @@ function Cell(props) {
                                 <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
                                 <p>{translate({lang: lang, info: "value"})}: {data.price} <FontAwesomeIcon icon={faCarrot} /></p>
                                 <p>{translate({lang: lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
-                                <Counter update={(e)=>updateQtyMarket(e)} />
+                                <Counter min={1} update={(e)=>updateQtyMarket(e)} />
                             </div>
                             <div className="cell_button">
                                 <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>

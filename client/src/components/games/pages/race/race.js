@@ -33,7 +33,8 @@ function Race(props){
                 open: true,
                 template: "error",
                 title: "error",
-                data: translate({lang: lang, info: "no_bets"})
+                data: translate({lang: lang, info: "no_bets"}),
+                size: "sm",
             }
             dispatch(changePopup(payload))
         }

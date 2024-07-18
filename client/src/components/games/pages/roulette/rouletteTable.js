@@ -322,7 +322,8 @@ function roulette_bets(props){
 						open: true,
 						template: "error",
 						title: "error",
-						data: translate({lang: props.settings.lang, info: "no_money"})
+						data: translate({lang: props.settings.lang, info: "no_money"}),
+						size: "sm",
 					}
 					props.dispatch(changePopup(payload))
 				} else {

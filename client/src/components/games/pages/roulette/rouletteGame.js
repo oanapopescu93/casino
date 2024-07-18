@@ -639,7 +639,8 @@ function RouletteGame(props){
 					open: true,
 					template: "error",
 					title: "error",
-					data: translate({lang: lang, info: "no_money"})
+					data: translate({lang: lang, info: "no_money"}),
+					size: "sm",
 				}
 				dispatch(changePopup(payload))
             } 
@@ -654,7 +655,8 @@ function RouletteGame(props){
 					open: true,
 					template: "error",
 					title: "error",
-					data: translate({lang: lang, info: "no_money"})
+					data: translate({lang: lang, info: "no_money"}),
+					size: "sm",
 				}
 				dispatch(changePopup(payload))
 			} else {
@@ -670,7 +672,8 @@ function RouletteGame(props){
 				open: true,
 				template: "error",
 				title: translate({lang: lang, info: "error"}),
-				data: translate({lang: lang, info: "no_bets"})
+				data: translate({lang: lang, info: "no_bets"}),
+				size: "sm",
 			}
 			dispatch(changePopup(payload))
 		}

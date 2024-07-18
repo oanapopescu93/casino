@@ -302,13 +302,23 @@ var word_bank = {
 
     // poker
     total_pot: "总奖池",
-    check: "过牌",
+    check: "看牌",
+    check_explanation: "不下注，继续游戏。",
     fold: "弃牌",
+    fold_explanation: "放弃当前手牌。",
     call: "跟注",
+    call_explanation: "跟上当前最高的赌注。",
     raise: "加注",
+    raise_explanation: "增加当前的赌注。",
     showdown: "摊牌",
-    invalid_raise: "加注无效",
-    not_enough_money: "资金不足",
+    showdown_explanation: "展示牌来确定胜者。",
+    draw: "换牌",
+    draw_explanation: "用新牌换掉现有的牌。",
+    cancel: "取消",
+    cancel_explanation: "取消之前的操作。",
+    bet_explanation: "下注初始金额。",
+    invalid_raise: "无效的加注",
+    not_enough_money: "余额不足",
 
     // results
     results: "结果",

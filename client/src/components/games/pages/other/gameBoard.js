@@ -3,8 +3,8 @@ import { translate } from '../../../../translations/translate'
 import Counter from '../../../partials/counter'
 import { decryptData } from '../../../../utils/crypto'
 import { Button, Row, Col } from 'react-bootstrap'
-import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faPlay} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faPlus, faPause, faAnglesUp, faXmark } from '@fortawesome/free-solid-svg-icons'
 import PokerBoard from './pokerBoard'
 
 function GameBoard(props){
@@ -26,35 +26,59 @@ function GameBoard(props){
     return <div id={template} className="gameboard shadow_convex">
         {(() => {
             switch(template) {
-                case "blackjack":
+                case "blackjack_board":
                     return <Row>
                         {startGame ? <>
                             <Col xs={3}>
-                                <div  className="button_box">
-                                    <Button type="button" onClick={()=>handleClick('hit')} className="mybutton button_fullcolor shadow_convex">
-                                        {translate({lang: lang, info: "hit"})}
+                                <div className="tooltip">
+                                    <Button 
+                                        type="button"
+                                        className="mybutton button_fullcolor shadow_convex"
+                                        onClick={()=>handleClick('hit')}
+                                    >
+                                        <FontAwesomeIcon icon={faPlus} />
+                                        <span>{translate({lang: lang, info: "hit"})}</span>
                                     </Button>
+                                    <span className="tooltiptext">{translate({lang: lang, info: "hit_explanation"})}</span>
                                 </div>
                             </Col>
                             <Col xs={3}>
-                                <div  className="button_box">
-                                    <Button type="button" onClick={()=>handleClick('stand')} className="mybutton button_fullcolor shadow_convex">
-                                        {translate({lang: lang, info: "stand"})}
+                                <div className="tooltip">
+                                    <Button 
+                                        type="button"
+                                        className="mybutton button_fullcolor shadow_convex"
+                                        onClick={()=>handleClick('stand')}
+                                    >
+                                        <FontAwesomeIcon icon={faPause} />
+                                        <span>{translate({lang: lang, info: "stand"})}</span>
                                     </Button>
+                                    <span className="tooltiptext">{translate({lang: lang, info: "stand_explanation"})}</span>
                                 </div>
                             </Col>
                             <Col xs={3}>
-                                <div  className="button_box">
-                                    <Button type="button" onClick={()=>handleClick('double_down')} className="mybutton button_fullcolor shadow_convex">
-                                        {translate({lang: lang, info: "double_down"})}
+                                <div className="tooltip">
+                                    <Button 
+                                        type="button"
+                                        className="mybutton button_fullcolor shadow_convex"
+                                        onClick={()=>handleClick('double_down')}
+                                    >
+                                        <FontAwesomeIcon icon={faAnglesUp} />
+                                        <span>{translate({lang: lang, info: "double_down"})}</span>
                                     </Button>
+                                    <span className="tooltiptext">{translate({lang: lang, info: "double_down_explanation"})}</span>
                                 </div>
                             </Col>
                             <Col xs={3}>
-                                <div  className="button_box">
-                                    <Button type="button" onClick={()=>handleClick('surrender')} className="mybutton button_fullcolor shadow_convex">
-                                        {translate({lang: lang, info: "surrender"})}
+                                <div className="tooltip">
+                                    <Button 
+                                        type="button"
+                                        className="mybutton button_fullcolor shadow_convex"
+                                        onClick={()=>handleClick('surrender')}
+                                    >
+                                        <FontAwesomeIcon icon={faXmark} />
+                                        <span>{translate({lang: lang, info: "surrender"})}</span>
                                     </Button>
+                                    <span className="tooltiptext">{translate({lang: lang, info: "surrender_explanation"})}</span>
                                 </div>
                             </Col>
                         </> : <>
@@ -76,7 +100,7 @@ function GameBoard(props){
                             </Col>
                         </>}
                     </Row>
-                case "slots":
+                case "slots_board":
                     return <Row>
                         <Col xs={8}>
                                 <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)} />
@@ -94,8 +118,8 @@ function GameBoard(props){
                             </div>
                         </Col>
                     </Row>
-                case "poker_texas_holdem":
-                case "poker_5_card_draw":
+                case "poker_texas_holdem_board":
+                case "poker_5_card_draw_board":
                     return <PokerBoard {...props} handleClick={(e)=>handleClick(e)} updateQtyMarket={(e)=>updateQtyMarket(e)} />
                 default: 
                     return null

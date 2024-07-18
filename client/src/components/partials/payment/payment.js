@@ -177,7 +177,7 @@ function Payment(props){
         setAmount(x * price_per_carrot)
     }
 
-    function handleBack(choice){
+    function handleBack(choice=null){
         dispatch(changePage('Salon'))
         dispatch(changeGame(null))
         dispatch(changeGamePage(choice))

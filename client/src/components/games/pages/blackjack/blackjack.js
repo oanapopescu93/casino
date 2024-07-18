@@ -454,7 +454,8 @@ function Blackjack(props){
 						open: true,
 						template: "error",
 						title: "error",
-						data: translate({lang: lang, info: data.action})
+						data: translate({lang: lang, info: data.action}),
+						size: "sm",
 					}
 					dispatch(changePopup(payload))
 				}
@@ -483,7 +484,8 @@ function Blackjack(props){
 							open: true,
 							template: "error",
 							title: "error",
-							data: translate({lang: lang, info: "no_bets"})
+							data: translate({lang: lang, info: "no_bets"}),
+							size: "sm",
 						}
 						dispatch(changePopup(payload))
 					} else {
@@ -554,7 +556,7 @@ function Blackjack(props){
     return <div id="blackjack" className="game_box">
 		<Header template={"game"} details={page} lang={lang} />
         <canvas id="blackjack_canvas" />
-        <GameBoard template="blackjack" {...props} startGame={startGame} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
+        <GameBoard template="blackjack_board" {...props} startGame={startGame} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
 		<div className="page_exit">
 			<div className="tooltip">
 				<Button 

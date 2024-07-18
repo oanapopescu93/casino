@@ -116,6 +116,7 @@ function Sign(props) {
                         open: true,
                         title: null,
                         template: "whack_a_rabbit",
+                        size: "lg",
                     }
                     dispatch(changePopup(payload))
                 }
@@ -159,7 +160,8 @@ function Sign(props) {
             open: true,
             template: template,
             title: "error",
-            data: translate({lang: lang, error})
+            data: translate({lang: lang, error}),
+            size: "sm",
         }                
         dispatch(changePopup(payload))
     }
