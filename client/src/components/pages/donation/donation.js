@@ -87,7 +87,7 @@ function Donation(props){
             <Button 
                 type="button"
                 className="mybutton round button_transparent shadow_convex"
-                onClick={()=>handleBack}
+                onClick={()=>handleBack()}
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
             <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
         </div>
