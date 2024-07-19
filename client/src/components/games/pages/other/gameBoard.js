@@ -8,7 +8,7 @@ import { faPlay, faPlus, faPause, faAnglesUp, faXmark } from '@fortawesome/free-
 import PokerBoard from './pokerBoard'
 
 function GameBoard(props){
-    const {template, user, settings, startGame} = props
+    const {template, user, settings, startGame, bet} = props
     const {lang} = settings
     let max_bet = user.money ? decryptData(user.money) : 0
 
@@ -103,7 +103,7 @@ function GameBoard(props){
                 case "slots_board":
                     return <Row>
                         <Col xs={8}>
-                                <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)} />
+                            <Counter num={bet} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                         </Col>
                         <Col xs={4}>
                             <div className="button_box button_box_start">

@@ -1,7 +1,7 @@
 import React from 'react'
-import { translate } from '../../translations/translate'
-import Payment from '../partials/payment/payment'
-import Header from '../partials/header'
+import { translate } from '../../../translations/translate'
+import Payment from '../../partials/payment/payment'
+import Header from '../../partials/header'
 import { Col, Row } from 'react-bootstrap'
 
 function BuyCarrots(props){

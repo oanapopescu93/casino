@@ -1,17 +1,19 @@
 import React from 'react'
+
 import Language from '../settings/language'
 
 import About from './about/about'
 import TermsConditions from './termsConditions/termsConditions'
 import PolicyPrivacy from './policyPrivacy/policyPrivacy'
-import Career from './career'
+import Career from './career/career'
 import Questions from './questions/questions'
 import Contact from './contact/contact'
 import Donation from './donation/donation'
 import Cart from './cart/cart'
 import Checkout from './checkout/checkout'
-import BuyCarrots from './buyCarrots'
+import BuyCarrots from './buyCarrots/buyCarrots'
 import HowToPlay from './howToPlay/howToPlay'
+
 import { translate } from '../../translations/translate'
 
 function OtherPages(props) {

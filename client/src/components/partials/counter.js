@@ -1,9 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 
 function Counter(props){  
   let [num, setNum]= useState(typeof props.num === "undefined" ? 1 : props.num)
   let min = props.min ? props.min : 0
   let max = props.max ? props.max : 100
+
+  useEffect(() => {
+    setNum(typeof props.num === "undefined" ? 1 : props.num)
+  }, [props.num])
 
   function increase(){
     if(num < max){

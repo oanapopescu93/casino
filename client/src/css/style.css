@@ -3029,11 +3029,7 @@ textarea {
     height: 125px;
   }
 }
-@media (max-width: 360px) {
-  .slot_machine.slot_machine_3 .box {
-    height: 155px;
-  }
-}
+@media (max-width: 360px) {}
 
 /* CRAPS */
 .craps_subtitle{

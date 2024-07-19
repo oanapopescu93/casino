@@ -116,7 +116,7 @@ function Sign(props) {
                         open: true,
                         title: null,
                         template: "whack_a_rabbit",
-                        size: "lg",
+                        size: "sm",
                     }
                     dispatch(changePopup(payload))
                 }
