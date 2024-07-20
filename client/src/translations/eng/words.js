@@ -274,6 +274,10 @@ var word_bank = {
     double_down: "Double down",
     surrender: "Surrender",
     not_current_player: "It is not your turn",
+    hit_explanation: "Take another card to increase your hand.",
+    stand_explanation: "Keep your current hand and end your turn.",
+    double_down_explanation: "Double your bet, receive one more card.",
+    surrender_explanation: "Forfeit your bet to end your hand.",
 
     // race
     breed: "Breed",

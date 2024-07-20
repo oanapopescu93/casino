@@ -274,6 +274,10 @@ var word_bank = {
     double_down: "Удвоить ставку",
     surrender: "Сдаться",
     not_current_player: "Сейчас не ваш ход",
+    hit_explanation: "Возьмите еще одну карту, чтобы увеличить руку.",
+    stand_explanation: "Оставьте текущую руку и завершите ход.",
+    double_down_explanation: "Удвойте ставку, получите еще одну карту.",
+    surrender_explanation: "Откажитесь от ставки, чтобы завершить руку.",
 
     // race
     breed: "Порода",

@@ -274,6 +274,10 @@ var word_bank = {
     double_down: "Double Down",
     surrender: "Aufgeben",
     not_current_player: "Du bist nicht an der Reihe",
+    hit_explanation: "Nehmen Sie eine weitere Karte, um Ihre Hand zu erhöhen.",
+    stand_explanation: "Behalten Sie Ihre aktuelle Hand und beenden Sie Ihren Zug.",
+    double_down_explanation: "Verdoppeln Sie Ihren Einsatz, erhalten Sie eine weitere Karte.",
+    surrender_explanation: "Verzichten Sie auf Ihren Einsatz, um Ihre Hand zu beenden.",
 
     // race
     breed: "Rasse",

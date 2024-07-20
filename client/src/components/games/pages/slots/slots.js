@@ -91,12 +91,12 @@ function Slots(props){
         }
     }
 
-    function updateStatus(x){
-        setSlotsStatus(x)
+    function updateStatus(e){
+        setSlotsStatus(e)
     }
 
-	function updateBets(x){
-        setSlotsBets(x)
+	function updateBets(e){
+        setSlotsBets(e)
     }
 
 	function handleShowPrizes(){
@@ -116,7 +116,6 @@ function Slots(props){
 
 	function handlePay(pay, win){
 		if(pay > 0){
-			//setSlotsBets(0)
 			let game = null
 			if(props.page && props.page.game){
 				game = props.page.game

@@ -275,6 +275,10 @@ var word_bank = {
     double_down: "Doblar apuesta",
     surrender: "Rendirse",
     not_current_player: "No es tu turno",
+    hit_explanation: "Tome otra carta para aumentar su mano.",
+    stand_explanation: "Mantenga su mano actual y termine su turno.",
+    double_down_explanation: "Doble su apuesta, reciba una carta más.",
+    surrender_explanation: "Renuncie a su apuesta para terminar su mano.",
 
     // race
     breed: "Raza",

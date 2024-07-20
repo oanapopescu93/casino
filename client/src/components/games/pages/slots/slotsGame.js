@@ -18,7 +18,7 @@ function slots_game(props){
 
 	let image_size = [100, 100]
 	let image_size_canvas = [290, 290, 5, 5, 80, 80]
-	let spin_time = 3000 // how long all slots spin before starting countdown
+	let spin_time = randomIntFromInterval(2000, 4000) // how long all slots spin before starting countdown
 	let spin_time_reel = spin_time/5 // how long each slot spins at minimum
 	let slot_speed = [] // how many pixels per second slots roll
 	let speed = 10
@@ -64,7 +64,8 @@ function slots_game(props){
 				slot_speed.push(speed)
 				slots_canvas.push(reel[i][0])
 				self.createCanvas(slots_canvas[slots_canvas.length-1])
-				self.draw_reel(slots_canvas[slots_canvas.length-1], images_pos[i], true)				
+				self.draw_reel(slots_canvas[slots_canvas.length-1], images_pos[i], true)
+				reel[i].css('transform', 'translate(0px, 0px)')			
 			}
 			if(typeof props.getImagePos === "function"){
 				props.getImagePos(images_pos)
@@ -202,7 +203,6 @@ function slots_game(props){
 
 	this.start = function(e){
 		self.spin(e)
-		spin_time = randomIntFromInterval(2000, 4000)
 	}
 	this.spin = function(e){
 		self.reset()
@@ -245,60 +245,61 @@ function slots_game(props){
 		let ctx_lines = canvas_lines.getContext("2d")
 		ctx_lines.clearRect(0, 0, canvas_lines.width, canvas_lines.height)
 	}
-	this.update = function(state){
+	this.update = function(state) {
 		now = new Date()
-		function check_slot(index){
-			console.log('check_slot ', index, offset[index], image_size)
-			if ( now - lastUpdate > spin_time_reel ){
-				return true // done
+		
+		function check_slot(index) {
+			if (now - lastUpdate > spin_time_reel) {
+				return true
+			}
+			if (offset[index] % image_size[1] === 0) {
+				return true
 			}
 			return false
 		}
-		switch(state){
+		
+		switch (state) {
 			case 0: // all slots spinning
-				if (now - lastUpdate > spin_time){
+				if (now - lastUpdate > spin_time) {
 					self.state = 1
 					lastUpdate = now
-				} 
+				}
 				break
 			case 6:
 				self.running = false
 				break
-			default: //stop slots one after the other
+			default: // stop slots one after the other
 				self.stopped[state-1] = check_slot(state-1)
-				if (self.stopped[state-1]){
+				if (self.stopped[state-1]) {
 					slot_speed[state-1] = 0
 					self.state++
 					lastUpdate = now
-				}	
-		}		
-		for(let i in reel){
+				}
+		}
+		
+		for (let i in reel) {
 			self.rotate(i, slot_speed[i])
 		}
-		for(let i in reel){
-			if(slot_speed[i] === 0){
-				if(offset[i]%100 !== 0){
-					self.running = true
-					self.rotate(i, 10)
-				}
+		
+		for (let i in reel) {
+			if (slot_speed[i] === 0 && offset[i] % image_size[1] !== 0) {
+				self.running = true
+				self.rotate(i, 10) // Adjust this speed as needed
 			}
 		}
 	}
+	
 	this.rotate = function(i, slot_speed){
 		offset[i] = offset[i] - slot_speed
 		let max_height = -(reel[i][0].height - items.length * image_size[1])
 		
-		if(offset[i] < max_height){
+		if (offset[i] < max_height) {
 			offset[i] = 0
 		}
-
-		if(i == 0){
-			if(offset[i] < max_height){
-				console.log('aaa ', offset[i], max_height)
-			} else {
-				console.log('bbb ', offset[i], max_height)
-			}
-		}
+		
+		if (slot_speed === 0 && offset[i] % image_size[1] !== 0) { // Ensure the offset aligns with the image size
+			offset[i] = Math.round(offset[i] / image_size[1]) * image_size[1]
+		}	
 
 		reel[i].css('transform', 'translate(0px, ' + offset[i] + 'px)')
 	}

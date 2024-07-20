@@ -83,11 +83,11 @@ function GameBoard(props){
                             </Col>
                         </> : <>
                             <Col xs={8} sm={4}>
-                                <Counter num={0} max={max_bet} update={(e)=>updateQtyMarket(e)} />
+                                <Counter num={bet} max={max_bet} update={(e)=>updateQtyMarket(e)} />
                             </Col>
                             <Col xs={4} sm={4} className="d-none d-sm-block"/>
                             <Col xs={4} sm={4}>
-                                <div  className="button_box button_box_start">
+                                <div className="button_box button_box_start">
                                     <div className="tooltip">
                                         <Button 
                                             type="button"

@@ -275,7 +275,10 @@ var word_bank = {
     double_down: "Dublează",
     surrender: "Predă-te",
     not_current_player: "Nu este rândul tău",
-
+    hit_explanation: "Luați o altă carte pentru a vă mări mâna.",
+    stand_explanation: "Păstrați mâna actuală și terminați tura.",
+    double_down_explanation: "Dublați pariul, primiți o altă carte.",
+    surrender_explanation: "Renunțați la pariul dvs. pentru a vă termina mâna.",
     // race
     breed: "Rasă",
     delay: "Întârziere",

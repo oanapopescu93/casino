@@ -275,6 +275,10 @@ var word_bank = {
     double_down: "Doubler",
     surrender: "Abandonner",
     not_current_player: "Ce n'est pas votre tour",
+    hit_explanation: "Prenez une autre carte pour augmenter votre main.",
+    stand_explanation: "Gardez votre main actuelle et terminez votre tour.",
+    double_down_explanation: "Doublez votre mise, recevez une carte supplémentaire.",
+    surrender_explanation: "Abandonnez votre mise pour terminer votre main.",
 
     // race
     breed: "Race",

@@ -275,6 +275,10 @@ var word_bank = {
     double_down: "Raddoppia",
     surrender: "Resa",
     not_current_player: "Non è il tuo turno",
+    hit_explanation: "Prendi un'altra carta per aumentare la tua mano.",
+    stand_explanation: "Tieni la tua mano attuale e termina il tuo turno.",
+    double_down_explanation: "Raddoppia la tua puntata, ricevi un'altra carta.",
+    surrender_explanation: "Rinuncia alla tua puntata per terminare la tua mano.",
 
     // race
     breed: "Razza",

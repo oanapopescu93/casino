@@ -274,6 +274,10 @@ var word_bank = {
     double_down: "加倍下注",
     surrender: "投降",
     not_current_player: "现在不是您的回合",
+    hit_explanation: "拿另一张牌增加你的手牌。",
+    stand_explanation: "保留当前手牌并结束你的回合。",
+    double_down_explanation: "加倍你的赌注，拿一张牌。",
+    surrender_explanation: "放弃你的赌注，结束你的手牌。",
 
     // race
     breed: "品种",
