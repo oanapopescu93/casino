@@ -206,48 +206,81 @@ function blackjack_game(props){
         }
 	}
 
-	this.createCanvas = function(){
-        canvas = document.getElementById("blackjack_canvas")
-		ctx = canvas.getContext("2d")
-		canvas.width = 1200
-		canvas.height = 500
-		card_base = {x: 20, y:260, width: 120, height: 180, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
-		card = {width: 100, height: 150}
-		player_nr = [20, 20]
-
-		if(window.innerWidth <= 1200){
-			//big
-			canvas.width = 900
-			canvas.height = 450
-			card_base = {x: 20, y:240, width: 100, height: 150, fillStyle: 'transparent', lineWidth: 2, strokeStyle: 'white', dealer_y:40}
-			card = {width: 80, height: 120}
-			player_nr = [20, 20]
+	this.createCanvas = function() {
+		canvas = document.getElementById("blackjack_canvas");
+		ctx = canvas.getContext("2d");
+	
+		// Default canvas and card settings
+		canvas.width = 740;
+		canvas.height = 460;
+		card_base = {
+			x: 20, 
+			y: 260, 
+			width: 120, 
+			height: 180, 
+			fillStyle: 'transparent', 
+			lineWidth: 2, 
+			strokeStyle: 'white', 
+			dealer_y: 40
+		};
+		card = { width: 100, height: 150 };
+		player_nr = [20, 20];
+	
+		if (window.innerWidth <= 800 || window.innerHeight <= 600) {
+			// Big
+			canvas.width = 620;
+			canvas.height = 400;
+			card_base = {
+				x: 20, 
+				y: 240, 
+				width: 100, 
+				height: 150, 
+				fillStyle: 'transparent', 
+				lineWidth: 2, 
+				strokeStyle: 'white', 
+				dealer_y: 40
+			};
+			card = { width: 80, height: 120 };
+			player_nr = [20, 20];
 		}
-		if(window.innerWidth <= 960){
-			//medium
-			canvas.width = 480
-			canvas.height = 220
-			card_base = {x: 5, y:120, width: 53, height: 80, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:20}
-			card = {width: 40, height: 60}
-			player_nr = [12, 12]				
+	
+		if (window.innerWidth <= 768 || window.innerHeight <= 400) {
+			// Medium
+			canvas.width = 400;
+			canvas.height = 260;
+			card_base = {
+				x: 5, 
+				y: 150, 
+				width: 70, 
+				height: 100, 
+				fillStyle: 'transparent', 
+				lineWidth: 1, 
+				strokeStyle: 'white', 
+				dealer_y: 20
+			};
+			card = { width: 60, height: 90 };
+			player_nr = [12, 12];
 		}
-		if(window.innerWidth <= 600){
-			//small
-			canvas.width = 400
-			canvas.height = 200
-			card_base = {x: 5, y:120, width: 46, height: 70, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:20}
-			card = {width: 33, height: 50}
-			player_nr = [12, 12]
+	
+		if (window.innerWidth <= 480 || window.innerHeight <= 320) {
+			// Small
+			canvas.width = 300;
+			canvas.height = 210;
+			card_base = {
+				x: 5, 
+				y: 120, 
+				width: 46, 
+				height: 70, 
+				fillStyle: 'transparent', 
+				lineWidth: 1, 
+				strokeStyle: 'white', 
+				dealer_y: 20
+			};
+			card = { width: 33, height: 50 };
+			player_nr = [12, 12];
 		}
-		if(window.innerWidth <= 480){
-			//extra small
-			canvas.width = 300
-			canvas.height = 200
-			card_base = {x: 5, y:120, width: 38, height: 60, fillStyle: 'transparent', lineWidth: 1, strokeStyle: 'white', dealer_y:30}
-			card = {width: 25, height: 38}
-			player_nr = [10, 10]
-		}
-	}
+	};
+	
 
     this.preaload_images = function(item){
 		return new Promise(function(resolve){
