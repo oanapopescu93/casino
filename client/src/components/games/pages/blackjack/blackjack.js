@@ -182,6 +182,7 @@ function blackjack_game(props){
 	let player_nr = [20, 20]    
     let items = get_cards()
     let resize = 0
+	let howManyPlayers = props.howManyPlayers ? props.howManyPlayers : 5
 
     this.ready = function(){
         resize++
@@ -286,7 +287,7 @@ function blackjack_game(props){
 		// create players
 		let a = 0
 		let b = 0
-		for(let i=0;i<7;i++){
+		for(let i=0 ;i < howManyPlayers; i++){
 			if(i === 0){
 				a = 3
 			} else {
@@ -399,6 +400,7 @@ function Blackjack(props){
 	
 	let game = page.game
 	let money = user.money ? decryptData(user.money) : 0
+	let howManyPlayers = 5
 
 	let [startGame, setStartGame]= useState(false)
 	let [blackjackBets, setBlackjackBets]= useState(1)
@@ -422,7 +424,7 @@ function Blackjack(props){
 		props.results(payload)
 		setStartGame(false)
 	}
-    let options = {...props, dispatch, getResults, clear}
+    let options = {...props, howManyPlayers, dispatch, getResults, clear}
     let my_blackjack = new blackjack_game(options)
 
     function ready(){
