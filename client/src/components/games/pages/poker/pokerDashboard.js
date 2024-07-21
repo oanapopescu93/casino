@@ -187,7 +187,7 @@ function PokerDashboard(props){
                 choice={(e)=>choice(e)} 
                 updateBets={(e)=>updateBets(e)}
             /> : null}
-            <div className="page_exit">
+            <div className="button_action_group poker_buttons_container">
                 <div className="tooltip">
                     <Button 
                         type="button"

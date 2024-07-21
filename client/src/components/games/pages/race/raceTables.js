@@ -80,14 +80,16 @@ function RaceTables(props){
 
     return <>
         <Header template={"game"} details={page} lang={lang} />
-        <Carousel 
-            {...props}
-            id="carousel_race"
-            template="race" 
-            options={race_carousel_options}
-            itemList={race_array}
-        />
-        <div className="game_start">
+        <div className="carousel_race_container">
+            <Carousel 
+                {...props}
+                id="carousel_race"
+                template="race" 
+                options={race_carousel_options}
+                itemList={race_array}
+            />
+        </div>
+        <div className="button_action_group race_buttons_container">
             <div className="tooltip">
                     <Button 
                         type="button"

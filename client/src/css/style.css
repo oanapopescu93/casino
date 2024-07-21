@@ -443,6 +443,9 @@ textarea:focus, input:focus{
   color: var(--bg)!important;
 }
 
+.button_action_group{
+  padding: var(--padding);
+}
 .button_action_group button{
   margin-bottom: var(--padding);
 }
@@ -2981,6 +2984,9 @@ textarea {
   .game_box{
     padding: var(--padding) 40px var(--padding) var(--padding);
   }
+  .game_container.poker_container .game_start{
+    padding: 0px 40px 0px 0px;
+  }
   .slot_machine .box{
     height: 220px;
   }
@@ -3034,9 +3040,6 @@ textarea {
 /* CRAPS */
 .craps_subtitle{
   margin-bottom: var(--padding_big);
-}
-.dice_container, .craps_container .button_action_group{
-  margin-bottom: var(--padding);
 }
 .dice_box {
 	position: relative;
@@ -4086,6 +4089,11 @@ textarea {
   }
 }
 @media (max-width:600px) {
+  /* CRAPS */
+  .game_bets_container{
+    padding: 0px 40px;
+  }
+
   /* RACE */
   #race_order{
     padding: var(--padding_small);
@@ -4255,17 +4263,55 @@ textarea {
 @media (max-width:340px) {
   .dashboard_box .cart_info, .dashboard_box .cart_buttons{
     width: 50%;
-  }
+  }  
 }
 
 @media (max-width: 960px) and (orientation: landscape){}
 @media (max-width: 768px) and (orientation: landscape){
   /* SALON */
+  #logo_icon {
+    width: 20px;
+  }
   .salon_button, .panel_button {
     height: 40px;
   }
   .salon_button span, .panel_button span{
     display: none;
+  }
+
+  /* GAMES */
+  .slot_machine.slot_machine_3 .box {
+    height: 221px;
+  }  
+  .dice_container{
+    margin-bottom: var(--padding);
+  }
+  .carousel_race_container{
+    padding-left: 50px;
+  }
+
+  .game_bets_box {
+    max-height: 200px;
+  }
+
+  .button_action_group{
+    position: fixed;
+    z-index: 9999;
+    top: 0px;
+    left: 0px;
+    width: 70px;
+  }
+  .button_action_group .round{
+    margin: var(--padding_small)!important;
+  }
+  .button_action_group.keno_prize_container{
+    right: 50px;
+    left: auto;
+  }
+  .keno_prize_container button{
+    height: auto;
+    line-height: 12px;
+    padding: var(--padding);
   }
 }
 
@@ -4295,7 +4341,7 @@ textarea {
   .keno_board{
     width: 100%;
     overflow: auto;
-    height: 210px;
+    height: 280px;
     padding: var(--padding_small);
   }
 
@@ -4312,9 +4358,6 @@ textarea {
     display: inline-block;
     vertical-align: middle;    
   }
-  .dice_container{
-    margin-right: var(--padding_big);
-  } 
   .how_to_play_titles{
     max-height: 200px;
   }

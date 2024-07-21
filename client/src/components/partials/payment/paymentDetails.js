@@ -139,7 +139,7 @@ function PaymentDetails(props){
                 </Col>
             </Row>
         </> : <p>{translate({lang: lang, info: "error"})}</p>} 
-        <div className="page_exit">
+        <div className="button_action_group payment_buttons_container">
 			<div className="tooltip">
 				<Button 
 					type="button"

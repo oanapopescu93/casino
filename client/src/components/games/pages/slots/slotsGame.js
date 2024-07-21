@@ -83,7 +83,11 @@ function slots_game(props){
 		}
 		switch(lines){
 			case 3:
-				if (window.innerWidth < 480){
+				if (window.innerWidth <= 768 || window.innerHeight <= 400) {
+					image_size = [70, 70]
+					image_size_canvas = [290, 290, 3, 3, 60, 60]
+				}
+				if (window.innerWidth < 480){					
 					image_size = [70, 70]
 					image_size_canvas = [290, 290, 3, 3, 60, 60]
 				}

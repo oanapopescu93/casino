@@ -60,12 +60,11 @@ function roulette_game(props){
 		if (window.innerWidth < 960){
 			if(window.innerHeight < window.innerWidth){
 				//small landscape
-				canvas.width = 290
-				canvas.height = 290
-
-				roulette_radius_x = 150
-				roulette_radius_y = 150
-				outsideRadius = 120
+				canvas.width = 260
+				canvas.height = 260
+				roulette_radius_x = 135
+				roulette_radius_y = 135
+				outsideRadius = 110		
 			} else {
 				//small portrait
 				canvas.width = 250
@@ -682,7 +681,7 @@ function RouletteGame(props){
     return <div className="game_box">
 		<Header template={"game"} details={page} lang={lang} />
 		<canvas id="roulette_canvas" /> 
-		<div className="game_start">
+		<div className="button_action_group roulette_buttons_container">
 			<div className="tooltip">
 				<Button 
 					type="button"  

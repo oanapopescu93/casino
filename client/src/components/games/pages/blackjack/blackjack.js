@@ -597,7 +597,7 @@ function Blackjack(props){
 		<Header template={"game"} details={page} lang={lang} />
         <canvas id="blackjack_canvas" />
         <GameBoard template="blackjack_board" {...props} startGame={startGame} bet={blackjackBets} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
-		<div className="page_exit">
+		<div className="button_action_group blackjack_buttons_container">
 			<div className="tooltip">
 				<Button 
 					type="button"

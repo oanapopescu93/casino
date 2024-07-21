@@ -182,7 +182,7 @@ function Slots(props){
 			{width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
 				{translate({lang: lang, info: "prizes"})}
 			</div> : null}
-			<div className="page_exit">
+			<div className="button_action_group slots_buttons_container">
 				<div className="tooltip">
 					<Button 
 						type="button"

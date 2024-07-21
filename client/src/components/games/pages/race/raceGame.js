@@ -954,20 +954,12 @@ function RaceGame(props){
 		}
     }, [])
 
-	// useEffect(() => {
-	// 	const handleRaceRead = function(data){}
-	// 	socket.on('race_read', handleRaceRead)
-	// 	return () => {
-    //         socket.off('race_read', handleRaceRead)
-    //     }
-    // }, [socket])
-
     return <>
 		<div className="race_order_container">
 			<div id="race_order"></div>
 		</div>
 		<canvas id="race_canvas" className="shadow_convex" />
-		<div className="button_action_group">
+		<div className="button_action_group race_buttons_container">
 			{!bets || bets.length === 0 ? <div className="tooltip">
 				<Button 
 					type="button" 
