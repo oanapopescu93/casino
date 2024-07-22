@@ -18,8 +18,9 @@ import Panel from '../../games/sidebar/panel'
 import OtherPages from '../otherPages'
 import ButtonDonation from '../donation/buttonDonation'
 
-import { isEmpty, postData } from '../../../utils/utils'
+import { getCarrotsFromProducts, isEmpty, postData } from '../../../utils/utils'
 import { translate } from '../../../translations/translate'
+import { changeMoney } from '../../../reducers/auth'
 
 function Home(props) {
     const {home, page, user, settings, exchange_rates, socket} = props
@@ -81,7 +82,8 @@ function Home(props) {
                             currency: data.payload.transactions[0].amount.currency,
                             currencyExchange: currency,
                             items: data.payload.transactions[0].item_list.items,
-                            exchange_rates: exchange_rates             
+                            exchange_rates: exchange_rates,
+                            carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)          
                         }
                         let payload = {
                             open: true,
@@ -177,8 +179,8 @@ function Home(props) {
     }
 
     useEffect(() => {
-		const handleOrderRead = function(details) {
-            //console.log('order_read', details)
+		const handleOrderRead = (details)=>{
+            console.log('order_read', details)
             let payload = {
                 open: true,
                 template: "paymentSuccess",
@@ -194,6 +196,9 @@ function Home(props) {
             dispatch(changePage('Salon'))
             dispatch(changeGame(null))
             dispatch(changeGamePage('dashboard'))
+
+            // update redux money
+            dispatch(changeMoney(details.money))
         }
 		socket.on('order_read', handleOrderRead)
 		return () => {

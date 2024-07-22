@@ -119,7 +119,7 @@ function Cell(props) {
                                     <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow} />
                                 </div>
                                 <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
-                                <p>{translate({lang: lang, info: "value"})}: {data.price} <FontAwesomeIcon icon={faCarrot} /></p>
+                                <p>{translate({lang: lang, info: "value"})}: {data.value} <FontAwesomeIcon icon={faCarrot} /></p>
                                 <p>{translate({lang: lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
                                 <Counter min={1} update={(e)=>updateQtyMarket(e)} />
                             </div>

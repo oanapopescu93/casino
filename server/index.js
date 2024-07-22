@@ -459,14 +459,14 @@ io.on('connection', function(socket) {
             let user_found = users_array.filter((x) => x.uuid === details.user_uid)            
             if(user_found[0] && user_found[0]){
               let id = user_found[0].id
+              let carrots_update = details.carrots_update
+              let money = user_found[0].money + carrots_update
               let orderDate;
               if (typeof details.order_date === 'number') {
                   orderDate = details.order_date + ""
               } else {
                   orderDate = new Date(details.order_date).getTime() + ""
               }
-
-              database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
               function getOrDefault(obj, key, defaultValue = '-') {
                 return obj[key] !== undefined ? obj[key] : defaultValue
@@ -485,11 +485,13 @@ io.on('connection', function(socket) {
                   getOrDefault(details, 'phone'),
                   details.description,
                   details.currency
-              ]
+              ]             
 
+              database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
+              database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
               database(database_config, payload).then(function(){
                 try{				
-                  io.to(socket.id).emit('order_read', details)
+                  io.to(socket.id).emit('order_read', {...details, money})
                 }catch(e){
                   console.log('[error]','order_read--> ', e)
                 }

@@ -250,3 +250,13 @@ export const showCardNumber = (value)=>{
   result = "***" + lastFourDigits
   return result
 }
+
+export const getCarrotsFromProducts = (array)=>{
+  let carrots = 0
+  if(array && array.length > 0){
+    for(let i in array){
+      carrots = carrots + (array[i].qty * array[i].value)
+    }
+  }
+  return carrots
+}

@@ -10,6 +10,10 @@ export const validateInput = (input="", type)=>{
         regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$'
         //letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
         break
+      case "phone":
+        regex = "^[0-9]{5,20}$"
+        //checks if it is a number
+        break
       case "pass":				
 				regex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
 				// At least one upper case English letter, (?=.*?[A-Z])

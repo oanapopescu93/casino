@@ -6,7 +6,7 @@ import Counter from '../counter'
 import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import $ from "jquery"
-import { convertCurrency, getProducts, isEmpty, paymentErrors, postData } from '../../../utils/utils'
+import { convertCurrency, getCarrotsFromProducts, getProducts, isEmpty, paymentErrors, postData } from '../../../utils/utils'
 import { validateCVV, validateCard, validateCardMonthYear, validateInput } from '../../../utils/validate'
 import { changePopup } from '../../../reducers/popup'
 import PaymentCart from './paymentCart'
@@ -178,9 +178,13 @@ function Payment(props){
     }
 
     function handleBack(choice=null){
-        dispatch(changePage('Salon'))
-        dispatch(changeGame(null))
-        dispatch(changeGamePage(choice))
+        if(choice){
+            dispatch(changePage('Salon'))
+            dispatch(changeGame(null))
+            dispatch(changeGamePage(choice))
+        } else {
+            setPaymentDetails(null)
+        }        
     }
 
     function getFormDetails(){
@@ -255,6 +259,9 @@ function Payment(props){
             }
             if(!validateInput(data.email, "email")){
                 errors.email.validate = false
+            }            
+            if(!isEmpty(data.phone) && !validateInput(data.phone, "phone")){ //if the user wrote a phone number but it is not a phone number
+                errors.phone.validate = false
             }
             if(isEmpty(data.cardNumber)){
                 errors.cardNumber.fill = false
@@ -354,6 +361,7 @@ function Payment(props){
     }
 
     function handlePaymentStripe(data){
+        console.log('handlePaymentStripe ', data)
         let details = {
             method: "stripe",
             user_uid: props.user.uuid,
@@ -372,6 +380,7 @@ function Payment(props){
             currencyExchange: currency,
             items: data.payload.metadata,
             exchange_rates,
+            carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)
         }
         socket.emit('order_send', details)
     }

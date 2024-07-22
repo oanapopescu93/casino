@@ -21,8 +21,10 @@ const paymentDetailsSlice = createSlice({
     reducers: {
         updatePaymentDetails: (state, { payload }) => {
             Object.keys(payload).forEach(key => {
-                state[key] = payload[key]
-                setCookie(`casino_payment_${key}`, payload[key])
+                if(payload[key]){
+                    state[key] = payload[key]
+                    setCookie(`casino_payment_${key}`, payload[key])
+                }
             })
         },
         resetPaymentDetails: (state) => {	

@@ -14,6 +14,7 @@ paypal.configure({
 const MINIMUM_AMOUNT_USD = 10
 let amountPaypal = 0
 const BASE_URL = process.env.BASE_URL
+let productsPaypal = []
 
 paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
   const { amount, products, description } = req.body
@@ -28,6 +29,7 @@ paypalPayment.post('/api/paypal', jsonParser, (req, res, next) => {
       return acc + (product.price * product.qty)
     }, 0)
     amountPaypal = totalAmount
+    productsPaypal = products
 
     if (totalAmount < MINIMUM_AMOUNT_USD) {
       return res.json({ type: "paypal", result: "error", payload: 'amount_too_low' })
@@ -108,7 +110,7 @@ paypalPayment.post('/api/paypal/success', jsonParser, (req, res) => {
       if (error) {
         res.json({ type: "paypal", result: "error", payload: 'error_charge', details: error.response })
       } else {
-        res.json({ type: "paypal", result: "success", payload: payment })
+        res.json({ type: "paypal", result: "success", payload: {...payment, payment_details: {products: productsPaypal}} })
       }
     })
   } else {

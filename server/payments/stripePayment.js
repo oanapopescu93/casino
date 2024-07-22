@@ -75,11 +75,12 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
                                                 exp_month: res2.card.exp_month,
                                                 exp_year: res2.card.exp_year
                                             },
-                                            name: name,
-                                            email: email,
-                                            phone: phone,
-                                            country: country,
-                                            city: city
+                                            name,
+                                            email,
+                                            phone,
+                                            country,
+                                            city,
+                                            products
                                         }
                                         res.json({ type: "stripe", result: "success", payload })
                                     }).catch((err)=>{
