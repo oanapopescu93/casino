@@ -146,8 +146,19 @@ function Home(props) {
                                 currency: data.payload.price_currency,
                                 currencyExchange: "-",
                                 items: null,
-                                exchange_rates: exchange_rates             
-                            }                                                       
+                                exchange_rates: exchange_rates,
+                                carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)      
+                            }
+                            let payload = {
+                                open: true,
+                                template: "paymentSuccess",
+                                title: translate({lang: lang, info: "payment_success"}),
+                                data: details,
+                                size: 'md',
+                            }
+                            dispatch(changePopup(payload)) //show success popup
+                            dispatch(cartRemoveAll()) //remove all from cart
+                            dispatch(orderAdd(details)) // add payment to order list
                             socket.emit('order_send', details)
                         } else {
                             showError(data)

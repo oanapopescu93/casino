@@ -7,10 +7,11 @@ const axios = require('axios')
 const apiKey = "Z1KG9J0-GNHMNQE-PT6HD64-ET6GTWK"
 const apiUrl = 'https://api.nowpayments.io/v1'
 const BASE_URL = process.env.BASE_URL
+let productsCrypto = []
 
 cryptoPayment.post("/api/crypto", jsonParser, (req, res, next) => {
-    const { amount, crypto_currency, description } = req.body
-    createCryptoInvoice(amount, crypto_currency, description).then(function(data) {
+    const { amount, crypto_currency, description, products } = req.body
+    createCryptoInvoice(amount, crypto_currency, description, products).then(function(data) {
         res.json(data)
     })
 })
@@ -42,7 +43,7 @@ cryptoPayment.post('/api/crypto/success', jsonParser, (req, res) => {
 
     if (payment_status === 'paid') {
         fetchPaymentDetails(order_id).then((data)=>{
-            res.json({ type: "crypto", result: "success", payload: data.payload })          
+            res.json({ type: "crypto", result: "success", payload: {...data.payload, payment_details: {products: productsCrypto}} })          
         })
     } else {
         res.json({ type: "crypto", result: "error", payload: "error_charge" })
@@ -53,7 +54,7 @@ cryptoPayment.post('/api/crypto/cancel', jsonParser, (req, res) => {
     res.json({ type: "crypto", result: "cancel"}) 
 })
 
-function createCryptoInvoice(amount, crypto_currency, description) {
+function createCryptoInvoice(amount, crypto_currency, description, products) {
     return new Promise(function(resolve, reject){
         try {
             const payload = {
@@ -68,8 +69,9 @@ function createCryptoInvoice(amount, crypto_currency, description) {
                 'x-api-key': apiKey,
                 'Content-Type': 'application/json',
             }
+            productsCrypto = products
             axios.post(`${apiUrl}/invoice`, payload, { headers }).then(function(response){
-                resolve({type: "crypto", result: "success", payload: response.data})
+                resolve({type: "crypto", result: "success", payload: {...response.data}})
             }).catch(function(err){
                 resolve({type: "crypto", result: "error", payload: err})
             })
@@ -85,7 +87,7 @@ function checkMinPayment(currency="btc") {
     }
     return axios.get(`${apiUrl}/min-amount?currency_from=${currency}&fiat_equivalent=usd`, { headers })
         .then(response => {
-            return { type: "crypto", payload: response.data, result: "crypto_min" }
+            return { type: "crypto", payload: {...response.data}, result: "crypto_min" }
         })
         .catch(error => {
             return { type: "crypto", payload: error, result: "error" }

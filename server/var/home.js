@@ -77,7 +77,7 @@ module.exports = Object.freeze({
         {id: 6, name_eng: "marten", name_ro: "jder", name_fr: "martre", name_de: "marder", name_es: "marta", name_it: "martora", name_pt: "marta", name_ru: "кунгуря", name_zh: "貂", free: true},
     ],    
     DONATIONS: [
-        {type: "crypto", title: "Bitcoin", text: "bc1qhpj7gpflqumppla8p9rk6f3fsq2qrmslakgmha", link: "bitcoin:bc1qhpj7gpflqumppla8p9rk6f3fsq2qrmslakgmha"},
+        {type: "crypto", title: "Bitcoin", text: "bc1q250h9jjr7wj9302z0vpzath3c560k3krkg0fxk", link: "bitcoin:bc1q250h9jjr7wj9302z0vpzath3c560k3krkg0fxk"},
         {type: "crypto", title: "Ethereum", text: "-"},
         {type: "crypto", title: "Litecoin", text: "-"},
         {type: "crypto", title: "Bitcoin Cash", text: "-"},
