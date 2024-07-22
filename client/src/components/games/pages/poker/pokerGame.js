@@ -344,7 +344,7 @@ export const poker_game = function(props){
     }
 
     this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve){
 			let image = new Image()
 			image.src = item.src
 			image.addEventListener("load", function() {

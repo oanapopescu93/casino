@@ -79,7 +79,6 @@ function keno_tube_game(props){
         }
     }
     this.createBallsDown = function(){
-        const totalBalls = kenoSpotsResult.length
         const ballDiameter = 2 * ball.radius
         const flaskHeight = flask.height
         balls = []
@@ -132,7 +131,7 @@ function keno_tube_game(props){
             self.animation(duration)
        }, 500)
     }
-    this.animation = function(time){ 
+    this.animation = function(){ 
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame	||
 			window.webkitRequestAnimationFrame		||

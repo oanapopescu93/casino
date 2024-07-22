@@ -1,6 +1,6 @@
 import React from 'react'
 
-function EasterEgg(props) {
+function EasterEgg() {
     return <div className="eggs">
         <div className="egg egg-left">
             <div className="stripe"></div>

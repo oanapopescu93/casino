@@ -413,7 +413,7 @@ function slots_game(props){
 		}
 	}
 	function blinkLines(results){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve, ){
 			let canvas = $('#slot_machine_lines')[0]
 			if(canvas){
 				ctx = canvas.getContext("2d")

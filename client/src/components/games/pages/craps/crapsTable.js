@@ -48,7 +48,7 @@ function craps_bets(props){
 	}
 
 	this.preaload_images = function(item){
-		return new Promise(function(resolve, reject){
+		return new Promise(function(resolve){
 			let image = new Image()
 			image.id = item.id
 			image.src = item.src

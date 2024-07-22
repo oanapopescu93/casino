@@ -8,7 +8,7 @@ function request(){
 }
 
 function api(){
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve)=>{
         fetch('/api/home', {
             method: 'POST',
             mode: 'cors',
