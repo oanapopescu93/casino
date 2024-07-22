@@ -279,6 +279,14 @@ var word_bank = {
     stand_explanation: "Tieni la tua mano attuale e termina il tuo turno.",
     double_down_explanation: "Raddoppia la tua puntata, ricevi un'altra carta.",
     surrender_explanation: "Rinuncia alla tua puntata per terminare la tua mano.",
+    table_1: "Tavolo 01", 
+    table_2: "Tavolo 02", 
+    table_3: "Tavolo 03", 
+    table_4: "Tavolo 04", 
+    table_5: "Tavolo 05", 
+    table_6: "Tavolo 06", 
+    table_7: "Tavolo 07", 
+    table_8: "Tavolo 08", 
 
     // race
     breed: "Razza",

@@ -278,6 +278,14 @@ var word_bank = {
     stand_explanation: "Оставьте текущую руку и завершите ход.",
     double_down_explanation: "Удвойте ставку, получите еще одну карту.",
     surrender_explanation: "Откажитесь от ставки, чтобы завершить руку.",
+    table_1: "Стол 01", 
+    table_2: "Стол 02", 
+    table_3: "Стол 03", 
+    table_4: "Стол 04", 
+    table_5: "Стол 05", 
+    table_6: "Стол 06", 
+    table_7: "Стол 07", 
+    table_8: "Стол 08", 
 
     // race
     breed: "Порода",

@@ -1,22 +1,25 @@
 import React, {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
-import Footer from '../../partials/footer'
-import Salon from '../../salon/salon'
-import Cookies from '../../partials/cookies'
+
 import { changeCookies } from '../../../reducers/settings'
+import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
+import { changePopup } from '../../../reducers/popup'
+import { orderAdd } from '../../../reducers/order'
+import { cartRemoveAll } from '../../../reducers/cart'
+
+import Salon from '../../salon/salon'
+import Withdraw from '../withdraw/withdraw'
+import Header from '../../partials/header'
+import Cookies from '../../partials/cookies'
+import Footer from '../../partials/footer'
 import Market from '../../games/pages/market/market'
 import Dashboard from '../../games/pages/dashboard/dashboard'
 import Panel from '../../games/sidebar/panel'
 import OtherPages from '../otherPages'
 import ButtonDonation from '../donation/buttonDonation'
-import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
-import Header from '../../partials/header'
-import { postData } from '../../../utils/utils'
+
+import { isEmpty, postData } from '../../../utils/utils'
 import { translate } from '../../../translations/translate'
-import { changePopup } from '../../../reducers/popup'
-import { orderAdd } from '../../../reducers/order'
-import { cartRemoveAll } from '../../../reducers/cart'
-import Withdraw from '../withdraw/withdraw'
 
 function Home(props) {
     const {home, page, user, settings, exchange_rates, socket} = props
@@ -25,6 +28,16 @@ function Home(props) {
     
     function handleCookiesClick(){
         dispatch(changeCookies())
+
+        if(!isEmpty(user.logs) && user.logs === 0){
+            let payload = {
+                open: true,
+                title: null,
+                template: "whack_a_rabbit",
+                size: "sm",
+            }
+            dispatch(changePopup(payload))
+        }
     }
     function handleDonationClick(){
         dispatch(changePage('Donation'))

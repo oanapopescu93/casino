@@ -7,9 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faCheck, faChevronUp, faXmark, faEye } from '@fortawesome/free-solid-svg-icons'
 
 function PokerBoard(props){
-    const {lang, user, action, template} = props
+    const {lang, user, action, bet, template} = props
     let max_bet = user.money ? decryptData(user.money) : 0
-    const [num, setNum]= useState(0)
+    const [num, setNum]= useState(bet)
 
     function handleClick(e){   
         if(typeof props.choice === "function"){

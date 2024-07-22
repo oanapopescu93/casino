@@ -278,6 +278,14 @@ var word_bank = {
     stand_explanation: "保留当前手牌并结束你的回合。",
     double_down_explanation: "加倍你的赌注，拿一张牌。",
     surrender_explanation: "放弃你的赌注，结束你的手牌。",
+    table_1: "桌子01", 
+    table_2: "桌子02", 
+    table_3: "桌子03", 
+    table_4: "桌子04", 
+    table_5: "桌子05", 
+    table_6: "桌子06", 
+    table_7: "桌子07", 
+    table_8: "桌子08", 
 
     // race
     breed: "品种",

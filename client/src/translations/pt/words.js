@@ -279,6 +279,14 @@ var word_bank = {
     stand_explanation: "Mantenha sua mão atual e termine sua vez.",
     double_down_explanation: "Dobre sua aposta, receba mais uma carta.",
     surrender_explanation: "Desista da sua aposta para terminar sua mão.",
+    table_1: "Mesa 01", 
+    table_2: "Mesa 02", 
+    table_3: "Mesa 03", 
+    table_4: "Mesa 04", 
+    table_5: "Mesa 05", 
+    table_6: "Mesa 06", 
+    table_7: "Mesa 07", 
+    table_8: "Mesa 08", 
 
     // race
     breed: "Raça",

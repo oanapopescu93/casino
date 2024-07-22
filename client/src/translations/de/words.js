@@ -278,6 +278,14 @@ var word_bank = {
     stand_explanation: "Behalten Sie Ihre aktuelle Hand und beenden Sie Ihren Zug.",
     double_down_explanation: "Verdoppeln Sie Ihren Einsatz, erhalten Sie eine weitere Karte.",
     surrender_explanation: "Verzichten Sie auf Ihren Einsatz, um Ihre Hand zu beenden.",
+    table_1: "Tisch 01", 
+    table_2: "Tisch 02", 
+    table_3: "Tisch 03", 
+    table_4: "Tisch 04", 
+    table_5: "Tisch 05", 
+    table_6: "Tisch 06", 
+    table_7: "Tisch 07", 
+    table_8: "Tisch 08", 
 
     // race
     breed: "Rasse",

@@ -1079,45 +1079,64 @@ textarea {
 
 /* COOKIES */
 .cookies_msg_container {
-  position: absolute;
-  bottom: 50px;	
-  padding: 20px;
-  max-width: 780px;
+  position: fixed;
+  z-index: 99999;
   width: 100%;	
-  z-index: 9999;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;	
+  background-color: var(--transparent_5);  
+}
+.cookies_box{
+  position: absolute;
+  z-index: 99999;
+  bottom: 50%;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  padding: var(--padding_big);
+  text-align: center;
 }
 .cookies_msg{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;	
+  display: inline-block;
+  width: 100%;
+  max-width: 600px;
   background: var(--color);	
   border-radius: var(--radius);
-  padding: 20px;
+  padding: var(--padding_big);
   border: solid 1px var(--color);
+  color:var(--bg);
+  text-align: left;  
 }
 .cookies_text {
-  width: 75%;
-  display: block;
-  color: var(--bg);
+  display: inline-block;
+  vertical-align: top;
+  width: 75%;  
   font-size: 14px;
-  text-align: left;
 }
 .confirm_cookies {
-  width: 20%;
-  display: block;
+  display: inline-block;
+  vertical-align: top;
+  width: 25%;
   position: relative;
+  text-align: center;
+}
+.cookies_msg h4{
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: var(--padding_small);
+}
+.cookies_msg p{
+  font-size: 14px;
+  line-height: 16px;
 }
 .confirm_cookies button {
-  width: 100px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 100px;
   background:var(--color);
   color:var(--bg);
-  border-radius:20px;
+  border-radius:var(--padding_big);
   border:solid 1px var(--color);
 }
 .confirm_cookies button:hover {
@@ -3028,6 +3047,16 @@ textarea {
   }
   .slot_machine.slot_machine_3 .box {
     height: 215px;
+  }
+  .cookies_msg{
+    padding: var(--padding);
+    text-align: center;
+  }
+  .cookies_text, .confirm_cookies {
+    width: 100%;  
+  }
+  .confirm_cookies button{
+    margin-top: var(--padding_small);
   }
 }
 @media (max-width: 400px) {

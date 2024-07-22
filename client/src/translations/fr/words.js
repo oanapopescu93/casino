@@ -279,6 +279,14 @@ var word_bank = {
     stand_explanation: "Gardez votre main actuelle et terminez votre tour.",
     double_down_explanation: "Doublez votre mise, recevez une carte supplémentaire.",
     surrender_explanation: "Abandonnez votre mise pour terminer votre main.",
+    table_1: "Table 01", 
+    table_2: "Table 02", 
+    table_3: "Table 03", 
+    table_4: "Table 04", 
+    table_5: "Table 05", 
+    table_6: "Table 06", 
+    table_7: "Table 07", 
+    table_8: "Table 08", 
 
     // race
     breed: "Race",

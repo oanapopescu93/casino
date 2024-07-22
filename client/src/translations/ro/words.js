@@ -279,6 +279,15 @@ var word_bank = {
     stand_explanation: "Păstrați mâna actuală și terminați tura.",
     double_down_explanation: "Dublați pariul, primiți o altă carte.",
     surrender_explanation: "Renunțați la pariul dvs. pentru a vă termina mâna.",
+    table_1: "Masa 01", 
+    table_2: "Masa 02", 
+    table_3: "Masa 03", 
+    table_4: "Masa 04", 
+    table_5: "Masa 05", 
+    table_6: "Masa 06", 
+    table_7: "Masa 07", 
+    table_8: "Masa 08", 
+
     // race
     breed: "Rasă",
     delay: "Întârziere",

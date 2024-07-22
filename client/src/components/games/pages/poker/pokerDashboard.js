@@ -26,6 +26,7 @@ function PokerDashboard(props){
     let [showdown, setShowDown] = useState(false)
     let [pot, setPot] = useState(0)
     let [action, setAction]= useState(null)
+    let [gamesPlayed, setGamesPlayed]= useState(false) //check if the user continued to play another poker game
     
     let clear = (bet)=>{
 		if(bet > 0 && startGame){			
@@ -96,7 +97,10 @@ function PokerDashboard(props){
                                 setStartGame(false)
                                 break
                             case "showdown":
+                                setStartGame(false)
                                 setShowDown(true)
+                                setGamesPlayed(true)
+                                setPot(0)
                                 break
                             default:
                         }
@@ -170,7 +174,7 @@ function PokerDashboard(props){
             {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
                 <div className="poker_pot">{translate({lang: lang, info: "total_pot"})}: {pot}</div>
             </div> : null}
-            {!startGame ? <div className="game_start">
+            {!startGame && !gamesPlayed ? <div className="game_start">
                 <div className="tooltip">
                     <Button 
                         type="button"
@@ -183,11 +187,20 @@ function PokerDashboard(props){
             {startGame && !showdown ? <GameBoard                 
                 {...props}
                 template={template + "_board"}
+                bet={poker_bets}
                 action={action}
                 choice={(e)=>choice(e)} 
                 updateBets={(e)=>updateBets(e)}
             /> : null}
             <div className="button_action_group poker_buttons_container">
+                {gamesPlayed ? <div className="tooltip">
+                    <Button 
+                        type="button"
+                        className="mybutton round button_transparent shadow_convex"
+                        onClick={()=>choice({action: 'start', stage: 'start'})}
+                    ><FontAwesomeIcon icon={faPlay} /></Button>
+                    <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                </div> : null}
                 <div className="tooltip">
                     <Button 
                         type="button"

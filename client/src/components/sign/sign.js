@@ -110,16 +110,7 @@ function Sign(props) {
         const handleSignInRead = (data)=>{
             setLoaded(true)
             if(data && data.exists && data.obj && Object.keys(data.obj).length>0){
-                dispatch(changeUser(data.obj))
-                if(typeof data.obj.logs !== "undefined" && data.obj.logs !== "null" && data.obj.logs !== null && data.obj.logs === 0){
-                    let payload = {
-                        open: true,
-                        title: null,
-                        template: "whack_a_rabbit",
-                        size: "sm",
-                    }
-                    dispatch(changePopup(payload))
-                }
+                dispatch(changeUser(data.obj))                
             } else {
                 handleErrors("error", "signup_error")
             } 
