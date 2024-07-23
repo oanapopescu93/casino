@@ -1807,7 +1807,7 @@ textarea {
   background: var(--transparent_color);
 }
 .donation_box_content{
-  height: 140px;
+  height: 150px;
 }
 .donation_box_content h2{
   margin-bottom: var(--padding);
@@ -1832,6 +1832,16 @@ textarea {
   height: 25px;
   font-size: 12px;
   line-height: 23px
+}
+a.donation_button{
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  height: 25px;
+  font-size: 12px;
+  line-height: 23px;
+  max-width: 200px;
+  margin: var(--padding_small) 0px;
 }
 
 /* CAREER */

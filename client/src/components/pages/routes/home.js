@@ -85,16 +85,6 @@ function Home(props) {
                             exchange_rates: exchange_rates,
                             carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)          
                         }
-                        let payload = {
-                            open: true,
-                            template: "paymentSuccess",
-                            title: translate({lang: lang, info: "payment_success"}),
-                            data: details,
-                            size: 'md',
-                        }
-                        dispatch(changePopup(payload)) //show success popup
-                        dispatch(cartRemoveAll()) //remove all from cart
-                        dispatch(orderAdd(details)) // add payment to order list
                         socket.emit('order_send', details)
                     } else {
                         showError(data)
@@ -130,42 +120,27 @@ function Home(props) {
             let token_id = url.searchParams.get('token_id')
             if(payment_status && order_id && token_id){
                 postData('/api/crypto/success', {payment_status, order_id, token_id}).then((data)=>{
-                    //console.log(data.payload)
-                    if(data.payload.status === 200){
-                        if(data.payload && data.result === "success"){
-                            let details = {
-                                method: "crypto",
-                                user_uid: user.uuid,
-                                payment_id: data.payload.id,
-                                order_date: data.payload.created_at,
-                                amount: parseFloat(data.payload.price_amount),  
-                                payment_method: "crypto2crypto",
-                                status: "paid",
-                                email: data.payload.customer_email ? data.payload.customer_email : "-",
-                                description: data.payload.order_description,
-                                currency: data.payload.price_currency,
-                                currencyExchange: "-",
-                                items: null,
-                                exchange_rates: exchange_rates,
-                                carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)      
-                            }
-                            let payload = {
-                                open: true,
-                                template: "paymentSuccess",
-                                title: translate({lang: lang, info: "payment_success"}),
-                                data: details,
-                                size: 'md',
-                            }
-                            dispatch(changePopup(payload)) //show success popup
-                            dispatch(cartRemoveAll()) //remove all from cart
-                            dispatch(orderAdd(details)) // add payment to order list
-                            socket.emit('order_send', details)
-                        } else {
-                            showError(data)
-                        }
+                    //console.log(data)
+                    if(data.payload && data.result === "success"){
+                        let details = {
+                            method: "crypto",
+                            user_uid: user.uuid,
+                            payment_id: data.payload.purchase_id,
+                            order_date: data.payload.created_at,
+                            amount: parseFloat(data.payload.price_amount),  
+                            payment_method: "crypto2crypto",
+                            status: "successful",
+                            description: data.payload.order_description,
+                            currency: data.payload.price_currency,
+                            currencyExchange: currency,
+                            items: data.payload.payment_details.products,
+                            exchange_rates: exchange_rates,
+                            carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)      
+                        }                    
+                        socket.emit('order_send', details)
                     } else {
-                        showError()
-                    }                    
+                        showError(data)
+                    }                   
                 }).catch((error) => {
                     console.error('Error:', error)
                 })
@@ -191,7 +166,7 @@ function Home(props) {
 
     useEffect(() => {
 		const handleOrderRead = (details)=>{
-            console.log('order_read', details)
+            //console.log('order_read', details)
             let payload = {
                 open: true,
                 template: "paymentSuccess",
@@ -202,11 +177,6 @@ function Home(props) {
             dispatch(changePopup(payload)) //show success popup
             dispatch(cartRemoveAll()) //remove all from cart
             dispatch(orderAdd(details)) // add payment to order list
-
-            //go to dashboard
-            dispatch(changePage('Salon'))
-            dispatch(changeGame(null))
-            dispatch(changeGamePage('dashboard'))
 
             // update redux money
             dispatch(changeMoney(details.money))

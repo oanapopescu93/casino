@@ -41,6 +41,7 @@ function Payment(props){
     const [city, setCity] = useState(payment_details.city !== "" ? payment_details.city : "")
     const [gateway, setGateway] = useState("stripe")
     const [cryptoData, setCryptoData] = useState(null)
+    const [fiatEquivalent, setFiatEquivalent] = useState(null)
 
     const [paymentDetails, setPaymentDetails] = useState(null)
     const [paymentError, setPaymentError] = useState(paymentErrors())
@@ -131,6 +132,28 @@ function Payment(props){
             setCryptoData(res.payload)
         })
     }, [])
+
+    useEffect(() => {
+        if(cryptoData){
+            const found = cryptoData.find(item => item.currency_from === cryptoChoice)
+            let fiat_equivalent = found?.fiat_equivalent
+            if(fiat_equivalent && fiat_equivalent < amount){
+                let url = "/api/crypto_estimated_price"
+                let currency_from = currency.toLowerCase()
+                let currency_to = cryptoChoice        
+                let payload = {
+                    amount: amount,
+                    currency_from, 
+                    currency_to,
+                }
+                postData(url, payload).then((res) => {
+                    setFiatEquivalent(res.payload)
+                })
+            } else {
+                setFiatEquivalent({estimated_amount: -1}) //if it is -1 it means we must show a message
+            }
+        }
+    }, [amount, currency, cryptoData, cryptoChoice])
 
     useEffect(() => {
         switch (payment_details.option) {
@@ -435,7 +458,8 @@ function Payment(props){
                     radioOne={radioOne}
                     radioTwo={radioTwo}
                     radioThree={radioThree} 
-                    cryptoChoice={cryptoChoice}                 
+                    cryptoChoice={cryptoChoice}
+                    fiatEquivalent={fiatEquivalent}              
                     handleChangeCheck={(e)=>handleChangeCheck(e)}
                     handleCryptoChange={(e)=>handleCryptoChange(e)}
                 />

@@ -198,6 +198,8 @@ var word_bank = {
     pay: "Pagamento",
     min_amount: "Importo minimo",
     fiat_equivalent: "Equivalente in valuta fiduciaria",
+    your_amount_in_fiat_equivalent: "Il tuo importo in equivalente fiat",
+    amount_too_small_transaction: "L'importo è troppo basso per effettuare una transazione",
     payment_details: "Dettagli di pagamento",
     payment_methode: "Metodo di pagamento",
     january: "Gennaio",

@@ -41,7 +41,7 @@ function Orders(props){
                         {order.map((item, i) => {
                             let price = convertCurrency(item.amount, currency, exchange_rates) + " " + currency                            
                             return <tr key={i} className="order_item">
-                                <td className="order_item_element order_item_no">#{i+1}</td>                                
+                                <td className="order_item_element order_item_no">#{item.orderId}</td>                                
                                 <td className="order_item_element order_item_description">                                 
                                     {item.description ? <span>{item.description}</span> : <span>-</span>}
                                 </td>

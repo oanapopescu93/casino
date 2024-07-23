@@ -198,6 +198,8 @@ var word_bank = {
     pay: "Plată",
     min_amount: "Suma minimă",
     fiat_equivalent: "Echivalent în valută",
+    your_amount_in_fiat_equivalent: "Suma dumneavoastră în echivalent fiat",
+    amount_too_small_transaction: "Suma este prea mică pentru a efectua o tranzacție",
     payment_details: "Detalii de plată",
     payment_methode: "Metodă de plată",
     january: "Ianuarie",

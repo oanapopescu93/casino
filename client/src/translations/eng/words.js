@@ -197,6 +197,8 @@ var word_bank = {
     pay: "Pay",
     min_amount: "Minimum amount",
     fiat_equivalent: "Fiat equivalent",
+    your_amount_in_fiat_equivalent: "Your amount in fiat equivalent",
+    amount_too_small_transaction: "The amount is too small to make a transaction",
     payment_details: "Payment_details",
     payment_methode: "Payment methode",
     january: "January",

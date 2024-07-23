@@ -31,6 +31,9 @@ function OrderDetails(props) {
         case 'succeeded':
         case 'approved':
         case 'completed':
+        case 'paid':
+        case 'finished':
+        case 'successful':
             status_color = "green"
             break
         case 'requires_action':
@@ -108,7 +111,7 @@ function OrderDetails(props) {
                     </div>
                 </Col>
             </Row>
-            <Row>
+            {items && items.length > 0 ? <Row>
                 <Col sm={12} className="orderDetails_order_detail_items">
                     <h3>{translate({lang: lang, info: 'items'})}:</h3>
                     {(() => {
@@ -127,10 +130,18 @@ function OrderDetails(props) {
                                         </li>
                                     ))}
                                 </ul>
+                            case "crypto":
+                                return <ul className="items">
+                                    {items.map((item, index) => (
+                                        <li key={index} className="item">
+                                            {item.name}: {item.quantity} x {item.price} {item.currency}
+                                        </li>
+                                    ))}
+                                </ul>
                         }
                     })()}                     
                 </Col>
-            </Row>        
+            </Row> : null}                   
         </div>
         <Row>
             <Col sm={12}>

@@ -8,10 +8,14 @@ const apiKey = "Z1KG9J0-GNHMNQE-PT6HD64-ET6GTWK"
 const apiUrl = 'https://api.nowpayments.io/v1'
 const BASE_URL = process.env.BASE_URL
 let productsCrypto = []
+const orderDescriptions = {}
 
 cryptoPayment.post("/api/crypto", jsonParser, (req, res, next) => {
     const { amount, crypto_currency, description, products } = req.body
     createCryptoInvoice(amount, crypto_currency, description, products).then(function(data) {
+        if (data.payload && data.payload.order_id) {
+            orderDescriptions[data.payload.order_id] = description
+        }
         res.json(data)
     })
 })
@@ -34,6 +38,18 @@ cryptoPayment.post("/api/crypto_min", jsonParser, (req, res, next) => {
     })
 })
 
+cryptoPayment.post("/api/crypto_estimated_price", jsonParser, (req, res, next) => {
+    const { amount, currency_from, currency_to } = req.body
+    console.log(amount, currency_from, currency_to)
+    if(!amount || amount === 0 || !currency_from || !currency_to){
+        return res.json({ type: "crypto", result: "error", payload: {"estimated_amount": 0} })
+    }
+
+    getEstimatedPrice(amount, currency_from, currency_to).then((data)=>{
+        return res.json({ type: "crypto", result: "success", payload: data })
+    })
+})
+
 cryptoPayment.post('/api/crypto/success', jsonParser, (req, res) => {
     const { payment_status, order_id, token_id } = req.body
 
@@ -41,9 +57,46 @@ cryptoPayment.post('/api/crypto/success', jsonParser, (req, res) => {
         return res.json({ type: "crypto", result: "error", payload: 'error_charge' })
     }
 
-    if (payment_status === 'paid') {
+    const dummyData = {
+        "payment_id": 6249365965,
+        "invoice_id": null,
+        "payment_status": "finished",
+        "pay_address": "address",
+        "payin_extra_id": null,
+        "price_amount": 1,
+        "price_currency": "usd",
+        "pay_amount": 11.8,
+        "actually_paid": 12,
+        "pay_currency": "trx",
+        "order_id": null,
+        "order_description": null,
+        "purchase_id": 5312822613,
+        "outcome_amount": 11.8405,
+        "outcome_currency": "trx",
+        "payout_hash": "hash",
+        "payin_hash": "hash",
+        "created_at": "2023-07-28T15:06:09.932Z",
+        "updated_at": "2023-07-28T15:09:40.535Z",
+        "burning_percent": "null",
+        "type": "crypto2crypto",
+        "payment_extra_ids": [
+            5513339153
+        ]
+    }
+
+    if (payment_status === 'paid' || payment_status === 'finished' || payment_status === 'successful' || payment_status === 'success') {
         fetchPaymentDetails(order_id).then((data)=>{
-            res.json({ type: "crypto", result: "success", payload: {...data.payload, payment_details: {products: productsCrypto}} })          
+            //res.json({ type: "crypto", result: "success", payload: {...data.payload, order_description: "Test Payment Description", payment_details: {products: productsCrypto}} })
+            res.json({ 
+                type: "crypto", 
+                result: "success", 
+                payload: {
+                    ...dummyData, 
+                    order_id: order_id,
+                    order_description: "Crypto payment", 
+                    payment_details: {products: productsCrypto}},
+                    order_description: orderDescriptions[order_id] || "Crypto payment",
+                })
         })
     } else {
         res.json({ type: "crypto", result: "error", payload: "error_charge" })
@@ -109,6 +162,23 @@ function fetchPaymentDetails(order_id){
             resolve({payload: err, result: "error"})
         }
     }) 
+}
+
+function getEstimatedPrice(amount, currency_from, currency_to){
+    return new Promise(function (resolve, reject) {
+        try {
+            const headers = {
+                'x-api-key': apiKey,
+            } 
+            axios.get(apiUrl + "/estimate?amount=" + amount + "&currency_from=" + currency_from + "&currency_to=" + currency_to, { headers }).then(function(response){
+                resolve(response.data)
+            }).catch(function(err){
+                resolve(err)
+            })
+        } catch (err) {
+            resolve(err)
+        }
+    })
 }
 
 module.exports = cryptoPayment

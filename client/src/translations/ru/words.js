@@ -197,6 +197,8 @@ var word_bank = {
     pay: "Плата",
     min_amount: "Минимальная сумма",
     fiat_equivalent: "Эквивалент в фиатных деньгах",
+    your_amount_in_fiat_equivalent: "Ваша сумма в эквиваленте фиатной валюты",
+    amount_too_small_transaction: "Сумма слишком мала для проведения транзакции",
     payment_details: "Детали оплаты",
     payment_methode: "Метод оплаты",
     january: "Январь",

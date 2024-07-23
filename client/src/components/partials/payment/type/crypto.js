@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { Row, Col, DropdownButton, Dropdown } from "react-bootstrap"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBitcoinSign, faLitecoinSign } from '@fortawesome/free-solid-svg-icons'
+import { translate } from '../../../../translations/translate'
 
 function Crypto(props) {
-    const { cryptoChoice, cryptoData } = props
+    const { cryptoChoice, cryptoData, fiatEquivalent, settings } = props
+    const { lang } = settings
 
     let cryptoArray = [
         {value: 'btc', text: "Bitcoin"},
@@ -47,25 +47,26 @@ function Crypto(props) {
                         </DropdownButton>
                     </div>
                 </Col>
-            </Row>
-            <Row>
-                <Col sm={12}>
-                    {details && details[0] ? <p>
-                        {(() => {                            
-                            switch (details[0].currency_from){
-                                case "btc":
-                                    return <span><FontAwesomeIcon icon={faBitcoinSign} /> - </span>
-                                case "ltc":
-                                    return <span><FontAwesomeIcon icon={faLitecoinSign} /> - </span>
-                                default:
-                                    return
-                            }
-                        })()}                            
-                        <span>{details[0].min_amount} {details[0].currency_from}</span>&nbsp;
-                        <span>({details[0].fiat_equivalent} USD)</span>
-                    </p> : null}                    
-                </Col>
-            </Row>
+            </Row>            
+            {details && details[0] && fiatEquivalent ? <>
+                <Row>
+                    <Col sm={12}>
+                        {details && details[0] ? <p>
+                            <span>{translate({lang: lang, info: "min_amount"})}:&nbsp;</span>                          
+                            <span>{details[0].min_amount} {details[0].currency_from}</span>&nbsp;
+                            <span>({details[0].fiat_equivalent} USD)</span>
+                        </p> : null}                    
+                    </Col>
+                </Row>
+                <Row>
+                    <Col sm={12}>                        
+                        {fiatEquivalent.estimated_amount > -1 ? <>
+                            <p>{translate({lang: lang, info: "your_amount_in_fiat_equivalent"})}:&nbsp;</p>
+                            <p>{fiatEquivalent.estimated_amount} {fiatEquivalent.currency_to}</p>
+                        </> : <p>{translate({lang: lang, info: "amount_too_small_transaction"})}</p>}
+                    </Col>
+                </Row>
+            </> : null}
         </Col>
     </Row>
 }

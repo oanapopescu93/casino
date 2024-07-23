@@ -197,6 +197,8 @@ var word_bank = {
     pay: "支付",
     min_amount: "最低金额",
     fiat_equivalent: "法定货币等值",
+    your_amount_in_fiat_equivalent: "您的金额的法币等值",
+    amount_too_small_transaction: "金额太小，无法进行交易",
     payment_details: "支付详情",
     payment_methode: "支付方式",
     january: "一月",

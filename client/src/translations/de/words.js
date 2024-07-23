@@ -197,6 +197,8 @@ var word_bank = {
     pay: "Bezahlung",
     min_amount: "Mindestbetrag",
     fiat_equivalent: "Gegenwert in Fiatwährung",
+    your_amount_in_fiat_equivalent: "Ihr Betrag in Fiat-Währung",
+    amount_too_small_transaction: "Der Betrag ist zu klein, um eine Transaktion durchzuführen",
     payment_details: "Zahlungsdetails",
     payment_methode: "Zahlungsmethode",
     january: "Januar",
