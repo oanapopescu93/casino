@@ -1,14 +1,12 @@
 import React, {useState} from 'react'
-import { useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { translate } from '../../translations/translate'
 
 function ChangeUsername(props) {
-    const {settings} = props
+    const {settings, user} = props
     const {lang} = settings
     const [choice, setChoice] = useState("")
-    const [error, setError] = useState(false)
-    let user = useSelector(state => state.auth.user)
+    const [error, setError] = useState(false)    
 
     function handleChange(e){
         setError(false)

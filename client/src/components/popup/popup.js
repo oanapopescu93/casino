@@ -23,6 +23,8 @@ import SlotsPrizeTable from "./slotsPrizeTable"
 import PaymentSuccess from "./paymentSuccess"
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import OrderDetails from "./orderDetails"
+import ChatBot from "./chatbot"
+import knowledgeBank from '../../utils/constants/knowledgeBank.json'
 
 function Popup(props){
     const {socket, home, settings} = props
@@ -34,6 +36,7 @@ function Popup(props){
     let data = useSelector(state => state.popup.data)
     let size = useSelector(state => state.popup.size)
     let sticky = useSelector(state => state.popup.sticky)
+    let user = useSelector(state => state.auth.user) 
 
     let dispatch = useDispatch()    
 
@@ -122,11 +125,11 @@ function Popup(props){
                         case "settings":
                             return <Settings settings={settings} home={home} />
                         case "change_pic":
-                            return <ChangeProfilePic settings={settings} profiles={data} home={home} choosePic={(e)=>dashboardChanges(e)} />
+                            return <ChangeProfilePic settings={settings} profiles={data} home={home} user={user} choosePic={(e)=>dashboardChanges(e)} />
                         case "change_username":
-                            return <ChangeUsername settings={settings} changeUsername={(e)=>dashboardChanges(e)} />
+                            return <ChangeUsername settings={settings} user={user} changeUsername={(e)=>dashboardChanges(e)} />
                         case "change_password":
-                            return <ChangePassword settings={settings} changePassword={(e)=>dashboardChanges(e)} />
+                            return <ChangePassword settings={settings} user={user} changePassword={(e)=>dashboardChanges(e)} />
                         case "slots_prizes":
                             return <SlotsPrizeTable settings={settings} slotsPrizes={data}/>
                         case "keno_prizes":
@@ -141,6 +144,8 @@ function Popup(props){
                             return <PaymentSuccess settings={settings} data={data} />
                         case "orderDetails":
                             return <OrderDetails settings={settings} data={data} />
+                        case "chatbot":
+                            return <ChatBot settings={settings} user={user} knowledgeBank={knowledgeBank}/>
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>

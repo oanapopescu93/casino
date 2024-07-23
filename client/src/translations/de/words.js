@@ -72,6 +72,7 @@ var word_bank = {
     bank_donation_text: "Bitte senden Sie Ihre Spende auf das folgende Bankkonto. Sobald die Spende überwiesen wurde, kann es einige Zeit dauern, bis sie im Konto angezeigt wird.",
     donation_footer_text: "Vielen Dank für Ihre Großzügigkeit!",
     donation_ukraine: "Spende für die Ukraine",
+    donate_with_nowpayments: "Spenden mit NOWPayments",
     
     all: "Alle",
     other: "Andere",

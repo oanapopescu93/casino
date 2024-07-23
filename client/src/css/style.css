@@ -103,6 +103,15 @@ body{
                                   supported by Chrome, Edge, Opera and Firefox */
   box-sizing: border-box;
 }
+.iban {
+  -webkit-touch-callout: text; /* iOS Safari */
+    -webkit-user-select: text; /* Safari */
+     -khtml-user-select: text; /* Konqueror HTML */
+       -moz-user-select: text; /* Old versions of Firefox */
+        -ms-user-select: text; /* Internet Explorer/Edge */
+            user-select: text; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p, address {
     margin: 0px;
@@ -1342,7 +1351,7 @@ textarea {
 	right:-265px;
 	width:300px;
 	position:fixed;	
-	z-index:9997;		
+	z-index:1;		
   -webkit-transition:0.7s;
   -moz-transition:0.7s;
   -o-transition: 0.7s;
@@ -3829,6 +3838,105 @@ a.donation_button{
   padding-top: var(--padding_small);
 }
 
+/* CHATBOT */
+.chatbot_button{
+  position: absolute;
+  z-index: 1;
+  bottom: 30px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  line-height: 50px;
+  background-color: transparent;
+  color: var(--color);
+  border: solid 1px var(--color);
+  border-radius: 100%;
+  cursor: pointer;
+}
+.chatbot_button:hover{
+  background-color: var(--transparent_color);
+  color: var(--color);
+}
+.chatbot_textarea_container{
+  border: solid 1px var(--bg);
+  padding: var(--padding);
+  margin-bottom: var(--padding);
+  background-color: var(--transparent_2);
+  position: relative;
+  z-index: 1;
+  height: 400px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.chatbot_textarea_container:before{
+	content: "";
+	background-image: url('./../img/noise.png'), url('./../img/bg001.jpg');
+	background-repeat: repeat, repeat;
+	background-size: auto, 200px auto;
+	position:absolute;
+	z-index: 1;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	width:100%;
+  opacity: 0.4;
+}
+.chatbot_textarea_container:after{
+	content: "";
+	background-color:transparent;
+	background-image: radial-gradient(rgba(0,0,0,0.2), black);
+	position:absolute;
+	z-index: 1;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	width:100%;
+}
+.chatbot_textarea{
+  position: absolute;
+  z-index: 2;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  padding: var(--padding);
+  font-size: 14px;
+  line-height: 16px;
+  text-align: left;
+  overflow: auto;  
+}
+.chatbot_input{
+  background-color: var(--bg);
+  color: var(--color)!important;
+  height: 30px;
+  border-radius: var(--padding_big);
+  padding: var(--padding_small) var(--padding);
+}
+.chatbot_textarea .bot_message{
+  text-align: left;
+}
+.chatbot_textarea .user_message{
+  text-align: right;
+}
+.chatbot_textarea .message_box{
+  background-color: var(--transparent_color);
+  border: solid 1px var(--color);
+  color: var(--color);
+  border-radius: var(--radius_small);
+  padding: var(--padding_small) var(--padding);
+  margin-bottom: var(--padding_small);
+  display: inline-block;
+  vertical-align: top;
+}
+.chatbot_container button{
+  width: 100%;
+  max-width: 150px;
+}
+
 /* media */
 @media (max-width: 1600px){
 	.shop_shader{
@@ -4249,6 +4357,15 @@ a.donation_button{
   .payment_details_body{
     border-bottom: solid 1px var(--color);
   }
+
+  /* CHATBOT */
+  .chatbot_textarea{
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .chatbot_input{
+    margin-bottom: var(--padding_small);
+  }
 }
 @media (max-width:480px) {
   .donation_box_tabs li{
@@ -4351,6 +4468,11 @@ a.donation_button{
     height: auto;
     line-height: 12px;
     padding: var(--padding);
+  }
+
+  /* CHATBOT */
+  .chatbot_textarea_container{
+    height: 140px;
   }
 }
 

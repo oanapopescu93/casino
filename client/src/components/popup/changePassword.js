@@ -1,16 +1,14 @@
 import React, {useState} from 'react'
-import { useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { translate } from '../../translations/translate'
 import { validateInput } from '../../utils/validate'
 
 function ChangePassword(props) {
-    const {settings} = props
+    const {settings, user} = props
     const {lang} = settings
     const [choice, setChoice] = useState("")
     const [error, setError] = useState(false)
     const [errorPassword, setErrorPassword] = useState(false)
-    let user = useSelector(state => state.auth.user) 
 
     function handleChange(e){
         setError(false)

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { translate } from '../../translations/translate'
 import { decryptData } from '../../utils/crypto'
@@ -7,11 +7,10 @@ import { changePic } from '../../reducers/auth'
 import Carousel from '../carousel/carousel'
 
 function ChangeProfilePic(props) {
-    const {settings, home} = props
+    const {settings, home, user} = props
     const {lang} = settings
     const {finances} = home
-
-    let user = useSelector(state => state.auth.user)
+    
     let profiles = home.profiles
     let picId = user.profile_pic ? decryptData(user.profile_pic) : 0
     let indexProfile = profiles.findIndex((x) => x.id === parseInt(picId))

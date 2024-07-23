@@ -7,6 +7,9 @@ import Language from '../settings/language'
 import Panel from '../games/sidebar/panel'
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import { useDispatch } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMessage } from '@fortawesome/free-solid-svg-icons'
+import { changePopup } from '../../reducers/popup'
 
 function Salon(props) {    
     const {page, settings} = props
@@ -19,6 +22,16 @@ function Salon(props) {
         dispatch(changeGame({table_name: "whack_a_rabbit"}))
     }
 
+    function handleChatBot(){
+        let payload = {
+            open: true,
+            template: "chatbot",
+            title: "chatbot",
+            size: "lg",
+        }
+        dispatch(changePopup(payload))
+    }
+
     return <>
         {page.game ? <Game {...props} /> : <>
             <Language title={lang} />
@@ -29,6 +42,7 @@ function Salon(props) {
             <SalonSidebarLeft lang={lang} />
             <Panel {...props} />
             <div style={{'display': 'none'}} onClick={()=>handleWhack()}>test whack</div>
+            <div className="chatbot_button" onClick={()=>handleChatBot()}><FontAwesomeIcon icon={faMessage} /></div>
         </>}
     </>
 }

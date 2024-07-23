@@ -72,6 +72,7 @@ var word_bank = {
     bank_donation_text: "请将您的捐赠发送到以下银行账户。捐赠转账后，可能需要一些时间反映在账户中。",
     donation_footer_text: "感谢您的慷慨！",
     donation_ukraine: "乌克兰捐赠",
+    donate_with_nowpayments: "通过NOWPayments捐款",
 
     all: "所有",
     other: "其他",

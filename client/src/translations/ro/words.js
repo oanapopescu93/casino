@@ -72,7 +72,7 @@ var word_bank = {
     bank_donation_text: "Vă rugăm să trimiteți donația dvs. la următorul cont bancar. Odată ce donația este transferată, ar putea dura ceva timp până când este reflectată în cont.",
     donation_footer_text: "Vă mulțumim pentru generozitatea dvs.!",
     donation_ukraine: "Donație pentru Ucraina",
-
+    donate_with_nowpayments: "Donează cu NOWPayments",
 
     all: "Tot",
     other: "Altceva",

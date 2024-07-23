@@ -72,7 +72,7 @@ var word_bank = {
     bank_donation_text: "Si prega di inviare la tua donazione al seguente conto bancario. Una volta trasferita la donazione, potrebbe richiedere del tempo per essere riflessa sul conto.",
     donation_footer_text: "Grazie per la tua generosità!",
     donation_ukraine: "Donazione per l'Ucraina",
-
+    donate_with_nowpayments: "Dona con NOWPayments",
 
     all: "Tutto",
     other: "Altro",
