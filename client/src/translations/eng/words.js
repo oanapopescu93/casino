@@ -351,7 +351,13 @@ var word_bank = {
     our_casino: "our Casino",
 
     //401
-    page_not_found_text: "Sorry, the page you are looking for does not exist. It might have been moved or deleted, or you might have typed the URL incorrectly."
+    page_not_found_text: "Sorry, the page you are looking for does not exist. It might have been moved or deleted, or you might have typed the URL incorrectly.",
+
+    // ChatBot
+    anonymous: "Anonymous",
+    greetings01: "Hello",
+    greetings02: "I am here to respond to all your questions regarding BunnyBet.",
+    error_chatbot: "I don't understand your question.",
 }
 
 export const wordsEng = (info)=>{

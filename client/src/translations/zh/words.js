@@ -352,6 +352,12 @@ var word_bank = {
     
     //401
     page_not_found_text: "抱歉，您查找的页面不存在。可能已移动或删除，或者您输入了错误的网址。",
+
+    // ChatBot
+    anonymous: "匿名",
+    greetings01: "你好",
+    greetings02: "我在这里回答你关于BunnyBet的所有问题。",
+    error_chatbot: "我不明白你的问题。",
 }
 
 export const wordsZh = (info)=>{

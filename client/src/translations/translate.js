@@ -44,7 +44,6 @@ export const translate = function (data){
         case "ENG":
         default:
             word = wordsEng(info)
-            break
     }
     if(word){
         return word

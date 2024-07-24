@@ -8,6 +8,7 @@ import HowToPlayGames from './howToPlayGames'
 import HowToPlayTitles from './howToPlayTitles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import ChatBotButton from '../../partials/chatBotButton'
 
 function HowToPlay(props){
     const {page, settings} = props
@@ -41,10 +42,11 @@ function HowToPlay(props){
         <div className="page_content">
             {!game ? <HowToPlayTitles lang={lang} handleChoice={(e)=>handleChoice(e)} /> : <HowToPlayGames game={game} lang={lang} />}
         </div>
-        <div className="text_center">
+        <div className="button_action_group">
+            <ChatBotButton />
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
-            </Button>
+            </Button>            
         </div>
     </div>
 }

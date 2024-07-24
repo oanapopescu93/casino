@@ -1,6 +1,5 @@
 import React, {useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { getWindowDimensions } from '../../utils/utils'
 import { changeGame, changeGamePage } from '../../reducers/page'
 import { checkWinterMonths } from '../../utils/special_occasions'
 import { translate } from '../../translations/translate'
@@ -10,13 +9,13 @@ import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import Carousel from '../carousel/carousel'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
+import ChatBotButton from '../partials/chatBotButton'
 
 function SalonGames(props){
-    const {home, settings} = props
+    const {home, settings, width, height} = props
     const {products} = home
     const {lang} = settings
-
-    const [width, setWidth] = useState(getWindowDimensions().width)
+    
     const [casinoGames, setCasinoGames] = useState(null)
     const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
     const [index, setIndex] = useState(0)
@@ -58,10 +57,6 @@ function SalonGames(props){
         ]
     }
 
-    function handleResize(){
-        setWidth(getWindowDimensions().width)
-    }
-
     useEffect(() => {
         create_casino_games()
 
@@ -70,12 +65,6 @@ function SalonGames(props){
 		if(winter){ // will appear only on winter months
 			setShowWinter(true)
 		}
-
-        if (typeof window !== "undefined") {
-            window.addEventListener("resize", handleResize)
-            handleResize()
-            return () => window.removeEventListener("resize", handleResize)
-        }
 	}, [])
 
     function create_casino_games(){
@@ -172,6 +161,15 @@ function SalonGames(props){
             </Col>
             <Col sm={2} />
         </Row>
+        {height >= 500 ? <Row>
+            <Col sm={2} />
+            <Col sm={8}>
+                <div className="chatbot_button_container_big">
+                    <ChatBotButton />
+                </div>
+            </Col>
+            <Col sm={2} />
+        </Row> : null}
     </div>
 }
 

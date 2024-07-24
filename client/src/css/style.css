@@ -570,7 +570,7 @@ textarea {
   margin-bottom: var(--padding);
 }
 .cell_howToPlay{
-  margin-bottom: 25px
+  margin-bottom: 20px
 }
 .cell_salon h4, .cell_market h4{
   font-size: 20px;
@@ -3839,24 +3839,14 @@ a.donation_button{
 }
 
 /* CHATBOT */
-.chatbot_button{
-  position: absolute;
-  z-index: 1;
-  bottom: 30px;
-  right: 10px;
-  width: 50px;
-  height: 50px;
-  font-size: 20px;
-  line-height: 50px;
-  background-color: transparent;
-  color: var(--color);
-  border: solid 1px var(--color);
-  border-radius: 100%;
-  cursor: pointer;
+.chatbot_button_container_big{
+  text-align: right;
 }
-.chatbot_button:hover{
-  background-color: var(--transparent_color);
-  color: var(--color);
+.chatbot_button_container_small{
+  position: absolute;
+  z-index: 9999;
+  top: 10px;
+  right: 10px
 }
 .chatbot_textarea_container{
   border: solid 1px var(--bg);
@@ -3865,9 +3855,26 @@ a.donation_button{
   background-color: var(--transparent_2);
   position: relative;
   z-index: 1;
-  height: 400px;
+  height: 50vh;
   border-radius: var(--radius);
   overflow: hidden;
+}
+@media (max-height: 1200px) {
+  .chatbot_textarea_container {
+      height: 50vh;
+  }
+}
+
+@media (max-height: 600px) {
+  .chatbot_textarea_container {
+      height: 60vh; /* 50% of viewport height */
+  }
+}
+
+@media (max-height: 480px) {
+  .chatbot_textarea_container {
+      height: 60vh; /* 60% of viewport height */
+  }
 }
 .chatbot_textarea_container:before{
 	content: "";
@@ -3931,10 +3938,6 @@ a.donation_button{
   margin-bottom: var(--padding_small);
   display: inline-block;
   vertical-align: top;
-}
-.chatbot_container button{
-  width: 100%;
-  max-width: 150px;
 }
 
 /* media */
@@ -4232,7 +4235,7 @@ a.donation_button{
   }  
 
   .how_to_play_titles{
-    max-height: 390px;
+    max-height: 370px;
   }
 }
 @media (max-width:600px) {
@@ -4363,9 +4366,6 @@ a.donation_button{
     font-size: 12px;
     line-height: 14px;
   }
-  .chatbot_input{
-    margin-bottom: var(--padding_small);
-  }
 }
 @media (max-width:480px) {
   .donation_box_tabs li{
@@ -4453,7 +4453,7 @@ a.donation_button{
   .button_action_group{
     position: fixed;
     z-index: 9999;
-    top: 0px;
+    top: 20px;
     left: 0px;
     width: 70px;
   }
@@ -4472,7 +4472,7 @@ a.donation_button{
 
   /* CHATBOT */
   .chatbot_textarea_container{
-    height: 140px;
+    height: 180px;
   }
 }
 

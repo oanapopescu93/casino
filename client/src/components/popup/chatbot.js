@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
 import { translate } from '../../translations/translate'
+import { knowledgeBankTranslations } from '../../knowledgeBankTranslations/knowledgeBankTranslations'
 import { decryptData } from '../../utils/crypto'
 import $ from "jquery"
 
 function ChatBot(props) {
-    const {user, settings, knowledgeBank} = props
+    const {user, settings} = props
     const {lang} = settings
-    let name = user.user ? decryptData(user.user) : "Anonymous"
+    let name = user.user ? decryptData(user.user) : translate({lang: lang, info: "anonymous"})
+    let error_chatbot = "error_chatbot"
+    let knowledgeBank = knowledgeBankTranslations()
 
     const [inputText, setInputText] = useState('')
     const [messages, setMessages] = useState([])
@@ -15,26 +18,28 @@ function ChatBot(props) {
 
     let chatbot_textarea = useRef(null)
 
-    let erros = ["I don't know", "I don't understand"]
-
-    useEffect(() => {    
+    useEffect(() => {
         const timeoutId = setTimeout(() => {
             addInitialMessages()
-        }, 500)        
-        return () => clearTimeout(timeoutId)
+        }, 500)
+        return () => {
+            setInputText('')
+            setMessages([])
+            clearTimeout(timeoutId)
+        }      
     }, [])
 
     function addInitialMessages(){
-        post("Typing...", "Bot", "bot", true)
+        post("...", "Bot", "bot", true)
         setTimeout(() => {
-            post("Hello " + name, "Bot", "bot", false)
+            post(translate({lang: lang, info: "greetings01"}) + " " + name, "Bot", "bot", false)
             setTimeout(() => {
-                post("Typing...", "Bot", "bot", true)
+                post("...", "Bot", "bot", true)
                 setTimeout(() => {
-                    post("I am here to respond to all your questions regarding BunnyBet", "Bot", "bot", false)
-                }, 600)
-            }, 600)
-        }, 600)
+                    post(translate({lang: lang, info: "greetings02"}), "Bot", "bot", false)
+                }, 500)
+            }, 500)
+        }, 500)
     }
 
     function handleInputChange(e){
@@ -48,7 +53,7 @@ function ChatBot(props) {
             setInputText('')            
             setTimeout(() => {
                 handleBotResponse(inputText)
-            }, 600)
+            }, 500)
         }
     }
 
@@ -65,10 +70,10 @@ function ChatBot(props) {
     }, [inputText, messages])
 
     function handleBotResponse(input){
-        post("Typing...", "Bot", "bot", true)
+        post("...", "Bot", "bot", true)
         setTimeout(() => {
             search(input)
-        }, 600)
+        }, 500)
     }
 
     function search(input){
@@ -102,7 +107,7 @@ function ChatBot(props) {
 
             post(updated_response, "Bot", "bot", false)
         } else {            
-            post("I don't know", "Bot", "bot", false) //no relevant response has been found --> we give a standard response
+            post(translate({info: error_chatbot, lang: lang}), "Bot", "bot", false) //no relevant response has been found --> we give a standard response
         }
 
         setIsSending(false)
@@ -168,8 +173,7 @@ function ChatBot(props) {
 		}
 	}
 
-    return <div className="chatbot_container">
-        <p>{translate({lang: lang, info: "under_construction"})}</p>
+    return <div className="chatbot_container">        
         <Row>
             <Col sm={12}>
                 <div className="chatbot_textarea_container shadow_concav">
@@ -187,7 +191,7 @@ function ChatBot(props) {
             </Col>
         </Row>
         <Row>
-            <Col sm={8} md={8} lg={10}>
+            <Col xs={8} sm={8} md={8} lg={10}>
                 <input 
                     id="chatbot_input" 
                     className="chatbot_input" 
@@ -197,7 +201,7 @@ function ChatBot(props) {
                     onChange={(e)=>handleInputChange(e)} 
                 />
             </Col>
-            <Col sm={4} md={4} lg={2}>
+            <Col xs={4} sm={4} md={4} lg={2}>
                 <Button disabled={isSending} type="button" className="mybutton button_fullcolor_dark shadow_convex" onClick={()=>handleSend()}>
                     {translate({lang: lang, info: "send"})}
                 </Button>

@@ -352,6 +352,12 @@ var word_bank = {
     
     //401
     page_not_found_text: "Lo siento, la página que busca no existe. Es posible que se haya movido o eliminado, o que haya ingresado incorrectamente la URL.",
+
+    // ChatBot
+    anonymous: "Anónimo",
+    greetings01: "Hola",
+    greetings02: "Estoy aquí para responder todas tus preguntas sobre BunnyBet.",
+    error_chatbot: "No entiendo tu pregunta.",
 }
 
 export const wordsEs = (info)=>{

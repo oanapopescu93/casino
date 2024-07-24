@@ -24,7 +24,6 @@ import PaymentSuccess from "./paymentSuccess"
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import OrderDetails from "./orderDetails"
 import ChatBot from "./chatbot"
-import knowledgeBank from '../../utils/constants/knowledgeBank.json'
 
 function Popup(props){
     const {socket, home, settings} = props
@@ -145,7 +144,7 @@ function Popup(props){
                         case "orderDetails":
                             return <OrderDetails settings={settings} data={data} />
                         case "chatbot":
-                            return <ChatBot settings={settings} user={user} knowledgeBank={knowledgeBank}/>
+                            return <ChatBot settings={settings} user={user} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>
