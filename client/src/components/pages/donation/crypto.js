@@ -33,16 +33,16 @@ function CryptoDonation(props){
                     .map((item, i) => {
                         if(item.text !== "-"){
                             if(item.link){
-                                return <li key={i} className="donation_link donation_link_crypto">
+                                return <li key={i} className="donation_link donation_link_crypto selectable">
                                     <a href={item.link}>
-                                        <span>{item.title}:</span>&nbsp;
-                                        <strong>{item.text}</strong>
+                                        <span className="crypto_label">{item.title}:</span>&nbsp;
+                                        <strong className="crypto_text selectable">{item.text}</strong>
                                     </a>
                                 </li>
                             }
-                            return <li key={i} className="donation_link donation_link_crypto" onClick={()=>copyToClipboard(i, item)}>
+                            return <li key={i} className="donation_link donation_link_crypto selectable" onClick={()=>copyToClipboard(i, item)}>
                                 <span className="crypto_label">{item.title}:</span>&nbsp;
-                                <strong className="crypto_text">{item.text}</strong>&nbsp;
+                                <strong className="crypto_text selectable">{item.text}</strong>&nbsp;
                                 <span className="crypto_icon"><FontAwesomeIcon icon={copy && index === parseInt(i) ? faCheck : faClone} /></span>
                             </li>
                         } else {
