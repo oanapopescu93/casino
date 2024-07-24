@@ -100,12 +100,7 @@ function ChatBot(props) {
             const randomIndex = Math.floor(Math.random() * best_responses.length)
             let best_response = best_responses[randomIndex]
 
-            // Replace placeholders with actual details
-            let updated_response = best_response.replace(/\/\/([^/]+)\/\//g, (match, p1) => {
-                return best_responses_details[p1] || match
-            })
-
-            post(updated_response, "Bot", "bot", false)
+            post(best_response, "Bot", "bot", false)
         } else {            
             post(translate({info: error_chatbot, lang: lang}), "Bot", "bot", false) //no relevant response has been found --> we give a standard response
         }
@@ -182,7 +177,8 @@ function ChatBot(props) {
                             <div key={index} className={`message ${msg.user === name ? 'user_message' : 'bot_message'}`}>
                                 <div key={index} className="message_box">
                                     <p><strong>{msg.user}:</strong></p>
-                                    <p>{msg.message}</p>
+                                    {/* <p>{msg.message}</p> */}
+                                    <p dangerouslySetInnerHTML={{ __html: msg.message }}></p>
                                 </div>
                             </div>
                         ))}

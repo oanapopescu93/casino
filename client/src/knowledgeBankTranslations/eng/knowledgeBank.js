@@ -74,9 +74,9 @@ let array = [
         "type": 1, 
         "queries": ["How can I contact " + info.casino_name + "?", "What is the contact information?", "How do I get in touch with you?"],
         "responses": [
-            "You can contact us via email at " + info.email + " or phone at " + info.phone + ".",
-            "Reach out to " + info.casino_name + " through email at " + info.email + " or call us at " + info.phone + ".",
-            "For inquiries, email us at " + info.email + " or call us at " + info.phone + "."
+            "You can contact us via email at <a href='mailto:" + info.email + "'>" + info.email + "</a> or phone at <a href='tel:" + info.phone + "'>" + info.phone_text + "</a>.",
+            "Reach out to " + info.casino_name + " through email at <a href='mailto:" + info.email + "'>" + info.email + "</a> or call us at <a href='tel:" + info.phone + "'>" + info.phone_text + "</a>.",
+            "For inquiries, email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> or call us at <a href='tel:" + info.phone + "'>" + info.phone_text + "</a>."
         ]
     },
     {
@@ -128,9 +128,9 @@ let array = [
         "type": 1, 
         "queries": ["How can I provide feedback?", "Where can I leave my comments?", "Can I submit suggestions or feedback?"],
         "responses": [
-            "You can provide feedback through our Contact Form or email us at " + info.email + ".",
+            "You can provide feedback through our Contact Form or email us at <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
             "Submit your comments and suggestions via the Contact Form on our website or send us an email.",
-            "Feedback can be sent through our Contact Form or by emailing us at " + info.email + "."
+            "Feedback can be sent through our Contact Form or by emailing us at <a href='mailto:" + info.email + "'>" + info.email + "</a>."
         ]
     },
     {
@@ -1044,18 +1044,18 @@ let array = [
         "type": 7, 
         "queries": ["How can I contact customer support?", "What is the customer support email?", "How do I reach your support team?"],
         "responses": [
-            "You can contact our customer support team by emailing " + info.email + ".",
-            "For support, please email us at " + info.email + ".",
-            "Reach out to our support team at " + info.email + " for assistance."
+            "You can contact our customer support team by emailing <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "For support, please email us at <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Reach out to our support team at <a href='mailto:" + info.email + "'>" + info.email + "</a> for assistance."
         ]
     },
     {
         "type": 7, 
         "queries": ["Is there a phone number for customer support?", "Can I call for help?", "Do you offer phone support?"],
         "responses": [
-            "You can reach our support team by calling " + info.phone + ".",
-            "For phone support, call us at " + info.phone + ".",
-            "Contact our customer support team at " + info.phone + " for help."
+            "You can reach our support team by calling <a href='tel:" + info.phone +  + "'>" + info.phone_text + "</a>.",
+            "For phone support, call us at <a href='tel:" + info.phone +  + "'>" + info.phone_text + "</a>.",
+            "Contact our customer support team at <a href='tel:" + info.phone +  + "'>" + info.phone_text + "</a> for help."
         ]
     },
     {
@@ -1080,7 +1080,7 @@ let array = [
         "type": 7, 
         "queries": ["Can I chat with customer support?", "Do you offer live chat support?", "Is there a chat option for customer support?"],
         "responses": [
-            "Currently, we do not offer live chat support, but you can email us at " + info.email + ".",
+            "Currently, we do not offer live chat support, but you can email us at <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
             "Live chat support is not available at this time. Please contact us via email.",
             "We do not have live chat support currently. Please reach out through email."
         ]
@@ -1089,9 +1089,9 @@ let array = [
         "type": 7, 
         "queries": ["How do I submit a support ticket?", "Is there a ticket system for support?", "Can I open a support ticket?"],
         "responses": [
-            "To submit a support ticket, please email us at " + info.email + " with your issue details.",
-            "We use an email-based support system. Send your inquiries to " + info.email + ".",
-            "For support, email your issue to " + info.email + " and our team will assist you."
+            "To submit a support ticket, please email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> with your issue details.",
+            "We use an email-based support system. Send your inquiries to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "For support, email your issue to <a href='mailto:" + info.email + "'>" + info.email + "</a> and our team will assist you."
         ]
     },
     {
@@ -1116,9 +1116,9 @@ let array = [
         "type": 7, 
         "queries": ["How do I escalate my support issue?", "Can I speak to a manager?", "What if I need more help with my issue?"],
         "responses": [
-            "If you need to escalate an issue, please email " + info.email + " and request further assistance.",
-            "For escalation, contact our support team at " + info.email + " and request higher-level assistance.",
-            "Email " + info.email + " and ask for escalation if your issue requires additional support."
+            "If you need to escalate an issue, please email <a href='mailto:" + info.email + "'>" + info.email + "</a> and request further assistance.",
+            "For escalation, contact our support team at <a href='mailto:" + info.email + "'>" + info.email + "</a> and request higher-level assistance.",
+            "Email <a href='mailto:" + info.email + "'>" + info.email + "</a> and ask for escalation if your issue requires additional support."
         ]
     },
     {
@@ -1126,7 +1126,7 @@ let array = [
         "queries": ["Do you have a FAQ section?", "Where can I find answers to common questions?", "Is there a knowledge base for common issues?"],
         "responses": [
             "Currently, we do not have a FAQ section, but our support team is available to answer your questions via email.",
-            "We are working on a FAQ section. For now, please contact us at " + info.email + " for any questions.",
+            "We are working on a FAQ section. For now, please contact us at <a href='mailto:" + info.email + "'>" + info.email + "</a> for any questions.",
             "A FAQ section is planned for future updates. In the meantime, please reach out to support via email."
         ]
     },
@@ -1143,81 +1143,81 @@ let array = [
         "type": 7, 
         "queries": ["Can I provide feedback on the service?", "How do I give feedback?", "Where can I send my suggestions?"],
         "responses": [
-            "We welcome your feedback! Please email your suggestions to " + info.email + ".",
-            "Feel free to send your feedback and suggestions to us at " + info.email + ".",
-            "Your feedback is important to us. Please email your thoughts to " + info.email + "."
+            "We welcome your feedback! Please email your suggestions to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Feel free to send your feedback and suggestions to us at <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Your feedback is important to us. Please email your thoughts to <a href='mailto:" + info.email + "'>" + info.email + "</a>."
         ]
     },
     {
         "type": 7, 
         "queries": ["How do I update my contact information?", "Can I change my email or phone number?", "How do I modify my contact details?"],
         "responses": [
-            "To update your contact information, please email us at " + info.email + " with your new details.",
-            "You can change your contact information by sending an email to " + info.email + ".",
-            "Email us at " + info.email + " to update your contact details."
+            "To update your contact information, please email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> with your new details.",
+            "You can change your contact information by sending an email to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> to update your contact details."
         ]
     },
     {
         "type": 7, 
         "queries": ["Can I track the status of my support request?", "How do I know if my issue is being resolved?", "Is there a way to follow up on my support inquiry?"],
         "responses": [
-            "You can follow up on your support request by emailing " + info.email + " and referencing your initial inquiry.",
-            "For status updates on your support request, email " + info.email + " and mention your original issue.",
-            "Track your support request by contacting us at " + info.email + " and providing your initial inquiry details."
+            "You can follow up on your support request by emailing <a href='mailto:" + info.email + "'>" + info.email + "</a> and referencing your initial inquiry.",
+            "For status updates on your support request, email <a href='mailto:" + info.email + "'>" + info.email + "</a> and mention your original issue.",
+            "Track your support request by contacting us at <a href='mailto:" + info.email + "'>" + info.email + "</a> and providing your initial inquiry details."
         ]
     },
     {
         "type": 7, 
         "queries": ["How do I close my account?", "Can I delete my account?", "How do I permanently remove my account?"],
         "responses": [
-            "To close your account, please email us at " + info.email + " with your request.",
-            "You can delete your account by sending a request to " + info.email + ".",
-            "Email us at " + info.email + " to permanently remove your account."
+            "To close your account, please email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> with your request.",
+            "You can delete your account by sending a request to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> to permanently remove your account."
         ]
     },
     {
         "type": 7, 
         "queries": ["What should I do if I forget my password?", "How do I reset my password?", "Can I recover a forgotten password?"],
         "responses": [
-            "If you forget your password, please email " + info.email + " for assistance with resetting it.",
-            "To reset your password, contact our support team at " + info.email + ".",
-            "Forgot your password? Email us at " + info.email + " for help with recovery."
+            "If you forget your password, please email <a href='mailto:" + info.email + "'>" + info.email + "</a> for assistance with resetting it.",
+            "To reset your password, contact our support team at <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Forgot your password? Email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> for help with recovery."
         ]
     },
     {
         "type": 7, 
         "queries": ["Do you offer support for technical issues?", "Can you help with technical problems?", "What should I do if I encounter a technical issue?"],
         "responses": [
-            "Yes, our support team can assist with technical issues. Email us at " + info.email + " with details of your problem.",
-            "For technical support, contact us at " + info.email + " and describe your issue.",
-            "We offer assistance for technical problems. Please email " + info.email + " with your technical concerns."
+            "Yes, our support team can assist with technical issues. Email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> with details of your problem.",
+            "For technical support, contact us at <a href='mailto:" + info.email + "'>" + info.email + "</a> and describe your issue.",
+            "We offer assistance for technical problems. Please email <a href='mailto:" + info.email + "'>" + info.email + "</a> with your technical concerns."
         ]
     },
     {
         "type": 7, 
         "queries": ["Is there a way to provide feedback on the app?", "How can I suggest improvements?", "Where do I send app feedback?"],
         "responses": [
-            "We appreciate your feedback on the app. Please email your suggestions to " + info.email + ".",
-            "Send your app improvement suggestions to us at " + info.email + ".",
-            "We value your input. Email your feedback on the app to " + info.email + "."
+            "We appreciate your feedback on the app. Please email your suggestions to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Send your app improvement suggestions to us at <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "We value your input. Email your feedback on the app to <a href='mailto:" + info.email + "'>" + info.email + "</a>."
         ]
     },
     {
         "type": 7, 
         "queries": ["Can I request new features?", "How do I suggest a new feature?", "Is there a way to propose new features for the app?"],
         "responses": [
-            "To suggest new features, please email your ideas to " + info.email + ".",
-            "We welcome feature requests. Send your suggestions to " + info.email + ".",
-            "Propose new features by emailing us at " + info.email + "."
+            "To suggest new features, please email your ideas to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "We welcome feature requests. Send your suggestions to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "Propose new features by emailing us at <a href='mailto:" + info.email + "'>" + info.email + "</a>."
         ]
     },
     {
         "type": 7, 
         "queries": ["How do I report a bug?", "Can I report issues with the app?", "Where do I send bug reports?"],
         "responses": [
-            "To report a bug, please email us at " + info.email + " with a detailed description of the issue.",
-            "Report any issues or bugs by sending an email to " + info.email + ".",
-            "For bug reports, contact our support team at " + info.email + " with details of the problem."
+            "To report a bug, please email us at <a href='mailto:" + info.email + "'>" + info.email + "</a> with a detailed description of the issue.",
+            "Report any issues or bugs by sending an email to <a href='mailto:" + info.email + "'>" + info.email + "</a>.",
+            "For bug reports, contact our support team at <a href='mailto:" + info.email + "'>" + info.email + "</a> with details of the problem."
         ]
     },
 

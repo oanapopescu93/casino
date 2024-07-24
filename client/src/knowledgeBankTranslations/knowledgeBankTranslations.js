@@ -9,8 +9,8 @@ import { knowledgeBankRu } from "./ru/knowledgeBank"
 import { knowledgeBankZh } from "./zh/knowledgeBank"
 
 export const knowledgeBankTranslations = function (data){
-    if(!data) return []
-    let lang = data.lang ? data.lang : "ENG"    
+    let lang = "ENG"
+    lang = data && data.lang ? data.lang : "ENG"   
     let knowledgeBase = []
     switch(lang){
         case "DE":

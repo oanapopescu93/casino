@@ -103,7 +103,7 @@ body{
                                   supported by Chrome, Edge, Opera and Firefox */
   box-sizing: border-box;
 }
-.iban {
+.selectable {
   -webkit-touch-callout: text; /* iOS Safari */
     -webkit-user-select: text; /* Safari */
      -khtml-user-select: text; /* Konqueror HTML */
@@ -1851,6 +1851,9 @@ a.donation_button{
   line-height: 23px;
   max-width: 200px;
   margin: var(--padding_small) 0px;
+}
+.iban_text, .crypto_text{
+  cursor: pointer;
 }
 
 /* CAREER */
