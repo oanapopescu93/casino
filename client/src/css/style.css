@@ -3944,6 +3944,8 @@ a.donation_button{
   margin-bottom: var(--padding_small);
   display: inline-block;
   vertical-align: top;
+  font-size: 14px;
+  line-height: 16px;
 }
 
 /* media */
