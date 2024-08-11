@@ -93,6 +93,9 @@ import 	whack_a_rabbit00 from '../img/whack_a_rabbit/whack_a_rabbit00.png'
 import 	whack_a_rabbit01 from '../img/whack_a_rabbit/whack_a_rabbit01.png'
 import 	whack_a_rabbit02 from '../img/whack_a_rabbit/whack_a_rabbit02.png'
 import 	whack_a_rabbit03 from '../img/whack_a_rabbit/whack_a_rabbit03.png'
+import 	whack_a_rabbit01_hit from '../img/whack_a_rabbit/whack_a_rabbit01_hit.png'
+import 	whack_a_rabbit02_hit from '../img/whack_a_rabbit/whack_a_rabbit02_hit.png'
+import 	whack_a_rabbit03_hit from '../img/whack_a_rabbit/whack_a_rabbit03_hit.png'
 import 	hammer01 from '../img/whack_a_rabbit/hammer01.png'
 import 	hammer02 from '../img/whack_a_rabbit/hammer02.png'
 
@@ -272,7 +275,10 @@ export const get_whack_a_rabbit_img = ()=>{
 	  	{id: 1, src: whack_a_rabbit01},
 		{id: 2, src: whack_a_rabbit02},
 		{id: 3, src: whack_a_rabbit03},
-		{id: 4, src: hammer01},
-		{id: 5, src: hammer02},
+	  	{id: 4, src: whack_a_rabbit01_hit},
+		{id: 5, src: whack_a_rabbit02_hit},
+		{id: 6, src: whack_a_rabbit03_hit},
+		{id: 7, src: hammer01},
+		{id: 8, src: hammer02},
 	]
 }

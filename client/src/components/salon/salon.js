@@ -7,21 +7,21 @@ import Language from '../settings/language'
 import Panel from '../games/sidebar/panel'
 import ChatBotButton from '../partials/chatBotButton'
 import { getWindowDimensions } from '../../utils/utils'
-// import { changeGamePage, changePage, changeGame } from "../../reducers/page"
-// import { useDispatch } from 'react-redux'
+import { changeGamePage, changePage, changeGame } from "../../reducers/page"
+import { useDispatch } from 'react-redux'
 
 function Salon(props) {    
     const {page, settings} = props
     const {lang} = settings
     const [width, setWidth] = useState(getWindowDimensions().width)
     const [height, setHeight] = useState(getWindowDimensions().height)
-    // let dispatch = useDispatch()
+    let dispatch = useDispatch()
 
-    // function handleWhack(){
-    //     dispatch(changePage('Salon'))
-    //     dispatch(changeGamePage(null))
-    //     dispatch(changeGame({table_name: "whack_a_rabbit"}))
-    // }
+    function handleWhack(){
+        dispatch(changePage('Salon'))
+        dispatch(changeGamePage(null))
+        dispatch(changeGame({table_name: "whack_a_rabbit"}))
+    }
 
     function handleResize(){
         setWidth(getWindowDimensions().width)
@@ -50,7 +50,7 @@ function Salon(props) {
             </div>
             <SalonSidebarLeft lang={lang} />
             <Panel {...props} />
-            {/* <div onClick={()=>handleWhack()}>test whack</div> */}
+            <div onClick={()=>handleWhack()}>test whack</div>
         </>}
     </>
 }

@@ -9,6 +9,7 @@ function Target(config){
 	let self = this
     self.id = config.id
 	self.img = config.img
+    self.img_hit = config.img_hit
     self.hole = config.hole
 	self.x = config.x
 	self.y = config.y
@@ -23,7 +24,11 @@ function Target(config){
         if(self.active){
             ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
         } else {
-            ctx.drawImage(self.hole, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
+            if(self.killed){
+                ctx.drawImage(self.img_hit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
+            } else {
+                ctx.drawImage(self.hole, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
+            }
         }
 	}
     self.change_active = function(status){
@@ -41,7 +46,7 @@ function whack_game(props){
     this.secs = 10
     let duration = 1000
     let lastSpawn = Date.now()  
-    let spawnRate = Math.round(Math.random() * (2000 - 1000) + 1000)
+    let spawnRate = Math.round(Math.random() * (4000 - 2000) + 2000)
 
     let canvas
     let canvas_hammer
@@ -131,7 +136,7 @@ function whack_game(props){
     this.drawHammerAtPosition = function(x, y){        
         let hammer_x = x - target_size[0]/2
         let hammer_y = y - target_size[1]/2
-        ctx_hammer.drawImage(self.images[4], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
+        ctx_hammer.drawImage(self.images[7], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
     }
 
     this.getTimer = function(secs){
@@ -188,7 +193,7 @@ function whack_game(props){
             let currentTime = Date.now()
             if (currentTime > (lastSpawn + spawnRate)) {
                 lastSpawn = currentTime
-                spawnRate = Math.round(Math.random() * (2000 - 1000) + 1000)
+                spawnRate = Math.round(Math.random() * (4000 - 2000) + 2000)
                 self.drawAll()
             }
         } else {
@@ -198,25 +203,39 @@ function whack_game(props){
     }
     this.drawAll = function(){
         ctx.clearRect(0,0, canvas.width, canvas.height)
-		self.createTarget()
+        self.createTarget()
         self.drawTarget()
 	}
     this.createTarget = function(){
-        let x = Math.round(Math.random() * (canvas.width - 2*target_size[0]) + target_size[0])
-        let y = Math.round(Math.random() * (canvas.height - 2*target_size[1]) + target_size[1])
+        let x, y
+        let validPosition = false
+        while (!validPosition) {
+            x = Math.round(Math.random() * (canvas.width - 2 * target_size[0]) + target_size[0])
+            y = Math.round(Math.random() * (canvas.height - 2 * target_size[1]) + target_size[1])
+            validPosition = true
+            for (let i = 0; i < target_array.length; i++) {
+                let existingTarget = target_array[i]
+                if(x < existingTarget.x + existingTarget.w && x + target_size[0] > existingTarget.x && y < existingTarget.y + existingTarget.h && y + target_size[1] > existingTarget.y){
+                    validPosition = false
+                    break
+                }
+            }
+        }    
         let t = Math.floor(Math.random() * (3 - 1 + 1)) + 1
         let target = new Target({
             id: target_array.length,
             id_img: items[t].id,
             img: self.images[t],
+            img_hit: self.images[t + 3],
             hole: self.images[0],
             x: x,
             y: y,
             w: target_size[0],
             h: target_size[1],
         })
+
         target_array.push(target)
-	}
+    }
     this.drawTarget = function(){
 		for(let i in target_array){
             target_array[i].change_active(false)
@@ -241,11 +260,12 @@ function whack_game(props){
     this.canvas_click = function(mouse){
         for(let i in target_array){
             let obj = {x: target_array[i].x, y: target_array[i].y, width: target_array[i].w, height: target_array[i].h}
-			if(isInside(mouse, obj) && target_array[i].active && !target_array[i].killed){
+			if(isInside(mouse, obj) && target_array[i].active && !target_array[i].killed){                
                 target_array[i].change_killed(true)
                 self.hammerAnimation(mouse)
             }
         }
+        self.drawAll()
     }
     this.hammerAnimation = function(obj){
         hammerUp(obj).then(function() {
@@ -262,7 +282,7 @@ function whack_game(props){
         return new Promise(function(resolve){
             let hammer_x = obj.x - target_size[0]/2
             let hammer_y = obj.y - target_size[1]/2
-            ctx_hammer.drawImage(self.images[4], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
+            ctx_hammer.drawImage(self.images[7], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
             setTimeout(function(){
                 resolve(true)					
             }, 100)
@@ -272,7 +292,7 @@ function whack_game(props){
         return new Promise(function(resolve){
             let hammer_x = obj.x - target_size[0]/2
             let hammer_y = obj.y - target_size[1]/2
-            ctx_hammer.drawImage(self.images[5], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
+            ctx_hammer.drawImage(self.images[8], 0, 0, 260, 260, hammer_x, hammer_y, target_size[0], target_size[1])
             setTimeout(function(){
                 resolve(true)
             }, 100)
@@ -317,7 +337,7 @@ function WhackARabbit(props){
 
     let options = {...props, dispatch, whack_a_rabbit_container_ref, items}
     let my_whack = new whack_game(options)
-    let limit = 10
+    let limit = 20
     const [time, setTime] = useState(limit)
 
 	function ready(r){
