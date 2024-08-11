@@ -146,14 +146,14 @@ function Sign(props) {
         dispatch(changePopup(payload))
     }
 
-    function handleErrors(template="error", error){
+    function handleErrors(template="error", error){        
         let payload = {
             open: true,
             template: template,
             title: "error",
-            data: translate({lang: lang, error}),
+            data: translate({lang: lang, info: error}),
             size: "sm",
-        }                
+        }        
         dispatch(changePopup(payload))
     }
     

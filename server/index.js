@@ -91,8 +91,9 @@ io.on('connection', function(socket) {
             money: user_found[0].money, 
             device,
             profile_pic: user_found[0].profile_pic,
-            logs: logs.length
+            logs: logs && logs.length ? logs.length : 0
           }
+          console.log('signin_send--> ', obj, logs, logs.length)
           try{
             io.to(socket.id).emit('signin_read', {exists: true, obj: obj})
           } catch(e){

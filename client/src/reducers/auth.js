@@ -21,6 +21,7 @@ const pageSlice = createSlice({
     initialState,
     reducers: {
         changeUser: (state, { payload }) => {
+            console.log(payload)
             if(payload.profile_pic){
                 state.user.profile_pic = encryptData(payload.profile_pic)
                 setCookie("casino_profile_pic", encryptData(payload.profile_pic))
