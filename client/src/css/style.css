@@ -3862,6 +3862,9 @@ a.donation_button{
   border-radius: var(--radius);
   overflow: hidden;
 }
+#chatbot_button img{
+  width: 100%;
+}
 @media (max-height: 1200px) {
   .chatbot_textarea_container {
       height: 50vh;
@@ -4475,7 +4478,11 @@ a.donation_button{
 
   /* CHATBOT */
   .chatbot_textarea_container{
-    height: 180px;
+    height: 160px;
+  }
+  .chatbot_textarea .message_box{
+    font-size: 12px;
+    line-height: 14px;
   }
 }
 

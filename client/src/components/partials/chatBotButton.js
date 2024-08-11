@@ -1,9 +1,8 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMessage } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../reducers/popup'
+import chatbotIcon from '../../img/chatbot/chatbot.png'
 
 function ChatBotButton(){
     let dispatch = useDispatch()
@@ -17,7 +16,7 @@ function ChatBotButton(){
         dispatch(changePopup(payload))
     }
     return <Button id="chatbot_button" type="button" onClick={()=>handleChatBot()} className="mybutton round button_transparent shadow_convex">
-        <FontAwesomeIcon icon={faMessage} />
+        <img src={chatbotIcon} alt="chatbotIcon" />
     </Button>
 }
 
