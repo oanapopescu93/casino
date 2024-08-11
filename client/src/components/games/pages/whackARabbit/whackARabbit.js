@@ -21,14 +21,15 @@ function Target(config){
     self.killed = false
 
 	self.draw = function(ctx){
-        if(self.active){
-            ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
+        if(self.killed){
+            ctx.drawImage(self.img_hit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
         } else {
-            if(self.killed){
-                ctx.drawImage(self.img_hit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
+            if(self.active){
+                ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
             } else {
                 ctx.drawImage(self.hole, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
             }
+           
         }
 	}
     self.change_active = function(status){
@@ -46,7 +47,7 @@ function whack_game(props){
     this.secs = 10
     let duration = 1000
     let lastSpawn = Date.now()  
-    let spawnRate = Math.round(Math.random() * (4000 - 2000) + 2000)
+    let spawnRate = Math.round(Math.random() * (3000 - 1000) + 1000)
 
     let canvas
     let canvas_hammer
@@ -193,7 +194,7 @@ function whack_game(props){
             let currentTime = Date.now()
             if (currentTime > (lastSpawn + spawnRate)) {
                 lastSpawn = currentTime
-                spawnRate = Math.round(Math.random() * (4000 - 2000) + 2000)
+                spawnRate = Math.round(Math.random() * (3000 - 1000) + 1000)
                 self.drawAll()
             }
         } else {
@@ -201,9 +202,11 @@ function whack_game(props){
         }
         
     }
-    this.drawAll = function(){
+    this.drawAll = function(hit){
         ctx.clearRect(0,0, canvas.width, canvas.height)
-        self.createTarget()
+        if(!hit){
+            self.createTarget()
+        }
         self.drawTarget()
 	}
     this.createTarget = function(){
@@ -265,7 +268,7 @@ function whack_game(props){
                 self.hammerAnimation(mouse)
             }
         }
-        self.drawAll()
+        self.drawAll('hit')
     }
     this.hammerAnimation = function(obj){
         hammerUp(obj).then(function() {
