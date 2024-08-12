@@ -109,7 +109,7 @@ function Popup(props){
                 {title === "" && !sticky ? <div className="closeButton" onClick={closeModal}>
                     <span>X</span>
                 </div> : null}
-                {(() => {					
+                {(() => {			
                     switch (template) {
                         case "forgotPassword":
                             return <ForgotPassword 

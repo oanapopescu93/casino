@@ -29,15 +29,15 @@ function Home(props) {
     
     function handleCookiesClick(){
         dispatch(changeCookies())
-
-        console.log('cookies--> ', user, user.logs, !isEmpty(user.logs), user.logs === 0)
-
-        if(!isEmpty(user.logs) && user.logs === 0){
+        handleWhackARabbit()
+    }
+    function handleWhackARabbit(){
+        if(!isEmpty(user.logs) && user.logs == 0){            
             let payload = {
                 open: true,
-                title: null,
                 template: "whack_a_rabbit",
-                size: "sm",
+                title: null,
+                size: 'sm',
             }
             dispatch(changePopup(payload))
         }

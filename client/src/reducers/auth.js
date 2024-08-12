@@ -50,7 +50,7 @@ const pageSlice = createSlice({
                 state.user.uuid = payload.uuid
                 setCookie("casino_uuid", payload.uuid)
             }
-            if(payload.logs){
+            if(payload.logs !== undefined && payload.logs !== null){
                 state.user.logs = payload.logs
                 setCookie("casino_logs", payload.logs)
             }

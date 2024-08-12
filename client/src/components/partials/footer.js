@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react'
 import {useDispatch} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../reducers/page'
 import { translate } from '../../translations/translate'
-import ukraine from '../../img/icons/ukraine.svg'
 import { checkWinterMonths } from '../../utils/special_occasions'
 import { getWindowDimensions } from '../../utils/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -70,7 +69,6 @@ function Footer(props){
                     <li onClick={()=>{handleClick('Questions')}}><span>{translate({lang: lang, info: "questions"})}</span></li>
                     <li onClick={()=>{handleClick('Career')}}><span>{translate({lang: lang, info: "career"})}</span></li>
                     <li onClick={()=>{handleClick('Contact')}}><span>{translate({lang: lang, info: "contact"})}</span></li>
-                    <li><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine"><img id="ukraine_icon" alt="ukraine_icon" src={ukraine}></img></a></li>
                 </ul>
             </div>
             <footer>
