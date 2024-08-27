@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 const dotenv = require('dotenv')
 const path = require('path')
-var NODE_ENV = process.env.NODE_ENV.trim() 
+var NODE_ENV = (process.env.NODE_ENV || 'development').trim() 
 dotenv.config({
   path: path.resolve(__dirname, `.env.${NODE_ENV}`)
 })
