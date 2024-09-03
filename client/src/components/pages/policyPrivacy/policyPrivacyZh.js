@@ -1,7 +1,22 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { translate } from '../../../translations/translate'
 
-function PolicyPrivacyZh(){
+function PolicyPrivacyZh(props){
+    const {settings} = props
+    const {lang} = settings
+    let dispatch = useDispatch()
+
+    function handleContact(){
+        dispatch(changePage('Contact'))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
+    }
+
     return <Row id="policy_privacy" className="other_page_container">
         <Col lg={2} />
         <Col lg={8}>

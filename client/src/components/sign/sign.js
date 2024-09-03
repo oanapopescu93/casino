@@ -5,6 +5,7 @@ import { changePopup } from '../../reducers/popup'
 import { translate } from '../../translations/translate'
 import PolicyPrivacy from '../pages/policyPrivacy/policyPrivacy'
 import TermsConditions from '../pages/termsConditions/termsConditions'
+import Contact from '../pages/contact/contact'
 import Header from '../partials/header'
 import Language from '../settings/language'
 import SignIn from './signIn'
@@ -17,8 +18,11 @@ function Sign(props) {
     const {settings, socket} = props
     const {lang} = settings
     let dispatch = useDispatch()
+
     let page = useSelector(state => state.page.page)
+    let home = useSelector(state => state.home)
     let isMinor = useSelector(state => state.auth.isMinor)
+
     const [visible, setVisible] = useState('signIn')
     const [errorEmail, setErrorEmail] = useState(false)
     const [errorUser, setErrorUser] = useState(false)
@@ -170,17 +174,19 @@ function Sign(props) {
     }, [])
 
     return <>
+        <Language title={lang} />
         {(() => {
             switch (page) {
                 case "terms_cond":
                     return <TermsConditions {...props} />
                 case "policy_privacy":
                     return <PolicyPrivacy {...props} />
+                case "Contact":
+                    return <Contact {...props} home={home}/>
                 case "Salon":
                 default:
                     return <>
-                        {loaded ? <>
-                            <Language title={lang} />
+                        {loaded ? <>                            
                             <div className="sign_container">
                                 <div className="sign_container_box">
                                     <div className="deco">

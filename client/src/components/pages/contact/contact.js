@@ -10,14 +10,16 @@ import { getWindowDimensions } from '../../../utils/utils'
 import Header from '../../partials/header'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import ContactInfo from './contactInfo'
 
 function Contact(props){
     const {socket, home, settings} = props
     const {lang} = settings
     let locations = home.contact    
-    const [contactElement, setContactElement] = useState(null)
     let dispatch = useDispatch()
     let default_location = locations[0][lang] ? locations[0][lang] : locations[0]["ENG"]
+
+    const [contactElement, setContactElement] = useState(null)
     const [mapCenter, setMapCenter] = useState(default_location.map)
     const [markerPosition, setMarkerPosition] = useState(default_location.marker)
     const [country, setCountry] = useState(default_location.country)
@@ -76,11 +78,14 @@ function Contact(props){
                             <ContactForm lang={lang} socket={socket} />
                         </Col>
                         <Col md={8}>
-                            <ContactList 
+                            {locations.length > 1 ? <ContactList 
                                 lang={lang} 
                                 list={locations} 
                                 handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
-                            />
+                            /> : <ContactInfo 
+                                lang={lang}
+                                location={locations[0][lang] ? locations[0][lang] : locations[0]["ENG"]}
+                            />}                            
                             <ContactMap 
                                 lang={lang} 
                                 contactElement={contactElement}

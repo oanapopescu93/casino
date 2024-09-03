@@ -34,24 +34,24 @@ function PolicyPrivacy(props){
                 {(() => {
                     switch (lang) {
                         case "DE":
-                            return <PolicyPrivacyDe/>
+                            return <PolicyPrivacyDe {...props}/>
                         case "ES":
-                            return <PolicyPrivacyEs/>
+                            return <PolicyPrivacyEs {...props}/>
                         case "FR":
-                            return <PolicyPrivacyFr/>
+                            return <PolicyPrivacyFr {...props}/>
                         case "IT":
-                            return <PolicyPrivacyIt/>
+                            return <PolicyPrivacyIt {...props}/>
                         case "PT":
-                            return <PolicyPrivacyPt/>
+                            return <PolicyPrivacyPt {...props}/>
                         case "RO":
-                            return <PolicyPrivacyRo/>
+                            return <PolicyPrivacyRo {...props}/>
                         case "RU":
-                            return <PolicyPrivacyRu/>
+                            return <PolicyPrivacyRu {...props}/>
                         case "ZH":
-                            return <PolicyPrivacyZh/>
+                            return <PolicyPrivacyZh {...props}/>
                         case "ENG":
                         default:
-                            return <PolicyPrivacyEng/>
+                            return <PolicyPrivacyEng {...props}/>
                     }
                 })()}
             </div>

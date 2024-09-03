@@ -32,24 +32,24 @@ function TermsConditions(props){
                 {(() => {
                     switch (lang) {
                         case "DE":
-                            return <TermsConditionsDe/>
+                            return <TermsConditionsDe {...props}/>
                         case "ES":
-                            return <TermsConditionsEs/>
+                            return <TermsConditionsEs {...props}/>
                         case "FR":
-                            return <TermsConditionsFr/>
+                            return <TermsConditionsFr {...props}/>
                         case "IT":
-                            return <TermsConditionsIt/>
+                            return <TermsConditionsIt {...props}/>
                         case "PT":
-                            return <TermsConditionsPt/>
+                            return <TermsConditionsPt {...props}/>
                         case "RO":
-                            return <TermsConditionsRo/>
+                            return <TermsConditionsRo {...props}/>
                         case "RU":
-                            return <TermsConditionsRu/>
+                            return <TermsConditionsRu {...props}/>
                         case "ZH":
-                            return <TermsConditionsZh/>
+                            return <TermsConditionsZh {...props}/>
                         case "ENG":
                         default:
-                            return <TermsConditionsEng/>
+                            return <TermsConditionsEng {...props}/>
                     }
                 })()}
             </div>

@@ -1,7 +1,22 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { translate } from '../../../translations/translate'
 
-function PolicyPrivacyIt(){
+function PolicyPrivacyIt(props){
+    const {settings} = props
+    const {lang} = settings
+    let dispatch = useDispatch()
+
+    function handleContact(){
+        dispatch(changePage('Contact'))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
+    }
+
     return <Row id="policy_privacy" className="other_page_container">
         <Col lg={2} />
         <Col lg={8}>
@@ -53,6 +68,8 @@ function PolicyPrivacyIt(){
             
             <h3>Contattaci</h3>
             <p>Se hai domande, preoccupazioni o richieste riguardo a questa Politica sulla Privacy o all'elaborazione delle tue informazioni personali, ti preghiamo di contattarci.</p>
+        
+            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

@@ -30,7 +30,7 @@ function App(){
 	}()
 
   	useEffect(() => {
-		my_console.disable()
+		//my_console.disable()
 		socket.connect()		
 		return () => {
 			socket.disconnect()
