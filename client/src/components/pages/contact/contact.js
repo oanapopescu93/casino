@@ -98,11 +98,14 @@ function Contact(props){
                         </Col>
                     </Row> : <Row>                
                         <Col md={8}>
-                            <ContactList 
+                            {locations.length > 1 ? <ContactList 
                                 lang={lang} 
                                 list={locations} 
                                 handleChooseContactElement={(e, i)=>handleChooseContactElement(e, i)}
-                            />
+                            />: <ContactInfo 
+                                lang={lang}
+                                location={locations[0][lang] ? locations[0][lang] : locations[0]["ENG"]}
+                            />}
                         </Col>
                         <Col md={4}>
                             <ContactForm lang={lang} socket={socket} />
