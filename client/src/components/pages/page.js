@@ -102,9 +102,9 @@ function Page(props) {
         {(() => {
             if(isEmpty(uuid)){
                 if(loaded){
-                    return <Sign {...props} lang={settings.lang} date={settings.date}/>
+                    return <Sign {...props} settings={settings}/>
                 } else {
-                    return <Splash {...props} lang={settings.lang} progressNumber={progressNumber} />
+                    return <Splash {...props} progressNumber={progressNumber} />
                 }
             } else {
                 if(home.loaded){

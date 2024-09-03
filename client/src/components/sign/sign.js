@@ -14,7 +14,8 @@ import { isEmpty, setCookie } from '../../utils/utils'
 import Loader from '../partials/loader'
 
 function Sign(props) {
-    const {lang, socket} = props
+    const {settings, socket} = props
+    const {lang} = settings
     let dispatch = useDispatch()
     let page = useSelector(state => state.page.page)
     let isMinor = useSelector(state => state.auth.isMinor)
@@ -172,9 +173,9 @@ function Sign(props) {
         {(() => {
             switch (page) {
                 case "terms_cond":
-                    return <TermsConditions lang={lang} />
+                    return <TermsConditions {...props} />
                 case "policy_privacy":
-                    return <PolicyPrivacy lang={lang} />
+                    return <PolicyPrivacy {...props} />
                 case "Salon":
                 default:
                     return <>
