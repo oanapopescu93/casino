@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
-import { translate } from '../../../translations/translate'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationDot, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faLinkedinIn, faGithub } from '@fortawesome/free-brands-svg-icons'
 
 function ContactList(props){
     const {lang, list, handleChooseContactElement} = props
@@ -35,9 +37,25 @@ function ContactList(props){
             </DropdownButton>
         </div>        
         <ul className="contact_box contact_list_item shadow_concav">
-            <li><p>{translate({lang: lang, info: 'city'})}:  {location.city}</p></li>
-            <li><p>{translate({lang: lang, info: 'phone'})}:  <a href={'tel:' + location.phone}>{location.phone_text}</a></p></li>
-            <li><p>{translate({lang: lang, info: 'email'})}: <a href={'mailto:' + location.email}>{location.email}</a></p></li>
+            <li>
+                <p><FontAwesomeIcon icon={faLocationDot} />:  <span>{location.city}</span></p>
+            </li>
+            <li>
+                <p><FontAwesomeIcon icon={faPhone} />:  <a href={'tel:' + location.phone}><span>{location.phone_text}</span></a></p>
+            </li>
+            <li>
+                <p><FontAwesomeIcon icon={faEnvelope} />: <a href={'mailto:' + location.email}><span>{location.email}</span></a></p>
+            </li>
+            <li>
+                <a href={location.linkedin} target="_blank" rel="noopener noreferrer">
+                    <FontAwesomeIcon icon={faLinkedinIn} /> <span>{location.linkedin}</span>                
+                </a>
+            </li>
+            <li>
+                <a href={location.github} target="_blank" rel="noopener noreferrer">
+                    <FontAwesomeIcon icon={faGithub} /> <span>{location.github}</span>                
+                </a>
+            </li>
         </ul>
     </div>
 }
