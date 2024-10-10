@@ -8,19 +8,15 @@ import { faPlay, faPlus, faPause, faAnglesUp, faXmark } from '@fortawesome/free-
 import PokerBoard from './pokerBoard'
 
 function GameBoard(props){
-    const {template, user, settings, startGame, bet} = props
+    const {template, user, settings, startGame, bet, choice, updateBets} = props
     const {lang} = settings
     let max_bet = user.money ? decryptData(user.money) : 0
 
     function handleClick(e){
-        if(typeof props.choice === "function"){
-            props.choice(e)
-        }
+        choice(e)
     }
     function updateQtyMarket(e){
-        if(typeof props.updateBets === "function"){
-            props.updateBets(e)
-        }
+        updateBets(e)
     }
 
     return <div id={template} className="gameboard shadow_convex">

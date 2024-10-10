@@ -5,7 +5,7 @@ import { checkoutData } from '../../../../utils/utils'
 import countriesData from '../../../../utils/constants/countries.json'
 
 function Stripe(props) {
-    const {paymentDetails, gateway, gatewayDetailsMandatory, paymentError, settings, minimum_amount_usd} = props
+    const {paymentDetails, gateway, gatewayDetailsMandatory, paymentError, settings, minimum_amount_usd, getChangesData} = props
     const {lang} = settings
 
     const [name] = useState(paymentDetails.name !== "" ? paymentDetails.name : "")
@@ -40,15 +40,11 @@ function Stripe(props) {
 
     function changeMonth(x){
         setMonth(x)
-        if(typeof props.getChanges === "function"){
-            props.getChanges({type: 'month', value: x})
-        }
+        getChangesData({type: 'month', value: x})
     }
     function changeYear(x){
         setYear(x)
-        if(typeof props.getChanges === "function"){
-            props.getChanges({type: 'year', value: x})
-        }
+        getChangesData({type: 'year', value: x})
     }
 
     function handleCountryChange(e) {
@@ -59,9 +55,7 @@ function Stripe(props) {
         setFilteredCities(selectedCities)
         setFilteredCity("")
         setCity("")
-        if(props.getChanges && typeof props.getChanges === "function"){
-            props.getChanges({type: 'country', value: selectedCountry})
-        }
+        getChangesData({type: 'country', value: selectedCountry})
 
         if(cityDropdownRef && cityDropdownRef.current){
             cityDropdownRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -70,9 +64,7 @@ function Stripe(props) {
 
     function handleCityChange(e) {
         setCity(e)
-        if(props.getChanges && typeof props.getChanges === "function"){
-            props.getChanges({type: 'city', value: e})
-        }
+        getChangesData({type: 'city', value: e})
     }
 
     function handleFilterCountries(e){

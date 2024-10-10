@@ -39,9 +39,7 @@ function KenoBoard(props){
     }
 
     function handleClickSpot(id){
-        if(typeof props.handleClickSpot === "function"){
-            props.handleClickSpot(id)
-        }
+        props.handleClickSpot(id)
     }
 
     function handleResize() {
@@ -96,24 +94,16 @@ function KenoButtons(props){
     const {lang} = settings
 
     function gameStart(){
-        if(typeof props.gameStart === "function"){
-            props.gameStart()
-        }
+        props.gameStart()
     }
     function openTable(){
-        if(typeof props.openTable === "function"){
-            props.openTable()
-        }
+        props.openTable()
     }
     function resetKenoSpots(){
-        if(typeof props.resetKenoSpots === "function"){
-            props.resetKenoSpots()
-        }
+        props.resetKenoSpots()
     }
     function handleBack(){
-        if(typeof props.handleBack === "function"){
-            props.handleBack()
-        }
+        props.handleBack()
     }
 
     return <div className="button_action_group keno_buttons_container">
@@ -153,42 +143,31 @@ function KenoButtons(props){
 }
 
 function KenoQuickPick(props){
-    const {settings} = props
+    const {settings, handleQuickPick} = props
     const {lang} = settings
     const [randomSelections, setRandomSelections] = useState(1)
 
     function updateQuickPickLength(e){
         setRandomSelections(e)
     }
-    function handleQuickPick(){
-        if(typeof props.handleQuickPick === "function"){
-            props.handleQuickPick(randomSelections)
-        }
-    }
 
     return <div className="keno_quickpick_container">
         <div className="keno_quickpick_counter">
-            <Counter num={1} max={10} update={(e)=>updateQuickPickLength(e)} />
+            <Counter max={10} update={(e)=>updateQuickPickLength(e)} />
         </div>
         <div className="keno_quickpick_button">
             <Button 
                 type="button"  
                 className="mybutton button_transparent shadow_convex"
-                onClick={()=>{handleQuickPick()}}
+                onClick={()=>{handleQuickPick(randomSelections)}}
             ><span>{translate({lang: lang, info: "quick_pick"})}</span></Button>
         </div>
     </div>
 }
 
 function KenoBets(props){
-    const {pricePerGame, noOfGames, settings} = props
+    const {pricePerGame, noOfGames, settings, updateKenoBets} = props
     const {lang} = settings
-
-    function updateKenoBets(type, e){
-        if(typeof props.updateKenoBets === "function"){
-            props.updateKenoBets(type, e)
-        }
-    }
 
     return <div className="keno_bets_container">            
         <div className="keno_bets keno_bets_prive_per_game">
@@ -215,20 +194,9 @@ function KenoBets(props){
 }
 
 function KenoSettings(props){
-    const {kenoSpotsResult, settings} = props
+    const {kenoSpotsResult, settings, closeTable, resetKenoSpots} = props
     const {lang} = settings
     let open = props.open ? "open" : ""
-
-    function closeTable(){
-        if(typeof props.closeTable === "function"){
-            props.closeTable()
-        }
-    }
-    function resetKenoSpots(){
-        if(typeof props.resetKenoSpots === "function"){
-            props.resetKenoSpots()
-        }
-    }
 
     return <div id="keno_game_bets" className={"game_bets_container " + open}>
         <div className="game_bets shadow_concav">
@@ -250,18 +218,12 @@ function KenoSettings(props){
 }
 
 function KenoGame(props){
-    const {page, settings} = props
+    const {page, settings, handleShowPrizes} = props
     const {lang} = settings
     const [open, setOpen] = useState(false)
 
     function openTable(){setOpen(true)}
     function closeTable(){setOpen(false)}
-
-    function handleShowPrizes(){
-        if(typeof props.handleShowPrizes !== "undefined"){
-            props.handleShowPrizes()
-        }
-    }
 
     return <>
         <Header template={"game"} details={page} lang={lang} />

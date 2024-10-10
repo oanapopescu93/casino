@@ -7,7 +7,7 @@ import {faStore, faUser, faCartShopping, faArrowRotateLeft} from '@fortawesome/f
 import Spinner from '../spinner'
 
 function PaymentDetails(props){
-    const {template, paymentDetails, amount, settings, exchange_rates, paymentSending} = props 
+    const {template, paymentDetails, amount, settings, exchange_rates, paymentSending, handleBack} = props 
     const {lang, currency} = settings
     const monthOptions = checkoutData().monthOptions
 
@@ -22,14 +22,8 @@ function PaymentDetails(props){
     }
 
     function sendPayment(){
-        if(!paymentSending && props.sendPayment && typeof props.sendPayment === "function"){
+        if(!paymentSending){
             props.sendPayment()
-        }
-    }
-
-    function handleBack(choice){
-        if(props.handleBack && typeof props.handleBack === "function"){
-            props.handleBack(choice)
         }
     }
 

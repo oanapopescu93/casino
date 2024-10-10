@@ -553,9 +553,7 @@ function roulette_game(props){
 			status: status,
 			bet: Math.abs(money_original - money_history)
 		}
-		if(typeof props.results === "function"){
-            props.results(roulette_payload)
-        }			
+		props.results(roulette_payload)			
     }
 
     this.get_status_game = function(){

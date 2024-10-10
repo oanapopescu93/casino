@@ -336,9 +336,7 @@ export const poker_game = function(props){
                         }
                     }
                 }
-                if(typeof props.getCardList === "function"){
-                    props.getCardList(card_list[i].selectedCards)
-                }
+                props.getCardList(card_list[i].selectedCards)
             }
 		}
     }
@@ -466,9 +464,7 @@ export const poker_game = function(props){
                 pot
             }
             
-            if(typeof props.getResults === "function"){
-                props.getResults(poker_payload)
-            }
+            props.getResults(poker_payload)
         }
     }
 
@@ -513,9 +509,7 @@ export const poker_game = function(props){
                 pot
             }
             
-            if(typeof props.getResults === "function"){
-                props.getResults(poker_payload)
-            }
+            props.getResults(poker_payload)
         }
     }
 

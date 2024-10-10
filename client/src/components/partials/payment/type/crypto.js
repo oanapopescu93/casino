@@ -3,7 +3,7 @@ import { Row, Col, DropdownButton, Dropdown } from "react-bootstrap"
 import { translate } from '../../../../translations/translate'
 
 function Crypto(props) {
-    const { cryptoChoice, cryptoData, fiatEquivalent, settings } = props
+    const { cryptoChoice, cryptoData, fiatEquivalent, settings, handleCryptoChange } = props
     const { lang } = settings
 
     let cryptoArray = [
@@ -13,12 +13,6 @@ function Crypto(props) {
     let cryptoChoiceText = cryptoArray.find(crypto => crypto.value === cryptoChoice)?.text
     const [title, setTitle] = useState(cryptoChoiceText)
     const [details, setDetails] = useState(null)
-
-    function handleCryptoChange(choice){
-        if(typeof props.handleCryptoChange === "function"){
-            props.handleCryptoChange(choice)
-        }
-    }
 
     useEffect(() => {
         let info = null

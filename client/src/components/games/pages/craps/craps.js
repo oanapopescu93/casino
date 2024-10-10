@@ -24,9 +24,7 @@ function Craps(props){
     function closeTable(){setOpen(false)}
     
     function results(x){
-        if(typeof props.results === "function"){
-            props.results(x)
-        }
+        props.results(x)
     }
 
     return <div id="craps" className='game_container'>

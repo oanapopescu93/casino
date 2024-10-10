@@ -55,9 +55,7 @@ function slots_game(props){
 					self.createCanvas(slots_canvas[slots_canvas.length-1])
 					self.draw_reel(slots_canvas[slots_canvas.length-1], images, false)					
 				}
-				if(typeof props.getImagePos === "function"){
-					props.getImagePos(images_pos)
-				}
+				props.getImagePos(images_pos)
 			})
 		} else { //resize
 			for(let i in reel){
@@ -67,9 +65,7 @@ function slots_game(props){
 				self.draw_reel(slots_canvas[slots_canvas.length-1], images_pos[i], true)
 				reel[i].css('transform', 'translate(0px, 0px)')			
 			}
-			if(typeof props.getImagePos === "function"){
-				props.getImagePos(images_pos)
-			}
+			props.getImagePos(images_pos)
 		}
     }
 
@@ -463,14 +459,12 @@ function slots_game(props){
 		}
 	}
 	this.pay = function(pay, win){
-		if(typeof props.handlePay === "function"){
-            props.handlePay(pay, win)
-        }
+		props.handlePay(pay, win)
 	}
 }
 
 function SlotsGame(props){
-	const {settings, slotsData, slotsStatus, slotsBets, lines, items, imagePos, width} = props
+	const {settings, slotsData, slotsStatus, slotsBets, lines, items, imagePos, width, handleShowPrizes} = props
     const {lang} = settings
     let dispatch = useDispatch()
     let options = {...props, slotsData, slotsBets, lines, items, dispatch}
@@ -488,17 +482,9 @@ function SlotsGame(props){
 	useEffect(() => {
 		if(slotsStatus && my_slots){
 			my_slots.start(imagePos)
-			if(typeof props.updateStatus === "function"){
-				props.updateStatus(false)
-			}
+			props.updateStatus(false)
 		}
     }, [slotsStatus])
-
-	function handleShowPrizes(){
-		if(typeof props.handleShowPrizes === "function"){
-			props.handleShowPrizes()
-		}
-	}
 
     return <div id="slot_machine" className={"slot_machine " + "slot_machine_" + lines}>
 		<canvas id="slot_machine_lines" />

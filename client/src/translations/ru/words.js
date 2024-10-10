@@ -225,6 +225,7 @@ var word_bank = {
     validate_message_year: "Это не действительный год",
     validate_message_cvv: "Это не действительный CVV",
     validate_message_bitcoinAddress: "Это не действительный адрес Bitcoin",
+    validate_iban_name: "Это не IBAN",
     continue: "Продолжить",
     save: "Сохранить",
     payment_success: "Оплата прошла успешно",

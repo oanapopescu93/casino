@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { getWindowDimensions } from '../../../utils/utils'
 
 function ChatMessages(props){
-    const {lang, messages, height} = props
+    const {lang, messages} = props
     const messagesEndRef = React.createRef()
     let date_format = useSelector(state => state.settings.date)
 
@@ -23,28 +23,28 @@ function ChatMessages(props){
 		scrollToBottom()
 	}, [messages]) 
 
-    return <div className="messages" style={{height: height+'px'}}>
+    return <div className="messages">
         {messages.map((message, i)=>{
             let text = message.text
             let user = message.user ? decryptData(message.user) : "" 
             let date = formatDate(message.timestamp, date_format)
             switch (text) {
                 case "join":
-                    return <div key={i} className='message'>
+                    return <div key={i} className='message message_join'>
                         <p>{user} {translate({lang: lang, info: "joined_the_chat"})}</p>
                     </div>
                 case "leave":
-                    return <div key={i} className='message'>
+                    return <div key={i} className='message message_leave'>
                         <p>{user} {translate({lang: lang, info: "left_the_chat"})}</p>
                     </div>
                 default:
-                    return <div key={i} className="message">
+                    return <div key={i} className="message message_box">
                         <div className="chat_header">
-                            <span className="user"><strong>{user} </strong>
-                            </span> (<span className="date">{date}</span>)
+                            <div className="user"><p><b>{user}</b></p></div>                            
                         </div>
                         <div className="chat_body">
-                            <span className="text">{text}</span>
+                            <div className="date"><h6>({date})</h6></div>
+                            <div className="text"><p>{text}</p></div>
                         </div>
                     </div>
             }
@@ -56,15 +56,17 @@ function ChatMessages(props){
 function ChatList(props){
     const {list} = props
     let date_format = useSelector(state => state.settings.date)
-    return <ul className="chat_list">
-        {list.map((item, i)=>{
-            let date = formatDate(item.timestamp, date_format)
-            return <li key={i}>
-                <span className="left">{decryptData(item.user)}</span>
-                <span className="right">{date}</span>
-            </li>
-        })}
-    </ul>
+    return <div className="chat_list_container">
+        <ul className="chat_list">
+            {list.map((item, i)=>{
+                let date = formatDate(item.timestamp, date_format)
+                return <li key={i}>
+                    <span className="left">{decryptData(item.user)}</span>
+                    <span className="right"><h6>{date}</h6></span>
+                </li>
+            })}
+        </ul>
+    </div>
 }
 
 function Chat(props){
@@ -72,28 +74,7 @@ function Chat(props){
     const {lang} = settings
     let game = page.game
     const [input, setInput] = useState('')
-    const [messages, setMessages] = useState([])
-    const [height, setHeight] = useState(getWindowDimensions().height)
-
-    function getHeight(x){
-        if(x >= 500){
-          return 200
-        } else {
-          return 100
-        }
-    }
-
-    function handleResize(){
-        setHeight(getHeight(getWindowDimensions().height))
-    }
-
-    useEffect(() => {    
-        if(typeof window !== "undefined"){
-            window.addEventListener("resize", handleResize)
-            handleResize()
-            return () => window.removeEventListener("resize", handleResize)
-        }
-	}, [])
+    const [messages, setMessages] = useState([])    
 
     useEffect(() => {
         socket.on('message_read', (res)=>{
@@ -122,7 +103,7 @@ function Chat(props){
         <Header template="panel_user" details={page} lang={lang} />
         <Form className="chat_form">
             <div id="chatmessages" className="input_light">
-                <ChatMessages messages={messages} lang={lang} height={height} />
+                <ChatMessages messages={messages} lang={lang} />
             </div>
             <input className="input_light" type="text" value={input} onChange={(e)=>{handleChange(e)}}/>
             <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor shadow_convex">

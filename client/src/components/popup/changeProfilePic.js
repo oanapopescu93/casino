@@ -7,7 +7,7 @@ import { changePic } from '../../reducers/auth'
 import Carousel from '../carousel/carousel'
 
 function ChangeProfilePic(props) {
-    const {settings, home, user} = props
+    const {settings, home, user, choosePic} = props
     const {lang} = settings
     const {finances} = home
     
@@ -50,11 +50,9 @@ function ChangeProfilePic(props) {
         }
     }
 
-    function choosePic(e){
-        if(typeof props.choosePic === "function"){
-            dispatch(changePic(e.value))
-            props.choosePic(e)
-        }
+    function handleClick(e){
+        dispatch(changePic(e.value))
+        choosePic(e)
     }    
 
     return <div className="changeProfilePic">
@@ -78,7 +76,7 @@ function ChangeProfilePic(props) {
             {error ? <div className="alert alert-danger"><p className="text_red">{translate({lang: lang, info: "profile_grey"})}</p></div> : null}
         </div>
         <div className="changeProfilePic_buttons">
-            <Button type="button" id="changeProfilePic_btn" className="mybutton button_fullcolor_dark" onClick={()=>choosePic({value: choice, uuid: user.uuid, type: "pic"})}>
+            <Button type="button" id="changeProfilePic_btn" className="mybutton button_fullcolor_dark" onClick={()=>handleClick({value: choice, uuid: user.uuid, type: "pic"})}>
                 {translate({lang: lang, info: "choose"})}
             </Button>
         </div>

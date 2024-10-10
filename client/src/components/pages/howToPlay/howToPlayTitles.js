@@ -9,14 +9,8 @@ import poker_icon from '../../../img/icons_other/icons/yellow/carribean.png'
 import { translate } from '../../../translations/translate'
 
 function HowToPlayTitles(props){
-    const {lang} = props
+    const {lang, handleChoice} = props
     let list_games = ["roulette", "blackjack", "slots", "craps", "race", "keno", "poker"]
-
-    function handleChoice(x){
-        if(typeof props.handleChoice === "function"){
-            props.handleChoice(x)
-        }
-    }
 
     return <div className="how_to_play_titles">
         {list_games.map((t, i)=>{

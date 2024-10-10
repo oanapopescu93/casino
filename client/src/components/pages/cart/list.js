@@ -9,22 +9,12 @@ import { decryptData } from '../../../utils/crypto'
 import { convertCurrency } from '../../../utils/utils'
 
 function List(props){
-    const {list, user, settings, exchange_rates} = props
+    const {
+        list, user, settings, exchange_rates, 
+        updateQtyProduct, removeProduct
+    } = props
     const {lang, currency} = settings
     let max = user.money ? decryptData(user.money) : 0
-
-    function updateQtyProduct(x, item){
-        let payload = {...item, qty: x}
-        if(typeof props.updateQtyProduct === "function"){
-            props.updateQtyProduct(payload)
-        }
-    }
-
-    function removeProduct(item){
-        if(typeof props.removeProduct === "function"){
-            props.removeProduct(item)
-        }
-    }
 
     return <div id="cart_list" className="cart_box shadow_concav">
         <div className="cart_list_items 1">
@@ -50,7 +40,7 @@ function List(props){
                             </Row>
                             <Row>
                                 <Col xs={12}>
-                                    <Counter min={1} num={item.qty} max={max} update={(e)=>updateQtyProduct(e, item)}></Counter>
+                                    <Counter num={item.qty} max={max} update={(e)=>updateQtyProduct({...item, qty: e})}></Counter>
                                 </Col>
                             </Row>
                         </Col>

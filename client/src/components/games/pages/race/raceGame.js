@@ -885,13 +885,9 @@ function race_game(props){
 			status: status,
 			bet: Math.abs(money_original - money_history)
 		}
-		if(typeof props.results === "function"){
-			props.results(race_payload)
-		}
-		
-		if(typeof props.resetBets === "function"){
-			props.resetBets()
-		}	
+
+		props.results(race_payload)
+		props.resetBets()
 	}
 
     this.leave = function(){
@@ -915,14 +911,10 @@ function race_game(props){
 				bet: bet
 			}
 
-			if(typeof props.results === "function"){
-				props.results(race_payload)
-			}
+			props.results(race_payload)
 		} 
 
-		if(typeof props.resetBets === "function"){
-			props.resetBets()
-		}
+		props.resetBets()
 	}
 }
 

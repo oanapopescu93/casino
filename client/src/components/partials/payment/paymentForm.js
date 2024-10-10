@@ -6,15 +6,9 @@ import Stripe from './type/stripe'
 import Crypto from './type/crypto'
 
 function PaymentForm(props){
-    const {radioOne, radioTwo, radioThree, settings} = props
+    const {radioOne, radioTwo, radioThree, settings, handleChangeCheck} = props
     const {lang} = settings
     const minimum_amount_usd = 10
-
-    function handleChangeCheck(x){
-        if(typeof props.handleChangeCheck === "function"){
-            props.handleChangeCheck(x)
-        }
-    }    
 
     return <form id="payment_form">
         <Row>

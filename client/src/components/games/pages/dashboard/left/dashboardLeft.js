@@ -7,18 +7,12 @@ import { changePopup } from '../../../../../reducers/popup'
 import { changePage, changeGame, changeGamePage } from '../../../../../reducers/page'
 import { Row, Col, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUpload, faCrown, faKey, faCartShopping, faMoneyBillTransfer, faCarrot } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faUpload, faCrown, faKey, faCartShopping, faMoneyBillTransfer, faCarrot, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 function Picture(props){
-    const {picId, money} = props
+    const {picId, money, handleChoice} = props
 
-	function choosePic(){
-		if(typeof props.choice === "function"){
-            props.choice('change_pic')
-        }
-	}	
-
-	return <div className="profile_pic_container" onClick={()=>choosePic()}>
+	return <div className="profile_pic_container" onClick={()=>handleChoice('change_pic')}>
         {money > 1000 ? <div className="profile_pic_crown">
             <FontAwesomeIcon icon={faCrown} />
         </div> : null}        
@@ -43,9 +37,11 @@ function Picture(props){
     </div>
 }
 
-function DashboardLeft(props){ 
+function DashboardLeft(props){    
     const {home, user, settings} = props
     const {lang, currency} = settings
+    const {finances} = home
+    const {min_amount_withdraw} = finances
     let dispatch = useDispatch()
 
     let name = user.user ? decryptData(user.user) : "-"
@@ -55,7 +51,6 @@ function DashboardLeft(props){
     let animal = profiles.filter((x)=>{
         return x.id === parseInt(picId)
     })
-    let min_amount_withdraw = 10000
 
     function handleChoice(choice){
         if(choice === "buy_carrots"){
@@ -116,9 +111,12 @@ function DashboardLeft(props){
         <Row>
             <Col sm={12} md={6} lg={12}>
                 <div className="dashboard_user_pic">
-                    <Picture profiles={profiles} picId={picId} money={money} choice={(e)=>handleChoice(e)} />
+                    <Picture profiles={profiles} picId={picId} money={money} handleChoice={(e)=>handleChoice(e)} />
                     <div className="profile_pic_name shadow_convex">
                         <span>{name}</span>
+                        <div className="profile_pic_edit" onClick={()=>handleChoice("change_username")}>
+                            <FontAwesomeIcon icon={faPenToSquare} />
+                        </div>
                     </div>
                 </div>
                 <div className="dashboard_user_info">
@@ -133,9 +131,6 @@ function DashboardLeft(props){
             </Col>
             <Col sm={12} md={6} lg={12}>
                 <div className="dashboard_left_buttons">
-                    <Button type="button" onClick={()=>handleChoice("change_username")} className="mybutton button_fullcolor shadow_convex">
-                        <FontAwesomeIcon icon={faUser} /> {translate({lang: lang, info: "change_username"})}
-                    </Button>
                     <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
                         <FontAwesomeIcon icon={faKey} /> {translate({lang: lang, info: "change_password"})}
                     </Button>

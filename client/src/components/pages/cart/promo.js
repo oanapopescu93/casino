@@ -4,7 +4,7 @@ import { isEmpty } from '../../../utils/utils'
 import { Button } from 'react-bootstrap'
 
 function Promo(props){
-    const {settings, socket} = props
+    const {settings, socket, updatePromo} = props
     const {lang} = settings
     const [value, setValue] = useState('')
     const [coupon, setCoupon] = useState(null)
@@ -25,9 +25,7 @@ function Promo(props){
             setTimeout(()=>{
                 setCoupon(null)
             }, 3000)
-            if(res && typeof props.updatePromo === "function"){
-                props.updatePromo(res)
-            }
+            updatePromo(res)
 		})
 	}, [socket])
 

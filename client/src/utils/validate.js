@@ -31,6 +31,9 @@ export const validateInput = (input="", type)=>{
         // lowercase letters
         // with the exception that the uppercase letter O, uppercase letter I, lowercase letter l, and the number 0 are never used to prevent visual ambiguity.
         break
+      case "iban":
+          regex = '^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$' // Basic IBAN structure
+          break
       default:
         regex = ''
         break

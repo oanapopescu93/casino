@@ -18,10 +18,8 @@ function Roulette(props){
     function closeTable(){setOpen(false)}
     
     function results(x){
-        if(typeof props.results === "function"){
-            props.results(x)
-            setUpdate(prevUpdate => prevUpdate + 1)
-        }
+        props.results(x)
+        setUpdate(prevUpdate => prevUpdate + 1)
     }
 
     return <div id="roulette" className='game_container'>

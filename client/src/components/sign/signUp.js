@@ -45,9 +45,7 @@ function SignUp(props) {
 
     function handleSubmit(e){
         e.preventDefault()
-        if(typeof props.signSubmit === "function"){
-            props.signSubmit({emit: 'signup_send', payload: {email, user, pass}})
-        }
+        props.signSubmit({emit: 'signup_send', payload: {email, user, pass}})
     }
 
     useEffect(() => {

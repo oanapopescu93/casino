@@ -94,25 +94,16 @@ function Payment(props){
                 setRadioOne(false)	
                 setRadioTwo(false)
                 setRadioThree(true)
-                if(typeof props.getChanges === "function"){
-                    props.getChanges({type: 'gateway', value: 'crypto'})
-                }
                 break
             case "radio2":	
                 setRadioOne(false)
                 setRadioTwo(true)
                 setRadioThree(false)
-                if(typeof props.getChanges === "function"){
-                    props.getChanges({type: 'gateway', value: 'paypal'})
-                }
                 break
             case "radio1":
                 setRadioOne(true)
                 setRadioTwo(false)
                 setRadioThree(false)
-                if(typeof props.getChanges === "function"){
-                    props.getChanges({type: 'gateway', value: 'stripe'})
-                }
                 break
             default:
                 break
@@ -171,7 +162,7 @@ function Payment(props){
         }
     }, [payment_details.option])
 
-    function getChanges(data){
+    function getChangesData(data){
         let type = data.type
         let value = data.value
         switch(type){
@@ -384,7 +375,6 @@ function Payment(props){
     }
 
     function handlePaymentStripe(data){
-        console.log('handlePaymentStripe ', data)
         let details = {
             method: "stripe",
             user_uid: props.user.uuid,
@@ -448,7 +438,7 @@ function Payment(props){
             <Col sm={8}>
                 <PaymentForm 
                     {...props} 
-                    getChanges={(e)=>getChanges(e)}
+                    getChangesData={(e)=>getChangesData(e)}
                     paymentError={paymentError}
                     cryptoData={cryptoData}
                     amount={amount}
@@ -471,7 +461,7 @@ function Payment(props){
                             switch(template) {
                                 case "buy_carrots":
                                     return <>
-                                        <Counter num={1} max={max_amount} update={(e)=>updateQty(e)} />
+                                        <Counter max={max_amount} update={(e)=>updateQty(e)} />
                                         <div className="payment_details_total_price 1">
                                             <h3>
                                                 <b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(amount, currency, exchange_rates)} {currency}

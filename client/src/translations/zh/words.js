@@ -225,6 +225,7 @@ var word_bank = {
     validate_message_year: "这不是一个有效的年份",
     validate_message_cvv: "这不是一个有效的CVV",
     validate_message_bitcoinAddress: "这不是一个有效的比特币地址",
+    validate_iban_name: "这不是IBAN",
     continue: "继续",
     save: "保存",
     payment_success: "支付成功",

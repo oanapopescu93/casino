@@ -6,6 +6,7 @@ import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function KenoAnimation(props){
+    const {animationFinished} = props
     const [array, setArray] = useState([])
 
     useEffect(() => {
@@ -13,9 +14,7 @@ function KenoAnimation(props){
     }, [props.kenoSpotsResult])
 
     function handleBack(){
-        if(typeof props.animationFinished === "function"){
-            props.animationFinished("balls")
-        }
+        animationFinished("balls")
     }
 
     return <>

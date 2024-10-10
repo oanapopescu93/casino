@@ -6,7 +6,10 @@ import { translate } from '../../../translations/translate'
 import { convertCurrency } from '../../../utils/utils'
 
 function Panel(props){    
-    const {list, promo, settings, exchange_rates} = props
+    const {
+        list, promo, settings, exchange_rates,
+        removeAll, handleCheckout, handleContinueShopping
+    } = props
     const {lang, currency} = settings
 
     let total = totalPriceSum()
@@ -21,24 +24,6 @@ function Panel(props){
             total = total + list[i].price * list[i].qty
         }
         return total.toFixed(2)
-    }
-
-    function removeAll(){
-        if(typeof props.removeAll === "function"){
-            props.removeAll()
-        }
-    }
-
-    function handleCheckout(){
-        if(typeof props.handleCheckout === "function"){
-            props.handleCheckout()
-        }
-    }
-
-    function handleContinueShopping(){
-        if(typeof props.handleContinueShopping === "function"){
-            props.handleContinueShopping()
-        }
     }
 
     return <div id="cart_panel">

@@ -319,9 +319,7 @@ function whack_game(props){
                 bet: target_array_killed
             }
 
-            if(typeof props.results === "function"){
-                props.results(whack_payload)
-            }
+            props.results(whack_payload)
 
             dispatch(changePage('Salon'))
             dispatch(changeGame(null))

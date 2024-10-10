@@ -117,9 +117,7 @@ function keno_game(props){
 				if (spin_nr > spin_time) {
 					stop = true
                     self.drawBigCircle()
-                    if(typeof props.animationFinished !== "undefined"){
-                        props.animationFinished()
-                    }
+                    props.animationFinished()
 				} else {
 					spin_nr++					
 					stop = false            
@@ -169,9 +167,7 @@ function keno_game(props){
 
 function KenoBalls(props){
     let animationFinished = function(){
-		if(typeof props.animationFinished === "function"){
-            props.animationFinished("balls")
-        }
+		props.animationFinished("balls")
 	}
 
     let options = {...props, animationFinished}

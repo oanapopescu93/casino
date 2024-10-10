@@ -418,7 +418,7 @@ function blackjack_game(props){
 			finished = true
 		}
 
-		if(finished && typeof props.getResults === "function"){
+		if(finished){
 			props.getResults(blackjack_payload)
 		}
 	}
@@ -573,11 +573,9 @@ function Blackjack(props){
 								money: money - blackjack_bets,
 								status: "lose",
 								bet: Math.round(blackjack_bets/2) //when you surrender you lose half your stake. The amount can only be interger
-							}
-							if(typeof props.results === "function"){
-								props.results(blackjack_payload)
-								setStartGame(false)
-							}
+							}							
+							props.results(blackjack_payload)
+							setStartGame(false)
                         }
                     }
                     break
@@ -596,7 +594,7 @@ function Blackjack(props){
     return <div id="blackjack" className="game_box">
 		<Header template={"game"} details={page} lang={lang} />
         <canvas id="blackjack_canvas" />
-        <GameBoard template="blackjack_board" {...props} startGame={startGame} bet={blackjackBets} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
+        <GameBoard template="blackjack_board" {...props} startGame={startGame} bet={blackjackBets} choice={(e)=>choice(e)} updateQtyMarket={(e)=>updateBets(e)} />
 		<div className="button_action_group blackjack_buttons_container">
 			<div className="tooltip">
 				<Button 

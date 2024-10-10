@@ -54,9 +54,12 @@ const database = require('./database/mysql')
 var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
-// database_config.sql = "SELECT * FROM order_user;"
+// database_config.sql = "SELECT * FROM casino_user;"
 // database(database_config).then(function(result){
-//   console.log(result)
+//   let user_found = result.filter(function(x){
+//     return x.user === "test"
+//   })
+//   console.log('user_found ', user_found[0], decrypt(JSON.parse(user_found[0].pass)))
 // })
 
 io.on('connection', function(socket) {

@@ -15,7 +15,7 @@ import profilePic from '../../img/profile/predators.jpg'
 import { convertCurrency } from '../../utils/utils'
 
 function Cell(props) {
-    const {index, selected, data, template, account_type, money, settings, exchange_rates, finances} = props
+    const {index, selected, data, template, account_type, money, settings, exchange_rates, finances, handlePic} = props
     const {lang, currency} = settings
     const [qty, setQty] = useState(1)
     let place = translate({lang: lang, info: 'place'})
@@ -28,9 +28,7 @@ function Cell(props) {
     const dragThreshold = 5 // pixels
 
     function updateQtyMarket(x){
-        if(x > 0){
-            setQty(x)
-        }
+        setQty(x)
     }
 
     function updateRaceBet(x, index){
@@ -52,22 +50,20 @@ function Cell(props) {
         }
     }
 
-    function getItem(x){ 
-        if(typeof props.getItem === "function"){
-            switch (template) {
-                case "market":
-                    let id = data.id ? data.id : null
-                    let payload_market = {id, qty} 
-                    props.getItem(payload_market)
-                    break
-                case "salon":
-                    let table_name = x.table_name ? x.table_name : null
-                    let table_type = x.table_type ? x.table_type : null
-                    let table_id = x.table_id ? x.table_id : null
-                    let payload_race = {table_name, table_type, table_id}
-                    props.getItem(payload_race)
-                    break
-            }
+    function getItem(x){        
+        switch (template) {
+            case "market":
+                let id = data.id ? data.id : null
+                let payload_market = {id, qty} 
+                props.getItem(payload_market)
+                break
+            case "salon":
+                let table_name = x.table_name ? x.table_name : null
+                let table_type = x.table_type ? x.table_type : null
+                let table_id = x.table_id ? x.table_id : null
+                let payload_race = {table_name, table_type, table_id}
+                props.getItem(payload_race)
+                break
         }
     }
 
@@ -89,8 +85,8 @@ function Cell(props) {
     }
 
     const handleClick = () => {
-        if(!isDragging && typeof props.handlePic === "function"){
-            props.handlePic(data, index-1)
+        if(!isDragging){
+            handlePic(data, index-1)
         }
     }
 
@@ -121,7 +117,7 @@ function Cell(props) {
                                 <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
                                 <p>{translate({lang: lang, info: "value"})}: {data.value} <FontAwesomeIcon icon={faCarrot} /></p>
                                 <p>{translate({lang: lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
-                                <Counter min={1} update={(e)=>updateQtyMarket(e)} />
+                                <Counter update={(e)=>updateQtyMarket(e)} />
                             </div>
                             <div className="cell_button">
                                 <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>
@@ -151,7 +147,7 @@ function Cell(props) {
                                     </div>
                                     <div className="rabbit_box_bet">
                                         <p>{translate({lang: lang, info: "bet"})}:</p>
-                                        <Counter num={0} max={max_bet} update={(e)=>updateRaceBet(e, index)} />
+                                        <Counter max={max_bet} update={(e)=>updateRaceBet(e, index)} />
                                     </div>
                                     <div className="rabbit_box_place">
                                         <DropdownButton title={titleDropdown} id="language_button" onSelect={(e)=>handleDropdown(e, index)}>

@@ -40,7 +40,6 @@ cryptoPayment.post("/api/crypto_min", jsonParser, (req, res, next) => {
 
 cryptoPayment.post("/api/crypto_estimated_price", jsonParser, (req, res, next) => {
     const { amount, currency_from, currency_to } = req.body
-    console.log(amount, currency_from, currency_to)
     if(!amount || amount === 0 || !currency_from || !currency_to){
         return res.json({ type: "crypto", result: "error", payload: {"estimated_amount": 0} })
     }

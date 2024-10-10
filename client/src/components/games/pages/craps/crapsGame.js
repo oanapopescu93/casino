@@ -649,9 +649,7 @@ function CrapsGame(props){
 				status: 'lose',
 				bet: 1
 			}
-			if(typeof props.results === "function"){
-				props.results(craps_payload)
-			}
+			props.results(craps_payload)
 		}
 		
 	}
@@ -686,9 +684,7 @@ function CrapsGame(props){
 			status: results,
 			bet: 1
 		}
-		if(typeof props.results === "function"){
-			props.results(craps_payload)
-		}
+		props.results(craps_payload)
 		setStart(false)
 		craps_status = false
 	}

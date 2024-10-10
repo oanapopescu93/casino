@@ -82,9 +82,7 @@ function craps_bets(props){
 				game_type = items[i].text
 				game_odds = items[i].odds
 				self.draw_craps_bets(self.images[i])
-				if(typeof props.getData === "function"){
-					props.getData({game_type, game_odds, bet: props.bet})
-				}
+				props.getData({game_type, game_odds, bet: props.bet})
 				break
 			}
 		}

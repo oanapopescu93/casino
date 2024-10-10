@@ -177,17 +177,13 @@ function keno_tube_game(props){
     }
 
     this.finish = function(){
-        if(typeof props.animationFinished !== "undefined"){
-            props.animationFinished()
-        }
+        props.animationFinished()
     }
 }
 
 function KenoTube(props){
     let animationFinished = function(){
-		if(typeof props.animationFinished === "function"){
-            props.animationFinished("flask")
-        }
+		props.animationFinished("flask")
 	}
 
     let options = {...props, animationFinished}

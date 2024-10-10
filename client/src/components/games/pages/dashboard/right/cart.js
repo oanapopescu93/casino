@@ -9,35 +9,15 @@ import { decryptData } from '../../../../../utils/crypto'
 import { convertCurrency } from '../../../../../utils/utils'
 
 function Cart(props){
-    const {cart, home, user, settings, exchange_rates} = props
+    const {
+        cart, home, user, settings, exchange_rates,
+        cartRemoveAllProduct, cartRemoveProduct, updateQtyProduct, handleCheckout
+    } = props
     const {lang, currency} = settings
+    
     let market = home.market ? home.market : []
     let total = totalPriceSum().toFixed(2)
-    let max = user.money ? decryptData(user.money) : 0
-
-    function cartRemoveAllProduct(){
-        if(typeof props.cartRemoveAllProduct === "function"){
-            props.cartRemoveAllProduct()
-        }
-    }
-    function cartRemoveProduct(item){
-        if(typeof props.cartRemoveProduct === "function"){
-            props.cartRemoveProduct(item)
-        }
-    }
-
-    function updateQtyProduct(x, item){
-        let payload = {...item, qty: x}
-        if(typeof props.updateQtyProduct === "function"){
-            props.updateQtyProduct(payload)
-        }
-    }
-
-    function handleCheckout(){
-        if(typeof props.handleCheckout === "function"){
-            props.handleCheckout()
-        }
-    }
+    let max = user.money ? decryptData(user.money) : 0  
 
     function totalPriceSum(){
         let total = 0
@@ -80,7 +60,7 @@ function Cart(props){
                             ><FontAwesomeIcon icon={faTrashCan}/></Button>
                         </div>
                         <div className="cart_counter">
-                            <Counter min={1} num={item.qty} max={max} update={(e)=>updateQtyProduct(e, item)} />
+                            <Counter  num={item.qty} max={max} update={(e)=>updateQtyProduct({...item, qty: e})} />
                         </div>
                     </div>
                 })}

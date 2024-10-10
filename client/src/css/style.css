@@ -1348,8 +1348,8 @@ textarea {
 .panel_container{
 	top:0px;
 	bottom:0px;
-	right:-265px;
-	width:300px;
+	right:-365px;
+	width:400px;
 	position:fixed;	
 	z-index:1;		
   -webkit-transition:0.7s;
@@ -1396,8 +1396,7 @@ textarea {
 	height:100%;
   top: 0px;
 	right:0px;
-	width:90%;
-	max-width:265px;
+	width:365px;
 	text-align: left;
 	color:var(--color);
 }
@@ -1492,18 +1491,65 @@ textarea {
   border-radius: var(--radius);
   margin-bottom: var(--padding);
   padding: var(--padding_small);
+  height: 500px;
 }
+
+@media (max-width: 767px) and (orientation: landscape) {
+  #chatmessages {
+    height: 150px;
+  }
+  .chat_list{
+    height: 75px;
+  }
+}
+@media (max-width: 767px) and (orientation: portrait) {
+  #chatmessages {
+    height: 300px;
+  }
+}
+
+
 #chatmessages .messages{
-  padding: var(--padding_small);
   overflow-x: hidden;
   overflow-y: auto;
+}
+#chatmessages .message{  
+  margin-top: var(--padding_small);
+}
+#chatmessages .message_box .chat_header{  
+  width: 33%;
+  min-width: 100px;
+}
+#chatmessages .message_box .chat_header .user{
+  border-radius: var(--radius_small) var(--radius_small) 0px 0px;
+  background-color: var(--color);
+  color: var(--bg);
+  padding: var(--padding_small);
+}
+#chatmessages .message_box .chat_header .user p{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#chatmessages .message_box .chat_body{
+  border-radius: 0px var(--radius_small) var(--radius_small) var(--radius_small);
+  padding: var(--padding_small);
+  border: solid 1px var(--color);
 }
 .chat_form input{
   margin-bottom: var(--padding);
 }
 
-.chat_list li{
+.chat_list_container{
   padding: var(--padding_small);
+}
+.chat_list{
+  padding: var(--padding_small);
+  overflow: auto;
+  max-height: 200px;
+}
+.chat_list li{
+  margin-bottom: var(--padding_small);
   border-bottom: solid 1px var(--color);
 }
 .chat_list li .left{
@@ -2231,6 +2277,10 @@ a.donation_button{
   height: 25px;
   line-height: 14px;
 }
+.contact_address{
+  text-align: left;
+  margin-bottom: var(--padding);
+}
 
 /* DASHBOARD */
 .dashboard_box{
@@ -2534,6 +2584,12 @@ a.donation_button{
   position: relative;
   z-index: 1;
 }
+.dashboard_user_pic, .dashboard_user_info{
+  display: inline-block;
+  vertical-align: middle;
+  width: 50%;
+  min-width: 120px;
+}
 .profile_pic_container{
 	position: relative;
   z-index: 1;
@@ -2600,6 +2656,15 @@ a.donation_button{
   padding: var(--padding_small) var(--padding);
   top: -20px;
   white-space: nowrap;
+  margin-bottom: -20px;
+}
+.profile_pic_edit{
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  right: 0px;
+  padding: var(--padding_small);
+  cursor: pointer;
 }
 .profile_pic_input{
 	opacity: 0;
@@ -2914,6 +2979,10 @@ a.donation_button{
 }
 #withdraw_form input, #withdraw_form .dropdown{
   margin-bottom: var(--padding);
+}
+#withdraw_form .withdraw_form_amount label,
+#withdraw_form .withdraw_form_amount input{
+  margin-bottom: 0px;
 }
 #withdraw_form .alert{
   margin-top: 0px;
@@ -3991,6 +4060,9 @@ a.donation_button{
     box-shadow: none!important;
     padding: 0px;
   }
+  .dashboard_user_pic, .dashboard_user_info{
+    width: 100%;
+  }
   #dashboard_left .mybutton{
     display: inline-block;
     max-width: 200px;
@@ -4298,11 +4370,21 @@ a.donation_button{
   }
 
   /* SALON */
+  .panel_container{
+    right:-265px;
+    width: 300px;
+  }
+  .panel_box{
+    width: 265px;
+  }
   .salon_button, .panel_button {
     height: 40px;
   }
   .salon_button span, .panel_button span{
     display: none;
+  }
+  .chat_list{
+    max-height: 100px;
   }
 
   /* SPLASH SCREEN */

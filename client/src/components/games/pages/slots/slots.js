@@ -130,9 +130,7 @@ function Slots(props){
 				status: status,
 				bet: pay
 			}		
-			if(typeof props.results === "function"){
-				props.results(slots_payload)
-			}
+			props.results(slots_payload)
 		}
 	}
 
