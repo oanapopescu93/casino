@@ -7,8 +7,12 @@ import Counter from '../../partials/counter'
 
 function WithdrawFormStripe(props) {    
     const { 
-        home, settings, allowedCurrencies, withdrawError, formState, 
-        changeCurrency, updateAmount, handleInputChange, handleSubmit, handleBack 
+        home, settings, allowedCurrencies, withdrawError, formState,
+        filteredCountries, filteredCountry, filteredCities, filteredCity, 
+        handleInputChange, changeCurrency, updateAmount, 
+        handleCountryChange, handleFilterCountries, 
+        handleCityChange, handleFilterCities, 
+        handleSubmit, handleBack 
     } = props
     const { lang } = settings
     const { finances } = home
@@ -119,11 +123,49 @@ function WithdrawFormStripe(props) {
                 <Row>
                     <Col sm={12} className="withdraw_form_country">
                         <label htmlFor="amount">{translate({ lang: lang, info: "country" })} *</label>
-                        <p>country will come here</p>
+                        <DropdownButton title={formState.country ? formState.country : translate({lang: lang, info: "country"})} id="country_button" className="shadow_convex" onSelect={handleCountryChange}>
+                            <div className="dropdown_search">
+                                <input 
+                                    id="searchCountry" 
+                                    className="input_light shadow_concav" 
+                                    type="text" 
+                                    placeholder={translate({lang: lang, info: "search"})}
+                                    value={filteredCountry}
+                                    onChange={(e) => handleFilterCountries(e.target.value)}
+                                />
+                            </div>
+                            {filteredCountries.map((country, i)=>{
+                                return <Dropdown.Item key={i} eventKey={country}><span>{country}</span></Dropdown.Item>
+                            })}
+                        </DropdownButton>
+                        {!withdrawError.country.fill ? <div className="alert alert-danger">
+                            <p className="text_red">
+                                {translate({ lang: lang, info: withdrawError.country.fill_message })}
+                            </p>
+                        </div> : null}
                     </Col>
                     <Col sm={12} className="withdraw_form_country">
                         <label htmlFor="amount">{translate({ lang: lang, info: "city" })} *</label>
-                        <p>city will come here</p>
+                        <DropdownButton title={formState.city ? formState.city : translate({lang: lang, info: "city"})} id="city_button" className="shadow_convex" onSelect={handleCityChange}>
+                            <div className="dropdown_search">
+                                <input 
+                                    id="searchCity" 
+                                    className="input_light shadow_concav" 
+                                    type="text" 
+                                    placeholder={translate({lang: lang, info: "search"})}
+                                    value={filteredCity}
+                                    onChange={(e) => handleFilterCities(e.target.value)}
+                                />
+                            </div>
+                            {filteredCities.map((city, i)=>{
+                                return <Dropdown.Item key={i} eventKey={city}><span>{city}</span></Dropdown.Item>
+                            })}
+                        </DropdownButton>
+                        {!withdrawError.city.fill ? <div className="alert alert-danger">
+                            <p className="text_red">
+                                {translate({ lang: lang, info: withdrawError.city.fill_message })}
+                            </p>
+                        </div> : null}
                     </Col>
                 </Row>
             </Col>

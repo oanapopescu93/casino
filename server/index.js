@@ -116,6 +116,7 @@ io.on('connection', function(socket) {
             
             //update user and login tables
             database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
+            console.log('ID ', user_found[0].id, " - ", uuid)
 						database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
 						let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
 						database(database_config, payload).then(function(){})
@@ -500,29 +501,6 @@ io.on('connection', function(socket) {
                   console.log('[error]','order_read--> ', e)
                 }
               })
-            }            
-          }
-        }
-      })
-    }    
-  })
-
-  socket.on('withdraw_send', function(details){
-    if(details.user_uid){
-      database_config.sql = "SELECT * FROM casino_user;"
-      database_config.name = "db06"
-      database(database_config).then(function(result){        
-        if(result){
-          users_array = result
-          if(users_array && users_array.length>0){
-            let user_found = users_array.filter((x) => x.uuid === details.user_uid)            
-            if(user_found[0] && user_found[0]){
-              // let id = user_found[0].id
-              try{				
-                io.to(socket.id).emit('withdraw_read', details)
-              }catch(e){
-                console.log('[error]','withdraw_read--> ', e)
-              }
             }            
           }
         }

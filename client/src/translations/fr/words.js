@@ -236,7 +236,7 @@ var word_bank = {
     validate_message_year: "Ce n'est pas une année valide",
     validate_message_cvv: "Ce n'est pas un CVV valide",
     validate_message_bitcoinAddress: "Ce n'est pas une adresse Bitcoin valide",
-    validate_iban_name: "Ce n'est pas un IBAN",
+    validate_message_iban: "Ce n'est pas un IBAN",
     continue: "Continuer",
     save: "Enregistrer",
     payment_success: "Paiement réussi",
@@ -282,6 +282,8 @@ var word_bank = {
     no_withdrawal: "Pas de retraits",
     not_enough_money_withdrawal: "Vous n'avez pas assez d'argent pour effectuer un retrait.",
     withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_success: "Retrait réussi",
+    withdraw_failed: "Échec du retrait",
 
     // blackjack
     start: "Démarrer",

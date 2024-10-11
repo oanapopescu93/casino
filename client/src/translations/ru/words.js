@@ -236,7 +236,7 @@ var word_bank = {
     validate_message_year: "Это не действительный год",
     validate_message_cvv: "Это не действительный CVV",
     validate_message_bitcoinAddress: "Это не действительный адрес Bitcoin",
-    validate_iban_name: "Это не IBAN",
+    validate_message_iban: "Это не IBAN",
     continue: "Продолжить",
     save: "Сохранить",
     payment_success: "Оплата прошла успешно",
@@ -282,6 +282,8 @@ var word_bank = {
     no_withdrawal: "Нет выводов средств",
     not_enough_money_withdrawal: "У вас недостаточно денег для вывода средств.",
     withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_success: "Вывод средств успешен",
+    withdraw_failed: "Вывод средств не удался",
 
     // blackjack
     start: "Начать",

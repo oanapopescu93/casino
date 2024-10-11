@@ -236,7 +236,7 @@ var word_bank = {
     validate_message_year: "Acesta nu este un an valid",
     validate_message_cvv: "Acesta nu este un CVV valid",
     validate_message_bitcoinAddress: "Acesta nu este o adresă Bitcoin validă",
-    validate_iban_name: "Aceasta nu este un IBAN",
+    validate_message_iban: "Aceasta nu este un IBAN",
     continue: "Continuă",
     save: "Salvează",
     payment_success: "Plată reușită",
@@ -282,6 +282,8 @@ var word_bank = {
     no_withdrawal: "Fără retrageri",
     not_enough_money_withdrawal: "Nu ai suficienți bani pentru a face o retragere.",
     withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_success: "Retragere reușită",
+    withdraw_failed: "Retragere eșuată",
 
     // blackjack
     start: "Începe",

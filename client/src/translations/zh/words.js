@@ -236,7 +236,7 @@ var word_bank = {
     validate_message_year: "这不是一个有效的年份",
     validate_message_cvv: "这不是一个有效的CVV",
     validate_message_bitcoinAddress: "这不是一个有效的比特币地址",
-    validate_iban_name: "这不是IBAN",
+    validate_message_iban: "这不是IBAN",
     continue: "继续",
     save: "保存",
     payment_success: "支付成功",
@@ -282,6 +282,8 @@ var word_bank = {
     no_withdrawal: "没有取款",
     not_enough_money_withdrawal: "您没有足够的资金进行取款。",
     withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_success: "提现成功",
+    withdraw_failed: "提现失败",
 
     // blackjack
     start: "开始",

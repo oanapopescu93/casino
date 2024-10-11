@@ -1277,6 +1277,9 @@ textarea {
 }
 
 /* LOADER */
+.page_content_loader{
+  min-height: 300px;
+}
 .loader_container{
   position: fixed;
   z-index: 9999;

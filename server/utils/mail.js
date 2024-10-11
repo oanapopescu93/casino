@@ -1,5 +1,8 @@
 var nodemailer = require('nodemailer')
 var constants = require('../var/constants')
+var database_config = constants.DATABASE[0]
+
+const database = require('../database/mysql')
 
 const transports = {
     // gmail: nodemailer.createTransport({
@@ -126,6 +129,21 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
                 html = html + "<p><b>About: </b> " + e.about + "</p>"
                 html = html + "<p><b>Message: </b> " + e.message + "</p>"
                 success_message = "email_send"
+            case "withdraw":
+                subject = reason
+
+                html = html + "<p><b>id: </b> " + e.id + "</p>"
+                html = html + "<p><b>uuid: </b> " + e.uuid + "</p>"
+                html = html + "<p><b>amount: </b> " + e.amount + "</p>"
+                html = html + "<p><b>currency: </b> " + e.currency + "</p>"
+                html = html + "<p><b>name: </b> " + e.name + "</p>"
+                html = html + "<p><b>phone: </b> " + e.phone + "</p>"
+                html = html + "<p><b>email: </b> " + e.email + "</p>"
+                html = html + "<p><b>country: </b> " + e.country + "</p>"
+                html = html + "<p><b>city: </b> " + e.city + "</p>"
+                html = html + "<p><b>iban: </b> " + e.iban + "</p>"
+
+                success_message = "withdraw_success"                
         }			
 
 		let mailOptions = {
