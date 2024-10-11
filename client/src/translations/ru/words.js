@@ -137,6 +137,17 @@ var word_bank = {
     language: "Язык",
     date_calendar: "Дата",
     currency: "Валюта",
+    theme: "Тема",
+    red: "Красный",
+    orange: "Оранжевый",
+    yellow: "Желтый",
+    green: "Зеленый",
+    blue: "Синий",
+    brown: "Коричневый",
+    purple: "Фиолетовый",
+    black: "Черный",
+    grey: "Серый",
+    white: "Белый",
 
     dashboard: "Дашборд",
     choose_profile_pic: "Выберите фото профиля",
@@ -270,6 +281,7 @@ var word_bank = {
     withdrawals: "Выводы средств",
     no_withdrawal: "Нет выводов средств",
     not_enough_money_withdrawal: "У вас недостаточно денег для вывода средств.",
+    withdraw_instructions: "Withdraw instructions will come here",
 
     // blackjack
     start: "Начать",

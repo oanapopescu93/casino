@@ -15,11 +15,11 @@ function Picture(props){
 	return <div className="profile_pic_container" onClick={()=>handleChoice('change_pic')}>
         {money > 1000 ? <div className="profile_pic_crown">
             <FontAwesomeIcon icon={faCrown} />
-        </div> : null}        
+        </div> : null}
         <div className="profile_pic_box shadow_convex">
             <div className="profile_pic_default">
                 <FontAwesomeIcon icon={faUpload} />
-            </div>        
+            </div>
             {(() => {
                 if(picId) {
                     return <div className="profile_pic">
@@ -70,7 +70,7 @@ function DashboardLeft(props){
                 case "change_password":
                     title = choice
                     break
-                default:              
+                default:
             }
             
             let payload = {
@@ -104,7 +104,7 @@ function DashboardLeft(props){
                 data: translate({lang: lang, info: "not_enough_money_withdrawal"})
             }
             dispatch(changePopup(payload))
-        }        
+        }
     }
 
     return <div id="dashboard_left" className="dashboard_box shadow_concav">
@@ -124,7 +124,7 @@ function DashboardLeft(props){
                         <b>{translate({lang: lang, info: "animal"})}: </b>
                         {animal && animal[0] ? <span>{animal[0]["name_" + lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
                     </p>
-                    <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>                                                  
+                    <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>
                     <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
                     <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
                 </div>

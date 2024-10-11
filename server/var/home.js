@@ -140,7 +140,8 @@ module.exports = Object.freeze({
     ],
     FINANCES: {
         currencies: ['USD', 'EUR', 'GBP', 'CHF', 'RON'],
-        min_amount_withdraw: 10000,
+        min_amount_withdraw: 10000, //min amount for carrots for withdrawal
+        convert_carrots_rate: 100, // 100 carrots = 1 usd
         min_free: 1000, //min amount where some stuff becomes free/active
     }
 })

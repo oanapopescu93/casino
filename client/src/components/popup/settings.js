@@ -3,10 +3,11 @@ import { translate } from '../../translations/translate'
 import Currency from '../settings/currency'
 import Date from '../settings/date'
 import Language from '../settings/language'
+import Theme from '../settings/theme'
 
 function Settings(props) {
     const {settings} = props
-    const {lang, date, currency} = settings
+    const {lang, date, currency, theme} = settings
 
     return <div className="settings">
         <div className="settings_language">
@@ -20,6 +21,10 @@ function Settings(props) {
         <div className="settings_currency">
             <h4>{translate({lang: lang, info: "currency"})}</h4>
             <Currency title={currency} {...props} />
+        </div>
+        <div className="settings_theme">
+            <h4>{translate({lang: lang, info: "theme"})}</h4>
+            <Theme title={theme} {...props} />
         </div>
     </div>
 }

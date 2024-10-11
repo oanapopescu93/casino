@@ -5,6 +5,7 @@ const initialState = {
     lang: getCookie("casino_language") !== "" ? getCookie("casino_language") : "ENG",
     currency: getCookie("casino_currency") !== "" ? getCookie("casino_currency") : "USD",
     date: getCookie("casino_date") !== "" ? getCookie("casino_date") : "d.m.Y H:i",
+    theme: getCookie("casino_theme") !== "" ? getCookie("casino_theme") : "green",
     cookies: getCookie("casino_cookies") !== "" ? getCookie("casino_cookies") : "0",
 }
 
@@ -24,6 +25,10 @@ const settingsSlice = createSlice({
             state.date = payload
             setCookie("casino_date", payload)
         },
+        changeTheme: (state, { payload }) => {
+            state.theme = payload
+            setCookie("casino_theme", payload)
+        },
         changeCookies: (state) => {
             state.cookies = '1'
             setCookie("casino_cookies", '1')
@@ -36,6 +41,7 @@ export const {
     changeLanguage,
     changeCurrency,
     changeDate,
+    changeTheme,
     changeCookies,
     resetSettings
 } = settingsSlice.actions

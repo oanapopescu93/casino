@@ -137,6 +137,17 @@ var word_bank = {
     language: "Limba",
     date_calendar: "Data calendaristică",
     currency: "Monedă",
+    theme: "Temă",
+    red: "Roșu",
+    orange: "Portocaliu",
+    yellow: "Galben",
+    green: "Verde",
+    blue: "Albastru",
+    brown: "Maro",
+    purple: "Violet",
+    black: "Negru",
+    grey: "Gri",
+    white: "Alb",
 
     dashboard: "Dashboard",
     choose_profile_pic: "Alege imaginea de profil",
@@ -270,6 +281,7 @@ var word_bank = {
     withdrawals: "Retrageri",
     no_withdrawal: "Fără retrageri",
     not_enough_money_withdrawal: "Nu ai suficienți bani pentru a face o retragere.",
+    withdraw_instructions: "Withdraw instructions will come here",
 
     // blackjack
     start: "Începe",

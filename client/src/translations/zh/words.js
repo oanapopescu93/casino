@@ -137,6 +137,17 @@ var word_bank = {
     language: "语言",
     date_calendar: "日期",
     currency: "货币",  
+    theme: "主题",
+    red: "红色",
+    orange: "橙色",
+    yellow: "黄色",
+    green: "绿色",
+    blue: "蓝色",
+    brown: "棕色",
+    purple: "紫色",
+    black: "黑色",
+    grey: "灰色",
+    white: "白色",
     
     dashboard: "仪表板",
     choose_profile_pic: "选择个人资料图片",
@@ -270,6 +281,7 @@ var word_bank = {
     withdrawals: "取款记录",
     no_withdrawal: "没有取款",
     not_enough_money_withdrawal: "您没有足够的资金进行取款。",
+    withdraw_instructions: "Withdraw instructions will come here",
 
     // blackjack
     start: "开始",

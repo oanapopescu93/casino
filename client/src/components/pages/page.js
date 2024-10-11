@@ -69,6 +69,25 @@ function Page(props) {
     }
 
     useEffect(() => {  
+        let theme = settings.theme
+        if(theme){            
+            document.body.classList.forEach((cls) => { // Remove all classes except "grad"
+                if (cls !== "grad") {
+                    document.body.classList.remove(cls)
+                }
+            })
+            document.body.classList.add(theme) // Add the current theme as a class to the body
+        }        
+        return () => {
+            document.body.classList.forEach((cls) => { // Do the cleanup
+                if (cls !== "grad") {
+                    document.body.classList.remove(cls)
+                }
+            })
+        }
+    }, [settings.theme])
+
+    useEffect(() => {  
         getExchangeRates()
     }, [])
 

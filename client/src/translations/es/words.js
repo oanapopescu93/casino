@@ -137,6 +137,17 @@ var word_bank = {
     language: "Idioma",
     date_calendar: "Fecha",
     currency: "Moneda",
+    theme: "Tema",
+    red: "Rojo",
+    orange: "Naranja",
+    yellow: "Amarillo",
+    green: "Verde",
+    blue: "Azul",
+    brown: "Marrón",
+    purple: "Púrpura",
+    black: "Negro",
+    grey: "Gris",
+    white: "Blanco",
 
     dashboard: "Dashboard",
     choose_profile_pic: "Elegir foto de perfil",
@@ -270,6 +281,7 @@ var word_bank = {
     withdrawals: "Retiros",
     no_withdrawal: "Sin retiros",
     not_enough_money_withdrawal: "No tienes suficiente dinero para hacer un retiro.",
+    withdraw_instructions: "Withdraw instructions will come here",
 
     // blackjack
     start: "Comenzar",
