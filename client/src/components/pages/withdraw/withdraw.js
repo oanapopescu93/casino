@@ -39,7 +39,7 @@ function Withdraw(props){
     const { finances } = home
     const { min_amount_withdraw, convert_carrots_rate } = finances
     let min_amount = min_amount_withdraw/convert_carrots_rate
-    const erros_default = {
+    const errors_default = {
         name: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_name" },
         phone: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_phone" },
         email: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_email" },
@@ -47,7 +47,7 @@ function Withdraw(props){
         city: { fill: true, fill_message: "fill_field", validate: true },
         iban: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_iban" },
     }
-    const [withdrawError, setWithdrawError] = useState(erros_default)
+    const [withdrawError, setWithdrawError] = useState(errors_default)
     const [formState, setFormState] = useState({ 
         amount: min_amount, 
         currency: 'USD', 
@@ -121,7 +121,7 @@ function Withdraw(props){
 
     function validateForm() {
         const { name, phone, email, country, city, iban } = formState        
-        let errors = erros_default
+        let errors = errors_default
 
         if (isEmpty(name)) {
             errors.name.fill = false

@@ -2919,7 +2919,10 @@ a.donation_button{
   overflow-y: auto;
 }
 .cart_total_price, #cart_promo h4, #cart_promo input{
-  margin-bottom: var(--padding);
+  margin-bottom: var(--padding);  
+}
+#payment_form .cart_total_price h3{
+  border-bottom: none;
 }
 #cart_panel .mybutton{
   margin-bottom: var(--padding);
