@@ -6,7 +6,7 @@ import Paypal from './type/paypal'
 import Crypto from './type/crypto'
 
 function PaymentForm(props){
-    const {paymentChoice, settings, handleChangeCheck} = props
+    const {paymentDetails, settings, handleChangeCheck} = props
     const {lang} = settings
 
     return <>
@@ -17,8 +17,8 @@ function PaymentForm(props){
                         <input 
                             type="radio" 
                             name="paymentChoice" 
-                            checked={paymentChoice.stripe} 
-                            onChange={() => handleChangeCheck("stripe")}
+                            checked={paymentDetails.option === "card"} 
+                            onChange={() => handleChangeCheck("card")}
                         />
                         {translate({ lang: lang, info: "pay_card" })}
                     </label>
@@ -26,7 +26,7 @@ function PaymentForm(props){
                         <input 
                             type="radio" 
                             name="paymentChoice" 
-                            checked={paymentChoice.paypal} 
+                            checked={paymentDetails.option === "paypal"} 
                             onChange={() => handleChangeCheck("paypal")}
                         />
                         {translate({ lang: lang, info: "pay_paypal" })}
@@ -35,7 +35,7 @@ function PaymentForm(props){
                         <input 
                             type="radio" 
                             name="paymentChoice" 
-                            checked={paymentChoice.crypto} 
+                            checked={paymentDetails.option === "crypto"} 
                             onChange={() => handleChangeCheck("crypto")}
                         />
                         {translate({ lang: lang, info: "pay_crypto" })}
@@ -44,16 +44,16 @@ function PaymentForm(props){
             </Col>
         </Row>        
         {(() => {
-            if(paymentChoice.stripe){
-                return <Stripe {...props} />
+            switch(paymentDetails.option){
+                case "card":
+                    return <Stripe {...props} />
+                case "paypal":
+                    return <Paypal {...props} />
+                case "crypto":
+                    return <Crypto {...props} />
+                default:
+                    <p>{translate({lang: lang, info: "error"})}</p>
             }
-            if(paymentChoice.paypal){
-                return <Paypal {...props} />
-            }
-            if(paymentChoice.crypto){
-                return <Crypto {...props} />
-            }
-            return <p>{translate({lang: lang, info: "error"})}</p>
         })()}
     </>
 }

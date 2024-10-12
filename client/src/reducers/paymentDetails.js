@@ -5,21 +5,21 @@ const initialState = {
     cardNumber: !isEmpty(getCookie("casino_payment_cardNumber")) ? getCookie("casino_payment_cardNumber") : "",
     city: !isEmpty(getCookie("casino_payment_city")) ? getCookie("casino_payment_city") : "",
     country: !isEmpty(getCookie("casino_payment_country")) ? getCookie("casino_payment_country") : "",
+    crypto: !isEmpty(getCookie("casino_payment_crypto")) ? getCookie("casino_payment_crypto") : "btc", //btc, ltc
     cvv: !isEmpty(getCookie("casino_payment_cvv")) ? getCookie("casino_payment_cvv") : "",
     email: !isEmpty(getCookie("casino_payment_email")) ? getCookie("casino_payment_email") : "",
     month: !isEmpty(getCookie("casino_payment_month")) ? getCookie("casino_payment_month") : -1,
-    year: !isEmpty(getCookie("casino_payment_year")) ? getCookie("casino_payment_year") : "",
     name: !isEmpty(getCookie("casino_payment_name")) ? getCookie("casino_payment_name") : "",
+    option: !isEmpty(getCookie("casino_payment_option")) ? getCookie("casino_payment_option") : "card", //card, paypal, crypto
     phone: !isEmpty(getCookie("casino_payment_phone")) ? getCookie("casino_payment_phone") : "",
-    option: !isEmpty(getCookie("casino_payment_option")) ? getCookie("casino_payment_option") : "1",   // 1 = card, 2 = paypal, 3 = crypto
-    crypto: !isEmpty(getCookie("casino_payment_crypto")) ? getCookie("casino_payment_crypto") : "btc" //btc, ltc
+    year: !isEmpty(getCookie("casino_payment_year")) ? getCookie("casino_payment_year") : "",
 }
 
 const paymentDetailsSlice = createSlice({
     name: 'paymentDetails',
     initialState,
     reducers: {
-        updatePaymentDetails: (state, { payload }) => {
+        updatePaymentDetails: (state, { payload }) => {            
             Object.keys(payload).forEach(key => {
                 if(payload[key]){
                     state[key] = payload[key]

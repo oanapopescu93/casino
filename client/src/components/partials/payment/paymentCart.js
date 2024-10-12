@@ -4,31 +4,47 @@ import { translate } from '../../../translations/translate'
 import { convertCurrency } from '../../../utils/utils'
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import Cart from '../../pages/checkout/cart'
+import BuyCarrots from '../../pages/checkout/buyCarrots'
 
 function PaymentCart(props){
-    const {template, settings, cart, promo, exchange_rates, total_promo, total, handleContinue, handleBack} = props
-    const {lang, currency} = settings    
+    const {
+        template, settings, cart, promo, exchange_rates, total_promo, total,
+        handleContinue, handleBack
+    } = props
+    const {lang, currency} = settings
 
     return <>
-        <Row>
-            <Col sm={12}>
-                <h3 className="cart_header">{translate({lang: lang, info: "cart"})}</h3>
-            </Col>
-            <Col sm={12}>
-                <p>cart will come here</p>
-            </Col>
-        </Row>
-        <Row>
-            <Col sm={12}>
-                <div className="cart_total_price 3">
-                    {promo && Object.keys(promo).length>0 ? <>
-                        <p><b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</p>
-                        <p><b>{translate({lang: lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
-                        <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total_promo, currency, exchange_rates)} {currency}</h3>
-                    </> : <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>}
-                </div>
-            </Col>
-        </Row>
+        {(() => {
+            switch(template){
+                case "checkout":
+                    return <Row>
+                        <Col sm={12}>
+                            <h3 className="cart_header">{translate({lang: lang, info: "cart"})}</h3>
+                        </Col>
+                        <Col sm={12}>
+                            <Cart {...props} cart={cart} />
+                        </Col>
+                        <Col sm={12}>
+                            <div className="cart_total_price">
+                                {promo && Object.keys(promo).length>0 ? <>
+                                    <p><b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</p>
+                                    <p><b>{translate({lang: lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
+                                    <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total_promo, currency, exchange_rates)} {currency}</h3>
+                                </> : <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>}
+                            </div>
+                        </Col>
+                    </Row>
+                case "buy_carrots":
+                    return <Row>
+                        <Col sm={12}>
+                            <BuyCarrots {...props} />
+                        </Col>
+                    </Row>
+                default:
+                    return
+            }
+        })()}
         <Row>
             <Col sm={12} className="button_action_group">
                 <Button 

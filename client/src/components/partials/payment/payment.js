@@ -9,13 +9,17 @@ import PaymentCart from './paymentCart'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 
 import countriesData from '../../../utils/constants/countries.json'
-import { checkoutData } from '../../../utils/utils'
+import { checkoutData, isEmpty } from '../../../utils/utils'
 import { translate } from '../../../translations/translate'
+import { validateCard, validateInput } from '../../../utils/validate'
+import { resetPaymentDetails, updatePaymentDetails } from '../../../reducers/paymentDetails'
 
 function Payment(props){
     const {template, home, settings} = props
     const {lang} = settings
     const minimum_amount_usd = 10
+    const max_amount = 100
+    const price_per_carrot = 1
 
     let dispatch = useDispatch()
 
@@ -37,11 +41,7 @@ function Payment(props){
     }
     
     const [paymentDetails, setPaymentDetails] = useState(payment_details)
-    const [paymentChoice, setPaymentChoice] = useState({
-        stripe: payment_details.option === "1" ? true : false,
-        paypal: payment_details.option === "2" ? true : false,
-        crypto: payment_details.option === "3" ? true : false,
-    })
+    const [editCardNumber, setEditCardNumber] = useState(false)
     const [paymentContinue, setPaymentContinue] = useState(null)
     const [paymentError, setPaymentError] = useState(errors_default)
     const [countries, setCountries] = useState([])
@@ -54,12 +54,30 @@ function Payment(props){
     const yearOptions = checkoutData().yearOptions
     const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
+    const [total, setTotal] = useState(0)
+    const [totalPromo, setTotalPromo] = useState(0)
+    const [qty, setQty] = useState(1)
+
     let market = home.market ? home.market : []
-    let total = totalPriceSum()
-    let total_promo = total
-    if(promo && Object.keys(promo).length>0){
-        total_promo = (total_promo - (total_promo * promo.discount)/100).toFixed(2)
-    }
+
+    useEffect(() => {
+        let pay = 0
+        switch(template){
+            case "buy_carrots":
+                pay = qty * price_per_carrot
+                break
+            case "checkout":
+                pay = totalPriceSum()
+                setTotal(parseFloat(pay))
+                if(promo && Object.keys(promo).length>0){
+                    pay = (pay - (pay * promo.discount)/100).toFixed(2)
+                }
+                break
+            default:
+                break
+        }
+        setTotalPromo(parseFloat(pay))
+    }, [])
 
     function totalPriceSum(){
         let total = 0
@@ -84,16 +102,12 @@ function Payment(props){
             dispatch(changeGame(null))
             dispatch(changeGamePage(choice))
         } else {
-            setPaymentDetails(null)
+            setPaymentContinue(false)
         }        
     }
 
-    function handleChangeCheck(choice){
-        setPaymentChoice({
-            stripe: choice === "stripe",
-            paypal: choice === "paypal",
-            crypto: choice === "crypto"
-        })
+    function handleChangeCheck(value){
+        setPaymentDetails({...paymentDetails, option: value})
     }
 
     function handleInputChange(e){
@@ -137,13 +151,94 @@ function Payment(props){
         setPaymentDetails({...paymentDetails, year: value})
     }
 
+    function handleEditCardNumber(){
+        setEditCardNumber(true)
+    }
+
+    function handleSaveCardNumber(){
+        setEditCardNumber(false)
+    }
+
+    function checkCardForm(){
+        const { name, phone, email, country, city, cardNumber, month, year, cvv } = paymentDetails        
+        let errors = errors_default
+
+        if (isEmpty(name)) {
+            errors.name.fill = false
+        }
+        if (isEmpty(phone)) {
+            errors.phone.fill = false
+        }
+        if (isEmpty(email)) {
+            errors.email.fill = false
+        }
+        if (isEmpty(country)) {
+            errors.country.fill = false
+        }
+        if (isEmpty(city)) {
+            errors.city.fill = false
+        }
+        if (isEmpty(cardNumber)) {
+            errors.cardNumber.fill = false
+        }
+        if(parseInt(month) === -1){
+            errors.month.fill = false
+        }
+        if(isEmpty(year)){
+            errors.year.fill = false
+        }
+        if (isEmpty(cvv)) {
+            errors.cvv.fill = false
+        }
+
+        if(!validateInput(name, "name")){
+            errors.name.validate = false
+        }                  
+        if(!validateInput(phone, "phone")){
+            errors.phone.validate = false
+        }
+        if(!validateInput(email, "email")){
+            errors.email.validate = false
+        }  
+        if(!validateCard(cardNumber)){ // test card details --> 4242424242424242
+            errors.cardNumber.validate = false
+            errors.month.validate = false
+            errors.year.validate = false
+        }
+
+        return errors
+    }
+
+    function validateForm(){               
+        let errors = null
+
+        if(paymentDetails.option === "card"){
+            errors = checkCardForm()
+            setPaymentError(errors)
+        }
+
+        // Check if there is any problem (fill or validate errors for at least one element in error array)
+        let problem = Object.values(errors).some(error => !error.fill || !error.validate)
+        return problem
+    }
+
+    function handleContinue(){        
+        if(!validateForm()){
+            setPaymentContinue(true)
+            dispatch(updatePaymentDetails({...paymentDetails}))
+        }
+    }
+
+    function updateQty(e){
+        setQty(e)
+        setTotalPromo(e * price_per_carrot)
+    }
+
     function sendPayment(){
         console.log('sendPayment!!! ', paymentDetails)
     }
 
-    function handleContinue(){
-        setPaymentContinue(true)
-    }
+    //dispatch(resetPaymentDetails())
 
     return <form id="payment_form">
         <p>{translate({lang: lang, info: "under_construction"})}</p>
@@ -158,8 +253,8 @@ function Payment(props){
                 <Col sm={8}>
                     <PaymentForm 
                         {...props} 
-                        paymentChoice={paymentChoice}
                         paymentDetails={paymentDetails}
+                        editCardNumber={editCardNumber}
                         paymentError={paymentError}
                         minimum_amount_usd={minimum_amount_usd}
                         filteredCountries={filteredCountries}
@@ -175,6 +270,8 @@ function Payment(props){
                         handleFilterCities={(e)=>handleFilterCities(e)}
                         handleChangeCheck={(e)=>handleChangeCheck(e)}
                         handleInputChange={(e)=>handleInputChange(e)}
+                        handleEditCardNumber={()=>handleEditCardNumber()}
+                        handleSaveCardNumber={()=>handleSaveCardNumber()}
                         changeMonth={(e)=>changeMonth(e)}
                         changeYear={(e)=>changeYear(e)}
                     />
@@ -184,8 +281,11 @@ function Payment(props){
                         {...props}
                         cart={cart}
                         promo={promo}
-                        total_promo={total_promo}
+                        total_promo={totalPromo}
                         total={total}
+                        qty={qty}
+                        max_amount={max_amount}
+                        updateQty={(e)=>updateQty(e)}
                         handleContinue={()=>handleContinue()}
                         handleBack={(e)=>handleBack(e)}
                     />

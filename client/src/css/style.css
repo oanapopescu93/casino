@@ -2975,6 +2975,34 @@ a.donation_button{
 #payment_form_crypto .checkbox_radio_container{
   display: inline-block;
 }
+.cardNumber_show, .cardNumber_edit{ 
+  position: relative;
+  z-index: 1;  
+  padding: var(--padding_small);
+}
+.cardNumber_show{
+  display: inline-block;
+  width: 100px;
+}
+.cardNumber_edit{
+  width: 100%;
+  padding-right: 40px;
+  margin-bottom: var(--padding);
+}
+.cardNumber_button{  
+  position: absolute;
+  z-index: 1;  
+  top: 0px;
+  right: 0px;
+  padding: var(--padding_small);
+  cursor: pointer;
+}
+.cardNumber_edit input{
+  margin-bottom: 0px!important;
+}
+.cardNumber_edit .cardNumber_button{
+  font-size: 25px;
+}
 
 /* ORDER */
 .order_box{

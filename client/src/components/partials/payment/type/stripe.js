@@ -1,19 +1,40 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import { Col, Row, Dropdown, DropdownButton } from 'react-bootstrap'
 import { translate } from "../../../../translations/translate"
-import { checkoutData } from '../../../../utils/utils'
-import countriesData from '../../../../utils/constants/countries.json'
+import { isEmpty, showCardNumber } from '../../../../utils/utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 
 function Stripe(props) {
     const {
-        paymentDetails, paymentError, settings, minimum_amount_usd,
-        filteredCountries, filteredCountry, filteredCities, filteredCity,
-        monthOptions, yearOptions, months, 
-        handleCountryChange, handleFilterCountries, 
-        handleCityChange, handleFilterCities, 
-        handleInputChange, changeMonth, changeYear
+        paymentDetails, editCardNumber, paymentError, settings, minimum_amount_usd, monthOptions, yearOptions, months, 
+        filteredCountries, filteredCountry, filteredCities, filteredCity,        
+        handleCountryChange, handleFilterCountries, handleCityChange, handleFilterCities, 
+        handleInputChange, handleEditCardNumber, handleSaveCardNumber, changeMonth, changeYear
     } = props
     const {lang} = settings
+
+    const cardNumber_edit = <div className="cardNumber_edit">
+        <input
+            value={paymentDetails.cardNumber}
+            onChange={handleInputChange}
+            className="input_light shadow_concav"
+            type="text"
+            placeholder={translate({ lang: lang, info: "cardNumber" })}
+            id="cardNumber"
+            name="cardNumber"
+        />
+        <div className="cardNumber_button" onClick={()=>handleSaveCardNumber()}>
+            <FontAwesomeIcon icon={faSquareCheck} />
+        </div>
+    </div>
+
+    const cardNumber_show = <div className="cardNumber_show">
+        <span>{paymentDetails.cardNumber ? showCardNumber(paymentDetails.cardNumber) : '-'}</span>
+        <div className="cardNumber_button" onClick={()=>handleEditCardNumber()}>
+            <FontAwesomeIcon icon={faPenToSquare} />
+        </div>
+    </div>
 
     return <Row id="payment_form_stripe">
         <Col sm={12}>
@@ -160,16 +181,8 @@ function Stripe(props) {
             </Row>
             <Row>
                 <Col sm={12}>
-                    <label htmlFor="card_number">{translate({lang: lang, info: "card_number"})}</label>
-                    <input
-                        value={paymentDetails.cardNumber}
-                        onChange={handleInputChange}
-                        className="input_light shadow_concav"
-                        type="text"
-                        placeholder={translate({ lang: lang, info: "cardNumber" })}
-                        id="cardNumber"
-                        name="cardNumber"
-                    />
+                    <label htmlFor="card_number">{translate({lang: lang, info: "card_number"})}</label>                    
+                    {!editCardNumber ? <>{cardNumber_show}</> : <>{cardNumber_edit}</>}
                     {!paymentError.cardNumber.fill ? (
                         <div className="alert alert-danger">
                             <p className="text_red">
