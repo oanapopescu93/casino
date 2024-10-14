@@ -204,7 +204,6 @@ var word_bank = {
     amount_too_low: "金额过低。",
     createSource_error: "未能将卡片附加到客户。",
     addNewCard_error: "无法创建卡片令牌。", 
-    createNewCustomer_error: "无法创建新客户。",
     submit: "提交",
     pay: "支付",
     min_amount: "最低金额",
@@ -257,6 +256,10 @@ var word_bank = {
     requires_capture: "需要捕获",
     canceled: "已取消",
     succeeded: "成功",
+    createNewCustomer_error: "创建客户失败。请再试一次。",
+    createPaymentMethod_error: "无法创建支付方式。请检查您的卡信息。",
+    attachPaymentMethod_error: "未能将支付方式附加到客户。",
+    paymentIntent_error: "付款处理失败。请稍后再试。",
 
     // order
     order: "订单",

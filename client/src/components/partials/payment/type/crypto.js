@@ -10,7 +10,7 @@ function Crypto(props) {
         exchange_rates, settings,
         handleCryptoChange
     } = props
-    const {lang, currency} = settings
+    const { lang, currency } = settings
     let cryptoDetails = cryptoArray.find(item => item.value === cryptoChoice)    
 
     return <Row id="payment_form_crypto">

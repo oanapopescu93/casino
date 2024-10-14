@@ -204,7 +204,6 @@ var word_bank = {
     amount_too_low: "O valor é muito baixo.",
     createSource_error: "Falha ao anexar o cartão ao cliente.",
     addNewCard_error: "Falha ao criar um token de cartão.",
-    createNewCustomer_error: "Falha ao criar um novo cliente.",
     submit: "Enviar",
     pay: "Pagamento",
     min_amount: "Valor mínimo",
@@ -257,6 +256,10 @@ var word_bank = {
     requires_capture: "Requer captura",
     canceled: "Cancelado",
     succeeded: "Bem-sucedido",
+    createNewCustomer_error: "Falha ao criar cliente. Por favor, tente novamente.",
+    createPaymentMethod_error: "Falha ao criar método de pagamento. Por favor, verifique os dados do seu cartão.",
+    attachPaymentMethod_error: "Falha ao vincular o método de pagamento ao cliente.",
+    paymentIntent_error: "Falha ao processar o pagamento. Por favor, tente novamente mais tarde.",
 
     // order
     order: "Pedido",

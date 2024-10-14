@@ -204,7 +204,6 @@ var word_bank = {
     amount_too_low: "Сумма слишком мала.",
     createSource_error: "Ошибка при привязке карты к клиенту.",
     addNewCard_error: "Ошибка при создании токена карты.",
-    createNewCustomer_error: "Ошибка при создании нового клиента.",
     submit: "Отправить",
     pay: "Плата",
     min_amount: "Минимальная сумма",
@@ -257,6 +256,10 @@ var word_bank = {
     requires_capture: "Требуется захват",
     canceled: "Отменено",
     succeeded: "Успешно",
+    createNewCustomer_error: "Не удалось создать клиента. Пожалуйста, попробуйте еще раз.",
+    createPaymentMethod_error: "Не удалось создать способ оплаты. Пожалуйста, проверьте данные вашей карты.",
+    attachPaymentMethod_error: "Не удалось привязать способ оплаты к клиенту.",
+    paymentIntent_error: "Не удалось обработать платеж. Пожалуйста, попробуйте позже.",
 
     // order
     order: "Заказ",

@@ -204,7 +204,6 @@ var word_bank = {
     amount_too_low: "Der Betrag ist zu niedrig.",
     createSource_error: "Fehler beim Anhängen der Karte an den Kunden.",
     addNewCard_error: "Fehler beim Erstellen eines Kartentokens.",
-    createNewCustomer_error: "Fehler beim Erstellen eines neuen Kunden.",
     submit: "Absenden",
     pay: "Bezahlung",
     min_amount: "Mindestbetrag",
@@ -257,6 +256,10 @@ var word_bank = {
     requires_capture: "Erfassung erforderlich",
     canceled: "Storniert",
     succeeded: "Erfolgreich",
+    createNewCustomer_error: "Kunde konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+    createPaymentMethod_error: "Zahlungsmethode konnte nicht erstellt werden. Bitte überprüfen Sie Ihre Kartendaten.",
+    attachPaymentMethod_error: "Zahlungsmethode konnte nicht an Kunden angehängt werden.",
+    paymentIntent_error: "Zahlung konnte nicht verarbeitet werden. Bitte versuchen Sie es später erneut.",
 
     // order
     order: "Bestellung",

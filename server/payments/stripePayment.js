@@ -84,7 +84,7 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
                                         }
                                         res.json({ type: "stripe", result: "success", payload })
                                     }).catch((err)=>{
-                                        res.json({ type: "stripe", result: "error", payload: 'error_paymentIntent', details: err.message });
+                                        res.json({ type: "stripe", result: "error", payload: 'paymentIntent_error', details: err.message });
                                     })
                                 } else {
                                     res.json({ type: "stripe", result: "error", payload: 'attachPaymentMethod_error' })

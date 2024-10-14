@@ -454,23 +454,23 @@ io.on('connection', function(socket) {
     }
   })
   socket.on('order_send', function(details){
-    if(details.user_uid){
+    const { uuid, carrots_update, order_date, payment_id, amount, method, description, currency } = details
+    if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db06"
       database(database_config).then(function(result){        
         if(result){
           users_array = result
           if(users_array && users_array.length>0){
-            let user_found = users_array.filter((x) => x.uuid === details.user_uid)            
+            let user_found = users_array.filter((x) => x.uuid === uuid)
             if(user_found[0] && user_found[0]){
               let id = user_found[0].id
-              let carrots_update = details.carrots_update
               let money = user_found[0].money + carrots_update
               let orderDate;
-              if (typeof details.order_date === 'number') {
-                  orderDate = details.order_date + ""
+              if (typeof order_date === 'number') {
+                  orderDate = order_date + ""
               } else {
-                  orderDate = new Date(details.order_date).getTime() + ""
+                  orderDate = new Date(order_date).getTime() + ""
               }
 
               function getOrDefault(obj, key, defaultValue = '-') {
@@ -479,18 +479,18 @@ io.on('connection', function(socket) {
 
               const payload = [
                   id,
-                  details.payment_id,
+                  payment_id,
                   getOrDefault(details, 'customer_id'),
                   orderDate,
-                  details.amount,
-                  details.method,
+                  amount,
+                  method,
                   getOrDefault(details, 'country'),
                   getOrDefault(details, 'city'),
                   getOrDefault(details, 'email'),
                   getOrDefault(details, 'phone'),
-                  details.description,
-                  details.currency
-              ]             
+                  description,
+                  currency
+              ]          
 
               database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
               database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
@@ -501,7 +501,7 @@ io.on('connection', function(socket) {
                   console.log('[error]','order_read--> ', e)
                 }
               })
-            }            
+            }
           }
         }
       })

@@ -9,17 +9,20 @@ import PaymentCart from './paymentCart'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 
 import countriesData from '../../../utils/constants/countries.json'
-import { checkoutData, isEmpty, postData } from '../../../utils/utils'
-import { translate } from '../../../translations/translate'
+import { checkoutData, convertCurrency, getCarrotsFromProducts, getProducts, isEmpty, postData } from '../../../utils/utils'
 import { validateCard, validateInput } from '../../../utils/validate'
-import { resetPaymentDetails, updatePaymentDetails } from '../../../reducers/paymentDetails'
+import { updatePaymentDetails } from '../../../reducers/paymentDetails'
+import { changePopup } from '../../../reducers/popup'
+import { translate } from '../../../translations/translate'
 
 function Payment(props){
-    const {template, home, settings} = props
-    const {lang, currency} = settings
+    const { template, home, user, settings, exchange_rates, socket } = props
+    const { lang, currency } = settings
+    const { uuid } = user
     const minimum_amount_usd = 10
     const maxAmount = 100
     const price_per_carrot = 1
+    const minimum_amount = convertCurrency(minimum_amount_usd, currency, exchange_rates)
 
     let dispatch = useDispatch()
 
@@ -228,19 +231,36 @@ function Payment(props){
             setPaymentError(errors)
             problem = Object.values(errors).some(error => !error.fill || !error.validate) // Check if there is any problem (fill or validate errors for at least one element in error array)
         }
-        if(paymentDetails.option === "crypto"){
-            if(!fiatEquivalent || fiatEquivalent.estimated_amount === -1){
-                problem = true
-            }
+        
+        return problem
+    }
+
+    function checkMinimunAmountToPass(){
+        let problem = false        
+
+        switch(paymentDetails.option){
+            case "card":                
+            case "paypal":
+                if(minimum_amount > totalPromo){
+                    problem = true
+                }
+                break
+            case "crypto":                
+                if(!fiatEquivalent || fiatEquivalent.estimated_amount === -1){
+                    problem = true
+                }
+                break
         }
         
         return problem
     }
 
     function handleContinue(){        
-        if(!validateForm()){
-            setPaymentContinue(true)
+        if(!validateForm()){            
             dispatch(updatePaymentDetails({...paymentDetails}))
+            if(!checkMinimunAmountToPass()){
+                setPaymentContinue(true)
+            }
         }
     }
 
@@ -294,11 +314,118 @@ function Payment(props){
     }
 
     function handleSendPayment(){
-        setPaymentSending(true)
-        console.log('handleSendPayment!!! ', paymentDetails)
+        let payload = {...paymentDetails}
+        payload.amount = totalPromo
+        let url = ""
+
+        switch(paymentDetails.option){
+            case "card":
+                url = "/api/stripe"
+                break
+            case "paypal":
+                url = "/api/paypal"
+                break
+            case "crypto":
+                url = "/api/crypto"
+                payload.crypto_currency = cryptoChoice.toUpperCase()
+                break
+            default:
+                break
+        }
+        
+        if(template === "buy_carrots"){
+            payload.products = [{name_eng: "Carrot", price: price_per_carrot, qty}]
+            payload.description = "Buy carrots"
+        }
+        if(template === "checkout"){
+            payload.products = getProducts(cart, home.market ? home.market : [])
+            payload.description = "Buy vegetables"
+        }
+        
+        if(!isEmpty(url)){
+            setPaymentSending(true)
+            postData(url, payload).then((data) => {
+                setPaymentSending(false)     
+                if(data && data.result && data.result === "success"){
+                    switch(paymentDetails.option){
+                        case "card":
+                            handlePaymentStripe(data)
+                            break
+                        case "paypal":
+                            handlePaymentPaypal(data)
+                            break
+                        case "crypto": 
+                            handlePaymentCrypto(data)
+                            break 
+                        default:
+                            showError()
+                            break
+                    }
+                } else {
+                    showError(data)
+                }
+            })
+        } else {
+            showError({payload: "no_payment_methods"})
+        }
     }
 
-    //dispatch(resetPaymentDetails())
+    function handlePaymentStripe(data){
+        const { payload } = data
+        const { id, customer, created, amount, payment_details, status, description, metadata } = payload
+        const { country, city, email, phone, products } = payment_details
+
+        let details = {
+            method: paymentDetails.option,
+            uuid,
+            payment_id: id,
+            customer_id: customer,
+            order_date: created * 1000,
+            amount: parseFloat((amount / 100).toFixed(2)),
+            payment_method: payment_details.payment_type,
+            status,
+            country,
+            city,
+            email,
+            phone,
+            description,
+            currency: payload.currency.toUpperCase(),
+            currencyExchange: currency,
+            items: metadata,
+            exchange_rates,
+            carrots_update: getCarrotsFromProducts(products)
+        }
+
+        socket.emit('order_send', details)
+    }
+
+    function handlePaymentPaypal(data){
+        if(data.payload && data.payload.receipt_url){
+            window.open(data.payload.receipt_url,'_blank')
+        } else {
+            showError(data)
+        }
+    }
+
+    function handlePaymentCrypto(data){
+        if(data.payload && data.payload.invoice_url){
+            window.open(data.payload.invoice_url,'_blank')
+        } else {
+            showError(data)
+        }  
+    }  
+
+    function showError(data={}){
+        console.error(data)
+        let payload = {
+            open: true,
+            template: "error",
+            title: translate({lang: lang, info: "error"}),
+            data: translate({lang: lang, info: data.payload && typeof data.payload === "string" ? data.payload : "error_charge"}),
+            size: 'sm',
+        }
+        dispatch(changePopup(payload))
+    }
 
     return <form id="payment_form">        
         <Row>
@@ -317,9 +444,11 @@ function Payment(props){
                     <PaymentForm 
                         {...props} 
                         paymentDetails={paymentDetails}
-                        editCardNumber={editCardNumber}
-                        paymentError={paymentError}
+                        amount={totalPromo}
                         minimum_amount_usd={minimum_amount_usd}
+                        minimum_amount={minimum_amount}
+                        editCardNumber={editCardNumber}
+                        paymentError={paymentError}                        
                         filteredCountries={filteredCountries}
                         filteredCountry={filteredCountry}
                         filteredCities={filteredCities}

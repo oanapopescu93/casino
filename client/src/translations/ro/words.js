@@ -204,7 +204,6 @@ var word_bank = {
     amount_too_low: "Suma este prea mică.",
     createSource_error: "Eroare la atașarea cardului la client.",
     addNewCard_error: "Eroare la crearea unui token de card.",
-    createNewCustomer_error: "Eroare la crearea unui nou client.",
     submit: "Finalizează comandă",
     pay: "Plată",
     min_amount: "Suma minimă",
@@ -257,6 +256,10 @@ var word_bank = {
     requires_capture: "Necesită captură",
     canceled: "Anulat",
     succeeded: "Reușit",
+    createNewCustomer_error: "Nu s-a putut crea clientul. Vă rugăm să încercați din nou.",
+    createPaymentMethod_error: "Nu s-a putut crea metoda de plată. Vă rugăm să verificați detaliile cardului.",
+    attachPaymentMethod_error: "Nu s-a putut atașa metoda de plată clientului.",
+    paymentIntent_error: "Nu s-a putut procesa plata. Vă rugăm să încercați din nou mai târziu.",
 
     // order
     order: "Comanda",

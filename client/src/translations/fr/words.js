@@ -204,7 +204,6 @@ var word_bank = {
     amount_too_low: "Le montant est trop bas.",
     createSource_error: "Échec de l'ajout de la carte au client.",
     addNewCard_error: "Échec de la création d'un jeton de carte.",
-    createNewCustomer_error: "Échec de la création d'un nouveau client.",
     submit: "Envoyer",
     pay: "Paiement",
     min_amount: "Montant minimum",
@@ -257,6 +256,10 @@ var word_bank = {
     requires_capture: "Capture requise",
     canceled: "Annulé",
     succeeded: "Réussi",
+    createNewCustomer_error: "Échec de la création du client. Veuillez réessayer.",
+    createPaymentMethod_error: "Échec de la création de la méthode de paiement. Veuillez vérifier les détails de votre carte.",
+    attachPaymentMethod_error: "Échec de l'attachement de la méthode de paiement au client.",
+    paymentIntent_error: "Échec du traitement du paiement. Veuillez réessayer plus tard.",
 
     // order
     order: "Commande",

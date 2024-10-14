@@ -1,18 +1,18 @@
 import React from 'react'
 import { Col, Row, Dropdown, DropdownButton } from 'react-bootstrap'
 import { translate } from "../../../../translations/translate"
-import { isEmpty, showCardNumber } from '../../../../utils/utils'
+import { showCardNumber } from '../../../../utils/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 
 function Stripe(props) {
     const {
-        paymentDetails, editCardNumber, paymentError, settings, minimum_amount_usd, monthOptions, yearOptions, months, 
+        paymentDetails, amount, minimum_amount, editCardNumber, paymentError, settings, monthOptions, yearOptions, months, 
         filteredCountries, filteredCountry, filteredCities, filteredCity,        
         handleCountryChange, handleFilterCountries, handleCityChange, handleFilterCities, 
         handleInputChange, handleEditCardNumber, handleSaveCardNumber, changeMonth, changeYear
     } = props
-    const {lang} = settings
+    const { lang, currency } = settings
 
     const cardNumber_edit = <div className="cardNumber_edit">
         <input
@@ -265,7 +265,11 @@ function Stripe(props) {
             </Row>
             <Row>
                 <Col sm={12}>
-                    <p><span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount_usd} USD</span></p>
+                    {minimum_amount > amount ? <div className="alert alert-danger">
+                        <p className="text_red">
+                            {translate({lang: lang, info: "amount_too_small_transaction"})}
+                        </p>
+                    </div> : <p><span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount} {currency}</span></p>}
                 </Col>
             </Row>
         </Col>
