@@ -2906,6 +2906,9 @@ a.donation_button{
 }
 
 /* CART */
+#cart_panel{
+  margin-top: var(--padding);
+}
 .cart_box{
   background-color: var(--transparent_2);
   border: solid 1px var(--color);
@@ -2921,22 +2924,19 @@ a.donation_button{
 .cart_total_price, #cart_promo h4, #cart_promo input{
   margin-bottom: var(--padding);  
 }
-#payment_form .cart_total_price h3{
-  border-bottom: none;
-}
 #cart_panel .mybutton{
   margin-bottom: var(--padding);
 }
 
 /* CHECKOUT */
-#payment_form h3, #payment_details .payment_details_title h3{
+#payment_details .payment_details_title h3{
   padding: var(--padding_small);
   margin-bottom: var(--padding_small);
   border-bottom: solid 1px var(--color);
 }
 .checkbox_radio_container.payment_details_title{
   padding: var(--padding_small);
-  margin-bottom: var(--padding_small);
+  margin: var(--padding_small) 0px;
   border-bottom: solid 1px var(--color);
 }
 .checkbox_radio_container{

@@ -234,7 +234,7 @@ export const convertCurrency = (value=0, currency="USD", exchangeRates=null, sho
     console.error("convertCurrency-rate-error--> ", rate)
     return value
   }
-  let result = parseInt(value) * rate
+  let result = parseFloat(value) * rate
   if (shorten) {
       result = parseFloat(result.toFixed(2))
   }

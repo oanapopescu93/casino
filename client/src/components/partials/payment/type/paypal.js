@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Col, Row, Dropdown, DropdownButton } from 'react-bootstrap'
+import React from 'react'
+import { Col, Row } from 'react-bootstrap'
 import { translate } from "../../../../translations/translate"
-import { checkoutData } from '../../../../utils/utils'
-import countriesData from '../../../../utils/constants/countries.json'
 
 function Paypal(props) {
-    const {paymentDetails, settings} = props
-    const {lang} = settings    
+    const {settings, minimum_amount_usd} = props
+    const {lang} = settings
 
     return <Row id="payment_form_paypal">
         <Col sm={12}>
-            Paypal
+            <p><span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount_usd} USD</span></p>
         </Col>
     </Row>
 }

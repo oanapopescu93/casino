@@ -136,7 +136,7 @@ function createCryptoInvoice(amount, crypto_currency, description, products) {
 function checkMinPayment(currency="btc") {
     const headers = {
         'x-api-key': apiKey,
-    }
+    }    
     return axios.get(`${apiUrl}/min-amount?currency_from=${currency}&fiat_equivalent=usd`, { headers })
         .then(response => {
             return { type: "crypto", payload: {...response.data}, result: "crypto_min" }

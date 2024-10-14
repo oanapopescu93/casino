@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getCookie, isEmpty, setCookie } from '../utils/utils'
 
-const initialState = {    
+const initialState = {
+    option: !isEmpty(getCookie("casino_payment_option")) ? getCookie("casino_payment_option") : "card", //card, paypal, crypto
     cardNumber: !isEmpty(getCookie("casino_payment_cardNumber")) ? getCookie("casino_payment_cardNumber") : "",
     city: !isEmpty(getCookie("casino_payment_city")) ? getCookie("casino_payment_city") : "",
     country: !isEmpty(getCookie("casino_payment_country")) ? getCookie("casino_payment_country") : "",
@@ -9,8 +10,7 @@ const initialState = {
     cvv: !isEmpty(getCookie("casino_payment_cvv")) ? getCookie("casino_payment_cvv") : "",
     email: !isEmpty(getCookie("casino_payment_email")) ? getCookie("casino_payment_email") : "",
     month: !isEmpty(getCookie("casino_payment_month")) ? getCookie("casino_payment_month") : -1,
-    name: !isEmpty(getCookie("casino_payment_name")) ? getCookie("casino_payment_name") : "",
-    option: !isEmpty(getCookie("casino_payment_option")) ? getCookie("casino_payment_option") : "card", //card, paypal, crypto
+    name: !isEmpty(getCookie("casino_payment_name")) ? getCookie("casino_payment_name") : "",    
     phone: !isEmpty(getCookie("casino_payment_phone")) ? getCookie("casino_payment_phone") : "",
     year: !isEmpty(getCookie("casino_payment_year")) ? getCookie("casino_payment_year") : "",
 }
@@ -19,7 +19,7 @@ const paymentDetailsSlice = createSlice({
     name: 'paymentDetails',
     initialState,
     reducers: {
-        updatePaymentDetails: (state, { payload }) => {            
+        updatePaymentDetails: (state, { payload }) => {
             Object.keys(payload).forEach(key => {
                 if(payload[key]){
                     state[key] = payload[key]

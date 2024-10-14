@@ -17,8 +17,8 @@ function WithdrawFormStripe(props) {
     const { lang } = settings
     const { finances } = home
     const { min_amount_withdraw, convert_carrots_rate } = finances
-    let min_amount = min_amount_withdraw/convert_carrots_rate
-    let max_amount = 3 * min_amount
+    let minAmount = min_amount_withdraw/convert_carrots_rate
+    let maxAmount = 3 * minAmount
 
     return <form id="withdraw_form">
         <p>{translate({lang: lang, info: "under_construction"})}</p>
@@ -30,7 +30,7 @@ function WithdrawFormStripe(props) {
         <Row>
             <Col sm={6} className="withdraw_form_amount">
                 <label htmlFor="amount">{translate({ lang: lang, info: "amount" })} *</label>
-                <Counter min={min_amount} num={formState.amount} max={max_amount} update={(e)=>updateAmount(e)} />
+                <Counter min={minAmount} num={formState.amount} max={maxAmount} update={(e)=>updateAmount(e)} />
             </Col>
             <Col sm={6} className="withdraw_form_currency">
                 <label htmlFor="currency">{translate({ lang: lang, info: "currency" })} *</label>

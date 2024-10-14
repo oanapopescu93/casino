@@ -1,19 +1,21 @@
 import React from 'react'
 import { translate } from '../../../translations/translate'
 import { Row, Col, Button } from 'react-bootstrap'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
-import { checkoutData, showCardNumber } from '../../../utils/utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { checkoutData, convertCurrency, showCardNumber } from '../../../utils/utils'
+import {faStore, faUser, faCartShopping, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import Spinner from '../spinner'
 
 function PaymentDetails(props){
     const {
-        paymentDetails, settings, paymentSending, 
-        sendPayment, handleBack
+        paymentDetails, template, settings, paymentSending, amount, fiatEquivalent, cryptoArray, exchange_rates, 
+        handleSendPayment, handleBack
     } = props 
     const {lang, currency} = settings
     const monthOptions = checkoutData().monthOptions
 
-    return <>        
+    return <>
+        <p>{translate({lang: lang, info: "under_construction"})}</p>    
         {paymentDetails ? <>
             <Row id="payment_details">                
                 <Col sm={8}>
@@ -27,11 +29,11 @@ function PaymentDetails(props){
                                         </div>
                                         <div className="payment_details_body">
                                             <p><strong>{translate({ lang: lang, info: "payment_methode" })}:</strong> {translate({ lang: lang, info: paymentDetails.option })}</p>
-                                            <p></p>
                                         </div>
                                     </Col>
                                 </Row>
-                            case "crypto":
+                            case "crypto": 
+                                let cryptoDetails = cryptoArray.find(item => item.value === fiatEquivalent.currency_to)
                                 return <Row>
                                     <Col sm={12} className="payment_details_box">
                                         <div className="payment_details_title">
@@ -39,7 +41,8 @@ function PaymentDetails(props){
                                         </div>
                                         <div className="payment_details_body">
                                             <p><strong>{translate({ lang: lang, info: "payment_methode" })}:</strong> {translate({ lang: lang, info: paymentDetails.option })}</p>
-                                            <p><strong>{translate({ lang: lang, info: "crypto" })}:</strong> {paymentDetails.crypto && cryptoArray[paymentDetails.crypto] ? cryptoArray[paymentDetails.crypto] : '-'}</p>
+                                            <p><strong>{translate({ lang: lang, info: "crypto" })}:</strong> {cryptoDetails ? cryptoDetails.text : "-"}</p>
+                                            <p><strong>{translate({lang: lang, info: "your_amount_in_fiat_equivalent"})}:</strong> {fiatEquivalent.estimated_amount} {fiatEquivalent.currency_to}</p>
                                         </div>
                                     </Col>
                                 </Row>
@@ -75,7 +78,47 @@ function PaymentDetails(props){
                     })()}
                 </Col>
                 <Col sm={4}>
-                    bbb
+                <Row>
+                        <Col sm={12}>
+                            <div className="payment_details_total_price 2">
+                                <h3>
+                                    <b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(amount, currency, exchange_rates)} {currency}
+                                </h3>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row> 
+                        <Col sm={12} className="button_action_group">
+                            <Button 
+                                type="button"  
+                                className="mybutton button_fullcolor shadow_convex"
+                                onClick={()=>handleSendPayment()}
+                            >{paymentSending ? <>
+                                <Spinner size="small" color="black"/>
+                            </> : <>
+                                <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "pay"})}
+                            </>}</Button>
+                            {(() => {
+                                let choice = null
+                                let icon = null
+                                switch(template){
+                                    case "buy_carrots":
+                                        choice = "dashboard"
+                                        icon = faUser
+                                        break
+                                    case "checkout":
+                                        choice = "market"
+                                        icon = faStore
+                                        break                                                 
+                                }
+                                return <>{choice && icon ? <Button 
+                                    type="button"  
+                                    className="mybutton button_fullcolor shadow_convex"
+                                    onClick={()=>handleBack(choice)}
+                                ><FontAwesomeIcon icon={icon} /> {translate({lang: lang, info: choice})}</Button> : null}</>
+                            })()}
+                        </Col> 
+                    </Row>
                 </Col>
             </Row>
         </> : <p>{translate({lang: lang, info: "error"})}</p>} 

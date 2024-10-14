@@ -9,16 +9,16 @@ import PaymentCart from './paymentCart'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 
 import countriesData from '../../../utils/constants/countries.json'
-import { checkoutData, isEmpty } from '../../../utils/utils'
+import { checkoutData, isEmpty, postData } from '../../../utils/utils'
 import { translate } from '../../../translations/translate'
 import { validateCard, validateInput } from '../../../utils/validate'
 import { resetPaymentDetails, updatePaymentDetails } from '../../../reducers/paymentDetails'
 
 function Payment(props){
     const {template, home, settings} = props
-    const {lang} = settings
+    const {lang, currency} = settings
     const minimum_amount_usd = 10
-    const max_amount = 100
+    const maxAmount = 100
     const price_per_carrot = 1
 
     let dispatch = useDispatch()
@@ -39,6 +39,11 @@ function Payment(props){
         cvv: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_cvv" },
         bitcoinAddress: { fill: true, validate: true, fill_message: "fill_field", validate_message: "validate_message_bitcoinAddress" }
     }
+    const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    let cryptoArray = [
+        {value: 'btc', text: "Bitcoin"},
+        {value: 'ltc', text: "Litcoin"}
+    ]
     
     const [paymentDetails, setPaymentDetails] = useState(payment_details)
     const [editCardNumber, setEditCardNumber] = useState(false)
@@ -51,12 +56,17 @@ function Payment(props){
     const [filteredCities, setFilteredCities] = useState([])
     const [filteredCity, setFilteredCity] = useState("")
     const monthOptions = checkoutData().monthOptions
-    const yearOptions = checkoutData().yearOptions
-    const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    const yearOptions = checkoutData().yearOptions    
+    const [cryptoData, setCryptoData] = useState(null)
+    const [cryptoDataFound, setCryptoDataFound] = useState(null)
+    const [fiatEquivalent, setFiatEquivalent] = useState(null)
+    const [cryptoChoice, setCryptoChoice] = useState(payment_details.crypto ? payment_details.crypto : cryptoArray[0].value)
+    const [loadingCryptoData, setLoadingCryptoData] = useState(false)
 
     const [total, setTotal] = useState(0)
     const [totalPromo, setTotalPromo] = useState(0)
     const [qty, setQty] = useState(1)
+    const [paymentSending, setPaymentSending] = useState(false)
 
     let market = home.market ? home.market : []
 
@@ -211,14 +221,19 @@ function Payment(props){
 
     function validateForm(){               
         let errors = null
+        let problem = false
 
         if(paymentDetails.option === "card"){
             errors = checkCardForm()
             setPaymentError(errors)
+            problem = Object.values(errors).some(error => !error.fill || !error.validate) // Check if there is any problem (fill or validate errors for at least one element in error array)
         }
-
-        // Check if there is any problem (fill or validate errors for at least one element in error array)
-        let problem = Object.values(errors).some(error => !error.fill || !error.validate)
+        if(paymentDetails.option === "crypto"){
+            if(!fiatEquivalent || fiatEquivalent.estimated_amount === -1){
+                problem = true
+            }
+        }
+        
         return problem
     }
 
@@ -229,26 +244,74 @@ function Payment(props){
         }
     }
 
-    function updateQty(e){
-        setQty(e)
-        setTotalPromo(e * price_per_carrot)
+    function updateQty(value){
+        setQty(value)
+        setTotalPromo(value * price_per_carrot)
     }
 
-    function sendPayment(){
-        console.log('sendPayment!!! ', paymentDetails)
+    useEffect(() => {  
+        setLoadingCryptoData(true)
+        if(totalPromo > 0){
+            let url = "/api/crypto_min"
+            let payload = {
+                amount: totalPromo
+            }            
+            postData(url, payload).then((res1) => {
+                if(res1 && res1.payload){
+                    setCryptoData(res1.payload)
+                    const found = res1.payload.find(item => item.currency_from === cryptoChoice)
+                    let fiat_equivalent = found.fiat_equivalent
+                    setCryptoDataFound(found)                    
+                    if(fiat_equivalent && fiat_equivalent < totalPromo){
+                        let url = "/api/crypto_estimated_price"
+                        let currency_from = currency.toLowerCase()
+                        let currency_to = cryptoChoice        
+                        let payload = {
+                            amount: totalPromo,
+                            currency_from, 
+                            currency_to,
+                        }                        
+                        postData(url, payload).then((res2) => {                            
+                            if(res1 && res1.payload){
+                                setFiatEquivalent(res2.payload)
+                                setLoadingCryptoData(false)
+                            }
+                        })
+                    } else {
+                        setFiatEquivalent({estimated_amount: -1}) //if it is -1 it means we must show a message
+                        setLoadingCryptoData(false)
+                    }
+                }                
+            })
+        }        
+    }, [totalPromo, cryptoChoice])
+
+    function handleCryptoChange(value){
+        const selectedCrypto = cryptoArray.find(crypto => crypto.value === value)
+        setCryptoChoice(selectedCrypto.value)
+        setPaymentDetails({...paymentDetails, crypto: selectedCrypto.value})
+        
+    }
+
+    function handleSendPayment(){
+        setPaymentSending(true)
+        console.log('handleSendPayment!!! ', paymentDetails)
     }
 
     //dispatch(resetPaymentDetails())
 
-    return <form id="payment_form">
-        <p>{translate({lang: lang, info: "under_construction"})}</p>
+    return <form id="payment_form">        
         <Row>
             {paymentContinue ? <PaymentDetails 
                 {...props} 
                 paymentDetails={paymentDetails}
                 template={template}
+                amount={totalPromo}
+                cryptoArray={cryptoArray}
+                fiatEquivalent={fiatEquivalent}
+                paymentSending={paymentSending}
                 handleBack={(e)=>handleBack(e)}
-                sendPayment={()=>sendPayment()}
+                handleSendPayment={()=>handleSendPayment()}
             /> : <>
                 <Col sm={8}>
                     <PaymentForm 
@@ -264,6 +327,12 @@ function Payment(props){
                         monthOptions={monthOptions}
                         yearOptions={yearOptions}
                         months={months}
+                        cryptoChoice={cryptoChoice}
+                        cryptoArray={cryptoArray}
+                        cryptoData={cryptoData}
+                        cryptoDataFound={cryptoDataFound}
+                        fiatEquivalent={fiatEquivalent}
+                        loadingCryptoData={loadingCryptoData}
                         handleCountryChange={(e)=>handleCountryChange(e)}
                         handleFilterCountries={(e)=>handleFilterCountries(e)}
                         handleCityChange={(e)=>handleCityChange(e)}
@@ -274,6 +343,7 @@ function Payment(props){
                         handleSaveCardNumber={()=>handleSaveCardNumber()}
                         changeMonth={(e)=>changeMonth(e)}
                         changeYear={(e)=>changeYear(e)}
+                        handleCryptoChange={(e)=>handleCryptoChange(e)}
                     />
                 </Col>
                 <Col sm={4}>
@@ -281,10 +351,10 @@ function Payment(props){
                         {...props}
                         cart={cart}
                         promo={promo}
-                        total_promo={totalPromo}
+                        totalPromo={totalPromo}
                         total={total}
                         qty={qty}
-                        max_amount={max_amount}
+                        maxAmount={maxAmount}
                         updateQty={(e)=>updateQty(e)}
                         handleContinue={()=>handleContinue()}
                         handleBack={(e)=>handleBack(e)}
