@@ -372,6 +372,7 @@ var word_bank = {
     page_not_found_text: "Désolé, la page que vous recherchez n'existe pas. Elle a peut-être été déplacée ou supprimée, ou vous avez peut-être saisi incorrectement l'URL.",
 
     // ChatBot
+    chatbot: "ChatBot",
     anonymous: "Anonyme",
     greetings01: "Bonjour",
     greetings02: "Je suis ici pour répondre à toutes vos questions concernant BunnyBet.",

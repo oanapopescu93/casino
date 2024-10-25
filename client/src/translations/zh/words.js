@@ -372,6 +372,7 @@ var word_bank = {
     page_not_found_text: "抱歉，您查找的页面不存在。可能已移动或删除，或者您输入了错误的网址。",
 
     // ChatBot
+    chatbot: "聊天机器人",
     anonymous: "匿名",
     greetings01: "你好",
     greetings02: "我在这里回答你关于BunnyBet的所有问题。",

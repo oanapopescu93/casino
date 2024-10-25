@@ -6,44 +6,61 @@ import { checkEaster, checkOccasion } from '../../utils/special_occasions'
 import EasterEgg from './special_occasions/easter/egg'
 import Ghost from './special_occasions/halloween/ghost'
 
+function SpecialEvent(props){
+    const {template, showEaster, showHalloween} = props
+    let easterShow = " easter_eggs_page"
+    let halloweenShow = " halloween_container_page"
+
+    if(template === "salon"){
+        easterShow = " easter_eggs_salon"
+        halloweenShow = " halloween_container_salon"
+    }
+
+    return <>
+        {showEaster ? <div className={"easter_eggs" + easterShow}>
+            <EasterEgg />
+            <EasterEgg />
+        </div> : null}
+        {showHalloween ? <div className={"halloween_container" + halloweenShow}>
+            <Ghost />
+            <Ghost />
+        </div> : null}
+    </>
+}
+
 function Header(props){
     const {lang, template, details} = props
     let title = props.title ? props.title : "BunnyBet"  
     const [showEaster, setShowEaster] = useState(false)
 	const [showHalloween, setShowHalloween] = useState(false)
+    const [style, setStyle] = useState("")
 
-    useEffect(() => {
-        // special occasions
+    useEffect(() => {      
+        //special occasions
         let easter = checkEaster()
 		let halloween = checkOccasion('halloween')
 		if(easter){ // will appear only if Easter is close
 			setShowEaster(true)
+            setStyle("special_occasions")
 		}
 		if(halloween){ // will appear only on Halloween
 			setShowHalloween(true)
+            setStyle("special_occasions")
 		}
 	}, [])
 
 	return <div className={"header_container "+template}>
-        {(() => {
-            let easter_eggs_salon = ""
+        {(() => {            
             if(isEmpty(template)){
                 return <div className="header"><h2 className="title">{title}</h2></div>
             } else {
                 switch (template) {
-                    case "salon":
-                        return <div id="header_salon" className="header">
+                    case "salon":                        
+                        return <div id="header_salon" className={"header " + style}>
                             <img id="logo_icon" alt="logo_icon" src={logo_icon} />
                             <h1>{title}</h1>
                             <h3>{translate({lang: lang, info: "salon_subtitle"})}</h3> 
-                            {showEaster ? <div className="easter_eggs easter_eggs_salon">
-                                <EasterEgg />
-                                <EasterEgg />
-                            </div> : null}
-                            {showHalloween ? <div className="halloween_container halloween_container_salon">
-                                <Ghost />
-                                <Ghost />
-                            </div> : null}
+                            <SpecialEvent template={template} showEaster={showEaster} showHalloween={showHalloween} />
                         </div> 
                     case "game":
                         if(typeof details === 'object' && details !== null){ // it means it's a game
@@ -87,8 +104,9 @@ function Header(props){
                     case "page":
                         if(details.game_page){
                             //ex: dashboard, market
-                            return <div id={"panel_user_"+details.game_page} className="header">
+                            return <div id={"panel_user_"+details.game_page} className={"header " + style}>
                                 <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
+                                <SpecialEvent template={template} showEaster={showEaster} showHalloween={showHalloween} />
                             </div>
                         } else {
                             //just a normal page
@@ -103,19 +121,9 @@ function Header(props){
                             <h3>{translate({lang: lang, info: "subtitle"})}</h3>
                         </div>
                     default:
-                        if(template === "donation"){
-                            easter_eggs_salon = " easter_eggs_salon"
-                        }
-                        return <div className="header">
+                        return <div className={"header " + style}>
                             <h1 className="title">{title}</h1>
-                            {showEaster ? <div className={"easter_eggs" + easter_eggs_salon}>
-                                <EasterEgg />
-                                <EasterEgg />
-                            </div> : null}
-                            {showHalloween ? <div className="halloween_container halloween_container_salon">
-                                <Ghost />
-                                <Ghost />
-                            </div> : null}
+                            <SpecialEvent template={template} showEaster={showEaster} showHalloween={showHalloween} />
                         </div>
                 }
             }

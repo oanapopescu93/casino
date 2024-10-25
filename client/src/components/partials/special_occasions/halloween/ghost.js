@@ -2,8 +2,8 @@ import React from 'react'
 
 function Ghost(props){
     let shadow = props.shadow ? props.shadow : true
-    let fill = props.fill ? props.fill : "gold"
-    let stroke = props.stroke ? props.stroke : "rgba(255, 215, 0, 0.2)"
+    let fill = props.fill ? props.fill : "white"
+    let stroke = props.stroke ? props.stroke : "rgba(255, 255, 255, 0.2)"
 
 	return <div className='halloween_ghost'>
         <svg className="ghost" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsxxlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

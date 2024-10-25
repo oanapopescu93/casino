@@ -165,7 +165,7 @@ function SalonGames(props){
             <Col sm={2} />
             <Col sm={8}>
                 <div className="chatbot_button_container_big">
-                    <ChatBotButton />
+                    <ChatBotButton lang={lang} />
                 </div>
             </Col>
             <Col sm={2} />

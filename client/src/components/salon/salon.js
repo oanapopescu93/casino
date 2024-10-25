@@ -17,7 +17,7 @@ function Salon(props) {
     const [height, setHeight] = useState(getWindowDimensions().height)
     // let dispatch = useDispatch()
 
-    // function handleWhack(){
+    // function handleWhack(){ // test only
     //     dispatch(changePage('Salon'))
     //     dispatch(changeGamePage(null))
     //     dispatch(changeGame({table_name: "whack_a_rabbit"}))
@@ -40,17 +40,17 @@ function Salon(props) {
         {page.game ? <Game {...props} /> : <>
             <Language title={lang} />
             {height < 500 ? <div className="chatbot_button_container_small">
-                <ChatBotButton />
+                <ChatBotButton lang={lang} />
             </div> : null}
             <div className="content_wrap">
                 <div className="salon_content_box">                    
-                    <Header template="salon" lang={lang} />
+                    <Header template="salon" lang={lang} details={page}/>
                     <SalonGames {...props} width={width} height={height}/>
                 </div>
             </div>
             <SalonSidebarLeft lang={lang} />
             <Panel {...props} />
-            {/* <div onClick={()=>handleWhack()}>test whack</div> */}
+            {/* <div onClick={()=>handleWhack()}>test whack</div> */} {/* test only */}
         </>}
     </>
 }

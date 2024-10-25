@@ -43,7 +43,7 @@ function HowToPlay(props){
             {!game ? <HowToPlayTitles lang={lang} handleChoice={(e)=>handleChoice(e)} /> : <HowToPlayGames game={game} lang={lang} />}
         </div>
         <div className="button_action_group">
-            <ChatBotButton />
+            <ChatBotButton lang={lang} />
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>            

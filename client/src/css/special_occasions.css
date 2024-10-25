@@ -9,18 +9,22 @@
 	--egg_stripe_color06: #FFBDE8;
 }
 
+.header.special_occasions h1{
+	padding-left: 80px;
+	padding-right: 80px;
+}
+
 /* HALLOWEEN */
 .halloween_container{
     position: relative;
 	z-index: 1;
-	display: inline-block;
 	vertical-align: middle;
     width: 100%;
 	max-width:600px;
     display: none;
     margin: 0px auto;
 }
-.halloween_container_salon{
+.halloween_container_salon, .halloween_container_page{
     display: block;
 }
 .halloween_container .halloween_ghost{
@@ -29,6 +33,7 @@
 	position: absolute;
 	z-index: 1;
 	top:-80px;
+	width: 60px;
 }
 .halloween_container .halloween_ghost:first-child{
 	left:0px
@@ -41,12 +46,18 @@
     width: 50px;
     height: 50px;
 }
+.halloween_container_page{
+	max-width: none;
+}
+.halloween_container_page .halloween_ghost{
+	top:-95px;
+}
   
 @keyframes float {
     50% {transform: translate(0, 20px);}
 }
 .shadowFrame {
-    width: 130px;
+    width: 60px;
     margin-top: 15px;
 }
 .shadow {
@@ -87,7 +98,7 @@ ellipse {
     display: none;
     margin: 0px auto;
 }
-.easter_eggs_salon{
+.easter_eggs_salon, .easter_eggs_page{
     display: block;
 }
 .easter_eggs .eggs{
@@ -96,6 +107,12 @@ ellipse {
 	position: absolute;
 	z-index: 1;
 	top:-80px;
+}
+.easter_eggs_page{
+	max-width:none;
+}
+.easter_eggs_page .eggs{
+	top:-100px;
 }
 .easter_eggs .eggs:first-child{
 	left:0px
@@ -136,7 +153,7 @@ ellipse {
   
 @keyframes egg-left-animation {
     0% {
-        transform: rotate(-25deg);
+        transform: rotate(-30deg);
     }
     100% {
         transform: rotate(-20deg);
@@ -147,7 +164,7 @@ ellipse {
         transform: rotate(40deg);
     }
     100% {
-        transform: rotate(35deg);
+        transform: rotate(30deg);
     }
 }
   
@@ -383,9 +400,29 @@ ellipse {
 }
 
 @media (max-width: 960px) {
+	.halloween_container_page .halloween_ghost{
+		top: -75px;
+	}
+	.halloween_container_page .ghost{
+		height: 30px;
+	}
+	.halloween_container_page .shadowFrame {
+		width: 60px;
+	}
+	.halloween_container_page .shadow {
+		width: 50px;
+		height: 25px;
+	}
+
 	.easter_eggs{
         max-width:400px;
     }
+	.easter_eggs_page{
+		max-width:none;
+	}
+	.easter_eggs .eggs{
+		top: -80px;
+	}
 }
 @media (max-width: 767px) {
 	.light-bulb {
@@ -401,9 +438,4 @@ ellipse {
 	.light-bulb::after{
 		width: 40px;
 	}
-}
-@media (max-width: 600px) {
-	.easter_eggs{
-        max-width:300px;
-    }
 }

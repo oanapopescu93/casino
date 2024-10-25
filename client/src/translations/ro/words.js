@@ -372,6 +372,7 @@ var word_bank = {
     page_not_found_text: "Ne pare rău, pagina pe care o căutați nu există. Este posibil să fi fost mutată sau ștearsă, sau ați introdus URL-ul incorect.",
 
     // ChatBot
+    chatbot: "ChatBot",
     anonymous: "Anonim",
     greetings01: "Bună",
     greetings02: "Sunt aici pentru a răspunde la toate întrebările tale despre BunnyBet.",
