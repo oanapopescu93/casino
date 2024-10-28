@@ -168,7 +168,7 @@ function Home(props) {
 
     useEffect(() => {
 		const handleOrderRead = (details)=>{
-            //console.log('order_read', details)
+            console.log('order_read', details)
             let payload = {
                 open: true,
                 template: "paymentSuccess",

@@ -14,7 +14,8 @@ function PaymentDetails(props){
     let paymentOptions = {
         "1": "pay_card",
         "2": "pay_paypal",
-        "3": "pay_crypto"
+        "3": "pay_crypto",
+        "4": "pay_google"
     }
     let cryptoArray = {
         btc: "Bitcoin",
@@ -54,6 +55,17 @@ function PaymentDetails(props){
                                         <div className="payment_details_body">
                                             <p><strong>{translate({ lang: lang, info: "payment_methode" })}:</strong> {translate({ lang: lang, info: paymentOptions[paymentDetails.option] })}</p>
                                             <p><strong>{translate({ lang: lang, info: "crypto" })}:</strong> {paymentDetails.crypto && cryptoArray[paymentDetails.crypto] ? cryptoArray[paymentDetails.crypto] : '-'}</p>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            case "4":
+                                return <Row>
+                                    <Col sm={12} className="payment_details_box">
+                                        <div className="payment_details_title">
+                                            <h3>{translate({lang: lang, info: "payment_info"})}</h3>
+                                        </div>
+                                        <div className="payment_details_body">
+                                            <p><strong>{translate({ lang: lang, info: "payment_methode" })}:</strong> {translate({ lang: lang, info: paymentOptions[paymentDetails.option] })}</p>                                            
                                         </div>
                                     </Col>
                                 </Row>

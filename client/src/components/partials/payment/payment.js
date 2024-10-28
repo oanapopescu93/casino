@@ -413,7 +413,30 @@ function Payment(props){
         } else {
             showError(data)
         }  
-    }  
+    } 
+    
+    function handlePaymentGoogle(e){
+        let paymentMethodData = e.paymentMethodData
+        console.log('handlePaymentGoogle ', paymentMethodData)
+    }
+
+    const handlePaymentDataChanged = (intermediatePaymentData) => {
+        // Here you can check for validation errors and return an error if necessary
+        if (!intermediatePaymentData.paymentMethodData) {
+            console.error('handlePaymentDataChanged') //PAYMENT_DATA_INVALID
+        }        
+        return {}
+    }
+
+    const handlePaymentAuthorized = async (paymentData) => {
+        try {
+            // Pass payment data to your backend for processing
+            await handlePaymentGoogle(paymentData)
+            return { transactionState: 'SUCCESS' }
+        } catch (error) {
+            console.error('handlePaymentAuthorized:', error)            
+        }
+    }
 
     function showError(data={}){
         console.error(data)
@@ -440,6 +463,18 @@ function Payment(props){
                 handleBack={(e)=>handleBack(e)}
                 handleSendPayment={()=>handleSendPayment()}
             /> : <>
+                <Col sm={4}>
+                    <PaymentCart 
+                        {...props}
+                        cart={cart}
+                        promo={promo}
+                        totalPromo={totalPromo}
+                        total={total}
+                        qty={qty}
+                        maxAmount={maxAmount}
+                        updateQty={(e)=>updateQty(e)}                        
+                    />
+                </Col>
                 <Col sm={8}>
                     <PaymentForm 
                         {...props} 
@@ -462,6 +497,7 @@ function Payment(props){
                         cryptoDataFound={cryptoDataFound}
                         fiatEquivalent={fiatEquivalent}
                         loadingCryptoData={loadingCryptoData}
+                        template={template}
                         handleCountryChange={(e)=>handleCountryChange(e)}
                         handleFilterCountries={(e)=>handleFilterCountries(e)}
                         handleCityChange={(e)=>handleCityChange(e)}
@@ -473,18 +509,9 @@ function Payment(props){
                         changeMonth={(e)=>changeMonth(e)}
                         changeYear={(e)=>changeYear(e)}
                         handleCryptoChange={(e)=>handleCryptoChange(e)}
-                    />
-                </Col>
-                <Col sm={4}>
-                    <PaymentCart 
-                        {...props}
-                        cart={cart}
-                        promo={promo}
-                        totalPromo={totalPromo}
-                        total={total}
-                        qty={qty}
-                        maxAmount={maxAmount}
-                        updateQty={(e)=>updateQty(e)}
+                        handlePaymentGoogle={(e)=>handlePaymentGoogle(e)}
+                        handlePaymentDataChanged={(e)=>handlePaymentDataChanged(e)}
+                        handlePaymentAuthorized={(e)=>handlePaymentAuthorized(e)}
                         handleContinue={()=>handleContinue()}
                         handleBack={(e)=>handleBack(e)}
                     />

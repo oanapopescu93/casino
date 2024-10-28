@@ -355,7 +355,7 @@ textarea:focus, input:focus{
 	display: grid;
   place-content: center;
   cursor: pointer;
-  margin: 0px !important;
+  margin: 0px 0px 0px 0px !important;
   border: solid 1px var(--color);
 }
 .checkbox_radio_container input[type="radio"]{
@@ -395,16 +395,21 @@ textarea:focus, input:focus{
 }
 .checkbox_radio_container label{
 	display: inline-flex;
-  grid-template-columns: 20px auto;
+  align-items: center;
   gap: 10px;
 	margin:0px var(--padding_small)!important;
 }
 .checkbox_radio_container label h6{
   text-align: left;
 }
-
 .checkbox_radio_container h6{
   margin-top: 4px;
+}
+.checkbox_radio_container label svg{
+  font-size: 40px;
+}
+.checkbox_radio_container.payment_details_title label{
+  height: 24px;
 }
 
 /* BUTTONS */
@@ -2940,7 +2945,7 @@ a.donation_button{
 }
 .checkbox_radio_container.payment_details_title{
   padding: var(--padding_small);
-  margin: var(--padding_small) 0px;
+  margin: 0px 0px var(--padding_small) 0px;
   border-bottom: solid 1px var(--color);
 }
 .checkbox_radio_container{
@@ -3006,6 +3011,33 @@ a.donation_button{
 }
 .cardNumber_edit .cardNumber_button{
   font-size: 25px;
+}
+.google_pay_button_container{
+  height: 30px!important;;
+}
+.google_pay_button_container .gpay-card-info-container, .google_pay_button_container .gpay-button{
+  background-color: transparent !important;
+  height: 30px;
+  min-height: 30px;
+}
+.google_pay_button{
+  background-color: var(--color) !important;
+  border: solid 1px var(--color) !important;
+  border-radius: var(--padding_big) !important;
+  box-shadow: 4px 4px 8px 2px var(--transparent_8);
+  height: 30px;
+  width: 100%;
+}
+.gpay-card-info-container-fill .gpay-card-info-iframe{
+  height: 30px !important;
+}
+.gpay-card-info-container.gpay-card-info-custom-radius, .gpay-button.gpay-card-info-custom-radius{
+  outline: solid 0px transparent!important;
+}
+.button_action_group_checkout, .google_pay_button_container{
+  width: 100%;
+  max-width: 300px;
+  margin: 0px auto;
 }
 
 /* ORDER */

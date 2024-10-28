@@ -195,6 +195,7 @@ var word_bank = {
     pay_card: "Credit or Debit card",
     pay_paypal: "Paypal",
     pay_crypto: "Crypto",
+    pay_google: "Google Pay",
     card_number: "Card number",
     month: "Month",
     year: "Year",  

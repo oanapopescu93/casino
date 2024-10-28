@@ -15,6 +15,9 @@ function SpecialEvent(props){
         easterShow = " easter_eggs_salon"
         halloweenShow = " halloween_container_salon"
     }
+    if(template === "market"){
+        halloweenShow = " halloween_container_market"
+    }
 
     return <>
         {showEaster ? <div className={"easter_eggs" + easterShow}>
@@ -106,7 +109,7 @@ function Header(props){
                             //ex: dashboard, market
                             return <div id={"panel_user_"+details.game_page} className={"header " + style}>
                                 <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
-                                <SpecialEvent template={template} showEaster={showEaster} showHalloween={showHalloween} />
+                                <SpecialEvent template={details.game_page} showEaster={showEaster} showHalloween={showHalloween} />
                             </div>
                         } else {
                             //just a normal page

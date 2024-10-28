@@ -195,6 +195,7 @@ var word_bank = {
     pay_card: "信用卡或借记卡",
     pay_paypal: "Paypal",
     pay_crypto: "加密货币",
+    pay_google: "Google Pay",
     card_number: "卡号",
     month: "月份",
     year: "年份",  

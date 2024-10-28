@@ -1,18 +1,13 @@
 import React from 'react'
-import { Col, Row, Button } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { translate } from '../../../translations/translate'
 import { convertCurrency } from '../../../utils/utils'
-import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import Cart from '../../pages/checkout/cart'
 import BuyCarrots from '../../pages/checkout/buyCarrots'
 
 function PaymentCart(props){
-    const {
-        template, settings, cart, promo, exchange_rates, totalPromo, total,
-        handleContinue, handleBack
-    } = props
-    const {lang, currency} = settings
+    const { template, settings, cart, promo, exchange_rates, totalPromo, total } = props
+    const { lang, currency } = settings
 
     return <>
         {(() => {
@@ -45,35 +40,6 @@ function PaymentCart(props){
                     return
             }
         })()}
-        <Row>
-            <Col sm={12} className="button_action_group">
-                <Button 
-                    type="button"  
-                    className="mybutton button_fullcolor shadow_convex"
-                    onClick={()=>handleContinue()}
-                ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "continue"})}</Button>
-                {(() => {
-                    let choice = null
-                    let icon = null
-                    switch(template) {
-                        case "buy_carrots":
-                            choice = "dashboard"
-                            icon = faUser
-                            break
-                        case "checkout":
-                            choice = "market"
-                            icon = faStore
-                            break
-                        default:
-                    }
-                    return <>{choice && icon ? <Button 
-                        type="button"  
-                        className="mybutton button_fullcolor shadow_convex"
-                        onClick={()=>handleBack(choice)}
-                    ><FontAwesomeIcon icon={icon} /> {translate({lang: lang, info: choice})}</Button> : null}</>
-                })()}
-            </Col>
-        </Row>
     </>
 }
 export default PaymentCart

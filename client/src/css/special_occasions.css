@@ -24,7 +24,7 @@
     display: none;
     margin: 0px auto;
 }
-.halloween_container_salon, .halloween_container_page{
+.halloween_container_salon, .halloween_container_page, .halloween_container_market{
     display: block;
 }
 .halloween_container .halloween_ghost{
@@ -51,6 +51,9 @@
 }
 .halloween_container_page .halloween_ghost{
 	top:-95px;
+}
+.halloween_container_market .halloween_ghost{
+	top:-75px;
 }
   
 @keyframes float {
@@ -403,13 +406,16 @@ ellipse {
 	.halloween_container_page .halloween_ghost{
 		top: -75px;
 	}
-	.halloween_container_page .ghost{
+	.halloween_container_market .halloween_ghost{
+		top: -53px;
+	}
+	.halloween_container_page .ghost, .halloween_container_market .ghost{
 		height: 30px;
 	}
-	.halloween_container_page .shadowFrame {
+	.halloween_container_page .shadowFrame, .halloween_container_market .shadowFrame {
 		width: 60px;
 	}
-	.halloween_container_page .shadow {
+	.halloween_container_page .shadow, .halloween_container_market .shadow {
 		width: 50px;
 		height: 25px;
 	}
