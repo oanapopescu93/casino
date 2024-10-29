@@ -3076,6 +3076,16 @@ a.donation_button{
   display: inline-block;
   margin-left: var(--padding_small);
 }
+.payment_icons_container{
+  padding: var(--padding_small) 0px;
+}
+.payment_icons_container .payment_icon{
+  width: 45px;
+  margin-right: var(--padding_small);
+}
+.payment_icons_container .payment_icon:last-child{
+  margin-right: 0px;
+}
 
 /* WITHDRAW */
 #withdraw_form h3, .checkbox_radio_container.withdraw_details_title{
@@ -4214,6 +4224,11 @@ a.donation_button{
     position: static;
     margin-bottom: var(--padding);
   }
+
+  /* ORDER */
+  .payment_icons_container .payment_icon{
+    width: 40px;
+  }
 }
 
 @media (max-width: 767px) {
@@ -4605,6 +4620,11 @@ a.donation_button{
   }
   .dashboard_box .cart_buttons{
     width: 40%;
+  }
+
+  /* ORDER */
+  .payment_cart_container, .payment_icons_container{
+    display: none;
   }
 }
 @media (max-width:360px) {

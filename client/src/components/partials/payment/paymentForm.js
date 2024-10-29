@@ -11,7 +11,7 @@ import { faStripe, faGooglePay } from '@fortawesome/free-brands-svg-icons'
 
 function PaymentForm(props){
     const {
-        template, paymentDetails, settings, handleChangeCheck,
+        template, paymentDetails, settings, handleChangeCheck, amount, minimum_amount,
         handleContinue, handleBack
     } = props
     const { lang } = settings
@@ -75,7 +75,7 @@ function PaymentForm(props){
         })()}
         <Row>
             <Col sm={12} className="button_action_group button_action_group_checkout">
-                {paymentDetails.option !== "google" ? <Button 
+                {minimum_amount < amount && paymentDetails.option !== "google" ? <Button 
                     type="button"  
                     className="mybutton button_fullcolor shadow_convex"
                     onClick={()=>handleContinue()}

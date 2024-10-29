@@ -5,6 +5,14 @@ import { showCardNumber } from '../../../../utils/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 
+import download1 from '../../../../img/payments/download1.png'
+import download2 from '../../../../img/payments/download2.png'
+import download3 from '../../../../img/payments/download3.png'
+import download4 from '../../../../img/payments/download4.png'
+import download5 from '../../../../img/payments/download5.png'
+import download6 from '../../../../img/payments/download6.png'
+import download7 from '../../../../img/payments/download7.png'
+
 function Stripe(props) {
     const {
         paymentDetails, amount, minimum_amount, editCardNumber, paymentError, settings, monthOptions, yearOptions, months, 
@@ -37,7 +45,16 @@ function Stripe(props) {
     </div>
 
     return <Row id="payment_form_stripe">
-        <Col sm={12}>
+        {minimum_amount >= amount ? <Col sm={12}>
+            <div className="alert alert-danger">
+                <p className="text_red">
+                    {translate({lang: lang, info: "amount_too_small_transaction"})}
+                </p>
+                <p className="text_red">
+                    <span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount} {currency}</span>
+                </p>
+            </div>
+        </Col> : <Col sm={12}>
             <Row>
                 <Col sm={12}>
                     <h3>{translate({lang: lang, info: "customer_info"})}</h3>
@@ -269,10 +286,26 @@ function Stripe(props) {
                         <p className="text_red">
                             {translate({lang: lang, info: "amount_too_small_transaction"})}
                         </p>
-                    </div> : <p><span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount} {currency}</span></p>}
+                        <p className="text_red">
+                            <span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount} {currency}</span>
+                        </p>
+                    </div> : null}
                 </Col>
             </Row>
-        </Col>
+            <Row>
+                <Col sm={12}>
+                    <div className="payment_icons_container">
+                        <img src={download1} alt="jcb" className="payment_icon"/>
+                        <img src={download2} alt="jcb" className="payment_icon"/>
+                        <img src={download3} alt="jcb" className="payment_icon"/>
+                        <img src={download4} alt="jcb" className="payment_icon"/>
+                        <img src={download5} alt="jcb" className="payment_icon"/>
+                        <img src={download6} alt="jcb" className="payment_icon"/>
+                        <img src={download7} alt="jcb" className="payment_icon"/>
+                    </div>
+                </Col>
+            </Row>
+        </Col>}
     </Row>
 }
 

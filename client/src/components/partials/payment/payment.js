@@ -120,7 +120,9 @@ function Payment(props){
     }
 
     function handleChangeCheck(value){
-        setPaymentDetails({...paymentDetails, option: value})
+        let payload = {...paymentDetails, option: value}
+        setPaymentDetails(payload)
+        dispatch(updatePaymentDetails(payload))
     }
 
     function handleInputChange(e){
@@ -415,7 +417,7 @@ function Payment(props){
         }  
     } 
     
-    function handleSendPaymentGoogle(e){ 
+    function handleSendPaymentGoogle(e){
         let paymentMethodData = e.paymentMethodData
         let url = "/api/google"
         let payload = {
@@ -453,26 +455,24 @@ function Payment(props){
 
     function handlePaymentGoogle(data){
         const { payload } = data
-        const { description, products, amount, status, payment_details } = payload
-        let created = new Date().getTime()
+        const { id, amount, created, description, payment_details, metadata } = payload
+        const { products } = payment_details        
 
         let details = {
             method: paymentDetails.option,
             uuid,
-            payment_id: 'id will come here',
-            order_date: created,
-            amount,
-            status,
-            payment_method: payment_details.type,            
+            payment_id: id,            
+            order_date: created * 1000,
+            amount: parseFloat((amount / 100).toFixed(2)),
+            payment_method: payment_details.type,
+            status: "successful",            
             description,
-            currency: 'USD',
+            currency: payload.currency.toUpperCase(),
             currencyExchange: currency,
-            items: products,
+            items: metadata,
             exchange_rates,
             carrots_update: getCarrotsFromProducts(products)
         }
-
-        console.log(description, products, amount, status, payment_details, details)
 
         socket.emit('order_send', details)
     }
@@ -502,7 +502,7 @@ function Payment(props){
                 handleBack={(e)=>handleBack(e)}
                 handleSendPayment={()=>handleSendPayment()}
             /> : <>
-                <Col sm={4}>
+                <Col sm={4} className="payment_cart_container">
                     <PaymentCart 
                         {...props}
                         cart={cart}
@@ -514,7 +514,7 @@ function Payment(props){
                         updateQty={(e)=>updateQty(e)}                        
                     />
                 </Col>
-                <Col sm={8}>
+                <Col sm={8} className="payment_form_container">
                     <PaymentForm 
                         {...props} 
                         paymentDetails={paymentDetails}

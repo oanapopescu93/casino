@@ -176,12 +176,18 @@ function Home(props) {
                 data: details,
                 size: 'md',
             } 
+
+            //go back to Salon
+            dispatch(changePage('Salon'))
+            dispatch(changeGame(null))
+            dispatch(changeGamePage(null))
+
             dispatch(changePopup(payload)) //show success popup
-            dispatch(cartRemoveAll()) //remove all from cart
+            // dispatch(cartRemoveAll()) //remove all from cart
             dispatch(orderAdd(details)) // add payment to order list
 
-            // update redux money
-            dispatch(changeMoney(details.money))
+            // // update redux money
+            // dispatch(changeMoney(details.money))
         }
 		socket.on('order_read', handleOrderRead)
 		return () => {

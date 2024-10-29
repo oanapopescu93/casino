@@ -144,9 +144,9 @@ function attachPaymentMethod(paymentMethod_id, customer_id){
         })
     })
 }
-function paymentIntents(data){
+function paymentIntents(data){    
     return new Promise((resolve, reject)=>{
-        stripe.paymentIntents.create(data).then((res)=>{
+        stripe.paymentIntents.create(data).then((res)=>{            
             resolve(res)
         }).catch(err => {
             console.error('error-paymentIntents--> ' + err)
