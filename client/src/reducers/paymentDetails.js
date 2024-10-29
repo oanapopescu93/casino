@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { getCookie, isEmpty, setCookie } from '../utils/utils'
 
 const initialState = {
-    option: !isEmpty(getCookie("casino_payment_option")) ? getCookie("casino_payment_option") : "card", //card, paypal, crypto, google
+    option: !isEmpty(getCookie("casino_payment_option")) ? getCookie("casino_payment_option") : "google", // google, apple, stripe, paypal, crypto
     cardNumber: !isEmpty(getCookie("casino_payment_cardNumber")) ? getCookie("casino_payment_cardNumber") : "",
     city: !isEmpty(getCookie("casino_payment_city")) ? getCookie("casino_payment_city") : "",
     country: !isEmpty(getCookie("casino_payment_country")) ? getCookie("casino_payment_country") : "",

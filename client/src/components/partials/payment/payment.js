@@ -175,24 +175,9 @@ function Payment(props){
     }
 
     function checkCardForm(){
-        const { name, phone, email, country, city, cardNumber, month, year, cvv } = paymentDetails        
+        const { cardNumber, month, year, cvv } = paymentDetails        
         let errors = errors_default
-
-        if (isEmpty(name)) {
-            errors.name.fill = false
-        }
-        if (isEmpty(phone)) {
-            errors.phone.fill = false
-        }
-        if (isEmpty(email)) {
-            errors.email.fill = false
-        }
-        if (isEmpty(country)) {
-            errors.country.fill = false
-        }
-        if (isEmpty(city)) {
-            errors.city.fill = false
-        }
+        
         if (isEmpty(cardNumber)) {
             errors.cardNumber.fill = false
         }
@@ -206,19 +191,11 @@ function Payment(props){
             errors.cvv.fill = false
         }
 
-        if(!validateInput(name, "name")){
-            errors.name.validate = false
-        }                  
-        if(!validateInput(phone, "phone")){
-            errors.phone.validate = false
-        }
-        if(!validateInput(email, "email")){
-            errors.email.validate = false
-        }  
         if(!validateCard(cardNumber)){ // test card details --> 4242424242424242
             errors.cardNumber.validate = false
             errors.month.validate = false
             errors.year.validate = false
+            errors.cvv.validate = false
         }
 
         return errors

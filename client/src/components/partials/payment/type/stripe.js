@@ -198,7 +198,7 @@ function Stripe(props) {
             </Row>
             <Row>
                 <Col sm={12}>
-                    <label htmlFor="card_number">{translate({lang: lang, info: "card_number"})}</label>                    
+                    <label htmlFor="card_number">{translate({lang: lang, info: "card_number"})}*</label>                    
                     {!editCardNumber ? <>{cardNumber_show}</> : <>{cardNumber_edit}</>}
                     {!paymentError.cardNumber.fill ? (
                         <div className="alert alert-danger">
@@ -217,7 +217,7 @@ function Stripe(props) {
             </Row>
             <Row>
                 <Col sm={4}>
-                    <label>{translate({lang: lang, info: "month"})}</label>
+                    <label>{translate({lang: lang, info: "month"})}*</label>
                     <DropdownButton title={monthOptions[paymentDetails.month] ? translate({lang: lang, info: monthOptions[paymentDetails.month]}) : translate({lang: lang, info: "month"})} onSelect={(e)=>changeMonth(e)} className="shadow_concav">
                         {months.map((x, i)=>{
                             return <Dropdown.Item key={i} eventKey={x}>{translate({lang: lang, info: monthOptions[x]})}</Dropdown.Item>
@@ -236,7 +236,7 @@ function Stripe(props) {
                     </>}
                 </Col>
                 <Col sm={4}>
-                    <label>{translate({lang: lang, info: "year"})}</label>
+                    <label>{translate({lang: lang, info: "year"})}*</label>
                     <DropdownButton title={paymentDetails.year ? paymentDetails.year : translate({lang: lang, info: "year"})} onSelect={(e)=>changeYear(e)} className="shadow_concav">
                         {yearOptions.map((x, i)=>{
                             return <Dropdown.Item key={i} eventKey={x}>{x}</Dropdown.Item>
@@ -255,7 +255,7 @@ function Stripe(props) {
                     </>}
                 </Col>
                 <Col sm={4}>
-                    <label htmlFor="cvv">{translate({lang: lang, info: "cvv"})}</label>
+                    <label htmlFor="cvv">{translate({lang: lang, info: "cvv"})}*</label>
                     <input
                         value={paymentDetails.cvv}
                         onChange={handleInputChange}
@@ -295,13 +295,13 @@ function Stripe(props) {
             <Row>
                 <Col sm={12}>
                     <div className="payment_icons_container">
-                        <img src={download1} alt="jcb" className="payment_icon"/>
-                        <img src={download2} alt="jcb" className="payment_icon"/>
-                        <img src={download3} alt="jcb" className="payment_icon"/>
-                        <img src={download4} alt="jcb" className="payment_icon"/>
-                        <img src={download5} alt="jcb" className="payment_icon"/>
-                        <img src={download6} alt="jcb" className="payment_icon"/>
-                        <img src={download7} alt="jcb" className="payment_icon"/>
+                        <img src={download1} alt="JCB" title="JCB" className="payment_icon" />
+                        <img src={download2} alt="Discover" title="Discover" className="payment_icon" />
+                        <img src={download3} alt="Diner's Club" title="Diner's Club" className="payment_icon" />
+                        <img src={download4} alt="Maestro" title="Maestro" className="payment_icon" />
+                        <img src={download5} alt="MasterCard" title="MasterCard" className="payment_icon" />
+                        <img src={download6} alt="Visa" title="Visa" className="payment_icon" />
+                        <img src={download7} alt="American Express" title="American Express" className="payment_icon" />
                     </div>
                 </Col>
             </Row>
