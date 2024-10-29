@@ -24,7 +24,9 @@ app.use(stripePayment)
 var paypalPayment = require("./payments/paypalPayment")
 app.use(paypalPayment) 
 var cryptoPayment = require("./payments/cryptoPayment")
-app.use(cryptoPayment) 
+app.use(cryptoPayment)
+var googlePayment = require("./payments/googlePayment")
+app.use(googlePayment)
 
 const { encrypt, decrypt } = require('./utils/crypto')
 const { get_device, get_extra_data, check_streak } = require("./utils/other")
@@ -490,17 +492,19 @@ io.on('connection', function(socket) {
                   getOrDefault(details, 'phone'),
                   description,
                   currency
-              ]          
+              ]
+              
+              io.to(socket.id).emit('order_read', {...details, money})
 
-              database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
-              database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-              database(database_config, payload).then(function(){
-                try{				
-                  io.to(socket.id).emit('order_read', {...details, money})
-                }catch(e){
-                  console.log('[error]','order_read--> ', e)
-                }
-              })
+              // database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
+              // database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+              // database(database_config, payload).then(function(){
+              //   try{				
+              //     io.to(socket.id).emit('order_read', {...details, money})
+              //   }catch(e){
+              //     console.log('[error]','order_read--> ', e)
+              //   }
+              // })
             }
           }
         }

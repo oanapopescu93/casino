@@ -415,27 +415,66 @@ function Payment(props){
         }  
     } 
     
-    function handlePaymentGoogle(e){
+    function handleSendPaymentGoogle(e){ 
         let paymentMethodData = e.paymentMethodData
-        console.log('handlePaymentGoogle ', paymentMethodData)
-    }
+        let url = "/api/google"
+        let payload = {
+            paymentMethodData, 
+            option: paymentDetails.option,
+            amount: totalPromo
+        }
+        if(template === "buy_carrots"){
+            payload.products = [{name_eng: "Carrot", price: price_per_carrot, qty}]
+            payload.description = "Buy carrots"
+        }
+        if(template === "checkout"){
+            payload.products = getProducts(cart, home.market ? home.market : [])
+            payload.description = "Buy vegetables"
+        }
 
-    const handlePaymentDataChanged = (intermediatePaymentData) => {
-        // Here you can check for validation errors and return an error if necessary
-        if (!intermediatePaymentData.paymentMethodData) {
-            console.error('handlePaymentDataChanged') //PAYMENT_DATA_INVALID
-        }        
-        return {}
+        postData(url, payload).then((data) => {
+            if(data && data.result && data.result === "success"){
+                handlePaymentGoogle(data)
+            } else {
+                showError(data)
+            }
+        })
     }
 
     const handlePaymentAuthorized = async (paymentData) => {
         try {
             // Pass payment data to your backend for processing
-            await handlePaymentGoogle(paymentData)
+            await handleSendPaymentGoogle(paymentData)
             return { transactionState: 'SUCCESS' }
         } catch (error) {
             console.error('handlePaymentAuthorized:', error)            
         }
+    }
+
+    function handlePaymentGoogle(data){
+        const { payload } = data
+        const { description, products, amount, status, payment_details } = payload
+        let created = new Date().getTime()
+
+        let details = {
+            method: paymentDetails.option,
+            uuid,
+            payment_id: 'id will come here',
+            order_date: created,
+            amount,
+            status,
+            payment_method: payment_details.type,            
+            description,
+            currency: 'USD',
+            currencyExchange: currency,
+            items: products,
+            exchange_rates,
+            carrots_update: getCarrotsFromProducts(products)
+        }
+
+        console.log(description, products, amount, status, payment_details, details)
+
+        socket.emit('order_send', details)
     }
 
     function showError(data={}){
@@ -509,8 +548,7 @@ function Payment(props){
                         changeMonth={(e)=>changeMonth(e)}
                         changeYear={(e)=>changeYear(e)}
                         handleCryptoChange={(e)=>handleCryptoChange(e)}
-                        handlePaymentGoogle={(e)=>handlePaymentGoogle(e)}
-                        handlePaymentDataChanged={(e)=>handlePaymentDataChanged(e)}
+                        handleSendPaymentGoogle={(e)=>handleSendPaymentGoogle(e)}
                         handlePaymentAuthorized={(e)=>handlePaymentAuthorized(e)}
                         handleContinue={()=>handleContinue()}
                         handleBack={(e)=>handleBack(e)}

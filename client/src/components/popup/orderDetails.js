@@ -138,6 +138,14 @@ function OrderDetails(props) {
                                         </li>
                                     ))}
                                 </ul>
+                            case "google":
+                                return <ul className="items">
+                                    {items.map((item, index) => (
+                                        <li key={index} className="item">
+                                            {item.name_eng}: {item.qty} x {item.price} USD
+                                        </li>
+                                    ))}
+                                </ul>
                         }
                     })()}                     
                 </Col>

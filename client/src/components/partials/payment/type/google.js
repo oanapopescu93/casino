@@ -6,10 +6,10 @@ import { convertCurrency } from '../../../../utils/utils'
 function Google(props) {
     const { 
         settings, amount, exchange_rates, 
-        handlePaymentDataChanged, handlePaymentAuthorized, handlePaymentGoogle 
+        handlePaymentAuthorized 
     } = props
     const { currency } = settings
-    let price = convertCurrency(amount, currency, exchange_rates).toString()    
+    let price = convertCurrency(amount, currency, exchange_rates).toString()
 
     return <Row id="payment_form_google">        
         <Col sm={12} className="google_pay_button_container">
@@ -35,7 +35,7 @@ function Google(props) {
                           },
                     ],
                     merchantInfo: {
-                        merchantId: '12345678901234567890',
+                        merchantId: 'BCR2DN4T2O37VQRY',
                         merchantName: 'BunnyBet',
                     },
                     transactionInfo: {
@@ -48,11 +48,7 @@ function Google(props) {
                     shippingAddressRequired: false,
                     callbackIntents: ['PAYMENT_AUTHORIZATION'],
                 }}
-                onLoadPaymentData={paymentData => {
-                    handlePaymentGoogle(paymentData)
-                }}
                 onPaymentAuthorized={handlePaymentAuthorized}
-                onPaymentDataChanged={handlePaymentDataChanged}
                 existingPaymentMethodRequired='false'
                 buttonColor='white'
                 buttonType='Pay'
