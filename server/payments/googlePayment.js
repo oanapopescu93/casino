@@ -48,7 +48,7 @@ googlePayment.post("/api/google", jsonParser, (req, res, next) => {
                 payload.payment_details = {
                     type: 'google',
                     payment_type: 'card',
-                    products,
+                    products: lineItems,
                     tokenData
                 }
                 res.json({ type: "google", result: "success", payload })

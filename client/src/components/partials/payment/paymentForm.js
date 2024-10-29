@@ -7,7 +7,7 @@ import Crypto from './type/crypto'
 import Google from './type/google'
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
-import { faGooglePay, faApplePay, faStripe } from '@fortawesome/free-brands-svg-icons'
+import { faGooglePay, faStripe } from '@fortawesome/free-brands-svg-icons'
 import Apple from './type/apple'
 
 function PaymentForm(props){
@@ -30,7 +30,7 @@ function PaymentForm(props){
                         />
                         <FontAwesomeIcon icon={faGooglePay} />
                     </label>
-                    <label>
+                    {/* <label>
                         <input 
                             type="radio" 
                             name="paymentChoice" 
@@ -38,7 +38,7 @@ function PaymentForm(props){
                             onChange={() => handleChangeCheck("apple")}
                         />
                         <FontAwesomeIcon icon={faApplePay} />
-                    </label>
+                    </label> */}
                     <label>
                         <input 
                             type="radio" 
@@ -48,16 +48,16 @@ function PaymentForm(props){
                         />                        
                         <FontAwesomeIcon icon={faStripe} />
                     </label>
-                    {/* <label>
+                    <label>
                         <input 
                             type="radio" 
                             name="paymentChoice" 
                             checked={paymentDetails.option === "paypal"} 
                             onChange={() => handleChangeCheck("paypal")}
                         />
-                        {translate({ lang: lang, info: "pay_paypal" })}
+                        {translate({ lang: lang, info: "pay_paypal" })}                        
                     </label>
-                    <label>
+                    {/* <label>
                         <input 
                             type="radio" 
                             name="paymentChoice" 
@@ -65,7 +65,7 @@ function PaymentForm(props){
                             onChange={() => handleChangeCheck("crypto")}
                         />
                         {translate({ lang: lang, info: "pay_crypto" })}
-                    </label> */}                    
+                    </label>                    */}
                 </div>
             </Col>
         </Row>        
@@ -87,7 +87,7 @@ function PaymentForm(props){
         })()}
         <Row>
             <Col sm={12} className="button_action_group button_action_group_checkout">
-                {minimum_amount < amount && paymentDetails.option !== "google" && paymentDetails.option !== "apple" ? <Button 
+                {minimum_amount < amount && paymentDetails.option === "card" ? <Button 
                     type="button"  
                     className="mybutton button_fullcolor shadow_convex"
                     onClick={()=>handleContinue()}

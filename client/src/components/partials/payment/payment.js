@@ -10,7 +10,7 @@ import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 
 import countriesData from '../../../utils/constants/countries.json'
 import { checkoutData, convertCurrency, getCarrotsFromProducts, getProducts, isEmpty, postData } from '../../../utils/utils'
-import { validateCard, validateInput } from '../../../utils/validate'
+import { validateCard } from '../../../utils/validate'
 import { updatePaymentDetails } from '../../../reducers/paymentDetails'
 import { changePopup } from '../../../reducers/popup'
 import { translate } from '../../../translations/translate'
@@ -432,8 +432,8 @@ function Payment(props){
 
     function handlePaymentGoogle(data){
         const { payload } = data
-        const { id, amount, created, description, payment_details, metadata } = payload
-        const { products } = payment_details        
+        const { id, amount, created, description, payment_details } = payload
+        const { products } = payment_details
 
         let details = {
             method: paymentDetails.option,
@@ -446,7 +446,7 @@ function Payment(props){
             description,
             currency: payload.currency.toUpperCase(),
             currencyExchange: currency,
-            items: metadata,
+            items: products,
             exchange_rates,
             carrots_update: getCarrotsFromProducts(products)
         }
@@ -529,6 +529,7 @@ function Payment(props){
                         handlePaymentAuthorized={(e)=>handlePaymentAuthorized(e)}
                         handleContinue={()=>handleContinue()}
                         handleBack={(e)=>handleBack(e)}
+                        handleSendPayment={()=>handleSendPayment()}
                     />
                 </Col>
             </>}

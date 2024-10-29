@@ -61,17 +61,17 @@ function Home(props) {
         checkCryptoPaymentCancel()
     }, [])
 
-    const checkPaypalPaymentSuccess = async () => {
+    const checkPaypalPaymentSuccess = async () => {        
         if(window.location.pathname.includes('/api/paypal/success')){
             const url = new URL(window.location.href)
             let paymentId = url.searchParams.get('paymentId')
-            let payerId = url.searchParams.get('PayerID')
+            let payerId = url.searchParams.get('PayerID')            
             if(paymentId && payerId){
                 postData('/api/paypal/success', {paymentId, payerId}).then((data)=>{
                     if(data.payload && data.result === "success"){
                         let details = {
                             method: "paypal",
-                            user_uid: user.uuid,
+                            uuid: user.uuid,
                             payment_id: data.payload.id,
                             customer_id: data.payload.payer.payer_info.payer_id,
                             order_date: data.payload.create_time,
@@ -126,7 +126,7 @@ function Home(props) {
                     if(data.payload && data.result === "success"){
                         let details = {
                             method: "crypto",
-                            user_uid: user.uuid,
+                            uuid: user.uuid,
                             payment_id: data.payload.purchase_id,
                             order_date: data.payload.created_at,
                             amount: parseFloat(data.payload.price_amount),  
@@ -168,7 +168,6 @@ function Home(props) {
 
     useEffect(() => {
 		const handleOrderRead = (details)=>{
-            console.log('order_read', details)
             let payload = {
                 open: true,
                 template: "paymentSuccess",
@@ -183,11 +182,11 @@ function Home(props) {
             dispatch(changeGamePage(null))
 
             dispatch(changePopup(payload)) //show success popup
-            // dispatch(cartRemoveAll()) //remove all from cart
+            dispatch(cartRemoveAll()) //remove all from cart
             dispatch(orderAdd(details)) // add payment to order list
 
             // // update redux money
-            // dispatch(changeMoney(details.money))
+            dispatch(changeMoney(details.money))
         }
 		socket.on('order_read', handleOrderRead)
 		return () => {

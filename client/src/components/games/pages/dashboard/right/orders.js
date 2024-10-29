@@ -32,6 +32,7 @@ function Orders(props){
                     <thead>
                         <tr>
                             <th className="order_item_row order_item_no">{translate({lang: lang, info: "id"})}</th>
+                            <th className="order_item_row order_item_method">{translate({lang: lang, info: "method"})}</th>
                             <th className="order_item_row order_item_description">{translate({lang: lang, info: "order_description"})}</th>
                             <th className="order_item_row order_item_amount">{translate({lang: lang, info: "price"})}</th>
                             <th className="order_item_row order_item_buttons"><FontAwesomeIcon icon={faCircleInfo} /></th>
@@ -41,7 +42,8 @@ function Orders(props){
                         {order.map((item, i) => {
                             let price = convertCurrency(item.amount, currency, exchange_rates) + " " + currency                            
                             return <tr key={i} className="order_item">
-                                <td className="order_item_element order_item_no">#{item.orderId}</td>                                
+                                <td className="order_item_element order_item_no">#{item.orderId}</td>
+                                <td className="order_item_element order_item_method">{item.method}</td>
                                 <td className="order_item_element order_item_description">                                 
                                     {item.description ? <span>{item.description}</span> : <span>-</span>}
                                 </td>

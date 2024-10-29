@@ -410,6 +410,8 @@ textarea:focus, input:focus{
 }
 .checkbox_radio_container.payment_details_title label{
   height: 24px;
+  font-size: 20px;
+  line-height: 20px;
 }
 
 /* BUTTONS */
@@ -3034,7 +3036,7 @@ a.donation_button{
 .gpay-card-info-container.gpay-card-info-custom-radius, .gpay-button.gpay-card-info-custom-radius{
   outline: solid 0px transparent!important;
 }
-.button_action_group_checkout, .google_pay_button_container{
+.button_action_group_checkout, .google_pay_button_container, .paypal_button_container{
   width: 100%;
   max-width: 300px;
   margin: 0px auto;

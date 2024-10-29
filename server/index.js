@@ -98,7 +98,6 @@ io.on('connection', function(socket) {
             profile_pic: user_found[0].profile_pic,
             logs: logs && logs.length ? logs.length : 0
           }
-          console.log('signin_send--> ', obj, logs, logs.length)
           try{
             io.to(socket.id).emit('signin_read', {exists: true, obj: obj})
           } catch(e){
@@ -118,7 +117,6 @@ io.on('connection', function(socket) {
             
             //update user and login tables
             database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
-            console.log('ID ', user_found[0].id, " - ", uuid)
 						database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
 						let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
 						database(database_config, payload).then(function(){})

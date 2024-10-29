@@ -122,27 +122,13 @@ function OrderDetails(props) {
                                         <li key={key} className="item">{items[key]}</li>
                                     ))}
                                 </ul>
-                            case "paypal":
-                                return <ul className="items">
-                                    {items.map((item, index) => (
-                                        <li key={index} className="item">
-                                            {item.name}: {item.quantity} x {item.price} {item.currency}
-                                        </li>
-                                    ))}
-                                </ul>
-                            case "crypto":
-                                return <ul className="items">
-                                    {items.map((item, index) => (
-                                        <li key={index} className="item">
-                                            {item.name}: {item.quantity} x {item.price} {item.currency}
-                                        </li>
-                                    ))}
-                                </ul>
+                            case "paypal":                                
+                            case "crypto":                                
                             case "google":
                                 return <ul className="items">
                                     {items.map((item, index) => (
                                         <li key={index} className="item">
-                                            {item.name_eng}: {item.qty} x {item.price} USD
+                                            {item.name}: {item.quantity} x {item.price} {item.currency}
                                         </li>
                                     ))}
                                 </ul>

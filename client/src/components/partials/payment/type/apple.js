@@ -7,7 +7,7 @@ import ApplePayButton from 'apple-pay-button'
 
 function Apple(props) {
     const { 
-        settings, amount, exchange_rates, minimum_amount
+        settings, amount, minimum_amount
     } = props
     const { lang, currency } = settings
 
@@ -55,6 +55,7 @@ function Apple(props) {
         };
     
         session.onpaymentmethodselected = (event) => {
+          console.log('event ', event)
           // Define ApplePayPaymentMethodUpdate based on the selected payment method.
           const update = {
             newTotal: {
@@ -67,6 +68,7 @@ function Apple(props) {
         };
     
         session.onshippingmethodselected = (event) => {
+          console.log('event ', event)
           // Define ApplePayShippingMethodUpdate based on the selected shipping method.
           const update = {
             newTotal: {
@@ -79,6 +81,7 @@ function Apple(props) {
         };
     
         session.onshippingcontactselected = (event) => {
+          console.log('event ', event)
           // Define ApplePayShippingContactUpdate based on the selected shipping contact.
           const update = {
             newTotal: {
@@ -109,6 +112,7 @@ function Apple(props) {
         };
     
         session.oncancel = (event) => {
+          console.log('event ', event)
           console.log("Session Cancelled.");
         };
       }
