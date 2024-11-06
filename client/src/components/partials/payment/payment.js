@@ -351,7 +351,7 @@ function Payment(props){
 
     function handlePaymentStripe(data){
         const { payload } = data
-        const { id, customer, created, amount, payment_details, status, description, metadata } = payload
+        const { id, customer, created, amount, payment_details, status, description } = payload
         const { country, city, email, phone, products } = payment_details
 
         let details = {
@@ -370,7 +370,7 @@ function Payment(props){
             description,
             currency: payload.currency.toUpperCase(),
             currencyExchange: currency,
-            items: metadata,
+            items: products,
             exchange_rates,
             carrots_update: getCarrotsFromProducts(products)
         }

@@ -116,6 +116,7 @@ io.on('connection', function(socket) {
             let timestamp = new Date().getTime() + ""
             
             //update user and login tables
+            console.log(uuid, user_found[0].id, user_found[0])
             database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
 						database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
 						let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
@@ -458,11 +459,11 @@ io.on('connection', function(socket) {
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db06"
-      database(database_config).then(function(result){        
+      database(database_config).then(function(result){
         if(result){
           users_array = result
           if(users_array && users_array.length>0){
-            let user_found = users_array.filter((x) => x.uuid === uuid)
+            let user_found = users_array.filter((x) => x.uuid === uuid) 
             if(user_found[0] && user_found[0]){
               let id = user_found[0].id
               let money = user_found[0].money + carrots_update
@@ -491,23 +492,59 @@ io.on('connection', function(socket) {
                   description,
                   currency
               ]
-              
-              io.to(socket.id).emit('order_read', {...details, money})
 
-              // database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
-              // database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-              // database(database_config, payload).then(function(){
-              //   try{				
-              //     io.to(socket.id).emit('order_read', {...details, money})
-              //   }catch(e){
-              //     console.log('[error]','order_read--> ', e)
-              //   }
-              // })
+              database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
+              database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+              database(database_config, payload).then(function(){                
+                try{
+                  let payload = {...details, money}
+                  io.to(socket.id).emit('order_read', payload)
+                }catch(e){
+                  console.log('[error]','order_read--> ', e)
+                }
+              })
+            } else {
+              io.to(socket.id).emit('order_read', {error: 'no_user'})
+              console.log('[error]','order_read--> ', user_found)
             }
           }
         }
       })
-    }    
+    } else {
+      io.to(socket.id).emit('order_read', {error: 'no_uuid'})
+      console.log('[error]','order_read--> ', uuid)
+    }   
+  })
+
+  socket.on('getOrder_send', function(details){
+    const { uuid } = details
+    if(uuid){
+      database_config.sql = "SELECT * FROM casino_user;"
+      database_config.name = "db06"
+      database(database_config).then(function(result){
+        if(result){
+          users_array = result
+          if(users_array && users_array.length>0){
+            let user_found = users_array.filter((x) => x.uuid === uuid) 
+            if(user_found[0] && user_found[0]){
+              let id = user_found[0].id              
+
+              database_config.sql = "SELECT * FROM order_user;"
+              database(database_config).then(function(result){
+                let orders_found = result.filter(function(x){return x.user_id === id})
+                io.to(socket.id).emit('order_read', {orders_found})
+              })
+            } else {
+              io.to(socket.id).emit('getOrder_read', {error: 'no_user'})
+              console.log('[error]','getOrder_read--> ', user_found)
+            }
+          }
+        }
+      })
+    } else {
+      io.to(socket.id).emit('getOrder_read', {error: 'no_uuid'})
+      console.log('[error]','getOrder_read--> ', uuid)
+    }   
   })
 
   // CHATROOM

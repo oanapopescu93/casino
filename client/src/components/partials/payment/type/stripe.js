@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Row, Dropdown, DropdownButton } from 'react-bootstrap'
 import { translate } from "../../../../translations/translate"
-import { showCardNumber } from '../../../../utils/utils'
+import { convertCurrency, showCardNumber } from '../../../../utils/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 
@@ -15,12 +15,13 @@ import download7 from '../../../../img/payments/download7.png'
 
 function Stripe(props) {
     const {
-        paymentDetails, amount, minimum_amount, editCardNumber, paymentError, settings, monthOptions, yearOptions, months, 
+        paymentDetails, amount, minimum_amount, exchange_rates, editCardNumber, paymentError, settings, monthOptions, yearOptions, months, 
         filteredCountries, filteredCountry, filteredCities, filteredCity,        
         handleCountryChange, handleFilterCountries, handleCityChange, handleFilterCities, 
         handleInputChange, handleEditCardNumber, handleSaveCardNumber, changeMonth, changeYear
     } = props
     const { lang, currency } = settings
+    let price = convertCurrency(amount, currency, exchange_rates)
 
     const cardNumber_edit = <div className="cardNumber_edit">
         <input
@@ -45,7 +46,7 @@ function Stripe(props) {
     </div>
 
     return <Row id="payment_form_stripe">
-        {minimum_amount >= amount ? <Col sm={12}>
+        {minimum_amount >= price ? <Col sm={12}>
             <div className="alert alert-danger">
                 <p className="text_red">
                     {translate({lang: lang, info: "amount_too_small_transaction"})}
@@ -282,7 +283,7 @@ function Stripe(props) {
             </Row>
             <Row>
                 <Col sm={12}>
-                    {minimum_amount > amount ? <div className="alert alert-danger">
+                    {minimum_amount > price ? <div className="alert alert-danger">
                         <p className="text_red">
                             {translate({lang: lang, info: "amount_too_small_transaction"})}
                         </p>

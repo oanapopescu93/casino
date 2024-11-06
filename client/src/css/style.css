@@ -2616,6 +2616,9 @@ a.donation_button{
   width: 50%;
   min-width: 120px;
 }
+.dashboard_user_info{
+  margin-top: var(--padding);
+}
 .profile_pic_container{
 	position: relative;
   z-index: 1;
@@ -4189,6 +4192,7 @@ a.donation_button{
   }
   .dashboard_user_pic, .dashboard_user_info{
     width: 100%;
+    margin: 0px;
   }
   #dashboard_left .mybutton{
     display: inline-block;

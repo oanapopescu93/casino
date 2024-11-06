@@ -3,13 +3,15 @@ import { Col, Row, Button } from 'react-bootstrap'
 import { translate } from "../../../../translations/translate"
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faPaypal } from '@fortawesome/free-brands-svg-icons'
+import { convertCurrency } from '../../../../utils/utils'
 
 function Paypal(props) {
     const { 
-        settings, amount, minimum_amount,
+        settings, amount, minimum_amount, exchange_rates,
         handleSendPayment
      } = props
-    const { lang } = settings
+    const { lang, currency } = settings
+    let price = convertCurrency(amount, currency, exchange_rates)
 
     // test
     // email: sb-qpjfz10423946@personal.example.com
@@ -22,7 +24,7 @@ function Paypal(props) {
     // balance: USD 4,527
 
     return <Row id="payment_form_paypal">
-            {minimum_amount > amount ? <Col sm={12}>
+            {minimum_amount > price ? <Col sm={12}>
                 <div className="alert alert-danger">
                     <p className="text_red">
                         {translate({lang: lang, info: "amount_too_small_transaction"})}

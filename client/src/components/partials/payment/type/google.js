@@ -13,7 +13,7 @@ function Google(props) {
     let price = convertCurrency(amount, currency, exchange_rates).toString()
 
     return <Row id="payment_form_google">  
-        {minimum_amount >= amount ? <Col sm={12}>
+        {minimum_amount >= price ? <Col sm={12}>
             <div className="alert alert-danger">
                 <p className="text_red">
                     {translate({lang: lang, info: "amount_too_small_transaction"})}

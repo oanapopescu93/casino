@@ -21,6 +21,7 @@ function OrderDetails(props) {
         phone,
         description,
         items,
+        // currencyExchange,
         currencySettings,
         exchange_rates
     } = data
@@ -55,7 +56,7 @@ function OrderDetails(props) {
             break
     }
 
-    let orderDetails_footer = convertCurrency(amount, currencySettings,exchange_rates) + " " + currencySettings
+    let orderDetails_footer = convertCurrency(amount, currencySettings, exchange_rates) + " " + currencySettings
 
     return <>
         <div className="orderDetails_popup">
@@ -114,26 +115,16 @@ function OrderDetails(props) {
             {items && items.length > 0 ? <Row>
                 <Col sm={12} className="orderDetails_order_detail_items">
                     <h3>{translate({lang: lang, info: 'items'})}:</h3>
-                    {(() => {
-                        switch(method){
-                            case "stripe":
-                                return <ul className="items">
-                                    {Object.keys(items).map(key => (
-                                        <li key={key} className="item">{items[key]}</li>
-                                    ))}
-                                </ul>
-                            case "paypal":                                
-                            case "crypto":                                
-                            case "google":
-                                return <ul className="items">
-                                    {items.map((item, index) => (
-                                        <li key={index} className="item">
-                                            {item.name}: {item.quantity} x {item.price} {item.currency}
-                                        </li>
-                                    ))}
-                                </ul>
-                        }
-                    })()}                     
+                    <ul className="items">
+                        {items.map((item, index) => {                            
+                            let name = item["name_" + lang.toLowerCase()] || item.name_eng.toLowerCase()
+                            let quantity = item.quantity ? item.quantity : item.qty
+                            let price = convertCurrency(item.price, currencySettings, exchange_rates)
+                            return <li key={index} className="item">
+                                {name}: {quantity} x {price} {currencySettings}
+                            </li>
+                        })}
+                    </ul>                   
                 </Col>
             </Row> : null}                   
         </div>

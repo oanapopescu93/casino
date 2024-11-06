@@ -9,7 +9,7 @@ const MINIMUM_AMOUNT_USD = 1000
 stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
     const { name, email, country, city, phone, cardNumber, month, year, cvv, amount, products, description } = req.body
 
-    if(!name || !email || !cardNumber || !month || !year || !cvv){        
+    if(!cardNumber || !month || !year || !cvv){        
         return res.json({ type: "stripe", result: "error", payload: 'error_charge' })
     }    
 
@@ -47,14 +47,22 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
             amount: amount * 100,
             currency: 'usd',
             description: description,
-            receipt_email: email,
+            receipt_email: email || undefined,
             confirm: true, // Automatically confirm the payment
             off_session: true, // Indicate that the payment is happening off-session
             metadata: metadata
         }
 
+        const customerData = {
+            description: "BunnyBet customer",
+        }
+        if (name) customerData.name = name
+        if (email) customerData.email = email
+        if (phone) customerData.phone = phone
+        if (country || city) customerData.address = { country, city }
+
         try {
-            createNewCustomer({ name, email, phone, description: "BunnyBet customer", address: { country, city } }).then((res1)=>{
+            createNewCustomer(customerData).then((res1)=>{
                 if(res1){
                     customer = res1
                     createPaymentMethod(card).then((res2)=>{

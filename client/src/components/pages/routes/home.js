@@ -83,7 +83,8 @@ function Home(props) {
                             description: data.payload.transactions[0].description,
                             currency: data.payload.transactions[0].amount.currency,
                             currencyExchange: currency,
-                            items: data.payload.transactions[0].item_list.items,
+                            // items: data.payload.transactions[0].item_list.items,
+                            items: data.payload.payment_details.products,
                             exchange_rates: exchange_rates,
                             carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)          
                         }
@@ -168,6 +169,11 @@ function Home(props) {
 
     useEffect(() => {
 		const handleOrderRead = (details)=>{
+            if(details && details.error){
+                console.error(details)
+                return
+            }
+            
             let payload = {
                 open: true,
                 template: "paymentSuccess",
