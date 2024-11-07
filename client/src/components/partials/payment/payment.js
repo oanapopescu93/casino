@@ -374,7 +374,6 @@ function Payment(props){
             exchange_rates,
             carrots_update: getCarrotsFromProducts(products)
         }
-
         socket.emit('order_send', details)
     }
 
@@ -450,7 +449,6 @@ function Payment(props){
             exchange_rates,
             carrots_update: getCarrotsFromProducts(products)
         }
-
         socket.emit('order_send', details)
     }
 

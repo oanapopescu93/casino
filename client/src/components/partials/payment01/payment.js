@@ -16,8 +16,9 @@ import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faStore, faUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 
 function Payment(props){
-    const {template, home, settings, exchange_rates, socket} = props
+    const {template, home, settings, exchange_rates, user, socket} = props
     const {lang, currency} = settings
+    const {uuid} = user
 
     let dispatch = useDispatch()
     let max_amount = 100
@@ -375,25 +376,32 @@ function Payment(props){
     }
 
     function handlePaymentStripe(data){
+        const { payload } = data
+        const { id, customer, created, amount, payment_details, status, description, metadata } = payload
+
+        if(!id){
+            console.error('id not found ', data)
+            return
+        }
         let details = {
             method: "stripe",
-            user_uid: props.user.uuid,
-            payment_id: data.payload.id,
-            customer_id: data.payload.customer,
-            order_date: data.payload.created * 1000,
-            amount: parseFloat((data.payload.amount / 100).toFixed(2)),
-            payment_method: data.payload.payment_details.payment_type,
-            status: data.payload.status,
-            country: data.payload.payment_details.country,
-            city: data.payload.payment_details.city,
-            email: data.payload.payment_details.email,
-            phone: data.payload.payment_details.phone,
-            description: data.payload.description,
-            currency: data.payload.currency.toUpperCase(),
+            user_uid: uuid,
+            payment_id: id,
+            customer_id: customer,
+            order_date: created * 1000,
+            amount: parseFloat((amount / 100).toFixed(2)),
+            payment_method: payment_details.payment_type,
+            status: status,
+            country: payment_details.country,
+            city: payment_details.city,
+            email: payment_details.email,
+            phone: payment_details.phone,
+            description: description,
+            currency: payload.currency.toUpperCase(),
             currencyExchange: currency,
-            items: data.payload.metadata,
+            items: metadata,
             exchange_rates,
-            carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)
+            carrots_update: getCarrotsFromProducts(payment_details.products)
         }
         socket.emit('order_send', details)
     }

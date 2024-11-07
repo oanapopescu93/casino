@@ -19,7 +19,7 @@ function Withdraw(props){
     let dispatch = useDispatch()
 
     let processWithdraw = useSelector(state => state.payments.processWithdraw)
-    let messageWithdraw = useSelector(state => state.payments.messageWithdraw)
+    let messageWithdraw = useSelector(state => state.payments.messageWithdraw)    
     if(messageWithdraw){        
         let payload = {
             open: true,
@@ -161,11 +161,9 @@ function Withdraw(props){
         return problem
     }
 
-    function handleSubmit() {  
-        // let payload = {...formState, uuid: user.uuid}
-        // dispatch(sendWithdrawRequest(payload))      
+    function handleSubmit() { 
         if(!validateForm()){
-            dispatch(sendWithdrawRequest(formState))
+            dispatch(sendWithdrawRequest({...formState, uuid: user.uuid}))
         }
     }    
 

@@ -40,8 +40,6 @@ function Picture(props){
 function DashboardLeft(props){    
     const {home, user, settings} = props
     const {lang, currency} = settings
-    const {finances} = home
-    const {min_amount_withdraw} = finances
     let dispatch = useDispatch()
 
     let name = user.user ? decryptData(user.user) : "-"
@@ -87,24 +85,9 @@ function DashboardLeft(props){
 	}
 
     function handleWithdrawal(){
-        // dispatch(changePage('Withdraw'))
-        // dispatch(changeGame(null))
-        // dispatch(changeGamePage(null))
-
-        if(money > min_amount_withdraw){
-            dispatch(changePage('Withdraw'))
-            dispatch(changeGame(null))
-            dispatch(changeGamePage(null))
-        } else {
-            let payload = {
-                open: true,
-                template: "error",
-                title: "error",
-                size: "sm",
-                data: translate({lang: lang, info: "not_enough_money_withdrawal"})
-            }
-            dispatch(changePopup(payload))
-        }
+        dispatch(changePage('Withdraw'))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
     }
 
     return <div id="dashboard_left" className="dashboard_box shadow_concav">

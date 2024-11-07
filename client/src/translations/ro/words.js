@@ -285,9 +285,10 @@ var word_bank = {
     withdrawals: "Retrageri",
     no_withdrawal: "Fără retrageri",
     not_enough_money_withdrawal: "Nu ai suficienți bani pentru a face o retragere.",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "Pentru a solicita o retragere, vă rugăm să completați formularul de mai jos. Asigurați-vă că toate câmpurile obligatorii sunt completate corect. Selectați suma și moneda dorite și furnizați numele complet, numărul de telefon, adresa de e-mail și IBAN-ul pentru tranzacție. După trimiterea formularului, veți primi un e-mail de confirmare, iar echipa noastră va procesa cererea dumneavoastră. Timpul de procesare poate varia în funcție de metoda de retragere și cerințele de verificare. Dacă aveți întrebări sau întâmpinați probleme, vă rugăm să contactați suportul.",
     withdraw_success: "Retragere reușită",
     withdraw_failed: "Retragere eșuată",
+    instructions: "Instrucțiuni",
 
     // blackjack
     start: "Începe",

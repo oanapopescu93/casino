@@ -139,7 +139,7 @@ function Home(props) {
                             items: data.payload.payment_details.products,
                             exchange_rates: exchange_rates,
                             carrots_update: getCarrotsFromProducts(data.payload.payment_details.products)      
-                        }                    
+                        }               
                         socket.emit('order_send', details)
                     } else {
                         showError(data)
@@ -169,6 +169,7 @@ function Home(props) {
 
     useEffect(() => {
 		const handleOrderRead = (details)=>{
+            console.log('zzz ', details)
             if(details && details.error){
                 console.error(details)
                 return

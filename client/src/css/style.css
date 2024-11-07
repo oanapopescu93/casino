@@ -1647,6 +1647,7 @@ textarea {
   padding: 5px 0;
   position: absolute;
   z-index: 1;
+  top: auto;
   bottom: 125%;
   left: 50%;
   margin-left: -60px;
@@ -1657,6 +1658,7 @@ textarea {
   content: "";
   position: absolute;
   top: 100%;
+  bottom: auto;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
@@ -1666,6 +1668,15 @@ textarea {
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+.tooltip.down .tooltiptext {
+  top: 25px;
+  bottom: auto;
+}
+.tooltip.down .tooltiptext::after {
+  top: auto;
+  bottom: 100%;
+  border-color: transparent transparent var(--color) transparent;
 }
 
 /* GAMES */
@@ -3120,6 +3131,17 @@ a.donation_button{
 }
 #withdraw_form .button_action_group button{
   margin: var(--padding_small);
+}
+.withdraw_form_iban{
+  padding-top: 30px;
+}
+.instructions_container{
+  text-align: right;
+}
+.instructions_container svg{
+  font-size: 20px;
+  line-height: 20px;
+  cursor: pointer;
 }
 
 /* SLOTS */
@@ -4592,6 +4614,11 @@ a.donation_button{
     font-size: 12px;
     line-height: 14px;
   }
+
+  /* WITHDRAW */
+  .withdraw_form_iban{
+    padding-top: 0px;
+  }
 }
 @media (max-width:480px) {
   .donation_box_tabs li{
@@ -4631,6 +4658,16 @@ a.donation_button{
   /* ORDER */
   .payment_cart_container, .payment_icons_container{
     display: none;
+  }
+
+  /* WITHDRAW */
+  .instructions_container{
+    text-align: right;
+  }
+  .instructions_container svg{
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
   }
 }
 @media (max-width:360px) {

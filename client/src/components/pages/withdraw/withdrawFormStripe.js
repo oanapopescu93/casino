@@ -1,9 +1,11 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoneyBillTransfer, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faCircleInfo, faMoneyBillTransfer, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Row, Col, Dropdown, DropdownButton, Button } from 'react-bootstrap'
 import { translate } from '../../../translations/translate'
 import Counter from '../../partials/counter'
+import { useDispatch } from 'react-redux'
+import { changePopup } from '../../../reducers/popup'
 
 function WithdrawFormStripe(props) {    
     const { 
@@ -20,11 +22,25 @@ function WithdrawFormStripe(props) {
     let minAmount = min_amount_withdraw/convert_carrots_rate
     let maxAmount = 3 * minAmount
 
+    let dispatch = useDispatch()
+
+    function handleInstructionPopup(){
+        let payload = {
+            open: true,
+            template: "instruction_popup",
+            title: translate({lang: lang, info: "instructions"}),
+            data: translate({lang: lang, info: "withdraw_instructions"}),
+            size: "lg",
+        }
+        dispatch(changePopup(payload))
+    }
+
     return <form id="withdraw_form">
-        <p>{translate({lang: lang, info: "under_construction"})}</p>
         <Row>
-            <Col sm={12}>
-                <p>{translate({lang: lang, info: "withdraw_instructions"})}</p>
+            <Col sm={12}>                
+                <div className="instructions_container">
+                    <p onClick={()=>handleInstructionPopup()}><FontAwesomeIcon icon={faCircleInfo} /></p>
+                </div>
             </Col>
         </Row>   
         <Row>
@@ -196,10 +212,10 @@ function WithdrawFormStripe(props) {
             </Col>
         </Row>
         <div className="button_action_group">
-            <Button type="button" onClick={handleSubmit} className="mybutton round button_transparent shadow_convex">
+            <Button type="button" onClick={()=>handleSubmit()} className="mybutton round button_transparent shadow_convex">
                 <FontAwesomeIcon icon={faMoneyBillTransfer} />
             </Button>
-            <Button type="button" onClick={handleBack} className="mybutton round button_transparent shadow_convex">
+            <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>
         </div>

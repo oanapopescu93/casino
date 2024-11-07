@@ -257,7 +257,7 @@ io.on('connection', function(socket) {
   // GAMES
   socket.on('game_send', function(data){
 		if(data.uuid){
-      database_config.sql = "SELECT * FROM casino_user;"
+      database_config.sql = "SELECT * FROM casino_user;" //buuu
       database_config.sql += "SELECT * FROM login_user;"
       database_config.name = "db06"
       database(database_config).then(function(result){ 
@@ -516,8 +516,8 @@ io.on('connection', function(socket) {
     }   
   })
 
-  socket.on('getOrder_send', function(details){
-    const { uuid } = details
+  socket.on('getOrdersWithdraws_send', function(data){
+    const { uuid } = data    
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db06"
@@ -525,25 +525,29 @@ io.on('connection', function(socket) {
         if(result){
           users_array = result
           if(users_array && users_array.length>0){
-            let user_found = users_array.filter((x) => x.uuid === uuid) 
+            let user_found = users_array.filter((x) => x.uuid === uuid)             
             if(user_found[0] && user_found[0]){
-              let id = user_found[0].id              
+              let id = user_found[0].id       //buuu
 
               database_config.sql = "SELECT * FROM order_user;"
-              database(database_config).then(function(result){
+              database_config.sql += "SELECT * FROM withdraw_user;"
+              database(database_config).then(function(result){                
                 let orders_found = result.filter(function(x){return x.user_id === id})
-                io.to(socket.id).emit('order_read', {orders_found})
+                let withdraws_found = result.filter(function(x){return x.user_id === id})                
+                orders_found = orders_found.map(({ user_id, ...order }) => order) // Remove user_id from each order in orders_found
+                withdraws_found = withdraws_found.map(({ user_id, ...withdraw }) => withdraw) // Remove user_id from each order in orders_found
+                io.to(socket.id).emit('getOrdersWithdraws_read', {orders_found, withdraws_found})
               })
             } else {
-              io.to(socket.id).emit('getOrder_read', {error: 'no_user'})
-              console.log('[error]','getOrder_read--> ', user_found)
+              io.to(socket.id).emit('getOrdersWithdraws_read', {error: 'no_user'})
+              console.log('[error]','getOrdersWithdraws_read--> ', user_found)
             }
           }
         }
       })
     } else {
-      io.to(socket.id).emit('getOrder_read', {error: 'no_uuid'})
-      console.log('[error]','getOrder_read--> ', uuid)
+      io.to(socket.id).emit('getOrdersWithdraws_read', {error: 'no_uuid'})
+      console.log('[error]','getOrdersWithdraws_read--> ', uuid)
     }   
   })
 

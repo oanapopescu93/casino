@@ -285,9 +285,10 @@ var word_bank = {
     withdraw: "Withdraw",    
     no_withdrawal: "No withdrawals",
     not_enough_money_withdrawal: "You don't have enough money to make a withdrawal.",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "To request a withdrawal, please complete the form below. Ensure all required fields are filled in accurately. Select the desired amount and currency, and provide your full name, phone number, email address, and IBAN for the transaction. After submitting, you’ll receive a confirmation email, and our team will process your request. Processing times may vary depending on the withdrawal method and verification requirements. If you have any questions or encounter issues, please contact support.",
     withdraw_success: "Withdraw success",
     withdraw_failed: "Withdraw failed",
+    instructions: "Instructions",
 
     // blackjack
     start: "Start",

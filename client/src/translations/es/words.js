@@ -285,9 +285,10 @@ var word_bank = {
     withdrawals: "Retiros",
     no_withdrawal: "Sin retiros",
     not_enough_money_withdrawal: "No tienes suficiente dinero para hacer un retiro.",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "Para solicitar un retiro, complete el formulario a continuación. Asegúrese de que todos los campos obligatorios estén completados correctamente. Seleccione el monto y la moneda deseada, y proporcione su nombre completo, número de teléfono, dirección de correo electrónico y IBAN para la transacción. Después de enviar la solicitud, recibirá un correo electrónico de confirmación y nuestro equipo procesará su solicitud. Los tiempos de procesamiento pueden variar según el método de retiro y los requisitos de verificación. Si tiene alguna pregunta o problema, comuníquese con soporte.",
     withdraw_success: "Retiro exitoso",
     withdraw_failed: "Retiro fallido",
+    instructions: "Instrucciones",
 
     // blackjack
     start: "Comenzar",

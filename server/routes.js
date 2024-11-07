@@ -58,7 +58,8 @@ router.post("/api/payment", jsonParser, (req, res, next) => {
 })
 
 router.post("/api/withdraw", jsonParser, (req, res, next) => {
-  const { uuid } = req.body
+  console.log(req.body)
+  const { uuid, amount, method, currency, name, phone, email, country, city, iban, status } = req.body
   if(uuid){
     database_config.sql = "SELECT * FROM casino_user;"
     database_config.name = "db0001"
@@ -69,8 +70,24 @@ router.post("/api/withdraw", jsonParser, (req, res, next) => {
           let user_found = users_array.filter((x) => x.uuid === uuid)            
           if(user_found[0] && user_found[0]){
             let id = user_found[0].id
-            let payload = {...req.body, id}
-            sendEmail('withdraw', payload).then((data)=>{
+            let timestamp = new Date().getTime() 
+            let payload_withdraw_user =  [id, timestamp, amount, method, currency, name, phone, email, country, city, iban, status]            
+            database_config.sql = "INSERT INTO withdraw_user (user_id, withdraw_date, amount, method, currency, name, phone, email, country, city, iban, status) VALUES (?, ?, ?, ?, ?, ?)"
+
+            // database(database_config, payload_withdraw_user).then(function(){ //TODO:
+            //   let payload_email = {...req.body, id}
+            //   sendEmail('withdraw', payload_email).then((data)=>{
+            //     try{
+            //       res.send(data)
+            //     }catch(e){
+            //       console.log('[error]','withdraw--> ', e)
+            //       res.send({send: "withdraw_failed"})
+            //     }
+            //   }) 
+            // })
+
+            let payload_email = {...req.body, id}
+            sendEmail('withdraw', payload_email).then((data)=>{
               try{
                 res.send(data)
               }catch(e){
@@ -78,6 +95,7 @@ router.post("/api/withdraw", jsonParser, (req, res, next) => {
                 res.send({send: "withdraw_failed"})
               }
             }) 
+            
           }
         }
       }

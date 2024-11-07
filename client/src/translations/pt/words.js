@@ -285,9 +285,10 @@ var word_bank = {
     withdrawals: "Retiradas",
     no_withdrawal: "Sem retiradas",
     not_enough_money_withdrawal: "Você não tem dinheiro suficiente para fazer uma retirada.",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "Para solicitar um saque, preencha o formulário abaixo. Certifique-se de que todos os campos obrigatórios estão preenchidos corretamente. Selecione o valor e a moeda desejada e forneça seu nome completo, número de telefone, e-mail e IBAN para a transação. Após o envio, você receberá um e-mail de confirmação e nossa equipe processará sua solicitação. Os prazos de processamento podem variar de acordo com o método de saque e os requisitos de verificação. Se tiver alguma dúvida ou problema, entre em contato com o suporte.",
     withdraw_success: "Saque bem-sucedido",
     withdraw_failed: "Falha no saque",
+    instructions: "Instruções",
 
     // blackjack
     start: "Iniciar",

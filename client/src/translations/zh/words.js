@@ -285,9 +285,10 @@ var word_bank = {
     withdrawals: "取款记录",
     no_withdrawal: "没有取款",
     not_enough_money_withdrawal: "您没有足够的资金进行取款。",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "要申请提现，请填写以下表格。确保所有必填字段准确填写。选择所需的金额和货币，并提供您的全名、电话号码、电子邮件地址和用于交易的IBAN。提交后，您将收到确认电子邮件，我们的团队将处理您的请求。处理时间可能因提现方式和验证要求而有所不同。如果您有任何问题或遇到问题，请联系支持人员。",
     withdraw_success: "提现成功",
     withdraw_failed: "提现失败",
+    instructions: "说明",
 
     // blackjack
     start: "开始",

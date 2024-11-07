@@ -285,9 +285,10 @@ var word_bank = {
     withdrawals: "Retraits",
     no_withdrawal: "Pas de retraits",
     not_enough_money_withdrawal: "Vous n'avez pas assez d'argent pour effectuer un retrait.",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "Pour demander un retrait, veuillez remplir le formulaire ci-dessous. Assurez-vous que tous les champs obligatoires sont remplis correctement. Sélectionnez le montant et la devise souhaités, et fournissez votre nom complet, numéro de téléphone, adresse e-mail et IBAN pour la transaction. Après avoir soumis votre demande, vous recevrez un e-mail de confirmation, et notre équipe traitera votre demande. Les délais de traitement peuvent varier en fonction de la méthode de retrait et des exigences de vérification. Si vous avez des questions ou rencontrez des problèmes, veuillez contacter le support.",
     withdraw_success: "Retrait réussi",
     withdraw_failed: "Échec du retrait",
+    instructions: "Instructions",
 
     // blackjack
     start: "Démarrer",

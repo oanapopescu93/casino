@@ -11,11 +11,16 @@ import Orders from './orders'
 import Withdrawals from './withdrawals'
 
 function DashboardRight(props){
-    const {settings} = props
+    const {settings, user, socket} = props
     const {lang} = settings
+    const {uuid} = user
+
     const [choice, setChoice] = useState("cart")
     const [width, setWidth] = useState(getWindowDimensions().width)
     const [title, setTitle] = useState("cart")
+    const [orderList, setOrderList] = useState(null)
+    const [withdrawList, setWithdrawList] = useState(null)
+
     let dispatch = useDispatch()
 
     function handleClick(e){
@@ -44,6 +49,25 @@ function DashboardRight(props){
         setTitle(e)
         setChoice(e)
     }
+
+    useEffect(() => {
+		socket.emit('getOrdersWithdraws_send', {uuid})		
+	}, [])
+
+    useEffect(() => {
+		const handleGetOrdersWithdrawsRead = function(data) {
+            if(data.error){
+                console.log('error--> ', data.error)
+                return
+            }
+            setOrderList(data.orders_found)
+            setWithdrawList(data.withdraws_found)
+		}
+		socket.on('getOrdersWithdraws_read', handleGetOrdersWithdrawsRead)
+		return () => {
+            socket.off('getOrdersWithdraws_read', handleGetOrdersWithdrawsRead)
+        }
+    }, [socket])
 
     return <>
         {width > 1200 ? <div className="dashboard_right_buttons">
@@ -82,11 +106,11 @@ function DashboardRight(props){
             switch (choice) {
                 case "orders":
                     return <div id="dashboard_right_orders" className="dashboard_box shadow_concav">								
-                        <Orders {...props} />
+                        <Orders {...props} orderList={orderList}/>
                     </div>  
                 case "withdraw":
                     return <div id="dashboard_right_orders" className="dashboard_box shadow_concav">								
-                        <Withdrawals {...props} />
+                        <Withdrawals {...props} withdrawList={withdrawList}/>
                     </div>                
                 case "cart":
                 default:

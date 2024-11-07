@@ -285,9 +285,10 @@ var word_bank = {
     withdrawals: "Abhebungen",
     no_withdrawal: "Keine Abhebungen",
     not_enough_money_withdrawal: "Sie haben nicht genug Geld für eine Abhebung.",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "Um eine Auszahlung zu beantragen, füllen Sie bitte das folgende Formular aus. Stellen Sie sicher, dass alle Pflichtfelder korrekt ausgefüllt sind. Wählen Sie den gewünschten Betrag und die Währung aus und geben Sie Ihren vollständigen Namen, Ihre Telefonnummer, Ihre E-Mail-Adresse und Ihre IBAN für die Transaktion an. Nach dem Absenden erhalten Sie eine Bestätigungs-E-Mail, und unser Team wird Ihre Anfrage bearbeiten. Die Bearbeitungszeit kann je nach Auszahlungsmethode und den erforderlichen Überprüfungen variieren. Bei Fragen oder Problemen wenden Sie sich bitte an den Support.",
     withdraw_success: "Auszahlung erfolgreich",
     withdraw_failed: "Auszahlung fehlgeschlagen",
+    instructions: "Anweisungen",
 
     // blackjack
     start: "Start",

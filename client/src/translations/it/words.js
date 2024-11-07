@@ -285,9 +285,10 @@ var word_bank = {
     withdrawals: "Prelievi",
     no_withdrawal: "Nessun prelievo",
     not_enough_money_withdrawal: "Non hai abbastanza soldi per fare un prelievo.",
-    withdraw_instructions: "Withdraw instructions will come here",
+    withdraw_instructions: "Per richiedere un prelievo, compilare il modulo sottostante. Assicurarsi che tutti i campi obbligatori siano compilati correttamente. Selezionare l'importo e la valuta desiderati e fornire il proprio nome completo, numero di telefono, indirizzo e-mail e IBAN per la transazione. Dopo l'invio, riceverete un'e-mail di conferma e il nostro team elaborerà la vostra richiesta. I tempi di elaborazione possono variare in base al metodo di prelievo e ai requisiti di verifica. Per domande o problemi, contattare il supporto.",
     withdraw_success: "Prelievo riuscito",
     withdraw_failed: "Prelievo fallito",
+    instructions: "Istruzioni",
 
     // blackjack
     start: "Inizia",
