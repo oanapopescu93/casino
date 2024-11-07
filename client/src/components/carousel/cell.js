@@ -156,7 +156,7 @@ function Cell(props) {
                                     <div className="rabbit_box_info">
                                         <p><span>{translate({lang: lang, info: "breed"})}: </span>{data.breed}</p>
                                         <p><span>{translate({lang: lang, info: "health"})}: </span>{data.health}</p>
-                                        <Stars score={data.health} max={data.health_max} />
+                                        <Stars score={data.health} max={data.health_max} theme={theme}/>
                                     </div>
                                     <div className="rabbit_box_bet">
                                         <p>{translate({lang: lang, info: "bet"})}:</p>

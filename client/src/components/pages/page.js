@@ -122,7 +122,7 @@ function Page(props) {
                         exchange_rates={exchangeRates} 
                     />
                 } else {
-                    return <Loader />
+                    return <Loader settings={settings}/>
                 }
             }
         })()} 

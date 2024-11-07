@@ -1,11 +1,26 @@
 import React from 'react'
-import logo from '../../img/rabbit_loader/rabbit_run.gif'
+import logo_yellow from '../../img/rabbit_loader/animation/yellow/rabbit_run_yellow.gif'
+import logo_pink from '../../img/rabbit_loader/animation/yellow/rabbit_run_pink.gif'
+import logo_green from '../../img/rabbit_loader/animation/yellow/rabbit_run_green.gif'
 
 function Loader(props){
-	const {text} = props
+	const {text, settings} = props
+	const {theme} = settings
+
+	function chooseImage(){
+        switch (theme) {
+            case 'purple':
+              return logo_pink
+            case 'black':
+              return logo_green
+            default:
+              return logo_yellow
+        }
+    }
+
 	return <div className="loader_container">
 		<div className="loader">
-			<img alt="logo" src={logo} />
+			<img alt="logo" src={chooseImage()} />
 			{text ? <p>{text}</p> : <p>Loading...</p>}
         </div>
 	</div>

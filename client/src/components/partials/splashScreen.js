@@ -6,7 +6,8 @@ import TransparentText from './transparentText'
 import { getWindowDimensions } from '../../utils/utils'
 
 function Splash(props) {
-    const {theme} = props
+    const {settings} = props
+    const {theme} = settings
     const [height, setHeight] = useState(getHeightBasedOnWidth(getWindowDimensions().width))
 
     function getHeightBasedOnWidth(width){
@@ -42,6 +43,17 @@ function Splash(props) {
         }
     }
 
+    function chooseLogoText(){
+        switch (theme) {
+            case 'purple':
+              return "#ffc0cb"
+            case 'black':
+              return "#32CD32"
+            default:
+              return "gold"
+        }
+    }
+
 	return <div id="splash_screen">
         <div className="splash_screen_container">
             <div className="content_box">
@@ -49,7 +61,7 @@ function Splash(props) {
                 <div className="content-dot">
                     <div className="content">
                         <h1 className="splash_title">
-                            <TransparentText text={"BunnyBet"} height={height} size={height} />
+                            <TransparentText text={"BunnyBet"} height={height} size={height} fill={chooseLogoText()} stroke={chooseLogoText()}/>
                         </h1>
                     </div>
                 </div>
