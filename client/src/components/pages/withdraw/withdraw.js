@@ -176,7 +176,7 @@ function Withdraw(props){
         <Header template="terms_cond" title={translate({lang: lang, info: "withdraw"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {processWithdraw ?  <div className="page_content_loader">
-                <Loader text={translate({lang: lang, info: "processing"})}/>
+                <Loader text={translate({lang: lang, info: "processing"})} lang={lang} theme={theme}/>
             </div> : <Row>
                 <Col lg={2} />
                 <Col lg={8}>

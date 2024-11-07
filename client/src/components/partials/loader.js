@@ -4,8 +4,8 @@ import logo_pink from '../../img/rabbit_loader/animation/yellow/rabbit_run_pink.
 import logo_green from '../../img/rabbit_loader/animation/yellow/rabbit_run_green.gif'
 
 function Loader(props){
-	const {text, settings} = props
-	const {theme} = settings
+	console.log('loader ', props)
+	const {text, theme} = props
 
 	function chooseImage(){
         switch (theme) {

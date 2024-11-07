@@ -238,7 +238,7 @@ function Sign(props) {
                             <div className="sign_footer">
                                 <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: lang, info: "all_rights_reserved"})}.</h6>
                             </div>
-                        </> : <Loader />}
+                        </> : <Loader lang={lang} theme={theme}/>}
                     </>
             }
         })()}

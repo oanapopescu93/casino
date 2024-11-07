@@ -109,7 +109,7 @@ function Page(props) {
                 if(loaded){
                     return <Sign {...props} settings={settings}/>
                 } else {
-                    return <Splash {...props} progressNumber={progressNumber} />
+                    return <Splash {...props} settings={settings} progressNumber={progressNumber} />
                 }
             } else {
                 if(home.loaded){
@@ -122,7 +122,7 @@ function Page(props) {
                         exchange_rates={exchangeRates} 
                     />
                 } else {
-                    return <Loader settings={settings}/>
+                    return <Loader lang={settings.lang} theme={settings.theme}/>
                 }
             }
         })()} 
