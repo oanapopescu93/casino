@@ -12,7 +12,7 @@ import { getWindowDimensions } from '../../utils/utils'
 
 function Salon(props) {    
     const {page, settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     const [width, setWidth] = useState(getWindowDimensions().width)
     const [height, setHeight] = useState(getWindowDimensions().height)
     // let dispatch = useDispatch()
@@ -40,11 +40,11 @@ function Salon(props) {
         {page.game ? <Game {...props} /> : <>
             <Language title={lang} />
             {height < 500 ? <div className="chatbot_button_container_small">
-                <ChatBotButton lang={lang} />
+                <ChatBotButton lang={lang} theme={theme} />
             </div> : null}
             <div className="content_wrap">
                 <div className="salon_content_box">                    
-                    <Header template="salon" lang={lang} details={page}/>
+                    <Header template="salon" details={page} lang={lang} theme={theme}/>
                     <SalonGames {...props} width={width} height={height}/>
                 </div>
             </div>

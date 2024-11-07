@@ -260,3 +260,31 @@ export const getCarrotsFromProducts = (array)=>{
   }
   return carrots
 }
+
+export const handleChangeTheme = (choice) => {
+  switch (choice) {
+    case 'green':
+      document.documentElement.style.setProperty('--body_color', 'green')
+      document.documentElement.style.setProperty('--color', 'gold')
+      document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 215, 0, 0.2)')
+      document.documentElement.style.setProperty('--dark_color', '#b39800')
+      document.documentElement.style.setProperty('--light_color', 'yellow')
+      break
+    case 'purple':
+      document.documentElement.style.setProperty('--body_color', 'purple')
+      document.documentElement.style.setProperty('--color', 'pink')
+      document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 105, 180, 0.2)')
+      document.documentElement.style.setProperty('--dark_color', '#800080') // Dark purple
+      document.documentElement.style.setProperty('--light_color', '#D8BFD8') // Thistle (light purple)
+      break
+    case 'black':
+      document.documentElement.style.setProperty('--body_color', '#333')
+      document.documentElement.style.setProperty('--color', '#32CD32') // Lime Green
+      document.documentElement.style.setProperty('--transparent_color', 'rgba(50, 205, 50, 0.2)')
+      document.documentElement.style.setProperty('--dark_color', '#006400') // Dark green
+      document.documentElement.style.setProperty('--light_color', '#90EE90') // Light green
+      break
+    default:
+      break
+  }
+}

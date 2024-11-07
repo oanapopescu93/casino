@@ -2,7 +2,9 @@ import React from 'react'
 import { translate } from '../../../../../translations/translate'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan, faCartShopping} from '@fortawesome/free-solid-svg-icons'
-import vegetables_yellow from '../../../../../img/icons/vegetables_yellow.png'
+import vegetables_yellow from '../../../../../img/icons/vegetables/vegetables_yellow.png'
+import vegetables_pink from '../../../../../img/icons/vegetables/vegetables_pink.png'
+import vegetables_green from '../../../../../img/icons/vegetables/vegetables_green.png'
 import Counter from '../../../../partials/counter'
 import { Button } from 'react-bootstrap'
 import { decryptData } from '../../../../../utils/crypto'
@@ -13,7 +15,7 @@ function Cart(props){
         cart, home, user, settings, exchange_rates,
         cartRemoveAllProduct, cartRemoveProduct, updateQtyProduct, handleCheckout
     } = props
-    const {lang, currency} = settings
+    const {lang, currency, theme} = settings
     
     let market = home.market ? home.market : []
     let total = totalPriceSum().toFixed(2)
@@ -30,6 +32,17 @@ function Cart(props){
         return total
     }
 
+    function chooseImage(){
+        switch (theme) {
+            case 'purple':
+              return vegetables_pink
+            case 'black':
+              return vegetables_green
+            default:
+              return vegetables_yellow
+        }
+    }
+
     return <div className="cart box">								
         {cart && cart.length>0 ? <>
             <div className="cart_header">
@@ -43,7 +56,7 @@ function Cart(props){
                     return <div key={i} className='cart_item'>
                         <div className="cart_image">
                             <div className="crop_vegetables">
-                                <img alt="vegetable" className={'vegetable '+item.id} src={vegetables_yellow} />
+                                <img alt="vegetable" className={'vegetable '+item.id} src={chooseImage()} />
                             </div>
                         </div>
                         <div className="cart_info">

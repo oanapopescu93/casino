@@ -219,14 +219,14 @@ function KenoSettings(props){
 
 function KenoGame(props){
     const {page, settings, handleShowPrizes} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     const [open, setOpen] = useState(false)
 
     function openTable(){setOpen(true)}
     function closeTable(){setOpen(false)}
 
     return <>
-        <Header template={"game"} details={page} lang={lang} />
+        <Header template={"game"} details={page} lang={lang} theme={theme}/>
         <Row className="keno_game">
             <Col sm={12}>
                 <KenoBoard {...props} />

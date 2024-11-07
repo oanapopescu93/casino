@@ -11,7 +11,7 @@ import { isEmpty, setCookie } from '../../../utils/utils'
 
 function User(props){    
     const {page, user, settings, streak} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let dispatch = useDispatch()
     const [buttonUser, setButtonUser] = useState('active')
     const [buttonMarket, setButtonMarket] = useState('')
@@ -75,7 +75,7 @@ function User(props){
 	}, [page.game_page])
 
     return <>
-        <Header template="panel_user" details={page} lang={lang} />
+        <Header template="panel_user" details={page} lang={lang} theme={theme}/>
         <div id="user_subtitle">
             <div className="user_subtitle_left">
                 <span id="user_name">{user.user ? decryptData(user.user) : "-"}</span>

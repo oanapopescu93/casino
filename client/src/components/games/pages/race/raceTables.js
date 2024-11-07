@@ -11,7 +11,7 @@ import Header from '../../../partials/header'
 
 function RaceTables(props){
     const {home, page, user, settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     
     let race_bets = useSelector(state => state.games.race.bets) 
     let money = user.money ? decryptData(user.money) : 0
@@ -79,7 +79,7 @@ function RaceTables(props){
     }
 
     return <>
-        <Header template={"game"} details={page} lang={lang} />
+        <Header template={"game"} details={page} lang={lang} theme={theme}/>
         <div className="carousel_race_container">
             <Carousel 
                 {...props}

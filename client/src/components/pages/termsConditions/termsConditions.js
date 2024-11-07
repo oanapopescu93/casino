@@ -18,7 +18,7 @@ import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function TermsConditions(props){
     const {settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let dispatch = useDispatch()
     function handleBack(){
         dispatch(changePage('Salon'))
@@ -26,7 +26,7 @@ function TermsConditions(props){
         dispatch(changeGamePage(null))
     }
     return <div className="content_wrap">
-        <Header template="terms_cond" title={translate({lang: lang, info: "terms_cond"})} />
+        <Header template="terms_cond" title={translate({lang: lang, info: "terms_cond"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {

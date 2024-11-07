@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "Saque bem-sucedido",
     withdraw_failed: "Falha no saque",
     instructions: "Instruções",
+    min_amount_withdraw: "Quantidade mínima de cenouras para realizar um saque",
+    convert_carrots_rate: "Taxa de conversão das cenouras",
 
     // blackjack
     start: "Iniciar",

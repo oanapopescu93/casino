@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "提现成功",
     withdraw_failed: "提现失败",
     instructions: "说明",
+    min_amount_withdraw: "提款所需的最小胡萝卜数量",
+    convert_carrots_rate: "胡萝卜兑换率",
 
     // blackjack
     start: "开始",

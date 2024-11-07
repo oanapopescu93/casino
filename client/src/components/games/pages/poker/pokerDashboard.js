@@ -17,7 +17,7 @@ let replaceCards = null
 
 function PokerDashboard(props){
     const {page, bet, user, settings, template, socket} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let game = page.game
 	let money = user.money ? decryptData(user.money) : 0 
     let poker_bets = bet
@@ -169,7 +169,7 @@ function PokerDashboard(props){
 
     return <div id="poker" className="game_container poker_container">
         <div className="game_box">
-            <Header template={"game"} details={page} lang={lang} />
+            <Header template={"game"} details={page} lang={lang} theme={theme}/>
             <canvas id="poker_canvas" />
             {pot > 0 && getWindowDimensions().width >= 960 ? <div className="poker_pot_container">
                 <div className="poker_pot">{translate({lang: lang, info: "total_pot"})}: {pot}</div>

@@ -16,7 +16,7 @@ import Loader from '../partials/loader'
 
 function Sign(props) {
     const {settings, socket} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let dispatch = useDispatch()
 
     let page = useSelector(state => state.page.page)
@@ -193,7 +193,7 @@ function Sign(props) {
                                         {isMinor === "true" ? <div className="sign_box isMinor_sign">
                                             <p>{translate({lang: lang, info: "isMinor_sign"})}</p>
                                         </div> : <>
-                                            <Header template="sign" lang={lang} />
+                                            <Header template="sign" lang={lang} theme={theme} />
                                             <div className="sign_box">
                                                 <ul>
                                                     <li id="signin_tab" className={signIn} onClick={()=>{handleClick('signIn')}}><span>{translate({lang: lang, info: "sign_in"})}</span></li>

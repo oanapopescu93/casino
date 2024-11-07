@@ -18,7 +18,7 @@ import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function About(props){
     const {settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let casino_name = "BunnyBet"
     let dispatch = useDispatch()
     function handleBack(){
@@ -27,7 +27,7 @@ function About(props){
         dispatch(changeGamePage(null))
     }
     return <div className="content_wrap">
-        <Header template="about" title={translate({lang: lang, info: "about"})} />
+        <Header template="about" title={translate({lang: lang, info: "about"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {

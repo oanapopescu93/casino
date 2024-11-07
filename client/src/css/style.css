@@ -3,6 +3,7 @@
   --color:gold;
   --dark_color:#b39800;
 	--light_color:yellow;
+  --body_color: green;
 
   --red: red;
   --darkred: darkred;
@@ -10,11 +11,7 @@
   --darkgreen: darkgreen;
   --green_transparent_3: rgba(0, 128, 0, 0.3);
   --red_transparent_3 : rgba(255, 0, 0, 0.3);
-  --orange: orange;
-
-  --green_bg: green;
-  --purple_bg: purple;
-  --black_bg: #333;
+  --orange: orange;  
 
   --padding: 10px;
   --padding_small: 5px;
@@ -39,14 +36,8 @@ body{
   line-height: 16px;
   text-align:center;
 }
-body.green{
-  background-color:var(--green_bg);
-}
-body.purple{
-  background-color:var(--purple_bg);
-}
-body.black{
-  background-color:var(--black_bg);
+body{
+  background-color:var(--body_color);
 }
 .grad:before{
 	content: "";
@@ -2900,30 +2891,26 @@ a.donation_button{
   padding: var(--padding_small);
 }
 .settings .theme_box{
-  color: var(--color);
+  border-radius: var(--radius);
+  padding: var(--padding_small) var(--padding);
 }
 .dropdown-item:focus .theme_box, .dropdown-item:active .theme_box, .dropdown-item:hover .theme_box{
   color: var(--bg);
 }
-.settings .theme_color{
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: var(--padding_small);
-}
-.settings .theme_color.green{
+.settings .theme_box.green{
   background: green;
-  border: solid 1px green;
+  border: solid 1px gold;
+  color: gold;
 }
-.settings .theme_color.purple{
+.settings .theme_box.purple{
   background: purple;
-  border: solid 1px purple;
+  border: solid 1px pink;
+  color: pink;
 }
-.settings .theme_color.black{
-  background: black;
-  border: solid 1px #333;
+.settings .theme_box.black{
+  background: #333;
+  border: solid 1px #32CD32;
+  color: #32CD32;
 }
 .settings .theme_text{
   display: inline-block;

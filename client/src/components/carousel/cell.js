@@ -10,13 +10,15 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import { decryptData } from '../../utils/crypto'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBasketShopping, faCarrot } from '@fortawesome/free-solid-svg-icons'
-import vegetables_yellow from '../../img/icons/vegetables_yellow.png'
+import vegetables_yellow from '../../img/icons/vegetables/vegetables_yellow.png'
+import vegetables_pink from '../../img/icons/vegetables/vegetables_pink.png'
+import vegetables_green from '../../img/icons/vegetables/vegetables_green.png'
 import profilePic from '../../img/profile/predators.jpg'
 import { convertCurrency } from '../../utils/utils'
 
 function Cell(props) {
     const {index, selected, data, template, account_type, money, settings, exchange_rates, finances, handlePic} = props
-    const {lang, currency} = settings
+    const {lang, currency, theme} = settings
     const [qty, setQty] = useState(1)
     let place = translate({lang: lang, info: 'place'})
     const [titleDropdown, setTitleDropdown] = useState(place)
@@ -90,6 +92,17 @@ function Cell(props) {
         }
     }
 
+    function chooseImage(){
+        switch (theme) {
+            case 'purple':
+              return vegetables_pink
+            case 'black':
+              return vegetables_green
+            default:
+              return vegetables_yellow
+        }
+    }
+
 	return <>
         {(() => {
             switch (template) {
@@ -112,7 +125,7 @@ function Cell(props) {
                         <div className="cell_market shadow_concav">
                             <div className="cell_info">
                                 <div className="crop_vegetables">
-                                    <img alt="vegetable" className={'vegetable '+data.id} src={vegetables_yellow} />
+                                    <img alt="vegetable" className={'vegetable '+data.id} src={chooseImage()} />
                                 </div>
                                 <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
                                 <p>{translate({lang: lang, info: "value"})}: {data.value} <FontAwesomeIcon icon={faCarrot} /></p>

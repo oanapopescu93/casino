@@ -629,7 +629,7 @@ function Craps(props){
 let craps_status = false
 function CrapsGame(props){
 	const {page, settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
 	
 	let dispatch = useDispatch()
 	const [start, setStart] = useState(false)
@@ -705,7 +705,7 @@ function CrapsGame(props){
 	}
 
     return <div id="craps_game" className="game_box">
-		<Header template={"game"} details={page} lang={lang} />
+		<Header template={"game"} details={page} lang={lang} theme={theme}/>
 		<Craps 
 			{...props} 
 			startGame={start} 

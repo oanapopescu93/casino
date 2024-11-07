@@ -429,7 +429,7 @@ var blackjack_bets = 1
 var blackjack_status = false
 function Blackjack(props){
 	const {page, user, socket, settings} = props
-	const {lang} = settings
+	const {lang, theme} = settings
 	
 	let game = page.game
 	let money = user.money ? decryptData(user.money) : 0
@@ -592,7 +592,7 @@ function Blackjack(props){
     }
 
     return <div id="blackjack" className="game_box">
-		<Header template={"game"} details={page} lang={lang} />
+		<Header template={"game"} details={page} lang={lang} theme={theme}/>
         <canvas id="blackjack_canvas" />
         <GameBoard template="blackjack_board" {...props} startGame={startGame} bet={blackjackBets} choice={(e)=>choice(e)} updateQtyMarket={(e)=>updateBets(e)} />
 		<div className="button_action_group blackjack_buttons_container">

@@ -127,7 +127,7 @@ function CareerList(props){
 
 function Career(props){
     const {list, settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let dispatch = useDispatch()
 
     function handleContact(){
@@ -143,7 +143,7 @@ function Career(props){
     }
 
     return <div className="content_wrap">
-        <Header template="career" title={translate({lang: lang, info: "career"})} />
+        <Header template="career" title={translate({lang: lang, info: "career"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {(() => {
                 if(list){

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import { getCookie, isEmpty, postData, setCookie } from '../../utils/utils'
+import { getCookie, handleChangeTheme, isEmpty, postData, setCookie } from '../../utils/utils'
 import Popup from '../popup/popup'
 import Sign from '../sign/sign'
 import { bringPayload } from '../../reducers/home'
@@ -70,21 +70,7 @@ function Page(props) {
 
     useEffect(() => {  
         let theme = settings.theme
-        if(theme){            
-            document.body.classList.forEach((cls) => { // Remove all classes except "grad"
-                if (cls !== "grad") {
-                    document.body.classList.remove(cls)
-                }
-            })
-            document.body.classList.add(theme) // Add the current theme as a class to the body
-        }        
-        return () => {
-            document.body.classList.forEach((cls) => { // Do the cleanup
-                if (cls !== "grad") {
-                    document.body.classList.remove(cls)
-                }
-            })
-        }
+        handleChangeTheme(theme)
     }, [settings.theme])
 
     useEffect(() => {  

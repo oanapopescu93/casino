@@ -14,7 +14,7 @@ import { getProducts } from '../../../utils/utils'
 
 function Cart(props){
     const {home, settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
 
     let market = home.market
     let cart = useSelector(state => state.cart.cart) 
@@ -58,7 +58,7 @@ function Cart(props){
     }
 
     return <div className="content_wrap">
-        <Header template="cart" title={translate({lang: lang, info: "cart"})} /> 
+        <Header template="cart" title={translate({lang: lang, info: "cart"})} lang={lang} theme={theme} /> 
         <div className="page_content">
             {list && list.length>0 ? <Row>
                 <Col sm={8}>

@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "Withdraw success",
     withdraw_failed: "Withdraw failed",
     instructions: "Instructions",
+    min_amount_withdraw: "Minimum amount of carrots to make a withdrawal",
+    convert_carrots_rate: "Convert carrots rate",
 
     // blackjack
     start: "Start",

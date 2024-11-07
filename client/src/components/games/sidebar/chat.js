@@ -6,7 +6,6 @@ import { formatDate, isEmpty } from '../../../utils/utils'
 import { decryptData } from '../../../utils/crypto'
 import { getRoom } from '../../../utils/games'
 import { useSelector } from 'react-redux'
-import { getWindowDimensions } from '../../../utils/utils'
 
 function ChatMessages(props){
     const {lang, messages} = props
@@ -71,7 +70,7 @@ function ChatList(props){
 
 function Chat(props){
     const {page, user, socket, settings, chatRoomUsers} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let game = page.game
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])    
@@ -100,7 +99,7 @@ function Chat(props){
     }
 
     return <>
-        <Header template="panel_user" details={page} lang={lang} />
+        <Header template="panel_user" details={page} lang={lang} theme={theme}/>
         <Form className="chat_form">
             <div id="chatmessages" className="input_light">
                 <ChatMessages messages={messages} lang={lang} />

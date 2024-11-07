@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "Prelievo riuscito",
     withdraw_failed: "Prelievo fallito",
     instructions: "Istruzioni",
+    min_amount_withdraw: "Quantità minima di carote per effettuare un prelievo",
+    convert_carrots_rate: "Tasso di conversione delle carote",
 
     // blackjack
     start: "Inizia",

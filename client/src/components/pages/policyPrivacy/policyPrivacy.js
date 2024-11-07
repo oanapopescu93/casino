@@ -18,7 +18,7 @@ import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function PolicyPrivacy(props){
     const {settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let dispatch = useDispatch()
 
     function handleBack(){
@@ -28,7 +28,7 @@ function PolicyPrivacy(props){
     }
 
     return <div className="content_wrap">
-        <Header template="policy_privacy" title={translate({lang: lang, info: "policy_privacy"})} />
+        <Header template="policy_privacy" title={translate({lang: lang, info: "policy_privacy"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {

@@ -57,7 +57,7 @@ import card_49 from '../img/blackjack/cards/card_49.png'
 import card_50 from '../img/blackjack/cards/card_50.png'
 import card_51 from '../img/blackjack/cards/card_51.png'
 
-import slots_image from '../img/icons/vegetables_color.png'
+import slots_image from '../img/icons/vegetables/vegetables_color.png'
 
 import craps_bets from '../img/craps/craps.png'
 import 	craps_pass_line from '../img/craps/hover/craps_pass_line.png'

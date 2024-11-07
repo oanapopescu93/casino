@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "Auszahlung erfolgreich",
     withdraw_failed: "Auszahlung fehlgeschlagen",
     instructions: "Anweisungen",
+    min_amount_withdraw: "Mindestmenge an Karotten für eine Auszahlung",
+    convert_carrots_rate: "Karottenumrechnungsrate",
 
     // blackjack
     start: "Start",

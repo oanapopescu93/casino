@@ -24,7 +24,7 @@ import { changeMoney } from '../../../reducers/auth'
 
 function Home(props) {
     const {home, page, user, settings, exchange_rates, socket} = props
-    const {lang, currency, cookies} = settings
+    const {lang, currency, theme, cookies} = settings
     let dispatch = useDispatch()
     
     function handleCookiesClick(){
@@ -235,7 +235,7 @@ function Home(props) {
                         case "dashboard":
                             return <>
                                 <div className="content_wrap">
-                                    <Header template="page" details={page} lang={lang} />
+                                    <Header template="page" details={page} lang={lang} theme={theme}/>
                                     <Dashboard {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />
@@ -243,7 +243,7 @@ function Home(props) {
                         case "market":
                             return <>
                                 <div className="content_wrap">
-                                    <Header template="page" details={page} lang={lang} />
+                                    <Header template="page" details={page} lang={lang} theme={theme}/>
                                     <Market {...props} handleHandleExit={()=>handleExit()}/>
                                 </div>
                                 <Panel {...props} />

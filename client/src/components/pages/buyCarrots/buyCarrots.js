@@ -6,10 +6,10 @@ import { Col, Row } from 'react-bootstrap'
 
 function BuyCarrots(props){
     const {settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
 
     return <div className="content_wrap">
-        <Header template="buy_carrots" title={translate({lang: lang, info: "buy_carrots"})} />
+        <Header template="buy_carrots" title={translate({lang: lang, info: "buy_carrots"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <Row>
                 <Col lg={2} />

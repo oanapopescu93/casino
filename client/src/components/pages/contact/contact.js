@@ -14,7 +14,7 @@ import ContactAddress from './contactAddress'
 
 function Contact(props){
     const {socket, home, settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let locations = home.contact
     let default_location = locations[0][lang] ? locations[0][lang] : locations[0]["ENG"]
     
@@ -67,7 +67,7 @@ function Contact(props){
     }, [lang])
 
     return <div className="content_wrap">
-        <Header template="contact" title={translate({lang: lang, info: "contact"})} />
+        <Header template="contact" title={translate({lang: lang, info: "contact"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <Row>
                 <Col lg={2} />

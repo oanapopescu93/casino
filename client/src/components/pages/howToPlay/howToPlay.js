@@ -12,7 +12,7 @@ import ChatBotButton from '../../partials/chatBotButton'
 
 function HowToPlay(props){
     const {page, settings} = props
-    const {lang} = settings
+    const {lang, theme} = settings
 
     const [game, setGame] = useState(null)
     let dispatch = useDispatch()     
@@ -38,12 +38,12 @@ function HowToPlay(props){
     }
 
     return <div className="content_wrap">
-        <Header template="how_to_play" title={translate({lang: lang, info: "how_to_play"})} />
+        <Header template="how_to_play" title={translate({lang: lang, info: "how_to_play"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {!game ? <HowToPlayTitles lang={lang} handleChoice={(e)=>handleChoice(e)} /> : <HowToPlayGames game={game} lang={lang} />}
         </div>
         <div className="button_action_group">
-            <ChatBotButton lang={lang} />
+            <ChatBotButton lang={lang} theme={theme}/>
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
             </Button>            

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Button } from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import { translate } from '../../../translations/translate'
@@ -12,9 +12,12 @@ import countriesData from '../../../utils/constants/countries.json'
 import { sendWithdrawRequest } from '../../../reducers/payments'
 import Loader from '../../partials/loader'
 import { changePopup } from '../../../reducers/popup'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCarrot, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
-function Withdraw(props){
-    const {lang, user, home} = props
+function Withdraw(props){    
+    const {user, home, settings} = props
+    const {lang, theme} = settings
     let money = user.money ? decryptData(user.money) : 0
     let dispatch = useDispatch()
 
@@ -38,7 +41,9 @@ function Withdraw(props){
     const allowedCurrencies = ['USD', 'EUR', 'GBP', 'CHF', 'RON']
     const { finances } = home
     const { min_amount_withdraw, convert_carrots_rate } = finances
+    
     let min_amount = min_amount_withdraw/convert_carrots_rate
+    
     const errors_default = {
         name: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_name" },
         phone: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_phone" },
@@ -168,14 +173,14 @@ function Withdraw(props){
     }    
 
     return <div className="content_wrap">
-        <Header template="terms_cond" title={translate({lang: lang, info: "withdraw"})} />
+        <Header template="terms_cond" title={translate({lang: lang, info: "withdraw"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {processWithdraw ?  <div className="page_content_loader">
                 <Loader text={translate({lang: lang, info: "processing"})}/>
             </div> : <Row>
                 <Col lg={2} />
                 <Col lg={8}>
-                    <WithdrawFormStripe
+                    {min_amount_withdraw < money ? <WithdrawFormStripe
                         {...props} 
                         money={money}
                         allowedCurrencies={allowedCurrencies}
@@ -194,7 +199,26 @@ function Withdraw(props){
                         handleCityChange={(e)=>handleCityChange(e)}
                         handleFilterCities={(e)=>handleFilterCities(e)}
                         handleBack={()=>handleBack()}
-                    />
+                    /> : <>
+                        <Row>
+                            <Col sm={12}>
+                                <div className="alert alert-danger">
+                                    <p className="text_red">
+                                        {translate({lang: lang, info: "not_enough_money_withdrawal"})}
+                                    </p>
+                                </div>
+                                <br></br>
+                                <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>
+                                <p><b>{translate({lang: lang, info: "min_amount_withdraw"})}: </b>{min_amount_withdraw} <FontAwesomeIcon icon={faCarrot} /></p>
+                                <p><b>{translate({lang: lang, info: "convert_carrots_rate"})}: </b>{convert_carrots_rate} = 1 USD</p>
+                            </Col>
+                        </Row>                        
+                        <div className="button_action_group">
+                            <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
+                                <FontAwesomeIcon icon={faArrowRotateLeft} />
+                            </Button>
+                        </div>
+                    </>}                    
                 </Col>
                 <Col lg={2} />
             </Row>}            

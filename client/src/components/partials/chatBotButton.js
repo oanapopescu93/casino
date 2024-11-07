@@ -2,11 +2,13 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../reducers/popup'
-import chatbotIcon from '../../img/chatbot/chatbot.png'
+import chatbotIcon_pink from '../../img/chatbot/chatbot_pink.png'
+import chatbotIcon_green from '../../img/chatbot/chatbot_green.png'
+import chatbotIcon_yellow from '../../img/chatbot/chatbot_yellow.png'
 import { translate } from '../../translations/translate'
 
 function ChatBotButton(props){
-    const { lang } = props
+    const { lang, theme } = props
     let dispatch = useDispatch()
 
     function handleChatBot(){
@@ -19,8 +21,19 @@ function ChatBotButton(props){
         dispatch(changePopup(payload))
     }
 
+    function chooseImage(){
+        switch (theme) {
+            case 'purple':
+              return chatbotIcon_pink
+            case 'black':
+              return chatbotIcon_green
+            default:
+              return chatbotIcon_yellow
+        }
+    }
+
     return <Button id="chatbot_button" type="button" onClick={()=>handleChatBot()} className="mybutton round button_transparent shadow_convex">
-        <img src={chatbotIcon} alt="chatbotIcon" />
+        <img src={chooseImage()} alt="chatbotIcon" />
     </Button>
 }
 

@@ -575,7 +575,7 @@ function roulette_game(props){
 var roulette_bets = []
 function RouletteGame(props){
 	const {page, user, bets, settings, socket} = props
-    const {lang} = settings
+    const {lang, theme} = settings
     let dispatch = useDispatch()	
     let options = {...props, dispatch}
     let my_roulette = new roulette_game(options)
@@ -677,7 +677,7 @@ function RouletteGame(props){
     }
 
     return <div className="game_box">
-		<Header template={"game"} details={page} lang={lang} />
+		<Header template={"game"} details={page} lang={lang} theme={theme}/>
 		<canvas id="roulette_canvas" /> 
 		<div className="button_action_group roulette_buttons_container">
 			<div className="tooltip">

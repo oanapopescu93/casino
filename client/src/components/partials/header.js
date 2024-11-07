@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { translate } from '../../translations/translate'
-import logo_icon from '../../img/logo.png'
+import logo_icon_yellow from '../../img/logo/logo_yellow.png'
+import logo_icon_pink from '../../img/logo/logo_pink.png'
+import logo_icon_green from '../../img/logo/logo_green.png'
 import { capitalizeFirstLetter, isEmpty } from '../../utils/utils'
 import { checkEaster, checkOccasion } from '../../utils/special_occasions'
 import EasterEgg from './special_occasions/easter/egg'
@@ -32,7 +34,7 @@ function SpecialEvent(props){
 }
 
 function Header(props){
-    const {lang, template, details} = props
+    const {lang, template, details, theme} = props
     let title = props.title ? props.title : "BunnyBet"  
     const [showEaster, setShowEaster] = useState(false)
 	const [showHalloween, setShowHalloween] = useState(false)
@@ -52,6 +54,17 @@ function Header(props){
 		}
 	}, [])
 
+    function chooseLogo(){
+        switch (theme) {
+            case 'purple':
+              return logo_icon_pink
+            case 'black':
+              return logo_icon_green
+            default:
+              return logo_icon_yellow
+        }
+    }
+
 	return <div className={"header_container "+template}>
         {(() => {            
             if(isEmpty(template)){
@@ -60,7 +73,7 @@ function Header(props){
                 switch (template) {
                     case "salon":                        
                         return <div id="header_salon" className={"header " + style}>
-                            <img id="logo_icon" alt="logo_icon" src={logo_icon} />
+                            <img id="logo_icon" alt="logo_icon" src={chooseLogo()} />
                             <h1>{title}</h1>
                             <h3>{translate({lang: lang, info: "salon_subtitle"})}</h3> 
                             <SpecialEvent template={template} showEaster={showEaster} showHalloween={showHalloween} />
@@ -119,7 +132,7 @@ function Header(props){
                         }                        
                     case "sign":
                         return <div id="header_sign" className="header">
-                            <img id="logo_icon" alt="logo_icon" src={logo_icon} />
+                            <img id="logo_icon" alt="logo_icon" src={chooseLogo()} />
                             <h1>{title}</h1>
                             <h3>{translate({lang: lang, info: "subtitle"})}</h3>
                         </div>

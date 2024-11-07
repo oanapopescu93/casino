@@ -1,7 +1,9 @@
 import React from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import shop from '../../../../img/other/shop.png'
+import shop_yellow from '../../../../img/other/shop/shop_yellow.png'
+import shop_pink from '../../../../img/other/shop/shop_pink.png'
+import shop_green from '../../../../img/other/shop/shop_green.png'
 import Carousel from '../../../carousel/carousel'
 import { useDispatch } from 'react-redux'
 import { cartAdd } from '../../../../reducers/cart'
@@ -11,9 +13,10 @@ import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faCartShopping, faUser, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
 
 function Market(props){
-    const {home} = props
+    const {home, settings} = props
+    const {theme} = settings
     let market = home.market ? home.market : []
-	let shader_style = {backgroundImage: `url(${shop})`}
+	let shader_style = {backgroundImage: `url(${chooseImage()})`}
     const market_carousel_options = {
         infinite: true,
         speed: 500,
@@ -77,6 +80,17 @@ function Market(props){
                 dispatch(changeGamePage(null))
                 break
 		}        
+    }
+
+    function chooseImage(){
+        switch (theme) {
+            case 'purple':
+              return shop_pink
+            case 'black':
+              return shop_green
+            default:
+              return shop_yellow
+        }
     }
 
     return <div className="market_container">        

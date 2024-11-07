@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "Retragere reușită",
     withdraw_failed: "Retragere eșuată",
     instructions: "Instrucțiuni",
+    min_amount_withdraw: "Cantitatea minimă de morcovi pentru a face o retragere",
+    convert_carrots_rate: "Rata de conversie a morcovilor",
 
     // blackjack
     start: "Începe",

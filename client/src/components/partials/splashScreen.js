@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import logo_splash from '../../img/logo.png'
+import logo_icon_yellow from '../../img/logo/logo_yellow.png'
+import logo_icon_pink from '../../img/logo/logo_pink.png'
+import logo_icon_green from '../../img/logo/logo_green.png'
 import TransparentText from './transparentText'
 import { getWindowDimensions } from '../../utils/utils'
 
 function Splash(props) {
+    const {theme} = props
     const [height, setHeight] = useState(getHeightBasedOnWidth(getWindowDimensions().width))
 
     function getHeightBasedOnWidth(width){
@@ -28,10 +31,21 @@ function Splash(props) {
         }
 	}, [])
 
+    function chooseLogo(){
+        switch (theme) {
+            case 'purple':
+              return logo_icon_pink
+            case 'black':
+              return logo_icon_green
+            default:
+              return logo_icon_yellow
+        }
+    }
+
 	return <div id="splash_screen">
         <div className="splash_screen_container">
             <div className="content_box">
-                <img id="logo_splash" alt="logo_splash" src={logo_splash} />
+                <img id="logo_splash" alt="logo_splash" src={chooseLogo()} />
                 <div className="content-dot">
                     <div className="content">
                         <h1 className="splash_title">

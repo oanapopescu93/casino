@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "Вывод средств успешен",
     withdraw_failed: "Вывод средств не удался",
     instructions: "Инструкции",
+    min_amount_withdraw: "Минимальное количество моркови для вывода",
+    convert_carrots_rate: "Курс конвертации моркови",
 
     // blackjack
     start: "Начать",

@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { changeTheme } from '../../reducers/settings'
 import { translate } from '../../translations/translate'
+import { handleChangeTheme } from '../../utils/utils'
 
 function Theme(props) {
   const {lang, title} = props
@@ -16,14 +17,14 @@ function Theme(props) {
 
   function handleSelect(choice){
     dispatch(changeTheme(choice))
+    handleChangeTheme(choice)
   }
 
   return <div className="theme">
     <DropdownButton title={translate({lang: lang, info: title})} id="theme_button"  className="shadow_convex" onSelect={handleSelect}>
       {theme_array.map((item, i)=>{
           return <Dropdown.Item key={i} eventKey={item.text}>
-            <div className="theme_box">
-              <div className={"theme_color " + item.color}></div>
+            <div className={"theme_box " + item.color}>
               <div className="theme_text">{translate({lang: lang, info: item.text})}</div>
             </div>
           </Dropdown.Item>

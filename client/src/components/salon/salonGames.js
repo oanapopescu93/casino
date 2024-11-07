@@ -14,7 +14,7 @@ import ChatBotButton from '../partials/chatBotButton'
 function SalonGames(props){
     const {home, settings, width, height} = props
     const {products} = home
-    const {lang} = settings
+    const {lang, theme} = settings
     
     const [casinoGames, setCasinoGames] = useState(null)
     const [casinoGamesTitle, setCasinoGamesTitle] = useState([])
@@ -165,7 +165,7 @@ function SalonGames(props){
             <Col sm={2} />
             <Col sm={8}>
                 <div className="chatbot_button_container_big">
-                    <ChatBotButton lang={lang} />
+                    <ChatBotButton lang={lang} theme={theme} />
                 </div>
             </Col>
             <Col sm={2} />

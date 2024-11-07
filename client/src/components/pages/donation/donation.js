@@ -13,7 +13,7 @@ import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 function Donation(props){
     const {list, settings} = props
-    const {lang} = settings   
+    const {lang, theme} = settings   
     
     const [visible, setVisible] = useState('bank')
     const [index, setIndex] = useState(0)
@@ -33,7 +33,7 @@ function Donation(props){
     }
 
     return <div className="content_wrap">
-        <Header template="donation" title={translate({lang: lang, info: "donation"})} />
+        <Header template="donation" title={translate({lang: lang, info: "donation"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {(() => {
                 if(list && list.length>0){

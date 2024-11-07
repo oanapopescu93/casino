@@ -14,7 +14,7 @@ import { decryptData } from '../../../../utils/crypto'
 
 function Slots(props){
 	const {page, user, settings, socket} = props
-    const {lang} = settings
+    const {lang, theme} = settings
 	const [width, setWidth] = useState(getWindowDimensions().width)
 	let money = props.user.money ? decryptData(props.user.money) : 0
 
@@ -159,7 +159,7 @@ function Slots(props){
 
 	return <>
 		{slotsData ? <div id="slots" className="game_box">
-			<Header template={"game"} details={page} lang={lang} />
+			<Header template={"game"} details={page} lang={lang} theme={theme}/>
 			<SlotsGame 
 				{...props} 
 				slotsData={slotsData}

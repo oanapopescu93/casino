@@ -289,6 +289,8 @@ var word_bank = {
     withdraw_success: "Retiro exitoso",
     withdraw_failed: "Retiro fallido",
     instructions: "Instrucciones",
+    min_amount_withdraw: "Cantidad mínima de zanahorias para realizar un retiro",
+    convert_carrots_rate: "Tasa de conversión de zanahorias",
 
     // blackjack
     start: "Comenzar",
