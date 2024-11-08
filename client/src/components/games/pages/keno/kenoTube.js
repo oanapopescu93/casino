@@ -6,8 +6,26 @@ function keno_tube_game(props){
     let self = this	
     let canvas
     let ctx
+    let theme = props.settings.theme
+    let color = "gold"
+    let color_transparent_1 = "rgba(255, 255, 0, 0.1)"
+    switch(theme){
+		case "purple":
+			color = "pink"
+			color_transparent_1 = "rgba(255, 105, 180, 0.1)"
+			break
+		case "black":
+			color = "green"
+			color_transparent_1 = "rgba(50, 205, 50, 0.1)"
+			break
+		case "green":
+		default:
+			color = "gold"
+			color_transparent_1 = "rgba(255, 215, 0, 0.1)"
+			break
+	}
     let kenoSpotsResult = props.kenoSpotsResult ? props.kenoSpotsResult : []
-    let ball = {radius: 20, background: "rgba(255, 255, 0, 0.1)", color: "gold", border: 1}
+    let ball = {radius: 20, background: color_transparent_1, color, border: 1}
     let balls = []
     let flask = null
     let font_obstacle = '12px sans-serif'
@@ -41,12 +59,12 @@ function keno_tube_game(props){
             //small landscape and portrait
             canvas.width = 20
             canvas.height = 200
-            ball = {radius: 10, background: "rgba(255, 255, 0, 0.1)", color: "gold", border: 1}
+            ball = {radius: 10, background: color_transparent_1, color, border: 1}
 		} else {
             //big
             canvas.width = 40
             canvas.height = 400	
-            ball = {radius: 20, background: "rgba(255, 255, 0, 0.1)", color: "gold", border: 1}	
+            ball = {radius: 20, background: color_transparent_1, color, border: 1}	
 		}
 	}
     this.createFlask = function(){
@@ -72,8 +90,8 @@ function keno_tube_game(props){
                 radius: ball.radius,
                 x,
                 y,
-                background: "rgba(255, 255, 0, 0.1)",
-                color: "gold",
+                background: color_transparent_1,
+                color,
                 border: 1,
             })
         }
@@ -91,8 +109,8 @@ function keno_tube_game(props){
                 radius: ball.radius,
                 x,
                 y,
-                background: "rgba(255, 255, 0, 0.1)",
-                color: "gold",
+                background: color_transparent_1,
+                color,
                 border: 1,
             })
         }
@@ -112,12 +130,12 @@ function keno_tube_game(props){
     this.drawBalls = function(){
         for(let i in balls){
             draw_dot(ctx, balls[i].x, balls[i].y, balls[i].radius, 0, 2 * Math.PI, false, balls[i].background, balls[i].border, balls[i].color)
-		    self.add_text(balls[i].number, balls[i].x, balls[i].y+4, font_obstacle, "gold", "center")
+		    self.add_text(balls[i].number, balls[i].x, balls[i].y+4, font_obstacle, color, "center")
         }
     }
     this.drawBall = function(ball){
         draw_dot(ctx, ball.x, ball.y, ball.radius, 0, 2 * Math.PI, false, ball.background, ball.border, ball.color)
-		self.add_text(ball.number, ball.x, ball.y+4, font_obstacle, "gold", "center")
+		self.add_text(ball.number, ball.x, ball.y+4, font_obstacle, color, "center")
     }
     this.add_text = function(text, x, y, font, color, text_align){
 		ctx.font = font

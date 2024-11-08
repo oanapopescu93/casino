@@ -212,7 +212,7 @@ function Home(props) {
         dispatch(changePopup(payload))
     }
 
-    return <div id="page-container">
+    return <div id="page-container">        
         {(() => {
             switch (page.page) {
                 case "About":                    

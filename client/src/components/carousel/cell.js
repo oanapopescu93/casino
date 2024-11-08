@@ -33,7 +33,7 @@ function Cell(props) {
         setQty(x)
     }
 
-    function updateRaceBet(x, index){
+    function updateRaceBet(x){
         dispatch(changeRaceBets({id: data.id, bet: x}))
     }
 
@@ -160,7 +160,7 @@ function Cell(props) {
                                     </div>
                                     <div className="rabbit_box_bet">
                                         <p>{translate({lang: lang, info: "bet"})}:</p>
-                                        <Counter max={max_bet} update={(e)=>updateRaceBet(e, index)} />
+                                        <Counter min={0} num={0} max={max_bet} update={(e)=>updateRaceBet(e)} />
                                     </div>
                                     <div className="rabbit_box_place">
                                         <DropdownButton title={titleDropdown} id="language_button" onSelect={(e)=>handleDropdown(e, index)}>

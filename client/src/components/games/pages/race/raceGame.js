@@ -1,15 +1,23 @@
 import React, {useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { draw_dot, draw_rect } from '../../../../utils/games'
-import rabbit_sit from '../../../../img/rabbit_move/rabbit000.png'
-import rabbit_move from '../../../../img/rabbit_move/rabbit_move_colored.png'
-import obstacle from '../../../../img/icons/obstacle.png'
 import { decryptData } from '../../../../utils/crypto'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
-import $ from 'jquery'
 import { translate } from '../../../../translations/translate'
+import $ from 'jquery'
+
+import rabbit_sit_yellow from '../../../../img/rabbit_move/yellow/rabbit000.png'
+import rabbit_move_yellow from '../../../../img/rabbit_move/yellow/rabbit_move.png'
+import rabbit_sit_pink from '../../../../img/rabbit_move/pink/rabbit000.png'
+import rabbit_move_pink from '../../../../img/rabbit_move/pink/rabbit_move.png'
+import rabbit_sit_green from '../../../../img/rabbit_move/green/rabbit000.png'
+import rabbit_move_green from '../../../../img/rabbit_move/green/rabbit_move.png'
+
+import obstacle_yellow from '../../../../img/icons/obstacle_yellow.png'
+import obstacle_pink from '../../../../img/icons/obstacle_pink.png'
+import obstacle_green from '../../../../img/icons/obstacle_green.png'
 
 function Land(config){
 	let self = this
@@ -167,7 +175,7 @@ function Rabbit(config){
 			if(self.frame > 7){
 				self.frame = 0
 			}					
-			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 2 * self.frameHeight, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)			
+			ctx.drawImage(self.img_move, self.frame * self.frameWidth, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)			
 		} else {
 			ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)
 		}
@@ -434,24 +442,59 @@ function race_game(props){
 	let lane_list = []
 	let rabbit_list = []
 	let money_per_win = 10
+
+	let theme = props.settings.theme
     
     let canvas
     let ctx
 	let font_counter = 'bold 40px sans-serif'
+	let color = "gold"
+	let color_transparent_1 = "rgba(255, 215, 0, 0.1)"
+	let color_transparent_5 = "rgba(255, 215, 0, 0.5)"
+	let rabbit_img_sit = {src: rabbit_sit_yellow}
+	let rabbit_img_move = {src: rabbit_move_yellow}
+	let rabbit_img_stop = {src: rabbit_sit_yellow}
+	let obstacle_img = {src: obstacle_yellow}
+	
+	switch(theme){
+		case "purple":
+			color = "pink"
+			color_transparent_1 = "rgba(255, 105, 180, 0.1)"
+			color_transparent_5 = "rgba(255, 105, 180, 0.5)"
+			rabbit_img_sit = {src: rabbit_sit_pink}
+			rabbit_img_move = {src: rabbit_move_pink}
+			rabbit_img_stop = {src: rabbit_sit_pink}
+			obstacle_img = {src: obstacle_pink}
+			break
+		case "black":
+			color = "green"
+			color_transparent_1 = "rgba(50, 205, 50, 0.1)"
+			color_transparent_5 = "rgba(50, 205, 50, 0.5)"
+			rabbit_img_sit = {src: rabbit_sit_green}
+			rabbit_img_move = {src: rabbit_move_green}
+			rabbit_img_stop = {src: rabbit_sit_green}
+			obstacle_img = {src: obstacle_green}
+			break
+		case "green":
+		default:
+			color = "gold"
+			color_transparent_1 = "rgba(255, 215, 0, 0.1)"
+			color_transparent_5 = "rgba(255, 215, 0, 0.5)"
+			rabbit_img_sit = {src: rabbit_sit_yellow}
+			rabbit_img_move = {src: rabbit_move_yellow}
+			rabbit_img_stop = {src: rabbit_sit_yellow}
+			obstacle_img = {src: obstacle_yellow}
+			break
+	}
 
 	let landscape = []
 	let lanscape_config = {}
 	let land_color = [
-		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
-		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1], 
-		['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.5)', 1]
+		[color_transparent_1, color_transparent_5, 1], 
+		[color_transparent_1, color_transparent_5, 1], 
+		[color_transparent_1, color_transparent_5, 1]
 	]	
-	let draw_road_height
-
-	let rabbit_img_sit = {src: rabbit_sit}
-	let rabbit_img_move = {src: rabbit_move}
-	let rabbit_img_stop = {src: rabbit_sit}
-	let obstacle_img = {src: obstacle}
+	let draw_road_height	
 	let rabbit_size
 	let obstacle_size
 
@@ -631,13 +674,13 @@ function race_game(props){
 		while(i--){
 			landscape[i].draw(canvas, ctx)
 		}
-		self.draw_road(canvas, ctx, -100, draw_road_height, 2*canvas.width, draw_road_height, 1, "rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.5)")		
+		self.draw_road(canvas, ctx, -100, draw_road_height, 2*canvas.width, draw_road_height, 1, color_transparent_1, color_transparent_5)		
 	}
 	this.create_finish_line = function(finish_line_x){
 		finish_line = new FinishLine({
-			fillStyle: "rgba(255, 215, 0, 0.1)",
+			fillStyle: color_transparent_1,
 			lineWidth: 1,
-			strokeStyle: "rgba(255, 215, 0, 0.1)",
+			strokeStyle: color_transparent_1,
 			x: finish_line_x,
 			y: draw_road_height,
 			cube: 10,
@@ -645,7 +688,7 @@ function race_game(props){
 		finish_line.draw(canvas, ctx)
 	}
 	this.draw_sun = function(canvas, ctx){
-		draw_dot(ctx, canvas.width-lanscape_config.sun[0], lanscape_config.sun[1], lanscape_config.sun[2], 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, 'rgba(255, 255, 0, 0.5)')
+		draw_dot(ctx, canvas.width-lanscape_config.sun[0], lanscape_config.sun[1], lanscape_config.sun[2], 0, 2 * Math.PI, false, color_transparent_1, 1, color_transparent_5)
 	}
 	this.draw_road = function(canvas, ctx, x, y, w, h, line, bg, color){
 		ctx.clearRect(0, h, canvas.width, canvas.height)
@@ -711,7 +754,7 @@ function race_game(props){
 				}
 				self.draw_background()
 				self.draw_rabbits('sit')
-				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, "rgba(255, 215, 0, 0.5)", "center", "gold", "1")
+				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, color_transparent_5, "center", color, "1")
 			  	if(self_counter.timeRemaining <= 0){
 					clearInterval(my_counter)
 					self.start_race()

@@ -23,7 +23,6 @@
   --transparent_2: rgba(0, 0, 0, 0.2);
 	--transparent_5: rgba(0, 0, 0, 0.5);
 	--transparent_8: rgba(0, 0, 0, 0.8);
-	--transparent_color_1: rgba(255, 215, 0, 0.1);
   --transparent_color: rgba(255, 215, 0, 0.2);
 
   --firework_color: red;
@@ -3734,7 +3733,7 @@ a.donation_button{
   padding: var(--padding);
 }
 #keno_tube_canvas{
-  background-color: var(--transparent_color_1);
+  background-color: var(--transparent_color);
   border: solid 1px var(--color);
   border-radius: 20px;
 }

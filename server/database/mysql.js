@@ -13,13 +13,13 @@ module.exports = function database(database_config, params){
         try{
             con.connect((err)=>{
 				if (err) {
-                    console.error('err1--> ', err, database_config)
+                    console.error('err1-connection_error--> ', err, database_config)
 					resolve(null)
 				} else {
                     if(params){
                         con.query(database_config.sql, params, (err, result, fields)=>{
                             if (err) {
-                                console.error('err2a--> ', err, database_config)
+                                console.error('err2a-query_error--> ', err, database_config)
 					            resolve(null)
                             } else {
                                 resolve(result)
@@ -29,7 +29,7 @@ module.exports = function database(database_config, params){
                     } else {
                         con.query(database_config.sql, (err, result, fields)=>{
                             if (err) {
-                                console.error('err2b--> ', err, database_config)
+                                console.error('err2b-query_error--> ', err, database_config)
 					            resolve(null)
                             } else {
                                 resolve(result)

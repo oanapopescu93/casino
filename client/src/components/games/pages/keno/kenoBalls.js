@@ -14,6 +14,25 @@ function keno_game(props){
     let duration = 500
     let ballPos = [350, 50]
     let ballSpeed = [1000, 3000]
+    
+    let theme = props.settings.theme
+    let color = "gold"
+    let color_transparent_1 = "rgba(255, 255, 0, 0.1)"
+    switch(theme){
+		case "purple":
+			color = "pink"
+			color_transparent_1 = "rgba(255, 105, 180, 0.1)"
+			break
+		case "black":
+			color = "green"
+			color_transparent_1 = "rgba(50, 205, 50, 0.1)"
+			break
+		case "green":
+		default:
+			color = "gold"
+			color_transparent_1 = "rgba(255, 215, 0, 0.1)"
+			break
+	}
 
     this.ready = function(){
         self.createCanvas()
@@ -76,8 +95,8 @@ function keno_game(props){
     }
 
     this.drawBalls = function(x,y,r, number){
-        draw_dot(ctx, x,y,r, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, "gold")
-		self.add_text(number, x, y+4, font_obstacle, "gold", "center")
+        draw_dot(ctx, x,y,r, 0, 2 * Math.PI, false, color_transparent_1, 1, color)
+		self.add_text(number, x, y+4, font_obstacle, color, "center")
     }
 
     self.add_text = function(text, x, y, font, color, text_align){
@@ -89,7 +108,7 @@ function keno_game(props){
 
     this.drawBigCircle = function() {
         ctx.clearRect(0,0,canvas.height, canvas.width)
-        draw_dot(ctx, canvas.width/2, canvas.height/2, radiusBig, 0, 2 * Math.PI, false, 'rgba(255, 255, 0, 0.1)', 1, "gold")	
+        draw_dot(ctx, canvas.width/2, canvas.height/2, radiusBig, 0, 2 * Math.PI, false, color_transparent_1, 1, color)	
 	}
     
     this.move = function(){
