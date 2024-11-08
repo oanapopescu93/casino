@@ -1,12 +1,12 @@
 import { Button } from "react-bootstrap"
 import { translate } from "../../translations/translate"
-import whach_a_rabbit_icon from '../../img/whack_a_rabbit/whach_01_black.png'
+import whack_a_rabbit_icon_black from '../../img/whack_a_rabbit/whack_a_rabbit_icon_black.png'
 
 function WhackARabbit(props){
     const {settings} = props
     const {lang} = settings   
     return <div className="whack_a_rabbit_popup">
-        <img id="whach_a_rabbit_icon" alt="whach_a_rabbit_icon" src={whach_a_rabbit_icon} />
+        <img id="whack_a_rabbit_icon" alt="whack_a_rabbit_icon" src={whack_a_rabbit_icon_black} />
         <p>{translate({lang: lang, info: "play_whack_a_rabbit"})}</p>
         <Button 
             type="button" 

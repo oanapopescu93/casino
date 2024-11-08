@@ -65,7 +65,8 @@ import KenoEng from './games/keno/kenoEng'
 import { translate } from '../../../translations/translate'
 
 function HowToPlayGames(props){
-    const {game, lang} = props
+    const {game, settings} = props
+    const {lang} = settings
 
     return <div className="box_scroll list_games_table">
         {(() => {

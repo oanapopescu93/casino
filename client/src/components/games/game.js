@@ -90,7 +90,7 @@ function Game(props){
             })
             dispatch(changeRoom(null))
 		}
-    }, [socket])    
+    }, [socket])
 
     return <>   
         {!game_page ? <>
@@ -100,30 +100,30 @@ function Game(props){
                             case "roulette":
                                 return <Roulette {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             case "blackjack":
-                                return <Blackjack {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Blackjack {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             case "slots":
-                                return <Slots {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Slots {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             case "craps":
-                                return <Craps {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Craps {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             case "poker":
-                                return <Poker {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Poker {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             case "race":
-                                return <Race {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Race {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             case "keno":
-                                return <Keno {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />                      
+                                return <Keno {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />               
                             case "whack_a_rabbit":
-                                return <WhackARabbit {...props} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} /> 
+                                return <WhackARabbit {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                         }
                     }
-                    return <GameLoading {...props} />                    
+                    return <GameLoading {...props} />
                 })()}
         </> : <>
             {(() => {
                 switch (game_page) {
                     case "dashboard":
-                        return <Dashboard {...props} handleHandleExit={()=>handleExit()} />
+                        return <Dashboard {...props} streak={streak} handleHandleExit={()=>handleExit()} />
                     case "market":
-                        return <Market {...props} handleHandleExit={()=>handleExit()} />
+                        return <Market {...props} streak={streak} handleHandleExit={()=>handleExit()} />
                     default:
                         return <p>{translate({lang: lang, info: "error"})}</p>
                 }

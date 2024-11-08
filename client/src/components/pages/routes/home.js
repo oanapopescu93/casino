@@ -55,6 +55,7 @@ function Home(props) {
     }
 
     useEffect(() => { 
+        // handleWhackARabbit() //test Whack a Rabbit
         checkPaypalPaymentSuccess()
         checkPaypalPaymentCancel()
         checkCryptoPaymentSuccess()
@@ -169,7 +170,6 @@ function Home(props) {
 
     useEffect(() => {
 		const handleOrderRead = (details)=>{
-            console.log('zzz ', details)
             if(details && details.error){
                 console.error(details)
                 return

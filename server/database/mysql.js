@@ -7,20 +7,19 @@ module.exports = function database(database_config, params){
 		password: database_config.password,
 		database: database_config.database,
 		multipleStatements: true
-	});
-	let sql_result = "hello friend!"
+	})
 
     return new Promise((resolve, reject)=>{
         try{
             con.connect((err)=>{
 				if (err) {
-                    console.error('err1--> ', err)
+                    console.error('err1--> ', err, database_config)
 					resolve(null)
 				} else {
                     if(params){
                         con.query(database_config.sql, params, (err, result, fields)=>{
                             if (err) {
-                                console.error('err2a--> ', err)
+                                console.error('err2a--> ', err, database_config)
 					            resolve(null)
                             } else {
                                 resolve(result)
@@ -30,7 +29,7 @@ module.exports = function database(database_config, params){
                     } else {
                         con.query(database_config.sql, (err, result, fields)=>{
                             if (err) {
-                                console.error('err2b--> ', err, database_config.sql)
+                                console.error('err2b--> ', err, database_config)
 					            resolve(null)
                             } else {
                                 resolve(result)
@@ -41,7 +40,7 @@ module.exports = function database(database_config, params){
                 }
             })
         } catch(err){
-			console.error('err0--> ', err)
+			console.error('err0--> ', err, database_config)
             resolve(null)
 		}
     })

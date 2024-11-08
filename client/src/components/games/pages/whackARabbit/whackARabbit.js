@@ -4,6 +4,8 @@ import $ from 'jquery'
 import { get_whack_a_rabbit_img, isInside } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 import { changeGame, changeGamePage, changePage } from '../../../../reducers/page'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHourglassStart, faHourglassHalf, faHourglassEnd, faGavel } from '@fortawesome/free-solid-svg-icons'
 
 function Target(config){
 	let self = this
@@ -45,7 +47,7 @@ function whack_game(props){
     this.images = []
 
     this.secs = 10
-    let duration = 1000
+    let duration = 100000000000
     let lastSpawn = Date.now()  
     let spawnRate = Math.round(Math.random() * (3000 - 1000) + 1000)
 
@@ -329,17 +331,22 @@ function whack_game(props){
     this.leave = function(){ // in this game if you leave, you don't lose anything
         target_array = []
     }
+    this.getTargetsHit = function(){
+        const target_array_killed = target_array.filter(item => item.killed).length
+        return target_array_killed
+    }
 }
 
-function WhackARabbit(props){  
+function WhackARabbit(props){
     let dispatch = useDispatch()
     let whack_a_rabbit_container_ref = useRef(null)
-    let items = get_whack_a_rabbit_img()
+    let items = get_whack_a_rabbit_img(props.settings.theme)
 
     let options = {...props, dispatch, whack_a_rabbit_container_ref, items}
     let my_whack = new whack_game(options)
     let limit = 20
     const [time, setTime] = useState(limit)
+    const [numberTargetsHit, setNumberTargetsHit] = useState(0)
 
 	function ready(r){
 		if(my_whack && document.getElementById("whack_canvas")){
@@ -358,6 +365,7 @@ function WhackARabbit(props){
             setTime(text)
             if(my_whack){
                 my_whack.getTimer(sec)
+                setNumberTargetsHit(my_whack.getTargetsHit())
             }            
             if(sec <= 0){
                 clearInterval(timer)
@@ -385,10 +393,21 @@ function WhackARabbit(props){
         counter()
     }, [])
 
+    const getHourglassIcon = () => {
+        if (time > limit * 0.66) {
+            return faHourglassStart
+        } else if (time > limit * 0.33) {
+            return faHourglassHalf
+        } else {
+            return faHourglassEnd
+        }
+    }
+
     return <div id="whack_a_rabbit" className='game_container whack_a_rabbit_container'>
         <div className='game_box'>
-            <div id="whack_a_rabbit_timer">
-                <p>00:{time}</p>
+            <div className="whack_a_rabbit_header">
+                <p><FontAwesomeIcon icon={getHourglassIcon()} /> <span>00:{time}</span></p>
+                <p><FontAwesomeIcon icon={faGavel} /> <span>{numberTargetsHit}</span></p>
             </div>
             <div className="whack_a_rabbit_canvas" ref={whack_a_rabbit_container_ref}>
                 <canvas id="whack_canvas" className="shadow_concav" />

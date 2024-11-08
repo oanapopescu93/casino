@@ -5,6 +5,8 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import { changeTheme } from '../../reducers/settings'
 import { translate } from '../../translations/translate'
 import { handleChangeTheme } from '../../utils/utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 function Theme(props) {
   const {lang, title} = props
@@ -25,7 +27,10 @@ function Theme(props) {
       {theme_array.map((item, i)=>{
           return <Dropdown.Item key={i} eventKey={item.text}>
             <div className={"theme_box " + item.color}>
-              <div className="theme_text">{translate({lang: lang, info: item.text})}</div>
+              <div className="theme_text">                
+                <span>{translate({lang: lang, info: item.text})}</span>
+                {item.text === title ? <>&nbsp;<FontAwesomeIcon icon={faCircleCheck} /></> : null}
+              </div>
             </div>
           </Dropdown.Item>
       })}

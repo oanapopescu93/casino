@@ -89,15 +89,35 @@ import 	craps_one_roll_3 from '../img/craps/hover/craps_one_roll_3.png'
 import 	craps_one_roll_4 from '../img/craps/hover/craps_one_roll_4.png'
 import 	craps_any_craps from '../img/craps/hover/craps_any_craps.png'
 
-import 	whack_a_rabbit00 from '../img/whack_a_rabbit/whack_a_rabbit00.png'
-import 	whack_a_rabbit01 from '../img/whack_a_rabbit/whack_a_rabbit01.png'
-import 	whack_a_rabbit02 from '../img/whack_a_rabbit/whack_a_rabbit02.png'
-import 	whack_a_rabbit03 from '../img/whack_a_rabbit/whack_a_rabbit03.png'
-import 	whack_a_rabbit01_hit from '../img/whack_a_rabbit/whack_a_rabbit01_hit.png'
-import 	whack_a_rabbit02_hit from '../img/whack_a_rabbit/whack_a_rabbit02_hit.png'
-import 	whack_a_rabbit03_hit from '../img/whack_a_rabbit/whack_a_rabbit03_hit.png'
-import 	hammer01 from '../img/whack_a_rabbit/hammer01.png'
-import 	hammer02 from '../img/whack_a_rabbit/hammer02.png'
+import 	whack_a_rabbit00_yellow from '../img/whack_a_rabbit/yellow/whack_a_rabbit00.png'
+import 	whack_a_rabbit01_yellow from '../img/whack_a_rabbit/yellow/whack_a_rabbit01.png'
+import 	whack_a_rabbit02_yellow from '../img/whack_a_rabbit/yellow/whack_a_rabbit02.png'
+import 	whack_a_rabbit03_yellow from '../img/whack_a_rabbit/yellow/whack_a_rabbit03.png'
+import 	whack_a_rabbit01_hit_yellow from '../img/whack_a_rabbit/yellow/whack_a_rabbit01_hit.png'
+import 	whack_a_rabbit02_hit_yellow from '../img/whack_a_rabbit/yellow/whack_a_rabbit02_hit.png'
+import 	whack_a_rabbit03_hit_yellow from '../img/whack_a_rabbit/yellow/whack_a_rabbit03_hit.png'
+import 	hammer01_yellow from '../img/whack_a_rabbit/yellow/hammer01.png'
+import 	hammer02_yellow from '../img/whack_a_rabbit/yellow/hammer02.png'
+
+import whack_a_rabbit00_pink from '../img/whack_a_rabbit/pink/whack_a_rabbit00.png'
+import whack_a_rabbit01_pink from '../img/whack_a_rabbit/pink/whack_a_rabbit01.png'
+import whack_a_rabbit02_pink from '../img/whack_a_rabbit/pink/whack_a_rabbit02.png'
+import whack_a_rabbit03_pink from '../img/whack_a_rabbit/pink/whack_a_rabbit03.png'
+import whack_a_rabbit01_hit_pink from '../img/whack_a_rabbit/pink/whack_a_rabbit01_hit.png'
+import whack_a_rabbit02_hit_pink from '../img/whack_a_rabbit/pink/whack_a_rabbit02_hit.png'
+import whack_a_rabbit03_hit_pink from '../img/whack_a_rabbit/pink/whack_a_rabbit03_hit.png'
+import hammer01_pink from '../img/whack_a_rabbit/pink/hammer01.png'
+import hammer02_pink from '../img/whack_a_rabbit/pink/hammer02.png'
+
+import whack_a_rabbit00_green from '../img/whack_a_rabbit/green/whack_a_rabbit00.png'
+import whack_a_rabbit01_green from '../img/whack_a_rabbit/green/whack_a_rabbit01.png'
+import whack_a_rabbit02_green from '../img/whack_a_rabbit/green/whack_a_rabbit02.png'
+import whack_a_rabbit03_green from '../img/whack_a_rabbit/green/whack_a_rabbit03.png'
+import whack_a_rabbit01_hit_green from '../img/whack_a_rabbit/green/whack_a_rabbit01_hit.png'
+import whack_a_rabbit02_hit_green from '../img/whack_a_rabbit/green/whack_a_rabbit02_hit.png'
+import whack_a_rabbit03_hit_green from '../img/whack_a_rabbit/green/whack_a_rabbit03_hit.png'
+import hammer01_green from '../img/whack_a_rabbit/green/hammer01.png'
+import hammer02_green from '../img/whack_a_rabbit/green/hammer02.png'
 
 export const getMousePos = (canvas, event)=>{
 	let rect = canvas.getBoundingClientRect()
@@ -269,16 +289,43 @@ export const get_craps_bets = ()=>{
 	]
 }
 
-export const get_whack_a_rabbit_img = ()=>{
-	return [
-	  	{id: 0, src: whack_a_rabbit00},
-	  	{id: 1, src: whack_a_rabbit01},
-		{id: 2, src: whack_a_rabbit02},
-		{id: 3, src: whack_a_rabbit03},
-	  	{id: 4, src: whack_a_rabbit01_hit},
-		{id: 5, src: whack_a_rabbit02_hit},
-		{id: 6, src: whack_a_rabbit03_hit},
-		{id: 7, src: hammer01},
-		{id: 8, src: hammer02},
-	]
+export const get_whack_a_rabbit_img = (theme)=>{
+	switch(theme){
+		case 'purple':
+			return [
+				{id: 0, src: whack_a_rabbit00_pink},
+				{id: 1, src: whack_a_rabbit01_pink},
+				{id: 2, src: whack_a_rabbit02_pink},
+				{id: 3, src: whack_a_rabbit03_pink},
+				{id: 4, src: whack_a_rabbit01_hit_pink},
+				{id: 5, src: whack_a_rabbit02_hit_pink},
+				{id: 6, src: whack_a_rabbit03_hit_pink},
+				{id: 7, src: hammer01_pink},
+				{id: 8, src: hammer02_pink},
+		  	]  
+		case 'black':
+			return [
+				{id: 0, src: whack_a_rabbit00_green},
+				{id: 1, src: whack_a_rabbit01_green},
+				{id: 2, src: whack_a_rabbit02_green},
+				{id: 3, src: whack_a_rabbit03_green},
+				{id: 4, src: whack_a_rabbit01_hit_green},
+				{id: 5, src: whack_a_rabbit02_hit_green},
+				{id: 6, src: whack_a_rabbit03_hit_green},
+				{id: 7, src: hammer01_green},
+				{id: 8, src: hammer02_green},
+		  	]
+		default:
+			return [
+				{id: 0, src: whack_a_rabbit00_yellow},
+				{id: 1, src: whack_a_rabbit01_yellow},
+				{id: 2, src: whack_a_rabbit02_yellow},
+				{id: 3, src: whack_a_rabbit03_yellow},
+				{id: 4, src: whack_a_rabbit01_hit_yellow},
+				{id: 5, src: whack_a_rabbit02_hit_yellow},
+				{id: 6, src: whack_a_rabbit03_hit_yellow},
+				{id: 7, src: hammer01_yellow},
+				{id: 8, src: hammer02_yellow},
+		  	]
+	}	
 }

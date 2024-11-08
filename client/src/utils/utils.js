@@ -274,8 +274,8 @@ export const handleChangeTheme = (choice) => {
       document.documentElement.style.setProperty('--body_color', 'purple')
       document.documentElement.style.setProperty('--color', 'pink')
       document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 105, 180, 0.2)')
-      document.documentElement.style.setProperty('--dark_color', '#800080') // Dark purple
-      document.documentElement.style.setProperty('--light_color', '#D8BFD8') // Thistle (light purple)
+      document.documentElement.style.setProperty('--dark_color', '#ff8095') // dark pink
+      document.documentElement.style.setProperty('--light_color', '#ffe6ea') // light pink
       break
     case 'black':
       document.documentElement.style.setProperty('--body_color', '#333')

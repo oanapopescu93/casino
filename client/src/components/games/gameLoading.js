@@ -1,60 +1,133 @@
 import React from 'react'
 
-import roulette_loading_icon from '../../img/icons_other/icons/yellow/roulette.png'
-import blackjack_loading_icon from '../../img/icons_other/icons/yellow/blackjack.png'
-import slots_loading_icon from '../../img/icons_other/icons/yellow/slots.png'
-import craps_loading_icon from '../../img/icons_other/icons/yellow/craps.png'
-import race_loading_icon from '../../img/icons_other/icons/yellow/race.png'
-import keno_loading_icon from '../../img/icons_other/icons/yellow/keno.png'
-import poker_loading_icon from '../../img/icons_other/icons/yellow/carribean.png'
-import whack_loading_icon from '../../img/whack_a_rabbit/whack_a_rabbit_icon.png'
+import roulette_icon_yellow from '../../img/icons_other/icons/yellow/roulette.png'
+import blackjack_icon_yellow from '../../img/icons_other/icons/yellow/blackjack.png'
+import slots_icon_yellow from '../../img/icons_other/icons/yellow/slots.png'
+import craps_icon_yellow from '../../img/icons_other/icons/yellow/craps.png'
+import race_icon_yellow from '../../img/icons_other/icons/yellow/race.png'
+import keno_icon_yellow from '../../img/icons_other/icons/yellow/keno.png'
+import poker_icon_yellow from '../../img/icons_other/icons/yellow/carribean.png'
+
+import roulette_icon_green from '../../img/icons_other/icons/green/roulette.png'
+import blackjack_icon_green from '../../img/icons_other/icons/green/blackjack.png'
+import slots_icon_green from '../../img/icons_other/icons/green/slots.png'
+import craps_icon_green from '../../img/icons_other/icons/green/craps.png'
+import race_icon_green from '../../img/icons_other/icons/green/race.png'
+import keno_icon_green from '../../img/icons_other/icons/green/keno.png'
+import poker_icon_green from '../../img/icons_other/icons/green/carribean.png'
+
+import roulette_icon_pink from '../../img/icons_other/icons/pink/roulette.png'
+import blackjack_icon_pink from '../../img/icons_other/icons/pink/blackjack.png'
+import slots_icon_pink from '../../img/icons_other/icons/pink/slots.png'
+import craps_icon_pink from '../../img/icons_other/icons/pink/craps.png'
+import race_icon_pink from '../../img/icons_other/icons/pink/race.png'
+import keno_icon_pink from '../../img/icons_other/icons/pink/keno.png'
+import poker_icon_pink from '../../img/icons_other/icons/pink/carribean.png'
+
+
+import whack_loading_yellow from '../../img/whack_a_rabbit/yellow/whack_a_rabbit_icon.png'
+import whack_loading_green from '../../img/whack_a_rabbit/green/whack_a_rabbit_icon.png'
+import whack_loading_pink from '../../img/whack_a_rabbit/pink/whack_a_rabbit_icon.png'
 
 function GameLoading(props){
-    const {page} = props
+    const {page, settings} = props
     const {game} = page
+    const {theme} = settings
     let title = game.table_name ? game.table_name : ""
+
+    function chooseImage(game){
+        switch (game) {
+            case "roulette":
+                switch (theme) {
+                    case 'purple':
+                        return roulette_icon_pink     
+                    case 'black':
+                        return roulette_icon_green
+                    default:
+                        return roulette_icon_yellow
+                }
+            case "blackjack":
+                switch (theme) {
+                    case 'purple':
+                        return blackjack_icon_pink     
+                    case 'black':
+                        return blackjack_icon_green
+                    default:
+                        return blackjack_icon_yellow
+                }
+            case "slots":
+                switch (theme) {
+                    case 'purple':
+                        return slots_icon_pink     
+                    case 'black':
+                        return slots_icon_green
+                    default:
+                        return slots_icon_yellow
+                }
+            case "craps":
+                switch (theme) {
+                    case 'purple':
+                        return craps_icon_pink     
+                    case 'black':
+                        return craps_icon_green
+                    default:
+                        return craps_icon_yellow
+                }
+            case "race":
+                switch (theme) {
+                    case 'purple':
+                        return race_icon_pink     
+                    case 'black':
+                        return race_icon_green
+                    default:
+                        return race_icon_yellow
+                }
+            case "keno":
+                switch (theme) {
+                    case 'purple':
+                        return keno_icon_pink     
+                    case 'black':
+                        return keno_icon_green
+                    default:
+                        return keno_icon_yellow
+                }
+            case "poker":
+                switch (theme) {
+                    case 'purple':
+                        return poker_icon_pink     
+                    case 'black':
+                        return poker_icon_green
+                    default:
+                        return poker_icon_yellow
+                }
+            case "whack_a_rabbit":
+                switch (theme) {
+                    case 'purple':
+                        return whack_loading_pink
+                    case 'black':
+                        return whack_loading_green
+                    default:
+                        return whack_loading_yellow
+                }
+            default:
+                return
+        }
+    }
+
     return <div id="game_loading" className='game_container'> 
         <div className='game_box'> 
             {(() => {
             switch (title) {
                 case "roulette":
-                    return <>
-                        <img src={roulette_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                        <p>Loading...</p>
-                    </>
                 case "blackjack":
-                    return <>
-                        <img src={blackjack_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                        <p>Loading...</p>
-                    </>
                 case "slots":
-                    return <>
-                        <img src={slots_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                        <p>Loading...</p>
-                    </>
                 case "craps":
-                    return <>
-                        <img src={craps_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                        <p>Loading...</p>
-                    </>
                 case "poker":
-                    return <>
-                        <img src={poker_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                        <p>Loading...</p>
-                    </>
                 case "race":
-                    return <>
-                        <img src={race_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                        <p>Loading...</p>
-                    </>
                 case "keno":
-                    return <>
-                        <img src={keno_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
-                        <p>Loading...</p>
-                    </>
                 case "whack_a_rabbit":
                     return <>
-                        <img src={whack_loading_icon} className="game_loading_icon" alt="game_loading_icon"/>
+                        <img src={chooseImage(title)} className="game_loading_icon" alt="game_loading_icon"/>
                         <p>Loading...</p>
                     </>
             }

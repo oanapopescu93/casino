@@ -667,6 +667,9 @@ textarea {
   background-color: var(--color);
   color: var(--bg);
 }
+.settings_theme .dropdown-item:focus, .settings_theme .dropdown-item:active, .settings_theme .dropdown-item:hover{
+  background-color: transparent;
+}
 .salon_games_dropdown .dropdown{
   border-radius: var(--radius_big);
 }
@@ -3495,7 +3498,7 @@ a.donation_button{
 }
 .rabbit_box_nr{
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	top:0px;
 	left:0px;	
 	padding:var(--padding_small);
@@ -3925,7 +3928,7 @@ a.donation_button{
   border-radius: var(--radius_big);
   background-color: var(--transparent_2);
 }
-#whack_a_rabbit_timer{
+.whack_a_rabbit_header{
   display: inline-block;
   background-color: var(--color);
   color: var(--bg);
@@ -3934,7 +3937,15 @@ a.donation_button{
   font-size: 14px;
   line-height: 14px;
   width: 100%;
-  max-width: 100px;
+  max-width: 150px;
+}
+.whack_a_rabbit_header p{
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: var(--padding_big);
+}
+.whack_a_rabbit_header p:last-child{
+  margin-right: 0px;
 }
 .whack_a_rabbit_canvas{
   position: relative;

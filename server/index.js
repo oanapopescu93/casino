@@ -58,15 +58,18 @@ var database_config = constants.DATABASE[0]
 
 // database_config.sql = "SELECT * FROM casino_user;"
 // database(database_config).then(function(result){
-//   let user_found = result.filter(function(x){
-//     return x.user === "test"
-//   })
-//   console.log('user_found ', user_found[0], decrypt(JSON.parse(user_found[0].pass)))
+//   console.log('result ', result)
+//   if(result){
+//     let user_found = result.filter(function(x){
+//       return x.user === "test"
+//     })
+//     console.log('user_found ', user_found[0], decrypt(JSON.parse(user_found[0].pass)))
+//   }  
 // })
 
 io.on('connection', function(socket) {
   socket.on('signin_send', (data) => {  
-    database_config.sql = "SELECT * FROM casino_user;"
+    database_config.sql = "SELECT * FROM casino_user; "
     database_config.sql += "SELECT * FROM login_user;"
     database_config.name = "db01"
 		database(database_config).then(function(result){
@@ -119,6 +122,7 @@ io.on('connection', function(socket) {
             console.log(uuid, user_found[0].id, user_found[0])
             database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
 						database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
+            database_config.name = "db02"
 						let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
 						database(database_config, payload).then(function(){})
           })
@@ -141,7 +145,7 @@ io.on('connection', function(socket) {
   })
   socket.on('signup_send', (data) => {  
     database_config.sql = 'SELECT * FROM casino_user WHERE email = "' + data.email + '"'
-    database_config.name = "db02"
+    database_config.name = "db03"
 		database(database_config).then(function(result){
       if(result && result.length == 0){
         //no user was found --> new user --> he must sign up
@@ -180,11 +184,11 @@ io.on('connection', function(socket) {
           //insert new user in users and login tables
           database_config.sql = "INSERT INTO casino_user (uuid, user, email, pass, account_type, money, signup) VALUES (?, ?, ?, ?, ?, ?, ?)"
 					let payload = [uuid, data.user, data.email, pass, account_type, user_money, timestamp] 
-          database_config.name = "db03"
+          database_config.name = "db04"
           database(database_config, payload).then(function(result){
 						let insertId = result.insertId
             database_config.sql = 'INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (' + insertId + ', "' + timestamp + '", ' + device + ', "' + extra_data.ip_address + '", "' + extra_data.city + '", "' + extra_data.country + '");'
-            database_config.name = "db04"
+            database_config.name = "db05"
             database(database_config).then(function(result){})
           })
         })
@@ -212,7 +216,7 @@ io.on('connection', function(socket) {
   })
   socket.on('forgotPassword_send', (data) => {
     database_config.sql = "SELECT * FROM casino_user"
-    database_config.name = "db05"
+    database_config.name = "db06"
 		database(database_config).then(function(result){
       if(result && result.length>0){
         users_array = result
@@ -249,17 +253,19 @@ io.on('connection', function(socket) {
       let new_pass_value = "Password001!"
       let new_pass = JSON.stringify(encrypt(new_pass_value))
       database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE uuid='" + user.uuid + "'; "
+      database_config.name = "db07"
+      database(database_config).then(function(){})
+    } else {
+      console.log('[error]','resetPassword--> no user ', user)
     }
-    database_config.name = "db011"
-    database(database_config).then(function(){})
   }
 
   // GAMES
   socket.on('game_send', function(data){
 		if(data.uuid){
-      database_config.sql = "SELECT * FROM casino_user;" //buuu
+      database_config.sql = "SELECT * FROM casino_user; "
       database_config.sql += "SELECT * FROM login_user;"
-      database_config.name = "db06"
+      database_config.name = "db08"
       database(database_config).then(function(result){ 
         let payload = {streak: 1, prize: 0}
         if(result){
@@ -309,6 +315,7 @@ io.on('connection', function(socket) {
         database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id="+user_found[0].id
       }
       database_config.sql += "INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) VALUES (?, ?, ?, ?, ?, ?, ?)"
+      database_config.name = "db09"
       let payload =  [user_found[0].id, table_name, game_id, game_type, timestamp, status, x.prize]
       database(database_config, payload).then(function(){})
     }
@@ -393,7 +400,7 @@ io.on('connection', function(socket) {
   socket.on('game_results_send', function(data){
     if(data.uuid){
       database_config.sql = "SELECT * FROM casino_user;"
-      database_config.name = "db09"
+      database_config.name = "db10"
       database(database_config).then(function(result){
         if(result){
           users_array = result
@@ -409,6 +416,7 @@ io.on('connection', function(socket) {
 
                 database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id=" + user_found[0].id + '; '
                 database_config.sql += "INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                database_config.name = "db11"
                 let payload =  [user_found[0].id, table_name, table_id, table_type, timestamp, status, data.bet]
                 database(database_config, payload).then(function(){})
               }
@@ -427,16 +435,18 @@ io.on('connection', function(socket) {
         switch(data.type) {
           case "pic":
             database_config.sql = "UPDATE casino_user SET profile_pic='" + data.value + "' WHERE uuid='" + data.uuid + "'; "
+            database_config.name = "db012"
             break
           case "user":
             database_config.sql = "UPDATE casino_user SET user='" + data.value + "'WHERE uuid='" + data.uuid + "'; "
+            database_config.name = "db013"
             break
           case "pass":
             let new_pass = JSON.stringify(encrypt(data.value))
             database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE uuid='" + data.uuid + "'; "
+            database_config.name = "db014"
             break
-        }
-        database_config.name = "db010"
+        }        
         database(database_config).then(function(){})
     }
   })
@@ -458,7 +468,7 @@ io.on('connection', function(socket) {
     const { uuid, carrots_update, order_date, payment_id, amount, method, description, currency } = details
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
-      database_config.name = "db06"
+      database_config.name = "db15"
       database(database_config).then(function(result){
         if(result){
           users_array = result
@@ -495,6 +505,7 @@ io.on('connection', function(socket) {
 
               database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
               database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+              database_config.name = "db016"
               database(database_config, payload).then(function(){                
                 try{
                   let payload = {...details, money}
@@ -520,7 +531,7 @@ io.on('connection', function(socket) {
     const { uuid } = data    
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
-      database_config.name = "db06"
+      database_config.name = "db17"
       database(database_config).then(function(result){
         if(result){
           users_array = result
@@ -531,6 +542,7 @@ io.on('connection', function(socket) {
 
               database_config.sql = "SELECT * FROM order_user;"
               database_config.sql += "SELECT * FROM withdraw_user;"
+              database_config.name = "db018"
               database(database_config).then(function(result){                
                 let orders_found = result.filter(function(x){return x.user_id === id})
                 let withdraws_found = result.filter(function(x){return x.user_id === id})                
