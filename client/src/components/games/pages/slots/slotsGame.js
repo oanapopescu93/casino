@@ -305,13 +305,15 @@ function slots_game(props){
 	}
 
 	this.stop = function(){
-		let result = self.win_lose(self.get_results_pos())
+		let positions = self.get_results_pos()
+		console.log('positions ', positions)
+		let result = self.win_lose(positions)
 		self.drawResultsArray(result)
 	}
 
 	this.get_results_pos = function(){
-		let array = []
-		for(let i in offset){
+		let array = []		
+		for(let i in offset){			
 			for(let j in images_pos[i]){
 				if(images_pos[i][j].pos === -offset[i]){
 					let t = j-1
@@ -330,15 +332,13 @@ function slots_game(props){
 	}
 	function formatArray(inputArray) {
 		const result = []
-		let howManyColumns = 3 //there are always 3 veggies on a column
-		let t = -1
-		for(let i = 0; i < howManyColumns; i ++){
-			t++
-			for(let j = 0; j < inputArray.length; j += lines){
-				result.push(inputArray[t + j])	
+		const columns = 3		
+		for (let i = 0; i < columns; i++) {			
+			for (let j = i; j < inputArray.length; j += columns) {
+				result.push(inputArray[j]);
 			}
-		}
-		return splitArray(result, howManyColumns)
+		}		
+		return splitArray(result, reel.length)
 	}
 	function splitArray(array, chunkSize){
 		const result = []
