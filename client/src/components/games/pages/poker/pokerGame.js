@@ -201,21 +201,21 @@ export const poker_game = function(props){
     let game_status = false
 
     let theme = props.settings.theme
-    let tableColorDark = "darkgreen"
-    let tableColor = "green"
+    let tableColor01 = "darkgreen"
+    let tableColor02 = "green"
     switch(theme){
 		case "purple":
-			tableColorDark = "#7A1A7D" // dark purple
-            tableColor = "#3e0d3f" //purple
+			tableColor01 = "#7A1A7D"
+            tableColor02 = "#3e0d3f"
 			break
 		case "black":
-			tableColorDark = "#006400" //dark green
-            tableColor = "#003300" // very dark green
+			tableColor01 = "#1e7b1e"
+            tableColor02 = "#0f3e0f"
 			break
 		case "green":
 		default:
-			tableColorDark = "darkgreen"
-            tableColor = "green"
+			tableColor01 = "darkgreen"
+            tableColor02 = "green"
 			break
 	}
 
@@ -313,7 +313,7 @@ export const poker_game = function(props){
 
     this.drawBackground = function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.fillStyle = tableColorDark
+        ctx.fillStyle = tableColor01
         ctx.shadowBlur = 20
         ctx.shadowColor = "black"
         ctx.shadowOffsetY = 10
@@ -323,7 +323,7 @@ export const poker_game = function(props){
         ctx.shadowBlur = 0
         ctx.shadowColor = "transparent"
         ctx.shadowOffsetY = 0
-        ctx.fillStyle = tableColor
+        ctx.fillStyle = tableColor02
         ctx.beginPath()
         ctx.ellipse(canvas.width/2, canvas.height/2, canvas.width/2-4*card_base.space, canvas.height/2-3*card_base.space, 0, 0, 2 * Math.PI)
         ctx.fill()
