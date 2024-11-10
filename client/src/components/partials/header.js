@@ -80,7 +80,10 @@ function Header(props){
                         </div> 
                     case "game":
                         if(typeof details === 'object' && details !== null){ // it means it's a game
-                            let table_name = details.game.table_name
+                            let table_name = ""
+                            if(details.game.table_name !== "poker"){
+                                table_name = details.game.table_name
+                            }
                             let table_type = details.game.table_type
                             let table_id = details.game.table_id
                             let title = capitalizeFirstLetter(table_name).split('_').join(' ')
