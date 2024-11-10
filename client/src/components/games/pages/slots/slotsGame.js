@@ -306,7 +306,6 @@ function slots_game(props){
 
 	this.stop = function(){
 		let positions = self.get_results_pos()
-		console.log('positions ', positions)
 		let result = self.win_lose(positions)
 		self.drawResultsArray(result)
 	}
