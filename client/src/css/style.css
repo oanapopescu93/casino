@@ -1712,7 +1712,7 @@ textarea {
 }
 .game_bets_box{
 	overflow: auto;
-  max-height: 320px;
+  max-height:none;
 }
 #keno_game_bets p{
   margin-bottom: var(--padding);

@@ -33,7 +33,7 @@ function Theme(props) {
             <div className={"theme_box " + item.color}>
               <div className="theme_text">                
                 <span>{translate({lang: lang, info: item.text})}</span>
-                {item.text === title ? <>&nbsp;<FontAwesomeIcon icon={faCircleCheck} /></> : null}
+                {item.color === title ? <>&nbsp;<FontAwesomeIcon icon={faCircleCheck} /></> : null}
               </div>
             </div>
           </Dropdown.Item>
