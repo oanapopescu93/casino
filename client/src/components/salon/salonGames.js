@@ -65,6 +65,13 @@ function SalonGames(props){
 		if(winter){ // will appear only on winter months
 			setShowWinter(true)
 		}
+
+        // Initialize adsbygoogle
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.error('Adsense error', e);
+        }
 	}, [])
 
     function create_casino_games(){
@@ -118,7 +125,7 @@ function SalonGames(props){
 
     return <div className="salon_games">
         <Row>
-            <Col sm={2} />
+        <Col sm={2} />
             <Col sm={8}>
                 {width < 960 ? <div className="salon_games_dropdown">
                     <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "shadow_convex snow" : "shadow_convex"} onSelect={handleSelect}>
@@ -131,7 +138,15 @@ function SalonGames(props){
             <Col sm={2} />
         </Row>
         <Row>
-            <Col sm={2} />
+            <Col sm={2}>
+                <ins
+                    className="adsbygoogle"
+                    style={{ display: "block", height: "60px" }}
+                    data-ad-client="ca-pub-8737922729231817"
+                    data-ad-slot="6086373080"
+                    data-ad-format="auto"
+                ></ins>
+            </Col>
             <Col sm={8}>
                 {casinoGamesTitle.map((t, i)=>{
                     let box = ""
@@ -159,7 +174,15 @@ function SalonGames(props){
                     </div>
                 })}
             </Col>
-            <Col sm={2} />
+            <Col sm={2}>
+                <ins
+                    className="adsbygoogle"
+                    style={{ display: "block", height: "60px" }}
+                    data-ad-client="ca-pub-8737922729231817"
+                    data-ad-slot="6086373080"
+                    data-ad-format="auto"
+                ></ins>
+            </Col>
         </Row>
         {height >= 500 ? <Row>
             <Col sm={2} />
