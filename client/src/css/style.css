@@ -4,6 +4,7 @@
   --dark_color:#b39800;
 	--light_color:yellow;
   --body_color: green;
+  --slot_canvas_color: #fff7cc;
 
   --red: red;
   --darkred: darkred;
@@ -1793,9 +1794,9 @@ textarea {
 .gameboard{
   background-color: var(--dark_color);
   border-top: solid var(--padding_small) var(--dark_color);
-  border-right: solid var(--padding_small) var(--color);
+  border-right: solid var(--padding_small) var(--light_color);
   border-bottom: solid var(--padding_small) var(--dark_color);
-  border-left: solid var(--padding_small) var(--color);
+  border-left: solid var(--padding_small) var(--light_color);
   border-radius: var(--radius_small);
   padding: var(--padding_small) var(--padding);
   color: var(--bg);
@@ -1821,6 +1822,7 @@ textarea {
   text-align: center;
 }
 .gameboard .button_fullcolor:hover{
+  background-color: var(--color)!important;
   border: solid 1px var(--bg)!important;
   color: var(--bg)!important;
 }
@@ -2732,6 +2734,9 @@ a.donation_button{
 #changeProfilePic_btn{
   width: 100px;
 }
+.profile_grey{
+  margin-bottom: var(--padding);
+}
 .crop_profile_pic_box:hover .crop_profile_pic{
   border:solid 3px var(--bg);
 }
@@ -2745,7 +2750,7 @@ a.donation_button{
 	border:solid 1px var(--bg);
 }
 .crop_profile_pic .profile_pic {
-	width: 720px!important;
+	width: 960px!important;
 	height: 120px;	
 }
 .profile_pic.pic_1 {
@@ -2772,6 +2777,10 @@ a.donation_button{
 	margin-top: 0px;
   margin-left: -600px;
 }
+.profile_pic.pic_7 {
+	margin-top: 0px;
+  margin-left: -720px;
+}
 
 #carousel_profile .crop_profile_pic {
   width: 150px;
@@ -2782,7 +2791,7 @@ a.donation_button{
   border: solid 1px var(--bg);
 }
 #carousel_profile .crop_profile_pic .profile_pic {
-  width: 900px !important;
+  width: 1200px !important;
   height: 150px;
 }
 #carousel_profile .profile_pic.pic_1 {
@@ -2808,6 +2817,14 @@ a.donation_button{
 #carousel_profile .profile_pic.pic_6 {
   margin-top: 0px;
   margin-left: -750px;
+}
+#carousel_profile .profile_pic.pic_7 {
+  margin-top: 0px;
+  margin-left: -900px;
+}
+#carousel_profile .profile_pic.pic_8 {
+  margin-top: 0px;
+  margin-left: -1050px;
 }
 
 .slick-prev, .slick-next{
@@ -2910,9 +2927,14 @@ a.donation_button{
   color: pink;
 }
 .settings .theme_box.black{
-  background: #333;
+  background: #262626;
   border: solid 1px #32CD32;
   color: #32CD32;
+}
+.settings .theme_box.blue{
+  background: #153184;
+  border: solid 1px #E0E0E0;
+  color: #E0E0E0;
 }
 .settings .theme_text{
   display: inline-block;
@@ -3141,8 +3163,8 @@ a.donation_button{
   text-align: center;
   border: var(--padding) solid;
   border-radius: var(--padding_small);
-  background: white;
-	border-color: var(--dark_color) var(--color);
+  background: var(--dark_color);
+	border-color: var(--dark_color) var(--light_color);
 }
 #slots_prizes{
   position: absolute;
@@ -3151,7 +3173,7 @@ a.donation_button{
   right: -45px;
   transform: translate(0px, -50%);
   border-radius: 0 var(--padding_small) var(--padding_small) 0;
-  background: var(--color);
+  background: var(--light_color);
   color: var(--bg);
   border-left: var(--padding_small) solid var(--dark_color);
   padding: var(--padding_small);
@@ -3170,9 +3192,9 @@ a.donation_button{
   text-orientation: unset;
   background-color: var(--dark_color);
   border-top: solid var(--padding_small) var(--dark_color);
-  border-right: solid var(--padding_small) var(--color);
+  border-right: solid var(--padding_small) var(--light_color);
   border-bottom: solid var(--padding_small) var(--dark_color);
-  border-left: solid var(--padding_small) var(--color);
+  border-left: solid var(--padding_small) var(--light_color);
   border-radius: var(--radius_small);
   margin-top: var(--padding);
 }
@@ -3191,16 +3213,14 @@ a.donation_button{
 	height: 310px;
   max-width: 110px;
 	border: var(--padding_small) solid;
-  border-color: var(--dark_color) var(--color) var(--dark_color) var(--dark_color);
+  border-color: var(--dark_color) var(--light_color) var(--dark_color) var(--dark_color);
 }
 .slot_machine .box:last-child{
 	border-right: var(--padding_small) solid var(--dark_color);
 }
 .slot_machine .slot_canvas{
   position: relative;
-}
-.slot_machine .slot_canvas{
-	background: white;
+	background: var(--slot_canvas_color);
 }
 .slot_machine_board{
   width: 100%;
@@ -3563,7 +3583,7 @@ a.donation_button{
   overflow: hidden;
   border-radius:100%;
 	border:solid 1px var(--color);
-  background-color: var(--transparent_2);
+  background-color: var(--transparent_color);
 	display:inline-block!important;
   position: relative;
   z-index: 1;
@@ -4073,7 +4093,7 @@ a.donation_button{
   border: solid 1px var(--bg);
   padding: var(--padding);
   margin-bottom: var(--padding);
-  background-color: var(--transparent_2);
+  background-color: var(--transparent_color);
   position: relative;
   z-index: 1;
   height: 50vh;

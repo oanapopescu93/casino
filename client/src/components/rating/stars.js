@@ -12,6 +12,10 @@ import star_full_green from '../../img/icons_other/rating/star_full_green.png'
 import star_half_green from '../../img/icons_other/rating/star_half_green.png'
 import star_empty_green from '../../img/icons_other/rating/star_empty_green.png'
 
+import star_full_grey from '../../img/icons_other/rating/star_full_grey.png'
+import star_half_grey from '../../img/icons_other/rating/star_half_grey.png'
+import star_empty_grey from '../../img/icons_other/rating/star_empty_grey.png'
+
 function Stars(props) {
     const { score, max, theme } = props
 
@@ -32,16 +36,16 @@ function Stars(props) {
     function chooseImage(type){
         switch (theme) {
             case 'purple':
-              switch(type){
-                case "star_full":
-                    return star_full_pink
-                case "star_half":
-                    return star_half_pink
-                default:
-                    return star_empty_pink
-              }
+                switch (type) {
+                    case "star_full":
+                        return star_full_pink
+                    case "star_half":
+                        return star_half_pink
+                    default:
+                        return star_empty_pink
+                }
             case 'black':
-                switch(type){
+                switch (type) {
                     case "star_full":
                         return star_full_green
                     case "star_half":
@@ -49,8 +53,17 @@ function Stars(props) {
                     default:
                         return star_empty_green
                 }
+            case 'blue':
+                switch (type) {
+                    case "star_full":
+                        return star_full_grey
+                    case "star_half":
+                        return star_half_grey
+                    default:
+                        return star_empty_grey
+                }
             default:
-                switch(type){
+                switch (type) {
                     case "star_full":
                         return star_full_yellow
                     case "star_half":
@@ -58,7 +71,7 @@ function Stars(props) {
                     default:
                         return star_empty_yellow
                 }
-        }
+        }        
     }
     
     return <div className="stars">

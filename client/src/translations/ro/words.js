@@ -148,6 +148,10 @@ var word_bank = {
     black: "Negru",
     grey: "Gri",
     white: "Alb",
+    forest_green: "Verde Pădure",
+    saphire_purple: "Mov Safir",
+    radium_black: "Negru Radiu",
+    royal_blue: "Albastru Regal",
 
     dashboard: "Dashboard",
     choose_profile_pic: "Alege imaginea de profil",

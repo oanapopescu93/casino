@@ -148,6 +148,10 @@ var word_bank = {
     black: "Black",
     grey: "Grey",
     white: "White",
+    forest_green: "Forest Green",
+    saphire_purple: "Saphire Purple",
+    radium_black: "Radium Black",
+    royal_blue: "Royal Blue",
     
     dashboard: "Dashboard",
     choose_profile_pic: "Choose profile pic",

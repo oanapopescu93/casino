@@ -31,8 +31,9 @@ function Card(config){
 	self.player_nr = config.player_nr
 	self.images = config.images
 	self.text = config.text
+	self.text_bg = config.text_bg
 	self.font_bold_10 = config.font_bold_10
-	self.font_bold_12 = config.font_bold_12
+	self.font_bold_12 = config.font_bold_12	
 	
 	self.draw_box = function(ctx){
 		//draw rect where the cards will be
@@ -72,9 +73,22 @@ function Card(config){
 			value_hand = value_hand + parseInt(hand[i].Weight)
 		}
 
+		let header_x = self.x+self.player_nr[0]
+		let header_y = self.y - self.player_nr[0]
+		let header_width = self.width-self.player_nr[0]
+		let header_height = self.player_nr[1]
+		let header_width_text = self.x + self.width/2 + self.player_nr[0]/2
+		let header_height_text = self.y - 5
+		if(self.id === -1){
+			//dealer
+			header_x = self.x
+			header_width = self.width
+			header_width_text = self.x + self.width/2
+		}
+
 		ctx.beginPath()
-		ctx.fillStyle = "white"
-		ctx.rect(self.x+self.player_nr[0], self.y - self.player_nr[0], self.width-self.player_nr[0], self.player_nr[1])
+		ctx.fillStyle = self.text_bg
+		ctx.rect(header_x, header_y, header_width, header_height)
 		if(self.strokeStyle !== ""){
 			ctx.lineWidth = self.lineWidth
 			ctx.strokeStyle = self.strokeStyle
@@ -87,13 +101,13 @@ function Card(config){
 		ctx.fillStyle = self.text
 		ctx.textAlign = "center"
 		ctx.font = self.font_bold_12
-		ctx.fillText(value_hand, self.x + self.width/2 + self.player_nr[0]/2, self.y - 5)
+		ctx.fillText(value_hand, header_width_text, header_height_text)
 		ctx.closePath()
 	}
 
 	self.draw_card_number = function(ctx, text, x, y, w){	
 		ctx.beginPath()
-		ctx.fillStyle = "white"
+		ctx.fillStyle = self.text_bg
 		ctx.textAlign = "center"
 		ctx.font = self.font_bold_12
 		ctx.fillText(text, x+w/2, y-15)
@@ -184,6 +198,29 @@ function blackjack_game(props){
     let resize = 0
 	let howManyPlayers = props.howManyPlayers ? props.howManyPlayers : 5
 
+	let theme = props.settings.theme
+    let text_color = "#b39800"
+    let text_bg = "#fff7cc"
+    switch(theme){
+		case "purple":
+            text_color = "#3e0d3f"
+            text_bg = "#ffccd5"
+			break
+		case "black":
+            text_color = "#0f3e0f"
+            text_bg = "#ccffcc"
+			break
+		case "blue":
+			text_color = "#333"
+            text_bg = "#E0E0E0"
+			break
+		case "green":
+		default:
+            text_color = "darkgreen"
+            text_bg = "#fff7cc"
+			break
+	}
+
     this.ready = function(){
         resize++
 		card_list = []
@@ -220,7 +257,7 @@ function blackjack_game(props){
 			height: 180, 
 			fillStyle: 'transparent', 
 			lineWidth: 2, 
-			strokeStyle: 'white', 
+			strokeStyle: text_bg, 
 			dealer_y: 40
 		};
 		card = { width: 100, height: 150 };
@@ -237,7 +274,7 @@ function blackjack_game(props){
 				height: 150, 
 				fillStyle: 'transparent', 
 				lineWidth: 2, 
-				strokeStyle: 'white', 
+				strokeStyle: text_bg, 
 				dealer_y: 40
 			};
 			card = { width: 80, height: 120 };
@@ -255,7 +292,7 @@ function blackjack_game(props){
 				height: 100, 
 				fillStyle: 'transparent', 
 				lineWidth: 1, 
-				strokeStyle: 'white', 
+				strokeStyle: text_bg, 
 				dealer_y: 20
 			};
 			card = { width: 60, height: 90 };
@@ -273,7 +310,7 @@ function blackjack_game(props){
 				height: 70, 
 				fillStyle: 'transparent', 
 				lineWidth: 1, 
-				strokeStyle: 'white', 
+				strokeStyle: text_bg, 
 				dealer_y: 20
 			};
 			card = { width: 33, height: 50 };
@@ -311,8 +348,8 @@ function blackjack_game(props){
 			space: space,
 			player_nr: player_nr,
 			images: images,
-			text: "black",
-			text_bg: "white",
+			text: text_color,
+			text_bg,
 			font_bold_12: 'bold 10px sans-serif',
 			font_bold_14: 'bold 12px sans-serif',
 		}))	
@@ -347,8 +384,8 @@ function blackjack_game(props){
 				space: space,
 				player_nr: player_nr,
 				images: images,
-				text: "black",
-				text_bg: "white",
+				text: text_color,
+				text_bg: text_bg,
 				font_bold_12: 'bold 10px sans-serif',
 				font_bold_14: 'bold 12px sans-serif',	
 			}))
@@ -594,7 +631,7 @@ function Blackjack(props){
     return <div id="blackjack" className="game_box">
 		<Header template={"game"} details={page} lang={lang} theme={theme}/>
         <canvas id="blackjack_canvas" />
-        <GameBoard template="blackjack_board" {...props} startGame={startGame} bet={blackjackBets} choice={(e)=>choice(e)} updateQtyMarket={(e)=>updateBets(e)} />
+        <GameBoard template="blackjack_board" {...props} startGame={startGame} bet={blackjackBets} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
 		<div className="button_action_group blackjack_buttons_container">
 			<div className="tooltip">
 				<Button 

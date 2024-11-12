@@ -269,20 +269,31 @@ export const handleChangeTheme = (choice) => {
       document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 215, 0, 0.2)')
       document.documentElement.style.setProperty('--dark_color', '#b39800')
       document.documentElement.style.setProperty('--light_color', 'yellow')
+      document.documentElement.style.setProperty('--slot_canvas_color', '#fff7cc')
       break
     case 'purple':
       document.documentElement.style.setProperty('--body_color', 'purple')
       document.documentElement.style.setProperty('--color', 'pink')
       document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 105, 180, 0.2)')
-      document.documentElement.style.setProperty('--dark_color', '#ff8095') // dark pink
-      document.documentElement.style.setProperty('--light_color', '#ffe6ea') // light pink
+      document.documentElement.style.setProperty('--dark_color', '#7A1A7D') // Dark purple
+      document.documentElement.style.setProperty('--light_color', '#ce2bd4') // Dark purple
+      document.documentElement.style.setProperty('--slot_canvas_color', '#ffccd5')
       break
     case 'black':
       document.documentElement.style.setProperty('--body_color', '#333')
       document.documentElement.style.setProperty('--color', '#32CD32') // Lime Green
       document.documentElement.style.setProperty('--transparent_color', 'rgba(50, 205, 50, 0.2)')
       document.documentElement.style.setProperty('--dark_color', '#006400') // Dark green
-      document.documentElement.style.setProperty('--light_color', '#90EE90') // Light green
+      document.documentElement.style.setProperty('--light_color', '#00b300') // Light green
+      document.documentElement.style.setProperty('--slot_canvas_color', '#ccffcc') // Light lime
+      break
+    case 'blue':
+      document.documentElement.style.setProperty('--body_color', 'royalblue')
+      document.documentElement.style.setProperty('--color', '#E0E0E0') // Silver
+      document.documentElement.style.setProperty('--transparent_color', 'rgba(224, 224, 224, 0.2)')
+      document.documentElement.style.setProperty('--dark_color', '#3862e0') // Dark royal blue
+      document.documentElement.style.setProperty('--light_color', '#6585e7') // Light royal blue
+      document.documentElement.style.setProperty('--slot_canvas_color', '#E0E0E0') // Light lime
       break
     default:
       break

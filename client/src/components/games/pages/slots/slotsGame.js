@@ -35,6 +35,24 @@ function slots_game(props){
 	let now = new Date()
 	let lastUpdate = new Date()
 
+	let theme = props.settings.theme
+	let lineColor = ""
+    switch(theme){
+		case "purple":
+			lineColor = "#ffb3c1"
+			break
+		case "black":
+			lineColor = "#99ff99"
+			break
+		case "blue":
+			lineColor = "#cccccc"
+			break
+		case "green":
+		default:
+			lineColor = "#ffec80"
+			break
+	}
+
 	this.ready = function(reason){
         suffle_array = slotsData.array
 		self.fit()
@@ -163,7 +181,7 @@ function slots_game(props){
     }
 	this.draw_reel = function(canvas, assets, resize=false){
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
-		ctx.fillStyle = '#ddd'
+		ctx.fillStyle = lineColor
 		let array = []
 
 		if(typeof assets !== "undefined"){

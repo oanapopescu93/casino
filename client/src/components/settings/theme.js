@@ -12,10 +12,14 @@ function Theme(props) {
   const {lang, title} = props
 	let dispatch = useDispatch()
   let theme_array = [
-    {text: "green", color: "green"},
-    {text: "purple", color: "purple"},
-    {text: "black", color: "black"},
+    {text: "forest_green", color: "green"},
+    {text: "saphire_purple", color: "purple"},
+    {text: "radium_black", color: "black"},
+    {text: "royal_blue", color: "blue"},
   ]
+  let myTitle = theme_array.find((x)=>{
+    return x.color === title
+  })
 
   function handleSelect(choice){
     dispatch(changeTheme(choice))
@@ -23,9 +27,9 @@ function Theme(props) {
   }
 
   return <div className="theme">
-    <DropdownButton title={translate({lang: lang, info: title})} id="theme_button"  className="shadow_convex" onSelect={handleSelect}>
+    <DropdownButton title={translate({lang: lang, info: myTitle.text})} id="theme_button"  className="shadow_convex" onSelect={handleSelect}>
       {theme_array.map((item, i)=>{
-          return <Dropdown.Item key={i} eventKey={item.text}>
+          return <Dropdown.Item key={i} eventKey={item.color}>
             <div className={"theme_box " + item.color}>
               <div className="theme_text">                
                 <span>{translate({lang: lang, info: item.text})}</span>

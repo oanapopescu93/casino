@@ -14,10 +14,13 @@ import rabbit_sit_pink from '../../../../img/rabbit_move/pink/rabbit000.png'
 import rabbit_move_pink from '../../../../img/rabbit_move/pink/rabbit_move.png'
 import rabbit_sit_green from '../../../../img/rabbit_move/green/rabbit000.png'
 import rabbit_move_green from '../../../../img/rabbit_move/green/rabbit_move.png'
+import rabbit_sit_grey from '../../../../img/rabbit_move/grey/rabbit000.png'
+import rabbit_move_grey from '../../../../img/rabbit_move/grey/rabbit_move.png'
 
 import obstacle_yellow from '../../../../img/icons/obstacle_yellow.png'
 import obstacle_pink from '../../../../img/icons/obstacle_pink.png'
 import obstacle_green from '../../../../img/icons/obstacle_green.png'
+import obstacle_grey from '../../../../img/icons/obstacle_grey.png'
 
 function Land(config){
 	let self = this
@@ -474,6 +477,15 @@ function race_game(props){
 			rabbit_img_move = {src: rabbit_move_green}
 			rabbit_img_stop = {src: rabbit_sit_green}
 			obstacle_img = {src: obstacle_green}
+			break
+		case "blue":
+			color = "#E0E0E0"
+			color_transparent_1 = "rgba(224, 224, 224, 0.1)"
+			color_transparent_5 = "rgba(224, 224, 224, 0.5)"
+			rabbit_img_sit = {src: rabbit_sit_grey}
+			rabbit_img_move = {src: rabbit_move_grey}
+			rabbit_img_stop = {src: rabbit_sit_grey}
+			obstacle_img = {src: obstacle_grey}
 			break
 		case "green":
 		default:

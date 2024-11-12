@@ -3,6 +3,7 @@ import { translate } from '../../../translations/translate'
 import vegetables_yellow from '../../../img/icons/vegetables/vegetables_yellow.png'
 import vegetables_pink from '../../../img/icons/vegetables/vegetables_pink.png'
 import vegetables_green from '../../../img/icons/vegetables/vegetables_green.png'
+import vegetables_grey from '../../../img/icons/vegetables/vegetables_grey.png'
 import { Row, Col } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { convertCurrency, getProducts } from '../../../utils/utils'
@@ -17,9 +18,11 @@ function Cart(props){
     function chooseImage(){
         switch (theme) {
             case 'purple':
-              return vegetables_pink
+                return vegetables_pink
             case 'black':
-              return vegetables_green
+                return vegetables_green
+            case 'blue':
+                return vegetables_grey
             default:
               return vegetables_yellow
         }

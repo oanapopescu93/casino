@@ -148,6 +148,10 @@ var word_bank = {
     black: "黑色",
     grey: "灰色",
     white: "白色",
+    forest_green: "森林绿",
+    saphire_purple: "蓝宝石紫",
+    radium_black: "镭黑",
+    royal_blue: "皇家蓝",
     
     dashboard: "仪表板",
     choose_profile_pic: "选择个人资料图片",

@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col'
 import shop_yellow from '../../../../img/other/shop/shop_yellow.png'
 import shop_pink from '../../../../img/other/shop/shop_pink.png'
 import shop_green from '../../../../img/other/shop/shop_green.png'
+import shop_grey from '../../../../img/other/shop/shop_grey.png'
 import Carousel from '../../../carousel/carousel'
 import { useDispatch } from 'react-redux'
 import { cartAdd } from '../../../../reducers/cart'
@@ -85,9 +86,11 @@ function Market(props){
     function chooseImage(){
         switch (theme) {
             case 'purple':
-              return shop_pink
+                return shop_pink
             case 'black':
-              return shop_green
+                return shop_green
+            case 'blue':
+                return shop_grey
             default:
               return shop_yellow
         }

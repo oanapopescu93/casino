@@ -15,7 +15,7 @@ function GameBoard(props){
     function handleClick(e){
         choice(e)
     }
-    function updateQtyMarket(e){
+    function handleUpdate(e){
         updateBets(e)
     }
 
@@ -79,7 +79,7 @@ function GameBoard(props){
                             </Col>
                         </> : <>
                             <Col xs={8} sm={4}>
-                                <Counter num={bet} max={max_bet} update={(e)=>updateQtyMarket(e)} />
+                                <Counter num={bet} max={max_bet} update={(e)=>handleUpdate(e)} />
                             </Col>
                             <Col xs={4} sm={4} className="d-none d-sm-block"/>
                             <Col xs={4} sm={4}>
@@ -99,7 +99,7 @@ function GameBoard(props){
                 case "slots_board":
                     return <Row>
                         <Col xs={8}>
-                            <Counter num={bet} max={max_bet} update={(e)=>updateQtyMarket(e)} />
+                            <Counter num={bet} max={max_bet} update={(e)=>handleUpdate(e)} />
                         </Col>
                         <Col xs={4}>
                             <div className="button_box button_box_start">
@@ -116,7 +116,7 @@ function GameBoard(props){
                     </Row>
                 case "poker_texas_holdem_board":
                 case "poker_5_card_draw_board":
-                    return <PokerBoard {...props} handleClick={(e)=>handleClick(e)} updateQtyMarket={(e)=>updateQtyMarket(e)} />
+                    return <PokerBoard {...props} handleClick={(e)=>handleClick(e)} updateBets={(e)=>handleUpdate(e)} />
                 default: 
                     return null
             }

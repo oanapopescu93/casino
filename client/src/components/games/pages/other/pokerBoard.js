@@ -15,7 +15,7 @@ function PokerBoard(props){
         choice(e)
     }
 
-    function updateQtyMarket(e){
+    function handleUpdate(e){
         updateBets(e)
         setNum(e)
     }
@@ -30,7 +30,7 @@ function PokerBoard(props){
                     }
                     return <>
                         <Col xs={4}>
-                            <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)} />
+                            <Counter num={num} max={max_bet} update={(e)=>handleUpdate(e)} />
                         </Col>
                         <Col xs={8}>
                             <Row>
@@ -119,7 +119,7 @@ function PokerBoard(props){
                     }
                     return <>
                         <Col xs={4}>
-                            <Counter num={num} max={max_bet} update={(e)=>updateQtyMarket(e)} />
+                            <Counter num={num} max={max_bet} update={(e)=>handleUpdate(e)} />
                         </Col>
                         <Col xs={8}>
                             <Row>

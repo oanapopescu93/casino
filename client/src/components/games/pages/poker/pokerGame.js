@@ -203,19 +203,33 @@ export const poker_game = function(props){
     let theme = props.settings.theme
     let tableColor01 = "darkgreen"
     let tableColor02 = "green"
+    let text_color = "#b39800"
+    let text_bg = "#fff7cc"
     switch(theme){
 		case "purple":
 			tableColor01 = "#7A1A7D"
             tableColor02 = "#3e0d3f"
+            text_color = "#3e0d3f"
+            text_bg = "#ffccd5"
 			break
 		case "black":
 			tableColor01 = "#1e7b1e"
             tableColor02 = "#0f3e0f"
+            text_color = "#0f3e0f"
+            text_bg = "#ccffcc"
 			break
+        case "blue":
+            tableColor01 = "#3862e0"
+            tableColor02 = "#18399a"
+            text_color = "#333"
+            text_bg = "#E0E0E0"
+            break
 		case "green":
 		default:
 			tableColor01 = "darkgreen"
             tableColor02 = "green"
+            text_color = "darkgreen"
+            text_bg = "#fff7cc"
 			break
 	}
 
@@ -434,8 +448,8 @@ export const poker_game = function(props){
                         card_img: card_img,
                         images: images,
                         space: space,
-                        text_color: "black",
-                        text_bg: "white",
+                        text_color,
+                        text_bg,
                         text_font: 'bold 10px sans-serif',
                         text_x: positions[i].x,
                         text_y: positions[i].y - 2*space,

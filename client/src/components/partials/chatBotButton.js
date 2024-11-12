@@ -5,6 +5,7 @@ import { changePopup } from '../../reducers/popup'
 import chatbotIcon_pink from '../../img/chatbot/chatbot_pink.png'
 import chatbotIcon_green from '../../img/chatbot/chatbot_green.png'
 import chatbotIcon_yellow from '../../img/chatbot/chatbot_yellow.png'
+import chatbotIcon_grey from '../../img/chatbot/chatbot_grey.png'
 import { translate } from '../../translations/translate'
 
 function ChatBotButton(props){
@@ -27,6 +28,8 @@ function ChatBotButton(props){
               return chatbotIcon_pink
             case 'black':
               return chatbotIcon_green
+            case 'blue':
+              return chatbotIcon_grey
             default:
               return chatbotIcon_yellow
         }

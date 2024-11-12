@@ -25,6 +25,14 @@ import race_icon_pink from '../../../img/icons_other/icons/pink/race.png'
 import keno_icon_pink from '../../../img/icons_other/icons/pink/keno.png'
 import poker_icon_pink from '../../../img/icons_other/icons/pink/carribean.png'
 
+import roulette_icon_grey from '../../../img/icons_other/icons/grey/roulette.png'
+import blackjack_icon_grey from '../../../img/icons_other/icons/grey/blackjack.png'
+import slots_icon_grey from '../../../img/icons_other/icons/grey/slots.png'
+import craps_icon_grey from '../../../img/icons_other/icons/grey/craps.png'
+import race_icon_grey from '../../../img/icons_other/icons/grey/race.png'
+import keno_icon_grey from '../../../img/icons_other/icons/grey/keno.png'
+import poker_icon_grey from '../../../img/icons_other/icons/grey/carribean.png'
+
 function HowToPlayTitles(props){
     const {handleChoice, settings} = props
     const {lang, theme} = settings
@@ -35,69 +43,84 @@ function HowToPlayTitles(props){
             case "roulette":
                 switch (theme) {
                     case 'purple':
-                        return roulette_icon_pink     
+                        return roulette_icon_pink
                     case 'black':
                         return roulette_icon_green
+                    case 'blue':
+                        return roulette_icon_grey
                     default:
                         return roulette_icon_yellow
                 }
             case "blackjack":
                 switch (theme) {
                     case 'purple':
-                        return blackjack_icon_pink     
+                        return blackjack_icon_pink
                     case 'black':
                         return blackjack_icon_green
+                    case 'blue':
+                        return blackjack_icon_grey
                     default:
                         return blackjack_icon_yellow
                 }
             case "slots":
                 switch (theme) {
                     case 'purple':
-                        return slots_icon_pink     
+                        return slots_icon_pink
                     case 'black':
                         return slots_icon_green
+                    case 'blue':
+                        return slots_icon_grey
                     default:
                         return slots_icon_yellow
                 }
             case "craps":
                 switch (theme) {
                     case 'purple':
-                        return craps_icon_pink     
+                        return craps_icon_pink
                     case 'black':
                         return craps_icon_green
+                    case 'blue':
+                        return craps_icon_grey
                     default:
                         return craps_icon_yellow
                 }
             case "race":
                 switch (theme) {
                     case 'purple':
-                        return race_icon_pink     
+                        return race_icon_pink
                     case 'black':
                         return race_icon_green
+                    case 'blue':
+                        return race_icon_grey
                     default:
                         return race_icon_yellow
                 }
             case "keno":
                 switch (theme) {
                     case 'purple':
-                        return keno_icon_pink     
+                        return keno_icon_pink
                     case 'black':
                         return keno_icon_green
+                    case 'blue':
+                        return keno_icon_grey
                     default:
                         return keno_icon_yellow
                 }
             case "poker":
                 switch (theme) {
                     case 'purple':
-                        return poker_icon_pink     
+                        return poker_icon_pink
                     case 'black':
                         return poker_icon_green
+                    case 'blue':
+                        return poker_icon_grey
                     default:
                         return poker_icon_yellow
                 }
             default:
                 return
         }
+        
     }
 
     return <div className="how_to_play_titles">

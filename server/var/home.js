@@ -69,12 +69,14 @@ module.exports = Object.freeze({
         {id: "cabbage", name_eng: "cabbage", name_ro: "varza", name_fr: "chou", name_de: "kohl", name_es: "col", name_it: "cavolo", name_pt: "repolho", name_ru: "капуста", name_zh: "卷心菜", price: 30, value: 30},
     ],    
     PROFILES: [
-        {id: 1, name_eng: "weasel", name_ro: "nevastuica", name_fr: "belette", name_de: "wiesel", name_es: "comadreja", name_it: "donnola", name_pt: "doninha", name_ru: "ласка", name_zh: "鼬", free: true},
+        {id: 1, name_eng: "weasel", name_ro: "nevăstuică", name_fr: "belette", name_de: "wiesel", name_es: "comadreja", name_it: "donnola", name_pt: "doninha", name_ru: "ласка", name_zh: "鼬", free: true},
         {id: 2, name_eng: "fox", name_ro: "vulpe", name_fr: "renard", name_de: "fuchs", name_es: "zorro", name_it: "volpe", name_pt: "raposa", name_ru: "лиса", name_zh: "狐狸", free: false},
         {id: 3, name_eng: "wolf", name_ro: "lup", name_fr: "loup", name_de: "wolf", name_es: "lobo", name_it: "lupo", name_pt: "lobo", name_ru: "волк", name_zh: "狼", free: false},
-        {id: 4, name_eng: "lynx", name_ro: "ras", name_fr: "lynx", name_de: "luchs", name_es: "lince", name_it: "lince", name_pt: "lince", name_ru: "рысь", name_zh: "猞猁", free: false},
+        {id: 4, name_eng: "lynx", name_ro: "râs", name_fr: "lynx", name_de: "luchs", name_es: "lince", name_it: "lince", name_pt: "lince", name_ru: "рысь", name_zh: "猞猁", free: false},
         {id: 5, name_eng: "ferret", name_ro: "dihor", name_fr: "furet", name_de: "frettchen", name_es: "hurón", name_it: "furetto", name_pt: "furão", name_ru: "хорёк", name_zh: "雪貂", free: true},
         {id: 6, name_eng: "marten", name_ro: "jder", name_fr: "martre", name_de: "marder", name_es: "marta", name_it: "martora", name_pt: "marta", name_ru: "кунгуря", name_zh: "貂", free: true},
+        {id: 7, name_eng: "mink", name_ro: "nurcă", name_fr: "vison", name_de: "marder", name_es: "nutria", name_it: "visone", name_pt: "visão", name_ru: "нyрка", name_zh: "水貂", free: true},
+        {id: 8, name_eng: "bear", name_ro: "urs", name_fr: "ours", name_de: "bär", name_es: "oso", name_it: "orso", name_pt: "urso", name_ru: "медведь", name_zh: "熊", free: false},
     ],    
     DONATIONS: [
         {type: "crypto", title: "Bitcoin", text: "bc1q250h9jjr7wj9302z0vpzath3c560k3krkg0fxk", link: "bitcoin:bc1q250h9jjr7wj9302z0vpzath3c560k3krkg0fxk"},

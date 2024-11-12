@@ -18,6 +18,10 @@ function keno_tube_game(props){
 			color = "green"
 			color_transparent_1 = "rgba(50, 205, 50, 0.1)"
 			break
+        case "blue":
+			color = "#E0E0E0"
+			color_transparent_1 = "rgba(224, 224, 224, 0.1)"
+			break
 		case "green":
 		default:
 			color = "gold"
