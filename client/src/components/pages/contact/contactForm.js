@@ -11,6 +11,7 @@ function ContactForm(props){
 
     const [email, setEmail] = useState('')
     const [subject, setSubject] = useState('')
+    const [about, setAbout] = useState("choose")
     const [message, setMessage] = useState('')
 
     const [errorEmail, setErrorEmail] = useState(false)
@@ -18,9 +19,8 @@ function ContactForm(props){
     const [errorAbout, setErrorAbout] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [sendResults, setSendResults] = useState(null)
-    const [emailSending, setEmailSending] = useState(false)
+    const [emailSending, setEmailSending] = useState(false)    
     
-    const [about, setAbout] = useState('')
     let questions = ['account_issues', 'payments_and_withdrawals', 'game_issues', 'hiring', 'other']
 
     function handleDropdown(x){
@@ -48,31 +48,35 @@ function ContactForm(props){
         setErrorAbout(false)
         setErrorMessage(false)
         setErrorEmail(false)
-        setEmailSending(true)
         
-        if(subject !== "" && message !== "" && about !== "" && validateInput('email', email)){
+        if(subject !== "" && message !== "" && about !== "choose" && email !== "" && validateInput(email, "email")){
+            setEmailSending(true)
             postData("/api/contact", {subject, about, message, email}).then((data) => {
                 setEmailSending(false)
                 if(data && data.send){
                     setSendResults(data.send)
+                    let time = 5000
+                    if(data.send === "email_no_send"){
+                        time = 3000
+                    }
                     setTimeout(() => {
                         setSendResults(null)
-                    }, 1500)
+                    }, time)
                 }
             })
         } else {
             if(subject === ""){
                 setErrorSubject(true)
             }
-            if(about === ""){
+            if(about === "choose"){
                 setErrorAbout(true)
             }
             if(message === ""){
                 setErrorMessage(true)
             }
-            if(email === "" || !validateInput('email', email)){
+            if(email === "" || !validateInput(email, "email")){
                 setErrorEmail(true)
-            }
+            }           
         }
     }
 
@@ -99,7 +103,7 @@ function ContactForm(props){
                     <div className="label">{translate({lang: lang, info: "about"})}</div>
                 </Col>
                 <Col sm={12} className="label_container">
-                    <DropdownButton title={about} id="question_button" className="shadow_concav" onSelect={(e)=>handleDropdown(e)}>
+                    <DropdownButton title={translate({lang: lang, info: about})} id="question_button" className="shadow_concav" onSelect={(e)=>handleDropdown(e)}>
                         {questions.map((item, i) => (
                             <Dropdown.Item key={i} eventKey={item}>
                                 {translate({ lang: lang, info: item })}
@@ -117,7 +121,7 @@ function ContactForm(props){
                 </Col>
             </Row>
             {(() => {
-                if(errorEmail || errorSubject || errorMessage){
+                if(errorEmail || errorSubject || errorAbout || errorMessage){
                     return <div className="alert alert-danger">
                         {errorEmail ? <p className="text_red">{translate({lang: lang, info: "incorrect_email"})}</p> : null}
                         {errorSubject ? <p className="text_red">{translate({lang: lang, info: "empty_input_subject"})}</p> : null}

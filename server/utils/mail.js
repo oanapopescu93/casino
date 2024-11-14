@@ -1,28 +1,16 @@
 var nodemailer = require('nodemailer')
 var constants = require('../var/constants')
-var database_config = constants.DATABASE[0]
-
-const database = require('../database/mysql')
 
 const transports = {
-    // gmail: nodemailer.createTransport({
-    //     host: 'smtp.gmail.com',
-    //     port: 587,
-    //     secure: false,
-    //     auth: {
-    //         user: constants.GMAIL_USER,
-    //         pass: constants.GMAIL_PASS
-    //     }
-    // }),
-    // yahoo: nodemailer.createTransport({
-    //     host: 'smtp.mail.yahoo.com',
-    //     port: 465,
-    //     secure: true,
-    //     auth: {
-    //         user: constants.YAHOO_USER,
-    //         pass: constants.YAHOO_PASS
-    //     }
-    // }),
+    gmail: nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: constants.AUTH_FROM,
+            pass: constants.GMAIL_PASS
+        }
+    }),
     default: nodemailer.createTransport({
         host: "smtp.mailtrap.io",
 		port: 2525,
@@ -37,18 +25,16 @@ function getTransport(email) {
     const domain = email.split('@')[1]
     if(domain){
         if (domain.includes('gmail.com')){
-            return transports.default
-        } else if (domain.includes('yahoo.com')) {
-            return transports.default
+            return transports.gmail
         } else {
-            return transports.default
+            return transports.gmail
         }
     } else {
         return transports.default
     }
 }
 
-function sendEmail(reason, e, data){ //send an email with instructions to reset token
+function sendEmail(reason, e, data){
 	return new Promise((resolve, reject)=>{
 		if(!e.email){
 			resolve({send: "email_no_send"})
@@ -60,6 +46,9 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
 		let subject = ''
 		let html = ''
         let success_message = "email_send"
+
+        let mailOptions = {}
+
         switch (reason) {
             case "forgot_password":
                 let lang = data.lang || 'ENG'
@@ -113,6 +102,13 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
                         html = html + "<p>Ваш новый пароль: <b>Password001!</b>.</p>"
                         html = html + "<p>После входа в систему, пожалуйста, сбросьте этот пароль на свой собственный.</p>"
                         break
+                    case "ZH":
+                        subject = 'BunnyBet 重置密码'
+                        html = html + "<p>你好 " + user + "</p>"
+                        html = html + "<p>你请求重置密码。</p>"
+                        html = html + "<p>您的新密码是：<b>Password001!</b></p>"
+                        html = html + "<p>登录后，请将此密码更改为您自己的密码。</p>"
+                        break
                     case "ENG":
                     default:
                         subject = 'BunnyBet reset password'
@@ -122,13 +118,33 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
                         html = html + "<p>After you login, please reset this password with your own.</p>"
                         break
                 }
+
                 success_message = "email_send_mailtrap"
+
+                mailOptions = {
+                    from: constants.AUTH_FROM,
+                    to: email,
+                    subject: subject,
+                    html: html
+                }
+
                 break
             case "contact":
                 subject = e.subject
+                html = html + "<p><b>email: </b> " + e.email + "</p>"
                 html = html + "<p><b>About: </b> " + e.about + "</p>"
                 html = html + "<p><b>Message: </b> " + e.message + "</p>"
+
                 success_message = "email_send"
+
+                mailOptions = {
+                    from: email,
+                    to: constants.AUTH_FROM,
+                    subject: subject,
+                    html: html
+                }
+
+                break
             case "withdraw":
                 subject = reason
 
@@ -143,24 +159,31 @@ function sendEmail(reason, e, data){ //send an email with instructions to reset 
                 html = html + "<p><b>city: </b> " + e.city + "</p>"
                 html = html + "<p><b>iban: </b> " + e.iban + "</p>"
 
-                success_message = "withdraw_success"                
-        }			
+                success_message = "withdraw_success"
 
-		let mailOptions = {
-			from: constants.AUTH_FROM,
-			to: email,
-			subject: subject,
-			html: html
-		}
+                mailOptions = {
+                    from: email,
+                    to: constants.AUTH_FROM,
+                    subject: subject,
+                    html: html
+                }
+
+                break             
+        }
         
-		transport.sendMail(mailOptions, (error, info)=>{
-			if (error) {
-			    console.log('error--> ', error, mailOptions)
-				resolve({send: "email_no_send"})
-			} else {
-				resolve({send: success_message})
-			}
-		})
+        if (Object.keys(mailOptions).length === 0) {
+            transport.sendMail(mailOptions, (error, info)=>{                
+                if (error) {
+                    console.log('error--> ', error, mailOptions)
+                    resolve({send: "email_no_send"})
+                } else {
+                    resolve({send: success_message})
+                }
+            })
+        } else {
+            console.log('error--> ', mailOptions)
+            resolve({send: "email_no_send"})
+        }
     })
 }
 

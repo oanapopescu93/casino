@@ -2271,6 +2271,7 @@ a.donation_button{
   margin-bottom: 0px;
 }
 .contact_box .alert{
+  margin-top: 0px;
   margin-bottom: var(--padding);
 }
 .contact_box input, .contact_box textarea{
@@ -2307,6 +2308,7 @@ a.donation_button{
 #contact_form .dropdown .dropdown-toggle{
   width: 100%;
   height: 25px;
+  font-size: 14px;
   line-height: 14px;
 }
 .contact_address{

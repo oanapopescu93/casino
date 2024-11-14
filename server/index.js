@@ -119,7 +119,7 @@ io.on('connection', function(socket) {
             let timestamp = new Date().getTime() + ""
             
             //update user and login tables
-            console.log(uuid, user_found[0].id, user_found[0])
+            
             database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
 						database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
             database_config.name = "db02"
