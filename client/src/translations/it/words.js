@@ -80,6 +80,7 @@ var word_bank = {
     location: "Posizione",
     requirements: "Requisiti",
     responsabilities: "Responsabilità",
+    nice_to_have: "Nice to have",
     marketing: "Marketing", 
 
     under_construction: "In costruzione",
@@ -234,6 +235,7 @@ var word_bank = {
     fill_field_phone: "Please fill phone number",
     fill_field_user: "Please fill username",
     fill_field_pass: "Please fill password",
+    fill_field_cv: "Please fill CV.pdf",
     fill_field_checkboxOne: "Please agree to the Terms and Conditions and Privacy Policy to complete your signup",
     validate_message_name: "Questo non è un nome",
     validate_message_email: "Questa non è un'email valida",

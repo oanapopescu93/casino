@@ -4,9 +4,10 @@ import { translate } from '../../translations/translate'
 import { validateInput } from '../../utils/validate'
 import { isEmpty } from '../../utils/utils'
 import { decryptData } from '../../utils/crypto'
+import Spinner from '../partials/spinner'
 
 function ApplyJob(props) {
-    const { settings, user, data, handleApplyJob } = props
+    const { settings, user, data, applyJobSending, handleApplyJob } = props
     const { lang } = settings
     let userEmail = user.email ? decryptData(user.email) : ""
 
@@ -16,7 +17,7 @@ function ApplyJob(props) {
     const [applyJobError, setApplyError] = useState({
         email: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_email" },
         cv: { fill: true, fill_message: "fill_field_cv", validate: true }
-    })
+    })    
 
     function handleChange(e) {
         setEmail(e.target.value)
@@ -58,7 +59,7 @@ function ApplyJob(props) {
             // Send the email, job ID, and Base64 encoded CV to handleApplyJob
             handleApplyJob({ email, id: data, cv, cvName })
         }
-    }
+    }    
 
     return (
         <div className="applyJob">
@@ -102,6 +103,11 @@ function ApplyJob(props) {
                     </div>
                 )}
             </div>
+            {applyJobSending ? <div className="applyJob_box">
+                {applyJobSending !== "sending" ? <div className="applyJob_box">
+                    <p>{translate({ lang: lang, info: applyJobSending })}</p>
+                </div> : <Spinner size="small" color="black"/>}
+            </div> : null}
             <div className="applyJob_buttons">
                 <Button type="button" id="applyJob_btn_ok" className="mybutton button_fullcolor_dark" onClick={handleSubmit}>
                     {translate({ lang: lang, info: "apply" })}

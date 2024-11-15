@@ -37,12 +37,13 @@ function Popup(props){
     let data = useSelector(state => state.popup.data)
     let size = useSelector(state => state.popup.size)
     let sticky = useSelector(state => state.popup.sticky)
-    let user = useSelector(state => state.auth.user) 
+    let user = useSelector(state => state.auth.user)
 
     let dispatch = useDispatch()    
 
     const [forgotPasswordResult, setForgotPasswordResult] = useState('')
     const [forgotPasswordSending, setForgotPasswordSending] = useState(false)
+    const [applyJobSending, setApplyJobSending] = useState(null)
 
     let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
     let style = template
@@ -100,10 +101,13 @@ function Popup(props){
     }, [socket])
 
     function handleApplyJob(payload){
-        console.log(payload)
+        setApplyJobSending("sending")
         postData('/api/apply_job', payload).then((res)=>{
-            closeModal()
-            console.log(res)
+            setApplyJobSending(res.send)
+            setTimeout(function(){
+                setApplyJobSending(null)
+                closeModal()
+           }, 2000)
         }) 
     }
 
@@ -156,7 +160,7 @@ function Popup(props){
                         case "chatbot":
                             return <ChatBot settings={settings} user={user} />
                         case "apply_job":
-                            return <ApplyJob settings={settings} user={user} data={data} handleApplyJob={(e)=>handleApplyJob(e)} />
+                            return <ApplyJob settings={settings} user={user} data={data} applyJobSending={applyJobSending} handleApplyJob={(e)=>handleApplyJob(e)} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>

@@ -80,6 +80,7 @@ var word_bank = {
     location: "位置",
     requirements: "要求",
     responsabilities: "责任",  
+    nice_to_have: "Nice to have",
     marketing: "市场营销",   
 
     under_construction: "建设中",
@@ -234,6 +235,7 @@ var word_bank = {
     fill_field_phone: "Please fill phone number",
     fill_field_user: "Please fill username",
     fill_field_pass: "Please fill password",
+    fill_field_cv: "Please fill CV.pdf",
     fill_field_checkboxOne: "Please agree to the Terms and Conditions and Privacy Policy to complete your signup",
     validate_message_name: "这不是一个有效的姓名",
     validate_message_email: "这不是一个有效的电子邮件地址",

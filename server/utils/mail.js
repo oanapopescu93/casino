@@ -21,19 +21,15 @@ const transports = {
     })
 }
 
-function getTransport(email) {
-    const domain = email.split('@')[1]
-    if(domain){
-        return transports.gmail
-    } else {
-        return transports.default
-    }
+function getTransport() {
+    // return transports.default
+    return transports.gmail
 }
 
 function sendEmail(reason, e, data){
 	return new Promise((resolve, reject)=>{
 		if(!e.email){
-			resolve({send: "email_no_send1"})
+			resolve({send: "email_no_send"})
 		}
 		let email = e.email
 		const transport = getTransport(email)
@@ -125,7 +121,6 @@ function sendEmail(reason, e, data){
 
                 break
             case "apply_job":
-                console.log('reason, e, data ', e)
                 subject = "Casino job apply"
                 html = html + "<p><b>email: </b> " + email + "</p>"
                 html = html + "<p><b>Job id: </b> " + e.id + "</p>"
@@ -191,8 +186,7 @@ function sendEmail(reason, e, data){
                 break             
         }
         
-        if (mailOptions) {
-            console.log(e)         
+        if (mailOptions) {      
             transport.sendMail(mailOptions, (error, info)=>{                
                 if (error) {
                     console.log('error1--> ', error, mailOptions)
@@ -211,7 +205,7 @@ function sendEmail(reason, e, data){
 function sendVerificationEmail(email, token) {
     return new Promise((resolve, reject) => {
         if (!email) {
-            return resolve({ send: "email_no_send" });
+            return resolve({ send: "email_no_send" })
         }
 
         // Determine the appropriate transport based on the email domain
@@ -220,7 +214,7 @@ function sendVerificationEmail(email, token) {
         // Compose the email subject and HTML body
         const subject = 'Please Verify Your Email Address';
         const html = `<p>Click the link below to verify your email address:</p>
-                      <a href="${process.env.BASE_URL}/verify-email?token=${token}">Verify Email</a>`;
+                      <a href="${process.env.BASE_URL}/verify-email?token=${token}">Verify Email</a>`
 
         // Mail options
         const mailOptions = {
@@ -228,16 +222,16 @@ function sendVerificationEmail(email, token) {
             to: email,
             subject: subject,
             html: html
-        };
+        }
 
         // Send the email using the selected transport
         transport.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log('Error sending verification email:', error);
-                resolve({ send: "email_no_send" });
+                console.log('Error sending verification email:', error)
+                resolve({ send: "email_no_send" })
             } else {
-                console.log('Verification email sent:', info.response);
-                resolve({ send: "email_send" });
+                console.log('Verification email sent:', info.response)
+                resolve({ send: "email_send" })
             }
         });
     });

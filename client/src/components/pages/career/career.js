@@ -54,6 +54,7 @@ function CareerList(props){
                                         return <>
                                             {filter.map((item, i)=>{
                                                     let requirements = item.requirements
+                                                    let nice_to_have = item.nice_to_have
                                                     let responsabilities = item.responsabilities
                                                     return <div className="career_box" key={i}>
                                                         <div className="career_info career_title"><h3><span><b>{translate({lang: lang, info: 'title'})}: </b></span><span>{item.title}</span></h3></div>
@@ -66,11 +67,19 @@ function CareerList(props){
                                                                 })}
                                                             </ul>
                                                         </div>
+                                                        {nice_to_have && nice_to_have.length > 0 ? <div className="career_info career_nice_to_have">
+                                                            <h4><b>{translate({lang: lang, info: 'nice_to_have'})}: </b></h4>
+                                                            <ul>
+                                                                {nice_to_have.map((item2, j)=>{
+                                                                    return <li key={j}>{item2}</li>
+                                                                })}
+                                                            </ul>
+                                                        </div> : null}
                                                         <div className="career_info career_responsabilities">
                                                             <h4><b>{translate({lang: lang, info: 'responsabilities'})}: </b></h4>
                                                             <ul>
-                                                                {responsabilities.map((item2, k)=>{
-                                                                    return <li key={k}> {item2}</li>
+                                                                {responsabilities.map((item3, k)=>{
+                                                                    return <li key={k}> {item3}</li>
                                                                 })}
                                                             </ul>
                                                         </div>

@@ -2030,7 +2030,11 @@ a.donation_button{
 .career_info h4{
   margin-bottom: var(--padding_small);
 }
-.career_info.career_requirements li, .career_info.career_responsabilities li{
+.career_info ul{
+  padding-left: 10px;
+}
+.career_info li{
+  display: list-item;
   list-style: inside circle;
 }
 .career_box .apply_button{

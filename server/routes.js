@@ -58,7 +58,6 @@ router.post("/api/payment", jsonParser, (req, res, next) => {
 })
 
 router.post("/api/withdraw", jsonParser, (req, res, next) => {
-  console.log(req.body)
   const { uuid, amount, method, currency, name, phone, email, country, city, iban, status } = req.body
   if(uuid){
     database_config.sql = "SELECT * FROM casino_user;"
