@@ -31,8 +31,7 @@ var word_bank = {
     poker_5_card_draw: "5 Card Draw",
 
     error: "Error",
-    all_rights_reserved: "All rights reserved",   
-    no_career: "No jobs available. But feel free to send us your CV.",
+    all_rights_reserved: "All rights reserved",
 
     cookies_modal_title: "Cookies Notification",
     cookies_modal_text: "In order to offer you the most relevant information and for optimal system performance, we use cookies that collect information from your game activity.",
@@ -401,6 +400,9 @@ var word_bank = {
     email_verify_success: "Email verified successfully",
     email_already_verified: "Email has already been verified",
     email_send_validation: "Email was sent successfully",
+
+    // Apply Job
+    apply: "Apply"
 }
 
 export const wordsEng = (info)=>{

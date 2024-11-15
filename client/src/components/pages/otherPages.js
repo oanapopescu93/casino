@@ -31,15 +31,7 @@ function OtherPages(props) {
                 case "policy_privacy":
                     return <PolicyPrivacy {...props} />
                 case "Career":
-                    let list_career = []                  
-                    if(home && home.career && home.career[0]){
-                        if(home.career[0][lang]){
-                            list_career = home.career[0][lang]
-                        } else {
-                            list_career = home.career[0]["ENG"]
-                        }
-                    }
-                    return <Career {...props} list={list_career} />
+                    return <Career {...props} list={home && home.career ?home.career : []} />
                 case "Questions":
                     let list_questions = []                  
                     if(home && home.questions && home.questions[0]){

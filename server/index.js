@@ -5,8 +5,8 @@ const bodyParser = require('body-parser')
 var http = require('http').createServer(app)
 var io = require('socket.io')(http)
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false })) 
+app.use(bodyParser.json({ limit: '50mb' })); // Allow JSON bodies up to 50MB
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' })); // Allow URL-encoded bodies up to 50MB
 
 const dotenv = require('dotenv')
 const path = require('path')

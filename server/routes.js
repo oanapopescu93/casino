@@ -21,7 +21,7 @@ var database_config = constants.DATABASE[0]
 
 const database = require('./database/mysql')
 
-var jsonParser = bodyParser.json() 
+var jsonParser = bodyParser.json({ limit: '50mb' });
 router.use(express.static(path.resolve(__dirname, '../client/build')))
 
 router.post("/api/home", jsonParser, (req, res, next) => {
@@ -142,6 +142,17 @@ router.post("/api/verify-email", jsonParser, (req, res, next) => {
     console.log('[error]','verify-email-/no_token--> ', token)
     res.send({error: true, send: 2}) //no_token
   }
+})
+
+router.post("/api/apply_job", jsonParser, (req, res, next) => {
+  sendEmail('apply_job', req.body).then((data)=>{
+    try{
+      res.send(data)
+    }catch(e){
+      console.log('[error]','apply_job--> ', e)
+      res.send({send: "email_no_send"})
+    }
+  }) 
 })
 
 router.get('*', (req, res) => {

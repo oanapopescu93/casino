@@ -31,8 +31,7 @@ var word_bank = {
     poker_5_card_draw: "5 Card Draw",
 
     error: "Fehler",
-    all_rights_reserved: "Alle Rechte vorbehalten",   
-    no_career: "Keine Stellen verfügbar. Aber senden Sie uns gerne Ihren Lebenslauf.",
+    all_rights_reserved: "Alle Rechte vorbehalten",
     
     cookies_modal_title: "Cookie-Benachrichtigung",
     cookies_modal_text: "Um Ihnen die relevantesten Informationen und eine optimale Systemleistung bieten zu können, verwenden wir Cookies, die Informationen über Ihre Spielaktivitäten sammeln.",
@@ -401,6 +400,9 @@ var word_bank = {
     email_verify_success: "Email verified successfully",
     email_already_verified: "Email has already been verified",
     email_send_validation: "Email was sent successfully",
+
+    // Apply Job
+    apply: "Apply"
 }
 
 export const wordsDe = (info)=>{

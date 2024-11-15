@@ -2015,6 +2015,8 @@ a.donation_button{
 	overflow-y: auto;
 }
 .career_box{
+  position: relative;
+  z-index: 1;
 	padding: var(--padding_small) 0px;
 	border-bottom: solid 1px var(--color);
 }
@@ -2025,12 +2027,17 @@ a.donation_button{
 .career_info{
   margin-bottom: var(--padding);
 }
-.career_info.career_requirements, .career_info.career_responsabilities
-.career_info.career_requirements h4, .career_info.career_responsabilities h4{
+.career_info h4{
   margin-bottom: var(--padding_small);
 }
 .career_info.career_requirements li, .career_info.career_responsabilities li{
   list-style: inside circle;
+}
+.career_box .apply_button{
+  position: absolute;
+  z-index: 1;
+  top: var(--padding);
+  right: var(--padding);
 }
 
 /* QUESTIONS */
@@ -4191,6 +4198,11 @@ a.donation_button{
 /* Email verification */
 .email_verification_box p{
   margin: var(--padding) 0px;
+}
+
+/* Apply for job */
+.applyJob_box{
+  margin-bottom: var(--padding);
 }
 
 /* media */

@@ -32,7 +32,6 @@ var word_bank = {
 
     error: "错误",
     all_rights_reserved: "版权所有",
-    no_career: "目前没有可用职位。但请随时将您的简历发送给我们。",
 
     cookies_modal_title: "Cookies通知",
     cookies_modal_text: "为了向您提供最相关的信息并实现最佳的系统性能，我们使用收集您游戏活动信息的Cookie。",
@@ -401,6 +400,9 @@ var word_bank = {
     email_verify_success: "Email verified successfully",
     email_already_verified: "Email has already been verified",
     email_send_validation: "Email was sent successfully",
+
+    // Apply Job
+    apply: "Apply"
 }
 
 export const wordsZh = (info)=>{

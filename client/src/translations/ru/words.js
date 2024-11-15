@@ -31,8 +31,7 @@ var word_bank = {
     poker_5_card_draw: "5 Карточный Дро",
 
     error: "Ошибка",
-    all_rights_reserved: "Все права защищены",   
-    no_career: "Вакансий нет. Но не стесняйтесь отправить нам свое резюме.",
+    all_rights_reserved: "Все права защищены",
 
     cookies_modal_title: "Уведомление о файлах cookie",
     cookies_modal_text: "Для предоставления вам наиболее актуальной информации и обеспечения оптимальной производительности системы мы используем файлы cookie, которые собирают информацию о вашей игровой активности.",
@@ -401,6 +400,9 @@ var word_bank = {
     email_verify_success: "Email verified successfully",
     email_already_verified: "Email has already been verified",
     email_send_validation: "Email was sent successfully",
+
+    // Apply Job
+    apply: "Apply"
 }
 
 export const wordsRu = (info)=>{

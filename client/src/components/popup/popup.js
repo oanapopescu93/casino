@@ -24,6 +24,8 @@ import PaymentSuccess from "./paymentSuccess"
 import { changeGamePage, changePage, changeGame } from "../../reducers/page"
 import OrderDetails from "./orderDetails"
 import ChatBot from "./chatbot"
+import ApplyJob from "./applyJob"
+import { postData } from "../../utils/utils"
 
 function Popup(props){
     const {socket, home, settings} = props
@@ -97,6 +99,14 @@ function Popup(props){
         })
     }, [socket])
 
+    function handleApplyJob(payload){
+        console.log(payload)
+        postData('/api/apply_job', payload).then((res)=>{
+            closeModal()
+            console.log(res)
+        }) 
+    }
+
     return <>
         {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + style} show={open} onHide={closeModal} size={size} centered> 
             {title !== "" ? <Modal.Header>
@@ -145,6 +155,8 @@ function Popup(props){
                             return <OrderDetails settings={settings} data={data} />
                         case "chatbot":
                             return <ChatBot settings={settings} user={user} />
+                        case "apply_job":
+                            return <ApplyJob settings={settings} user={user} data={data} handleApplyJob={(e)=>handleApplyJob(e)} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>

@@ -24,11 +24,6 @@ const transports = {
 function getTransport(email) {
     const domain = email.split('@')[1]
     if(domain){
-        // if (domain.includes('gmail.com')){
-        //     return transports.gmail
-        // } else {
-        //     return transports.default
-        // }
         return transports.gmail
     } else {
         return transports.default
@@ -38,9 +33,8 @@ function getTransport(email) {
 function sendEmail(reason, e, data){
 	return new Promise((resolve, reject)=>{
 		if(!e.email){
-			resolve({send: "email_no_send"})
-		}		
-		let user = e.user
+			resolve({send: "email_no_send1"})
+		}
 		let email = e.email
 		const transport = getTransport(email)
 
@@ -48,7 +42,7 @@ function sendEmail(reason, e, data){
 		let html = ''
         let success_message = "email_send"
 
-        let mailOptions = {}
+        let mailOptions = null     
 
         switch (reason) {
             case "forgot_password":
@@ -56,56 +50,56 @@ function sendEmail(reason, e, data){
                 switch (lang) {
                     case "DE":
                         subject = 'BunnyBet Passwort zurücksetzen'
-                        html = html + "<p>Hallo " + user + "</p>"
+                        html = html + "<p>Hallo " + e.user + "</p>"
                         html = html + "<p>Sie haben eine Passwortrücksetzung angefordert.</p>"
                         html = html + "<p>Ihr neues Passwort ist: <b>Password001!</b></p>"
                         html = html + "<p>Nachdem Sie sich angemeldet haben, setzen Sie bitte dieses Passwort auf Ihr eigenes zurück.</p>"
                         break
                     case "ES":
                         subject = 'BunnyBet restablecer contraseña'
-                        html = html + "<p>Hola " + user + "</p>"
+                        html = html + "<p>Hola " + e.user + "</p>"
                         html = html + "<p>Has solicitado restablecer tu contraseña.</p>"
                         html = html + "<p>Su nueva contraseña es: <b>Password001!</b></p>"
                         html = html + "<p>Después de iniciar sesión, por favor restablezca esta contraseña con la suya propia.</p>"
                         break
                     case "FR":
                         subject = 'BunnyBet réinitialiser le mot de passe'
-                        html = html + "<p>Bonjour " + user + "</p>"
+                        html = html + "<p>Bonjour " + e.user + "</p>"
                         html = html + "<p>Vous avez demandé à réinitialiser votre mot de passe.</p>"
                         html = html + "<p>Votre nouveau mot de passe est : <b>Password001!</b></p>"
                         html = html + "<p>Après vous être connecté, veuillez réinitialiser ce mot de passe avec le vôtre.</p>"
                         break
                     case "IT":
                         subject = 'BunnyBet reimposta password'
-                        html = html + "<p>Ciao " + user + "</p>"
+                        html = html + "<p>Ciao " + e.user + "</p>"
                         html = html + "<p>Hai richiesto di resettare la tua password.</p>"
                         html = html + "<p>La tua nuova password è: <b>Password001!</b></p>"
                         html = html + "<p>Dopo aver effettuato l'accesso, si prega di reimpostare questa password con la propria.</p>"
                         break
                     case "PT":
                         subject = 'BunnyBet redefinir senha'
-                        html = html + "<p>Olá " + user + "</p>"
+                        html = html + "<p>Olá " + e.user + "</p>"
                         html = html + "<p>Você solicitou a redefinição de sua senha.</p>"
                         html = html + "<p>Sua nova senha é: <b>Password001!</b></p>"
                         html = html + "<p>Depois de fazer login, por favor redefina esta senha com a sua própria.</p>"
                         break
                     case "RO":
                         subject = 'BunnyBet resetare parolă'
-                        html = html + "<p>Bună " + user + "</p>"
+                        html = html + "<p>Bună " + e.user + "</p>"
                         html = html + "<p>Ai cerut resetarea parolei tale.</p>"
                         html = html + "<p>Noua ta parolă este: <b>Password001!</b></p>"
                         html = html + "<p>După autentificare, vă rugăm să resetați această parolă cu cea proprie.</p>"
                         break
                     case "RU":
                         subject = 'BunnyBet сброс пароля'
-                        html = html + "<p>Привет " + user + "</p>"
+                        html = html + "<p>Привет " + e.user + "</p>"
                         html = html + "<p>Вы запросили сброс пароля.</p>"
                         html = html + "<p>Ваш новый пароль: <b>Password001!</b>.</p>"
                         html = html + "<p>После входа в систему, пожалуйста, сбросьте этот пароль на свой собственный.</p>"
                         break
                     case "ZH":
                         subject = 'BunnyBet 重置密码'
-                        html = html + "<p>你好 " + user + "</p>"
+                        html = html + "<p>你好 " + e.user + "</p>"
                         html = html + "<p>你请求重置密码。</p>"
                         html = html + "<p>您的新密码是：<b>Password001!</b></p>"
                         html = html + "<p>登录后，请将此密码更改为您自己的密码。</p>"
@@ -113,7 +107,7 @@ function sendEmail(reason, e, data){
                     case "ENG":
                     default:
                         subject = 'BunnyBet reset password'
-                        html = html + "<p>Hi " + user + "</p>"
+                        html = html + "<p>Hi " + e.user + "</p>"
                         html = html + "<p>You requested to reset your password.</p>"
                         html = html + "<p>You new password is: <b>Password001!</b>.</p>"
                         html = html + "<p>After you login, please reset this password with your own.</p>"
@@ -130,6 +124,31 @@ function sendEmail(reason, e, data){
                 }
 
                 break
+            case "apply_job":
+                console.log('reason, e, data ', e)
+                subject = "Casino job apply"
+                html = html + "<p><b>email: </b> " + email + "</p>"
+                html = html + "<p><b>Job id: </b> " + e.id + "</p>"
+
+                const attachments = e.cv ? [
+                    {   // encoded string as an attachment
+                        filename: e.cvName,
+                        content: e.cv,
+                        encoding: 'base64'
+                    },
+                ] : [];
+
+                success_message = "email_send"
+
+                mailOptions = {
+                    from: email,
+                    to: constants.AUTH_FROM,
+                    subject,
+                    html,
+                    attachments
+                }
+
+                break
             case "contact":
                 subject = e.subject
                 html = html + "<p><b>email: </b> " + e.email + "</p>"
@@ -141,8 +160,8 @@ function sendEmail(reason, e, data){
                 mailOptions = {
                     from: email,
                     to: constants.AUTH_FROM,
-                    subject: subject,
-                    html: html
+                    subject,
+                    html
                 }
 
                 break
@@ -165,24 +184,25 @@ function sendEmail(reason, e, data){
                 mailOptions = {
                     from: email,
                     to: constants.AUTH_FROM,
-                    subject: subject,
-                    html: html
+                    subject,
+                    html
                 }
 
                 break             
         }
         
-        if (Object.keys(mailOptions).length === 0) {
+        if (mailOptions) {
+            console.log(e)         
             transport.sendMail(mailOptions, (error, info)=>{                
                 if (error) {
-                    console.log('error--> ', error, mailOptions)
+                    console.log('error1--> ', error, mailOptions)
                     resolve({send: "email_no_send"})
                 } else {
                     resolve({send: success_message})
                 }
             })
-        } else {
-            console.log('error--> ', mailOptions)
+        } else {            
+            console.log('error2--> ', mailOptions)
             resolve({send: "email_no_send"})
         }
     })

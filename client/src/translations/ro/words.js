@@ -31,8 +31,7 @@ var word_bank = {
     poker_5_card_draw: "5 Card Draw",
 
     error: "Eroare",
-    all_rights_reserved: "Toate drepturile rezervate",  
-    no_career: "Nu există joburi disponibile. Puteți totuși să ne trimiteți CV-ul dumneavoastră.",  
+    all_rights_reserved: "Toate drepturile rezervate",
 
     cookies_modal_title: "Notificări de cookies",
     cookies_modal_text: "Pentru a vă oferi cele mai relevante informații și pentru o performanță optimă a sistemului, noi folosim cookies pentru a colecta informații din activitatea dumneavoastră.",
@@ -401,6 +400,9 @@ var word_bank = {
     email_verify_success: "Email verified successfully",
     email_already_verified: "Email has already been verified",
     email_send_validation: "Email was sent successfully",
+
+    // Apply Job
+    apply: "Apply"
 }
 
 export const wordsRo = (info)=>{

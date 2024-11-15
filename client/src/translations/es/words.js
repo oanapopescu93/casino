@@ -32,8 +32,6 @@ var word_bank = {
 
     error: "Error",
     all_rights_reserved: "Todos los derechos reservados",
-    no_career: "No hay trabajos disponibles. Pero puedes enviarnos tu CV.",
-
     cookies_modal_title: "Notificación de cookies",
     cookies_modal_text: "Con el fin de ofrecerte la información más relevante y un rendimiento óptimo del sistema, utilizamos cookies que recopilan información de tu actividad de juego.",
 
@@ -401,6 +399,9 @@ var word_bank = {
     email_verify_success: "Email verified successfully",
     email_already_verified: "Email has already been verified",
     email_send_validation: "Email was sent successfully",
+
+    // Apply Job
+    apply: "Apply"
 }
 
 export const wordsEs = (info)=>{
