@@ -24,11 +24,12 @@ const transports = {
 function getTransport(email) {
     const domain = email.split('@')[1]
     if(domain){
-        if (domain.includes('gmail.com')){
-            return transports.gmail
-        } else {
-            return transports.gmail
-        }
+        // if (domain.includes('gmail.com')){
+        //     return transports.gmail
+        // } else {
+        //     return transports.default
+        // }
+        return transports.gmail
     } else {
         return transports.default
     }
