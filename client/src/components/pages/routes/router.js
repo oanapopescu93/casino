@@ -10,7 +10,7 @@ const RouterComponent = (props) => {
           <Route path="/api/paypal/success" element={<Home {...props}/>} />
           <Route path="/api/paypal/cancel" element={<Home {...props}/>} />
           <Route path="/api/crypto/success" element={<Home {...props}/>} />
-          <Route path="/api/crypto/cancel" element={<Home {...props}/>} />
+          <Route path="/api/crypto/cancel" element={<Home {...props}/>} />          
           <Route path="*" element={<NoMatch {...props}/>} />
         </Routes>
       </div>

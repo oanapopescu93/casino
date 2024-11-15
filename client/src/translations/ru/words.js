@@ -41,6 +41,7 @@ var word_bank = {
     sign_up: "Зарегистрироваться",
     signin_error: "Пользователь не существует",
     signup_error: "Произошла ошибка при регистрации. Пожалуйста, отправьте эту ошибку на " + admin_email + " или попробуйте снова позже.",
+    signup_error_email_verification: "Your account has not been verified. Check your email.",
     email_yes_user_no_error: "Этот адрес электронной почты уже был использован",
     email_yes_user_yes_error: "Пользователь уже существует",
     user: "юзер",
@@ -230,6 +231,11 @@ var word_bank = {
     november: "Ноябрь",
     december: "Декабрь",
     fill_field: "Пожалуйста, заполните это поле",
+    fill_field_email: "Please fill email",
+    fill_field_phone: "Please fill phone number",
+    fill_field_user: "Please fill username",
+    fill_field_pass: "Please fill password",
+    fill_field_checkboxOne: "Please agree to the Terms and Conditions and Privacy Policy to complete your signup",
     validate_message_name: "Это не имя",
     validate_message_email: "Это не действительный адрес электронной почты",
     validate_message_phone: "Это не действительный номер телефона",
@@ -385,6 +391,16 @@ var word_bank = {
     greetings01: "Здравствуйте",
     greetings02: "Я здесь, чтобы ответить на все ваши вопросы о BunnyBet.",
     error_chatbot: "Я не понимаю ваш вопрос.",
+
+    // Email verification
+    email_verification: "Email verification",
+    verifying: "Verifying",
+    no_token: "No token",
+    error_during_verification: "Error during verification",
+    invalid_expired_token: "Invalid or expired token",
+    email_verify_success: "Email verified successfully",
+    email_already_verified: "Email has already been verified",
+    email_send_validation: "Email was sent successfully",
 }
 
 export const wordsRu = (info)=>{

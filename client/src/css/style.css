@@ -236,7 +236,7 @@ textarea:focus, input:focus{
   padding: var(--padding);
   border-radius: var(--radius);
   text-align: center;
-  height: 180px;
+  height: 200px;
   position: relative;
   z-index: 1;
 }
@@ -4188,6 +4188,11 @@ a.donation_button{
   line-height: 16px;
 }
 
+/* Email verification */
+.email_verification_box p{
+  margin: var(--padding) 0px;
+}
+
 /* media */
 @media (max-width: 1600px){
 	.shop_shader{
@@ -4531,7 +4536,7 @@ a.donation_button{
     height: 420px;
   }
   .sign_box{
-    height: 200px;
+    height: 220px;
   }
   #splash_screen #logo_splash{
     width: 30px;

@@ -7,8 +7,9 @@ import rabbit_stand_left from '../../../img/rabbit_move/rabbit_stand_left.png'
 import rabbit_stand_right from '../../../img/rabbit_move/rabbit_stand_right.png'
 import Language from '../../settings/language'
 
-function NoMatch(props) {  
-    const {lang} = props
+function NoMatch(props) {
+    const {settings} = props
+    const {lang} = settings
 
     function handleHandleExit(){
         window.location.href = "/"

@@ -32,7 +32,7 @@ function Home(props) {
         handleWhackARabbit()
     }
     function handleWhackARabbit(){
-        if(!isEmpty(user.logs) && user.logs == 0){            
+        if(!isEmpty(user.logs) && parseInt(user.logs) == 0){            
             let payload = {
                 open: true,
                 template: "whack_a_rabbit",

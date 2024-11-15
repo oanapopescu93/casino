@@ -187,6 +187,42 @@ function sendEmail(reason, e, data){
     })
 }
 
+function sendVerificationEmail(email, token) {
+    return new Promise((resolve, reject) => {
+        if (!email) {
+            return resolve({ send: "email_no_send" });
+        }
+
+        // Determine the appropriate transport based on the email domain
+        const transport = getTransport(email);
+
+        // Compose the email subject and HTML body
+        const subject = 'Please Verify Your Email Address';
+        const html = `<p>Click the link below to verify your email address:</p>
+                      <a href="${process.env.BASE_URL}/verify-email?token=${token}">Verify Email</a>`;
+
+        // Mail options
+        const mailOptions = {
+            from: constants.AUTH_FROM,
+            to: email,
+            subject: subject,
+            html: html
+        };
+
+        // Send the email using the selected transport
+        transport.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log('Error sending verification email:', error);
+                resolve({ send: "email_no_send" });
+            } else {
+                console.log('Verification email sent:', info.response);
+                resolve({ send: "email_send" });
+            }
+        });
+    });
+}
+
 module.exports = {
 	sendEmail,
+    sendVerificationEmail,
 }

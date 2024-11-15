@@ -12,6 +12,7 @@ function SignUp(props) {
     let isMinor = useSelector(state => state.auth.isMinor)
     const [email, setEmail] = useState('')
     const [user, setUser] = useState('')
+    const [phone, setPhone] = useState('')
     const [pass, setPass] = useState('')
     const [visible, setVisible] = useState(false)
     let dispatch = useDispatch()
@@ -23,6 +24,9 @@ function SignUp(props) {
                 break
             case "user":
                 setUser(e.target.value)
+                break
+            case "phone":
+                setPhone(e.target.value)
                 break
             case "pass":
                 setPass(e.target.value)
@@ -45,7 +49,7 @@ function SignUp(props) {
 
     function handleSubmit(e){
         e.preventDefault()
-        props.signSubmit({emit: 'signup_send', payload: {email, user, pass}})
+        props.signSubmit({emit: 'signup_send', payload: {email, phone, user, pass}})
     }
 
     useEffect(() => {
@@ -75,6 +79,14 @@ function SignUp(props) {
                 </Col>
                 <Col sm={8} className="input_container">
                     <input placeholder={translate({lang: lang, info: "email"})} className="input_light" type="text" value={email} onChange={(e)=>{handleChange('email', e)}}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={4} className="label_container d-none d-sm-block">
+                    <div className="label">{translate({lang: lang, info: "phone"})}</div>
+                </Col>
+                <Col sm={8} className="input_container">
+                    <input placeholder={translate({lang: lang, info: "phone"})} className="input_light" type="text" value={phone} onChange={(e)=>{handleChange('phone', e)}}/>
                 </Col>
             </Row>
             <Row>

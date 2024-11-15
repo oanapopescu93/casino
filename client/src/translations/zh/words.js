@@ -41,6 +41,7 @@ var word_bank = {
     sign_up: "注册",
     signin_error: "用户不存在",
     signup_error: "注册时出现错误。请将此错误发送至 " + admin_email + " 或稍后再试。",
+    signup_error_email_verification: "Your account has not been verified. Check your email.",
     email_yes_user_no_error: "该电子邮件已被使用",
     email_yes_user_yes_error: "用户已存在",
     user: "用户名",
@@ -230,6 +231,11 @@ var word_bank = {
     november: "十一月",
     december: "十二月",
     fill_field: "请填写此字段",
+    fill_field_email: "Please fill email",
+    fill_field_phone: "Please fill phone number",
+    fill_field_user: "Please fill username",
+    fill_field_pass: "Please fill password",
+    fill_field_checkboxOne: "Please agree to the Terms and Conditions and Privacy Policy to complete your signup",
     validate_message_name: "这不是一个有效的姓名",
     validate_message_email: "这不是一个有效的电子邮件地址",
     validate_message_phone: "这不是一个有效的电话号码",
@@ -385,6 +391,16 @@ var word_bank = {
     greetings01: "你好",
     greetings02: "我在这里回答你关于BunnyBet的所有问题。",
     error_chatbot: "我不明白你的问题。",
+
+    // Email verification
+    email_verification: "Email verification",
+    verifying: "Verifying",
+    no_token: "No token",
+    error_during_verification: "Error during verification",
+    invalid_expired_token: "Invalid or expired token",
+    email_verify_success: "Email verified successfully",
+    email_already_verified: "Email has already been verified",
+    email_send_validation: "Email was sent successfully",
 }
 
 export const wordsZh = (info)=>{

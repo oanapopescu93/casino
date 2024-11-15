@@ -103,6 +103,47 @@ router.post("/api/withdraw", jsonParser, (req, res, next) => {
   }
 })
 
+// 2: "no_token",
+// 3: "error_during_verification",
+// 4: "invalid_expired_token",
+// 5: "email_verify_success"
+// 6: "email_already_verified"
+
+router.post("/api/verify-email", jsonParser, (req, res, next) => {
+  const { token } = req.body
+  if(token){
+    try{
+      database_config.sql = 'SELECT * FROM casino_user WHERE verification_token = "' + token + '"'
+      database_config.name = "db0001"
+      database(database_config).then(function(result){
+        if(result && result.length > 0){
+          if(result[0].is_verified){
+            //email_already_verified
+            res.send({success: true, send: 6})
+          } else {
+            //email_verify_success
+            res.send({success: true, send: 5})
+
+            // update is_verified to 1
+            database_config.sql = 'UPDATE casino_user SET is_verified=1 WHERE verification_token = "' + token + '"'
+            database_config.name = "db0002"
+            database(database_config).then(function(){})
+          }       
+        } else {
+          console.log('[error]','verify-email-invalid_expired_token--> ', token)
+          res.send({error: true, send: 4}) //invalid_expired_token
+        }
+      })
+    }catch(e){
+      console.log('[error]','verify-email-error_during_verification--> ', e)
+      res.send({error: true, send: 3}) //error_during_verification
+    }    
+  } else {
+    console.log('[error]','verify-email-/no_token--> ', token)
+    res.send({error: true, send: 2}) //no_token
+  }
+})
+
 router.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })

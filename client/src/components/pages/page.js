@@ -11,6 +11,7 @@ import { checkWinterMonths, checkOccasion } from '../../utils/special_occasions'
 import Snowflakes from '../partials/special_occasions/winter/snowflakes'
 import Lights from '../partials/special_occasions/christmas/lights'
 import RouterComponent from './routes/router'
+import VerifyEmail from './routes/verifyEmail'
 
 function Page(props) {    
     let home = useSelector(state => state.home)
@@ -23,6 +24,15 @@ function Page(props) {
     const [showWinter, setShowWinter] = useState(false)
 	const [showChristmas, setShowChristmas] = useState(false)
     const [exchangeRates, setExchangeRates] = useState(null)
+    const [verifyEmail, setVerifyEmail] = useState(1)
+    const verifyEmailTexts = {
+        1: "verifying",
+        2: "no_token",
+        3: "error_during_verification",
+        4: "invalid_expired_token",
+        5: "email_verify_success",
+        6: "email_already_verified"
+    }
 
     let uuid = user.uuid ? user.uuid : ''
     let dispatch = useDispatch()
@@ -103,28 +113,62 @@ function Page(props) {
         }
     }
 
+    useEffect(() => {         
+        checkVerifyEmail()
+    }, [])
+
+    const checkVerifyEmail = async () => {        
+        //http://localhost:8088/verify-email?token=afc9eb21d1e9a37b77fee017c47924480e904d17    
+
+        if(window.location.pathname.includes('/verify-email')){
+            const url = new URL(window.location.href)
+            let token = url.searchParams.get('token')             
+            if(token){
+                setVerifyEmail(1)
+                postData('/api/verify-email', {token}).then((data)=>{
+                    if(data && data.send){
+                        setVerifyEmail(data.send)
+                    } else {
+                        setVerifyEmail(3)
+                    }
+                }).catch((error) => {
+                    console.error('Error:', error)
+                })
+            } else {
+                setVerifyEmail(0)
+            }
+        } else {
+            setVerifyEmail(0)
+        }       
+    }
+
     return <>
         {(() => {
-            if(isEmpty(uuid)){
-                if(loaded){
-                    return <Sign {...props} settings={settings}/>
-                } else {
-                    return <Splash {...props} settings={settings} progressNumber={progressNumber} />
-                }
+            if(verifyEmail > 0){
+                return <VerifyEmail {...props} settings={settings} verifyEmail={verifyEmail} verifyEmailTexts={verifyEmailTexts}/>
             } else {
-                if(home.loaded){
-                    return <RouterComponent 
-                        {...props} 
-                        home={home} 
-                        page={page} 
-                        user={user} 
-                        settings={settings}
-                        exchange_rates={exchangeRates} 
-                    />
+                if(isEmpty(uuid)){
+                    if(loaded){
+                        return <Sign {...props} settings={settings}/>
+                    } else {
+                        return <Splash {...props} settings={settings} progressNumber={progressNumber} />
+                    }
                 } else {
-                    return <Loader lang={settings.lang} theme={settings.theme}/>
+                    if(home.loaded){
+                        return <RouterComponent 
+                            {...props} 
+                            home={home} 
+                            page={page} 
+                            user={user} 
+                            settings={settings}
+                            exchange_rates={exchangeRates} 
+                        />
+                    } else {
+                        return <Loader lang={settings.lang} theme={settings.theme}/>
+                    }
                 }
             }
+            
         })()} 
         {(() => {
             if((isEmpty(uuid) && loaded) || (!isEmpty(uuid) && home.loaded)){ //this is only for Sign or Home

@@ -6,14 +6,14 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 function SignIn(props) {
     const {lang} = props
-    const [user, setUser] = useState('')
+    const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
     const [visible, setVisible] = useState(false)
 
     function handleChange(type, e){
         switch(type) {
-            case "user":
-                setUser(e.target.value)
+            case "email":
+                setEmail(e.target.value)
                 break
             case "pass":
                 setPass(e.target.value)
@@ -32,11 +32,11 @@ function SignIn(props) {
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
         }
-    }, [user, pass])
+    }, [email, pass])
 
     function handleSubmit(e){
         e.preventDefault()
-        props.signSubmit({emit: 'signin_send', payload: {user, pass}})
+        props.signSubmit({emit: 'signin_send', payload: {email, pass}})
     }
 
     function handleVisible(){
@@ -47,10 +47,10 @@ function SignIn(props) {
         <Form>
             <Row>
                 <Col sm={4} className="label_container d-none d-sm-block">
-                    <div className="label">{translate({lang: lang, info: "user"})}</div>
+                    <div className="label">{translate({lang: lang, info: "email"})}</div>
                 </Col>
                 <Col sm={8} className="input_container">
-                    <input placeholder={translate({lang: lang, info: "user"})} className="input_light" type="text" value={user} onChange={(e)=>{handleChange('user', e)}}/>
+                    <input placeholder={translate({lang: lang, info: "email"})} className="input_light" type="text" value={email} onChange={(e)=>{handleChange('email', e)}}/>
                 </Col>
             </Row>
             <Row>

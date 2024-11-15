@@ -13,6 +13,7 @@ import SignUp from './signUp'
 import { changeUser } from '../../reducers/auth'
 import { isEmpty, setCookie } from '../../utils/utils'
 import Loader from '../partials/loader'
+import { validateInput } from '../../utils/validate'
 
 function Sign(props) {
     const {settings, socket} = props
@@ -24,22 +25,23 @@ function Sign(props) {
     let isMinor = useSelector(state => state.auth.isMinor)
 
     const [visible, setVisible] = useState('signIn')
-    const [errorEmail, setErrorEmail] = useState(false)
-    const [errorUser, setErrorUser] = useState(false)
-    const [errorPass, setErrorPass] = useState(false)
-    const [errorAgree, setErrorAgree] = useState(false)
+    const errors_default = {
+        email: { fill: true, fill_message: "fill_field_email", validate: true, validate_message: "validate_message_email" },
+        phone: { fill: true, fill_message: "fill_field_phone", validate: true, validate_message: "validate_message_phone" },
+        user: { fill: true, fill_message: "fill_field_user", validate: true },
+        pass: { fill: true, fill_message: "fill_field_pass", validate: true },
+        checkboxOne: { fill: true, fill_message: "fill_field_checkboxOne", validate: true },
+    }
+    const [signError, setSignError] = useState(errors_default)
     const [signIn, setSignIn] = useState('active')
     const [signUp, setSignUp] = useState('')
     const [checkboxOne, setCheckboxOne] = useState(false)
     const [loaded, setLoaded] = useState(true)
     const [date, setDate] = useState('')
 
-    function handleClick(choice){
-        setErrorEmail(false)
-        setErrorUser(false)
-        setErrorPass(false)
-        setErrorAgree(false)
+    function handleClick(choice){        
         setVisible(choice)
+        setSignError(errors_default)
         if(choice === "signIn"){
 			setSignIn('active')
 			setSignUp('')
@@ -49,39 +51,50 @@ function Sign(props) {
 		}
     }
 
-    function signSubmit(data){
-        setErrorEmail(false)
-        setErrorUser(false)
-        setErrorPass(false)
-        setErrorAgree(false)
-        if(!checkPayload(data.payload)){
+    function signSubmit(data){        
+        if(!validateForm(data.payload)){
             setLoaded(false)
             socket.emit(data.emit, data.payload)
         }
     }
 
-    function checkPayload(data){
-        let error = false
-        if(typeof data.user != "undefined" && (data.user === "")){
-            error = true
-            setErrorUser(true)
+    function validateForm(payload) {
+        const { email, phone, user, pass } = payload
+        let errors = errors_default
+
+        if (isEmpty(email)) {
+            errors.email.fill = false
+        } 
+        if (isEmpty(pass)) {
+            errors.pass.fill = false
         }
-        if(typeof data.pass != "undefined" && (data.pass === "")){
-            error = true
-            setErrorPass(true)
-        }
+
+        if(!validateInput(email, "email")){
+            errors.email.validate = false
+        } 
+
         if(visible === "signUp"){
-            //besides user and pass, we also check the email and the checkbox
-            if(typeof data.email != "undefined" && (data.email === "")){
-                error = true
-                setErrorEmail(true)
+            if (isEmpty(phone)) {
+                errors.phone.fill = false
             }
+            if (isEmpty(user)) {
+                errors.user.fill = false
+            }            
+    
+                      
+            if(!validateInput(phone, "phone")){
+                errors.phone.validate = false
+            }
+    
             if(!checkboxOne){
-                error = true
-                setErrorAgree(true)
+                errors.checkboxOne.fill = false
             }
         }
-        return error
+
+        setSignError(errors)
+        let problem = Object.values(errors).some(error => !error.fill || !error.validate)
+
+        return problem
     }
 
     function handleForgotPassword(){
@@ -115,23 +128,72 @@ function Sign(props) {
         const handleSignInRead = (data)=>{
             setLoaded(true)
             if(data && data.exists && data.obj && Object.keys(data.obj).length>0){
-                dispatch(changeUser(data.obj))                
+                if(data.is_verified){                    
+                    dispatch(changeUser(data.obj))
+                    setCookie("casino_uuid", data.obj.uuid)
+                    if(data.obj.logs === 0){
+                        handleWelcome() //first time sign up - you get a popup gift
+                    }
+                } else {
+                    handleErrors("error", "signup_error_email_verification")
+                }
             } else {
                 handleErrors("error", "signup_error")
             } 
         }
-        const handleSignUpRead = (data)=>{
-            setLoaded(true)
-            if(data && data.obj && Object.keys(data.obj).length>0){
-                dispatch(changeUser(data.obj))
-                if(!isEmpty(data.obj.uuid)){
-                    setCookie("casino_uuid", data.obj.uuid)
-                }                
-                handleWelcome() //first time sign up - you get a popup gift
+        const handleSignUpRead = (data) => {
+            setLoaded(false)
+            
+            if (data) {
+                // If the user does not need validation (new sign-up)
+                if (!data.validate) {                    
+                    // Dispatch a success popup notifying the user about email verification
+                    let payload = {
+                        open: true,
+                        template: "success",
+                        title: translate({ lang: lang, info: "success" }),
+                        data: translate({ lang: lang, info: "email_send_validation" }),
+                        size: "sm",
+                    }
+                    dispatch(changePopup(payload))
+                
+                // Case: Email exists but username is different
+                } else if (data.details === "email_yes_user_no_error") {                    
+                    // Dispatch an error popup with specific message for email in use
+                    setLoaded(true)
+                    let payload = {
+                        open: true,
+                        template: "error",
+                        title: translate({ lang: lang, info: "error" }),
+                        data: translate({ lang: lang, info: "email_in_use" }),
+                        size: "sm",
+                    }
+                    dispatch(changePopup(payload))
+                
+                // Case: Email and username both exist, suggesting a login instead of a sign-up
+                } else if (data.details === "email_yes_user_yes_error") {                    
+                    // Dispatch an error popup notifying the user to sign in
+                    setLoaded(true)
+                    let payload = {
+                        open: true,
+                        template: "error",
+                        title: translate({ lang: lang, info: "error" }),
+                        data: translate({ lang: lang, info: "account_exists_login" }),
+                        size: "sm",
+                    }
+                    dispatch(changePopup(payload))
+        
+                // Default error case, if details or data structure is unexpected
+                } else {
+                    setLoaded(true)
+                    handleErrors("signup", data.details ? data.details : "signup_error")
+                }
             } else {
-                handleErrors("signup", data.details ? data.details : "signup_error")
+                // If data is empty or undefined, handle as an error
+                setLoaded(true)
+                handleErrors("signup", "signup_error")
             }
-        }
+        }        
 		socket.on('signin_read', handleSignInRead)
         socket.on('signup_read', handleSignUpRead)
 		return () => {
@@ -225,14 +287,38 @@ function Sign(props) {
                                     </div>
                                 </div> 
                                 {(() => {
-                                    if(errorEmail || errorUser || errorPass || errorAgree){
-                                        return <div className="alert alert-danger">
-                                            {errorEmail ? <p className="text_red">{translate({lang: lang, info: "incorrect_email"})}</p> : null}
-                                            {errorUser ? <p className="text_red">{translate({lang: lang, info: "empty_input_subject"})}</p> : null}
-                                            {errorPass ? <p className="text_red">{translate({lang: lang, info: "empty_input_message"})}</p> : null}
-                                            {errorAgree ? <p className="text_red">{translate({lang: lang, info: "empty_input_agree"})}</p> : null}
-                                        </div>
-                                    }
+                                    let problem = Object.values(signError).some(error => !error.fill || !error.validate)
+                                    return <>
+                                        {problem ? <div className="alert alert-danger">
+                                            {!signError.email.fill ? <p className="text_red">
+                                                {translate({ lang: lang, info: signError.email.fill_message })}
+                                            </p> : <>
+                                                {!signError.email.validate ? <p className="text_red">
+                                                    {translate({ lang: lang, info: signError.email.validate_message })}
+                                                </p> : null}
+                                            </>}
+
+                                            {!signError.phone.fill ? <p className="text_red">
+                                                {translate({ lang: lang, info: signError.phone.fill_message })}
+                                            </p> : <>
+                                                {!signError.phone.validate ? <p className="text_red">
+                                                    {translate({ lang: lang, info: signError.phone.validate_message })}
+                                                </p> : null}
+                                            </>}
+
+                                            {!signError.user.fill ? <p className="text_red">
+                                                {translate({ lang: lang, info: signError.user.fill_message })}
+                                            </p> : null}
+
+                                            {!signError.pass.fill ? <p className="text_red">
+                                                {translate({ lang: lang, info: signError.pass.fill_message })}
+                                            </p> : null}                                            
+
+                                            {!signError.checkboxOne.fill ? <p className="text_red">
+                                                {translate({ lang: lang, info: signError.checkboxOne.fill_message })}
+                                            </p> : null}
+                                        </div> : null}
+                                    </>
                                 })()}
                             </div>
                             <div className="sign_footer">

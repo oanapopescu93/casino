@@ -30,7 +30,7 @@ app.use(googlePayment)
 
 const { encrypt, decrypt } = require('./utils/crypto')
 const { get_device, get_extra_data, check_streak } = require("./utils/other")
-const { sendEmail } = require("./utils/mail")
+const { sendEmail, sendVerificationEmail } = require("./utils/mail")
 const crypto = require('crypto')
 
 const { roulette } = require("./games/roulette")
@@ -56,14 +56,18 @@ const database = require('./database/mysql')
 var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
+//DELETE FROM casino_user WHERE `casino_user`.`id` = 435"
+
 // database_config.sql = "SELECT * FROM casino_user;"
 // database(database_config).then(function(result){
-//   console.log('result ', result)
+//   console.log('result ', result.length)
 //   if(result){
 //     let user_found = result.filter(function(x){
-//       return x.user === "test"
+//       return x.email === "oanapopescu93@gmail.com"
 //     })
-//     console.log('user_found ', user_found[0], decrypt(JSON.parse(user_found[0].pass)))
+//     if(user_found[0]){
+//       console.log('user_found ', user_found[0], decrypt(JSON.parse(user_found[0].pass)))
+//     }
 //   }  
 // })
 
@@ -77,10 +81,12 @@ io.on('connection', function(socket) {
         users_array = result[0] 
         login_user = result[1]
         let user_found = users_array.filter(function(x){
-          return (x.user === data.user || x.email === data.email) && decrypt(JSON.parse(x.pass)) === data.pass
+          return x.email === data.email && decrypt(JSON.parse(x.pass)) === data.pass
         })
+        console.log(user_found, data, data.email, data.pass)
         if(user_found && user_found.length>0){
-          //the user exists --> we sign him in
+          //the user exists
+
           let uuid = crypto.randomBytes(20).toString('hex')
           let device = get_device(socket.request.headers) // 0 = computer, 1 = mobile, 2 = other
 
@@ -89,7 +95,7 @@ io.on('connection', function(socket) {
             let date02 = new Date(parseInt(x.login_date)).setHours(0, 0, 0, 0)
             return x.user_id === user_found[0].id && date01 === date02
           })
-  
+
           //emit
           let obj = {
             uuid, 
@@ -99,33 +105,46 @@ io.on('connection', function(socket) {
             money: user_found[0].money, 
             device,
             profile_pic: user_found[0].profile_pic,
-            logs: logs && logs.length ? logs.length : 0
+            logs: logs && logs.length ? parseInt(logs.length) : 0
           }
-          try{
-            io.to(socket.id).emit('signin_read', {exists: true, obj: obj})
-          } catch(e){
-            console.log('[error]','signin_read :', e)
-          }
+
+          if(user_found[0].is_verified === 1){
+            // is verified --> we sign him in            
+            try{
+              io.to(socket.id).emit('signin_read', {exists: true, is_verified: true, obj: obj})
+            } catch(e){
+              console.log('[error]','signin_read :', e)
+            }
   
-          get_extra_data().then(function(res) {  
-            let extra_data = {}
-            if(res && res.data){
-              extra_data = {
-                city: res.data.city ? res.data.city : "",
-                country: res.data.country_name ? res.data.country_name : "",
-                ip_address: res.data.ip? res.data.ip : "",
-              }
-            }				
-            let timestamp = new Date().getTime() + ""
+            get_extra_data().then(function(res) {  
+              let extra_data = {}
+              if(res && res.data){
+                extra_data = {
+                  city: res.data.city ? res.data.city : "",
+                  country: res.data.country_name ? res.data.country_name : "",
+                  ip_address: res.data.ip? res.data.ip : "",
+                }
+              }				
+              let timestamp = new Date().getTime() + ""
+              
+              //update user and login tables
+              
+              database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
+              database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
+              database_config.name = "db02"
+              let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
+              database(database_config, payload).then(function(){})
+            })
+          } else {
+            //is NOT verified --> we send him a message to go to his mail
             
-            //update user and login tables
-            
-            database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
-						database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
-            database_config.name = "db02"
-						let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
-						database(database_config, payload).then(function(){})
-          })
+            try{
+              io.to(socket.id).emit('signin_read', {exists: true, is_verified: false, obj: obj})
+            } catch(e){
+              console.log('[error]','signin_read :', e)
+            }
+          }
+          
         } else {
           //the user doesn't exist
           try{
@@ -143,28 +162,20 @@ io.on('connection', function(socket) {
       }
     }) 
   })
-  socket.on('signup_send', (data) => {  
-    database_config.sql = 'SELECT * FROM casino_user WHERE email = "' + data.email + '"'
+  socket.on('signup_send', (data) => {
+    const { user, pass, email, phone } = data
+    database_config.sql = 'SELECT * FROM casino_user WHERE email = "' + email + '"'
     database_config.name = "db03"
 		database(database_config).then(function(result){
       if(result && result.length == 0){
         //no user was found --> new user --> he must sign up
         users_array = result
-        let uuid = crypto.randomBytes(20).toString('hex')
-        let device = get_device(socket.request.headers) // 0 = computer, 1 = mobile, 2 = other
-  
-        //emit
-        let obj = {
-          uuid: uuid, 
-          user: data.user, 
-          email: data.email, 
-          account_type: account_type, 
-          money: user_money, 
-          device: device,
-          profile_pic: profile_pic
-        }
+        let uuid = crypto.randomBytes(20).toString('hex')        
+        let verificationToken = crypto.randomBytes(20).toString('hex') // Generate a unique verification token
+
+        sendVerificationEmail(email, verificationToken).then(()=>{})
         try{
-          io.to(socket.id).emit('signup_read', {exists: false, obj: obj})
+          io.to(socket.id).emit('signup_read', {exists: false, validate: false})
         } catch(e){
           console.log('[error]','signup_read :', e)
         } 
@@ -179,34 +190,29 @@ io.on('connection', function(socket) {
             }
           }
           let timestamp = new Date().getTime() + ""   
-          let pass = JSON.stringify(encrypt(data.pass))
+          let pass_encrypt = JSON.stringify(encrypt(pass))
 
           //insert new user in users and login tables
-          database_config.sql = "INSERT INTO casino_user (uuid, user, email, pass, account_type, money, signup) VALUES (?, ?, ?, ?, ?, ?, ?)"
-					let payload = [uuid, data.user, data.email, pass, account_type, user_money, timestamp] 
+          database_config.sql = "INSERT INTO casino_user (uuid, user, email, phone, pass, account_type, money, signup, verification_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+					let payload = [uuid, user, email, phone, pass_encrypt, account_type, user_money, timestamp, verificationToken] 
           database_config.name = "db04"
-          database(database_config, payload).then(function(result){
-						let insertId = result.insertId
-            database_config.sql = 'INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (' + insertId + ', "' + timestamp + '", ' + device + ', "' + extra_data.ip_address + '", "' + extra_data.city + '", "' + extra_data.country + '");'
-            database_config.name = "db05"
-            database(database_config).then(function(result){})
-          })
+          database(database_config, payload).then(function(){})
         })
       } else {        
         let array = result.filter(function(x){ //check if there already is an email with same username
           return x.user === data.user
         })
         if(array && array.length == 0){
-          //email exists, username is different --> he lust signup with different email
+          //email exists, username is different --> he must signup with different email
           try{
-            io.emit('signup_read', {exists: false, obj: {}, details: "email_yes_user_no_error"})
+            io.emit('signup_read', {exists: false, obj: {}, validate: true, details: "email_yes_user_no_error"})
           } catch(e){
             console.log('[error]','signup_read :', e)
           }
         } else {
           //email exists, username is same --> he must signin
           try{
-            io.emit('signup_read', {exists: true, obj: {}, details: "email_yes_user_yes_error"})
+            io.emit('signup_read', {exists: true, obj: {}, validate: true, details: "email_yes_user_yes_error"})
           } catch(e){
             console.log('[error]','signup_read :', e)
           }

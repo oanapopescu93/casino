@@ -42,7 +42,7 @@ function PaymentDetails(props){
                                         <div className="payment_details_body">
                                             <p><strong>{translate({ lang: lang, info: "payment_methode" })}:</strong> {translate({ lang: lang, info: paymentDetails.option })}</p>
                                             <p><strong>{translate({ lang: lang, info: "crypto" })}:</strong> {cryptoDetails ? cryptoDetails.text : "-"}</p>
-                                            <p><strong>{translate({lang: lang, info: "your_amount_in_fiat_equivalent"})}:</strong> {fiatEquivalent.estimated_amount} {fiatEquivalent.currency_to}</p>
+                                            <p><strong>{translate({ lang: lang, info: "your_amount_in_fiat_equivalent"})}:</strong> {fiatEquivalent.estimated_amount} {fiatEquivalent.currency_to}</p>
                                         </div>
                                     </Col>
                                 </Row>
@@ -78,7 +78,7 @@ function PaymentDetails(props){
                     })()}
                 </Col>
                 <Col sm={4}>
-                <Row>
+                    <Row>
                         <Col sm={12}>
                             <div className="payment_details_total_price 2">
                                 <h3>
@@ -96,7 +96,7 @@ function PaymentDetails(props){
                             >{paymentSending ? <>
                                 <Spinner size="small" color="black"/>
                             </> : <>
-                                <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "pay"})}
+                                <FontAwesomeIcon icon={faCartShopping} /> {translate({ lang: lang, info: "pay" })}
                             </>}</Button>
                             {(() => {
                                 let choice = null
@@ -115,7 +115,7 @@ function PaymentDetails(props){
                                     type="button"  
                                     className="mybutton button_fullcolor shadow_convex"
                                     onClick={()=>handleBack(choice)}
-                                ><FontAwesomeIcon icon={icon} /> {translate({lang: lang, info: choice})}</Button> : null}</>
+                                ><FontAwesomeIcon icon={icon} /> {translate({ lang: lang, info: choice })}</Button> : null}</>
                             })()}
                         </Col> 
                     </Row>
@@ -129,7 +129,7 @@ function PaymentDetails(props){
 					className="mybutton round button_transparent shadow_convex"
 					onClick={()=>handleBack()}
 				><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-				<span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+				<span className="tooltiptext">{translate({ lang: lang, info: "back" })}</span>
 			</div>
 		</div>         
     </>

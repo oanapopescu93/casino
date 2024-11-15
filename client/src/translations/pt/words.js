@@ -41,6 +41,7 @@ var word_bank = {
     sign_up: "Registrar",
     signin_error: "O usuário não existe",
     signup_error: "Houve um erro ao fazer seu cadastro. Por favor, envie este erro para " + admin_email + " ou tente novamente mais tarde.",
+    signup_error_email_verification: "Your account has not been verified. Check your email.",
     email_yes_user_no_error: "Este email já foi utilizado",
     email_yes_user_yes_error: "O usuário já existe",
     user: "Usuário",
@@ -230,6 +231,11 @@ var word_bank = {
     november: "Novembro",
     december: "Dezembro",
     fill_field: "Por favor, preencha este campo",
+    fill_field_email: "Please fill email",
+    fill_field_phone: "Please fill phone number",
+    fill_field_user: "Please fill username",
+    fill_field_pass: "Please fill password",
+    fill_field_checkboxOne: "Please agree to the Terms and Conditions and Privacy Policy to complete your signup",
     validate_message_name: "Este não é um nome",
     validate_message_email: "Este não é um email válido",
     validate_message_phone: "Este não é um número de telefone válido",
@@ -385,6 +391,16 @@ var word_bank = {
     greetings01: "Olá",
     greetings02: "Estou aqui para responder a todas as suas perguntas sobre BunnyBet.",
     error_chatbot: "Eu não entendo a sua pergunta.",
+
+    // Email verification
+    email_verification: "Email verification",
+    verifying: "Verifying",
+    no_token: "No token",
+    error_during_verification: "Error during verification",
+    invalid_expired_token: "Invalid or expired token",
+    email_verify_success: "Email verified successfully",
+    email_already_verified: "Email has already been verified",
+    email_send_validation: "Email was sent successfully",
 }
 
 export const wordsPt = (info)=>{

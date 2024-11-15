@@ -41,6 +41,7 @@ var word_bank = {
     sign_up: "Înregistrare",
     signin_error: "User-ul nu există",
     signup_error: "A apărut o eroare la înregistrare. Vă rugăm să trimiteți această eroare la " + admin_email + " sau încercați din nou mai târziu.",
+    signup_error_email_verification: "Your account has not been verified. Check your email.",
     email_yes_user_no_error: "Acest email a fost deja folosit",
     email_yes_user_yes_error: "User-ul există deja",
     user: "Utilizator",
@@ -230,6 +231,11 @@ var word_bank = {
     november: "Noiembrie",
     december: "Decembrie",
     fill_field: "Vă rugăm să completați acest câmp",
+    fill_field_email: "Please fill email",
+    fill_field_phone: "Please fill phone number",
+    fill_field_user: "Please fill username",
+    fill_field_pass: "Please fill password",
+    fill_field_checkboxOne: "Please agree to the Terms and Conditions and Privacy Policy to complete your signup",
     validate_message_name: "Acesta nu este un nume",
     validate_message_email: "Acesta nu este un email valid",
     validate_message_phone: "Acesta nu este un număr de telefon valid",
@@ -385,6 +391,16 @@ var word_bank = {
     greetings01: "Bună",
     greetings02: "Sunt aici pentru a răspunde la toate întrebările tale despre BunnyBet.",
     error_chatbot: "Nu înțeleg întrebarea ta.",
+
+    // Email verification
+    email_verification: "Email verification",
+    verifying: "Verifying",
+    no_token: "No token",
+    error_during_verification: "Error during verification",
+    invalid_expired_token: "Invalid or expired token",
+    email_verify_success: "Email verified successfully",
+    email_already_verified: "Email has already been verified",
+    email_send_validation: "Email was sent successfully",
 }
 
 export const wordsRo = (info)=>{

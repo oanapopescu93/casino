@@ -299,3 +299,5 @@ export const handleChangeTheme = (choice) => {
       break
   }
 }
+
+export const isNumber = (n) => { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
