@@ -285,15 +285,15 @@ export const handleChangeTheme = (choice) => {
       document.documentElement.style.setProperty('--transparent_color', 'rgba(50, 205, 50, 0.2)')
       document.documentElement.style.setProperty('--dark_color', '#006400') // Dark green
       document.documentElement.style.setProperty('--light_color', '#00b300') // Light green
-      document.documentElement.style.setProperty('--slot_canvas_color', '#ccffcc') // Light lime
+      document.documentElement.style.setProperty('--slot_canvas_color', '#ccffcc') // Very Light lime
       break
     case 'blue':
-      document.documentElement.style.setProperty('--body_color', 'royalblue')
-      document.documentElement.style.setProperty('--color', '#E0E0E0') // Silver
-      document.documentElement.style.setProperty('--transparent_color', 'rgba(224, 224, 224, 0.2)')
-      document.documentElement.style.setProperty('--dark_color', '#3862e0') // Dark royal blue
-      document.documentElement.style.setProperty('--light_color', '#6585e7') // Light royal blue
-      document.documentElement.style.setProperty('--slot_canvas_color', '#E0E0E0') // Light lime
+      document.documentElement.style.setProperty('--body_color', '#324A63')
+      document.documentElement.style.setProperty('--color', '#ff8000') // Orange
+      document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 128, 0, 0.2)')
+      document.documentElement.style.setProperty('--dark_color', '#663300') // Dark orange
+      document.documentElement.style.setProperty('--light_color', '#cc6600') // Light orange
+      document.documentElement.style.setProperty('--slot_canvas_color', '#ffe6cc') // Very light orange
       break
     default:
       break

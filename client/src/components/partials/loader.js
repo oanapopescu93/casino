@@ -2,7 +2,7 @@ import React from 'react'
 import logo_yellow from '../../img/rabbit_loader/animation/rabbit_run_yellow.gif'
 import logo_pink from '../../img/rabbit_loader/animation/rabbit_run_pink.gif'
 import logo_green from '../../img/rabbit_loader/animation/rabbit_run_green.gif'
-import logo_grey from '../../img/rabbit_loader/animation/rabbit_run_grey.gif'
+import logo_orange from '../../img/rabbit_loader/animation/rabbit_run_orange.gif'
 
 function Loader(props){
 	const {text, theme} = props
@@ -14,7 +14,7 @@ function Loader(props){
             case 'black':
               return logo_green
             case 'blue':
-              return logo_grey
+              return logo_orange
             default:
               return logo_yellow
         }

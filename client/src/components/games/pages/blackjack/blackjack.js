@@ -211,8 +211,8 @@ function blackjack_game(props){
             text_bg = "#ccffcc"
 			break
 		case "blue":
-			text_color = "#333"
-            text_bg = "#E0E0E0"
+			text_color = "#324A63"
+            text_bg = "#ffe6cc"
 			break
 		case "green":
 		default:

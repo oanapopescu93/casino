@@ -3,7 +3,7 @@ import { translate } from '../../translations/translate'
 import logo_icon_yellow from '../../img/logo/logo_yellow.png'
 import logo_icon_pink from '../../img/logo/logo_pink.png'
 import logo_icon_green from '../../img/logo/logo_green.png'
-import logo_icon_grey from '../../img/logo/logo_grey.png'
+import logo_icon_orange from '../../img/logo/logo_orange.png'
 import { capitalizeFirstLetter, isEmpty } from '../../utils/utils'
 import { checkEaster, checkOccasion } from '../../utils/special_occasions'
 import EasterEgg from './special_occasions/easter/egg'
@@ -62,7 +62,7 @@ function Header(props){
             case 'black':
               return logo_icon_green
             case 'blue':
-              return logo_icon_grey
+              return logo_icon_orange
             default:
               return logo_icon_yellow
         }

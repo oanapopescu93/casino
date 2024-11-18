@@ -12,9 +12,9 @@ import star_full_green from '../../img/icons_other/rating/star_full_green.png'
 import star_half_green from '../../img/icons_other/rating/star_half_green.png'
 import star_empty_green from '../../img/icons_other/rating/star_empty_green.png'
 
-import star_full_grey from '../../img/icons_other/rating/star_full_grey.png'
-import star_half_grey from '../../img/icons_other/rating/star_half_grey.png'
-import star_empty_grey from '../../img/icons_other/rating/star_empty_grey.png'
+import star_full_orange from '../../img/icons_other/rating/star_full_orange.png'
+import star_half_orange from '../../img/icons_other/rating/star_half_orange.png'
+import star_empty_orange from '../../img/icons_other/rating/star_empty_orange.png'
 
 function Stars(props) {
     const { score, max, theme } = props
@@ -56,11 +56,11 @@ function Stars(props) {
             case 'blue':
                 switch (type) {
                     case "star_full":
-                        return star_full_grey
+                        return star_full_orange
                     case "star_half":
-                        return star_half_grey
+                        return star_half_orange
                     default:
-                        return star_empty_grey
+                        return star_empty_orange
                 }
             default:
                 switch (type) {

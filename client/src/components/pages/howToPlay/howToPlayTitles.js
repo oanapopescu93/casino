@@ -25,13 +25,13 @@ import race_icon_pink from '../../../img/icons_other/icons/pink/race.png'
 import keno_icon_pink from '../../../img/icons_other/icons/pink/keno.png'
 import poker_icon_pink from '../../../img/icons_other/icons/pink/carribean.png'
 
-import roulette_icon_grey from '../../../img/icons_other/icons/grey/roulette.png'
-import blackjack_icon_grey from '../../../img/icons_other/icons/grey/blackjack.png'
-import slots_icon_grey from '../../../img/icons_other/icons/grey/slots.png'
-import craps_icon_grey from '../../../img/icons_other/icons/grey/craps.png'
-import race_icon_grey from '../../../img/icons_other/icons/grey/race.png'
-import keno_icon_grey from '../../../img/icons_other/icons/grey/keno.png'
-import poker_icon_grey from '../../../img/icons_other/icons/grey/carribean.png'
+import roulette_icon_orange from '../../../img/icons_other/icons/orange/roulette.png'
+import blackjack_icon_orange from '../../../img/icons_other/icons/orange/blackjack.png'
+import slots_icon_orange from '../../../img/icons_other/icons/orange/slots.png'
+import craps_icon_orange from '../../../img/icons_other/icons/orange/craps.png'
+import race_icon_orange from '../../../img/icons_other/icons/orange/race.png'
+import keno_icon_orange from '../../../img/icons_other/icons/orange/keno.png'
+import poker_icon_orange from '../../../img/icons_other/icons/orange/carribean.png'
 
 function HowToPlayTitles(props){
     const {handleChoice, settings} = props
@@ -47,7 +47,7 @@ function HowToPlayTitles(props){
                     case 'black':
                         return roulette_icon_green
                     case 'blue':
-                        return roulette_icon_grey
+                        return roulette_icon_orange
                     default:
                         return roulette_icon_yellow
                 }
@@ -58,7 +58,7 @@ function HowToPlayTitles(props){
                     case 'black':
                         return blackjack_icon_green
                     case 'blue':
-                        return blackjack_icon_grey
+                        return blackjack_icon_orange
                     default:
                         return blackjack_icon_yellow
                 }
@@ -69,7 +69,7 @@ function HowToPlayTitles(props){
                     case 'black':
                         return slots_icon_green
                     case 'blue':
-                        return slots_icon_grey
+                        return slots_icon_orange
                     default:
                         return slots_icon_yellow
                 }
@@ -80,7 +80,7 @@ function HowToPlayTitles(props){
                     case 'black':
                         return craps_icon_green
                     case 'blue':
-                        return craps_icon_grey
+                        return craps_icon_orange
                     default:
                         return craps_icon_yellow
                 }
@@ -91,7 +91,7 @@ function HowToPlayTitles(props){
                     case 'black':
                         return race_icon_green
                     case 'blue':
-                        return race_icon_grey
+                        return race_icon_orange
                     default:
                         return race_icon_yellow
                 }
@@ -102,7 +102,7 @@ function HowToPlayTitles(props){
                     case 'black':
                         return keno_icon_green
                     case 'blue':
-                        return keno_icon_grey
+                        return keno_icon_orange
                     default:
                         return keno_icon_yellow
                 }
@@ -113,7 +113,7 @@ function HowToPlayTitles(props){
                     case 'black':
                         return poker_icon_green
                     case 'blue':
-                        return poker_icon_grey
+                        return poker_icon_orange
                     default:
                         return poker_icon_yellow
                 }

@@ -219,10 +219,10 @@ export const poker_game = function(props){
             text_bg = "#ccffcc"
 			break
         case "blue":
-            tableColor01 = "#3862e0"
-            tableColor02 = "#18399a"
-            text_color = "#333"
-            text_bg = "#E0E0E0"
+            tableColor01 = "#994d00"
+            tableColor02 = "#663300"
+            text_color = "#663300"
+            text_bg = "#ffe6cc"
             break
 		case "green":
 		default:

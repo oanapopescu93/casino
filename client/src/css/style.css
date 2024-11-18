@@ -2945,9 +2945,9 @@ a.donation_button{
   color: #32CD32;
 }
 .settings .theme_box.blue{
-  background: #153184;
-  border: solid 1px #E0E0E0;
-  color: #E0E0E0;
+  background: #1a2633;
+  border: solid 1px #ff8000;
+  color: #ff8000;
 }
 .settings .theme_text{
   display: inline-block;
@@ -3481,7 +3481,7 @@ a.donation_button{
 	border:solid 1px var(--color);
 	border-radius: var(--radius);
 	color:var(--color);
-	background-color: var(--transparent_8);
+	background-color: var(--transparent_5);
 	font-family:courier new;
 }
 #craps_board {

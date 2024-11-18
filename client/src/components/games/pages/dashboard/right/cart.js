@@ -5,7 +5,7 @@ import {faTrashCan, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../../../../img/icons/vegetables/vegetables_yellow.png'
 import vegetables_pink from '../../../../../img/icons/vegetables/vegetables_pink.png'
 import vegetables_green from '../../../../../img/icons/vegetables/vegetables_green.png'
-import vegetables_grey from '../../../../../img/icons/vegetables/vegetables_grey.png'
+import vegetables_orange from '../../../../../img/icons/vegetables/vegetables_orange.png'
 import Counter from '../../../../partials/counter'
 import { Button } from 'react-bootstrap'
 import { decryptData } from '../../../../../utils/crypto'
@@ -40,7 +40,7 @@ function Cart(props){
             case 'black':
                 return vegetables_green
             case 'blue':
-                return vegetables_grey
+                return vegetables_orange
             default:
               return vegetables_yellow
         }

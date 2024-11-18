@@ -24,18 +24,18 @@ import race_icon_pink from '../../img/icons_other/icons/pink/race.png'
 import keno_icon_pink from '../../img/icons_other/icons/pink/keno.png'
 import poker_icon_pink from '../../img/icons_other/icons/pink/carribean.png'
 
-import roulette_icon_grey from '../../img/icons_other/icons/grey/roulette.png'
-import blackjack_icon_grey from '../../img/icons_other/icons/grey/blackjack.png'
-import slots_icon_grey from '../../img/icons_other/icons/grey/slots.png'
-import craps_icon_grey from '../../img/icons_other/icons/grey/craps.png'
-import race_icon_grey from '../../img/icons_other/icons/grey/race.png'
-import keno_icon_grey from '../../img/icons_other/icons/grey/keno.png'
-import poker_icon_grey from '../../img/icons_other/icons/grey/carribean.png'
+import roulette_icon_orange from '../../img/icons_other/icons/orange/roulette.png'
+import blackjack_icon_orange from '../../img/icons_other/icons/orange/blackjack.png'
+import slots_icon_orange from '../../img/icons_other/icons/orange/slots.png'
+import craps_icon_orange from '../../img/icons_other/icons/orange/craps.png'
+import race_icon_orange from '../../img/icons_other/icons/orange/race.png'
+import keno_icon_orange from '../../img/icons_other/icons/orange/keno.png'
+import poker_icon_orange from '../../img/icons_other/icons/orange/carribean.png'
 
 import whack_loading_yellow from '../../img/whack_a_rabbit/yellow/whack_a_rabbit_icon.png'
 import whack_loading_green from '../../img/whack_a_rabbit/green/whack_a_rabbit_icon.png'
 import whack_loading_pink from '../../img/whack_a_rabbit/pink/whack_a_rabbit_icon.png'
-import whack_loading_grey from '../../img/whack_a_rabbit/grey/whack_a_rabbit_icon.png'
+import whack_loading_orange from '../../img/whack_a_rabbit/orange/whack_a_rabbit_icon.png'
 
 function GameLoading(props){
     const {page, settings} = props
@@ -52,7 +52,7 @@ function GameLoading(props){
                     case 'black':
                         return roulette_icon_green
                     case 'blue':
-                        return roulette_icon_grey
+                        return roulette_icon_orange
                     default:
                         return roulette_icon_yellow
                 }
@@ -63,7 +63,7 @@ function GameLoading(props){
                     case 'black':
                         return blackjack_icon_green
                     case 'blue':
-                        return blackjack_icon_grey
+                        return blackjack_icon_orange
                     default:
                         return blackjack_icon_yellow
                 }
@@ -74,7 +74,7 @@ function GameLoading(props){
                     case 'black':
                         return slots_icon_green
                     case 'blue':
-                        return slots_icon_grey
+                        return slots_icon_orange
                     default:
                         return slots_icon_yellow
                 }
@@ -85,7 +85,7 @@ function GameLoading(props){
                     case 'black':
                         return craps_icon_green
                     case 'blue':
-                        return craps_icon_grey
+                        return craps_icon_orange
                     default:
                         return craps_icon_yellow
                 }
@@ -96,7 +96,7 @@ function GameLoading(props){
                     case 'black':
                         return race_icon_green
                     case 'blue':
-                        return race_icon_grey
+                        return race_icon_orange
                     default:
                         return race_icon_yellow
                 }
@@ -107,7 +107,7 @@ function GameLoading(props){
                     case 'black':
                         return keno_icon_green
                     case 'blue':
-                        return keno_icon_grey
+                        return keno_icon_orange
                     default:
                         return keno_icon_yellow
                 }
@@ -118,7 +118,7 @@ function GameLoading(props){
                     case 'black':
                         return poker_icon_green
                     case 'blue':
-                        return poker_icon_grey
+                        return poker_icon_orange
                     default:
                         return poker_icon_yellow
                 }
@@ -129,7 +129,7 @@ function GameLoading(props){
                     case 'black':
                         return whack_loading_green
                     case 'blue':
-                        return whack_loading_grey
+                        return whack_loading_orange
                     default:
                         return whack_loading_yellow
                 }

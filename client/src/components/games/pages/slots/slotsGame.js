@@ -45,7 +45,7 @@ function slots_game(props){
 			lineColor = "#99ff99"
 			break
 		case "blue":
-			lineColor = "#cccccc"
+			lineColor = "#ffcc99"
 			break
 		case "green":
 		default:
