@@ -30,8 +30,10 @@ var word_bank = {
     poker_texas_holdem: "Texas hold'em",
     poker_5_card_draw: "5 Card Draw",
 
+    success: "Éxito",
     error: "Error",
     all_rights_reserved: "Todos los derechos reservados",
+    
     cookies_modal_title: "Notificación de cookies",
     cookies_modal_text: "Con el fin de ofrecerte la información más relevante y un rendimiento óptimo del sistema, utilizamos cookies que recopilan información de tu actividad de juego.",
 
@@ -40,8 +42,7 @@ var word_bank = {
     signin_error: "El usuario no existe",
     signup_error: "Ha habido un error al registrarte. Por favor, envía este error a " + admin_email + " o inténtalo de nuevo más tarde.",
     signup_error_email_verification: "Your account has not been verified. Check your email.",
-    email_yes_user_no_error: "Este correo electrónico ya ha sido utilizado",
-    email_yes_user_yes_error: "El usuario ya existe",
+    email_in_use: "Este correo electrónico ya ha sido utilizado",
     user: "Usuario",
     password: "Contraseña",
     sign_in_email_empty: "El correo electrónico está vacío",
@@ -107,7 +108,6 @@ var word_bank = {
     forgot_password_title: "¿Olvidaste tu contraseña?",
     forgot_password_text: "Por favor, ingresa la dirección de correo electrónico utilizada para registrarte. Te enviaremos tu nueva contraseña a esa dirección.",
     send: "Enviar",
-    email_send_mailtrap: "El correo electrónico ha sido enviado. Verifique su cuenta de Mailtrap.",
     email_send: "El correo electrónico ha sido enviado.",
     email_no_send: "No se ha enviado el correo electrónico.",
     subject: "Asunto",
@@ -393,17 +393,17 @@ var word_bank = {
     error_chatbot: "No entiendo tu pregunta.",
 
     // Email verification
-    email_verification: "Email verification",
-    verifying: "Verifying",
-    no_token: "No token",
-    error_during_verification: "Error during verification",
-    invalid_expired_token: "Invalid or expired token",
-    email_verify_success: "Email verified successfully",
-    email_already_verified: "Email has already been verified",
-    email_send_validation: "Email was sent successfully",
+    email_verification: "Verificación de correo electrónico",
+    verifying: "Verificando",
+    no_token: "Sin token",
+    error_during_verification: "Error durante la verificación",
+    invalid_expired_token: "Token inválido o expirado",
+    email_verify_success: "Correo electrónico verificado con éxito",
+    email_already_verified: "El correo electrónico ya ha sido verificado",
+    email_send_validation: "Correo electrónico enviado con éxito",
 
     // Apply Job
-    apply: "Apply"
+    apply: "Postúlate al trabajo",
 }
 
 export const wordsEs = (info)=>{

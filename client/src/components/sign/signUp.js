@@ -49,7 +49,7 @@ function SignUp(props) {
 
     function handleSubmit(e){
         e.preventDefault()
-        props.signSubmit({emit: 'signup_send', payload: {email, phone, user, pass}})
+        props.signSubmit({emit: 'signup_send', payload: {email, phone, user, pass, lang}})
     }
 
     useEffect(() => {

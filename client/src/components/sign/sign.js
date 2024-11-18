@@ -127,27 +127,43 @@ function Sign(props) {
     useEffect(() => {
         const handleSignInRead = (data)=>{
             setLoaded(true)
-            if(data && data.exists && data.obj && Object.keys(data.obj).length>0){
-                if(data.is_verified){                    
+            
+            if(data){
+                if(!data.success){                    
+                    handleErrors("error", data.details ? data.details : "error")
+                    return
+                }                
+                if(data.is_verified){                                 
                     dispatch(changeUser(data.obj))
                     setCookie("casino_uuid", data.obj.uuid)
-                    if(data.obj.logs === 0){
+                    if(data.obj.logsTotal === 0){
                         handleWelcome() //first time sign up - you get a popup gift
                     }
-                } else {
+                } else {                    
                     handleErrors("error", "signup_error_email_verification")
                 }
             } else {
                 handleErrors("error", "signup_error")
-            } 
+            }
         }
         const handleSignUpRead = (data) => {
             setLoaded(false)
             
-            if (data) {
-                // If the user does not need validation (new sign-up)
+            if (data) {                
+                if(!data.success_mail){
+                    setLoaded(true)
+                    let payload = {
+                        open: true,
+                        template: "error",
+                        title: translate({ lang: lang, info: "error" }),
+                        data: translate({ lang: lang, info: data.send }),
+                        size: "sm",
+                    }
+                    dispatch(changePopup(payload))
+                    return
+                }
+                
                 if (!data.validate) {                    
-                    // Dispatch a success popup notifying the user about email verification
                     let payload = {
                         open: true,
                         template: "success",
@@ -156,40 +172,21 @@ function Sign(props) {
                         size: "sm",
                     }
                     dispatch(changePopup(payload))
-                
-                // Case: Email exists but username is different
-                } else if (data.details === "email_yes_user_no_error") {                    
-                    // Dispatch an error popup with specific message for email in use
+                } else if (data.exists) {                    
                     setLoaded(true)
                     let payload = {
                         open: true,
                         template: "error",
                         title: translate({ lang: lang, info: "error" }),
-                        data: translate({ lang: lang, info: "email_in_use" }),
+                        data: translate({ lang: lang, info: data.details }),
                         size: "sm",
                     }
-                    dispatch(changePopup(payload))
-                
-                // Case: Email and username both exist, suggesting a login instead of a sign-up
-                } else if (data.details === "email_yes_user_yes_error") {                    
-                    // Dispatch an error popup notifying the user to sign in
-                    setLoaded(true)
-                    let payload = {
-                        open: true,
-                        template: "error",
-                        title: translate({ lang: lang, info: "error" }),
-                        data: translate({ lang: lang, info: "account_exists_login" }),
-                        size: "sm",
-                    }
-                    dispatch(changePopup(payload))
-        
-                // Default error case, if details or data structure is unexpected
+                    dispatch(changePopup(payload))  
                 } else {
                     setLoaded(true)
                     handleErrors("signup", data.details ? data.details : "signup_error")
                 }
-            } else {
-                // If data is empty or undefined, handle as an error
+            } else {                
                 setLoaded(true)
                 handleErrors("signup", "signup_error")
             }

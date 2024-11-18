@@ -30,6 +30,7 @@ var word_bank = {
     poker_texas_holdem: "Texas hold'em",
     poker_5_card_draw: "5 Card Draw",
 
+    success: "Succes",
     error: "Eroare",
     all_rights_reserved: "Toate drepturile rezervate",
 
@@ -41,8 +42,7 @@ var word_bank = {
     signin_error: "User-ul nu există",
     signup_error: "A apărut o eroare la înregistrare. Vă rugăm să trimiteți această eroare la " + admin_email + " sau încercați din nou mai târziu.",
     signup_error_email_verification: "Your account has not been verified. Check your email.",
-    email_yes_user_no_error: "Acest email a fost deja folosit",
-    email_yes_user_yes_error: "User-ul există deja",
+    email_in_use: "Acest email a fost deja folosit",
     user: "Utilizator",
     password: "Parolă",
     sign_in_email_empty: "Email-ul este gol",
@@ -108,7 +108,6 @@ var word_bank = {
     forgot_password_title: "Ți-ai uitat parola?",
     forgot_password_text: "Introdu adresa ta de email cu care te-ai înregistrat. Noi îți vom trimite parola nouă pe această adresă.",
     send: "Trimite",
-    email_send_mailtrap: "E-mailul a fost trimis. Verificați contul dvs. Mailtrap.",
     email_send: "E-mailul a fost trimis.",
     email_no_send: "Emailul nu a fost trimis.",
     subject: "Subiect",
@@ -394,17 +393,17 @@ var word_bank = {
     error_chatbot: "Nu înțeleg întrebarea ta.",
 
     // Email verification
-    email_verification: "Email verification",
-    verifying: "Verifying",
-    no_token: "No token",
-    error_during_verification: "Error during verification",
-    invalid_expired_token: "Invalid or expired token",
-    email_verify_success: "Email verified successfully",
-    email_already_verified: "Email has already been verified",
-    email_send_validation: "Email was sent successfully",
+    email_verification: "Verificare e-mail",
+    verifying: "Verificare în curs",
+    no_token: "Fără token",
+    error_during_verification: "Eroare la verificare",
+    invalid_expired_token: "Token invalid sau expirat",
+    email_verify_success: "E-mail verificat cu succes",
+    email_already_verified: "E-mail deja verificat",
+    email_send_validation: "E-mail trimis cu succes",
 
     // Apply Job
-    apply: "Apply"
+    apply: "Aplică pentru job"
 }
 
 export const wordsRo = (info)=>{

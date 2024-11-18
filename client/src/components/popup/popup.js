@@ -97,6 +97,10 @@ function Popup(props){
         socket.on('forgotPassword_read', (res)=>{
             setForgotPasswordResult(res.send)
             setForgotPasswordSending(false)
+            setTimeout(function(){
+                setForgotPasswordResult('')
+                closeModal()
+           }, 2000)
         })
     }, [socket])
 
@@ -127,7 +131,7 @@ function Popup(props){
                     switch (template) {
                         case "forgotPassword":
                             return <ForgotPassword 
-                                lang={lang} 
+                                settings={settings} 
                                 text={data} 
                                 forgotPasswordClick={(e)=>forgotPasswordClick(e)} 
                                 forgotPasswordResult={forgotPasswordResult}
@@ -160,7 +164,7 @@ function Popup(props){
                         case "chatbot":
                             return <ChatBot settings={settings} user={user} />
                         case "apply_job":
-                            return <ApplyJob settings={settings} user={user} data={data} applyJobSending={applyJobSending} handleApplyJob={(e)=>handleApplyJob(e)} />
+                            return <ApplyJob settings={settings} home={home} user={user} data={data} applyJobSending={applyJobSending} handleApplyJob={(e)=>handleApplyJob(e)} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>

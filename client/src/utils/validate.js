@@ -6,8 +6,8 @@ export const validateInput = (input="", type)=>{
         // ^[A-Z]?              - Optional uppercase letter at the start
         // [a-zA-Z\s\-]{0,49}$  - Followed by 0 to 49 characters that can be uppercase letters, lowercase letters, spaces, or hyphens
       break
-      case "email":
-        regex = '^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z]{2,4}$'
+      case "email":        
+        regex = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
         //letters+numbers+"."+"_" + @ + letters+numbers+"."+"_" + letters(2-4 characters)
         break
       case "phone":
@@ -23,7 +23,7 @@ export const validateInput = (input="", type)=>{
 				// Minimum eight in length .{8,}
 				break
       case "bitcoin_address":
-        regex = '^(1|3|bc1)[a-zA-HJ-NP-Z0-9]{25,39}$'
+        regex = '^(1|3|bc1)[a-zA-HJ-NP-Z0-9]{25,39}$'        
         // an identifier of 26-35 alphanumeric characters
         // beginning with the number 1 or 3 or bc1 (used for Bech32 addresses)
         // random digits

@@ -36,7 +36,7 @@ function SignIn(props) {
 
     function handleSubmit(e){
         e.preventDefault()
-        props.signSubmit({emit: 'signin_send', payload: {email, pass}})
+        props.signSubmit({emit: 'signin_send', payload: {email, pass, lang}})
     }
 
     function handleVisible(){

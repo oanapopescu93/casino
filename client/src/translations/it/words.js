@@ -30,6 +30,7 @@ var word_bank = {
     poker_texas_holdem: "Texas hold'em",
     poker_5_card_draw: "5 Card Draw",
 
+    success: "Successo",
     error: "Errore",
     all_rights_reserved: "Tutti i diritti riservati",
 
@@ -41,8 +42,7 @@ var word_bank = {
     signin_error: "L'utente non esiste",
     signup_error: "C'è stato un errore durante la registrazione. Si prega di inviare questo errore a " + admin_email + " o riprovare più tardi.",
     signup_error_email_verification: "Your account has not been verified. Check your email.",
-    email_yes_user_no_error: "Questa email è già stata utilizzata",
-    email_yes_user_yes_error: "L'utente esiste già",
+    email_in_use: "Questa email è già stata utilizzata",
     user: "Utente",
     password: "Password",
     sign_in_email_empty: "Email vuota",
@@ -108,7 +108,6 @@ var word_bank = {
     forgot_password_title: "Hai dimenticato la password",
     forgot_password_text: "Inserisci l'indirizzo email utilizzato per la registrazione. Ti invieremo la tua nuova password a quell'indirizzo.",
     send: "Invia",
-    email_send_mailtrap: "Email inviata. Controlla il tuo account Mailtrap.",
     email_send: "Email inviata.",
     email_no_send: "Email non inviata",
     subject: "Oggetto",
@@ -394,17 +393,17 @@ var word_bank = {
     error_chatbot: "Non capisco la tua domanda.",
 
     // Email verification
-    email_verification: "Email verification",
-    verifying: "Verifying",
-    no_token: "No token",
-    error_during_verification: "Error during verification",
-    invalid_expired_token: "Invalid or expired token",
-    email_verify_success: "Email verified successfully",
-    email_already_verified: "Email has already been verified",
-    email_send_validation: "Email was sent successfully",
+    email_verification: "Verifica dell'email",
+    verifying: "Verifica in corso",
+    no_token: "Nessun token",
+    error_during_verification: "Errore durante la verifica",
+    invalid_expired_token: "Token non valido o scaduto",
+    email_verify_success: "Email verificata con successo",
+    email_already_verified: "Email già verificata",
+    email_send_validation: "Email inviata con successo",
 
     // Apply Job
-    apply: "Apply"
+    apply: "Candidati per il lavoro"
 }
 
 export const wordsIt = (info)=>{

@@ -51,7 +51,7 @@ function ContactForm(props){
         
         if(subject !== "" && message !== "" && about !== "choose" && email !== "" && validateInput(email, "email")){
             setEmailSending(true)
-            postData("/api/contact", {subject, about, message, email}).then((data) => {
+            postData("/api/contact", {subject, about, message, email, lang}).then((data) => {
                 setEmailSending(false)
                 if(data && data.send){
                     setSendResults(data.send)

@@ -30,6 +30,7 @@ var word_bank = {
     poker_texas_holdem: "Техасский холдем",
     poker_5_card_draw: "5 Карточный Дро",
 
+    success: "Успех",
     error: "Ошибка",
     all_rights_reserved: "Все права защищены",
 
@@ -41,8 +42,7 @@ var word_bank = {
     signin_error: "Пользователь не существует",
     signup_error: "Произошла ошибка при регистрации. Пожалуйста, отправьте эту ошибку на " + admin_email + " или попробуйте снова позже.",
     signup_error_email_verification: "Your account has not been verified. Check your email.",
-    email_yes_user_no_error: "Этот адрес электронной почты уже был использован",
-    email_yes_user_yes_error: "Пользователь уже существует",
+    email_in_use: "Этот адрес электронной почты уже был использован",
     user: "юзер",
     password: "Пароль",
     sign_in_email_empty: "Электронная почта пуста",
@@ -108,7 +108,6 @@ var word_bank = {
     forgot_password_title: "Забыли пароль",
     forgot_password_text: "Введите адрес электронной почты, использованный при регистрации. Мы вышлем вам новый пароль на этот адрес.",
     send: "Отправить",
-    email_send_mailtrap: "Письмо отправлено. Проверьте ваш аккаунт Mailtrap.",
     email_send: "Письмо отправлено.",
     email_no_send: "Письмо не отправлено.",
     subject: "Тема",
@@ -394,17 +393,17 @@ var word_bank = {
     error_chatbot: "Я не понимаю ваш вопрос.",
 
     // Email verification
-    email_verification: "Email verification",
-    verifying: "Verifying",
-    no_token: "No token",
-    error_during_verification: "Error during verification",
-    invalid_expired_token: "Invalid or expired token",
-    email_verify_success: "Email verified successfully",
-    email_already_verified: "Email has already been verified",
-    email_send_validation: "Email was sent successfully",
+    email_verification: "Подтверждение электронной почты",
+    verifying: "Подтверждение",
+    no_token: "Нет токена",
+    error_during_verification: "Ошибка при подтверждении",
+    invalid_expired_token: "Неверный или истекший токен",
+    email_verify_success: "Электронная почта успешно подтверждена",
+    email_already_verified: "Электронная почта уже подтверждена",
+    email_send_validation: "Электронная почта отправлена успешно",
 
     // Apply Job
-    apply: "Apply"
+    apply: "Подать заявку на работу"
 }
 
 export const wordsRu = (info)=>{

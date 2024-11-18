@@ -7,9 +7,11 @@ import { decryptData } from '../../utils/crypto'
 import Spinner from '../partials/spinner'
 
 function ApplyJob(props) {
-    const { settings, user, data, applyJobSending, handleApplyJob } = props
+    const { settings, home, user, data, applyJobSending, handleApplyJob } = props
     const { lang } = settings
+    const { career } = home
     let userEmail = user.email ? decryptData(user.email) : ""
+    let job = career.filter((x)=>{ return x.id === data})
 
     const [email, setEmail] = useState(userEmail)
     const [cv, setCv] = useState(null)  // Store Base64 encoded file
@@ -57,7 +59,7 @@ function ApplyJob(props) {
     function handleSubmit() {
         if (!validateForm()) {
             // Send the email, job ID, and Base64 encoded CV to handleApplyJob
-            handleApplyJob({ email, id: data, cv, cvName })
+            handleApplyJob({ email, id: data, cv, cvName, job: job[0], lang })
         }
     }    
 

@@ -30,6 +30,7 @@ var word_bank = {
     poker_texas_holdem: "德州扑克",
     poker_5_card_draw: "五张牌扑克",
 
+    success: "成功",
     error: "错误",
     all_rights_reserved: "版权所有",
 
@@ -41,8 +42,7 @@ var word_bank = {
     signin_error: "用户不存在",
     signup_error: "注册时出现错误。请将此错误发送至 " + admin_email + " 或稍后再试。",
     signup_error_email_verification: "Your account has not been verified. Check your email.",
-    email_yes_user_no_error: "该电子邮件已被使用",
-    email_yes_user_yes_error: "用户已存在",
+    email_in_use: "该电子邮件已被使用",
     user: "用户名",
     password: "密码",
     sign_in_email_empty: "电子邮件为空",
@@ -108,7 +108,6 @@ var word_bank = {
     forgot_password_title: "忘记密码",
     forgot_password_text: "请输入用于注册的电子邮件地址。我们将向该地址发送您的新密码。",
     send: "发送",
-    email_send_mailtrap: "邮件已发送。请查看您的Mailtrap帐户。",
     email_send: "邮件已发送。",
     email_no_send: "邮件发送失败。",
     subject: "主题",
@@ -394,17 +393,17 @@ var word_bank = {
     error_chatbot: "我不明白你的问题。",
 
     // Email verification
-    email_verification: "Email verification",
-    verifying: "Verifying",
-    no_token: "No token",
-    error_during_verification: "Error during verification",
-    invalid_expired_token: "Invalid or expired token",
-    email_verify_success: "Email verified successfully",
-    email_already_verified: "Email has already been verified",
-    email_send_validation: "Email was sent successfully",
+    email_verification: "电子邮件验证",
+    verifying: "验证中",
+    no_token: "没有令牌",
+    error_during_verification: "验证时出错",
+    invalid_expired_token: "无效或过期的令牌",
+    email_verify_success: "电子邮件验证成功",
+    email_already_verified: "电子邮件已验证",
+    email_send_validation: "电子邮件发送成功",
 
     // Apply Job
-    apply: "Apply"
+    apply: "申请工作"
 }
 
 export const wordsZh = (info)=>{
