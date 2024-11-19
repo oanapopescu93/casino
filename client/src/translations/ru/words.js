@@ -151,7 +151,7 @@ var word_bank = {
     forest_green: "Лесной Зеленый",
     saphire_purple: "Сапфировый Пурпурный",
     radium_black: "Радиоактивный Черный",
-    royal_blue: "Королевский Синий",
+    copper_night: "Медная Ночь",
 
     dashboard: "Дашборд",
     choose_profile_pic: "Выберите фото профиля",

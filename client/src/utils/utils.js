@@ -288,7 +288,7 @@ export const handleChangeTheme = (choice) => {
       document.documentElement.style.setProperty('--slot_canvas_color', '#ccffcc') // Very Light lime
       break
     case 'blue':
-      document.documentElement.style.setProperty('--body_color', '#324A63')
+      document.documentElement.style.setProperty('--body_color', '#3b5775')
       document.documentElement.style.setProperty('--color', '#ff8000') // Orange
       document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 128, 0, 0.2)')
       document.documentElement.style.setProperty('--dark_color', '#663300') // Dark orange

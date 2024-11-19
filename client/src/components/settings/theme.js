@@ -9,13 +9,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 function Theme(props) {
-  const {lang, title} = props
+  const {settings, title} = props
+  const {lang} = settings
+
 	let dispatch = useDispatch()
   let theme_array = [
     {text: "forest_green", color: "green"},
     {text: "saphire_purple", color: "purple"},
     {text: "radium_black", color: "black"},
-    {text: "royal_blue", color: "blue"},
+    {text: "copper_night", color: "blue"},
   ]
   let myTitle = theme_array.find((x)=>{
     return x.color === title

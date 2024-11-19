@@ -178,8 +178,8 @@ io.on('connection', function(socket) {
         users_array = result
         let verificationToken = crypto.randomBytes(20).toString('hex') // Generate a unique verification token
 
-        sendVerificationEmail(email, lang, verificationToken).then((res)=>{
-          if(res && res.success){            
+        sendVerificationEmail(email, lang, verificationToken).then((res)=>{          
+          if(res && res.success_mail){            
             try{
               io.to(socket.id).emit('signup_read', {exists: false, validate: false})
             } catch(e){

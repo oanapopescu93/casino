@@ -133,7 +133,8 @@ function Sign(props) {
                     handleErrors("error", data.details ? data.details : "error")
                     return
                 }                
-                if(data.is_verified){                                 
+                if(data.is_verified){  
+                    console.log(data.obj)                               
                     dispatch(changeUser(data.obj))
                     setCookie("casino_uuid", data.obj.uuid)
                     if(data.obj.logsTotal === 0){
@@ -156,7 +157,7 @@ function Sign(props) {
                         open: true,
                         template: "error",
                         title: translate({ lang: lang, info: "error" }),
-                        data: translate({ lang: lang, info: data.send }),
+                        data: translate({ lang: lang, info: data.details }),
                         size: "sm",
                     }
                     dispatch(changePopup(payload))

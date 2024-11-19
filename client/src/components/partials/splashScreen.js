@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import logo_icon_yellow from '../../img/logo/logo_yellow.png'
 import logo_icon_pink from '../../img/logo/logo_pink.png'
 import logo_icon_green from '../../img/logo/logo_green.png'
+import logo_icon_orange from '../../img/logo/logo_orange.png'
 import TransparentText from './transparentText'
 import { getWindowDimensions } from '../../utils/utils'
 
@@ -38,6 +39,8 @@ function Splash(props) {
               return logo_icon_pink
             case 'black':
               return logo_icon_green
+            case 'blue':
+              return logo_icon_orange
             default:
               return logo_icon_yellow
         }
@@ -49,6 +52,8 @@ function Splash(props) {
               return "#ffc0cb"
             case 'black':
               return "#32CD32"
+            case 'blue':
+              return "#ff8000"
             default:
               return "gold"
         }

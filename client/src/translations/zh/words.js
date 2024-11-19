@@ -151,7 +151,7 @@ var word_bank = {
     forest_green: "森林绿",
     saphire_purple: "蓝宝石紫",
     radium_black: "镭黑",
-    royal_blue: "皇家蓝",
+    copper_night: "铜夜",
     
     dashboard: "仪表板",
     choose_profile_pic: "选择个人资料图片",

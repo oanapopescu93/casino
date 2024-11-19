@@ -151,7 +151,7 @@ var word_bank = {
     forest_green: "Verde Bosque",
     saphire_purple: "Púrpura Zafiro",
     radium_black: "Negro Radio",
-    royal_blue: "Azul Real",
+    copper_night: "Noche de Cobre",
 
     dashboard: "Dashboard",
     choose_profile_pic: "Elegir foto de perfil",

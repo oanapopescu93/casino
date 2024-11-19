@@ -39,17 +39,17 @@ function Panel(props){
                 type="button"  
                 className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>handleCheckout()}
-            ><FontAwesomeIcon icon={faCartShopping}/><span>{translate({lang: lang, info: "checkout"})}</span></Button>            
+            ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang: lang, info: "checkout"})}</span></Button>            
             <Button 
                 type="button"  
                 className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>handleContinueShopping()}
-            ><FontAwesomeIcon icon={faCartShopping}/><span>{translate({lang: lang, info: "continue_shopping"})}</span></Button>
+            ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang: lang, info: "continue_shopping"})}</span></Button>
             <Button 
                 type="button"  
                 className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>removeAll()}
-            ><FontAwesomeIcon icon={faTrashCan}/><span>{translate({lang: lang, info: "remove_all"})}</span></Button>
+            ><FontAwesomeIcon icon={faTrashCan}/>&nbsp;<span>{translate({lang: lang, info: "remove_all"})}</span></Button>
         </div>
     </div>
 }

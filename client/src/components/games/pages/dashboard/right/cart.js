@@ -90,14 +90,14 @@ function Cart(props){
                         type="button"  
                         className="mybutton button_transparent shadow_convex"
                         onClick={()=>cartRemoveAllProduct()}
-                    ><FontAwesomeIcon icon={faTrashCan}/> <span>{translate({lang: lang, info: "remove_all"})}</span></Button>
+                    ><FontAwesomeIcon icon={faTrashCan}/>&nbsp;<span>{translate({lang: lang, info: "remove_all"})}</span></Button>
                 </div>
                 <div className="cart_button">
                     <Button 
                         type="button"  
                         className="mybutton button_fullcolor shadow_convex"
                         onClick={()=>handleCheckout()}
-                    ><FontAwesomeIcon icon={faCartShopping}/> <span>{translate({lang: lang, info: "checkout"})}</span></Button>
+                    ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang: lang, info: "checkout"})}</span></Button>
                 </div>
             </div>
         </> : <p>{translate({lang: lang, info: "no_cart"})}</p>}
