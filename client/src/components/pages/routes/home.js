@@ -227,6 +227,7 @@ function Home(props) {
                 case "Order":                    
                 case "BuyCarrots":                    
                 case "how_to_play":  
+                case "gdpr":  
                     return <OtherPages {...props}/>
                 case "Withdraw":
                     return <Withdraw {...props}/>
@@ -256,8 +257,10 @@ function Home(props) {
             }
         })()}
         {cookies !== '1' ? <Cookies lang={lang} cookiesClick={()=>handleCookiesClick()} /> : null}
-        <ButtonDonation handleDonationClick={()=>handleDonationClick()}/>
-        <Footer lang={lang} />
+        {!page.game ? <>
+            <ButtonDonation handleDonationClick={()=>handleDonationClick()}/>
+            <Footer {...props} settings={settings} />
+        </> : null}
     </div>
 }
 

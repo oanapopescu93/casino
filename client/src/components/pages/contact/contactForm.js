@@ -134,9 +134,9 @@ function ContactForm(props){
             {(() => {                
                 if(sendResults === "email_send"){
                     return <div className="alert alert-success">
-                        <a href="https://www.mailtrap.io" className="text_green">
+                        <p className="text_green">
                             {translate({lang: lang, info: sendResults})}
-                        </a>
+                        </p>
                     </div>
                 } else if(sendResults === "email_no_send"){
                     return <div className="alert alert-danger">

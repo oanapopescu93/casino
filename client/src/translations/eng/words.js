@@ -405,7 +405,13 @@ var word_bank = {
     email_send_validation: "Email was sent successfully",
 
     // Apply Job
-    apply: "Apply"
+    apply: "Apply",
+
+    // Newsletter
+    newsletter: "Newsletter",
+    company: "Company",
+    resources: "Resources",
+    links: "Links",
 }
 
 export const wordsEng = (info)=>{

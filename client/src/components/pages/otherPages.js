@@ -15,6 +15,7 @@ import BuyCarrots from './buyCarrots/buyCarrots'
 import HowToPlay from './howToPlay/howToPlay'
 
 import { translate } from '../../translations/translate'
+import Gdpr from './gdpr/gdpr'
 
 function OtherPages(props) {
     const {page, home, settings} = props
@@ -54,6 +55,8 @@ function OtherPages(props) {
                     return <BuyCarrots {...props} />
                 case "how_to_play": 
                     return <HowToPlay {...props} />
+                case "gdpr":
+                    return <Gdpr {...props} />
                 default:
                     return <p>{translate({lang: lang, info: "error"})}</p>
             }

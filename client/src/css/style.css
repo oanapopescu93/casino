@@ -1262,20 +1262,49 @@ textarea {
 }
 .footer_container.up .footer_body{
   border-top:solid 1px var(--color);
-  height: 50px;
+  height: 160px;
 }
-.footer_list, footer{
-  padding: var(--padding_small) var(--padding) 0px var(--padding);
+.footer_list{
+  padding: var(--padding) 0px;
+  text-align: left;
+}
+.footer_list h4{
+  border-bottom:solid 1px var(--color);
+  padding-bottom: var(--padding_small);
+  margin-bottom: var(--padding_small);
 }
 .footer_list li{
-  display: inline-block;
-  vertical-align: middle;
-  padding: 0px var(--padding_small);
-  border-right: solid 1px var(--color);
   cursor: pointer;
+  line-height: 20px;
 }
-.footer_list li:last-child{
-  border-right: solid 0px transparent;
+.newsletter_container{
+  padding: var(--padding) 0px;
+  text-align: left;
+}
+.newsletter_container h4{
+  border-bottom:solid 1px var(--color);
+  padding-bottom: var(--padding_small);
+  margin-bottom: var(--padding_small);
+}
+.newsletter_box input, .newsletter_box button{
+  display: inline-block;
+  vertical-align: top;
+  height: 25px;
+}
+.newsletter_box input{
+  border-radius: var(--radius) 0px 0px var(--radius);
+  width: 80%;
+}
+.newsletter_box button{
+  border-radius: 0px var(--radius) var(--radius) 0px;
+  width: 20%;
+}
+.newsletter_box button svg{
+  font-size: 14px;
+}
+footer{
+  border-top:solid 1px var(--color);
+  padding: var(--padding_small) 0px;
 }
 #ukraine_icon{
   width: 20px;
@@ -4353,12 +4382,19 @@ a.donation_button{
 		font-size: 10px;
 		line-height: 12px;
 	}
-  .footer_list li{
-    width: 100%;
-    padding: var(--padding_small);
-  }
   .footer_container.up .footer_body{
-    height: 170px;
+    height: 420px;
+  }
+  .footer_list, .newsletter_container, footer {
+    padding: var(--padding);
+    padding-bottom: 0px;
+    text-align: center;
+  }
+  .newsletter_container{
+    padding-bottom: var(--padding_small);
+  }
+  footer{
+    border-top: solid 0px transparent;
   }
   .mybutton.round,#game_bets_clear{
     width: 40px;
@@ -4742,7 +4778,11 @@ a.donation_button{
     height: 30px;
     right: -40px;
     top: 85px;
-  }  
+  }
+  .question_subcategory h2 {
+		font-size: 22px;
+		line-height: 22px;
+	}
 }
 @media (max-width:340px) {
   .dashboard_box .cart_info, .dashboard_box .cart_buttons{
@@ -4805,6 +4845,11 @@ a.donation_button{
   .chatbot_textarea .message_box{
     font-size: 12px;
     line-height: 14px;
+  }
+
+  /* FOOTER */
+  .footer_container.up .footer_body {
+    height: 220px;
   }
 }
 

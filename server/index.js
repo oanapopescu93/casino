@@ -442,21 +442,22 @@ io.on('connection', function(socket) {
     }
   })
 
-  // DASHBOARD, CART, ORDER, WITHDRAW
+  // DASHBOARD, CART, ORDER, WITHDRAW, NEWSLETTERS
   socket.on('dashboardChanges_send', function(data){
-    if(data.uuid){
+    const { uuid, value } = data
+    if(uuid){
         switch(data.type) {
           case "pic":
-            database_config.sql = "UPDATE casino_user SET profile_pic='" + data.value + "' WHERE uuid='" + data.uuid + "'; "
+            database_config.sql = "UPDATE casino_user SET profile_pic='" + value + "' WHERE uuid='" + uuid + "'; "
             database_config.name = "db012"
             break
           case "user":
-            database_config.sql = "UPDATE casino_user SET user='" + data.value + "'WHERE uuid='" + data.uuid + "'; "
+            database_config.sql = "UPDATE casino_user SET user='" + value + "'WHERE uuid='" + uuid + "'; "
             database_config.name = "db013"
             break
           case "pass":
-            let new_pass = JSON.stringify(encrypt(data.value))
-            database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE uuid='" + data.uuid + "'; "
+            let new_pass = JSON.stringify(encrypt(value))
+            database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE uuid='" + uuid + "'; "
             database_config.name = "db014"
             break
         }        
@@ -574,6 +575,14 @@ io.on('connection', function(socket) {
       io.to(socket.id).emit('getOrdersWithdraws_read', {error: 'no_uuid'})
       console.log('[error]','getOrdersWithdraws_read--> ', uuid)
     }   
+  })
+
+  socket.on('newsletter_send', function(email){
+    try{				
+      io.to(socket.id).emit('newsletter_read', {send: "email_send"})
+    }catch(e){
+      console.log('[error]','newsletter_read--> ', e)
+    }
   })
 
   // CHATROOM
