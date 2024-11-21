@@ -4,7 +4,7 @@ import { translate } from '../../translations/translate'
 import Spinner from '../partials/spinner'
 
 function ForgotPassword(props) {
-    const {forgotPasswordResult, forgotPasswordSending, settings, text} = props
+    const {forgotPasswordResult, sending, settings, text} = props
     const {lang} = settings
     const [email, setEmail] = useState("")
 
@@ -21,7 +21,7 @@ function ForgotPassword(props) {
             <Button type="button" id="forgotPassword_btn_ok" className="mybutton button_fullcolor_dark" onClick={()=>props.forgotPasswordClick(email)}>
                 {translate({lang: lang, info: "send"})}
             </Button>
-            {forgotPasswordSending ? <Spinner size="small" color="black"/> : null}
+            {sending ? <Spinner size="small" color="black"/> : null}
             {(() => {                
                 if(forgotPasswordResult === "email_no_send"){
                     return <div className="alert alert-danger">

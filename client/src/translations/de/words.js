@@ -400,7 +400,9 @@ var word_bank = {
     invalid_expired_token: "Ungültiger oder abgelaufener Token",
     email_verify_success: "E-Mail erfolgreich verifiziert",
     email_already_verified: "E-Mail wurde bereits verifiziert",
-    email_send_validation: "E-Mail wurde erfolgreich gesendet",
+    email_send_validation_title: "Bestätigen Sie Ihre E-Mail-Adresse",
+    email_send_validation_text: "Wir haben eine Bestätigungs-E-Mail an Ihren Posteingang gesendet. Bitte überprüfen Sie Ihre E-Mails und klicken Sie auf den Bestätigungslink, um Ihr Konto zu aktivieren. Wenn Sie die E-Mail nicht sehen, überprüfen Sie bitte Ihren Spam- oder Junk-Ordner. Vielen Dank!",
+    email_send_validation_button: "Bestätigungs-E-Mail erneut senden",
 
     // Apply Job
     apply: "Bewerben für den Job",

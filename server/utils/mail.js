@@ -293,9 +293,9 @@ function sendVerificationEmail(email, lang="ENG", token) {
                 } else if (error.responseCode === 554) {
                     error_message = "email_blocked_has_restrictions"
                 }                
-                resolve({ success_mail: false, send: error_message })
+                resolve({ success_mail: false, details: error_message })
             } else {                
-                resolve({ success_mail: true, send: "email_send" })
+                resolve({ success_mail: true, details: "email_send_validation" })
             }
         })
     })

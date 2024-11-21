@@ -4238,6 +4238,14 @@ a.donation_button{
   margin-bottom: var(--padding);
 }
 
+/* Verify email popup */
+.perificationSendSuccess button{
+  margin-top: var(--padding);
+}
+.perificationSendSuccess .resendVerificationResult{
+  margin-top: var(--padding);
+}
+
 /* media */
 @media (max-width: 1600px){
 	.shop_shader{

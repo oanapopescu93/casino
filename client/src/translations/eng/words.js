@@ -402,7 +402,9 @@ var word_bank = {
     invalid_expired_token: "Invalid or expired token",
     email_verify_success: "Email verified successfully",
     email_already_verified: "Email has already been verified",
-    email_send_validation: "Email was sent successfully",
+    email_send_validation_title: "Verify your email address",
+    email_send_validation_text: "We've sent a verification email to your inbox. Please check your email and click the verification link to activate your account. If you don't see the email, check your spam or junk folder. Thank you!",
+    email_send_validation_button: "Resend verification email",
 
     // Apply Job
     apply: "Apply",

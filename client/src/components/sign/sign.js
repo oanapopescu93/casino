@@ -133,8 +133,7 @@ function Sign(props) {
                     handleErrors("error", data.details ? data.details : "error")
                     return
                 }                
-                if(data.is_verified){  
-                    console.log(data.obj)                               
+                if(data.is_verified){                             
                     dispatch(changeUser(data.obj))
                     setCookie("casino_uuid", data.obj.uuid)
                     if(data.obj.logsTotal === 0){
@@ -149,49 +148,28 @@ function Sign(props) {
         }
         const handleSignUpRead = (data) => {
             setLoaded(false)
-            
-            if (data) {                
-                if(!data.success_mail){
-                    setLoaded(true)
-                    let payload = {
-                        open: true,
-                        template: "error",
-                        title: translate({ lang: lang, info: "error" }),
-                        data: translate({ lang: lang, info: data.details }),
-                        size: "sm",
-                    }
-                    dispatch(changePopup(payload))
-                    return
-                }
-                
-                if (!data.validate) {                    
-                    let payload = {
-                        open: true,
-                        template: "success",
-                        title: translate({ lang: lang, info: "success" }),
-                        data: translate({ lang: lang, info: "email_send_validation" }),
-                        size: "sm",
-                    }
-                    dispatch(changePopup(payload))
-                } else if (data.exists) {                    
-                    setLoaded(true)
-                    let payload = {
-                        open: true,
-                        template: "error",
-                        title: translate({ lang: lang, info: "error" }),
-                        data: translate({ lang: lang, info: data.details }),
-                        size: "sm",
-                    }
-                    dispatch(changePopup(payload))  
-                } else {
-                    setLoaded(true)
-                    handleErrors("signup", data.details ? data.details : "signup_error")
-                }
-            } else {                
+        
+            if (!data) {                
                 setLoaded(true)
-                handleErrors("signup", "signup_error")
+                handleErrors("error", "signup_error")
+                return
             }
-        }        
+        
+            const { success_mail, details } = data
+        
+            if(success_mail){
+                let payload = {
+                    open: true,
+                    template: "verificationSendSuccess",
+                    title: translate({lang: lang, info: "email_send_validation_title"}),
+                    data,
+                    size: "md",
+                }
+                dispatch(changePopup(payload))
+            } else {
+                handleErrors("error", details ? details : "signup_error")
+            }
+        }       
 		socket.on('signin_read', handleSignInRead)
         socket.on('signup_read', handleSignUpRead)
 		return () => {

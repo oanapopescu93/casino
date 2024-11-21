@@ -400,7 +400,9 @@ var word_bank = {
     invalid_expired_token: "无效或过期的令牌",
     email_verify_success: "电子邮件验证成功",
     email_already_verified: "电子邮件已验证",
-    email_send_validation: "电子邮件发送成功",
+    email_send_validation_title: "验证您的电子邮件地址",
+    email_send_validation_text: "我们已将验证邮件发送到您的收件箱。请检查您的电子邮件并点击验证链接以激活您的帐户。如果您没有看到邮件，请检查您的垃圾邮件或垃圾文件夹。谢谢！",
+    email_send_validation_button: "重新发送验证邮件",
 
     // Apply Job
     apply: "申请工作"

@@ -400,7 +400,9 @@ var word_bank = {
     invalid_expired_token: "Token non valido o scaduto",
     email_verify_success: "Email verificata con successo",
     email_already_verified: "Email già verificata",
-    email_send_validation: "Email inviata con successo",
+    email_send_validation_title: "Verifica il tuo indirizzo e-mail",
+    email_send_validation_text: "Abbiamo inviato un'email di verifica alla tua casella di posta. Controlla la tua email e fai clic sul link di verifica per attivare il tuo account. Se non vedi l'email, controlla la cartella spam o posta indesiderata. Grazie!",
+    email_send_validation_button: "Rinvia email di verifica",
 
     // Apply Job
     apply: "Candidati per il lavoro"

@@ -26,6 +26,7 @@ import OrderDetails from "./orderDetails"
 import ChatBot from "./chatbot"
 import ApplyJob from "./applyJob"
 import { postData } from "../../utils/utils"
+import VerificationSendSuccess from "./verificationSendSuccess"
 
 function Popup(props){
     const {socket, home, settings} = props
@@ -42,12 +43,13 @@ function Popup(props){
     let dispatch = useDispatch()    
 
     const [forgotPasswordResult, setForgotPasswordResult] = useState('')
-    const [forgotPasswordSending, setForgotPasswordSending] = useState(false)
+    const [sending, setSending] = useState(false)
     const [applyJobSending, setApplyJobSending] = useState(null)
+    const [resendVerificationResult, setResendVerificationResult] = useState('')
 
     let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
     let style = template
-    if(template === "paymentSuccess"){
+    if(template === "paymentSuccess" || template === "verificationSendSuccess"){
         style = "success"
     }
 
@@ -63,10 +65,10 @@ function Popup(props){
         dispatch(changeIsMinor(e))
     }
 
-    function forgotPasswordClick(e){
-        if(validateInput(e, "email")){
-            setForgotPasswordSending(true)
-            socket.emit('forgotPassword_send', {lang: lang, email: e})
+    function forgotPasswordClick(email){
+        if(validateInput(email, "email")){
+            setSending(true)
+            socket.emit('forgotPassword_send', {lang: lang, email})
         } else {
             setForgotPasswordResult(translate({lang: lang, info: "error"}))
         }
@@ -96,10 +98,17 @@ function Popup(props){
     useEffect(() => {
         socket.on('forgotPassword_read', (res)=>{
             setForgotPasswordResult(res.send)
-            setForgotPasswordSending(false)
+            setSending(false)
             setTimeout(function(){
                 setForgotPasswordResult('')
                 closeModal()
+           }, 2000)
+        })
+        socket.on('signup_verification_read', (res)=>{
+            setSending(false)            
+            setResendVerificationResult(res.details)
+            setTimeout(function(){
+                setResendVerificationResult('')
            }, 2000)
         })
     }, [socket])
@@ -113,6 +122,11 @@ function Popup(props){
                 closeModal()
            }, 2000)
         }) 
+    }
+
+    function handleResendVerification(email){
+        setSending(true)
+        socket.emit('signup_verification_send', {lang: lang, email})
     }
 
     return <>
@@ -135,7 +149,7 @@ function Popup(props){
                                 text={data} 
                                 forgotPasswordClick={(e)=>forgotPasswordClick(e)} 
                                 forgotPasswordResult={forgotPasswordResult}
-                                forgotPasswordSending={forgotPasswordSending}
+                                sending={sending}
                             />
                         case "isMinor":
                             return <IsMinor settings={settings} text={data} isMinorClick={(e)=>isMinorClick(e)} />
@@ -159,6 +173,14 @@ function Popup(props){
                             return <WhackARabbit settings={settings} handleClick={()=>handleWhackARabbit()} />
                         case "paymentSuccess":
                             return <PaymentSuccess settings={settings} data={data} />
+                        case "verificationSendSuccess":
+                            return <VerificationSendSuccess 
+                            settings={settings} 
+                            data={data} 
+                            resendVerificationResult={resendVerificationResult} 
+                            sending={sending}
+                            handleResendVerification={(e)=>handleResendVerification(e)}
+                        />
                         case "orderDetails":
                             return <OrderDetails settings={settings} data={data} />
                         case "chatbot":

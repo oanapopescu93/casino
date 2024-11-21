@@ -170,10 +170,11 @@ io.on('connection', function(socket) {
   })
   socket.on('signup_send', (data) => {
     const { user, pass, email, phone, lang } = data
-    database_config.sql = 'SELECT * FROM casino_user WHERE email = "' + email + '"'
+    database_config.sql = 'SELECT * FROM casino_user WHERE email = ?'
     database_config.name = "db03"
-		database(database_config).then(function(result){
-      if(result && result.length == 0){
+
+		database(database_config, [email]).then(function(result){
+      if(result && result.length == 0){        
         //no user was found --> new user --> he must sign up
         users_array = result
         let verificationToken = crypto.randomBytes(20).toString('hex') // Generate a unique verification token
@@ -181,7 +182,13 @@ io.on('connection', function(socket) {
         sendVerificationEmail(email, lang, verificationToken).then((res)=>{          
           if(res && res.success_mail){            
             try{
-              io.to(socket.id).emit('signup_read', {exists: false, validate: false})
+              io.to(socket.id).emit('signup_read', {
+                ...res,
+                exists: false, 
+                validate: false, 
+                email,
+                type: 'a'
+              })
             } catch(e){
               console.log('[error]','signup_read :', e)
             } 
@@ -208,7 +215,13 @@ io.on('connection', function(socket) {
           } else {
             // if the verification email, for some reaon, had a problem. If not, we more foreward.
             try{
-              io.to(socket.id).emit('signup_read', res)
+              io.to(socket.id).emit('signup_read', {
+                ...res, 
+                exists: false, 
+                validate: false, 
+                email,
+                type: 'b'
+              })
             } catch(e){
               console.log('[error]','signup_read :', e)
             }
@@ -217,7 +230,13 @@ io.on('connection', function(socket) {
       } else {
         // user tries to signup with an existing email --> we send him to login      
         try{
-          io.emit('signup_read', {exists: true, obj: {}, validate: true, details: "email_in_use"})
+          io.to(socket.id).emit('signup_read', {
+            exists: true, 
+            validate: true, 
+            details: "email_in_use", 
+            email,
+            type: 'c'
+          })
         } catch(e){
           console.log('[error]','signup_read :', e)
         }       
@@ -272,6 +291,18 @@ io.on('connection', function(socket) {
       console.log('[error]','resetPassword--> no user ', user)
     }
   }
+  socket.on('signup_verification_send', (data) => {
+    const { email, lang } = data
+    let verificationToken = crypto.randomBytes(20).toString('hex') // Generate a unique verification token
+
+    sendVerificationEmail(email, lang, verificationToken).then((res)=>{          
+      try{
+        io.to(socket.id).emit('signup_verification_read', res)
+      } catch(e){
+        console.log('[error]','signup_verification_read :', e)
+      }
+    }) 
+  })
 
   // GAMES
   socket.on('game_send', function(data){

@@ -400,7 +400,9 @@ var word_bank = {
     invalid_expired_token: "Token invalid sau expirat",
     email_verify_success: "E-mail verificat cu succes",
     email_already_verified: "E-mail deja verificat",
-    email_send_validation: "E-mail trimis cu succes",
+    email_send_validation_title: "Verificați adresa de e-mail",
+    email_send_validation_text: "Am trimis un e-mail de verificare în căsuța dumneavoastră. Vă rugăm să verificați e-mailul și să faceți clic pe linkul de verificare pentru a activa contul. Dacă nu vedeți e-mailul, verificați folderul de spam sau mesaje nedorite. Mulțumim!",
+    email_send_validation_button: "Retrimiteți e-mailul de verificare",
 
     // Apply Job
     apply: "Aplică pentru job"
