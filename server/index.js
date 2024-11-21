@@ -616,8 +616,7 @@ io.on('connection', function(socket) {
 
 
   socket.on('newsletter_send', function(data){
-    const { uuid, email } = data 
-
+    const { uuid, email } = data
     if(uuid && email){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db19"
