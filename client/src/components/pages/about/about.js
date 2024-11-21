@@ -9,7 +9,7 @@ import AboutEng from './aboutEng'
 import AboutEs from './aboutEs'
 import AboutFr from './aboutFr'
 import AboutIt from './aboutIt'
-import AboutPT from './aboutPT'
+import AboutPt from './aboutPt'
 import AboutRo from './aboutRo'
 import AboutRu from './aboutRu'
 import AboutZh from './aboutZh'
@@ -41,7 +41,7 @@ function About(props){
                         case "IT":
                             return <AboutIt settings={settings} casino_name={casino_name} />
                         case "PT":
-                            return <AboutPT settings={settings} casino_name={casino_name} />
+                            return <AboutPt settings={settings} casino_name={casino_name} />
                         case "RO":
                             return <AboutRo settings={settings} casino_name={casino_name} />
                         case "RU":

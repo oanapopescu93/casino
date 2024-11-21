@@ -16,7 +16,7 @@ function VerifyEmail(props) {
             case 'black':
                 return '#32CD32' // Lime Green
             case 'blue':
-                return '#E0E0E0' //silver
+                return '#ff8000' // orange
             default:
               return 'gold'
         }

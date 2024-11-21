@@ -405,7 +405,16 @@ var word_bank = {
     email_send_validation_button: "Retrimiteți e-mailul de verificare",
 
     // Apply Job
-    apply: "Aplică pentru job"
+    apply: "Aplică pentru job",
+
+    // Newsletter
+    newsletter: "Newsletter",
+    company: "Companie",
+    resources: "Resurse",
+    links: "Linkuri",
+    subscribed: "Abonat",
+    unsubscribed: "Dezabonat",
+    already_subscribed: "Deja abonat",
 }
 
 export const wordsRo = (info)=>{

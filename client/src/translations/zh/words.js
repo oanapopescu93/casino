@@ -405,7 +405,16 @@ var word_bank = {
     email_send_validation_button: "重新发送验证邮件",
 
     // Apply Job
-    apply: "申请工作"
+    apply: "申请工作",
+
+    // Newsletter
+    newsletter: "新闻通讯",
+    company: "公司",
+    resources: "资源",
+    links: "链接",
+    subscribed: "已订阅",
+    unsubscribed: "已退订",
+    already_subscribed: "已经订阅",
 }
 
 export const wordsZh = (info)=>{

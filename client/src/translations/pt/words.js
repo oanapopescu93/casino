@@ -405,7 +405,16 @@ var word_bank = {
     email_send_validation_button: "Reenviar e-mail de verificação",
 
     // Apply Job
-    apply: "Candidatar-se à vaga"
+    apply: "Candidatar-se à vaga",
+
+    // Newsletter
+    newsletter: "Newsletter",
+    company: "Empresa",
+    resources: "Recursos",
+    links: "Links",
+    subscribed: "Inscrito",
+    unsubscribed: "Cancelado",
+    already_subscribed: "Já inscrito",
 }
 
 export const wordsPt = (info)=>{

@@ -405,7 +405,16 @@ var word_bank = {
     email_send_validation_button: "Повторно отправить письмо для подтверждения",
 
     // Apply Job
-    apply: "Подать заявку на работу"
+    apply: "Подать заявку на работу",
+
+    // Newsletter
+    newsletter: "Новостная рассылка",
+    company: "Компания",
+    resources: "Ресурсы",
+    links: "Ссылки",
+    subscribed: "Подписан",
+    unsubscribed: "Отписан",
+    already_subscribed: "Уже подписан",
 }
 
 export const wordsRu = (info)=>{

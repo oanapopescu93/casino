@@ -406,6 +406,15 @@ var word_bank = {
 
     // Apply Job
     apply: "Postuler pour le poste",
+
+    // Newsletter
+    newsletter: "Newsletter",
+    company: "Entreprise",
+    resources: "Ressources",
+    links: "Liens",
+    subscribed: "Abonné",
+    unsubscribed: "Désabonné",
+    already_subscribed: "Déjà abonné",
 }
 
 export const wordsFr = (info)=>{

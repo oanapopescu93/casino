@@ -414,6 +414,9 @@ var word_bank = {
     company: "Company",
     resources: "Resources",
     links: "Links",
+    subscribed: "Subscribed",
+    unsubscribed: "Unsubscribed",
+    already_subscribed: "Already subscribed",
 }
 
 export const wordsEng = (info)=>{

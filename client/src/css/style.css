@@ -1362,7 +1362,7 @@ footer{
   color: var(--color);
   border-radius: 0px var(--radius) var(--radius) 0px;
   width: 35px;
-  height: 130px;
+  height: 145px;
   text-align: center;
   vertical-align: top;
   padding: var(--padding) var(--padding) var(--padding) var(--padding_small);

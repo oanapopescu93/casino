@@ -8,10 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { Button, Col, Row } from 'react-bootstrap'
 import { validateInput } from '../../utils/validate'
+import Spinner from './spinner'
 
 function Footer(props){
-    const { socket, settings } = props
-    const { lang } = settings
+    const { socket, settings, user } = props
+    const { lang, theme } = settings
+    const { uuid } = user
 
     let dispatch = useDispatch()
     const wrapperRef = useRef(null)
@@ -26,6 +28,7 @@ function Footer(props){
     }
     const [newsletterError, setNewsletterError] = useState(errors_default)
     const [sendResults, setSendResults] = useState(null)
+    const [sendingResults, setSendingResults] = useState(false)
 
     useEffect(() => {
         handleDate()
@@ -54,11 +57,7 @@ function Footer(props){
     }
 
     function handleFooterUp(){
-        if(up === ''){
-            setUp('up')
-        } else {
-            setUp('')
-        }
+        setUp(up === '' ? 'up' : '')
         setEmail('')
         setNewsletterError(errors_default)
     }
@@ -94,26 +93,36 @@ function Footer(props){
         return problem
     }
 
-    function handleSubmitNewsletter() { 
+    function handleSubmitNewsletter(e) { 
+        e.stopPropagation()
         if(!validateForm()){
-            socket.emit('newsletter_send', email)
+            setSendingResults(true)
+            socket.emit('newsletter_send', {uuid, email})
         }
     }
 
     useEffect(() => {
 		socket.on('newsletter_read', (data)=>{
-			if(data && data.send){
-                setSendResults(data.send)
-            } else {
-                setSendResults("email_no_send")
-            }
-
-            let time = 3000
+            setSendingResults(false)
+            setSendResults(data && data.send ? data.send : "error")
             setTimeout(() => {
                 setSendResults(null)
-            }, time)
+            }, 3000)
 		})
 	}, [socket])
+
+    function chooseColor(theme){
+        switch (theme) {
+            case 'purple':
+                return 'pink'
+            case 'black':
+                return '#32CD32' // Lime Green
+            case 'blue':
+                return '#ff8000' // orange
+            default:
+              return 'gold'
+        }
+    }
 
     return <div ref={wrapperRef} className={"footer_container " + up}>
         <div className="footer_button_container">
@@ -164,35 +173,39 @@ function Footer(props){
                         <Col md="4">                            
                             <div className="newsletter_container">
                                 <h4>{translate({lang: lang, info: "newsletter"})}</h4>
-                                <div className="newsletter_box">
-                                    <input className="input_light" type="text" value={email} onChange={(e)=>{handleChangeInput(e)}}/>
-                                    <Button type="button" onClick={(e)=>handleSubmitNewsletter(e)} className="mybutton button_fullcolor">
-                                        <FontAwesomeIcon icon={faPaperPlane} />
-                                    </Button>
+                                {(() => {
+                                    if(!sendResults){
+                                        if(sendingResults){
+                                            return <Spinner size="small" color={chooseColor(theme)}/>
+                                        }
+                                        return <div className="newsletter_box">
+                                            <input className="input_light" type="text" value={email} onChange={(e)=>{handleChangeInput(e)}}/>
+                                            <Button type="button" onClick={(e)=>handleSubmitNewsletter(e)} className="mybutton button_fullcolor">
+                                                <FontAwesomeIcon icon={faPaperPlane} />
+                                            </Button>
 
-                                    {!newsletterError.email.fill ? (
-                                        <div className="alert alert-danger">
-                                            <p className="text_red">
-                                                {translate({ lang: lang, info: newsletterError.email.fill_message })}
-                                            </p>
+                                            {!newsletterError.email.fill ? <div className="alert alert-danger">
+                                                <p className="text_red">
+                                                    {translate({ lang: lang, info: newsletterError.email.fill_message })}
+                                                </p>
+                                            </div> : !newsletterError.email.validate ? <div className="alert alert-danger">
+                                                <p className="text_red">
+                                                    {translate({ lang: lang, info: newsletterError.email.validate_message })}
+                                                </p>
+                                            </div> : null}
                                         </div>
-                                    ) : !newsletterError.email.validate ? (
-                                        <div className="alert alert-danger">
-                                            <p className="text_red">
-                                                {translate({ lang: lang, info: newsletterError.email.validate_message })}
+                                    }
+                                    return <div className="newsletter_box">
+                                        {sendResults === "subscribed" || sendResults === "unsubscribed" ? <div className="alert alert-success">
+                                            <p className="text_green">
+                                                {translate({lang: lang, info: sendResults})}
                                             </p>
-                                        </div>
-                                    ) : null}
-
-                                    {sendResults === "email_send" ? <div className="alert alert-success">
-                                        <p className="text_green">
-                                            {translate({lang: lang, info: sendResults})}
-                                        </p>
-                                    </div> : null}
-                                    {sendResults === "email_no_send" ? <div className="alert alert-danger">
-                                        <p className="text_red">{translate({lang: lang, info: sendResults})}</p>
-                                    </div> : null}
-                                </div>
+                                        </div> : <div className="alert alert-danger">
+                                            <p className="text_red">{translate({lang: lang, info: sendResults})}</p>
+                                        </div>}
+                                    </div>
+                                })()}
+                                                               
                             </div>
                         </Col>
                     </Row>

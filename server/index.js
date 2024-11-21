@@ -549,7 +549,7 @@ io.on('connection', function(socket) {
               ]
 
               database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
-              database_config.sql = `INSERT INTO order_user (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+              database_config.sql = `INSERT INTO order_table (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
               database_config.name = "db016"
               database(database_config, payload).then(function(){                
                 try{
@@ -580,20 +580,26 @@ io.on('connection', function(socket) {
       database(database_config).then(function(result){
         if(result){
           users_array = result
-          if(users_array && users_array.length>0){
+          if(users_array && users_array.length > 0){
             let user_found = users_array.filter((x) => x.uuid === uuid)             
             if(user_found[0] && user_found[0]){
-              let id = user_found[0].id       //buuu
+              let id = user_found[0].id
 
-              database_config.sql = "SELECT * FROM order_user;"
-              database_config.sql += "SELECT * FROM withdraw_user;"
+              database_config.sql = "SELECT * FROM order_table;"
+              database_config.sql += "SELECT * FROM withdraw_table;"
               database_config.name = "db018"
-              database(database_config).then(function(result){                
-                let orders_found = result.filter(function(x){return x.user_id === id})
-                let withdraws_found = result.filter(function(x){return x.user_id === id})                
-                orders_found = orders_found.map(({ user_id, ...order }) => order) // Remove user_id from each order in orders_found
-                withdraws_found = withdraws_found.map(({ user_id, ...withdraw }) => withdraw) // Remove user_id from each order in orders_found
-                io.to(socket.id).emit('getOrdersWithdraws_read', {orders_found, withdraws_found})
+              database(database_config).then(function(result){
+                let orders_found = []
+                let withdraws_found = []
+
+                if(result && result[0] && result[1]){
+                  let orders_found = result[0].filter(function(x){return x.user_id === id})
+                  let withdraws_found = result[1].filter(function(x){return x.user_id === id})                
+                  orders_found = orders_found.map(({ user_id, ...order }) => order) // Remove user_id from each order in orders_found
+                  withdraws_found = withdraws_found.map(({ user_id, ...withdraw }) => withdraw) // Remove user_id from each order in orders_found                
+                }
+
+                io.to(socket.id).emit('getOrdersWithdraws_read', {orders_found, withdraws_found})                
               })
             } else {
               io.to(socket.id).emit('getOrdersWithdraws_read', {error: 'no_user'})
@@ -608,12 +614,73 @@ io.on('connection', function(socket) {
     }   
   })
 
-  socket.on('newsletter_send', function(email){
-    try{				
-      io.to(socket.id).emit('newsletter_read', {send: "email_send"})
-    }catch(e){
-      console.log('[error]','newsletter_read--> ', e)
-    }
+
+  socket.on('newsletter_send', function(data){
+    const { uuid, email } = data 
+
+    if(uuid && email){
+      database_config.sql = "SELECT * FROM casino_user;"
+      database_config.name = "db19"
+      database(database_config).then(function(result1){
+        if(result1){
+          users_array = result1
+          if(users_array && users_array.length > 0){
+            let user_found = users_array.filter((x) => x.uuid === uuid)           
+            if(user_found[0] && user_found[0]){
+              database_config.sql = "SELECT * FROM newsletters;"
+              database_config.name = "db20"
+              database(database_config).then(function(result2){
+                if(result2){
+                  let email_found = result2.filter((x) => x.email === email)
+                  if(email_found && email_found.length > 0){
+                    try{				
+                      io.to(socket.id).emit('newsletter_read', {success: false, send: "already_subscribed"})
+                    }catch(e){
+                      console.log('[error]','newsletter_read--> ', e)
+                    }
+                  } else {                    
+                    database_config.sql = "INSERT INTO newsletters (user_id, email) VALUES (?, ?)"
+                    database_config.name = "db21"
+                    let payload =  [user_found[0].id, email]
+                    database(database_config, payload).then(function(){                  
+                      try{				
+                        io.to(socket.id).emit('newsletter_read', {success: false, send: "subscribed"})
+                      }catch(e){
+                        console.log('[error]','newsletter_read--> ', e)
+                      }
+                    })
+                  }
+                }
+              })
+            } else {
+              try{				
+                io.to(socket.id).emit('newsletter_read', {success: false, send: "error"})
+              }catch(e){
+                console.log('[error]','newsletter_read--> ', e)
+              }
+            }
+          } else {
+            try{				
+              io.to(socket.id).emit('newsletter_read', {success: false, send: "error"})
+            }catch(e){
+              console.log('[error]','newsletter_read--> ', e)
+            }
+          }
+        } else {
+          try{				
+            io.to(socket.id).emit('newsletter_read', {success: false, send: "error"})
+          }catch(e){
+            console.log('[error]','newsletter_read--> ', e)
+          }
+        }
+      })
+    } else {
+      try{				
+        io.to(socket.id).emit('newsletter_read', {success: false, send: "error"})
+      }catch(e){
+        console.log('[error]','newsletter_read--> ', e)
+      }
+    }    
   })
 
   // CHATROOM
