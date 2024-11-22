@@ -48,7 +48,7 @@ function About(props){
                         case "IT":
                             return <AboutIt settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "PT":
-                            return <AboutPt />
+                            return <AboutPt settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "RO":
                             return <AboutRo settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "RU":
