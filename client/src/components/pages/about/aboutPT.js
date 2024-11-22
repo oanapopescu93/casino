@@ -1,10 +1,8 @@
 import React from 'react'
 
-function AboutPt(props){
-    const {settings, casino_name, handleHowToPlay} = props
-    const {lang} = settings    
+function AboutPT(props){  
     return <>
-        <p>AboutPt</p>
+        <p>aboutPT</p>
     </>
 }
-export default AboutPt
+export default AboutPT
