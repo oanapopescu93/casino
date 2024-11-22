@@ -196,7 +196,7 @@ function Craps(props){
 		props.winLose(result)
 	}
 
-	function start_game(){	
+	function start_game(){
 		let timer
 		let state = 1
 		let point = 0
@@ -319,12 +319,6 @@ function Craps(props){
 		}
 
 		function gameLogic(type){
-			const handler = betHandlers[type]
-			if (!handler) {
-				console.error(`Unknown bet type: ${type}`)
-				return
-			}
-
 			switch(type){
 				case "place bet":
 					switch(state){
@@ -572,119 +566,7 @@ function Craps(props){
 						default:
 					}
 			}
-
-			// switch (state) {
-			// 	case 1: // Initial roll
-			// 		rollAndSum().then((sum) => {
-			// 			if (handler.winCondition(sum)) {
-			// 				state = 2; // Win
-			// 			} else if (handler.loseCondition && handler.loseCondition(sum)) {
-			// 				state = 4; // Lose
-			// 			} else {
-			// 				if (handler.onPointEstablished) handler.onPointEstablished(sum);
-			// 				state = 3; // Point established
-			// 			}
-			// 			show_on_board(dicesNumber, sum, point);
-			// 		});
-			// 		break;
-		
-			// 	case 2: // Win
-			// 		check_win_lose('win');
-			// 		clearInterval(timer);
-			// 		break;
-		
-			// 	case 3: // Rolling to hit point or lose
-			// 		rollAndSum().then((sum) => {
-			// 			if (handler.winCondition(sum)) {
-			// 				state = 2; // Win
-			// 			} else if (handler.loseCondition && handler.loseCondition(sum)) {
-			// 				state = 4; // Lose
-			// 			} else if (handler.pushCondition && handler.pushCondition(sum)) {
-			// 				check_win_lose('push'); // Push
-			// 				clearInterval(timer);
-			// 			}
-			// 			show_on_board(dicesNumber, sum, point);
-			// 		});
-			// 		break;
-		
-			// 	case 4: // Lose
-			// 		check_win_lose('lose');
-			// 		clearInterval(timer);
-			// 		break;
-		
-			// 	default:
-			// 		console.error("Unknown game state.");
-			// }
 		}
-
-		function rollAndSum() {
-			return roll(point).then(() => dicesNumber[0] + dicesNumber[1]);
-		}
-		
-		function checkWinLose(sum, winCondition, loseCondition) {
-			if (winCondition(sum)) {
-				state = 2; // Win
-				check_win_lose('win');
-				clearInterval(timer);
-			} else if (loseCondition(sum)) {
-				state = 4; // Lose
-				check_win_lose('lose');
-				clearInterval(timer);
-			}
-		}
-
-		const betHandlers = {
-			"place bet": {
-				winCondition: (sum) => sum === value,
-				loseCondition: (sum) => sum === 7,
-				onPointEstablished: (sum) => {
-					point = sum;
-					state = 3; // Point is established
-				},
-			},
-			"6 big 8": {
-				winCondition: (sum) => sum === 6 || sum === 8,
-				loseCondition: (sum) => sum === 7,
-				onPointEstablished: () => {
-					state = 3; // Continue rolling
-				},
-			},
-			"come": {
-				winCondition: (sum) => sum === 7 || sum === 11,
-				loseCondition: (sum) => sum === 2 || sum === 3 || sum === 12,
-				onPointEstablished: (sum) => {
-					point = sum;
-					state = 3; // Point is established
-				},
-			},
-			"don't come": {
-				winCondition: (sum) => sum === 2 || sum === 3,
-				loseCondition: (sum) => sum === 7 || sum === 11,
-				pushCondition: (sum) => sum === 12, // Push if sum is 12
-				onPointEstablished: (sum) => {
-					point = sum;
-					state = 3; // Point is established
-				},
-			},
-			"don't pass line": {
-				winCondition: (sum) => sum === 2 || sum === 3, // Natural win
-				loseCondition: (sum) => sum === 7 || sum === 11, // Craps
-				pushCondition: (sum) => sum === 12, // Push
-				onPointEstablished: (sum) => {
-					point = sum;
-					state = 3; // Point is established
-				},
-			},
-			default: {
-				winCondition: (sum) => sum === 7 || sum === 11, // Natural win
-				loseCondition: (sum) => sum === 2 || sum === 3 || sum === 12, // Craps
-				onPointEstablished: (sum) => {
-					point = sum;
-					state = 3; // Point is established
-				},
-			},
-		};
-		
 	}
 	
 	return <>
