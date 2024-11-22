@@ -1,7 +1,7 @@
-function AboutPortuguese(props){
+function AboutPt(props){
     return <>
         AboutPortuguese
     </>
 }
 
-export default AboutPortuguese
+export default AboutPt
