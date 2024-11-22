@@ -14,7 +14,6 @@ import AboutRu from './aboutRu'
 import AboutZh from './aboutZh'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
-import AboutPT from './aboutPt'
 
 function About(props){
     const {settings} = props
@@ -48,7 +47,7 @@ function About(props){
                         case "IT":
                             return <AboutIt settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "PT":
-                            return <AboutPT />
+                            return <AboutEng settings={settings} casino_name={casino_name} />
                         case "RO":
                             return <AboutRo settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "RU":
