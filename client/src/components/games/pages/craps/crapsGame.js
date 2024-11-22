@@ -18,49 +18,48 @@ function Dice(props){
 		setX(Math.floor((Math.random() * 6) + 1))
 	}, [])
 
-	return (
-		<div ref={props.innerRef} className="dice_box">
-			<div id={'dice'+number} className={"dice dice_" + number + " show_" + x}>
-				<div id={"dice_"+number+"_side_one"} className='side one'>
-					<div className="dot one_1"></div>
-				</div>
-				<div id={"dice_"+number+"_side_two"} className='side two'>
-					<div className="dot two_1"></div>
-					<div className="dot two_2"></div>
-				</div>
-				<div id={"dice_"+number+"_side_three"} className='side three'>
-					<div className="dot three_1"></div>
-					<div className="dot three_2"></div>
-					<div className="dot three_3"></div>
-				</div>
-				<div id={"dice_"+number+"_side_four"} className='side four'>
-					<div className="dot four_1"></div>
-					<div className="dot four_2"></div>
-					<div className="dot four_3"></div>
-					<div className="dot four_4"></div>
-				</div>
-				<div id={"dice_"+number+"_side_five"} className='side five'>
-					<div className="dot five_1"></div>
-					<div className="dot five_2"></div>
-					<div className="dot five_3"></div>
-					<div className="dot five_4"></div>
-					<div className="dot five_5"></div>
-				</div>
-				<div id={"dice_"+number+"_side_six"} className='side six'>
-					<div className="dot six_1"></div>
-					<div className="dot six_2"></div>
-					<div className="dot six_3"></div>
-					<div className="dot six_4"></div>
-					<div className="dot six_5"></div>
-					<div className="dot six_6"></div>
-				</div>					
+	return <div ref={props.innerRef} className="dice_box">
+		<div id={'dice'+number} className={"dice dice_" + number + " show_" + x}>
+			<div id={"dice_"+number+"_side_one"} className='side one'>
+				<div className="dot one_1"></div>
 			</div>
-			<div className="dice_box_shadow"></div>
+			<div id={"dice_"+number+"_side_two"} className='side two'>
+				<div className="dot two_1"></div>
+				<div className="dot two_2"></div>
+			</div>
+			<div id={"dice_"+number+"_side_three"} className='side three'>
+				<div className="dot three_1"></div>
+				<div className="dot three_2"></div>
+				<div className="dot three_3"></div>
+			</div>
+			<div id={"dice_"+number+"_side_four"} className='side four'>
+				<div className="dot four_1"></div>
+				<div className="dot four_2"></div>
+				<div className="dot four_3"></div>
+				<div className="dot four_4"></div>
+			</div>
+			<div id={"dice_"+number+"_side_five"} className='side five'>
+				<div className="dot five_1"></div>
+				<div className="dot five_2"></div>
+				<div className="dot five_3"></div>
+				<div className="dot five_4"></div>
+				<div className="dot five_5"></div>
+			</div>
+			<div id={"dice_"+number+"_side_six"} className='side six'>
+				<div className="dot six_1"></div>
+				<div className="dot six_2"></div>
+				<div className="dot six_3"></div>
+				<div className="dot six_4"></div>
+				<div className="dot six_5"></div>
+				<div className="dot six_6"></div>
+			</div>					
 		</div>
-	)
+		<div className="dice_box_shadow"></div>
+	</div>
 }
 
 function CrapsBoardText(props){
+	console.log('props.list ', props.list)
 	return <>
 		{props.list && props.list.length>0 ? <>
 			{props.list.map((item, i)=>{
@@ -525,7 +524,7 @@ function Craps(props){
 					break
 				default:
 					switch(state){
-						case 1:
+						case 1: //A roll is made, and the sum is evaluated for a natural win (7 or 11) or a point is established.
 							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								if(sum === 7|| sum === 11){
@@ -539,11 +538,11 @@ function Craps(props){
 								}
 							})
 							break
-						case 2:
+						case 2: //A win is declared.
 							check_win_lose('win')
 							clearInterval(timer)
 							break
-						case 3:
+						case 3: //The player tries to roll the point again or lose by rolling a 7 or craps (2, 3, or 12).
 							roll(point).then(()=>{
 								sum = dicesNumber[0] + dicesNumber[1]
 								show_on_board(dicesNumber, sum, point)
@@ -560,7 +559,7 @@ function Craps(props){
 								}
 							})
 							break
-						case 4:
+						case 4: //A loss is declared.
 							check_win_lose('lose')
 							clearInterval(timer)
 							break

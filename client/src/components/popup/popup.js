@@ -134,8 +134,6 @@ function Popup(props){
         socket.emit('signup_verification_send', {lang: lang, email})
     }
 
-    console.log(title, icon, title === "", !icon)
-
     return <>
         {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + style} show={open} onHide={closeModal} size={size} centered> 
             {title === "" && !icon ? null : <Modal.Header>

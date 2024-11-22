@@ -3531,7 +3531,7 @@ a.donation_button{
 	margin-bottom: var(--padding_small);
 }
 .craps_board_text .text{
-	padding-right:var(--padding_small);
+	padding: 0px var(--padding_small);
 }
 .craps_board_text .text01, .craps_board_text .text03, .craps_board_text .text05{
 	font-weight: bold;
