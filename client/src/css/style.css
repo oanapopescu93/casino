@@ -717,6 +717,9 @@ textarea {
   color: var(--color);
   border: solid 1px var(--color);
 }
+.modal-title img{
+  width: 40px;
+}
 .closeButton{
   background: var(--color);
   border: solid 1px var(--bg);
@@ -4246,6 +4249,34 @@ a.donation_button{
   margin-top: var(--padding);
 }
 
+/* Gambling warning popup */
+.warningGambling_container{
+  text-align: center;
+}
+.warningGambling{
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 400px;
+}
+.warningGambling_box{
+  display: inline-block;
+  vertical-align: top;
+  padding: var(--padding_small);
+  width: 33%;  
+}
+.warningGambling_box img{
+  width: 100%;
+  max-width: 100px;
+}
+.warningGambling_box p{
+  margin-top: var(--padding_small);
+}
+.warningGambling_container h4{
+  margin-top: var(--padding_small);
+  padding-top: var(--padding_small);
+  border-top: solid 1px var(--darkred);
+}
+
 /* media */
 @media (max-width: 1600px){
 	.shop_shader{
@@ -4557,7 +4588,11 @@ a.donation_button{
   }  
 
   .how_to_play_titles{
-    max-height: 370px;
+    max-height: 380px;
+  }
+
+  .warningGambling_box {
+    width: 50%;
   }
 }
 @media (max-width:600px) {
@@ -4795,7 +4830,10 @@ a.donation_button{
 @media (max-width:340px) {
   .dashboard_box .cart_info, .dashboard_box .cart_buttons{
     width: 50%;
-  }  
+  }
+  .warningGambling_box {
+    width: 100%;
+  }
 }
 
 @media (max-width: 960px) and (orientation: landscape){}
@@ -4924,6 +4962,19 @@ a.donation_button{
 	background-color: var(--color);
 	border:solid 1px var(--bg);
   cursor: pointer;
+}
+
+.error ::-webkit-scrollbar-track {
+	background:var(--darkred);
+}
+.error ::-webkit-scrollbar-thumb{
+	background-color: var(--darkred);
+}
+.success ::-webkit-scrollbar-track {
+	background:var(--darkgreen);
+}
+.success ::-webkit-scrollbar-thumb{
+	background-color: var(--darkgreen);
 }
 
 .under_construction_icon{

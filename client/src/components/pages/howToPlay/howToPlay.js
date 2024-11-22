@@ -6,9 +6,10 @@ import { translate } from '../../../translations/translate'
 import Header from '../../partials/header'
 import HowToPlayGames from './howToPlayGames'
 import HowToPlayTitles from './howToPlayTitles'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import ChatBotButton from '../../partials/chatBotButton'
+import { changePopup } from '../../../reducers/popup'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTriangleExclamation, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 function HowToPlay(props){
     const {page, settings} = props
@@ -37,16 +38,32 @@ function HowToPlay(props){
         setGame(x)
     }
 
+    function handleGamblingWarningPopup(){
+        let payload = {
+            open: true,
+            template: "gambling_warning",
+            title: "gambling_warning_signs",
+            size: "lg",
+            icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+        }
+        dispatch(changePopup(payload))
+    }
+
     return <div className="content_wrap">
         <Header template="how_to_play" title={translate({lang: lang, info: "how_to_play"})} lang={lang} theme={theme}/>
         <div className="page_content">
-            {!game ? <HowToPlayTitles settings={settings} handleChoice={(e)=>handleChoice(e)} /> : <HowToPlayGames game={game} settings={settings} />}
+            {!game ? <>
+                <HowToPlayTitles settings={settings} handleChoice={(e)=>handleChoice(e)} />
+            </> : <HowToPlayGames game={game} settings={settings} />}
         </div>
-        <div className="button_action_group">
+        <div className="button_action_group how_to_play">
             <ChatBotButton lang={lang} theme={theme}/>
+            <Button type="button" onClick={()=>handleGamblingWarningPopup()} className="mybutton round button_transparent shadow_convex">
+                <FontAwesomeIcon icon={faTriangleExclamation} />
+            </Button>
             <Button type="button" onClick={()=>handleBack()} className="mybutton round button_transparent shadow_convex">
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
-            </Button>            
+            </Button>                     
         </div>
     </div>
 }

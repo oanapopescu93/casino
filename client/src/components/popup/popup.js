@@ -27,6 +27,7 @@ import ChatBot from "./chatbot"
 import ApplyJob from "./applyJob"
 import { postData } from "../../utils/utils"
 import VerificationSendSuccess from "./verificationSendSuccess"
+import WarningGambling from "./warningGambling"
 
 function Popup(props){
     const {socket, home, settings} = props
@@ -38,6 +39,7 @@ function Popup(props){
     let data = useSelector(state => state.popup.data)
     let size = useSelector(state => state.popup.size)
     let sticky = useSelector(state => state.popup.sticky)
+    let icon = useSelector(state => state.popup.icon)
     let user = useSelector(state => state.auth.user)
 
     let dispatch = useDispatch()    
@@ -51,6 +53,9 @@ function Popup(props){
     let style = template
     if(template === "paymentSuccess" || template === "verificationSendSuccess"){
         style = "success"
+    }
+    if(template === "gambling_warning"){
+        style = "error"
     }
 
   	function closeModal(){
@@ -129,16 +134,18 @@ function Popup(props){
         socket.emit('signup_verification_send', {lang: lang, email})
     }
 
+    console.log(title, icon, title === "", !icon)
+
     return <>
         {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + style} show={open} onHide={closeModal} size={size} centered> 
-            {title !== "" ? <Modal.Header>
+            {title === "" && !icon ? null : <Modal.Header>
                 {!sticky ? <div className="closeButton closeButtonHeader" onClick={closeModal}>
                     <span>X</span>
                 </div> : null}
-                <Modal.Title>{title}</Modal.Title>
-            </Modal.Header> : null}
+                <Modal.Title>{icon ? icon : null} {title}</Modal.Title>
+            </Modal.Header>}
             <Modal.Body>
-                {title === "" && !sticky ? <div className="closeButton" onClick={closeModal}>
+                {title === "" && !icon && !sticky ? <div className="closeButton" onClick={closeModal}>
                     <span>X</span>
                 </div> : null}
                 {(() => {			
@@ -187,6 +194,8 @@ function Popup(props){
                             return <ChatBot settings={settings} user={user} />
                         case "apply_job":
                             return <ApplyJob settings={settings} home={home} user={user} data={data} applyJobSending={applyJobSending} handleApplyJob={(e)=>handleApplyJob(e)} />
+                        case "gambling_warning":
+                            return <WarningGambling settings={settings} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>

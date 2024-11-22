@@ -146,7 +146,7 @@ function HowToPlayTitles(props){
                     <div className="cell_text shadow_convex">{translate({lang: lang, info: t})}</div>
                 </div>
             </div>
-        })}
+        })}        
     </div>
 }
 export default HowToPlayTitles

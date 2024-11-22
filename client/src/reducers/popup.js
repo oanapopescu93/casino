@@ -7,6 +7,7 @@ const initialState = {
     data: null,
     size: "sm", //'sm' | 'lg' | 'xl'
     sticky: false,
+    icon: null,
 }
 
 const popupsSlice = createSlice({
@@ -15,21 +16,12 @@ const popupsSlice = createSlice({
     reducers: {
         changePopup: (state, { payload }) => {
             state.open = payload.open
-            if(payload.title){
-                state.title = payload.title
-            }
-            if(payload.template){
-                state.template = payload.template
-            }
-            if(payload.data){
-                state.data = payload.data
-            }
-            if(payload.size){
-                state.size = payload.size
-            }
-            if(payload.sticky){
-                state.sticky = payload.sticky
-            }
+            state.title = payload.title ? payload.title : ""
+            state.template = payload.template ? payload.template : ""
+            state.data = payload.data ? payload.data : null
+            state.size = payload.size ? payload.size : "sm"
+            state.sticky = payload.sticky ? payload.sticky : false
+            state.icon = payload.icon ? payload.icon : null
         },
     }
 })

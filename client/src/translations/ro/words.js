@@ -29,6 +29,7 @@ var word_bank = {
     reel_5: "5 Role",
     poker_texas_holdem: "Texas hold'em",
     poker_5_card_draw: "5 Card Draw",
+    responsible_gamble_request: "Te rugăm să joci responsabil!",
 
     success: "Succes",
     error: "Eroare",
@@ -415,6 +416,15 @@ var word_bank = {
     subscribed: "Abonat",
     unsubscribed: "Dezabonat",
     already_subscribed: "Deja abonat",
+
+    // Gambling warning
+    gambling_warning_signs: "Semne de avertizare ale problemelor cu jocurile de noroc",
+    warning_gambling_01: "Împrumutarea banilor, vânzarea tuturor lucrurilor sau chiar furtul pentru a obține bani pentru jocuri de noroc.",
+    warning_gambling_02: "Mințirea despre cât timp sau câți bani sunt cheltuiți pe jocuri de noroc.",
+    warning_gambling_03: "Ascunderea timpului petrecut la jocuri de noroc sau a facturilor și datoriilor neplătite.",
+    warning_gambling_04: "Petrecerea mult timp jucând, gândindu-se la jocuri de noroc sau planificând să joace.",
+    warning_gambling_05: "A fi neliniștit sau iritabil atunci când nu joci.",
+    warning_gambling_06: "Lăudarea câștigurilor, exagerarea acestora și/sau minimizarea pierderilor.",      
 }
 
 export const wordsRo = (info)=>{

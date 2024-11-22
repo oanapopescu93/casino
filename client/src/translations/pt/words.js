@@ -29,6 +29,7 @@ var word_bank = {
     reel_5: "5 Carretéis",
     poker_texas_holdem: "Texas hold'em",
     poker_5_card_draw: "5 Card Draw",
+    responsible_gamble_request: "Por favor, jogue com responsabilidade!",
 
     success: "Sucesso",
     error: "Erro",
@@ -415,6 +416,15 @@ var word_bank = {
     subscribed: "Inscrito",
     unsubscribed: "Cancelado",
     already_subscribed: "Já inscrito",
+
+    // Gambling warning
+    gambling_warning_signs: "Sinais de alerta de problemas com jogos de azar",
+    warning_gambling_01: "Pedir dinheiro emprestado, vender tudo ou até roubar para conseguir dinheiro para jogar.",
+    warning_gambling_02: "Mentir sobre quanto tempo ou dinheiro é gasto em jogos de azar.",
+    warning_gambling_03: "Esconder o tempo gasto jogando ou esconder contas e dívidas não pagas.",
+    warning_gambling_04: "Passar muito tempo jogando, pensando ou planejando apostar.",
+    warning_gambling_05: "Ficar inquieto ou irritado quando não está jogando.",
+    warning_gambling_06: "Gabar-se de ganhos, exagerar vitórias e/ou minimizar perdas.",    
 }
 
 export const wordsPt = (info)=>{

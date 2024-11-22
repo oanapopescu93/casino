@@ -29,6 +29,7 @@ var word_bank = {
     reel_5: "5轮",
     poker_texas_holdem: "德州扑克",
     poker_5_card_draw: "五张牌扑克",
+    responsible_gamble_request: "请负责任地游戏！",
 
     success: "成功",
     error: "错误",
@@ -415,6 +416,15 @@ var word_bank = {
     subscribed: "已订阅",
     unsubscribed: "已退订",
     already_subscribed: "已经订阅",
+
+    // Gambling warning
+    gambling_warning_signs: "赌博问题的警告信号",
+    warning_gambling_01: "借钱、卖掉所有东西甚至偷窃来获得赌博资金。",
+    warning_gambling_02: "谎报在赌博上花费的时间或金钱。",
+    warning_gambling_03: "隐藏用于赌博的时间或隐瞒账单和未偿债务。",
+    warning_gambling_04: "花大量时间赌博、思考赌博或计划赌博。",
+    warning_gambling_05: "不赌博时感到焦躁不安或易怒。",
+    warning_gambling_06: "夸耀赢利，夸大胜利和/或淡化损失。",    
 }
 
 export const wordsZh = (info)=>{
