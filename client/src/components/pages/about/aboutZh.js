@@ -1,20 +1,12 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { translate } from '../../../translations/translate'
-import { useDispatch } from 'react-redux'
-import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCircleQuestion} from '@fortawesome/free-solid-svg-icons'
 
 function AboutZh(props){
-    const {settings, casino_name} = props
+    const {settings, casino_name, handleHowToPlay} = props
     const {lang} = settings
-    let dispatch = useDispatch()
-    function handleHowToPlay(){
-        dispatch(changePage("how_to_play"))
-        dispatch(changeGame(null))
-        dispatch(changeGamePage(null))
-    }
     return <Row id="about" className="other_page_container">
         <Col lg={2} />
         <Col lg={8}>

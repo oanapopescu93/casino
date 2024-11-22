@@ -9,23 +9,30 @@ import AboutEng from './aboutEng'
 import AboutEs from './aboutEs'
 import AboutFr from './aboutFr'
 import AboutIt from './aboutIt'
-import AboutPt from './aboutPt'
 import AboutRo from './aboutRo'
 import AboutRu from './aboutRu'
 import AboutZh from './aboutZh'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import AboutPt from './aboutPt'
 
 function About(props){
     const {settings} = props
     const {lang, theme} = settings
     let casino_name = "BunnyBet"
     let dispatch = useDispatch()
+
     function handleBack(){
         dispatch(changePage('Salon'))
         dispatch(changeGame(null))
         dispatch(changeGamePage(null))
     }
+    function handleHowToPlay(){
+        dispatch(changePage("how_to_play"))
+        dispatch(changeGame(null))
+        dispatch(changeGamePage(null))
+    }
+
     return <div className="content_wrap">
         <Header template="about" title={translate({lang: lang, info: "about"})} lang={lang} theme={theme}/>
         <div className="page_content">
@@ -33,21 +40,21 @@ function About(props){
                 {(() => {
                     switch (lang) {
                         case "DE":
-                            return <AboutDe settings={settings} casino_name={casino_name} />
+                            return <AboutDe settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "ES":
-                            return <AboutEs settings={settings} casino_name={casino_name} />
+                            return <AboutEs settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "FR":
-                            return <AboutFr settings={settings} casino_name={casino_name} />
+                            return <AboutFr settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "IT":
-                            return <AboutIt settings={settings} casino_name={casino_name} />
+                            return <AboutIt settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "PT":
-                            return <AboutPt settings={settings} casino_name={casino_name} />
+                            return <AboutPt settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "RO":
-                            return <AboutRo settings={settings} casino_name={casino_name} />
+                            return <AboutRo settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "RU":
-                            return <AboutRu settings={settings} casino_name={casino_name} />
+                            return <AboutRu settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "ZH":
-                            return <AboutZh settings={settings} casino_name={casino_name} />
+                            return <AboutZh settings={settings} casino_name={casino_name} handleHowToPlay={handleHowToPlay} />
                         case "ENG":
                         default:
                             return <AboutEng settings={settings} casino_name={casino_name} />
