@@ -14,7 +14,7 @@ import AboutRu from './aboutRu'
 import AboutZh from './aboutZh'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
-import AboutPortuguese from './aboutPortuguese'
+import AboutPortuguese from './aboutPt'
 
 function About(props){
     const {settings} = props
