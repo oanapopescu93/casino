@@ -7,6 +7,8 @@ const initialState = {
     craps: {bets: null, lucky_bet: null, result: null},
     race: {bets: [], lucky_bet: null, result: null},
     keno: {bets: null, lucky_bet: null, result: null},
+    poker: {bets: null, lucky_bet: null, result: null},
+    baccarat: {bets: null, lucky_bet: null, result: null},
 }
 
 const gamesSlice = createSlice({
@@ -43,6 +45,12 @@ const gamesSlice = createSlice({
         changeKenoBets: (state, { payload }) => {
             state.keno.bets = payload
         },
+        changePokerBets: (state, { payload }) => {
+            state.poker.bets = payload
+        },
+        changeBaccaratBets: (state, { payload }) => {
+            state.baccarat.bets = payload
+        },
 
         changeRouletteLuckyBet: (state, { payload }) => {
             state.roulette.lucky_bet = payload
@@ -62,6 +70,12 @@ const gamesSlice = createSlice({
         changeKenoLuckyBet: (state, { payload }) => {
             state.keno.lucky_bet = payload
         },
+        changePokerLuckyBet: (state, { payload }) => {
+            state.poker.lucky_bet = payload
+        },
+        changeBaccaratLuckyBet: (state, { payload }) => {
+            state.baccarat.lucky_bet = payload
+        },
 
         resetGame: (state, { payload }) => {
             if (initialState[payload]) {
@@ -78,6 +92,8 @@ export const {
     changeCrapsBets,
     changeRaceBets,
     changeKenoBets,
+    changePokerBets,
+    changeBaccaratBets,
 
     changeRouletteLuckyBet,
     changeBlackjackLuckyBet,
@@ -85,6 +101,8 @@ export const {
     changeCrapsLuckyBet,
     changeRaceLuckyBet,
     changeKenoLuckyBet,
+    changePokerLuckyBet,
+    changeBaccaratLuckyBet,
     
     resetGame,
 } = gamesSlice.actions

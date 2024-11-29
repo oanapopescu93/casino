@@ -40,6 +40,7 @@ const { craps } = require("./games/craps")
 const { race } = require("./games/race")
 const { keno } = require("./games/keno")
 const { poker } = require("./games/poker")
+const { baccarat } = require("./games/baccarat")
 
 var coupons = require('./var/home').COUPONS
 
@@ -322,7 +323,7 @@ io.on('connection', function(socket) {
               io.to(socket.id).emit('game_read', payload)
               updateMoney(user_found, payload)
             } catch(e){
-              console.log('[error]','roulette_read--> ', e)
+              console.log('[error]','game_read--> ', e)
             }
           }
         }
@@ -437,6 +438,16 @@ io.on('connection', function(socket) {
         io.emit('keno_read', payload)
 			} catch(e){
 				console.log('[error]','keno_read--> ', e)
+			}
+		}
+	})
+  socket.on('baccarat_send', function(data){
+		if(data.uuid){
+			let payload = baccarat(data, how_lucky)
+			try{
+        io.emit('baccarat_read', payload)
+			} catch(e){
+				console.log('[error]','baccarat_read--> ', e)
 			}
 		}
 	})

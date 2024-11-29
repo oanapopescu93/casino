@@ -3509,18 +3509,17 @@ a.donation_button{
 .six_5 {top: 50%;left: 80%; }
 
 .craps_board_box{
-	padding:var(--padding);
-	border:solid 1px var(--color);
-	border-radius: var(--radius);
+	padding:var(--padding);	
 	color:var(--color);
 	background-color: var(--transparent_5);
 	font-family:courier new;
 }
 #craps_board {
 	resize: none;
-	width:100%;
+	/* width:100%; */
 	height:200px;	
-	padding:var(--padding_small);
+	padding: var(--padding_small);
+  margin: var(--padding_small);
 	cursor: default;
 	overflow-y:auto;
 }

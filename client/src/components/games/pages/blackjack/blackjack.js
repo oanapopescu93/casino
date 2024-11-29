@@ -316,8 +316,7 @@ function blackjack_game(props){
 			card = { width: 33, height: 50 };
 			player_nr = [12, 12];
 		}
-	};
-	
+	}	
 
     this.preaload_images = function(item){
 		return new Promise(function(resolve){

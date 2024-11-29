@@ -23,6 +23,7 @@ var word_bank = {
     race: "Curse",
     keno: "Keno",
     poker: "Poker",
+    baccarat: "Baccarat",
     european: "European",
     american: "American",
     reel_3: "3 Role",

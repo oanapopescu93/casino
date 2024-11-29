@@ -613,8 +613,10 @@ function Craps(props){
 					</Col>
 					<Col lg={6} className="craps_board_container">
 						<div className="craps_board_box">
-							<div readOnly id="craps_board" className="craps_board" ref={craps_board}>
-								<CrapsBoardText list={crapsBoardList} />
+							<div className="deco">
+								<div readOnly id="craps_board" className="craps_board" ref={craps_board}>
+									<CrapsBoardText list={crapsBoardList} />
+								</div>
 							</div>
 						</div>
 					</Col>

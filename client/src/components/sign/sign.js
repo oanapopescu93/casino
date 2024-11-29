@@ -133,7 +133,8 @@ function Sign(props) {
                     handleErrors("error", data.details ? data.details : "error")
                     return
                 }                
-                if(data.is_verified){                             
+                if(data.is_verified){
+                    console.log(data)                         
                     dispatch(changeUser(data.obj))
                     setCookie("casino_uuid", data.obj.uuid)
                     if(data.obj.logsTotal === 0){

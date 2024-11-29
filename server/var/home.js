@@ -58,6 +58,15 @@ module.exports = Object.freeze({
         {table_id: '052', table_name: "poker", table_type: "poker_5_card_draw"},
         {table_id: '053', table_name: "poker", table_type: "poker_texas_holdem"},
         {table_id: '054', table_name: "poker", table_type: "poker_5_card_draw"},
+
+        {table_id: '055', table_name: "baccarat", table_type: "table_1"},
+        {table_id: '056', table_name: "baccarat", table_type: "table_2"},
+        {table_id: '057', table_name: "baccarat", table_type: "table_3"},
+        {table_id: '058', table_name: "baccarat", table_type: "table_4"},
+        {table_id: '059', table_name: "baccarat", table_type: "table_5"},
+        {table_id: '060', table_name: "baccarat", table_type: "table_6"},
+        {table_id: '061', table_name: "baccarat", table_type: "table_7"},
+        {table_id: '062', table_name: "baccarat", table_type: "table_8"},
     ],
     MARKET: [
         {id: "carrot", name_eng: "carrot", name_ro: "morcov", name_fr: "carotte", name_de: "karotte", name_es: "zanahoria", name_it: "carota", name_pt: "cenoura", name_ru: "морковь", name_zh: "胡萝卜", price: 1, value: 1},

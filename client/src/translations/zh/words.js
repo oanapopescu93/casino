@@ -23,6 +23,7 @@ var word_bank = {
     race: "赛跑",
     keno: "快乐十分",
     poker: "扑克",
+    baccarat: "百家乐",
     european: "欧洲",
     american: "美式",
     reel_3: "3轮",

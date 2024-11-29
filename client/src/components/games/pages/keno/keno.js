@@ -179,7 +179,7 @@ function Keno(props){
             template: "keno_prizes",
             title: "keno_prizes",
             data: home.keno_prizes,
-            size: 'lg',
+            size: 'md',
         }
         dispatch(changePopup(payload))
     }

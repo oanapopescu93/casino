@@ -20,6 +20,7 @@ import { getCookie, isEmpty, setCookie } from '../../utils/utils'
 import { getRoom } from '../../utils/games'
 import { translate } from '../../translations/translate'
 import GameLoading from './gameLoading'
+import Baccarat from './baccarat/baccarat'
 
 function Game(props){
     const {page, user, socket, settings} = props
@@ -110,7 +111,9 @@ function Game(props){
                             case "race":
                                 return <Race {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                             case "keno":
-                                return <Keno {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />               
+                                return <Keno {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                            case "baccarat":
+                                return <Baccarat {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />         
                             case "whack_a_rabbit":
                                 return <WhackARabbit {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
                         }

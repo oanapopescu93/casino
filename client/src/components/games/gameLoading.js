@@ -122,6 +122,17 @@ function GameLoading(props){
                     default:
                         return poker_icon_yellow
                 }
+            case "baccarat":
+                switch (theme) {
+                    case 'purple':
+                        return poker_icon_pink     
+                    case 'black':
+                        return poker_icon_green
+                    case 'blue':
+                        return poker_icon_orange
+                    default:
+                        return poker_icon_yellow
+                }
             case "whack_a_rabbit":
                 switch (theme) {
                     case 'purple':

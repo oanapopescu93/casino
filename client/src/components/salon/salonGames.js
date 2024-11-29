@@ -81,6 +81,7 @@ function SalonGames(props){
             slots: [],
             craps: [],
             poker: [],
+            baccarat: [],
         }
         let casino_games_title = Object.getOwnPropertyNames(casino_games)
         for(let i in products){
@@ -99,6 +100,9 @@ function SalonGames(props){
 					break
                 case "poker":
                     casino_games.poker.push(products[i])
+                    break
+                case "baccarat":
+                    casino_games.baccarat.push(products[i])
                     break
 				default:
 					break						
