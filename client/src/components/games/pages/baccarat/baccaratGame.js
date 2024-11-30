@@ -22,8 +22,8 @@ function Card(config){
 	self.images = config.images
 	self.text = config.text
 	self.text_bg = config.text_bg
-	self.font_bold_10 = config.font_bold_10
-	self.font_bold_12 = config.font_bold_12	
+	self.font_bold_12 = config.font_bold_12
+	self.font_bold_14 = config.font_bold_14
 	
 	self.draw_box = function(ctx){
 		//draw title	
@@ -33,29 +33,41 @@ function Card(config){
 		draw_rect(ctx, self.x, self.y + 10, self.width, self.height, self.fillStyle, self.lineWidth, self.strokeStyle)	
 	}	
 
-	self.show_cards = function(ctx, data){		
+	self.show_cards = function(ctx, data, type){		
 		const {banker, player, value_banker, value_player} = data
-		console.log(data, banker, player)
-		//player
-		self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, player)
-		self.draw_card_text(ctx, value_player, self.x, self.y + self.width + 10)
-
-		//banker
-		self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, banker)
-		self.draw_card_text(ctx, value_banker, self.x, self.y + self.width + 10)
+		switch(type){
+			case "banker":
+				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, banker)
+				self.draw_card_text(ctx, value_banker, self.x + self.width/2, self.y + self.height, self.player_nr[0])
+				break
+			case "player":
+				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, player)
+				self.draw_card_text(ctx, value_player, self.x + self.width/2, self.y + self.height, self.player_nr[0])
+				break
+		}		
 	}
 
-	self.draw_card_text = function(ctx, text, x, y){	
+	self.draw_card_text = function(ctx, text, x, y, h) {
+		ctx.font = self.font_bold_14
+		const boxWidth = self.width + 5
+		const boxHeight = h
+		const boxX = x - boxWidth / 2
+		const boxY = y - boxHeight / 2
+		
 		ctx.beginPath()
 		ctx.fillStyle = self.text_bg
+		ctx.fillRect(boxX, boxY, boxWidth, boxHeight)
+		ctx.closePath()	
+		
+		ctx.beginPath()
+		ctx.fillStyle = self.text
 		ctx.textAlign = "center"
-		ctx.font = self.font_bold_14
+		ctx.textBaseline = "middle"
 		ctx.fillText(text, x, y)
 		ctx.closePath()
 	}
 
 	this.draw_card = function(ctx, x, y, w, h, size, hand){
-		console.log('draw_card ', hand)
 		let img = self.images
 		let space = 5
 		let img_index = 0
@@ -175,81 +187,79 @@ function baccarat_game(props){
             })
         } else {
 			self.draw_background()
-            self.create_cards()
             self.draw_cards()
         }
     }
 
-    this.createCanvas = function() {
+    this.createCanvas = function () {
 		canvas = document.getElementById("baccarat_canvas")
 		ctx = canvas.getContext("2d")
-	
-		// Default canvas and card settings
-		canvas.width = 740
-		canvas.height = 460
+		
+		canvas.width = 900
+		canvas.height = 300
 		card_base = {
-			x: 20, 
-			y: 40, 
-			width: 120, 
-			height: 180, 
-			fillStyle: 'transparent', 
-			lineWidth: 2, 
-			strokeStyle: text_bg, 
+			x: 24,
+			y: 50,
+			width: 140,
+			height: 210,
+			fillStyle: 'transparent',
+			lineWidth: 3,
+			strokeStyle: text_bg,
 		}
-		card = { width: 100, height: 150 }
-		player_nr = [20, 20]
+		card = { width: 120, height: 180 }
+		player_nr = [25, 25]
 	
 		if (window.innerWidth <= 800 || window.innerHeight <= 600) {
 			// Big
-			canvas.width = 620
-			canvas.height = 400
+			canvas.width = 750
+			canvas.height = 250
 			card_base = {
-				x: 20, 
-				y: 40, 
-				width: 100, 
-				height: 150, 
-				fillStyle: 'transparent', 
-				lineWidth: 2, 
+				x: 24,
+				y: 50,
+				width: 120,
+				height: 180,
+				fillStyle: 'transparent',
+				lineWidth: 3,
 				strokeStyle: text_bg,
 			}
-			card = { width: 80, height: 120 }
-			player_nr = [20, 20]
+			card = { width: 96, height: 144 }
+			player_nr = [25, 25]
 		}
 	
 		if (window.innerWidth <= 768 || window.innerHeight <= 400) {
 			// Medium
-			canvas.width = 400
-			canvas.height = 260
+			canvas.width = 480
+			canvas.height = 180
 			card_base = {
-				x: 5, 
-				y: 20, 
-				width: 70, 
-				height: 100, 
-				fillStyle: 'transparent', 
-				lineWidth: 1, 
+				x: 6,
+				y: 25,
+				width: 85,
+				height: 120,
+				fillStyle: 'transparent',
+				lineWidth: 2,
 				strokeStyle: text_bg,
 			}
-			card = { width: 60, height: 90 }
-			player_nr = [12, 12]
+			card = { width: 72, height: 108 }
+			player_nr = [15, 15]
 		}
 	
 		if (window.innerWidth <= 480 || window.innerHeight <= 320) {
 			// Small
-			canvas.width = 300
-			canvas.height = 210
+			canvas.width = 360
+			canvas.height = 120
 			card_base = {
-				x: 5, 
-				y: 20, 
-				width: 46, 
-				height: 70, 
-				fillStyle: 'transparent', 
-				lineWidth: 1, 
-				strokeStyle: text_bg, 
+				x: 6,
+				y: 25,
+				width: 55,
+				height: 85,
+				fillStyle: 'transparent',
+				lineWidth: 2,
+				strokeStyle: text_bg,
 			}
-			card = { width: 33, height: 50 }
-			player_nr = [12, 12]
+			card = { width: 40, height: 60 }
+			player_nr = [15, 15]
 		}
-	}
+	}	
 
 	this.preaload_images = function(item){
 		return new Promise(function(resolve){
@@ -266,6 +276,7 @@ function baccarat_game(props){
 	}
 
 	this.create_cards = function(){
+		card_list = []
 		let space = (canvas.width - (card_base.width*7 + card_base.x*6))/2
 		
 		//player
@@ -312,10 +323,12 @@ function baccarat_game(props){
 	}
 
 	this.draw_cards = function(){
+		self.draw_background()
 		if(baccarat_data){
 			for(let i in card_list){
+				let type = card_list[i].type
 				card_list[i].draw_box(ctx)
-				card_list[i].show_cards(ctx, baccarat_data)
+				card_list[i].show_cards(ctx, baccarat_data, type)
 			}
 		} else {
 			for(let i in card_list){
@@ -361,7 +374,7 @@ function BaccaratGame(props){
     useEffect(() => {
         ready()
         $(window).resize(function(){
-			ready()
+			ready('resize')
 		})
 		return () => {
 			console.log('we will leave', choice)
