@@ -1822,6 +1822,21 @@ footer{
   padding: var(--padding_small) var(--padding);
 }
 
+/* BACCARAT */
+.baccarat_table{
+  margin-bottom: var(--padding);
+}
+.baccarat_table .table_box h3, 
+.baccarat_table .table_box .counter{
+  padding-bottom: var(--padding_small);
+  margin-bottom: var(--padding_small);
+  border-bottom: solid 1px var(--color);
+}
+.baccarat_table .table_box button{
+  width: 100%;
+  max-width: 130px;
+}
+
 /* GAME BOARD */
 .gameboard{
   background-color: var(--dark_color);
@@ -4876,7 +4891,7 @@ a.donation_button{
   .button_action_group.keno_prize_container{
     right: 50px;
     left: auto;
-  }
+  }  
   .keno_prize_container button{
     height: auto;
     line-height: 12px;

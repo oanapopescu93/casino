@@ -118,7 +118,7 @@ function GameBoard(props){
                 case "poker_5_card_draw_board":
                     return <PokerBoard {...props} handleClick={(e)=>handleClick(e)} updateBets={(e)=>handleUpdate(e)} />
                 default: 
-                    return null
+                    return
             }
         })()}
     </div>

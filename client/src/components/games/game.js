@@ -6,6 +6,7 @@ import Blackjack from './pages/blackjack/blackjack'
 import Slots from './pages/slots/slots'
 import Craps from './pages/craps/craps'
 import Poker from './pages/poker/poker'
+import Baccarat from './pages/baccarat/baccarat'
 import Race from './pages/race/race'
 import Keno from './pages/keno/keno'
 import Dashboard from './pages/dashboard/dashboard'
@@ -20,7 +21,6 @@ import { getCookie, isEmpty, setCookie } from '../../utils/utils'
 import { getRoom } from '../../utils/games'
 import { translate } from '../../translations/translate'
 import GameLoading from './gameLoading'
-import Baccarat from './baccarat/baccarat'
 
 function Game(props){
     const {page, user, socket, settings} = props

@@ -36,11 +36,12 @@ import whack_loading_yellow from '../../img/whack_a_rabbit/yellow/whack_a_rabbit
 import whack_loading_green from '../../img/whack_a_rabbit/green/whack_a_rabbit_icon.png'
 import whack_loading_pink from '../../img/whack_a_rabbit/pink/whack_a_rabbit_icon.png'
 import whack_loading_orange from '../../img/whack_a_rabbit/orange/whack_a_rabbit_icon.png'
+import { translate } from '../../translations/translate'
 
 function GameLoading(props){
-    const {page, settings} = props
-    const {game} = page
-    const {theme} = settings
+    const { page, settings } = props
+    const { game } = page
+    const { theme, lang } = settings
     let title = game.table_name ? game.table_name : ""
 
     function chooseImage(game){
@@ -125,13 +126,13 @@ function GameLoading(props){
             case "baccarat":
                 switch (theme) {
                     case 'purple':
-                        return poker_icon_pink     
+                        return blackjack_icon_pink     
                     case 'black':
-                        return poker_icon_green
+                        return blackjack_icon_green
                     case 'blue':
-                        return poker_icon_orange
+                        return blackjack_icon_orange
                     default:
-                        return poker_icon_yellow
+                        return blackjack_icon_yellow
                 }
             case "whack_a_rabbit":
                 switch (theme) {
@@ -160,11 +161,14 @@ function GameLoading(props){
                 case "poker":
                 case "race":
                 case "keno":
+                case "baccarat":
                 case "whack_a_rabbit":
                     return <>
                         <img src={chooseImage(title)} className="game_loading_icon" alt="game_loading_icon"/>
                         <p>Loading...</p>
                     </>
+                default:
+                    return <p>{translate({lang: lang, info: "error"})}</p>
             }
             })()}
         </div>
