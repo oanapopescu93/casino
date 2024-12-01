@@ -368,6 +368,11 @@ var word_bank = {
     bet_explanation: "Platziere den anfänglichen Wetteinsatz.",
     invalid_raise: "Ungültige Erhöhung",
     not_enough_money: "Nicht genug Geld",
+    
+    // baccarat
+    player: "Player",
+    banker: "Banker",
+    tie: "Tie",
 
     // results
     results: "Ergebnisse",

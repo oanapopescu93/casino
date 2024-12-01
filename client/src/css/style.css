@@ -569,6 +569,14 @@ textarea {
   margin: var(--padding);
 }
 
+#header_salon #logo_icon{
+  width: 30px;
+}
+#header_salon h1{
+  font-size: 40px;
+  line-height: 40px;
+}
+
 .cell_salon_container, .cell_market_container{
   padding: var(--padding);
   text-align: center;
@@ -614,7 +622,7 @@ textarea {
   z-index: 1;
   background-color: transparent;
   padding: var(--padding);
-  margin-bottom: var(--padding);
+  margin-bottom: var(--padding_small);
   border-radius: var(--radius_big);
   text-align: center;
   border: solid 1px var(--color);
@@ -1835,6 +1843,9 @@ footer{
 .baccarat_table .table_box button{
   width: 100%;
   max-width: 130px;
+}
+.baccarat_subtitles span{
+  margin-right: var(--padding_small);
 }
 
 /* GAME BOARD */
@@ -4754,6 +4765,18 @@ a.donation_button{
   }
 }
 @media (max-width:480px) {
+  /* SALON */
+  .header{
+    margin-bottom: var(--padding_small);
+  }
+  #header_salon #logo_icon {
+    width: 20px;
+  }
+  #header_salon h1{
+    font-size: 30px;
+    line-height: 30px;
+  }
+
   .donation_box_tabs li{
     width: 200px;
     border-radius: var(--radius)!important;
@@ -4853,8 +4876,15 @@ a.donation_button{
 @media (max-width: 960px) and (orientation: landscape){}
 @media (max-width: 768px) and (orientation: landscape){
   /* SALON */
-  #logo_icon {
+  .header{
+    margin-bottom: var(--padding_small);
+  }
+  #header_salon #logo_icon {
     width: 20px;
+  }
+  #header_salon h1{
+    font-size: 30px;
+    line-height: 30px;
   }
   .salon_button, .panel_button {
     height: 40px;

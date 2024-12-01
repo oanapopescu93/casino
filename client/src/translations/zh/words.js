@@ -369,6 +369,11 @@ var word_bank = {
     invalid_raise: "无效的加注",
     not_enough_money: "余额不足",
 
+    // baccarat
+    player: "Player",
+    banker: "Banker",
+    tie: "Tie",
+
     // results
     results: "结果",
     result: "结果",

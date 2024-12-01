@@ -371,6 +371,11 @@ var word_bank = {
     invalid_raise: "Invalid raise",
     not_enough_money: "Not enough money",
 
+    // baccarat
+    player: "Player",
+    banker: "Banker",
+    tie: "Tie",
+
     // results
     results: "Results",
     result: "Result",

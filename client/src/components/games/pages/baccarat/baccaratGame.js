@@ -2,11 +2,13 @@ import React, {useEffect} from 'react'
 import { useDispatch} from 'react-redux'
 import $ from 'jquery'
 import { translate } from '../../../../translations/translate'
-import { draw_rect, get_cards } from '../../../../utils/games'
+import { get_cards } from '../../../../utils/games'
+import { decryptData } from '../../../../utils/crypto'
 
 function Card(config){
 	let self = this
 	self.type = config.type
+	self.name = config.name
 	
 	self.x = config.x
 	self.y = config.y
@@ -22,33 +24,30 @@ function Card(config){
 	self.images = config.images
 	self.text = config.text
 	self.text_bg = config.text_bg
-	self.font_bold_12 = config.font_bold_12
-	self.font_bold_14 = config.font_bold_14
+	self.font = config.font
+	self.lang = config.lang
 	
-	self.draw_box = function(ctx){
-		//draw title	
-		self.draw_card_text(ctx, self.type, self.x + self.width/2, self.y, self.player_nr[0])
-
-		//draw rect where the cards will be
-		draw_rect(ctx, self.x, self.y + 10, self.width, self.height, self.fillStyle, self.lineWidth, self.strokeStyle)	
+	self.draw_title = function(ctx){
+		self.draw_card_text(ctx, self.name, self.x + self.width/2, self.y, self.player_nr[0])
 	}	
 
 	self.show_cards = function(ctx, data, type){		
-		const {banker, player, value_banker, value_player} = data
+		const {banker, player} = data
+		let value_text = translate({lang: self.lang, info: "value"}) + ": "
 		switch(type){
 			case "banker":
-				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, banker)
-				self.draw_card_text(ctx, value_banker, self.x + self.width/2, self.y + self.height, self.player_nr[0])
+				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, banker.hand)
+				self.draw_card_text(ctx, value_text + banker.value_hand, self.x + self.width/2, self.y + self.height, self.player_nr[0])
 				break
 			case "player":
-				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, player)
-				self.draw_card_text(ctx, value_player, self.x + self.width/2, self.y + self.height, self.player_nr[0])
+				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, player.hand)
+				self.draw_card_text(ctx, value_text + player.value_hand, self.x + self.width/2, self.y + self.height, self.player_nr[0])
 				break
 		}		
 	}
 
 	self.draw_card_text = function(ctx, text, x, y, h) {
-		ctx.font = self.font_bold_14
+		ctx.font = self.font
 		const boxWidth = self.width + 5
 		const boxHeight = h
 		const boxX = x - boxWidth / 2
@@ -136,9 +135,9 @@ function baccarat_game(props){
     let self = this	
     let canvas
     let ctx	
-
-	let resize = 0
 	let baccarat_data = null
+	let lang = props.settings.lang
+	let choice = props.choice
 	
 	let card_list = []
 	let card_base = {}
@@ -282,6 +281,7 @@ function baccarat_game(props){
 		//player
 		card_list.push(new Card({
 			type: 'player',
+			name: translate({lang: lang, info: 'player'}),
 			x: space + 2 * (card_base.width + card_base.x), 
 			y: card_base.y, 
 			width: card_base.width, 
@@ -289,20 +289,21 @@ function baccarat_game(props){
 			fillStyle: card_base.fillStyle, 
 			lineWidth: card_base.lineWidth, 
 			strokeStyle: card_base.strokeStyle, 
-			card: card,
-			card_img: card_img,
-			space: space,
-			player_nr: player_nr,
-			images: images,
+			card,
+			card_img,
+			space,
+			player_nr,
+			images,
 			text: text_color,
-			text_bg: text_bg,
-			font_bold_12: 'bold 10px sans-serif',
-			font_bold_14: 'bold 12px sans-serif',	
+			text_bg,
+			font: 'bold 12px sans-serif',
+			lang
 		}))
 
 		//banker
 		card_list.push(new Card({
 			type: 'banker',
+			name: translate({lang: lang, info: 'banker'}),
 			x: space + 4 * (card_base.width + card_base.x), 
 			y: card_base.y, 
 			width: card_base.width, 
@@ -310,15 +311,15 @@ function baccarat_game(props){
 			fillStyle: card_base.fillStyle, 
 			lineWidth: card_base.lineWidth, 
 			strokeStyle: card_base.strokeStyle, 
-			card: card,
-			card_img: card_img,
-			space: space,
-			player_nr: player_nr,
-			images: images,
+			card,
+			card_img,
+			space,
+			player_nr,
+			images,
 			text: text_color,
-			text_bg: text_bg,
-			font_bold_12: 'bold 10px sans-serif',
-			font_bold_14: 'bold 12px sans-serif',	
+			text_bg,
+			font: 'bold 12px sans-serif',
+			lang
 		}))
 	}
 
@@ -327,32 +328,72 @@ function baccarat_game(props){
 		if(baccarat_data){
 			for(let i in card_list){
 				let type = card_list[i].type
-				card_list[i].draw_box(ctx)
+				card_list[i].draw_title(ctx)
 				card_list[i].show_cards(ctx, baccarat_data, type)
 			}
 		} else {
 			for(let i in card_list){
-				card_list[i].draw_box(ctx)
+				card_list[i].draw_title(ctx)
 			}
 		}
-	}
-
-
-	this.check_win_lose = function(){
-		
-	}
+	}	
 
 	this.action = function(data){
-		if(data.action){
-			baccarat_data = data
-			ctx.clearRect(0, 0, canvas.width, canvas.height)
-			if(data.action === "start"){
-				resize = 0
-			}		
-			self.draw_cards()
-			self.check_win_lose()
-		}
+		baccarat_data = data
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
+		self.draw_cards()
+		self.check_win_lose()
     }
+
+	this.check_win_lose = function(){
+		const {banker, player} = baccarat_data
+		if((player.win && banker.win) || (player.value_hand === banker.value_hand)){ // we have a tie
+			self.result("tie")
+			return
+		}
+		if(player.win){ // player wins
+			self.result("player")
+			return
+		}
+		if(banker.win){ // banker wins
+			self.result("banker")
+			return
+		}
+
+		//check card values
+		if(player.value_hand > banker.value_hand){
+			self.result("player")
+		} else {
+			self.result("banker")
+		}
+	}
+
+	this.result = function(x){
+		let game = null	
+		if(props.page && props.page.game){
+			game = props.page.game
+		}
+		let money = props.user.money ? decryptData(props.user.money) : 0
+
+		let baccarat_payload = {
+			uuid: props.user.uuid,
+			game,
+			status: 'lose',
+			bet: choice.bet,
+			money: money - choice.bet
+		}
+
+		if(x === choice.type){
+			// you won
+			baccarat_payload.money = money + choice.bet
+			baccarat_payload.status = 'win'
+			// props.getResults(baccarat_payload)
+			return
+		}
+
+		//you lost
+		// props.getResults(baccarat_payload)
+	}
 }
 
 function BaccaratGame(props){
@@ -389,10 +430,10 @@ function BaccaratGame(props){
 
     return <>
 		<p>{translate({lang: lang, info: "under_construction"})}</p>
-		<p>
-			<span>{translate({lang: lang, info: "type"})}: {choice.type}</span>
+		<h3 className="baccarat_subtitles">
+			<span>{translate({lang: lang, info: "bet_type"})}: {choice.type}</span>
 			<span>{translate({lang: lang, info: "bet"})}: {choice.bet}</span>
-		</p>
+		</h3>
 		<canvas id="baccarat_canvas" />
 	</>
 }

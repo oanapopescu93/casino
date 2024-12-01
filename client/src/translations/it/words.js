@@ -369,6 +369,11 @@ var word_bank = {
     invalid_raise: "Rilancio non valido",
     not_enough_money: "Non abbastanza denaro",
 
+    // baccarat
+    player: "Player",
+    banker: "Banker",
+    tie: "Tie",
+
     // results
     results: "Risultati",
     result: "Risultato",
