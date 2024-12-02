@@ -57,6 +57,7 @@ var word_bank = {
     country: "Țară",
     city: "Oraș",  
     your_streak: "Câte zile la rând ai jucat",
+    streak_prize_text: "Dacă joci 10 zile la rând, vei primi un premiu",
 
     exit_salon: "Ieși din salon",
     salon_subtitle: "Bine ai venit în salon",

@@ -44,7 +44,7 @@ function HowToPlay(props){
             template: "gambling_warning",
             title: "gambling_warning_signs",
             size: "lg",
-            icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+            icon: "faTriangleExclamation"
         }
         dispatch(changePopup(payload))
     }

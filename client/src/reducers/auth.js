@@ -12,6 +12,7 @@ const initialState = {
         user: getCookie("casino_user") !== "" ? getCookie("casino_user") : null,
         uuid: getCookie("casino_uuid") !== "" ? getCookie("casino_uuid") : null,
         logs: getCookie("casino_logs") !== "" ? getCookie("casino_logs") : null,
+        logsTotal: getCookie("casino_logsTotal") !== "" ? getCookie("casino_logsTotal") : null,
     },
     isMinor: getCookie("casino_isminor") !== "" ? getCookie("casino_isminor") : null,
 }
@@ -52,6 +53,10 @@ const pageSlice = createSlice({
             if(payload.logs !== undefined && payload.logs !== null){
                 state.user.logs = payload.logs
                 setCookie("casino_logs", payload.logs)
+            }
+            if(payload.logsTotal !== undefined && payload.logsTotal !== null){
+                state.user.logsTotal = payload.logsTotal
+                setCookie("casino_logsTotal", payload.logsTotal)
             }
         },
         changeIsMinor: (state, { payload }) => {

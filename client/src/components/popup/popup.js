@@ -29,6 +29,14 @@ import { postData } from "../../utils/utils"
 import VerificationSendSuccess from "./verificationSendSuccess"
 import WarningGambling from "./warningGambling"
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCalendarDays, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+
+import chatbotIcon_pink from '../../img/chatbot/chatbot_pink.png'
+import chatbotIcon_green from '../../img/chatbot/chatbot_green.png'
+import chatbotIcon_yellow from '../../img/chatbot/chatbot_yellow.png'
+import chatbotIcon_orange from '../../img/chatbot/chatbot_orange.png'
+
 function Popup(props){
     const {socket, home, settings} = props
     const {lang} = settings
@@ -56,6 +64,16 @@ function Popup(props){
     }
     if(template === "gambling_warning"){
         style = "error"
+    }
+
+    const iconMap = {
+        faCalendarDays: <FontAwesomeIcon icon={faCalendarDays} />,
+        faTriangleExclamation: <FontAwesomeIcon icon={faTriangleExclamation} />,
+
+        chatbotIcon_pink: <img src={chatbotIcon_pink} alt="chatbotIcon" />,
+        chatbotIcon_green: <img src={chatbotIcon_green} alt="chatbotIcon" />,
+        chatbotIcon_yellow: <img src={chatbotIcon_yellow} alt="chatbotIcon" />,
+        chatbotIcon_orange: <img src={chatbotIcon_orange} alt="chatbotIcon" />,
     }
 
   	function closeModal(){
@@ -116,6 +134,12 @@ function Popup(props){
                 setResendVerificationResult('')
            }, 2000)
         })
+        socket.on('streakClainPrize_read', ()=>{
+            setSending(false)
+            setTimeout(function(){
+                closeModal()
+           }, 2000)
+        })
     }, [socket])
 
     function handleApplyJob(payload){
@@ -134,16 +158,21 @@ function Popup(props){
         socket.emit('signup_verification_send', {lang: lang, email})
     }
 
+    function streakClainPrize(data){
+        setSending(true)
+        socket.emit('streakClainPrize_send', data)
+    }    
+
     return <>
         {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + style} show={open} onHide={closeModal} size={size} centered> 
-            {title === "" && !icon ? null : <Modal.Header>
+            {title === "" && !icon && !iconMap[icon] ? null : <Modal.Header>
                 {!sticky ? <div className="closeButton closeButtonHeader" onClick={closeModal}>
                     <span>X</span>
                 </div> : null}
-                <Modal.Title>{icon ? icon : null} {title}</Modal.Title>
+                <Modal.Title>{icon && iconMap[icon] ? icon && iconMap[icon] : null} {title}</Modal.Title>
             </Modal.Header>}
             <Modal.Body>
-                {title === "" && !icon && !sticky ? <div className="closeButton" onClick={closeModal}>
+                {title === "" && !icon && !iconMap[icon] && !sticky ? <div className="closeButton" onClick={closeModal}>
                     <span>X</span>
                 </div> : null}
                 {(() => {			
@@ -173,7 +202,7 @@ function Popup(props){
                         case "game_results":
                             return <GameResults settings={settings} results={data} />
                         case "streak":
-                            return <Streak settings={settings} data={data} />
+                            return <Streak settings={settings} data={data} user={user} sending={sending} streakClainPrize={(e)=>streakClainPrize(e)} />
                         case "whack_a_rabbit":
                             return <WhackARabbit settings={settings} handleClick={()=>handleWhackARabbit()} />
                         case "paymentSuccess":

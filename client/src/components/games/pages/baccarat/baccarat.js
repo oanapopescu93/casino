@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react'
 import BaccaratGame from './baccaratGame'
 import Header from '../../../partials/header'
 import { translate } from '../../../../translations/translate'
-import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faPlay, faTrashCan, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
-import { Button } from 'react-bootstrap'
 import BaccaratTable from './baccaratTable'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { getRoom } from '../../../../utils/games'
+import BaccaratButtons from './baccaratButtons'
 
 function Baccarat(props){
     const {page, user, settings, socket} = props
@@ -23,6 +21,7 @@ function Baccarat(props){
     const [tieBet, setTieBet] = useState(0)
     const [choice, setChoice] = useState(null)
     const [gameData, setGameData] = useState(null)
+    const [gameResults, setGameResults] = useState(null)
 
     function updateBets(type, bet){
         switch (type) {
@@ -71,6 +70,7 @@ function Baccarat(props){
         setTieBet(0)
         setChoice(null)
         setStart(false)
+        setGameResults(null)
 	}
 
     useEffect(() => {
@@ -86,6 +86,11 @@ function Baccarat(props){
         }
     }, [socket])
 
+    function endGame(payload){
+        setGameResults(payload)
+        props.results(payload)
+	}
+
     return <div id="baccarat" className='game_container'>
         <div className='game_box'>
             <Header template={"game"} details={page} lang={lang} theme={theme}/>            
@@ -93,6 +98,7 @@ function Baccarat(props){
                 {...props} 
                 gameData={gameData}
                 choice={choice}
+                endGame={(e)=>endGame(e)}
             /> : <BaccaratTable 
                 {...props} 
                 playerBet={playerBet}
@@ -102,32 +108,12 @@ function Baccarat(props){
                 updateBets={(type, bet)=>updateBets(type, bet)}
                 handleChoice={(type, bet)=>handleChoice(type, bet)}
             />}
-            <div className="button_action_group baccarat_buttons_container">
-                <div className="tooltip">
-                    <Button 
-                        type="button"
-                        className="mybutton round button_transparent shadow_convex"
-                        onClick={()=>startGame()}
-                    ><FontAwesomeIcon icon={faPlay} /></Button>
-                    <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
-                </div>
-                <div className="tooltip">
-                    <Button 
-                        type="button"
-                        className="mybutton round button_transparent shadow_convex"
-                        onClick={()=>resetGame()}
-                    ><FontAwesomeIcon icon={faTrashCan} /></Button>
-                    <span className="tooltiptext">{translate({lang: lang, info: "reset"})}</span>
-                </div>
-                <div className="tooltip">
-                    <Button 
-                        type="button"
-                        className="mybutton round button_transparent shadow_convex"
-                        onClick={()=>props.handleHandleExit()}
-                    ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                    <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
-                </div>
-            </div>
+            <BaccaratButtons 
+                {...props} 
+                gameResults={gameResults}
+                startGame={()=>startGame()}
+                resetGame={()=>resetGame()}
+            />
         </div>
     </div>
 }

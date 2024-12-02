@@ -1844,8 +1844,15 @@ footer{
   width: 100%;
   max-width: 130px;
 }
+.baccarat_subtitles{
+  margin-bottom: var(--padding);
+}
 .baccarat_subtitles span{
-  margin-right: var(--padding_small);
+  padding: 0px var(--padding_small);
+  border-right: solid 1px var(--color);
+}
+.baccarat_subtitles span:last-child{
+  border-right: solid 0px transparent;
 }
 
 /* GAME BOARD */
@@ -3893,13 +3900,19 @@ a.donation_button{
 }
 
 /* POPUP STREAK */
+#streak{
+  text-align: center;
+}
+.streak_text{
+  margin-bottom: var(--padding);
+}
 .progress_bubble_container{
+  display: inline-block;
   width: 100%;
   max-width: 600px;
   max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
-  margin: 0px auto var(--padding) auto;
 }
 .bubble{
   background: var(--color);
@@ -4393,36 +4406,6 @@ a.donation_button{
 }
 
 @media (max-width: 767px) {
-  .modal-body{
-    padding: var(--padding);
-  }
-
-  /* DASHBOARD */  
-  .dashboard_user_info, .dashboard_user_info_text, .dashboard_left_buttons{
-    text-align: center;
-  }
-  #dashboard_left .mybutton{
-    display: block;
-    margin: var(--padding_small) auto;
-    max-width: 200px;
-  }
-
-  /* KENO */
-  .keno_spot_box{
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-    line-height: 30px;
-    padding: var(--padding_small);
-  }
-  .keno_prize_container {
-    margin-top: var(--padding_small);
-  }
-
-  /* MARKET */
-  .shop_shader {
-    height: 45px;
-  }
   #logo_icon{
     width: 30px;
   }
@@ -4460,13 +4443,10 @@ a.donation_button{
   footer{
     border-top: solid 0px transparent;
   }
-  .mybutton.round,#game_bets_clear{
-    width: 40px;
-    height: 40px;
+  .modal-body{
+    padding: var(--padding);
   }
-  #game_bets_clear svg{
-    font-size: 18px;
-  }
+  
   input, textarea, #payment_form .dropdown .dropdown-toggle, #withdraw_form .dropdown .dropdown-toggle{
     font-size: 12px;
     line-height: 6px;
@@ -4475,6 +4455,45 @@ a.donation_button{
   .sign_container .input_container .input_eye{
     top: 3px;
   }
+
+  /* GAMES */
+  .game_loading_icon{
+    width: 150px;
+  }
+  .mybutton.round,#game_bets_clear{
+    width: 40px;
+    height: 40px;
+  }
+  #game_bets_clear svg{
+    font-size: 18px;
+  }
+
+  /* DASHBOARD */  
+  .dashboard_user_info, .dashboard_user_info_text, .dashboard_left_buttons{
+    text-align: center;
+  }
+  #dashboard_left .mybutton{
+    display: block;
+    margin: var(--padding_small) auto;
+    max-width: 200px;
+  }
+
+  /* KENO */
+  .keno_spot_box{
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 30px;
+    padding: var(--padding_small);
+  }
+  .keno_prize_container {
+    margin-top: var(--padding_small);
+  }
+
+  /* MARKET */
+  .shop_shader {
+    height: 45px;
+  }  
 
   /* CAREER */
   .career_header_container{
@@ -4555,12 +4574,7 @@ a.donation_button{
   /* LOADER */
   .loader_container .loader img{
 		width:100px;
-	}
-
-  /* GAMES */
-  .game_loading_icon{
-    width: 150px;
-  }
+	}  
 
   /* CART */
   .cart_list_items{
@@ -4618,6 +4632,15 @@ a.donation_button{
 
   .warningGambling_box {
     width: 50%;
+  }
+
+  /* BACCARAT */
+  .table_box{
+    margin: var(--padding) auto;
+    max-width: 200px;
+  }
+  .baccarat_table .table_box button{
+    max-width: 100px;
   }
 }
 @media (max-width:600px) {
@@ -4921,7 +4944,11 @@ a.donation_button{
   .button_action_group.keno_prize_container{
     right: 50px;
     left: auto;
-  }  
+  } 
+  .button_action_group.baccarat_table_buttons_container{
+    position: static;
+    width: 100%;
+  }
   .keno_prize_container button{
     height: auto;
     line-height: 12px;

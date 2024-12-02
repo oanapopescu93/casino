@@ -50,31 +50,33 @@ function get_device(headers){
 	}
 	return device
 }
-function check_streak(result){
-	const DAYS = 2
-	const DAY_SPAN = DAYS * 24
+function check_streak(array) {
+	const MS_IN_A_DAY = 24 * 60 * 60 * 1000 // Milliseconds in a day
 	let streak = 1
-
-	for(let i = 0; i < result.length-1; i++){
-		let date01 = new Date(parseInt(result[i].login_date))
-		var day01 = date01.getDate()			
-		let date02 = new Date(parseInt(result[i+1].login_date))
-		var day02 = date02.getDate()
-		let period = parseInt(result[i+1].login_date)-parseInt(result[i].login_date)
-		let hours = period / 3600000
-
-		if(hours < DAY_SPAN && day01 != day02){
-			// less then two days span, but not the same day
-			streak++
-		} else if(hours < DAY_SPAN && day01 == day02){
-			// he logged again in the same day
-		} else {
-			// he missed a day or more
-			streak = 1
-		}
+  
+	// Sort the array by login_date in ascending order
+	array.sort((a, b) => parseInt(a.login_date) - parseInt(b.login_date))
+  
+	for (let i = 0; i < array.length - 1; i++) {
+	  const currentDate = new Date(parseInt(array[i].login_date))
+	  const nextDate = new Date(parseInt(array[i + 1].login_date))
+  
+	  // Normalize dates to midnight for comparison
+	  const currentDay = new Date(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate())
+	  const nextDay = new Date(nextDate.getUTCFullYear(), nextDate.getUTCMonth(), nextDate.getUTCDate())
+  
+	  const dayDifference = (nextDay - currentDay) / MS_IN_A_DAY
+  
+	  if (dayDifference === 1) { // Consecutive day login		
+		streak++
+	  } else if (dayDifference > 1) { // Break in streak		
+		streak = 1
+	  }
+	  // If `dayDifference === 0`, ignore since it's the same day
 	}
+  
 	return streak
-}
+  }  
 
 function get_geolocation(apiKey) {
 	return "https://api.ipgeolocation.io/ipgeo?apiKey=" + apiKey

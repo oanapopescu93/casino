@@ -57,6 +57,7 @@ var word_bank = {
     country: "国家",
     city: "城市",
     your_streak: "你连续玩了多少天",
+    streak_prize_text: "如果你连续玩10天，你会得到一个奖励",
 
     exit_salon: "退出沙龙",
     salon_subtitle: "欢迎来到沙龙",

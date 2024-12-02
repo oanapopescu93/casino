@@ -57,6 +57,7 @@ var word_bank = {
     country: "País",
     city: "Ciudad",
     your_streak: "Cuántos días seguidos has jugado",
+    streak_prize_text: "Si juegas 10 días seguidos, obtendrás un premio",
 
     exit_salon: "Salir del salón",
     salon_subtitle: "Bienvenido al salón",

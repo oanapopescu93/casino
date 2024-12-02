@@ -20,7 +20,7 @@ function Card(config){
 	self.card = config.card //The size of the clipped image
 	self.card_img = config.card_img //The size of the image to use
 	self.space = config.space
-	self.player_nr = config.player_nr
+	self.title = config.title
 	self.images = config.images
 	self.text = config.text
 	self.text_bg = config.text_bg
@@ -28,7 +28,7 @@ function Card(config){
 	self.lang = config.lang
 	
 	self.draw_title = function(ctx){
-		self.draw_card_text(ctx, self.name, self.x + self.width/2, self.y, self.player_nr[0])
+		self.draw_card_text(ctx, self.name, self.x + self.width/2, self.y - self.title[0], self.title[0])
 	}	
 
 	self.show_cards = function(ctx, data, type){		
@@ -37,11 +37,11 @@ function Card(config){
 		switch(type){
 			case "banker":
 				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, banker.hand)
-				self.draw_card_text(ctx, value_text + banker.value_hand, self.x + self.width/2, self.y + self.height, self.player_nr[0])
+				self.draw_card_text(ctx, value_text + banker.value_hand, self.x + self.width/2, self.y + self.height + self.title[0], self.title[0])
 				break
 			case "player":
 				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, player.hand)
-				self.draw_card_text(ctx, value_text + player.value_hand, self.x + self.width/2, self.y + self.height, self.player_nr[0])
+				self.draw_card_text(ctx, value_text + player.value_hand, self.x + self.width/2, self.y + self.height + self.title[0], self.title[0])
 				break
 		}		
 	}
@@ -143,7 +143,7 @@ function baccarat_game(props){
 	let card_base = {}
 	let card = {}
 	let card_img = {width: 237, height: 365}
-	let player_nr = [20, 20]
+	let title = [20, 20]
 	let images = []
 	let items = get_cards()
     
@@ -194,7 +194,7 @@ function baccarat_game(props){
 		canvas = document.getElementById("baccarat_canvas")
 		ctx = canvas.getContext("2d")
 		
-		canvas.width = 900
+		canvas.width = 600
 		canvas.height = 300
 		card_base = {
 			x: 24,
@@ -206,12 +206,12 @@ function baccarat_game(props){
 			strokeStyle: text_bg,
 		}
 		card = { width: 120, height: 180 }
-		player_nr = [25, 25]
+		title = [25, 25]
 	
-		if (window.innerWidth <= 800 || window.innerHeight <= 600) {
-			// Big
-			canvas.width = 750
-			canvas.height = 250
+		if (window.innerWidth <= 768 || window.innerHeight <= 480) {
+			// Medium
+			canvas.width = 450
+			canvas.height = 300
 			card_base = {
 				x: 24,
 				y: 50,
@@ -222,41 +222,24 @@ function baccarat_game(props){
 				strokeStyle: text_bg,
 			}
 			card = { width: 96, height: 144 }
-			player_nr = [25, 25]
+			title = [25, 25]
 		}
 	
-		if (window.innerWidth <= 768 || window.innerHeight <= 400) {
-			// Medium
-			canvas.width = 480
-			canvas.height = 180
+		if (window.innerWidth <= 480 || window.innerHeight <= 320) {
+			// Small
+			canvas.width = 300
+			canvas.height = 200
 			card_base = {
 				x: 6,
 				y: 25,
 				width: 85,
-				height: 120,
+				height: 140,
 				fillStyle: 'transparent',
 				lineWidth: 2,
 				strokeStyle: text_bg,
 			}
 			card = { width: 72, height: 108 }
-			player_nr = [15, 15]
-		}
-	
-		if (window.innerWidth <= 480 || window.innerHeight <= 320) {
-			// Small
-			canvas.width = 360
-			canvas.height = 120
-			card_base = {
-				x: 6,
-				y: 25,
-				width: 55,
-				height: 85,
-				fillStyle: 'transparent',
-				lineWidth: 2,
-				strokeStyle: text_bg,
-			}
-			card = { width: 40, height: 60 }
-			player_nr = [15, 15]
+			title = [15, 15]
 		}
 	}	
 
@@ -292,7 +275,7 @@ function baccarat_game(props){
 			card,
 			card_img,
 			space,
-			player_nr,
+			title,
 			images,
 			text: text_color,
 			text_bg,
@@ -314,7 +297,7 @@ function baccarat_game(props){
 			card,
 			card_img,
 			space,
-			player_nr,
+			title,
 			images,
 			text: text_color,
 			text_bg,
@@ -347,8 +330,8 @@ function baccarat_game(props){
 
 	this.check_win_lose = function(){
 		const {banker, player} = baccarat_data
-		if((player.win && banker.win) || (player.value_hand === banker.value_hand)){ // we have a tie
-			self.result("tie")
+		if((player.win && banker.win) || (player.value_hand === banker.value_hand)){ 
+			self.result("tie") // we have a tie
 			return
 		}
 		if(player.win){ // player wins
@@ -383,16 +366,12 @@ function baccarat_game(props){
 			money: money - choice.bet
 		}
 
-		if(x === choice.type){
-			// you won
+		if(x === choice.type){ // you chose well -> you won		
 			baccarat_payload.money = money + choice.bet
 			baccarat_payload.status = 'win'
-			// props.getResults(baccarat_payload)
-			return
 		}
-
-		//you lost
-		// props.getResults(baccarat_payload)
+		
+		props.endGame(baccarat_payload)
 	}
 }
 
@@ -417,21 +396,17 @@ function BaccaratGame(props){
         $(window).resize(function(){
 			ready('resize')
 		})
-		return () => {
-			console.log('we will leave', choice)
-		}
     }, [])
 
-	useEffect(() => {        
+	useEffect(() => {
 		if(gameData && my_baccarat){
 			my_baccarat.action(gameData)
 		}
     }, [gameData])
 
-    return <>
-		<p>{translate({lang: lang, info: "under_construction"})}</p>
+    return <>		
 		<h3 className="baccarat_subtitles">
-			<span>{translate({lang: lang, info: "bet_type"})}: {choice.type}</span>
+			<span>{translate({lang: lang, info: "bet_type"})}: {translate({lang: lang, info: choice.type})}</span>
 			<span>{translate({lang: lang, info: "bet"})}: {choice.bet}</span>
 		</h3>
 		<canvas id="baccarat_canvas" />

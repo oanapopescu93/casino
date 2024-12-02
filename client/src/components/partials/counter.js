@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react'
 function Counter(props){  
   const {num, update} = props
   let [number, setNumber]= useState(typeof num === "undefined" ? 1 : num)
-  let min = props.min ? props.min : 1
-  let max = props.max ? props.max : 100
+  let min = props.min !== undefined && props.min !== null ? props.min : 1
+  let max = props.max !== undefined && props.max !== null ? props.max : 100
 
   useEffect(() => {
     setNumber(typeof num === "undefined" ? 1 : props.num)

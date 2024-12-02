@@ -55,28 +55,29 @@ function Game(props){
     }
 
     useEffect(() => {
-        let streak = getCookie("casino_streak")
-        if(isEmpty(streak)){ // check if popup streak has already been shown
+        let show_streak_popup = getCookie("casino_show_streak_popup")
+        if(isEmpty(show_streak_popup)){
             socket.emit('game_send', {uuid: user.uuid}) 
             socket.on('game_read', (res)=>{
                 if(res && res.streak){
+                    console.log(res)
                     setStreak(res.streak)
-                    if(!isEmpty(streak)){
-                        if(res.streak>1){
-                            let payload = {
-                                open: true,
-                                template: "streak",
-                                title: "Streak",
-                                data: res,
-                                size: 'lg',
-                            }
-                            dispatch(changePopup(payload))
+
+                    if(res.streak > 1){ // if popup streak hasn't been show and streak is more than 1
+                        let payload = {
+                            open: true,
+                            template: "streak",
+                            title: "Streak",
+                            data: res,
+                            size: 'lg',
+                            icon: "faCalendarDays"
                         }
-                        setCookie('casino_streak', true)
+                        dispatch(changePopup(payload))
+                        setCookie('casino_show_streak_popup', true)
                     }
                 }
             })
-        }
+        }        
 
         let room = getRoom(game)
         socket.emit('join_room', {room: room, uuid: user.uuid, user: user.user}) 

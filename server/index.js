@@ -321,7 +321,6 @@ io.on('connection', function(socket) {
               let user_found = users_array.filter((x) => x.uuid === data.uuid)
               payload = updateStreak(user_found, login_user)
               io.to(socket.id).emit('game_read', payload)
-              updateMoney(user_found, payload)
             } catch(e){
               console.log('[error]','game_read--> ', e)
             }
@@ -330,6 +329,19 @@ io.on('connection', function(socket) {
       })
     }
 	})
+
+  socket.on('streakClainPrize_send', function(data){
+		if(data.uuid){
+      try{        
+        io.to(socket.id).emit('streakClainPrize_read', {prize: data.prize})
+        // updateMoney(user_found, payload)
+      } catch(e){
+        console.log('[error]','streakClainPrize_read--> ', e)
+      }
+    }
+	})
+
+  
   function updateStreak(user_found, login_user){
     let streak = 1
     if(user_found[0]){
@@ -337,12 +349,8 @@ io.on('connection', function(socket) {
       streak = check_streak(logs)
     }
     let prize = 0
-    if(streak>0){
-      if(streak % 10 === 0){ //each 10 days the user gets a bigger prize
-        prize = 10
-      } else {
-        prize = 1
-      }
+    if(streak > 0 && streak % 10 === 0){ //each 10 days the user gets a bigger prize
+      prize = 10
     }
     return {streak, prize}
   }
