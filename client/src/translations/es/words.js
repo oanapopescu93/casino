@@ -324,6 +324,7 @@ var word_bank = {
     table_6: "Mesa 06", 
     table_7: "Mesa 07", 
     table_8: "Mesa 08", 
+    reset: "Restablecer",
 
     // race
     breed: "Raza",

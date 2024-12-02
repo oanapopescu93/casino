@@ -4,6 +4,8 @@ import $ from 'jquery'
 import { translate } from '../../../../translations/translate'
 import { get_cards } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCarrot } from '@fortawesome/free-solid-svg-icons'
 
 function Card(config){
 	let self = this
@@ -404,13 +406,18 @@ function BaccaratGame(props){
 		}
     }, [gameData])
 
-    return <>		
-		<h3 className="baccarat_subtitles">
-			<span>{translate({lang: lang, info: "bet_type"})}: {translate({lang: lang, info: choice.type})}</span>
-			<span>{translate({lang: lang, info: "bet"})}: {choice.bet}</span>
-		</h3>
+    return <div className="baccarat_canvas_container">		
+		<div className="baccarat_subtitles">
+			<div>
+				<p>{translate({lang: lang, info: "bet_type"})}: </p>
+				<p>{translate({lang: lang, info: choice.type})}</p>
+			</div>
+			<div>
+				<p>{translate({lang: lang, info: "bet"})}: {choice.bet} <FontAwesomeIcon icon={faCarrot} /></p>
+			</div>			
+		</div>
 		<canvas id="baccarat_canvas" />
-	</>
+	</div>
 }
 
 export default BaccaratGame

@@ -149,17 +149,23 @@ function Card(config){
         }
 	}
 
-    self.draw_card_text = function(ctx, text, x, y, w, h){	
+    self.draw_card_text = function(ctx, text, x, y, w, h){
+        ctx.font = self.text_font
+        const textWidth = ctx.measureText(text).width
+        const adjustedWidth = Math.max(w, textWidth + 0)
+
+        // Draw the box
 		ctx.beginPath()
-		ctx.fillStyle = self.text_bg
-        ctx.fillRect(x, y, w, h)
+        ctx.fillStyle = self.text_bg
+        ctx.fillRect(x, y, adjustedWidth, h)
         ctx.closePath()
 
-        ctx.beginPath()
+        // Draw the text
+        ctx.beginPath();
         ctx.fillStyle = self.text_color
-		ctx.font = self.text_font
-		ctx.fillText(text, x+5, y+8)
-		ctx.closePath()
+        ctx.textBaseline = "top"
+        ctx.fillText(text, x+5, y)
+        ctx.closePath()
 	}
 
     self.updateHand = function(i, x, y, w, h){

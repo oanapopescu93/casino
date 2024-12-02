@@ -1844,15 +1844,27 @@ footer{
   width: 100%;
   max-width: 130px;
 }
+.baccarat_canvas_container{
+  position: relative;
+  z-index: 1;
+}
 .baccarat_subtitles{
-  margin-bottom: var(--padding);
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--transparent_5);
+  border: solid 1px var(--color);
+  border-radius: var(--radius);
+  color: var(--color);
+  display: inline-block;
+  width: 100%;
+  max-width: 100px;
+  padding: var(--padding_small) var(--padding);
 }
 .baccarat_subtitles span{
-  padding: 0px var(--padding_small);
-  border-right: solid 1px var(--color);
-}
-.baccarat_subtitles span:last-child{
-  border-right: solid 0px transparent;
+  padding: var(--padding_small);
 }
 
 /* GAME BOARD */
@@ -4848,6 +4860,10 @@ a.donation_button{
     line-height: 20px;
     cursor: pointer;
   }
+
+  .baccarat_subtitles{
+    max-width: 90px;
+  }
 }
 @media (max-width:360px) {
   h1 {
@@ -4885,7 +4901,7 @@ a.donation_button{
   .question_subcategory h2 {
 		font-size: 22px;
 		line-height: 22px;
-	}
+	}  
 }
 @media (max-width:340px) {
   .dashboard_box .cart_info, .dashboard_box .cart_buttons{

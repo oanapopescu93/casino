@@ -324,6 +324,7 @@ var word_bank = {
     table_6: "Tavolo 06", 
     table_7: "Tavolo 07", 
     table_8: "Tavolo 08", 
+    reset: "Ripristina",
 
     // race
     breed: "Razza",

@@ -324,6 +324,7 @@ var word_bank = {
     table_6: "桌子06", 
     table_7: "桌子07", 
     table_8: "桌子08", 
+    reset: "重置",
 
     // race
     breed: "品种",

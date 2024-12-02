@@ -56,12 +56,13 @@ function Game(props){
 
     useEffect(() => {
         let show_streak_popup = getCookie("casino_show_streak_popup")
+        let casino_streak = getCookie("casino_streak")
         if(isEmpty(show_streak_popup)){
             socket.emit('game_send', {uuid: user.uuid}) 
             socket.on('game_read', (res)=>{
                 if(res && res.streak){
-                    console.log(res)
                     setStreak(res.streak)
+                    setCookie('casino_streak', res.streak)
 
                     if(res.streak > 1){ // if popup streak hasn't been show and streak is more than 1
                         let payload = {
@@ -77,7 +78,9 @@ function Game(props){
                     }
                 }
             })
-        }        
+        } else {
+            setStreak(casino_streak)
+        }
 
         let room = getRoom(game)
         socket.emit('join_room', {room: room, uuid: user.uuid, user: user.user}) 
