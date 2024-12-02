@@ -22,12 +22,15 @@ function Card(config){
 	self.card = config.card //The size of the clipped image
 	self.card_img = config.card_img //The size of the image to use
 	self.space = config.space
+	self.space_between_cards = config.space_between_cards	
 	self.title = config.title
 	self.images = config.images
 	self.text = config.text
 	self.text_bg = config.text_bg
 	self.font = config.font
 	self.lang = config.lang
+
+	console.log(self.card, self.space_between_cards)
 	
 	self.draw_title = function(ctx){
 		self.draw_card_text(ctx, self.name, self.x + self.width/2, self.y - self.title[0], self.title[0])
@@ -128,7 +131,7 @@ function Card(config){
 					img_index = img_index + 12					
 					break			
 			}				
-			ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i*12, y + i*12 + space, w, h)
+			ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i * self.space_between_cards, y + i * self.space_between_cards + space, w, h)
 		}
 	}
 }
@@ -148,6 +151,7 @@ function baccarat_game(props){
 	let title = [20, 20]
 	let images = []
 	let items = get_cards()
+	let space_between_cards = 16
     
     let theme = props.settings.theme
     let text_color = "#b39800"
@@ -209,6 +213,7 @@ function baccarat_game(props){
 		}
 		card = { width: 120, height: 180 }
 		title = [25, 25]
+		space_between_cards = 16
 	
 		if (window.innerWidth <= 768 || window.innerHeight <= 480) {
 			// Medium
@@ -225,6 +230,7 @@ function baccarat_game(props){
 			}
 			card = { width: 96, height: 144 }
 			title = [25, 25]
+			space_between_cards = 16
 		}
 	
 		if (window.innerWidth <= 480 || window.innerHeight <= 320) {
@@ -242,6 +248,7 @@ function baccarat_game(props){
 			}
 			card = { width: 72, height: 108 }
 			title = [15, 15]
+			space_between_cards = 12
 		}
 	}	
 
@@ -277,6 +284,7 @@ function baccarat_game(props){
 			card,
 			card_img,
 			space,
+			space_between_cards,
 			title,
 			images,
 			text: text_color,
@@ -299,6 +307,7 @@ function baccarat_game(props){
 			card,
 			card_img,
 			space,
+			space_between_cards,
 			title,
 			images,
 			text: text_color,

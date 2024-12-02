@@ -152,7 +152,7 @@ function Card(config){
     self.draw_card_text = function(ctx, text, x, y, w, h){
         ctx.font = self.text_font
         const textWidth = ctx.measureText(text).width
-        const adjustedWidth = Math.max(w, textWidth + 0)
+        const adjustedWidth = Math.max(w, textWidth + 10)
 
         // Draw the box
 		ctx.beginPath()

@@ -89,12 +89,16 @@ function PokerDashboard(props){
                         }
                         dispatch(changePopup(payload))
                     } else {
+                        if(data.pot){
+                            setPot(data.pot)
+                        }
                         switch(data.action){
                             case "preflop_betting":
                                 setStartGame(true)
                                 break
                             case "fold":
                                 setStartGame(false)
+                                setPot(0)
                                 break
                             case "showdown":
                                 setStartGame(false)
@@ -103,10 +107,7 @@ function PokerDashboard(props){
                                 setPot(0)
                                 break
                             default:
-                        }
-                        if(data.pot){
-                            setPot(data.pot)
-                        }
+                        }                        
                         my_poker.action(data)
                     }
                 }
