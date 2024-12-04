@@ -29,8 +29,6 @@ function Card(config){
 	self.text_bg = config.text_bg
 	self.font = config.font
 	self.lang = config.lang
-
-	console.log(self.card, self.space_between_cards)
 	
 	self.draw_title = function(ctx){
 		self.draw_card_text(ctx, self.name, self.x + self.width/2, self.y - self.title[0], self.title[0])

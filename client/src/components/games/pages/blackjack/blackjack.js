@@ -8,6 +8,7 @@ import { get_cards, getRoom } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
+import { getWindowDimensions } from '../../../../utils/utils'
 
 function Blackjack(props){
 	const {page, user, settings, socket, handleHandleExit} = props
@@ -18,6 +19,7 @@ function Blackjack(props){
 	const [bets, setBets]= useState(0)
     const [gameData, setGameData] = useState(null)
     const [images, setImages] = useState(null)
+    const [width, setWidth] = useState(getWindowDimensions().width)
 
     let dispatch = useDispatch()
     let items = get_cards()
@@ -25,16 +27,29 @@ function Blackjack(props){
 	let money = user.money ? decryptData(user.money) : 0
 	let howManyPlayers = 5
 
-    function choice(type){        
-        if(type === "start" || type === "hit" || type === "stand" || type === "double_down"  || type === "surrender"){
+    function handleResize() {
+        setWidth(getWindowDimensions().width)
+    }
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.addEventListener("resize", handleResize)
+            handleResize()
+            return () => window.removeEventListener("resize", handleResize)
+        }
+    }, [])
+
+    function choice(action){        
+        if(action === "start" || action === "hit" || action === "stand" || action === "double_down"  || action === "surrender"){
             let blackjack_payload_server = {
                 uuid: user.uuid,
                 room: getRoom(game),
-                action: type,
-                bet: bets
+                action,
+                bet: bets,
+                howManyPlayers
             }
 			let payload = null
-            switch (type){
+            switch (action){
                 case "start":
                     if(bets === 0){
 						payload = {
@@ -52,6 +67,7 @@ function Blackjack(props){
                     break
                 case "hit":
                 case "stand":
+                case "surrender":	
                     blackjack_payload_server.players = gameData.players			
                     socket.emit('blackjack_send', blackjack_payload_server)
                     break
@@ -60,17 +76,6 @@ function Blackjack(props){
                     blackjack_payload_server.bet = 2 * bets
                     socket.emit('blackjack_send', blackjack_payload_server)
                     setBets(2 * bets)
-                    break
-                case "surrender":			
-                    let blackjack_payload = {
-                        uuid: user.uuid,
-                        game: game,
-                        money: money - bets,
-                        status: "lose",
-                        bet: Math.round(bets/2) //when you surrender you lose half your stake. The amount can only be interger
-                    }							
-                    //props.results(blackjack_payload)
-                    setStartGame(false)
                     break
             }
         }
@@ -140,6 +145,12 @@ function Blackjack(props){
 		})
 	}
 
+    function handleReset(){
+        setStartGame(false)
+        setBets(0)
+        setGameData(null)
+    }
+
     return <div id="baccarat" className='game_container'>
         <div className='game_box'>
             <Header template={"game"} details={page} lang={lang} theme={theme}/>            
@@ -150,17 +161,21 @@ function Blackjack(props){
                 gameData={gameData}
                 images={images}
                 howManyPlayers={howManyPlayers}
+                width={width}
             />
             <BlackjackTable 
                 {...props} 
                 startGame={startGame} 
                 bets={bets}
+                gameData={gameData}
                 choice={(e)=>choice(e)} 
-                updateBets={(e)=>updateBets(e)}
+                updateBets={(e)=>updateBets(e)}                
             />
             <BlackjackButtons 
                 {...props} 
+                gameData={gameData}
                 handleBack={()=>handleBack()}
+                handleReset={()=>handleReset()}
             />
 		</div>
 	</div>

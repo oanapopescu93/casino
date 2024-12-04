@@ -4,87 +4,118 @@ var blackjack_players = []
 var blackjack_dealer = {}
 
 function blackjack(data, user_join){
-    let blackjack_current_player = 0
     let blackjack_game_end = false
+    blackjack_players = data.players ? data.players : []
 
     switch (data.action) {
         case 'start':
             let suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
             let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
-
-            blackjack_deck = createDeck(suits, values, 10000)
-            
-            blackjack_players = user_join
+            blackjack_deck = createDeck(suits, values, 10000)            
+            createPlayer(user_join, data)
+            createBots(data)
             dealHands()
-
-            blackjack_hidden_dealer.id = blackjack_dealer.id
-            blackjack_hidden_dealer.hand = []
-            blackjack_hidden_dealer.hand.push(blackjack_dealer.hand[0])
-
-            checkBlackjack()
-            
-            if(blackjack_dealer.win){
-                blackjack_game_end = true
-                return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
-            } else {
-                let check_player_win = blackjack_players.filter((x)=>{
-                    if(x.win) return x
-                })
-                if(check_player_win.length > 0){ // one of the players won
-                    blackjack_game_end = true
-                    return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
-                } else {
-                    return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
-                }
-            } 
+            break
         case 'hit':
-            blackjack_players = data.players
             let index_hit = blackjack_players.findIndex((x) => x.uuid === data.uuid)
-            if(index_hit === blackjack_current_player){
-                hitMe()
-                checkForEndOfGame(index_hit)
-                if(blackjack_dealer.win){
-                    blackjack_game_end = true
-                    return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
-                } else {
-                    let check_player_win = blackjack_players.filter((x)=>{
-                        if(x.win) return x
-                    })
-                    if(check_player_win.length > 0){ // one of the players won
-                        blackjack_game_end = true
-                        return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
-                    } else {
-                        return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
-                    }
-                }
-            } else {
-                return {action: 'not_current_player'} 
-            }
+            blackjack_players[index_hit].action = data.action
+            hitMe(index_hit)
+            dealerAction()
+            botAction()
+            break         
         case 'stand':
-            blackjack_players = data.players
             let index_stand = blackjack_players.findIndex((x) => x.uuid === data.uuid)
-            blackjack_current_player++
-            checkForEndOfGame(index_stand)
-            if(blackjack_current_player<blackjack_players.length){
-                return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
-            } else {
-                blackjack_game_end = true
-                return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
-            }
+            blackjack_players[index_stand].action = data.action
+            dealerAction()
+            botAction()
+            break
         case 'double_down':
-            blackjack_players = data.players
             let index_double_down = blackjack_players.findIndex((x) => x.uuid === data.uuid)
-            if(index_double_down === blackjack_current_player){
-                hitMe()
-                blackjack_current_player++
-                checkForEndOfGame(index_double_down)
-                if(blackjack_current_player<blackjack_players.length){
-                    return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end}
-                } else {
-                    blackjack_game_end = true
-                    return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end}
+            blackjack_players[index_double_down].action = data.action
+            blackjack_players[index_double_down].bets = 2 * blackjack_players[index_double_down].bets
+            hitMe(index_double_down)
+            dealerAction()
+            botAction()
+            break
+        case "surrender":
+            let index_surrender = blackjack_players.findIndex((x) => x.uuid === data.uuid)
+            blackjack_players[index_surrender].action = data.action
+            dealerAction()
+            botAction()
+            break
+    }
+
+    return end_game()
+
+    function createPlayer(array, data){
+        let index = array.findIndex((x) => x.uuid === data.uuid)
+        let player = {...array[index], type: "human", action: data.action}
+        blackjack_players.push(player)        
+    }
+
+    function createBots(data){
+        let howManyPlayers = data.howManyPlayers
+        let random_player_number = Math.floor(Math.random() * howManyPlayers)
+        // random_player_number = 1 // just for test
+        for (let i = 0; i < random_player_number; i++) {
+            let t = parseInt(i) + 1
+            let bot = {
+                uuid: 'bot_' + t,
+                user: 'bot_' + t,
+                type: "bot",
+                bets: 1,
+                action: 'start',
+            }    
+            blackjack_players.push(bot)
+        }
+    }
+    function botAction(){
+        let decision = ['hit', 'stand', 'double_down', 'surrender']
+        for(i in blackjack_players){
+            if(blackjack_players[i].type === "bot"){
+                let actionIndex = Math.floor(Math.random() * decision.length)
+                let action = decision[actionIndex]
+                blackjack_players[i].action = action
+                switch (action) {
+                    case 'hit':
+                        let card = blackjack_deck.pop()        
+                        blackjack_players[i].hand.push(card)
+                        points(false)
+                        break
+                    case 'stand':
+                    case 'surrender':
+                        //nothing happens
+                        break
+                    case 'double_down':
+                        blackjack_players[i].bets = 2 * blackjack_players[i].bets
+                        hitMe(i)
+                        break
                 }
             }
+        }
+    }
+
+    function dealerAction(){
+        let decision = ['hit', 'stand', 'double_down', 'surrender']
+        let actionIndex = Math.floor(Math.random() * decision.length)
+        let action = decision[actionIndex]
+        blackjack_dealer.action = action
+        switch (action) {
+            case 'hit':
+                let card1 = blackjack_deck.pop()
+                blackjack_dealer.hand.push(card1)
+                points(false)
+                break
+            case 'stand':
+            case 'surrender':
+                //nothing happens
+                break
+            case 'double_down':
+                blackjack_dealer.bets = 2 * blackjack_dealer.bets
+                let card2 = blackjack_deck.pop()
+                blackjack_dealer.hand.push(card2)
+                break
+        }
     }
 
     function createDeck(suits, values, turns){
@@ -114,7 +145,7 @@ function blackjack(data, user_join){
         return blackjack_deck
     }		
     function dealHands(){
-        blackjack_dealer = {id: "dealer", hand: []}			
+        blackjack_dealer = {id: "dealer", hand: [], bets: 1, action: "start"}			
         for(let i = 0; i < 2; i++){	
             let card = blackjack_deck.pop()
             blackjack_dealer.hand.push(card)
@@ -131,24 +162,11 @@ function blackjack(data, user_join){
             }
         }
         points(false)
-    }	
-    function checkBlackjack(){
-        let dealerScore = points(true)
-        if(dealerScore === 21){ //blackjack
-            blackjack_dealer.win = true
-        } else {
-            for(let i in blackjack_players){
-                let playerScore = blackjack_players[i].points   
-                if(playerScore === 21){ //blackjack
-                    blackjack_players[i].win = true
-                }
-            }
-        }
-    }
+    }    
 
-    function hitMe(){
-        let card = blackjack_deck.pop()
-        blackjack_players[blackjack_current_player].hand.push(card)
+    function hitMe(index){
+        let card = blackjack_deck.pop()        
+        blackjack_players[index].hand.push(card)
         points(false)
     }
 
@@ -171,38 +189,149 @@ function blackjack(data, user_join){
         
     }
 
-    function checkForEndOfGame(index){
-        let playerScore = blackjack_players[index].points   
+    function checkBlackjack() {    
         let dealerScore = points(true)
 
-        if(playerScore === 21){ //blackjack
-            blackjack_players[index].win = true
-        } else if(dealerScore === 21){ //blackjack
+        if (dealerScore === 21) { // Dealer Blackjack
+            blackjack_dealer.result = 'blackjack'
             blackjack_dealer.win = true
-        } else {
-            while (dealerScore < playerScore && playerScore <= 21 && dealerScore <= 21) {
-                let card = blackjack_deck.pop()
-                blackjack_dealer.hand.push(card)
-                dealerScore = points(true)
+            blackjack_game_end = true
+            return {
+                action: data.action, 
+                players: blackjack_players, 
+                dealer: blackjack_dealer, 
+                game_end: blackjack_game_end, 
+                result: {winner: "dealer"}
             }
-    
-            if (playerScore > 21) { //busted
-                blackjack_dealer.win = true
-            } else if (dealerScore > 21) { //busted
-                blackjack_players[index].win = true
-            } else {
-                if(data.action === "stand" || data.action === "double_down"){
-                    if (playerScore > dealerScore){
-                        blackjack_players[index].win = true
-                    } else {
-                        blackjack_dealer.win = true
-                    }
+        }
+
+        for (let player of blackjack_players) {
+            if (player.points === 21) { // First player to get Blackjack ends the game
+                player.result = 'blackjack'
+                player.win = true
+                blackjack_game_end = true
+                return {
+                    action: data.action,
+                    players: blackjack_players,
+                    dealer: blackjack_dealer,
+                    game_end: blackjack_game_end,
+                    result: {winner: "player", player}
                 }
             }
         }
+        
+        return
     }
-    
-    return {}
+
+    function checkDealerBusted(){
+        let dealerScore = points(true)
+        if (dealerScore > 21) {
+            blackjack_dealer.result = 'busted'
+            blackjack_dealer.win = false
+            blackjack_game_end = true
+            return {
+                action: data.action, 
+                players: blackjack_players, 
+                dealer: blackjack_dealer,
+                game_end: blackjack_game_end, 
+                result: getPlayerWinner()
+            }
+        }
+        return
+    }
+
+    function checkPlayesBusted(){
+        blackjack_players.forEach((player) => {
+            if (player.points > 21) { // busted
+                player.result = 'busted'
+                player.win = false
+            }
+        })
+    }
+
+    function checkDealerSurrender() {
+        if (blackjack_dealer.action === "surrender") {
+            blackjack_dealer.result = 'surrender'
+            blackjack_dealer.win = false
+            blackjack_game_end = true
+            return {
+                action: data.action, 
+                players: blackjack_players, 
+                dealer: blackjack_dealer, 
+                game_end: blackjack_game_end, 
+                result: getPlayerWinner()
+            }
+        }
+        return
+    }
+
+    function checkAllPlayersStoodBustedOrSurrendered() {
+        return blackjack_players.every(player => player.action === "stand" || player.action === "surrender" || player.result === "busted")
+    }
+
+    function getPlayerWinner (){
+        let result = null
+        let pointsMax = 0
+        let dealerScore = points(true)
+        let dealerBusted = dealerScore > 21 || blackjack_dealer.action === "surrender"
+
+        // Determine the player with the highest valid points
+        blackjack_players.forEach((player) => {
+            if (player.action !== "surrender" && player.result !== "busted" && player.points > pointsMax) {
+                pointsMax = player.points
+                result = { winner: "player", player }
+            }
+        })
+
+        let winPlayer = result?.player
+        if (winPlayer && (dealerBusted || winPlayer.points > dealerScore)) {       
+            return result
+        }
+        return {winner: "dealer"}
+    }
+
+    function end_game(){
+        blackjack_game_end = false
+
+        // check players busted
+        checkPlayesBusted()
+
+        // Check if dealer surrendered
+        let surrenderResult = checkDealerSurrender()
+        if (surrenderResult) {
+            //console.log('dealer surrendered ', surrenderResult)
+            return surrenderResult // If the dealer surrenders, the game ends here.
+        }
+
+        // check blackjack
+        let blackjackResult = checkBlackjack()
+        if (blackjackResult) {
+            //console.log('blackjack ', blackjackResult)
+            return blackjackResult // If there's a Blackjack, the game ends here.
+        }
+
+        // check dealer busted
+        let bustedDealerResult = checkDealerBusted()
+        if (bustedDealerResult) {
+            //console.log('dealer busted ', bustedDealerResult)
+            return bustedDealerResult // If dealer is busted, the game ends here.
+        }
+
+        // Check if all players have either stood or surrendered
+        let all = checkAllPlayersStoodBustedOrSurrendered() 
+        if(all){
+            //console.log('all stood, surrendered or busted ', blackjack_players)
+            blackjack_game_end = true
+            return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end, result: getPlayerWinner()}
+        }
+        
+        //console.log('continue game ', blackjack_players)
+        
+        blackjack_hidden_dealer.id = blackjack_dealer.id
+        blackjack_hidden_dealer.hand = [blackjack_dealer.hand[0]] // Show only the first card
+        
+        return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end, result: null}
+    }
 }
 
 module.exports = {blackjack}

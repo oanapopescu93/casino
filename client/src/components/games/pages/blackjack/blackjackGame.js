@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { translate } from '../../../../translations/translate'
 import { draw_rect } from '../../../../utils/games'
-import $ from 'jquery'
 import { decryptData } from '../../../../utils/crypto'
 
 function Card(config){
@@ -27,6 +26,7 @@ function Card(config){
 	self.text_bg = config.text_bg
 	self.font_bold_10 = config.font_bold_10
 	self.font_bold_12 = config.font_bold_12	
+    self.space_between_cards = config.space_between_cards
 	
 	self.draw_box = function(ctx){
 		//draw rect where the cards will be
@@ -171,7 +171,7 @@ function Card(config){
 						img_index = img_index + 12					
 						break			
 				}				
-				ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i*12, y + i*12 + space, w, h)
+				ctx.drawImage(img[img_index].src, 0, 0, size.width, size.height, x + i * self.space_between_cards, y + i * self.space_between_cards + space, w, h)
 			}
 		}
 	}
@@ -187,8 +187,9 @@ function blackjack_game(props){
 	let card = {}
 	let card_img = {width: 237, height: 365}
 	let player_nr = [20, 20]
+    let space_between_cards = 12
 	let howManyPlayers = props.howManyPlayers ? props.howManyPlayers : 5
-    let blackjack_data = null
+    let blackjack_data = props.gameData ? props.gameData : null
 
 	let theme = props.settings.theme
     let text_color = "#b39800"
@@ -213,8 +214,7 @@ function blackjack_game(props){
 			break
 	}
 
-    this.ready = function(data){
-        blackjack_data = data
+    this.ready = function(){
 		self.draw()
 	}
 
@@ -244,6 +244,7 @@ function blackjack_game(props){
 		}
 		card = { width: 100, height: 150 }
 		player_nr = [20, 20]
+        space_between_cards = 12
 	
 		if (window.innerWidth <= 800 || window.innerHeight <= 600) {
 			// Big
@@ -261,17 +262,18 @@ function blackjack_game(props){
 			}
 			card = { width: 80, height: 120 }
 			player_nr = [20, 20]
+            space_between_cards = 12
 		}
 	
-		if (window.innerWidth <= 768 || window.innerHeight <= 400) {
+		if (window.innerWidth <= 768 || window.innerHeight <= 600) {
 			// Medium
-			canvas.width = 400
-			canvas.height = 260
+			canvas.width = 550
+			canvas.height = 300
 			card_base = {
 				x: 5, 
-				y: 150, 
-				width: 70, 
-				height: 100, 
+				y: 160, 
+				width: 80, 
+				height: 120, 
 				fillStyle: 'transparent', 
 				lineWidth: 1, 
 				strokeStyle: text_bg, 
@@ -279,6 +281,26 @@ function blackjack_game(props){
 			}
 			card = { width: 60, height: 90 }
 			player_nr = [12, 12]
+            space_between_cards = 12
+		}
+
+        if (window.innerWidth <= 600 || window.innerHeight <= 480) {
+			// Medium
+			canvas.width = 400
+			canvas.height = 250
+			card_base = {
+				x: 5, 
+				y: 140, 
+				width: 70, 
+				height: 95, 
+				fillStyle: 'transparent', 
+				lineWidth: 1, 
+				strokeStyle: text_bg, 
+				dealer_y: 20
+			}
+			card = { width: 43, height: 60 }
+			player_nr = [12, 12]
+            space_between_cards = 9
 		}
 	
 		if (window.innerWidth <= 480 || window.innerHeight <= 320) {
@@ -297,6 +319,7 @@ function blackjack_game(props){
 			}
 			card = { width: 33, height: 50 }
 			player_nr = [12, 12]
+            space_between_cards = 7
 		}
 	}
 
@@ -329,6 +352,7 @@ function blackjack_game(props){
 			text_bg,
 			font_bold_12: 'bold 10px sans-serif',
 			font_bold_14: 'bold 12px sans-serif',
+            space_between_cards
 		}))	
 
 		// create players
@@ -364,7 +388,8 @@ function blackjack_game(props){
 				text: text_color,
 				text_bg: text_bg,
 				font_bold_12: 'bold 10px sans-serif',
-				font_bold_14: 'bold 12px sans-serif',	
+				font_bold_14: 'bold 12px sans-serif',
+                space_between_cards
 			}))
 		}
 	}
@@ -378,57 +403,46 @@ function blackjack_game(props){
         }
 	}
 
-    this.action = function(data){
-		blackjack_data = data
+    this.action = function(){
+		blackjack_data = props.gameData
         self.draw()
         self.check_win_lose()
     }
 
-    this.check_win_lose = function(){
-        let finished = false
-		let game = null	
-		if(props.page && props.page.game){
-			game = props.page.game
-		}
-		let money = props.user.money ? decryptData(props.user.money) : 0
+    this.check_win_lose = function(){        
+        if(blackjack_data && blackjack_data.game_end){
+            let index = blackjack_data.players.findIndex((x) => x.uuid === props.user.uuid)
+			let player = blackjack_data.players[index]
+            
+            let game = null	
+            if(props.page && props.page.game){
+                game = props.page.game
+            }
+            let money = props.user.money ? decryptData(props.user.money) : 0		
 
-		let dealer = null
-		if(blackjack_data && blackjack_data.dealer){
-			dealer = blackjack_data.dealer
-		}
-		let player = null
-		if(blackjack_data && blackjack_data.players){
-			let index = blackjack_data.players.findIndex((x) => x.uuid === props.user.uuid)
-			if(index !== -1){
-				player = blackjack_data.players[index]
-			}
-		}
+            let blackjack_payload = {
+                uuid: props.user.uuid,
+                game: game,
+                status: 'lose',
+                bet: props.bets,
+                money: money - props.bets
+            }
+            
+            let result = blackjack_data.result
+            
+            if(result && result.player && result.player.uuid === player.uuid){
+                blackjack_payload.status = 'win'
+                blackjack_payload.money = money + props.bets
+            }
 
-		let blackjack_payload = {
-			uuid: props.user.uuid,
-			game: game,
-			status: 'lose',
-			bet: props.bets
-		}        
-
-		if(dealer && dealer.win){
-			blackjack_payload.money = money - props.bets
-			finished = true								
-		} else if(player && player.win){
-			blackjack_payload.money = money + props.bets
-			blackjack_payload.status = 'win'
-			finished = true
-		}
-
-		if(finished){
             console.log(blackjack_payload, blackjack_data)
-			//props.getResults(blackjack_payload)
-		}
+            //props.getResults(blackjack_payload)
+        }
 	}
 }
 
 function BlackjackGame(props){
-	const {settings, images, gameData} = props
+	const {settings, images, gameData, width} = props
 	const {lang} = settings
     
     let options = {...props}
@@ -438,17 +452,7 @@ function BlackjackGame(props){
         if(my_blackjack && document.getElementById("blackjack_canvas")){
             my_blackjack.ready()
         }
-    }	
-
-    useEffect(() => {
-        ready()
-        $(window).resize(function(){
-			ready()
-		})
-		return () => {
-			
-		}
-    }, [])
+    }
 
 	useEffect(() => {
         if(images){
@@ -457,10 +461,14 @@ function BlackjackGame(props){
     }, [images])
 
     useEffect(() => {
-        if(my_blackjack && gameData){
-            my_blackjack.action(gameData)
+        if(my_blackjack){
+            my_blackjack.action()
         }
     }, [gameData])
+
+    useEffect(() => {
+        ready()
+    }, [width])
 
     return <>
         <p>{translate({lang: lang, info: "under_construction"})}</p>
