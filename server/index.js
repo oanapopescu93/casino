@@ -388,7 +388,7 @@ io.on('connection', function(socket) {
   socket.on('blackjack_send', function(data){
 		if(data.uuid){
       let room = data.room
-      let payload = blackjack(data, chatroom_users)
+      let payload = blackjack(data, chatroom_users, how_lucky)
 			try{
 				io.to(room).emit('blackjack_read', payload)
 			} catch(e){

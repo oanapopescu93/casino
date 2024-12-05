@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react'
 import { useDispatch} from 'react-redux'
-import $ from 'jquery'
 import { translate } from '../../../../translations/translate'
-import { get_cards } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCarrot } from '@fortawesome/free-solid-svg-icons'
@@ -137,8 +135,8 @@ function Card(config){
 function baccarat_game(props){
     let self = this	
     let canvas
-    let ctx	
-	let baccarat_data = null
+    let ctx
+	let baccarat_data = props.gameData ? props.gameData : null
 	let lang = props.settings.lang
 	let choice = props.choice
 	
@@ -147,8 +145,7 @@ function baccarat_game(props){
 	let card = {}
 	let card_img = {width: 237, height: 365}
 	let title = [20, 20]
-	let images = []
-	let items = get_cards()
+	let images = props.images
 	let space_between_cards = 16
     
     let theme = props.settings.theme
@@ -174,24 +171,11 @@ function baccarat_game(props){
 			break
 	}
 
-    this.ready = function(r){
+    this.ready = function(){
         self.createCanvas()
-
-		if(r !== "resize"){ //first time entering
-            let promises = []
-            for(let i in items){				
-                promises.push(self.preaload_images(items[i]))
-            }
-            Promise.all(promises).then(function(result){
-                images = result
-				self.draw_background()
-				self.create_cards()
-                self.draw_cards()
-            })
-        } else {
-			self.draw_background()
-            self.draw_cards()
-        }
+		self.draw_background()
+		self.create_cards()
+		self.draw_cards()
     }
 
     this.createCanvas = function () {
@@ -316,7 +300,6 @@ function baccarat_game(props){
 	}
 
 	this.draw_cards = function(){
-		self.draw_background()
 		if(baccarat_data){
 			for(let i in card_list){
 				let type = card_list[i].type
@@ -330,9 +313,7 @@ function baccarat_game(props){
 		}
 	}	
 
-	this.action = function(data){
-		baccarat_data = data
-		ctx.clearRect(0, 0, canvas.width, canvas.height)
+	this.action = function(){		
 		self.draw_cards()
 		self.check_win_lose()
     }
@@ -385,7 +366,7 @@ function baccarat_game(props){
 }
 
 function BaccaratGame(props){
-	const {settings, gameData, choice} = props
+	const {settings, gameData, images, width, choice} = props
 	const {lang} = settings
 
     let dispatch = useDispatch()
@@ -401,15 +382,14 @@ function BaccaratGame(props){
 	}
 
     useEffect(() => {
-        ready()
-        $(window).resize(function(){
-			ready('resize')
-		})
-    }, [])
+		if(images){
+			ready()
+		}
+    }, [images, width])
 
 	useEffect(() => {
-		if(gameData && my_baccarat){
-			my_baccarat.action(gameData)
+		if(my_baccarat){
+			my_baccarat.action()
 		}
     }, [gameData])
 

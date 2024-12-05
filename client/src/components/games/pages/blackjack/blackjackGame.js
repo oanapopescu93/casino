@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { translate } from '../../../../translations/translate'
 import { draw_rect } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 
@@ -30,7 +29,8 @@ function Card(config){
 	
 	self.draw_box = function(ctx){
 		//draw rect where the cards will be
-		draw_rect(ctx, self.x, self.y, self.width, self.height, self.fillStyle, self.lineWidth, self.strokeStyle)		
+		draw_rect(ctx, self.x, self.y, self.width, self.height, self.fillStyle, self.lineWidth, self.strokeStyle)
+
 		//draw square with number
 		if(self.id !== -1){
 			draw_rect(ctx, self.x, self.y - self.player_nr[1], self.player_nr[0], self.player_nr[1], self.fillStyle, self.lineWidth, self.strokeStyle)
@@ -44,14 +44,14 @@ function Card(config){
 			let player = data.players[self.id]
 			if(player){
 				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, player.hand)
-				self.show_cards_value(ctx, player.hand)
+				self.show_cards_value(ctx, player)
 			}
 		} else {
 			//dealer
 			let dealer = data.dealer
 			if(dealer){
 				self.draw_card(ctx, self.x, self.y, self.card.width, self.card.height, self.card_img, dealer.hand)
-				self.show_cards_value(ctx, dealer.hand)
+				self.show_cards_value(ctx, dealer)
 				if(dealer.hand.length === 1){
 					//dealer's hand is still hidden
 					self.draw_card(ctx, self.x + 5, self.y + 5, self.card.width, self.card.height, self.card_img, "hidden")
@@ -60,7 +60,9 @@ function Card(config){
 		}		
 	}
 
-	self.show_cards_value = function(ctx, hand){
+	self.show_cards_value = function(ctx, player){
+        const {type, hand} = player
+
 		let value_hand = 0
 		for(let i in hand){
 			value_hand = value_hand + parseInt(hand[i].Weight)
@@ -94,7 +96,8 @@ function Card(config){
 		ctx.fillStyle = self.text
 		ctx.textAlign = "center"
 		ctx.font = self.font_bold_12
-		ctx.fillText(value_hand, header_width_text, header_height_text)
+        let user = type === "bot" || type === "dealer" ? player.user : "you"
+		ctx.fillText(user + " (" + value_hand + ")", header_width_text, header_height_text)
 		ctx.closePath()
 	}
 
@@ -188,27 +191,38 @@ function blackjack_game(props){
 	let card_img = {width: 237, height: 365}
 	let player_nr = [20, 20]
     let space_between_cards = 12
+    let space_table = [80, 80]
 	let howManyPlayers = props.howManyPlayers ? props.howManyPlayers : 5
     let blackjack_data = props.gameData ? props.gameData : null
 
 	let theme = props.settings.theme
+    let tableColor01 = "darkgreen"
+    let tableColor02 = "green"
     let text_color = "#b39800"
     let text_bg = "#fff7cc"
     switch(theme){
 		case "purple":
+            tableColor01 = "#7A1A7D"
+            tableColor02 = "#3e0d3f"
             text_color = "#3e0d3f"
             text_bg = "#ffccd5"
 			break
 		case "black":
+            tableColor01 = "#1e7b1e"
+            tableColor02 = "#0f3e0f"
             text_color = "#0f3e0f"
             text_bg = "#ccffcc"
 			break
 		case "blue":
+            tableColor01 = "#994d00"
+            tableColor02 = "#663300"
 			text_color = "#324A63"
             text_bg = "#ffe6cc"
 			break
 		case "green":
 		default:
+            tableColor01 = "darkgreen"
+            tableColor02 = "green"
             text_color = "darkgreen"
             text_bg = "#fff7cc"
 			break
@@ -230,24 +244,65 @@ function blackjack_game(props){
 		ctx = canvas.getContext("2d")
 	
 		// Default canvas and card settings
-		canvas.width = 740
-		canvas.height = 460
-		card_base = {
-			x: 20, 
-			y: 260, 
-			width: 120, 
-			height: 180, 
-			fillStyle: 'transparent', 
-			lineWidth: 2, 
-			strokeStyle: text_bg, 
-			dealer_y: 40
-		}
-		card = { width: 100, height: 150 }
-		player_nr = [20, 20]
+		canvas.width = 1100
+        canvas.height = 600
+        card_base = {
+            x: 20, 
+            y: 300, 
+            width: 120, 
+            height: 180, 
+            fillStyle: 'transparent', 
+            lineWidth: 2, 
+            strokeStyle: text_bg, 
+            dealer_y: 80
+        }
+        card = { width: 100, height: 150 }
+        player_nr = [20, 20]
         space_between_cards = 12
+        space_table = [50, 50]
+
+        if (window.innerWidth <= 1200) {
+			// very big
+			canvas.width = 1000
+			canvas.height = 550
+			card_base = {
+				x: 20, 
+				y: 280, 
+				width: 110, 
+				height: 160, 
+				fillStyle: 'transparent', 
+				lineWidth: 2, 
+				strokeStyle: text_bg, 
+				dealer_y: 80
+			}
+			card = { width: 90, height: 130 }
+			player_nr = [20, 20]
+            space_between_cards = 12
+            space_table = [50, 50]
+		}
+
+        if (window.innerWidth <= 1050) {
+			// big
+			canvas.width = 800
+			canvas.height = 400
+			card_base = {
+				x: 20, 
+				y: 220, 
+				width: 100, 
+				height: 150, 
+				fillStyle: 'transparent', 
+				lineWidth: 2, 
+				strokeStyle: text_bg, 
+				dealer_y: 30
+			}
+			card = { width: 80, height: 120 }
+			player_nr = [20, 20]
+            space_between_cards = 12
+            space_table = [40, 40]
+		}
 	
-		if (window.innerWidth <= 800 || window.innerHeight <= 600) {
-			// Big
+		if (window.innerWidth <= 900) {
+			// medium
 			canvas.width = 620
 			canvas.height = 400
 			card_base = {
@@ -263,10 +318,11 @@ function blackjack_game(props){
 			card = { width: 80, height: 120 }
 			player_nr = [20, 20]
             space_between_cards = 12
+            space_table = [30, 40]
 		}
 	
-		if (window.innerWidth <= 768 || window.innerHeight <= 600) {
-			// Medium
+		if (window.innerWidth <= 768) {
+			// small
 			canvas.width = 550
 			canvas.height = 300
 			card_base = {
@@ -282,10 +338,11 @@ function blackjack_game(props){
 			card = { width: 60, height: 90 }
 			player_nr = [12, 12]
             space_between_cards = 12
+            space_table = [20, 20]
 		}
 
-        if (window.innerWidth <= 600 || window.innerHeight <= 480) {
-			// Medium
+        if (window.innerWidth <= 600) {
+			// smaller
 			canvas.width = 400
 			canvas.height = 250
 			card_base = {
@@ -301,10 +358,11 @@ function blackjack_game(props){
 			card = { width: 43, height: 60 }
 			player_nr = [12, 12]
             space_between_cards = 9
+            space_table = [20, 20]
 		}
 	
-		if (window.innerWidth <= 480 || window.innerHeight <= 320) {
-			// Small
+		if (window.innerWidth <= 480) {
+			// very small
 			canvas.width = 300
 			canvas.height = 210
 			card_base = {
@@ -320,11 +378,28 @@ function blackjack_game(props){
 			card = { width: 33, height: 50 }
 			player_nr = [12, 12]
             space_between_cards = 7
+            space_table = [20, 20]
 		}
 	}
 
     this.draw_background = function(){
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
+        if (window.innerWidth > 600) {
+            ctx.fillStyle = tableColor01
+            ctx.shadowBlur = 20
+            ctx.shadowColor = "black"
+            ctx.shadowOffsetY = 10
+            ctx.beginPath()
+            ctx.ellipse(canvas.width/2, canvas.height/2, canvas.width/2 - space_table[0], canvas.height/2 - space_table[1], 0, 0, 2 * Math.PI) 
+            ctx.fill()
+            ctx.shadowBlur = 0
+            ctx.shadowColor = "transparent"
+            ctx.shadowOffsetY = 0
+            ctx.fillStyle = tableColor02
+            ctx.beginPath()
+            ctx.ellipse(canvas.width/2, canvas.height/2, canvas.width/2 - 2.5 * space_table[0], canvas.height/2 - 2 * space_table[1], 0, 0, 2 * Math.PI)
+            ctx.fill()
+        }
 	}
 
     this.create_cards = function(){
@@ -413,7 +488,7 @@ function blackjack_game(props){
         if(blackjack_data && blackjack_data.game_end){
             let index = blackjack_data.players.findIndex((x) => x.uuid === props.user.uuid)
 			let player = blackjack_data.players[index]
-            
+
             let game = null	
             if(props.page && props.page.game){
                 game = props.page.game
@@ -434,16 +509,15 @@ function blackjack_game(props){
                 blackjack_payload.status = 'win'
                 blackjack_payload.money = money + props.bets
             }
-
-            console.log(blackjack_payload, blackjack_data)
-            //props.getResults(blackjack_payload)
+            
+            props.results(blackjack_payload)
+            props.handleBets()
         }
 	}
 }
 
 function BlackjackGame(props){
-	const {settings, images, gameData, width} = props
-	const {lang} = settings
+	const {images, gameData, width} = props
     
     let options = {...props}
     let my_blackjack = new blackjack_game(options)
@@ -458,7 +532,7 @@ function BlackjackGame(props){
         if(images){
             ready()
         }
-    }, [images])
+    }, [images, width])
 
     useEffect(() => {
         if(my_blackjack){
@@ -466,14 +540,7 @@ function BlackjackGame(props){
         }
     }, [gameData])
 
-    useEffect(() => {
-        ready()
-    }, [width])
-
-    return <>
-        <p>{translate({lang: lang, info: "under_construction"})}</p>
-        <canvas id="blackjack_canvas" />
-    </>
+    return <canvas id="blackjack_canvas" />
 }
 
 export default BlackjackGame

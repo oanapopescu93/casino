@@ -85,8 +85,7 @@ function Blackjack(props){
         setBets(e)
     }
 
-    function handleBack(){        
-        handleHandleExit()
+    function handleBack(){
         if(startGame){
             //you bet, then started the game and decided to leave the game --> you lose your bet
             let blackjack_payload = {
@@ -96,8 +95,9 @@ function Blackjack(props){
                 status: "lose",
                 bet: bets
             }							
-            //props.results(blackjack_payload)
-        } 
+            props.results(blackjack_payload)
+        }
+        handleHandleExit()
     }
 
     useEffect(() => {
@@ -151,6 +151,10 @@ function Blackjack(props){
         setGameData(null)
     }
 
+    function handleBets(){
+        setBets(0)
+    }
+
     return <div id="baccarat" className='game_container'>
         <div className='game_box'>
             <Header template={"game"} details={page} lang={lang} theme={theme}/>            
@@ -159,9 +163,10 @@ function Blackjack(props){
                 startGame={startGame} 
                 bets={bets}
                 gameData={gameData}
-                images={images}
-                howManyPlayers={howManyPlayers}
+                images={images}                
                 width={width}
+                howManyPlayers={howManyPlayers}
+                handleBets={()=>handleBets()}
             />
             <BlackjackTable 
                 {...props} 

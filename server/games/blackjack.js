@@ -3,7 +3,14 @@ var blackjack_hidden_dealer = {}
 var blackjack_players = []
 var blackjack_dealer = {}
 
-function blackjack(data, user_join){
+function blackjack(data, user_join, how_lucky){
+    let monkey_blackjack = false
+    let is_lucky = Math.floor(Math.random() * 100)
+    if(is_lucky % how_lucky === 0){
+        monkey_blackjack = true
+    }
+    // monkey_blackjack = true //only for test
+
     let blackjack_game_end = false
     blackjack_players = data.players ? data.players : []
 
@@ -60,8 +67,8 @@ function blackjack(data, user_join){
         for (let i = 0; i < random_player_number; i++) {
             let t = parseInt(i) + 1
             let bot = {
-                uuid: 'bot_' + t,
-                user: 'bot_' + t,
+                uuid: 'player_' + t,
+                user: 'player ' + t,
                 type: "bot",
                 bets: 1,
                 action: 'start',
@@ -145,24 +152,93 @@ function blackjack(data, user_join){
         return blackjack_deck
     }		
     function dealHands(){
-        blackjack_dealer = {id: "dealer", hand: [], bets: 1, action: "start"}			
+        blackjack_dealer = {id: "dealer", user: "dealer", type: "dealer", hand: [], bets: 1, action: "start"}
+        let index = blackjack_players.findIndex((x) => x.uuid === data.uuid)
+        
+        if(monkey_blackjack && index !== -1){
+            blackjack_players[index].hand = [] 
+            for(let i = 0; i < 2; i++){	
+                blackjack_players[index].hand.push(forceBustHand(i))
+            }
+        }
+
         for(let i = 0; i < 2; i++){	
             let card = blackjack_deck.pop()
             blackjack_dealer.hand.push(card)
+
             for (let j = 0; j < blackjack_players.length; j++){
-                let card = blackjack_deck.pop()
-                if(i === 0){
-                    blackjack_players[j].hand = []
+                if(monkey_blackjack && parseInt(j) === parseInt(index)){
+                    continue
                 } else {
-                    if(data.uuid == blackjack_players[j].uuid){
-                        blackjack_players[j].bets = data.bet
-                    }	
-                }	
-                blackjack_players[j].hand.push(card)
+                    let card = blackjack_deck.pop()
+
+                    if(i === 0){
+                        blackjack_players[j].hand = []
+                    } else {
+                        if(data.uuid == blackjack_players[j].uuid){
+                            blackjack_players[j].bets = data.bet
+                        }	
+                    }
+
+                    blackjack_players[j].hand.push(card)       
+                }
+                       
             }
         }
         points(false)
-    }    
+    }
+    
+    function forceBustHand(index){
+        let arrayBustedCards = [
+            { Value: "A", Suit: "Spades", Weight: 11 },
+            { Value: "A", Suit: "Hearts", Weight: 11 },
+            { Value: "A", Suit: "Diamonds", Weight: 11 },
+            { Value: "A", Suit: "Clubs", Weight: 11 },
+
+            { Value: "K", Suit: "Spades", Weight: 10 },
+            { Value: "K", Suit: "Hearts", Weight: 10 },
+            { Value: "K", Suit: "Diamonds", Weight: 10 },
+            { Value: "K", Suit: "Clubs", Weight: 10 },
+
+            { Value: "Q", Suit: "Spades", Weight: 10 },
+            { Value: "Q", Suit: "Hearts", Weight: 10 },
+            { Value: "Q", Suit: "Diamonds", Weight: 10 },
+            { Value: "Q", Suit: "Clubs", Weight: 10 },
+
+            { Value: "J", Suit: "Spades", Weight: 10 },
+            { Value: "J", Suit: "Hearts", Weight: 10 },
+            { Value: "J", Suit: "Diamonds", Weight: 10 },
+            { Value: "J", Suit: "Clubs", Weight: 10 },
+
+            { Value: "10", Suit: "Spades", Weight: 10 },
+            { Value: "10", Suit: "Hearts", Weight: 10 },
+            { Value: "10", Suit: "Diamonds", Weight: 10 },
+            { Value: "10", Suit: "Clubs", Weight: 10 },
+        ]
+
+        let firstCard, secondCard
+        do {
+            firstCard = arrayBustedCards[Math.floor(Math.random() * arrayBustedCards.length)]
+            secondCard = arrayBustedCards[Math.floor(Math.random() * arrayBustedCards.length)]
+        } while (firstCard.Weight + secondCard.Weight <= 21)
+
+        // Remove the selected cards from the deck if they exist
+        removeCardFromDeck(firstCard)
+        removeCardFromDeck(secondCard)
+
+        return index === 0 ? firstCard : secondCard
+    }
+    function removeCardFromDeck(card) {
+        for (let i = 0; i < blackjack_deck.length; i++) {
+            if (
+                blackjack_deck[i].Value === card.Value &&
+                blackjack_deck[i].Suit === card.Suit
+            ) {
+                blackjack_deck.splice(i, 1)
+                break
+            }
+        }
+    }
 
     function hitMe(index){
         let card = blackjack_deck.pop()        
@@ -291,7 +367,7 @@ function blackjack(data, user_join){
     }
 
     function end_game(){
-        blackjack_game_end = false
+        blackjack_game_end = false        
 
         // check players busted
         checkPlayesBusted()
@@ -299,36 +375,39 @@ function blackjack(data, user_join){
         // Check if dealer surrendered
         let surrenderResult = checkDealerSurrender()
         if (surrenderResult) {
-            //console.log('dealer surrendered ', surrenderResult)
             return surrenderResult // If the dealer surrenders, the game ends here.
         }
 
         // check blackjack
         let blackjackResult = checkBlackjack()
-        if (blackjackResult) {
-            //console.log('blackjack ', blackjackResult)
+        if (blackjackResult) {            
             return blackjackResult // If there's a Blackjack, the game ends here.
         }
 
         // check dealer busted
         let bustedDealerResult = checkDealerBusted()
-        if (bustedDealerResult) {
-            //console.log('dealer busted ', bustedDealerResult)
+        if (bustedDealerResult) {            
             return bustedDealerResult // If dealer is busted, the game ends here.
         }
 
         // Check if all players have either stood or surrendered
         let all = checkAllPlayersStoodBustedOrSurrendered() 
-        if(all){
-            //console.log('all stood, surrendered or busted ', blackjack_players)
+        if(all){            
             blackjack_game_end = true
             return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end, result: getPlayerWinner()}
         }
-        
-        //console.log('continue game ', blackjack_players)
-        
-        blackjack_hidden_dealer.id = blackjack_dealer.id
-        blackjack_hidden_dealer.hand = [blackjack_dealer.hand[0]] // Show only the first card
+
+        // still end game if the human player is busted
+        let index = blackjack_players.findIndex((x) => x.uuid === data.uuid)
+        if(blackjack_players[index] && blackjack_players[index].points > 21){            
+            blackjack_game_end = true
+            return {action: data.action, players: blackjack_players, dealer: blackjack_dealer, game_end: blackjack_game_end, result: null}
+        }
+
+        blackjack_hidden_dealer = {
+            ...blackjack_dealer,
+            hand: [blackjack_dealer.hand[0]] // Show only the first card
+        }
         
         return {action: data.action, players: blackjack_players, dealer: blackjack_hidden_dealer, game_end: blackjack_game_end, result: null}
     }

@@ -38,6 +38,7 @@ function Card(config){
             } 
 
             let title = self.user
+            console.log(self)
             if(self.bet > 0){
                 title = title + " (Bet: " + self.bet + ")"
             } else if(self.last_choice){
@@ -164,7 +165,7 @@ function Card(config){
         ctx.beginPath();
         ctx.fillStyle = self.text_color
         ctx.textBaseline = "top"
-        ctx.fillText(text, x+5, y)
+        ctx.fillText(text, x + 5, y)
         ctx.closePath()
 	}
 
@@ -304,7 +305,7 @@ export const poker_game = function(props){
 				canvas.width = 300
 				canvas.height = 240
 			}
-		} else if (window.innerWidth <= 1200){
+		} else if (window.innerWidth <= 1250){
 			//big
 			canvas.width = 900
 			canvas.height = 450			
@@ -315,10 +316,9 @@ export const poker_game = function(props){
 			//extra big
 			canvas.width = 1200
 			canvas.height = 500			
-			card = {width: 70, height: 105}
-            card_base = {width: 80, height: 120, space: 25}
-            space = 10
-            
+			card = {width: 90, height: 130}
+            card_base = {width: 100, height: 140, space: 25}
+            space = 10           
 		}
 
         positions = [
@@ -415,11 +415,11 @@ export const poker_game = function(props){
             for(let i = 0; i < how_many_players; i++){
                 if(positions[i] && poker_data.players[i]){ 
                     let uuid = null 
-                    let user = 'player_'+i
+                    let user = 'player ' + i
                     let evaluateHand = null
                     if(poker_data.players && poker_data.players[i] && props.user.uuid === poker_data.players[i].uuid){
                         uuid = poker_data.players[i].uuid
-                        user = poker_data.players[i].user ? decryptData(poker_data.players[i].user) : "-"
+                        user = "you"
                         evaluateHand = poker_data.players[i].evaluateHand
                     } 
                     let hand = []

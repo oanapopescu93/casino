@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import BaccaratGame from './baccaratGame'
-import Header from '../../../partials/header'
 import { translate } from '../../../../translations/translate'
-import BaccaratTable from './baccaratTable'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
-import { getRoom } from '../../../../utils/games'
+import { get_cards, getRoom } from '../../../../utils/games'
+import Header from '../../../partials/header'
+import BaccaratGame from './baccaratGame'
+import BaccaratTable from './baccaratTable'
 import BaccaratButtons from './baccaratButtons'
+import { getWindowDimensions } from '../../../../utils/utils'
 
 function Baccarat(props){
     const {page, user, settings, socket} = props
 	const {lang, theme} = settings
     const {game} = page
-
-    let dispatch = useDispatch()
 
     const [start, setStart] = useState(false)
     const [playerBet, setPlayerBet] = useState(0)
@@ -22,6 +21,23 @@ function Baccarat(props){
     const [choice, setChoice] = useState(null)
     const [gameData, setGameData] = useState(null)
     const [gameResults, setGameResults] = useState(null)
+    const [images, setImages] = useState(null)
+    const [width, setWidth] = useState(getWindowDimensions().width)
+
+    let dispatch = useDispatch()
+    let items = get_cards()
+
+    function handleResize() {
+        setWidth(getWindowDimensions().width)
+    }
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.addEventListener("resize", handleResize)
+            handleResize()
+            return () => window.removeEventListener("resize", handleResize)
+        }
+    }, [])
 
     function updateBets(type, bet){
         switch (type) {
@@ -91,6 +107,26 @@ function Baccarat(props){
         props.results(payload)
 	}
 
+    useEffect(() => {
+        let promises = []
+        for(let i in items){				
+            promises.push(preaload_images(items[i]))
+        }
+        Promise.all(promises).then(function(result){
+            setImages(result)
+        })
+    }, [])
+
+    function preaload_images(item){
+		return new Promise(function(resolve){
+			let image = new Image()
+			image.src = item.src
+			image.addEventListener("load", function(){
+				resolve({suit: item.suit, value: item.value, src: image})
+			}, false)
+		})
+	}
+
     return <div id="baccarat" className='game_container'>
         <div className='game_box'>
             <Header template={"game"} details={page} lang={lang} theme={theme}/>            
@@ -98,6 +134,8 @@ function Baccarat(props){
                 {...props} 
                 gameData={gameData}
                 choice={choice}
+                images={images}
+                width={width}
                 endGame={(e)=>endGame(e)}
             /> : <BaccaratTable 
                 {...props} 

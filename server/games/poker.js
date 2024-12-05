@@ -130,7 +130,7 @@ function poker(data, user_join){
     function createPlayers(){
         let players = []
         for(let i=0; i<how_many_players;i++){
-            let player = {uuid: "player_"+i, user: "player_"+i, type: "bot", money: 100, fold: false, bet: 0}
+            let player = {uuid: "player_" + i, user: "player " + i, type: "bot", money: 100, fold: false, bet: 0}
             if(user_join[i]){
                 player.uuid = user_join[i].uuid
                 player.user = user_join[i].user
