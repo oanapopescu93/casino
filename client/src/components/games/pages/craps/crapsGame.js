@@ -59,7 +59,6 @@ function Dice(props){
 }
 
 function CrapsBoardText(props){
-	console.log('props.list ', props.list)
 	return <>
 		{props.list && props.list.length>0 ? <>
 			{props.list.map((item, i)=>{

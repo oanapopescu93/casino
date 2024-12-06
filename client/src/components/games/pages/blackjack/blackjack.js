@@ -101,7 +101,7 @@ function Blackjack(props){
     }
 
     useEffect(() => {
-		const handleBlackjackRead = function(data){
+		const handleBlackjackRead = (data)=>{
             if(data){
 				if(data.action === "start" || data.action === "hit" || data.action === "stand" || data.action === "double_down"  || data.action === "surrender"){
 					setGameData(data)
@@ -130,16 +130,16 @@ function Blackjack(props){
         for(let i in items){				
             promises.push(preaload_images(items[i]))
         }
-        Promise.all(promises).then(function(result){
+        Promise.all(promises).then((result)=>{
             setImages(result)
         })
     }, [])
 
     function preaload_images(item){
-		return new Promise(function(resolve){
+		return new Promise((resolve)=>{
 			let image = new Image()
 			image.src = item.src
-			image.addEventListener("load", function(){
+			image.addEventListener("load", ()=>{
 				resolve({suit: item.suit, value: item.value, src: image})
 			}, false)
 		})

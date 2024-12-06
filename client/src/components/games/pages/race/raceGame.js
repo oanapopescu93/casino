@@ -51,6 +51,7 @@ function Landscape(config){
 	self.color = config.color
 	self.color_stroke = config.color_stroke
 	self.stroke = config.stroke
+
 	self.populate = function (canvas){
 		let totalWidth = 0
 		let x = 0
@@ -74,7 +75,8 @@ function Landscape(config){
 			totalWidth = totalWidth + newWidth
 		}
 	}
-	self.draw = function(canvas, ctx){
+
+	self.draw = (canvas, ctx)=>{
 		ctx.save()
 		ctx.translate(self.x, 0)
 		ctx.beginPath()
@@ -96,7 +98,8 @@ function Landscape(config){
 		ctx.stroke()
 		ctx.restore()
 	}
-	self.update = function(){
+
+	self.update = ()=>{
 		let x = 0
 		let newWidth = Math.floor(Math.random() * self.width.max) + self.width.min
 		let newHeight = Math.floor(Math.random() * self.height.max) + self.height.min
@@ -151,17 +154,17 @@ function Rabbit(config){
 		self.border_color = "black"
 	}
 	
-	self.draw = function(ctx){
+	self.draw = (ctx)=>{
 		let coord2 = self.y+self.h/2 - 5
 		self.draw_starting(ctx, 0, coord2, 10, self.h, 10, 0, 2 * Math.PI, false, self.color, self.border, self.border_color)
 		ctx.drawImage(self.img_sit, 0, 0, self.frameWidth, self.frameHeight, self.x, self.y, self.w, self.h)		
 	}
 
-	self.draw_starting = function(ctx, x, y, width, height, r, sAngle, eAngle, counterclockwise, fillStyle, lineWidth, strokeStyle){
+	self.draw_starting = (ctx, x, y, width, height, r, sAngle, eAngle, counterclockwise, fillStyle, lineWidth, strokeStyle)=>{
 		draw_rect(ctx, 0, self.y_starting, width, height, fillStyle, lineWidth, strokeStyle)
 	}
 
-	self.run = function(canvas, ctx, nr, finish_line_x){
+	self.run = (canvas, ctx, nr, finish_line_x)=>{
 		let coord2 = self.y+self.h/2 - 5
 		self.draw_starting(ctx, 0, coord2, 10, self.h, 10, 0, 2 * Math.PI, false, self.color, self.border, self.border_color)
 
@@ -185,7 +188,7 @@ function Rabbit(config){
 		
 	}
 
-	self.add_text = function(ctx, text, x, y, font, color, text_align, stroke, line){
+	self.add_text = (ctx, text, x, y, font, color, text_align, stroke, line)=>{
 		ctx.font = font
 		ctx.textAlign = text_align
 		if(stroke && line){
@@ -197,7 +200,7 @@ function Rabbit(config){
 		ctx.fillText(text, x, y)
 	}
 
-	self.stop = function(ctx, nr){
+	self.stop = (ctx, nr)=>{
 		let coord2 = self.y+self.h/2 - 5
 		self.draw_starting(ctx, 0, coord2, 10, self.h, 10, 0, 2 * Math.PI, false, self.color, self.border, self.border_color)
 
@@ -215,12 +218,12 @@ function Rabbit(config){
 		}		
 	}
 
-	self.change_speed = function(){
+	self.change_speed = ()=>{
 		let random_speed = Math.floor(Math.random() * self.max_speed) + self.min_speed
 		self.speed = random_speed
 	}
 
-	self.move_view = function(all){
+	self.move_view = (all)=>{
 		let sum_dist = 0
 		for(let i in all){
 			sum_dist = sum_dist + all[i].x
@@ -244,11 +247,11 @@ function Obstacle(config){
 	self.frameWidth = 816
 	self.frameHeight = 635
 
-	self.draw = function(ctx){
+	self.draw = (ctx)=>{
 		let coord = self.y+self.h/2
 		ctx.drawImage(self.img, 0, 0, self.frameWidth, self.frameHeight, self.x, coord, self.w, self.h)
 	}
-	self.add_text = function(ctx, text, x, y, font, color, text_align, stroke, line){
+	self.add_text = (ctx, text, x, y, font, color, text_align, stroke, line)=>{
 		ctx.font = font
 		ctx.textAlign = text_align
 		if(stroke && line){
@@ -278,11 +281,11 @@ function Lane(config){
 	self.obstacle_img = config.obstacle_img	
 	self.obstacle_size = config.obstacle_size	
 	
-	self.create_rabbit = function(){
+	self.create_rabbit = ()=>{
 		self.rabbit = new Rabbit(self.rabbit_config)
 	}
 
-	self.create_obstacles = function(canvas){		
+	self.create_obstacles = (canvas)=>{		
 		let chance = Math.random() < 0.01 //probability of 1%		
 		if(chance){
 			let x = canvas.width + self.obstacle_size[0]
@@ -321,15 +324,15 @@ function Lane(config){
 		}
 	}
 
-	self.lane_update = function(obstacle){
+	self.lane_update = (obstacle)=>{
 		obstacle.x = obstacle.x-3
 	}
 
-	self.draw_obstacle = function(ctx, obstacle){
+	self.draw_obstacle = (ctx, obstacle)=>{
 		obstacle.draw(ctx)
 	}
 
-	self.move_obstacles = function(ctx, nr){
+	self.move_obstacles = (ctx, nr)=>{
 		for(let i in self.obstacles){
 			self.lane_update(self.obstacles[i], nr)
 			self.draw_obstacle(ctx, self.obstacles[i])
@@ -340,7 +343,7 @@ function Lane(config){
 		}
 	}
 
-	self.collision = function(){
+	self.collision = ()=>{
 		let collision = false	
 		for(let i in self.obstacles){
 			if(self.collision_entities(self.rabbit, self.obstacles[i])){
@@ -350,7 +353,7 @@ function Lane(config){
 		}
 		return collision
 	}
-	self.collision_entities = function(rect01, rect02){	
+	self.collision_entities = (rect01, rect02)=>{	
 		let cond01 = rect01.x <= rect02.x + rect02.w
 		let cond02 = rect01.y <= rect02.y + rect02.h
 		let cond03 = rect02.x <= rect01.x + rect01.w
@@ -358,7 +361,7 @@ function Lane(config){
 		return cond01 && cond02 && cond03 && cond04
 	}
 
-	self.action = function(canvas, ctx, rabbit_list, nr, finish_line_x){	
+	self.action = (canvas, ctx, rabbitList, nr, finish_line_x)=>{	
 		//check collision
 		self.rabbit.y = self.rabbit.y_original		
 		if(self.collision()){					
@@ -372,13 +375,13 @@ function Lane(config){
 
 		//make rabbit run
 		self.rabbit.change_speed()
-		self.rabbit.move_view(rabbit_list, nr)
+		self.rabbit.move_view(rabbitList, nr)
 		self.rabbit.run(canvas, ctx, nr, finish_line_x)
 
-		self.get_min_speed(rabbit_list, nr)
+		self.get_min_speed(rabbitList, nr)
 	}
 
-	self.get_min_speed = function(all){
+	self.get_min_speed = (all)=>{
 		let min_speed = all[0].speed
 		for(let i in all){
 			if(min_speed > all[i].speed){
@@ -400,7 +403,7 @@ function FinishLine(config){
 	self.y = config.y
 	self.cube = config.cube	
 
-	self.draw = function(canvas, ctx){
+	self.draw = (canvas, ctx)=>{
 		draw_rect(ctx, self.x, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle) //line01
 		
 		//cubes
@@ -418,33 +421,33 @@ function FinishLine(config){
 		
 		draw_rect(ctx, self.x + 4*self.cube-space, self.y, self.cube/2, canvas.height, self.fillStyle, self.lineWidth, self.strokeStyle) //line03
 	}
-	self.move = function(x){
+	self.move = (x)=>{
 		self.x = x
 	}
 }
 
 function race_game(props){
 	let self = this
-	let rabbit_array = []
+	let rabbitArray = []
 	if(props.home.race_rabbits && props.home.race_rabbits.length>0){
-		rabbit_array = props.home.race_rabbits.filter(function(x){
+		rabbitArray = props.home.race_rabbits.filter((x)=>{
 			return x.participating
 		})
 	}
-	for(let i in rabbit_array){
+	for(let i in rabbitArray){
 		for(let j in props.bets){			
-			if(rabbit_array[i].id === props.bets[j].id){
-				rabbit_array[i] = {... rabbit_array[i], bet: props.bets[j].bet}
+			if(rabbitArray[i].id === props.bets[j].id){
+				rabbitArray[i] = {... rabbitArray[i], bet: props.bets[j].bet}
 				if(props.bets[j].place){
-					rabbit_array[i] = {... rabbit_array[i], place: parseInt(props.bets[j].place)}
+					rabbitArray[i] = {... rabbitArray[i], place: parseInt(props.bets[j].place)}
 				}
 			}
 		}
 	}
 	
-	let lane_list = []
-	let rabbit_list = []
-	let money_per_win = 10
+	let laneList = []
+	let rabbitList = []
+	let moneyPerWin = 10
 
 	let theme = props.settings.theme
     
@@ -454,48 +457,48 @@ function race_game(props){
 	let color = "gold"
 	let color_transparent_1 = "rgba(255, 215, 0, 0.1)"
 	let color_transparent_5 = "rgba(255, 215, 0, 0.5)"
-	let rabbit_img_sit = {src: rabbit_sit_yellow}
-	let rabbit_img_move = {src: rabbit_move_yellow}
-	let rabbit_img_stop = {src: rabbit_sit_yellow}
-	let obstacle_img = {src: obstacle_yellow}
+	let rabbitImgSit = {src: rabbit_sit_yellow}
+	let rabbitImgMove = {src: rabbit_move_yellow}
+	let rabbitImgStop = {src: rabbit_sit_yellow}
+	let obstacleImg = {src: obstacle_yellow}
 	
 	switch(theme){
 		case "purple":
 			color = "pink"
 			color_transparent_1 = "rgba(255, 105, 180, 0.1)"
 			color_transparent_5 = "rgba(255, 105, 180, 0.5)"
-			rabbit_img_sit = {src: rabbit_sit_pink}
-			rabbit_img_move = {src: rabbit_move_pink}
-			rabbit_img_stop = {src: rabbit_sit_pink}
-			obstacle_img = {src: obstacle_pink}
+			rabbitImgSit = {src: rabbit_sit_pink}
+			rabbitImgMove = {src: rabbit_move_pink}
+			rabbitImgStop = {src: rabbit_sit_pink}
+			obstacleImg = {src: obstacle_pink}
 			break
 		case "black":
 			color = "green"
 			color_transparent_1 = "rgba(50, 205, 50, 0.1)"
 			color_transparent_5 = "rgba(50, 205, 50, 0.5)"
-			rabbit_img_sit = {src: rabbit_sit_green}
-			rabbit_img_move = {src: rabbit_move_green}
-			rabbit_img_stop = {src: rabbit_sit_green}
-			obstacle_img = {src: obstacle_green}
+			rabbitImgSit = {src: rabbit_sit_green}
+			rabbitImgMove = {src: rabbit_move_green}
+			rabbitImgStop = {src: rabbit_sit_green}
+			obstacleImg = {src: obstacle_green}
 			break
 		case "blue":
 			color = "#ff8000"
 			color_transparent_1 = "rgba(255, 128, 0, 0.1)"
 			color_transparent_5 = "rgba(255, 128, 0, 0.5)"
-			rabbit_img_sit = {src: rabbit_sit_orange}
-			rabbit_img_move = {src: rabbit_move_orange}
-			rabbit_img_stop = {src: rabbit_sit_orange}
-			obstacle_img = {src: obstacle_orange}
+			rabbitImgSit = {src: rabbit_sit_orange}
+			rabbitImgMove = {src: rabbit_move_orange}
+			rabbitImgStop = {src: rabbit_sit_orange}
+			obstacleImg = {src: obstacle_orange}
 			break
 		case "green":
 		default:
 			color = "gold"
 			color_transparent_1 = "rgba(255, 215, 0, 0.1)"
 			color_transparent_5 = "rgba(255, 215, 0, 0.5)"
-			rabbit_img_sit = {src: rabbit_sit_yellow}
-			rabbit_img_move = {src: rabbit_move_yellow}
-			rabbit_img_stop = {src: rabbit_sit_yellow}
-			obstacle_img = {src: obstacle_yellow}
+			rabbitImgSit = {src: rabbit_sit_yellow}
+			rabbitImgMove = {src: rabbit_move_yellow}
+			rabbitImgStop = {src: rabbit_sit_yellow}
+			obstacleImg = {src: obstacle_yellow}
 			break
 	}
 
@@ -513,15 +516,15 @@ function race_game(props){
 	let finish_line
 	let finish_line_x = 0
 	let race_interval = 800
-	let game_status = false
+	let gameStatus = false
 		
-	this.ready = function(reason){
+	this.ready = (reason)=>{
 		startGameRace = false //the game immediately begins		
 		self.createCanvas()	
 		self.start(reason)
 	}
 
-	this.createCanvas = function(){	
+	this.createCanvas = ()=>{	
 		canvas = document.getElementById("race_canvas")	
 		ctx = canvas.getContext("2d")
 		
@@ -573,63 +576,63 @@ function race_game(props){
 		finish_line_x = canvas.width
 	}
 
-	this.start = function(reason){
+	this.start = (reason)=>{
 		let promises = []
 		if(reason !== "resize"){
-			promises.push(self.preaload_images(rabbit_img_sit))
-			promises.push(self.preaload_images(rabbit_img_move))
-			promises.push(self.preaload_images(rabbit_img_stop))
-			promises.push(self.preaload_images(obstacle_img))
-			Promise.all(promises).then(function(result){
-				lane_list = self.create_lane(result)
-				rabbit_list = self.get_rabbits(lane_list)
+			promises.push(self.preaload_images(rabbitImgSit))
+			promises.push(self.preaload_images(rabbitImgMove))
+			promises.push(self.preaload_images(rabbitImgStop))
+			promises.push(self.preaload_images(obstacleImg))
+			Promise.all(promises).then((result)=>{
+				laneList = self.create_lane(result)
+				rabbitList = self.get_rabbits(laneList)
 				self.background()
 				self.draw_rabbits('sit')
-				setTimeout(function(){
+				setTimeout(()=>{
 				 	self.counter(3)
 				}, 500)
 			})			
 		} else {
 			self.background()
 			self.draw_rabbits('sit')
-			setTimeout(function(){
+			setTimeout(()=>{
 			 	self.counter(3)
 			}, 500)
 		}
 	}
 
-	this.preaload_images = function(item){
-		return new Promise(function(resolve){
+	this.preaload_images = (item)=>{
+		return new Promise((resolve)=>{
 			let image = new Image()
 			image.src = item.src
-			image.addEventListener("load", function(){
+			image.addEventListener("load", ()=>{
 				resolve(image)
 			}, false)
 		})
 	}
-	this.create_lane = function(img){
+	this.create_lane = (img)=>{
 		let lanes = []
-		for(let i in rabbit_array){
+		for(let i in rabbitArray){
 			let rabbit_config = {
-				id: rabbit_array[i].id, 
-				name: rabbit_array[i].name, 
-				color: rabbit_array[i].color, 
+				id: rabbitArray[i].id, 
+				name: rabbitArray[i].name, 
+				color: rabbitArray[i].color, 
 				img_sit: img[0], 
 				img_move: img[1],
 				img_stop: img[2], 
 				speed: 0,
-				delay: rabbit_array[i].delay,
-				max_speed: rabbit_array[i].max_speed,
-				min_speed: rabbit_array[i].min_speed,
+				delay: rabbitArray[i].delay,
+				max_speed: rabbitArray[i].max_speed,
+				min_speed: rabbitArray[i].min_speed,
 				x: rabbit_size[0],
-				y: rabbit_size[1]+i*(rabbit_size[3]+rabbit_size[4]),
+				y: rabbit_size[1]+i * (rabbit_size[3]+rabbit_size[4]),
 				w: rabbit_size[2],
 				h: rabbit_size[3],
 			}
 			let lane = new Lane({
 				id: i,
 				x: 0,
-				y: rabbit_size[1]+i*(rabbit_size[3]+rabbit_size[4]),
+				y: rabbit_size[1]+i*(rabbit_size[3] + rabbit_size[4]),
 				w: canvas.width,
 				h: rabbit_size[3],
 				rabbit_config: rabbit_config,
@@ -641,20 +644,20 @@ function race_game(props){
 		}
 		return lanes
 	}
-	self.get_rabbits = function(lane_list){
+	self.get_rabbits = (laneList)=>{
 		let rabbits = []
-		for(let i in lane_list){
-			rabbits.push(lane_list[i].rabbit)
+		for(let i in laneList){
+			rabbits.push(laneList[i].rabbit)
 		}
 		return rabbits
 	}
 
-	this.background = function(){
+	this.background = ()=>{
 		self.create_background()	
 		self.draw_background()	
 		self.create_finish_line(finish_line_x)
 	}
-	this.create_background = function(){
+	this.create_background = ()=>{
 		let i = land_color.length
 		landscape = []
 		while(i--){
@@ -679,7 +682,7 @@ function race_game(props){
 			landscape.push(my_land)
 		}	
 	}
-	this.draw_background = function(){
+	this.draw_background = ()=>{
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
 		self.draw_sun(canvas, ctx)		
 		let i = landscape.length
@@ -688,7 +691,7 @@ function race_game(props){
 		}
 		self.draw_road(canvas, ctx, -100, draw_road_height, 2*canvas.width, draw_road_height, 1, color_transparent_1, color_transparent_5)		
 	}
-	this.create_finish_line = function(finish_line_x){
+	this.create_finish_line = (finish_line_x)=>{
 		finish_line = new FinishLine({
 			fillStyle: color_transparent_1,
 			lineWidth: 1,
@@ -699,10 +702,10 @@ function race_game(props){
 		})
 		finish_line.draw(canvas, ctx)
 	}
-	this.draw_sun = function(canvas, ctx){
+	this.draw_sun = (canvas, ctx)=>{
 		draw_dot(ctx, canvas.width-lanscape_config.sun[0], lanscape_config.sun[1], lanscape_config.sun[2], 0, 2 * Math.PI, false, color_transparent_1, 1, color_transparent_5)
 	}
-	this.draw_road = function(canvas, ctx, x, y, w, h, line, bg, color){
+	this.draw_road = (canvas, ctx, x, y, w, h, line, bg, color)=>{
 		ctx.clearRect(0, h, canvas.width, canvas.height)
 		ctx.beginPath()
 		ctx.fillStyle = bg
@@ -712,20 +715,20 @@ function race_game(props){
 		ctx.strokeRect(x, y, w, canvas.height)
 	}
 
-	this.draw_rabbits = function(action, nr, finish_line_x){
+	this.draw_rabbits = (action, nr, finish_line_x)=>{
 		if(action==="run"){
-			for(let i in lane_list){
-				lane_list[i].action(canvas, ctx, rabbit_list, nr, finish_line_x)
+			for(let i in laneList){
+				laneList[i].action(canvas, ctx, rabbitList, nr, finish_line_x)
 			}
-			rabbit_list = self.order_rabbits(rabbit_list)
-			self.post_order_rabbits(rabbit_list)
+			rabbitList = self.order_rabbits(rabbitList)
+			self.post_order_rabbits(rabbitList)
 		} else {
-			for(let i in lane_list){
-				lane_list[i].rabbit.draw(ctx)
+			for(let i in laneList){
+				laneList[i].rabbit.draw(ctx)
 			}
 		}
 	}
-	this.order_rabbits = function(list){
+	this.order_rabbits = (list)=>{
 		let done = false
 		while(!done){ //false
 			done = true
@@ -740,7 +743,7 @@ function race_game(props){
 		}
 		return list
 	}
-	this.post_order_rabbits = function(list){
+	this.post_order_rabbits = (list)=>{
 		if($('#race_order')){
 			$('#race_order').empty()
 			for(let i in list){
@@ -750,7 +753,7 @@ function race_game(props){
 		}
 	}
 
-	this.counter = function(totalTime){
+	this.counter = (totalTime)=>{
 		let self_counter = this
 		self_counter.totaTime = totalTime
 		self_counter.timeRemaining = self_counter.totaTime
@@ -759,7 +762,7 @@ function race_game(props){
 		timerGame()
 
 		function timerGame(){	
-			my_counter = setInterval(function(){
+			my_counter = setInterval(()=>{
 				self_counter.timeRemaining = self_counter.timeRemaining - 1
 				if(self_counter.timeRemaining < 0){
 					self_counter.timeRemaining = 0
@@ -769,12 +772,12 @@ function race_game(props){
 				self.add_text(self_counter.timeRemaining, canvas.width/2,  canvas.height/2-10, font_counter, color_transparent_5, "center", color, "1")
 			  	if(self_counter.timeRemaining <= 0){
 					clearInterval(my_counter)
-					self.start_race()
+					self.startRace()
 			  	}
 			}, 1000)
 		}
 	}
-	this.add_text = function(text, x, y, font, color, text_align, stroke, line){
+	this.add_text = (text, x, y, font, color, text_align, stroke, line)=>{
 		ctx.font = font
 		ctx.textAlign = text_align
 		if(stroke && line){
@@ -785,11 +788,11 @@ function race_game(props){
 		ctx.fillStyle = color
 		ctx.fillText(text, x, y)	
 	}
-	this.check_rabbits = function(line){
+	this.check_rabbits = (line)=>{
 		//check if all rabbits passed the finish line
 		let passed = true
-		for(let i in lane_list){		
-			if(lane_list[i].rabbit.x < line){
+		for(let i in laneList){		
+			if(laneList[i].rabbit.x < line){
 				passed = false
 				break
 			}
@@ -797,164 +800,158 @@ function race_game(props){
 		return passed
 	}
 	
-	this.start_race = function(){
+	this.startRace = ()=>{
 		let nr = 0
 		let time = race_interval
-		let move_landscape = false
-		game_status = true
+		let moveLandscape = false
+		gameStatus = true
 
-		window.requestAnimFrame = (function(){
-			return  window.requestAnimationFrame       ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame    ||
-			function( callback ){
-			  window.setTimeout(callback, 1000 / 60)
-			}
-	  	})()
+		window.requestAnimFrame = (()=>{
+			return  window.requestAnimationFrame	||
+			window.webkitRequestAnimationFrame		||
+			window.mozRequestAnimationFrame			||
+			((callback) => window.setTimeout(callback, 1000 / 60))
+	    })()
 	  
-	  	function race(){
+		function runRace() {
 			let stop = false
-
-			if(!startGameRace){
-				let avg_dist = lane_list[0].rabbit.avg_dist
-
-				if(nr > time){
-					rabbit_list = self.order_rabbits(rabbit_list)			
-					let end_rabbit = true
-					let end_finish_line = true
-					let sit_rabbit = true
-					
-					if(finish_line_x > canvas.width/2){
-						finish_line_x = finish_line_x - 5
-						end_finish_line = false
-					} 
-					
-					end_rabbit = self.check_rabbits(finish_line_x)
-
-					if(end_rabbit && end_finish_line){
-						for(let i in lane_list){		
-							if(lane_list[i].rabbit.frame !== 4){
-								sit_rabbit = false
+		
+			if (!startGameRace) {
+				let avgDist = laneList[0].rabbit.avg_dist
+		
+				if (nr > time) {
+					rabbitList = self.order_rabbits(rabbitList)
+					let endRabbit = true
+					let endFinishLine = true
+					let sitRabbit = true
+		
+					// Move finish line
+					if (finish_line_x > canvas.width / 2) {
+						finish_line_x -= 5
+						endFinishLine = false
+					}
+		
+					// Check if rabbit has passed finish line
+					endRabbit = self.check_rabbits(finish_line_x)
+		
+					if (endRabbit && endFinishLine) {
+						// Check if all rabbits have finished (frame 4)
+						for (let i in laneList) {
+							if (laneList[i].rabbit.frame !== 4) {
+								sitRabbit = false
 								break
 							}
 						}
-
-						if(sit_rabbit){
+		
+						if (sitRabbit) {
 							stop = true
 							self.draw_background()
 							finish_line.draw(canvas, ctx)
-
-							for(let i in lane_list){		
-								lane_list[i].rabbit.stop(ctx, nr)
-							}
+		
+							// Stop all rabbits
+							laneList.forEach(lane => lane.rabbit.stop(ctx, nr))
 							self.win_lose()
 						} else {
-							nr++
-							stop = false
-							self.draw_background()
-							finish_line.draw(canvas, ctx)
-
-							for(let i in lane_list){		
-								lane_list[i].rabbit.stop(ctx, nr)
-							}
+							nr++;
+							stop = false;
+							self.draw_background();
+							finish_line.draw(canvas, ctx);
+		
+							// Stop rabbits without finishing
+							laneList.forEach(lane => lane.rabbit.stop(ctx, nr))
 						}
-						
 					} else {
 						nr++
 						stop = false
 						self.draw_background()
 						finish_line.move(finish_line_x)
 						finish_line.draw(canvas, ctx)
-
-						if(end_rabbit){
-							for(let i in lane_list){		
-								lane_list[i].rabbit.stop(ctx, nr, false)
-							}
+		
+						if (endRabbit) {
+							laneList.forEach(lane => lane.rabbit.stop(ctx, nr, false));
 						} else {
-							self.draw_rabbits('run', nr, finish_line_x) 
-						}
-					}			
-				} else{
-					nr++	
-					stop = false
-					if(!move_landscape){
-						if(avg_dist > canvas.width/2){
-							move_landscape = true
-						}
-					} else {
-						let i = landscape.length			
-						while(i--){
-							landscape[i].update()
-							let my_lands = landscape[i].lands
-							for(let j in my_lands){
-								my_lands[j].x = my_lands[j].x + landscape[i].x
-							}
+							self.draw_rabbits('run', nr, finish_line_x)
 						}
 					}
-					self.draw_background()	
+				} else {
+					nr++
+					stop = false
+					if (!moveLandscape) {
+						if (avgDist > canvas.width / 2) {
+							moveLandscape = true
+						}
+					} else {
+						// Update landscape
+						landscape.forEach(land => {
+							land.update();
+							land.lands.forEach(myLand => {
+								myLand.x += land.x
+							})
+						})
+					}
+		
+					self.draw_background()
 					self.draw_rabbits('run', nr)
 				}
 			} else {
 				stop = true
-			}			
-			
-			if(!stop){
-				window.requestAnimationFrame(race)
-			} else {
-				window.cancelAnimationFrame(race)
 			}
-	  	}
 
-		race()
+			if (stop) {
+				window.cancelAnimationFrame(runRace)
+				return
+			}
+
+			window.requestAnimationFrame(runRace)
+		}
+
+		runRace()
 	}
 
-	this.win_lose = function(){
-		rabbit_list = self.order_rabbits(rabbit_list)
-		let money_original = props.user.money ? decryptData(props.user.money) : 0 
-		let money_history = money_original
+	this.win_lose = ()=>{
+		rabbitList = self.order_rabbits(rabbitList)
+		let moneyOriginal = props.user.money ? decryptData(props.user.money) : 0 
+		let moneyHistory = moneyOriginal
 		
-		for(let i in rabbit_array){
-			if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
-				let bet = rabbit_array[i].bet
-				let win = money_per_win * bet
-				let place = rabbit_array[i].place
-				if(rabbit_list[place-1].id === rabbit_array[i].id){
-				 	money_history = money_history + win
+		rabbitArray.forEach(rabbit => {
+			if (rabbit.bet && rabbit.bet !== "0" && rabbit.bet !== 0) {
+				const bet = rabbit.bet
+				const win = moneyPerWin * bet
+				const place = rabbit.place	
+				
+				if (rabbitList[place - 1].id === rabbit.id) {
+					moneyHistory += win
 				} else {
-				 	money_history = money_history - bet						
+					moneyHistory -= bet
 				}
 			}
-		}
+		})
 
-		game_status = false
-
-		let status = "lose"
-		if(money_history > money_original){
-			status = "win"
-		}
+		gameStatus = false
+		const status = moneyHistory > moneyOriginal ? "win" : "lose"
 		
 		let race_payload = {
 			uuid: props.user.uuid,
 			game: "race",
-			money: money_history,
+			money: moneyHistory,
 			status: status,
-			bet: Math.abs(money_original - money_history)
+			bet: Math.abs(moneyOriginal - moneyHistory)
 		}
 
 		props.results(race_payload)
 		props.resetBets()
 	}
 
-    this.leave = function(){
+    this.leave = ()=>{
 		startGameRace = true
-		if(game_status){
+		if(gameStatus){
 			//the user decided to leave in the middle of the race --> he will lose the bet
 			let money = props.user.money ? decryptData(props.user.money) : 0 
 			let bet = 0
 
-			for(let i in rabbit_array){
-				if(typeof rabbit_array[i].bet !== "undefined" && rabbit_array[i].bet !== "0" && rabbit_array[i].bet !== 0){
-					bet = bet + rabbit_array[i].bet
+			for(let i in rabbitArray){
+				if(typeof rabbitArray[i].bet !== "undefined" && rabbitArray[i].bet !== "0" && rabbitArray[i].bet !== 0){
+					bet = bet + rabbitArray[i].bet
 				}
 			}		
 
@@ -990,7 +987,7 @@ function RaceGame(props){
 
     useEffect(() => {
         ready()
-        $(window).resize(function(){
+        $(window).resize(()=>{
 			ready()
 		})
 		return () => {

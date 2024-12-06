@@ -62,7 +62,7 @@ router.post("/api/withdraw", jsonParser, (req, res, next) => {
   if(uuid){
     database_config.sql = "SELECT * FROM casino_user;"
     database_config.name = "db0001"
-    database(database_config).then(function(result){        
+    database(database_config).then((result)=>{        
       if(result){
         users_array = result        
         if(users_array && users_array.length>0){
@@ -73,7 +73,7 @@ router.post("/api/withdraw", jsonParser, (req, res, next) => {
             let payload_withdraw_user =  [id, timestamp, amount, method, currency, name, phone, email, country, city, iban, status]            
             database_config.sql = "INSERT INTO withdraw_user (user_id, withdraw_date, amount, method, currency, name, phone, email, country, city, iban, status) VALUES (?, ?, ?, ?, ?, ?)"
 
-            // database(database_config, payload_withdraw_user).then(function(){ //TODO:
+            // database(database_config, payload_withdraw_user).then(()=>{ //TODO:
             //   let payload_email = {...req.body, id}
             //   sendEmail('withdraw', payload_email).then((data)=>{
             //     try{
@@ -114,7 +114,7 @@ router.post("/api/verify-email", jsonParser, (req, res, next) => {
     try{
       database_config.sql = 'SELECT * FROM casino_user WHERE verification_token = "' + token + '"'
       database_config.name = "db0001"
-      database(database_config).then(function(result){
+      database(database_config).then((result)=>{
         if(result && result.length > 0){
           if(result[0].is_verified){
             //email_already_verified
@@ -126,7 +126,7 @@ router.post("/api/verify-email", jsonParser, (req, res, next) => {
             // update is_verified to 1
             database_config.sql = 'UPDATE casino_user SET is_verified=1 WHERE verification_token = "' + token + '"'
             database_config.name = "db0002"
-            database(database_config).then(function(){})
+            database(database_config).then(()=>{})
           }       
         } else {
           console.log('[error]','verify-email-invalid_expired_token--> ', token)

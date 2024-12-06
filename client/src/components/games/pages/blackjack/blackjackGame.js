@@ -27,7 +27,7 @@ function Card(config){
 	self.font_bold_12 = config.font_bold_12	
     self.space_between_cards = config.space_between_cards
 	
-	self.draw_box = function(ctx){
+	self.draw_box = (ctx)=>{
 		//draw rect where the cards will be
 		draw_rect(ctx, self.x, self.y, self.width, self.height, self.fillStyle, self.lineWidth, self.strokeStyle)
 
@@ -38,7 +38,7 @@ function Card(config){
 		}
 	}	
 
-	self.show_cards = function(ctx, data){
+	self.show_cards = (ctx, data)=>{
 		if(self.id !== -1){
 			//player
 			let player = data.players[self.id]
@@ -60,7 +60,7 @@ function Card(config){
 		}		
 	}
 
-	self.show_cards_value = function(ctx, player){
+	self.show_cards_value = (ctx, player)=>{
         const {type, hand} = player
 
 		let value_hand = 0
@@ -101,7 +101,7 @@ function Card(config){
 		ctx.closePath()
 	}
 
-	self.draw_card_number = function(ctx, text, x, y, w){	
+	self.draw_card_number = (ctx, text, x, y, w)=>{	
 		ctx.beginPath()
 		ctx.fillStyle = self.text_bg
 		ctx.textAlign = "center"
@@ -111,7 +111,7 @@ function Card(config){
 		ctx.closePath()
 	}
 
-	this.draw_card = function(ctx, x, y, w, h, size, hand){
+	this.draw_card = (ctx, x, y, w, h, size, hand)=>{
 		let img = self.images
 		let space = 5
 		let img_index = 0
@@ -228,18 +228,18 @@ function blackjack_game(props){
 			break
 	}
 
-    this.ready = function(){
+    this.ready = ()=>{
 		self.draw()
 	}
 
-    this.draw = function(){
+    this.draw = ()=>{
 		self.createCanvas()
         self.draw_background()
         self.create_cards()
         self.draw_cards()
 	}
 
-	this.createCanvas = function() {
+	this.createCanvas = ()=>{
 		canvas = document.getElementById("blackjack_canvas")
 		ctx = canvas.getContext("2d")
 	
@@ -382,7 +382,7 @@ function blackjack_game(props){
 		}
 	}
 
-    this.draw_background = function(){
+    this.draw_background = ()=>{
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
         if (window.innerWidth > 600) {
             ctx.fillStyle = tableColor01
@@ -402,7 +402,7 @@ function blackjack_game(props){
         }
 	}
 
-    this.create_cards = function(){
+    this.create_cards = ()=>{
         card_list=[]
 
 		let space = (canvas.width - (card_base.width*7 + card_base.x*6))/2
@@ -469,7 +469,7 @@ function blackjack_game(props){
 		}
 	}
 
-	this.draw_cards = function(){        
+	this.draw_cards = ()=>{        
         for(let i in card_list){
             card_list[i].draw_box(ctx)
             if(blackjack_data){                
@@ -478,13 +478,13 @@ function blackjack_game(props){
         }
 	}
 
-    this.action = function(){
+    this.action = ()=>{
 		blackjack_data = props.gameData
         self.draw()
         self.check_win_lose()
     }
 
-    this.check_win_lose = function(){        
+    this.check_win_lose = ()=>{        
         if(blackjack_data && blackjack_data.game_end){
             let index = blackjack_data.players.findIndex((x) => x.uuid === props.user.uuid)
 			let player = blackjack_data.players[index]

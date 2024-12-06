@@ -90,7 +90,7 @@ function Baccarat(props){
 	}
 
     useEffect(() => {
-		const handleBaccaratRead = function(data){
+		const handleBaccaratRead = (data)=>{
             if(data){
                 setStart(true)
                 setGameData(data)
@@ -112,16 +112,16 @@ function Baccarat(props){
         for(let i in items){				
             promises.push(preaload_images(items[i]))
         }
-        Promise.all(promises).then(function(result){
+        Promise.all(promises).then((result)=>{
             setImages(result)
         })
     }, [])
 
     function preaload_images(item){
-		return new Promise(function(resolve){
+		return new Promise((resolve)=>{
 			let image = new Image()
 			image.src = item.src
-			image.addEventListener("load", function(){
+			image.addEventListener("load", ()=>{
 				resolve({suit: item.suit, value: item.value, src: image})
 			}, false)
 		})

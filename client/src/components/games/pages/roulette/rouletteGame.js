@@ -17,7 +17,7 @@ function roulette_game(props){
     let ctx    
 	const dispatch = props.dispatch	
 
-    let start_game = false
+    let startGame = false
 
     let roulette_radius_x = 240
 	let roulette_radius_y = 240
@@ -29,13 +29,11 @@ function roulette_game(props){
 	let outsideRadius = 200
 	let textRadius = outsideRadius-20
 	let insideRadius = outsideRadius-30
-    let roulette_pos = []
-    let roulette_type = props.page.game.table_type
+    let roulettePos = []
+    let rouletteType = props.page.game.table_type
 
 	let circle = {radius: textRadius*0.6, angle:0}
 	let ball = {x:70, y:roulette_radius_x, speed:0.05, width:10}
-    let roulette_index = 0
-    let win_nr = null
 
 	let font_bold_10 = 'bold 10px sans-serif'
 	let font_bold_12 = 'bold 12px sans-serif'
@@ -47,13 +45,13 @@ function roulette_game(props){
 	let radiantLine03 = []
 	let text_offset = 0   
 
-    this.ready = function(){
+    this.ready = ()=>{
         self.createCanvas()
-		self.choose_roulette_type()
+		self.chooseRouletteType()
         self.start()
     }
 
-    this.createCanvas = function(){	
+    this.createCanvas = ()=>{	
 		canvas = document.getElementById("roulette_canvas")	
 		ctx = canvas.getContext("2d")
 		
@@ -114,8 +112,8 @@ function roulette_game(props){
 		spin_clear = [0, 0, canvas.width, canvas.height]
 	}
 	
-	this.choose_roulette_type = function(){			
-		if(roulette_type === 'european'){
+	this.chooseRouletteType = ()=>{			
+		if(rouletteType === 'european'){
 			colors = ["green", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red"]
 			numbers = ["0", "32", "15", "19", "4", "21", "2", "25", "17", "34", "6", "27", "13", "36", "11", "30", "8", "23", "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18", "29", "7", "28", "12", "35", "3", "26"] //37
 			arc = Math.PI / (numbers.length/2)		
@@ -126,7 +124,7 @@ function roulette_game(props){
 		}		
 	}
 
-	this.start = function(){			
+	this.start = ()=>{			
 		ctx.clearRect(0,0, canvas.width, canvas.height)
 
         ctx.font = font_bold_10
@@ -138,8 +136,8 @@ function roulette_game(props){
 		ctx.font = font_bold_14
 	}
 
-    this.drawRoulette = function(){
-        roulette_pos = []
+    this.drawRoulette = ()=>{
+        roulettePos = []
 		
 		ctx.shadowBlur = 10
 		draw_dot(ctx, roulette_radius_x, roulette_radius_y, outsideRadius*1.05, 0, 2 * Math.PI, false, '#a87b51', 15, '#5e391c')	
@@ -147,20 +145,20 @@ function roulette_game(props){
 		ctx.shadowBlur = 0
 
 		ctx.font = font_bold_12	
-		draw_roulette_holes(outsideRadius, insideRadius, numbers.length, colors, true, startAngle)
+		drawRouletteHoles(outsideRadius, insideRadius, numbers.length, colors, true, startAngle)
 		ctx.font = font_bold_14
-		draw_roulette_holes(insideRadius-1, insideRadius*0.7, numbers.length, "dark", false, startAngle)
+		drawRouletteHoles(insideRadius-1, insideRadius*0.7, numbers.length, "dark", false, startAngle)
 		
 		radiantLine(numbers.length, 1, "gold", radiantLine01, startAngle)		
 		
-		draw_roulette_holes(insideRadius*0.7-1, 0, 12, "grey", false, startAngle01)
+		drawRouletteHoles(insideRadius*0.7-1, 0, 12, "grey", false, startAngle01)
 		radiantLine(12, 1, "#4d4d4d", radiantLine02, startAngle01)
 
-		draw_roulette_holes(20, 0, 8, "gold", false, startAngle01)	
+		drawRouletteHoles(20, 0, 8, "gold", false, startAngle01)	
 		radiantLine(8, 1, "#b99813", radiantLine03, startAngle01)
     }
 
-    function draw_roulette_holes(outsideRadius, insideRadius, how_many, colors, text, startAngle){			
+    function drawRouletteHoles(outsideRadius, insideRadius, how_many, colors, text, startAngle){			
 		for(let i = 0; i < how_many; i++) {
 			arc = Math.PI / (how_many/2)
 			let angle = startAngle + i * arc			
@@ -182,7 +180,7 @@ function roulette_game(props){
 					ctx.fillStyle = "#eac739"
 				}		
 			} else if(colors === "dark"){
-				if(roulette_type === "european"){
+				if(rouletteType === "european"){
 					if(i === 0){
 						ctx.fillStyle = "darkgreen"
 					} else {
@@ -192,7 +190,7 @@ function roulette_game(props){
 							ctx.fillStyle = "darkred"
 						}
 					}
-				} else if(roulette_type === "american"){
+				} else if(rouletteType === "american"){
 					if(i === 0 || i === 19){
 						ctx.fillStyle = "darkgreen"
 					} else {
@@ -216,7 +214,7 @@ function roulette_game(props){
 				ctx.rotate(angle + arc / 2 + Math.PI / 2)
 				let text = numbers[i]
 				ctx.fillText(text, -ctx.measureText(text).width / 2, 0)
-				roulette_pos.push({x: roulette_radius_x + Math.cos(angle + arc / 2) * (textRadius-text_offset), y: roulette_radius_y + Math.sin(angle + arc / 2) * (textRadius-text_offset), nr: text, color: colors[i]})
+				roulettePos.push({x: roulette_radius_x + Math.cos(angle + arc / 2) * (textRadius-text_offset), y: roulette_radius_y + Math.sin(angle + arc / 2) * (textRadius-text_offset), nr: text, color: colors[i]})
 			}
 		  
 			ctx.restore()
@@ -240,141 +238,162 @@ function roulette_game(props){
 		}
 	} 
 
-    this.spin = function(data){  
-		start_game = true 
-		let arc = data.arc	
-		
-		let spin_nr = 0
-		let spin_time = data.spin_time
-		let spin_time_more = 200
-		//uncomment this to make the spin shorter
-		// spin_time = 10
-		// spin_time_more = 10
+    this.spin = (data)=>{  
+		startGame = true 
 
-		let monkey = data.monkey
-		let monkey_wait = 200
+		const arc = data.arc
+		const spinTime = data.spin_time || Math.floor(Math.random() * (800 - 300)) + 300
+		const spinTimeMore  = 200
+		const monkey = data.monkey
+		const monkeyWait = 200
 
-		window.requestAnimFrame = (function(){
+		let spinFrame = 0
+
+		window.requestAnimFrame = (()=>{
 			return  window.requestAnimationFrame	||
 			window.webkitRequestAnimationFrame		||
 			window.mozRequestAnimationFrame			||
-			function( callback ){
-			  window.setTimeout(callback, 1000 / 60)
-			}
+			((callback) => window.setTimeout(callback, 1000 / 60))
 	    })()
 	  
-	    function spin_roulette() {
-			if(ctx){
-				ctx.clearRect(spin_clear[0], spin_clear[1], spin_clear[2], spin_clear[3])
-				let stop = false
+	    function spinRoulette() {
+			if (!ctx) return
+			
+			ctx.clearRect(...spin_clear)
 
-				if (spin_nr > spin_time) {
-					if(spin_nr > spin_time + spin_time_more){								
-						self.drawRoulette()
-						ctx.font = font_bold_14
-						
-						roulette_index = parseInt(self.closest_nr(ball, roulette_pos, "nr"))
-						win_nr = roulette_pos[roulette_index]							
-						
-						self.drawBall(win_nr.x, win_nr.y, ball.width, 0, 2 * Math.PI, false)				
-						self.check_win_lose(roulette_bets, win_nr)
-						
-						setTimeout(function(){							
-							self.start()
-							start_game = false	
-						}, 500)
-						
-						stop = true                    
-					} else {
-						spin_nr++ 
-						self.rotateWheel(arc-0.04)		
-						
-						roulette_index = parseInt(self.closest_nr(ball, roulette_pos, "nr"))
-						win_nr = roulette_pos[roulette_index]
-						
-						circle.angle -= arc-0.04
-						self.rotateBall(win_nr.x, win_nr.y)
-						
-						stop = false
-					}
-				} else {
-					spin_nr++
-					
-					switch (true) {
-						case (spin_nr <= spin_time/2):						
-							self.rotateWheel(arc)
-							circle.angle += ball.speed	
-							break
-						case (spin_nr > spin_time/2 && spin_nr <= 2*spin_time/3):
-							self.rotateWheel(arc-0.01)
-							circle.angle += ball.speed-0.01	
-							break
-						case (spin_nr > 2*spin_time/3 && spin_nr <= 5*spin_time/6):
-							self.rotateWheel(arc-0.02)
-							circle.angle += ball.speed-0.02		
-							break
-						case (spin_nr > 5*spin_time/6 && spin_nr <= spin_time-20):
-							self.rotateWheel(arc-0.03)
-							circle.angle += ball.speed-0.03	
-							break
-						case (spin_nr > spin_time-20 && spin_nr <= spin_time-10):
-							self.rotateWheel(arc-0.04)
-							circle.angle += ball.speed-0.04	
-							break
-						default:
-							break
-					}
-					
-					if(typeof monkey !== "undefined"){							
-						roulette_index = parseInt(self.closest_nr(ball, roulette_pos, "nr"))
-						win_nr = roulette_pos[roulette_index]
-						
-						if(typeof monkey === "number"){
-							monkey = monkey.toString()
-						}	
-
-						if(monkey === win_nr.nr && spin_nr > spin_time -  monkey_wait){
-							self.rotateBall(win_nr.x, win_nr.y)
-							spin_nr = spin_time + 1
-						} else {
-							self.rotateBall(ball.x,ball.y)
-						}					
-					} else {
-						self.rotateBall(ball.x,ball.y)
-					}
-					
-					stop = false
-				}		
-            
-				if(!stop){
-					window.requestAnimationFrame(spin_roulette)
-				} else {
-					window.cancelAnimationFrame(spin_roulette)
-				}
+			if (spinFrame > spinTime + spinTimeMore) {
+				endSpin()
+				return
 			}
+	
+			if (spinFrame > spinTime) {
+				// Final phase
+				updateWheelAndBall(arc - 0.04)
+				spinFrame++;
+			} else {
+				// Spinning phases
+				updateWheelAndBallBasedOnFrame()
+				spinFrame++
+			}
+	
+			// Monkey logic
+			if (monkeyLogic(monkey, spinFrame, spinTime, monkeyWait)) {
+				spinFrame = spinTime + 1 // Force end spin
+			}
+	
+			// Continue animation
+			window.requestAnimFrame(spinRoulette)
 	  	}
 
-	  	spin_roulette()
+	  	spinRoulette()
+
+		function updateWheelAndBall(arcDelta) {
+			self.rotateWheel(arcDelta)
+	
+			const rouletteIndex = parseInt(self.closest_nr(ball, roulettePos, "nr"))
+			const winNr = roulettePos[rouletteIndex]
+	
+			circle.angle -= arcDelta
+			self.rotateBall(winNr.x, winNr.y)
+		}
+
+		function updateWheelAndBallBasedOnFrame() {
+			const phase = determineSpinPhase(spinFrame, spinTime)
+	
+			switch (phase) {
+				case 1:
+					self.rotateWheel(arc)
+					circle.angle += ball.speed
+					break
+				case 2:
+					self.rotateWheel(arc - 0.01)
+					circle.angle += ball.speed - 0.01
+					break
+				case 3:
+					self.rotateWheel(arc - 0.02)
+					circle.angle += ball.speed - 0.02
+					break
+				case 4:
+					self.rotateWheel(arc - 0.03)
+					circle.angle += ball.speed - 0.03
+					break
+				case 5:
+					self.rotateWheel(arc - 0.04)
+					circle.angle += ball.speed - 0.04
+					break
+				default:
+					break
+			}
+	
+			self.rotateBall(ball.x, ball.y)
+		}
+
+		function determineSpinPhase(frame, totalTime) {
+			const halfTime = totalTime / 2
+			const twoThirdsTime = (2 * totalTime) / 3
+			const fiveSixthsTime = (5 * totalTime) / 6
+	
+			if (frame <= halfTime) return 1
+			if (frame > halfTime && frame <= twoThirdsTime) return 2
+			if (frame > twoThirdsTime && frame <= fiveSixthsTime) return 3
+			if (frame > fiveSixthsTime && frame <= totalTime - 20) return 4
+			if (frame > totalTime - 20 && frame <= totalTime - 10) return 5
+	
+			return 0
+		}
+	
+		function monkeyLogic(monkey, frame, totalTime, waitTime) {
+			if (typeof monkey === "undefined") return false
+	
+			const rouletteIndex = parseInt(self.closest_nr(ball, roulettePos, "nr"))
+			const winNr = roulettePos[rouletteIndex]
+	
+			if (typeof monkey === "number") {
+				monkey = monkey.toString()
+			}
+	
+			if (monkey === winNr.nr && frame > totalTime - waitTime) {
+				self.rotateBall(winNr.x, winNr.y)
+				return true
+			}
+	
+			return false
+		}
+
+		function endSpin() {
+			self.drawRoulette()
+	
+			const rouletteIndex = parseInt(self.closest_nr(ball, roulettePos, "nr"))
+			const winNr = roulettePos[rouletteIndex]
+	
+			self.drawBall(winNr.x, winNr.y, ball.width, 0, 2 * Math.PI, false)
+			self.check_win_lose(roulette_bets, winNr)
+	
+			setTimeout(() => {
+				self.start()
+				startGame = false
+			}, 500)
+		}
 	}
 
-    this.rotateWheel = function(x) {
+    this.rotateWheel = (x)=>{
 		startAngle  = startAngle + x
 		startAngle01  = startAngle01 + x
 		ball.y = roulette_radius_y + Math.cos(circle.angle) * circle.radius
 		ball.x = roulette_radius_x + Math.sin(circle.angle) * circle.radius		
 	}	
 	
-	this.drawBall = function(x, y, r, sAngle, eAngle, counterclockwise){
+	this.drawBall = (x, y, r, sAngle, eAngle, counterclockwise)=>{
 		draw_dot(ctx, x, y, r, sAngle, eAngle, counterclockwise, 'white', 1, 'grey')  //ctx.arc(x, y, r, sAngle, eAngle, counterclockwise)
 	}
 	
-	this.rotateBall = function(a, b){
+	this.rotateBall = (a, b)=>{
 		self.drawRoulette()	
 		ctx.font = font_bold_14		
 		self.drawBall(a, b, ball.width, 0, 2 * Math.PI, false)
 	}
 	
-	this.closest_nr = function(nr, arr, text){
+	this.closest_nr = (nr, arr, text)=>{
 		let closest = 1000
 		let obj = {}
 		let index = 0
@@ -392,7 +411,7 @@ function roulette_game(props){
 		}		
 	}
 
-    this.check_win_lose = function(x, nr){
+    this.check_win_lose = (x, nr)=>{
 		let elem01 = JSON.parse(JSON.stringify(x))
 		let elem02 = JSON.parse(JSON.stringify(nr))
 
@@ -536,7 +555,7 @@ function roulette_game(props){
         self.win_lose(elem01, money_history)
     }
 
-    this.win_lose = function(arr, money_history, leave=false){
+    this.win_lose = (arr, money_history, leave=false)=>{
 		let game = null
 		if(props.page && props.page.game){
 			game = props.page.game
@@ -556,11 +575,11 @@ function roulette_game(props){
 		props.results(roulette_payload)			
     }
 
-    this.get_status_game = function(){
-        return start_game
+    this.get_status_game = ()=>{
+        return startGame
     }
 
-	this.leave = function(){
+	this.leave = ()=>{
 		let elem01 = JSON.parse(JSON.stringify(roulette_bets))
 		let money_history = decryptData(props.user.money)
 		for(let i in elem01){
@@ -589,7 +608,7 @@ function RouletteGame(props){
 
     useEffect(() => {
         ready()
-        $(window).resize(function(){
+        $(window).resize(()=>{
 			ready()
 		})
 		return () => {
@@ -603,7 +622,7 @@ function RouletteGame(props){
     }, [])
 
 	useEffect(() => {
-		const handleRouletteRead = function(data) {
+		const handleRouletteRead = (data)=>{
 			if(typeof data.arc !== "undefined" || typeof data.spin_time !== "undefined" || typeof data.ball_speed !== "undefined"){
 				if (window.innerWidth < 960){
 					if(window.innerHeight < window.innerWidth){

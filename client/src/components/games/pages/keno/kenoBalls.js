@@ -10,7 +10,7 @@ function keno_game(props){
     let radiusBig = 300
     let ballsArray = []
     let howManyBalls = 80
-    let font_obstacle = '12px sans-serif'
+    let fontObstacle = '12px sans-serif'
     let duration = 500
     let ballPos = [350, 50]
     let ballSpeed = [1000, 3000]
@@ -38,14 +38,14 @@ function keno_game(props){
 			break
 	}
 
-    this.ready = function(){
+    this.ready = ()=>{
         self.createCanvas()
         self.createBallArray()
         self.drawBigCircle()
         self.move()
     }
 
-    this.createCanvas = function(){	
+    this.createCanvas = ()=>{	
 		canvas = document.getElementById("keno_canvas")	
 		ctx = canvas.getContext("2d")
 		
@@ -68,7 +68,7 @@ function keno_game(props){
 		}
 	}
 
-    this.createBallArray = function(){
+    this.createBallArray = ()=>{
         for (let i=0; i<howManyBalls; i++){
             ballsArray[i] = {
                 radius: radiusBall,
@@ -92,104 +92,116 @@ function keno_game(props){
        }
     }
 
-    this.drawBallArray = function(){
+    this.drawBallArray = ()=>{
         for (let i in ballsArray){
             self.drawBalls(ballsArray[i].xpos, ballsArray[i].ypos, ballsArray[i].radius, ballsArray[i].number);
         }
     }
 
-    this.drawBalls = function(x,y,r, number){
+    this.drawBalls = (x,y,r, number)=>{
         draw_dot(ctx, x,y,r, 0, 2 * Math.PI, false, color_transparent_1, 1, color)
-		self.add_text(number, x, y+4, font_obstacle, color, "center")
+		self.add_text(number, x, y+4, fontObstacle, color, "center")
     }
 
-    self.add_text = function(text, x, y, font, color, text_align){
+    self.add_text = (text, x, y, font, color, text_align)=>{
 		ctx.font = font
 		ctx.textAlign = text_align		
 		ctx.fillStyle = color			
 		ctx.fillText(text, x, y)
 	}
 
-    this.drawBigCircle = function() {
+    this.drawBigCircle = ()=>{
         ctx.clearRect(0,0,canvas.height, canvas.width)
         draw_dot(ctx, canvas.width/2, canvas.height/2, radiusBig, 0, 2 * Math.PI, false, color_transparent_1, 1, color)	
 	}
     
-    this.move = function(){
-        setTimeout(function(){
+    this.move = ()=>{
+        setTimeout(()=>{
             self.animation(duration)
        }, 500)
     }
 
-    this.animation = function(time){ 
-		let spin_nr = 0
-		let spin_time = time
+    this.animation = (time)=>{ 
+		let spinFrame = 0
+        const spinTime = time
 
-		window.requestAnimFrame = (function(){
+		window.requestAnimFrame = (()=>{
 			return  window.requestAnimationFrame	||
 			window.webkitRequestAnimationFrame		||
 			window.mozRequestAnimationFrame			||
-			function( callback ){
-			  window.setTimeout(callback, 1000 / 60)
-			}
+			((callback) => window.setTimeout(callback, 1000 / 60))
 	    })()
 	  
-	    function run() {
-			if(ctx){
-				let stop = false
-				if (spin_nr > spin_time) {
-					stop = true
-                    self.drawBigCircle()
-                    props.animationFinished()
-				} else {
-					spin_nr++					
-					stop = false            
-
-                    for(let i in ballsArray){
-                        ballsArray[i].xpos += ballsArray[i].xspeed * ballsArray[i].dir/1000  // update position according to constant speed
-                        ballsArray[i].ypos += ballsArray[i].yspeed * ballsArray[i].dir/1000  // update position according to constant speed
-                    }
-
-                    // change speed direction
-                    for(let i in ballsArray){
-                        let point01 = {x: ballsArray[i].xpos, y: ballsArray[i].ypos}
-                        let point02 = {x: canvas.width/2, y: canvas.height/2}
-                        if (getDistance_between_entities(point01, point02) + ballsArray[i].radius >= radiusBig) {
-                            let nx_o = canvas.width/2 -  ballsArray[i].xpos
-                            let ny_o = canvas.width/2 -  ballsArray[i].ypos
-                    
-                            let nx = nx_o / (Math.sqrt(nx_o * nx_o + ny_o * ny_o))
-                            let ny = ny_o / (Math.sqrt(nx_o * nx_o + ny_o * ny_o))
-                            // r = v − [2 (n · v) n]
-                            let v_newx = ballsArray[i].xspeed - (2 *( nx * ballsArray[i].xspeed + ny * ballsArray[i].yspeed ) ) * nx
-                            let v_newy = ballsArray[i].yspeed - (2 *( nx * ballsArray[i].xspeed + ny * ballsArray[i].yspeed ) ) * ny
-            
-                            ballsArray[i].xspeed = v_newx
-                            ballsArray[i].yspeed = v_newy
-                        }
-                    }
-
-                    // redraw with new positions
-                    self.drawBigCircle()
-                    self.drawBallArray()
-				}		
-            
-				if(!stop){
-					window.requestAnimationFrame(run)
-				} else {
-					window.cancelAnimationFrame(run)
-				}
-			} else {
-                window.cancelAnimationFrame(run)
+	    function runKenoBalls() {
+            if (!ctx) {
+                window.cancelAnimationFrame(runKenoBalls)
+                return
             }
+
+            if (spinFrame > spinTime) {
+                endAnimation()
+                return
+            }
+
+            updateBallsPosition()
+            checkCollisionAndReflect()
+            redrawScene()
+
+            spinFrame++
+            window.requestAnimFrame(runKenoBalls)
 	  	}
 
-	  	run()
+	  	runKenoBalls()
+
+        function updateBallsPosition() {
+            ballsArray.forEach((ball) => {
+                ball.xpos += (ball.xspeed * ball.dir) / 1000
+                ball.ypos += (ball.yspeed * ball.dir) / 1000
+            })
+        }
+    
+        function checkCollisionAndReflect() {
+            ballsArray.forEach((ball) => {
+                const ballPosition = { x: ball.xpos, y: ball.ypos }
+                const centerPosition = { x: canvas.width / 2, y: canvas.height / 2 }
+    
+                if (getDistance_between_entities(ballPosition, centerPosition) + ball.radius >= radiusBig) {
+                    const [newXSpeed, newYSpeed] = calculateReflection(ball, centerPosition)
+                    ball.xspeed = newXSpeed
+                    ball.yspeed = newYSpeed
+                }
+            })
+        }
+
+        function calculateReflection(ball, center) {
+            const nx_o = center.x - ball.xpos
+            const ny_o = center.y - ball.ypos
+    
+            const nx = nx_o / Math.sqrt(nx_o ** 2 + ny_o ** 2)
+            const ny = ny_o / Math.sqrt(nx_o ** 2 + ny_o ** 2)
+    
+            const dotProduct = nx * ball.xspeed + ny * ball.yspeed
+    
+            const newXSpeed = ball.xspeed - 2 * dotProduct * nx
+            const newYSpeed = ball.yspeed - 2 * dotProduct * ny
+    
+            return [newXSpeed, newYSpeed]
+        }
+    
+        function redrawScene() {
+            self.drawBigCircle()
+            self.drawBallArray()
+        }
+    
+        function endAnimation() {
+            self.drawBigCircle()
+            props.animationFinished()
+        }
 	}
 }
 
 function KenoBalls(props){
-    let animationFinished = function(){
+    let animationFinished = ()=>{
 		props.animationFinished("balls")
 	}
 
@@ -204,7 +216,7 @@ function KenoBalls(props){
 
     useEffect(() => {
         ready()
-        $(window).resize(function(){
+        $(window).resize(()=>{
 			ready()
 		})
 		return () => {

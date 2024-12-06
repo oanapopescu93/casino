@@ -58,10 +58,10 @@ var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
 // database_config.sql = "SELECT * FROM casino_user;"
-// database(database_config).then(function(result){
+// database(database_config).then((result)=>{
 //   console.log('result ', result.length)
 //   if(result){
-//     let user_found = result.filter(function(x){
+//     let user_found = result.filter((x)=>{
 //       return x.email === "oana.popescu@idriveglobal.com"
 //     })
 //     if(user_found[0]){
@@ -70,18 +70,18 @@ var database_config = constants.DATABASE[0]
 //   }  
 // })
 
-io.on('connection', function(socket) {
+io.on('connection', (socket)=>{
   socket.on('signin_send', (data) => {
     const { email, pass, lang } = data
 
     database_config.sql = "SELECT * FROM casino_user; "
     database_config.sql += "SELECT * FROM login_user;"
     database_config.name = "db01"
-		database(database_config).then(function(result){
+		database(database_config).then((result)=>{
       if(result && result[0] && result[1]){
         users_array = result[0] 
         login_array = result[1]
-        let user_found = users_array.filter(function(x){
+        let user_found = users_array.filter((x)=>{
           return x.email === email && decrypt(JSON.parse(x.pass)) === pass
         })                
         if(user_found && user_found.length>0){
@@ -89,7 +89,7 @@ io.on('connection', function(socket) {
 
           let id = user_found[0].id
 
-          let login_found = login_array.filter(function(x){
+          let login_found = login_array.filter((x)=>{
             return x.user_id === id //get all the logins from that user
           })
 
@@ -123,7 +123,7 @@ io.on('connection', function(socket) {
               console.log('[error]','signin_read :', e)
             }
   
-            get_extra_data().then(function(res) {  
+            get_extra_data().then((res)=>{  
               let extra_data = {}
               if(res && res.data){
                 extra_data = {
@@ -140,7 +140,7 @@ io.on('connection', function(socket) {
               database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
               database_config.name = "db02"
               let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
-              database(database_config, payload).then(function(){})
+              database(database_config, payload).then(()=>{})
             })
           } else {
             //is NOT verified --> we send him a message to go to his mail
@@ -174,7 +174,7 @@ io.on('connection', function(socket) {
     database_config.sql = 'SELECT * FROM casino_user WHERE email = ?'
     database_config.name = "db03"
 
-		database(database_config, [email]).then(function(result){
+		database(database_config, [email]).then((result)=>{
       if(result && result.length == 0){        
         //no user was found --> new user --> he must sign up
         users_array = result
@@ -194,7 +194,7 @@ io.on('connection', function(socket) {
               console.log('[error]','signup_read :', e)
             } 
 
-            get_extra_data().then(function(res) {
+            get_extra_data().then((res)=>{
               let uuid = crypto.randomBytes(20).toString('hex') 
               let extra_data = {city: "", country: "", ip_address: ""} 
               if(res && res.data){
@@ -211,7 +211,7 @@ io.on('connection', function(socket) {
               database_config.sql = "INSERT INTO casino_user (uuid, user, email, phone, pass, account_type, money, signup, verification_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
               let payload = [uuid, user, email, phone, pass_encrypt, account_type, user_money, timestamp, verificationToken] 
               database_config.name = "db04"
-              database(database_config, payload).then(function(){})
+              database(database_config, payload).then(()=>{})
             })
           } else {
             // if the verification email, for some reaon, had a problem. If not, we more foreward.
@@ -249,15 +249,15 @@ io.on('connection', function(socket) {
 
     database_config.sql = "SELECT * FROM casino_user"
     database_config.name = "db06"
-		database(database_config).then(function(result){
+		database(database_config).then((result)=>{
       if(result && result.length > 0){
         users_array = result
-        let user = users_array.filter(function(x){
+        let user = users_array.filter((x)=>{
           return x.email === email
         })
         if(user && user[0]){
           let payload = {...user[0], ...data}
-          sendEmail('forgot_password', payload).then(function(res){
+          sendEmail('forgot_password', payload).then((res)=>{
             try{
               resetPassword(user[0])
               io.to(socket.id).emit('forgotPassword_read', res)
@@ -287,7 +287,7 @@ io.on('connection', function(socket) {
       let new_pass = JSON.stringify(encrypt(new_pass_value))
       database_config.sql = "UPDATE casino_user SET pass='" + new_pass + "' WHERE uuid='" + user.uuid + "'; "
       database_config.name = "db07"
-      database(database_config).then(function(){})
+      database(database_config).then(()=>{})
     } else {
       console.log('[error]','resetPassword--> no user ', user)
     }
@@ -306,12 +306,12 @@ io.on('connection', function(socket) {
   })
 
   // GAMES
-  socket.on('game_send', function(data){
+  socket.on('game_send', (data)=>{
 		if(data.uuid){
       database_config.sql = "SELECT * FROM casino_user; "
       database_config.sql += "SELECT * FROM login_user;"
       database_config.name = "db08"
-      database(database_config).then(function(result){ 
+      database(database_config).then((result)=>{ 
         let payload = {streak: 1, prize: 0}
         if(result){
           users_array = result[0]
@@ -330,7 +330,7 @@ io.on('connection', function(socket) {
     }
 	})
 
-  socket.on('streakClainPrize_send', function(data){
+  socket.on('streakClainPrize_send', (data)=>{
 		if(data.uuid){
       try{        
         io.to(socket.id).emit('streakClainPrize_read', {prize: data.prize})
@@ -370,11 +370,11 @@ io.on('connection', function(socket) {
       database_config.sql += "INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) VALUES (?, ?, ?, ?, ?, ?, ?)"
       database_config.name = "db09"
       let payload =  [user_found[0].id, table_name, game_id, game_type, timestamp, status, x.prize]
-      database(database_config, payload).then(function(){})
+      database(database_config, payload).then(()=>{})
     }
   }
 
-	socket.on('roulette_send', function(data){
+	socket.on('roulette_send', (data)=>{
 		if(data.uuid){
       let room = data.room
 			let payload = roulette(data, how_lucky)
@@ -385,7 +385,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('blackjack_send', function(data){
+  socket.on('blackjack_send', (data)=>{
 		if(data.uuid){
       let room = data.room
       let payload = blackjack(data, chatroom_users, how_lucky)
@@ -396,7 +396,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('poker_send', function(data){
+  socket.on('poker_send', (data)=>{
 		if(data.uuid){
       let room = data.room
       let payload = poker(data, chatroom_users)
@@ -407,7 +407,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('slots_send', function(data){
+  socket.on('slots_send', (data)=>{
 		if(data.uuid){
       let room = data.room
 			let payload = slots(data)
@@ -418,7 +418,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('craps_send', function(data){
+  socket.on('craps_send', (data)=>{
 		if(data.uuid){
       let room = data.room
 			let payload = craps(data, how_lucky)
@@ -429,7 +429,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('race_send', function(data){
+  socket.on('race_send', (data)=>{
 		if(data.uuid){
 			let payload = race(data, how_lucky)
 			try{
@@ -439,7 +439,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('keno_send', function(data){
+  socket.on('keno_send', (data)=>{
 		if(data.uuid){
 			let payload = keno(data, how_lucky)
 			try{
@@ -449,7 +449,7 @@ io.on('connection', function(socket) {
 			}
 		}
 	})
-  socket.on('baccarat_send', function(data){
+  socket.on('baccarat_send', (data)=>{
 		if(data.uuid){
 			let payload = baccarat(data, how_lucky)
 			try{
@@ -460,11 +460,11 @@ io.on('connection', function(socket) {
 		}
 	})
 
-  socket.on('game_results_send', function(data){
+  socket.on('game_results_send', (data)=>{
     if(data.uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db10"
-      database(database_config).then(function(result){
+      database(database_config).then((result)=>{
         if(result){
           users_array = result
           if(users_array && users_array.length>0){
@@ -481,7 +481,7 @@ io.on('connection', function(socket) {
                 database_config.sql += "INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) VALUES (?, ?, ?, ?, ?, ?, ?)"
                 database_config.name = "db11"
                 let payload =  [user_found[0].id, table_name, table_id, table_type, timestamp, status, data.bet]
-                database(database_config, payload).then(function(){})
+                database(database_config, payload).then(()=>{})
               }
             } catch(e){
               console.log('[error]','game_results_read--> ', e)
@@ -493,7 +493,7 @@ io.on('connection', function(socket) {
   })
 
   // DASHBOARD, CART, ORDER, WITHDRAW, NEWSLETTERS
-  socket.on('dashboardChanges_send', function(data){
+  socket.on('dashboardChanges_send', (data)=>{
     const { uuid, value } = data
     if(uuid){
         switch(data.type) {
@@ -511,10 +511,10 @@ io.on('connection', function(socket) {
             database_config.name = "db014"
             break
         }        
-        database(database_config).then(function(){})
+        database(database_config).then(()=>{})
     }
   })
-  socket.on('promo_send', function(text){
+  socket.on('promo_send', (text)=>{
     let coupon = {}
     for(let i in coupons){
       if(coupons[i].name === text){
@@ -528,12 +528,12 @@ io.on('connection', function(socket) {
       console.log('[error]','promo_read--> ', e)
     }
   })
-  socket.on('order_send', function(details){
+  socket.on('order_send', (details)=>{
     const { uuid, carrots_update, order_date, payment_id, amount, method, description, currency } = details
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db15"
-      database(database_config).then(function(result){
+      database(database_config).then((result)=>{
         if(result){
           users_array = result
           if(users_array && users_array.length>0){
@@ -570,7 +570,7 @@ io.on('connection', function(socket) {
               database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
               database_config.sql = `INSERT INTO order_table (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
               database_config.name = "db016"
-              database(database_config, payload).then(function(){                
+              database(database_config, payload).then(()=>{                
                 try{
                   let payload = {...details, money}
                   io.to(socket.id).emit('order_read', payload)
@@ -591,12 +591,12 @@ io.on('connection', function(socket) {
     }   
   })
 
-  socket.on('getOrdersWithdraws_send', function(data){
+  socket.on('getOrdersWithdraws_send', (data)=>{
     const { uuid } = data    
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db17"
-      database(database_config).then(function(result){
+      database(database_config).then((result)=>{
         if(result){
           users_array = result
           if(users_array && users_array.length > 0){
@@ -607,13 +607,13 @@ io.on('connection', function(socket) {
               database_config.sql = "SELECT * FROM order_table;"
               database_config.sql += "SELECT * FROM withdraw_table;"
               database_config.name = "db018"
-              database(database_config).then(function(result){
+              database(database_config).then((result)=>{
                 let orders_found = []
                 let withdraws_found = []
 
                 if(result && result[0] && result[1]){
-                  let orders_found = result[0].filter(function(x){return x.user_id === id})
-                  let withdraws_found = result[1].filter(function(x){return x.user_id === id})                
+                  let orders_found = result[0].filter((x)=>{return x.user_id === id})
+                  let withdraws_found = result[1].filter((x)=>{return x.user_id === id})                
                   orders_found = orders_found.map(({ user_id, ...order }) => order) // Remove user_id from each order in orders_found
                   withdraws_found = withdraws_found.map(({ user_id, ...withdraw }) => withdraw) // Remove user_id from each order in orders_found                
                 }
@@ -634,12 +634,12 @@ io.on('connection', function(socket) {
   })
 
 
-  socket.on('newsletter_send', function(data){
+  socket.on('newsletter_send', (data)=>{
     const { uuid, email } = data
     if(uuid && email){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db19"
-      database(database_config).then(function(result1){
+      database(database_config).then((result1)=>{
         if(result1){
           users_array = result1
           if(users_array && users_array.length > 0){
@@ -647,7 +647,7 @@ io.on('connection', function(socket) {
             if(user_found[0] && user_found[0]){
               database_config.sql = "SELECT * FROM newsletters;"
               database_config.name = "db20"
-              database(database_config).then(function(result2){
+              database(database_config).then((result2)=>{
                 if(result2){
                   let email_found = result2.filter((x) => x.email === email)
                   if(email_found && email_found.length > 0){
@@ -660,7 +660,7 @@ io.on('connection', function(socket) {
                     database_config.sql = "INSERT INTO newsletters (user_id, email) VALUES (?, ?)"
                     database_config.name = "db21"
                     let payload =  [user_found[0].id, email]
-                    database(database_config, payload).then(function(){                  
+                    database(database_config, payload).then(()=>{                  
                       try{				
                         io.to(socket.id).emit('newsletter_read', {success: false, send: "subscribed"})
                       }catch(e){
@@ -702,7 +702,7 @@ io.on('connection', function(socket) {
   })
 
   // CHATROOM
-  socket.on('join_room', function(data){
+  socket.on('join_room', (data)=>{
     let room = data.room
     //console.log('join_room ', room)
     socket.join(data.room)
@@ -727,7 +727,7 @@ io.on('connection', function(socket) {
       console.log('[error]','message_read--> ', e)
     }
   })
-  socket.on('leave_room', function(data){
+  socket.on('leave_room', (data)=>{
     let room = data.room
     //console.log('leave_room ', room)
     socket.leave(room)
@@ -744,7 +744,7 @@ io.on('connection', function(socket) {
       console.log('[error]','message_read--> ', e)
     }
   })
-  socket.on('message_send', function(data){
+  socket.on('message_send', (data)=>{
     let room = data.room
     //console.log('message_send ', room)
     let timestamp = new Date().getTime()
@@ -756,10 +756,10 @@ io.on('connection', function(socket) {
     }
 	}) 
 
-  socket.on('heartbeat', function(data) {
+  socket.on('heartbeat', (data)=>{
 		console.log('heartbeat', data)
 	})
-  socket.on('disconnect', function() {  
+  socket.on('disconnect', ()=>{  
     console.log('Got disconnect!')
   })
 })

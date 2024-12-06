@@ -12,7 +12,7 @@ const orderDescriptions = {}
 
 cryptoPayment.post("/api/crypto", jsonParser, (req, res, next) => {
     const { amount, crypto_currency, description, products } = req.body
-    createCryptoInvoice(amount, crypto_currency, description, products).then(function(data) {
+    createCryptoInvoice(amount, crypto_currency, description, products).then((data)=>{
         if (data.payload && data.payload.order_id) {
             orderDescriptions[data.payload.order_id] = description
         }
@@ -107,7 +107,7 @@ cryptoPayment.post('/api/crypto/cancel', jsonParser, (req, res) => {
 })
 
 function createCryptoInvoice(amount, crypto_currency, description, products) {
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve)=>{
         try {
             const payload = {
                 price_amount: amount,
@@ -122,9 +122,9 @@ function createCryptoInvoice(amount, crypto_currency, description, products) {
                 'Content-Type': 'application/json',
             }
             productsCrypto = products
-            axios.post(`${apiUrl}/invoice`, payload, { headers }).then(function(response){
+            axios.post(`${apiUrl}/invoice`, payload, { headers }).then((response)=>{
                 resolve({type: "crypto", result: "success", payload: {...response.data}})
-            }).catch(function(err){
+            }).catch((err)=>{
                 resolve({type: "crypto", result: "error", payload: err})
             })
         } catch (err) {
@@ -147,14 +147,14 @@ function checkMinPayment(currency="btc") {
 }
 
 function fetchPaymentDetails(order_id){
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve)=>{
         try {
             const headers = {
                 'x-api-key': apiKey,
             } 
-            axios.get(apiUrl + "/invoice/" + order_id, { headers }).then(function(response){
+            axios.get(apiUrl + "/invoice/" + order_id, { headers }).then((response)=>{
                 resolve({payload: response.data})
-            }).catch(function(err){
+            }).catch((err)=>{
                 resolve({payload: err, result: "error"})
             })
         } catch (err) {
@@ -169,9 +169,9 @@ function getEstimatedPrice(amount, currency_from, currency_to){
             const headers = {
                 'x-api-key': apiKey,
             } 
-            axios.get(apiUrl + "/estimate?amount=" + amount + "&currency_from=" + currency_from + "&currency_to=" + currency_to, { headers }).then(function(response){
+            axios.get(apiUrl + "/estimate?amount=" + amount + "&currency_from=" + currency_from + "&currency_to=" + currency_to, { headers }).then((response)=>{
                 resolve(response.data)
-            }).catch(function(err){
+            }).catch((err)=>{
                 resolve(err)
             })
         } catch (err) {

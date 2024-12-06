@@ -22,9 +22,9 @@ function App(){
 		}	
 		function disable(){
 			oldConsole = console.log
-			window['console']['log'] = function(){}
-			window['console']['warn'] = function(){}
-			window['console']['error'] = function(){}
+			window['console']['log'] = ()=>{}
+			window['console']['warn'] = ()=>{}
+			window['console']['error'] = ()=>{}
 		}	
 		return {enable, disable}
 	}()
@@ -37,7 +37,7 @@ function App(){
 		}
 	}, [])
 
-  	setInterval(function(){		  
+  	setInterval(()=>{
     	socket.emit('heartbeat', { data: "ping" })
   	}, 15000)
 

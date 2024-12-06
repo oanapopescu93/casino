@@ -28,7 +28,7 @@ function roulette_bets(props){
 
 	let money = props.user.money ? decryptData(props.user.money) : 0 
 
-    this.ready = function(r){
+    this.ready = (r)=>{
         reason = r
 		canvas = document.getElementById("roulette_bets_canvas")	
 		if(canvas){
@@ -38,7 +38,7 @@ function roulette_bets(props){
 		}
     }
 
-    this.choose_roulette_type = function(){			
+    this.choose_roulette_type = ()=>{			
 		if(roulette_type === 'european'){			
 			numbers = ["0", "32", "15", "19", "4", "21", "2", "25", "17", "34", "6", "27", "13", "36", "11", "30", "8", "23", "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18", "29", "7", "28", "12", "35", "3", "26"] //37
 		} else {			
@@ -46,7 +46,7 @@ function roulette_bets(props){
 		}		
 	}
 
-    this.createCanvas = function(){
+    this.createCanvas = ()=>{
 		ctx = canvas.getContext("2d")	
 		small_image = false	
 		if (window.innerWidth < 960){
@@ -72,13 +72,13 @@ function roulette_bets(props){
 		}
 	}
 
-	this.getImage = function(reason){
+	this.getImage = (reason)=>{
 		if(reason !== "resize"){
 			let promises = []
 			for(let i in items){				
 				promises.push(self.preaload_images(items[i]))
 			}
-			Promise.all(promises).then(function(result){
+			Promise.all(promises).then((result)=>{
 				self.images = result
 				self.choose_roulette_bets()
 				self.create_roulette_bets()
@@ -91,18 +91,18 @@ function roulette_bets(props){
 		}
 	}
 
-	this.preaload_images = function(item){
-		return new Promise(function(resolve){
+	this.preaload_images = (item)=>{
+		return new Promise((resolve)=>{
 			let image = new Image()
 			image.id = item.id
 			image.src = item.src
-			image.addEventListener("load", function(){
+			image.addEventListener("load", ()=>{
 				resolve(image)
 			}, false)
 		})
 	}
 
-    this.choose_roulette_bets = function(){
+    this.choose_roulette_bets = ()=>{
 		if(roulette_type === "european"){
 			if(!small_image){
 				this.draw_roulette_bets(this.images[0])
@@ -118,7 +118,7 @@ function roulette_bets(props){
 		}
 	}
 
-	this.draw_roulette_bets = function(img){
+	this.draw_roulette_bets = (img)=>{
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
 		let sx = roulette_bets_coord[0]
 		let sy = roulette_bets_coord[1]
@@ -131,7 +131,7 @@ function roulette_bets(props){
 		ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
 	}
 
-    this.create_roulette_bets = function(){
+    this.create_roulette_bets = ()=>{
 		let color = ['red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red']
 		let k = 0
 		let squares
@@ -303,16 +303,16 @@ function roulette_bets(props){
 		}
 	}	
 
-    this.handleClick = function(){
+    this.handleClick = ()=>{
         if($('#roulette_bets_canvas')){
-            $('#roulette_bets_canvas').off('click').on('click', function(event){
+            $('#roulette_bets_canvas').off('click').on('click', (event)=>{
                 let mousePos = getMousePos(canvas, event)
                 self.canvas_click(mousePos)
             })
         }		
     }
 
-    this.canvas_click = function(mouse){ 
+    this.canvas_click = (mouse)=>{ 
         for(let i in list_bets){
 			let obj = list_bets[i]			
 			if (isInside(mouse, obj)){
@@ -337,14 +337,14 @@ function roulette_bets(props){
         props.getData(your_bets)
     }
 
-	this.draw_tokens = function(bet){		
+	this.draw_tokens = (bet)=>{		
 		let x = bet.x + bet.width/2 - bet_square/4
 		let y = bet.y + bet.height/2 - bet_square/4 - 5
 		let w = bet_square/2
 		let h = bet_square/2+10
 		let img = new Image()
 		img.src = carrot_img
-		img.onload = function(){
+		img.onload = ()=>{
 			ctx.drawImage(img, x, y, w, h)	
 		}
 	}
@@ -360,7 +360,7 @@ function RouletteTable(props){
         if(my_roulette_bets){
             my_roulette_bets.ready()
         }
-        $(window).resize(function(){
+        $(window).resize(()=>{
 			if(my_roulette_bets){
 				my_roulette_bets.ready('resize')
 			}

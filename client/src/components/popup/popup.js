@@ -122,7 +122,7 @@ function Popup(props){
         socket.on('forgotPassword_read', (res)=>{
             setForgotPasswordResult(res.send)
             setSending(false)
-            setTimeout(function(){
+            setTimeout(()=>{
                 setForgotPasswordResult('')
                 closeModal()
            }, 2000)
@@ -130,13 +130,13 @@ function Popup(props){
         socket.on('signup_verification_read', (res)=>{
             setSending(false)            
             setResendVerificationResult(res.details)
-            setTimeout(function(){
+            setTimeout(()=>{
                 setResendVerificationResult('')
            }, 2000)
         })
         socket.on('streakClainPrize_read', ()=>{
             setSending(false)
-            setTimeout(function(){
+            setTimeout(()=>{
                 closeModal()
            }, 2000)
         })
@@ -146,7 +146,7 @@ function Popup(props){
         setApplyJobSending("sending")
         postData('/api/apply_job', payload).then((res)=>{
             setApplyJobSending(res.send)
-            setTimeout(function(){
+            setTimeout(()=>{
                 setApplyJobSending(null)
                 closeModal()
            }, 2000)

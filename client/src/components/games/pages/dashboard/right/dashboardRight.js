@@ -55,7 +55,7 @@ function DashboardRight(props){
 	}, [])
 
     useEffect(() => {
-		const handleGetOrdersWithdrawsRead = function(data) {
+		const handleGetOrdersWithdrawsRead = (data)=>{
             if(data.error){
                 console.log('error--> ', data.error)
                 return

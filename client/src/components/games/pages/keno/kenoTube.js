@@ -36,7 +36,7 @@ function keno_tube_game(props){
     let duration = 100000
     let index = 0 // index for the balls
 
-    this.ready = function(r){
+    this.ready = (r)=>{
         if(r !== "resize") {
             self.createAll()
             self.drawAll()
@@ -49,13 +49,13 @@ function keno_tube_game(props){
         }
     }
 
-    this.createAll = function(){
+    this.createAll = ()=>{
         self.createCanvas()
         self.createFlask()
         self.createBalls()
 	}
 
-    this.createCanvas = function(){	
+    this.createCanvas = ()=>{	
 		canvas = document.getElementById("keno_tube_canvas")	
 		ctx = canvas.getContext("2d")
 
@@ -71,7 +71,7 @@ function keno_tube_game(props){
             ball = {radius: 20, background: color_transparent_1, color, border: 1}	
 		}
 	}
-    this.createFlask = function(){
+    this.createFlask = ()=>{
         flask = {
             width: canvas.width,
             height: canvas.height,
@@ -80,7 +80,7 @@ function keno_tube_game(props){
             border: 0,
         }
     }
-    this.createBalls = function(){
+    this.createBalls = ()=>{
         const totalBalls = kenoSpotsResult.length
         const ballDiameter = 2 * ball.radius
         const flaskHeight = flask.height
@@ -100,7 +100,7 @@ function keno_tube_game(props){
             })
         }
     }
-    this.createBallsDown = function(){
+    this.createBallsDown = ()=>{
         const ballDiameter = 2 * ball.radius
         const flaskHeight = flask.height
         balls = []
@@ -120,74 +120,75 @@ function keno_tube_game(props){
         }
     }
 
-    this.drawAll = function(){
+    this.drawAll = ()=>{
         ctx.clearRect(0,0,1000, 1000)
         self.drawFlask()
         self.drawBalls()
     }
 
-    this.drawFlask = function(){
+    this.drawFlask = ()=>{
         if(flask){
             draw_rect(ctx, 0, 0, flask.width, flask.height, flask.background, flask.border, flask.color)
         }
     }
-    this.drawBalls = function(){
+    this.drawBalls = ()=>{
         for(let i in balls){
             draw_dot(ctx, balls[i].x, balls[i].y, balls[i].radius, 0, 2 * Math.PI, false, balls[i].background, balls[i].border, balls[i].color)
 		    self.add_text(balls[i].number, balls[i].x, balls[i].y+4, font_obstacle, color, "center")
         }
     }
-    this.drawBall = function(ball){
+    this.drawBall = (ball)=>{
         draw_dot(ctx, ball.x, ball.y, ball.radius, 0, 2 * Math.PI, false, ball.background, ball.border, ball.color)
 		self.add_text(ball.number, ball.x, ball.y+4, font_obstacle, color, "center")
     }
-    this.add_text = function(text, x, y, font, color, text_align){
+    this.add_text = (text, x, y, font, color, text_align)=>{
 		ctx.font = font
 		ctx.textAlign = text_align		
 		ctx.fillStyle = color			
 		ctx.fillText(text, x, y)
 	}
 
-    this.move = function(){
-        setTimeout(function(){
+    this.move = ()=>{
+        setTimeout(()=>{
             self.animation(duration)
        }, 500)
     }
-    this.animation = function(){ 
-		window.requestAnimFrame = (function(){
+    this.animation = ()=>{ 
+		window.requestAnimFrame = (()=>{
 			return  window.requestAnimationFrame	||
 			window.webkitRequestAnimationFrame		||
 			window.mozRequestAnimationFrame			||
-			function( callback ){
-			  window.setTimeout(callback, 1000 / 60)
-			}
+			((callback) => window.setTimeout(callback, 1000 / 60))
 	    })()
 	  
-	    function run(){
-			if(ctx){
-				let stop = false
-				if (index < balls.length){                        
-                    self.updateBalls()
-                } else {
-                    stop = true
-                    self.finish()
-                }
-                
-                self.drawAll()
-            
-				if(!stop){
-					window.requestAnimationFrame(run)
-				} else {
-					window.cancelAnimationFrame(run)
-				}
-			} else {
-                window.cancelAnimationFrame(run)
+	    function runKenoTube(){
+            if (!ctx){
+                window.cancelAnimationFrame(runKenoTube)
+                return
             }
+
+			let stop = false
+            if (index < balls.length){                        
+                self.updateBalls()
+            } else {
+                stop = true
+                self.finish()
+            }
+            
+            self.drawAll()
+
+            if(stop){
+                window.cancelAnimationFrame(runKenoTube)
+                return
+            }
+        
+            window.requestAnimationFrame(runKenoTube)
 	  	}
 
-	  	run()
+	  	runKenoTube()
 	}
-    this.updateBalls = function(){
+
+    this.updateBalls = ()=>{
         const flaskHeight = flask.height
         const radius = balls[index].radius
         const diameter = 2 * balls[index].radius
@@ -198,13 +199,13 @@ function keno_tube_game(props){
         }
     }
 
-    this.finish = function(){
+    this.finish = ()=>{
         props.animationFinished()
     }
 }
 
 function KenoTube(props){
-    let animationFinished = function(){
+    let animationFinished = ()=>{
 		props.animationFinished("flask")
 	}
 
@@ -219,7 +220,7 @@ function KenoTube(props){
 
     useEffect(() => {
         ready()
-        $(window).resize(function(){
+        $(window).resize(()=>{
 			ready('resize')
 		})
 		return () => {

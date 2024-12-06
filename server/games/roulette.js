@@ -6,15 +6,17 @@ function roulette(data, how_lucky){
         monkey_roulette = true
     }
     
-    if(monkey_roulette){ // it means the player must lose
+    if(monkey_roulette){
         monkey = get_monkey_for_roulette(data.bet)
     }
+
+    // this is only for tests
+    // monkey_roulette = true	
+    // monkey = [1]
     
     let spin_time = Math.floor(Math.random() * (800 - 300)) + 300
     let ball_speed = 0.06
-    let k = Math.floor(Math.random() * (monkey.length-1 - 0)) + 0
-
-    //monkey[k] = 23
+    let k = Math.floor(Math.random() * (monkey.length-1 - 0)) + 0    
 
     return {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}
 

@@ -28,11 +28,11 @@ function Card(config){
 	self.font = config.font
 	self.lang = config.lang
 	
-	self.draw_title = function(ctx){
+	self.draw_title = (ctx)=>{
 		self.draw_card_text(ctx, self.name, self.x + self.width/2, self.y - self.title[0], self.title[0])
 	}	
 
-	self.show_cards = function(ctx, data, type){		
+	self.show_cards = (ctx, data, type)=>{		
 		const {banker, player} = data
 		let value_text = translate({lang: self.lang, info: "value"}) + ": "
 		switch(type){
@@ -47,7 +47,7 @@ function Card(config){
 		}		
 	}
 
-	self.draw_card_text = function(ctx, text, x, y, h) {
+	self.draw_card_text = (ctx, text, x, y, h)=>{
 		ctx.font = self.font
 		const boxWidth = self.width + 5
 		const boxHeight = h
@@ -67,7 +67,7 @@ function Card(config){
 		ctx.closePath()
 	}
 
-	this.draw_card = function(ctx, x, y, w, h, size, hand){
+	this.draw_card = (ctx, x, y, w, h, size, hand)=>{
 		let img = self.images
 		let space = 5
 		let img_index = 0
@@ -171,14 +171,14 @@ function baccarat_game(props){
 			break
 	}
 
-    this.ready = function(){
+    this.ready = ()=>{
         self.createCanvas()
 		self.draw_background()
 		self.create_cards()
 		self.draw_cards()
     }
 
-    this.createCanvas = function () {
+    this.createCanvas = ()=>{
 		canvas = document.getElementById("baccarat_canvas")
 		ctx = canvas.getContext("2d")
 		
@@ -234,21 +234,21 @@ function baccarat_game(props){
 		}
 	}	
 
-	this.preaload_images = function(item){
-		return new Promise(function(resolve){
+	this.preaload_images = (item)=>{
+		return new Promise((resolve)=>{
 			let image = new Image()
 			image.src = item.src
-			image.addEventListener("load", function() {
+			image.addEventListener("load", ()=>{
 				resolve({suit: item.suit, value: item.value, src: image})
 			}, false)
 		})
 	}
 
-	this.draw_background = function(){
+	this.draw_background = ()=>{
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
 	}
 
-	this.create_cards = function(){
+	this.create_cards = ()=>{
 		card_list = []
 		let space = (canvas.width - (card_base.width*7 + card_base.x*6))/2
 		
@@ -299,7 +299,7 @@ function baccarat_game(props){
 		}))
 	}
 
-	this.draw_cards = function(){
+	this.draw_cards = ()=>{
 		if(baccarat_data){
 			for(let i in card_list){
 				let type = card_list[i].type
@@ -313,12 +313,12 @@ function baccarat_game(props){
 		}
 	}	
 
-	this.action = function(){		
+	this.action = ()=>{		
 		self.draw_cards()
 		self.check_win_lose()
     }
 
-	this.check_win_lose = function(){
+	this.check_win_lose = ()=>{
 		const {banker, player} = baccarat_data
 		if((player.win && banker.win) || (player.value_hand === banker.value_hand)){ 
 			self.result("tie") // we have a tie
@@ -341,7 +341,7 @@ function baccarat_game(props){
 		}
 	}
 
-	this.result = function(x){
+	this.result = (x)=>{
 		let game = null	
 		if(props.page && props.page.game){
 			game = props.page.game
