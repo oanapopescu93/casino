@@ -372,9 +372,15 @@ var word_bank = {
     not_enough_money: "余额不足",
 
     // baccarat
-    player: "Player",
-    banker: "Banker",
-    tie: "Tie",
+    player: "玩家",
+    banker: "庄家",
+    tie: "平局",
+
+    // craps
+    dice: "骰子",
+    dices: "骰子们",
+    sum: "总和",
+    point: "点数",
 
     // results
     results: "结果",

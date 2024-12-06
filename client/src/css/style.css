@@ -1831,9 +1831,6 @@ footer{
 }
 
 /* BACCARAT */
-.baccarat_table{
-  margin-bottom: var(--padding);
-}
 .baccarat_table .table_box h3, 
 .baccarat_table .table_box .counter{
   padding-bottom: var(--padding_small);
@@ -3553,6 +3550,13 @@ a.donation_button{
 .six_2 {top: 50%;left: 20%;}
 .six_5 {top: 50%;left: 80%; }
 
+.bets_container{
+  display: inline-block;
+  width: 100%;
+  max-width: 250px;
+  margin-top: var(--padding);
+}
+
 .craps_board_box{
 	padding:var(--padding);	
 	color:var(--color);
@@ -3573,6 +3577,10 @@ a.donation_button{
 	padding: var(--padding_small);
 	border-bottom: solid 1px var(--color);
 	margin-bottom: var(--padding_small);
+}
+.craps_board_text:last-child{
+  border-bottom: solid 0px transparent;
+	margin-bottom: 0px;
 }
 .craps_board_text .text{
 	padding: 0px var(--padding_small);

@@ -1,42 +1,36 @@
 import React, {useState, useEffect} from 'react'
 import RouletteTable from '../roulette/rouletteTable'
+import CrapsTable from '../craps/crapsTable'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
-import CrapsTable from '../craps/crapsTable'
 
 function GameBets(props){
-    let open = props.open ? "open" : ""
-    let template = props.page.game.table_name
-    const [clear, setClear] = useState(0)
+    const {page, update, getData, closeTable} = props
 
-    function handleClose(){
-        props.closeTable()
-    }
+    let open = props.open ? "open" : ""
+    let template = page.game.table_name
+    const [clear, setClear] = useState(0)
 
     function handleClear(){
         setClear(prevUpdate => prevUpdate + 1)
-        props.getData(null)
+        getData(null)
     }
-
-    function getData(x){
-        props.getData(x)
-	}
 
     useEffect(() => {			
 		setClear(prevUpdate => prevUpdate + 1)
-        props.getData(null)
-	}, [props.update])
+        getData(null)
+	}, [update])
 
     return <div className={"game_bets_container " + open}>
         <div id={"game_bets_" + template} className="game_bets shadow_concav">
-            <div className="close" onClick={()=>handleClose()}>x</div>
+            <div className="close" onClick={()=>closeTable()}>x</div>
             <div className="game_bets_box">						
                 {(() => {
                     switch (template) {
                         case "craps":
-                            return <CrapsTable {...props} clear={clear} getData={(e)=>getData(e)} />
+                            return <CrapsTable {...props} clear={clear} />
                         case "roulette":
-                            return <RouletteTable {...props} clear={clear} getData={(e)=>getData(e)} />
+                            return <RouletteTable {...props} clear={clear} />
                         default:
                             return null
                     }

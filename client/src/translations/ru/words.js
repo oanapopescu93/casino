@@ -372,9 +372,15 @@ var word_bank = {
     not_enough_money: "Недостаточно средств",
 
     // baccarat
-    player: "Player",
-    banker: "Banker",
-    tie: "Tie",
+    player: "Игрок",
+    banker: "Банкир",
+    tie: "Ничья",
+
+    // craps
+    dice: "Кубик",
+    dices: "Кубики",
+    sum: "Сумма",
+    point: "Очко",
 
     // results
     results: "Результаты",

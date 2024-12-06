@@ -378,6 +378,12 @@ var word_bank = {
     banker: "Banker",
     tie: "Tie",
 
+    // craps
+    dice: "Dice",
+    dices: "Dices",
+    sum: "Sum",
+    point: "Point",
+
     // results
     results: "Results",
     result: "Result",

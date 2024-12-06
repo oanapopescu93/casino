@@ -4,7 +4,8 @@ import $ from 'jquery'
 
 function craps_bets(props){
     let self = this
-	let images = props.images
+	const { images, bet, getData } = props
+	
 	let canvas
 	let ctx
 	let items = get_craps_bets()
@@ -51,7 +52,7 @@ function craps_bets(props){
 				gameType = items[i].text
 				gameOdds = items[i].odds
 				self.drawBets(images[i])
-				props.getData({gameType, gameOdds, bet: props.bet})
+				getData({gameType, gameOdds, bet: bet})
 				break
 			}
 		}
