@@ -7,7 +7,7 @@ import { translate } from '../../../../translations/translate'
 import { decryptData } from '../../../../utils/crypto'
 
 function Keno(props){
-    const {page, home, user, settings, socket} = props
+    const {page, home, user, settings, socket, handleHandleExit} = props
     const {lang} = settings
 
     let game = page.game
@@ -169,10 +169,6 @@ function Keno(props){
         }
     }
 
-    function handleBack(){
-        props.handleHandleExit()
-    }
-
     function handleShowPrizes(){
         let payload = {
             open: true,
@@ -320,7 +316,7 @@ function Keno(props){
                 handleShowPrizes={()=>handleShowPrizes()}
                 resetKenoSpots={()=>resetKenoSpots()}
                 gameStart={()=>gameStart()}
-                handleBack={()=>handleBack()}
+                handleBack={()=>handleHandleExit()}
             />}
         </div>
     </div>

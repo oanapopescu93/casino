@@ -160,7 +160,8 @@ function Slots(props){
 	return <>
 		{slotsData ? <div id="slots" className="game_box">
 			<Header template={"game"} details={page} lang={lang} theme={theme}/>
-			<SlotsGame 
+			<p>{translate({lang: lang, info: "under_construction"})}</p>
+			{/* <SlotsGame 
 				{...props} 
 				slotsData={slotsData}
 				slotsStatus={slotsStatus}
@@ -173,9 +174,9 @@ function Slots(props){
 				getImagePos={(e)=>getImagePos(e)}
 				updateStatus={(e)=>updateStatus(e)}
 				handlePay={(pay, win)=>handlePay(pay, win)}
-			/>	
+			/>	 */}
 			<div className="slot_machine_board">
-				<GameBoard template="slots_board" {...props} bet={slotsBets} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} />
+				{/* <GameBoard template="slots_board" {...props} bet={slotsBets} choice={(e)=>choice(e)} updateBets={(e)=>updateBets(e)} /> */}
 			</div>
 			{width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
 				{translate({lang: lang, info: "prizes"})}
