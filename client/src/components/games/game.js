@@ -108,7 +108,6 @@ function Game(props){
                     if(room){
                         switch (title) {
                             case "roulette":
-                                console.log('aaa')
                                 return <Roulette {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "blackjack":
                                 return <Blackjack {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
