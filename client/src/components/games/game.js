@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Roulette from './pages/roulette/roulette'
@@ -33,15 +33,14 @@ function Game(props){
     const [streak, setStreak] = useState(1)
     let room = useSelector(state => state.page.room)
 
-    function results(res, showPopup = true){
-        if(res && res.bet && res.bet > 0){ //send results to server only if he bet
-            socket.emit('game_results_send', res)
+    const results = useCallback((res, showPopup = true) => {
+        if (res && res.bet > 0) {
+            socket.emit("game_results_send", res)
             dispatch(changeMoney(res.money))
 
-            if(!showPopup){
-                return
-            }
-            let payload = {
+            if (!showPopup) return
+
+            const payload = {
                 open: true,
                 template: "game_results",
                 title: "results",
@@ -50,13 +49,14 @@ function Game(props){
             }
             dispatch(changePopup(payload))
         }
-    }
+        }, [socket, dispatch]
+    )
 
-    function handleExit(){
+    const handleExit = useCallback(() => {
         dispatch(changePage('Salon'))
         dispatch(changeGame(null))
         dispatch(changeGamePage(null))
-    }
+    }, [dispatch])
 
     useEffect(() => {
         let show_streak_popup = getCookie("casino_show_streak_popup")
@@ -85,21 +85,22 @@ function Game(props){
         } else {
             setStreak(casino_streak)
         }
-
-        let room = getRoom(game)
-        socket.emit('join_room', {room: room, uuid: user.uuid, user: user.user}) 
-        socket.on('chatroom_users_read', (res)=>{
-            setChatRoomUsers(res)
-            dispatch(changeRoom(room))
-        })
-        return () => {
-			socket.emit('leave_room', {room: room, uuid: user.uuid, user: user.user}) 
-            socket.on('chatroom_users_read', (res)=>{
-                setChatRoomUsers(res)
-            })
-            dispatch(changeRoom(null))
-		}
     }, [socket])
+
+    useEffect(() => {
+        const currentRoom = getRoom(game)
+
+        socket.emit("join_room", { room: currentRoom, uuid: user.uuid, user: user.user })
+        socket.on("chatroom_users_read", (res) => {
+            setChatRoomUsers(res)
+            dispatch(changeRoom(currentRoom))
+        });
+
+        return () => {
+            socket.emit("leave_room", { room: currentRoom, uuid: user.uuid, user: user.user })
+            dispatch(changeRoom(null))
+        };
+    }, [socket, game, user, dispatch])
 
     return <>   
         {!game_page ? <>
@@ -107,6 +108,7 @@ function Game(props){
                     if(room){
                         switch (title) {
                             case "roulette":
+                                console.log('aaa')
                                 return <Roulette {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "blackjack":
                                 return <Blackjack {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />

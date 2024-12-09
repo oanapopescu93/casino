@@ -1,24 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { get_craps_bets, getRoom } from '../../../../utils/games'
 import GameBets from '../other/gameBets'
 import CrapsGame from './crapsGame'
 import { decryptData } from '../../../../utils/crypto'
-import { changePopup } from '../../../../reducers/popup'
-import { translate } from '../../../../translations/translate'
+import { checkBets } from '../../../../utils/checkBets'
+import { useHandleErrors } from '../../../../utils/utils'
 
 function Craps(props){
     const { page, user, settings, socket } = props
     const { lang } = settings
 
-    const [betInfo, setBetInfo] = useState({gameType: "pass line", gameOdds: 2, bet: 0})
+    const [betInfo, setBetInfo] = useState({gameType: "pass line", gameOdds: 2, bet: 1})
     const [open, setOpen] = useState(false)
     const [images, setImages] = useState(null)
     const [startGame, setStartGame] = useState(false)
     const [showNumbers, setShowNumbers] = useState([1, 1])
     const [crapsBoardList, setCrapsBoardList] = useState([])
-
-    let dispatch = useDispatch()
+    
+    const handleErrors = useHandleErrors()
 
     let items = get_craps_bets()
     let money = user.money ? decryptData(user.money) : 0
@@ -65,19 +64,10 @@ function Craps(props){
 	}, [])
 
     function gameStart(){
-        if(!startGame && betInfo.bet > 0){
+        if(!startGame && checkBets({bets: betInfo.bet, money, lang}, handleErrors)){
             setStartGame(true)
             setCrapsBoardList([])
             rollCraps()
-        } else {
-            let payload = {
-				open: true,
-				template: "error",
-				title: "error",
-				data: translate({lang: lang, info: "no_bets"}),
-				size: "sm",
-			}
-			dispatch(changePopup(payload))
         }
     }
 
@@ -313,7 +303,7 @@ function Craps(props){
     function check_win_lose(status){
         let bet = betInfo.bet
         setStartGame(false)
-        updateBets(0)
+        updateBets(1)
 
         let craps_payload = {
 			uuid: user.uuid,

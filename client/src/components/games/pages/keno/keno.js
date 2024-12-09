@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { translate } from '../../../../translations/translate'
 import { decryptData } from '../../../../utils/crypto'
+import { useHandleErrors } from '../../../../utils/utils'
+import { checkBets } from '../../../../utils/checkBets'
 
 function Keno(props){
     const {page, home, user, settings, socket, handleHandleExit} = props
@@ -13,6 +15,7 @@ function Keno(props){
     let game = page.game
     let money = user.money ? decryptData(user.money) : 0
     let dispatch = useDispatch()
+    const handleErrors = useHandleErrors()
 
     const [kenoSpots, setKenoSpots] = useState([])
     const [kenoSpotsSelectedArray, setKenoSpotsSelectedArray] = useState([])
@@ -180,9 +183,12 @@ function Keno(props){
         dispatch(changePopup(payload))
     }
 
-    function handleStartGame(){
-        setStart(true)
-        sendKenoData()
+    function handleStartGame(){//buuu
+        let bet = pricePerGame * noOfGames
+        if(checkBets({bets: bet, money, lang}, handleErrors)){
+            setStart(true)
+            sendKenoData()
+        }
     }
 
     function sendKenoData(){

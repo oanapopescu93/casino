@@ -1,8 +1,6 @@
 import React from 'react'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { translate } from '../../../../translations/translate'
-import { decryptData } from '../../../../utils/crypto'
-import { changePopup } from '../../../../reducers/popup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
@@ -10,33 +8,16 @@ import Carousel from '../../../carousel/carousel'
 import Header from '../../../partials/header'
 
 function RaceTables(props){
-    const {home, page, user, settings} = props
+    const {home, page, settings, getData} = props
     const {lang, theme} = settings
     
     let race_bets = useSelector(state => state.games.race.bets) 
-    let money = user.money ? decryptData(user.money) : 0
-    let dispatch = useDispatch()
 
     let race_array = []
 	if(home.race_rabbits && home.race_rabbits.length>0){
 		race_array = home.race_rabbits.filter((x)=>{
 			return x.participating
 		})
-	}
-
-    function getData(){
-        const sum = race_bets.reduce((total, current) => total + current.bet, 0)
-        if(money >= sum){ //the user has enough money to make all these bets
-            props.getData(race_bets)
-        } else {
-            let payload = {
-				open: true,
-				template: "error",
-				title: "error",
-				data: translate({lang: lang, info: "no_money"})
-			}
-			dispatch(changePopup(payload))
-        }
 	}
 
     const race_carousel_options = {
@@ -94,7 +75,7 @@ function RaceTables(props){
                     <Button 
                         type="button"
                         className="mybutton round button_transparent shadow_convex"
-                        onClick={() => getData()}
+                        onClick={() => getData(race_bets)}
                     ><FontAwesomeIcon icon={faPlay} /></Button>
                     <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
                 </div>

@@ -1937,6 +1937,9 @@ footer{
 #slots_board .counter{
   margin: var(--padding_small) 0px 0px 0px;
 }
+#slots_board .counter .counter_minus, #slots_board .counter .counter_plus{
+  color: var(--bg);
+}
 #slots_board .round{
   margin: 0px var(--padding_small);
 }
@@ -2990,7 +2993,7 @@ a.donation_button{
 }
 .counter .counter_minus, .counter .counter_plus{
   border: solid 1px var(--color);
-  color: var(--bg);
+  color: var(--color);
   border-radius: 100%;
   padding: var(--padding_small);
   width: 25px;

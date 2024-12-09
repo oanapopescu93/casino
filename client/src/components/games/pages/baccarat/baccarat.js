@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { translate } from '../../../../translations/translate'
-import { useDispatch } from 'react-redux'
-import { changePopup } from '../../../../reducers/popup'
 import { get_cards, getRoom } from '../../../../utils/games'
 import Header from '../../../partials/header'
 import BaccaratGame from './baccaratGame'
 import BaccaratTable from './baccaratTable'
 import BaccaratButtons from './baccaratButtons'
-import { getWindowDimensions } from '../../../../utils/utils'
+import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
+import { checkBets } from '../../../../utils/checkBets'
+import { decryptData } from '../../../../utils/crypto'
 
 function Baccarat(props){
     const {page, user, settings, socket} = props
@@ -23,9 +22,10 @@ function Baccarat(props){
     const [gameResults, setGameResults] = useState(null)
     const [images, setImages] = useState(null)
     const [width, setWidth] = useState(getWindowDimensions().width)
-
-    let dispatch = useDispatch()
+    
+    const handleErrors = useHandleErrors()
     let items = get_cards()
+    let money = user.money ? decryptData(user.money) : 0
 
     function handleResize() {
         setWidth(getWindowDimensions().width)
@@ -59,25 +59,20 @@ function Baccarat(props){
         }
     }
 
-    function startGame(){
+    function startGame(){        
         if(choice && choice.bet > 0){
-            let baccarat_payload_server = {
-                uuid: user.uuid,
-                room: getRoom(game),
-                action: "start",
-                choice
-            }
-            socket.emit('baccarat_send', baccarat_payload_server)            
+            if(checkBets({bets: choice.bet, money, lang}, handleErrors)){
+                let baccarat_payload_server = {
+                    uuid: user.uuid,
+                    room: getRoom(game),
+                    action: "start",
+                    choice
+                }
+                socket.emit('baccarat_send', baccarat_payload_server)
+            }         
         } else {
-            let payload = {
-                open: true,
-                template: "error",
-                title: "error",
-                data: translate({lang: lang, info: "no_bets"}),
-                size: "sm",
-            }
-            dispatch(changePopup(payload))
-        }        
+            handleErrors("error", "no_bets", lang)
+        }   
 	}
 
     function resetGame(){

@@ -134,21 +134,20 @@ function Card(config){
 
 function baccarat_game(props){
     let self = this	
+	const {settings, gameData, choice, images, page, user} = props
+	const {lang, theme} = settings
+
     let canvas
     let ctx
-	let baccarat_data = props.gameData ? props.gameData : null
-	let lang = props.settings.lang
-	let choice = props.choice
+	let baccarat_data = gameData ? gameData : null
 	
 	let card_list = []
 	let card_base = {}
 	let card = {}
 	let card_img = {width: 237, height: 365}
 	let title = [20, 20]
-	let images = props.images
-	let space_between_cards = 16
+	let space_between_cards = 16    
     
-    let theme = props.settings.theme
     let text_color = "#b39800"
     let text_bg = "#fff7cc"
     switch(theme){
@@ -342,15 +341,11 @@ function baccarat_game(props){
 	}
 
 	this.result = (x)=>{
-		let game = null	
-		if(props.page && props.page.game){
-			game = props.page.game
-		}
-		let money = props.user.money ? decryptData(props.user.money) : 0
+		let money = user.money ? decryptData(user.money) : 0
 
 		let baccarat_payload = {
-			uuid: props.user.uuid,
-			game,
+			uuid: user.uuid,
+			game: page.game,
 			status: 'lose',
 			bet: choice.bet,
 			money: money - choice.bet

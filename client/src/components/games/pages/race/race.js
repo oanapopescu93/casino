@@ -5,13 +5,21 @@ import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { translate } from '../../../../translations/translate'
 import { resetGame } from '../../../../reducers/games'
+import { useHandleErrors } from '../../../../utils/utils'
+import { decryptData } from '../../../../utils/crypto'
+import { checkBets } from '../../../../utils/checkBets'
 
 function Race(props){
-    const {settings} = props
+    const {settings, user} = props
     const {lang} = settings
+
     const [startRace, setStartRace] = useState(false)
     const [bets, setBets] = useState([])
+
+    let money = user.money ? decryptData(user.money) : 0
+
     let dispatch = useDispatch()
+    const handleErrors = useHandleErrors()
 
     function calculateTotalBets(array){
         let total = 0
@@ -25,18 +33,9 @@ function Race(props){
 
     function getData(x){
         let total = calculateTotalBets(x)
-        if(total>0){
+        if(checkBets({bets: total, money, lang}, handleErrors)){
             setBets(x)
 		    setStartRace(true)
-        } else {
-            let payload = {
-                open: true,
-                template: "error",
-                title: "error",
-                data: translate({lang: lang, info: "no_bets"}),
-                size: "sm",
-            }
-            dispatch(changePopup(payload))
         }
 	}
 

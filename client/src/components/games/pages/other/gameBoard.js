@@ -102,7 +102,7 @@ function GameBoard(props){
                             </Col>
                         </> : <>
                             <Col xs={8} sm={4}>
-                                <Counter num={bet} max={max_bet} update={(e)=>handleUpdate(e)} />
+                                <Counter min={1} num={bet} max={max_bet} update={(e)=>handleUpdate(e)} />
                             </Col>
                             <Col xs={4} sm={4} className="d-none d-sm-block"/>
                             <Col xs={4} sm={4}>

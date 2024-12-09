@@ -8,15 +8,18 @@ import { get_cards, getRoom } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
-import { getWindowDimensions } from '../../../../utils/utils'
+import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
+import { checkBets } from '../../../../utils/checkBets'
 
 function Blackjack(props){
 	const {page, user, settings, socket, handleHandleExit} = props
 	const {lang, theme} = settings
     const {game} = page
 
+    const handleErrors = useHandleErrors()
+
     const [startGame, setStartGame]= useState(false)
-	const [bets, setBets]= useState(0)
+	const [bets, setBets]= useState(1)
     const [gameData, setGameData] = useState(null)
     const [images, setImages] = useState(null)
     const [width, setWidth] = useState(getWindowDimensions().width)
@@ -39,7 +42,13 @@ function Blackjack(props){
         }
     }, [])
 
-    function choice(action){        
+    function choice(action){
+        if(action === "start"){
+            if(!checkBets({bets, money, lang}, handleErrors)){
+                return
+            }
+        }  
+
         if(action === "start" || action === "hit" || action === "stand" || action === "double_down"  || action === "surrender"){
             let blackjack_payload_server = {
                 uuid: user.uuid,
@@ -47,23 +56,11 @@ function Blackjack(props){
                 action,
                 bet: bets,
                 howManyPlayers
-            }
-			let payload = null
+            }			
             switch (action){
                 case "start":
-                    if(bets === 0){
-						payload = {
-							open: true,
-							template: "error",
-							title: "error",
-							data: translate({lang: lang, info: "no_bets"}),
-							size: "sm",
-						}
-						dispatch(changePopup(payload))
-					} else {
-						socket.emit('blackjack_send', blackjack_payload_server)								
-						setStartGame(true)
-					}
+                    socket.emit('blackjack_send', blackjack_payload_server)								
+					setStartGame(true)
                     break
                 case "hit":
                 case "stand":

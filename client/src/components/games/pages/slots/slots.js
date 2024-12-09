@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import { getRoom, get_slots_images } from '../../../../utils/games'
-import { getWindowDimensions } from '../../../../utils/utils'
+import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
 import { changePopup } from '../../../../reducers/popup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
@@ -11,12 +11,14 @@ import Header from '../../../partials/header'
 import { decryptData } from '../../../../utils/crypto'
 import SlotsGame from './slotsGame'
 import GameBoard from '../other/gameBoard'
+import { checkBets } from '../../../../utils/checkBets'
 
 function Slots(props){
 	const {page, user, settings, socket, handleHandleExit} = props
     const {lang, theme} = settings
 
     let areYouSureSlotsMaxBet = useSelector(state => state.areYouSure.areYouSureSlotsMaxBet)
+    const handleErrors = useHandleErrors()
 
 	const [width, setWidth] = useState(getWindowDimensions().width)    	
 	const [lines, setLines] = useState(0)
@@ -98,13 +100,9 @@ function Slots(props){
     function choice(type){	
         if(!startGame){
             switch(type){
-                case "start":
-                    if(bets > money){
-                        handleErrors("error", "not_enough_money")
-                    } else if(bets > 0){
+                case "start":                    
+                    if(checkBets({bets, money, lang}, handleErrors)){
                         setStartGame(true)
-                    } else {
-                        handleErrors("error", "no_bets")
                     }
                     break
                 case "max":
@@ -129,13 +127,9 @@ function Slots(props){
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Enter' && !startGame) {
-                if(bets > money){
-                    handleErrors("error", "not_enough_money")
-                } else if(bets > 0){
-					setStartGame(true)
-				} else {
-                    handleErrors("error", "no_bets")
-				}
+                if(checkBets({bets, money, lang}, handleErrors)){
+                    setStartGame(true)
+                }
             }
         }
         window.addEventListener('keydown', handleKeyDown)
@@ -145,11 +139,7 @@ function Slots(props){
     }, [bets])
 
 	function updateBets(e){
-        if(e > money){
-            handleErrors("error", "not_enough_money")            
-        } else {
-            setBets(e)
-        }
+        setBets(e)
     }
 
 	function handleShowPrizes(){
@@ -202,17 +192,6 @@ function Slots(props){
             bet: sum
         }		
         props.results(slots_payload, win)
-    }
-
-    function handleErrors(title="error", text=""){
-        let payload = {
-            open: true,
-            template: "error",
-            title: translate({lang: lang, info: title}),
-            data: translate({lang: lang, info: text}),
-            size: "sm",
-        }
-        dispatch(changePopup(payload))
     }
 
 	return <div id="slots" className="game_box">

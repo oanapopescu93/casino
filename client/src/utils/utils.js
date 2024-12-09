@@ -1,3 +1,7 @@
+import { useDispatch } from "react-redux"
+import { translate } from "../translations/translate"
+import { changePopup } from "../reducers/popup"
+
 export const isEmpty = (element)=>{
   let empty = true
   if(typeof element !== "undefined" && element !== 'null' && element !== null && element !== '' && element !== 'N/A'){
@@ -301,3 +305,20 @@ export const handleChangeTheme = (choice) => {
 }
 
 export const isNumber = (n) => { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+
+export const useHandleErrors = () => {
+  const dispatch = useDispatch()
+
+  const handleErrors = (title = "error", text = "", lang = "ENG") => {
+      let payload = {
+          open: true,
+          template: "error",
+          title: translate({ lang: lang, info: title }),
+          data: translate({ lang: lang, info: text }),
+          size: "sm",
+      }
+      dispatch(changePopup(payload))
+  }
+
+  return handleErrors
+}
