@@ -653,6 +653,7 @@ textarea {
   display: none;
 }
 .dropdown .dropdown-menu{
+  z-index: 9999;
   background-color: var(--bg);
   border: solid 1px var(--color);
   color: var(--color);
@@ -1112,6 +1113,25 @@ textarea {
   background: var(--darkgreen);
   border: solid 1px var(--green);
   color: var(--bg);
+}
+
+.areYouSure_buttons{
+  margin-top: var(--padding_small);
+}
+.areYouSure_buttons .areYouSure_button{
+  display: inline-block;
+  width: 100%;
+  max-width: 100px;
+  padding: 0px var(--padding_small);
+}
+.areYouSure_buttons .areYouSure_button .button_fullcolor{
+  background-color: var(--bg)!important;
+  border: solid 1px var(--bg)!important;
+  color: var(--color)!important;
+}
+.areYouSure_buttons .areYouSure_button .button_fullcolor:hover{
+  background-color: var(--dark_color)!important;
+  border: solid 1px var(--dark_color)!important;
 }
 
 /* COOKIES */
@@ -1873,18 +1893,20 @@ footer{
   border-left: solid var(--padding_small) var(--light_color);
   border-radius: var(--radius_small);
   padding: var(--padding_small) var(--padding);
-  color: var(--bg);
+  color: var(--light_color);
   display: inline-block;
   width: 100%;
 }
 .gameboard .counter .counter_minus, .gameboard .counter .counter_plus {
-  background-color: var(--color);
+  border: solid 1px var(--light_color);
+  background-color: var(--light_color);
 }
 .gameboard .counter .counter_minus:hover, .gameboard .counter .counter_plus:hover {
   border: solid 1px var(--bg);
 }
 .gameboard .input_light {
-  background-color: var(--color);
+  border: solid 1px var(--light_color);
+  background-color: var(--light_color);
   color: var(--bg);
 }
 .gameboard .button_box {
@@ -1895,8 +1917,12 @@ footer{
   width: 100%;
   text-align: center;
 }
+.gameboard .button_fullcolor{
+  border: solid 1px var(--light_color)!important;
+  background-color: var(--light_color)!important;
+}
 .gameboard .button_fullcolor:hover{
-  background-color: var(--color)!important;
+  background-color: var(--light_color)!important;
   border: solid 1px var(--bg)!important;
   color: var(--bg)!important;
 }
@@ -1907,6 +1933,12 @@ footer{
   max-width: 150px;
   margin-right: var(--padding_small);
   height: 25px;
+}
+#slots_board .counter{
+  margin: var(--padding_small) 0px 0px 0px;
+}
+#slots_board .round{
+  margin: 0px var(--padding_small);
 }
 
 /* DONATE */
@@ -2958,6 +2990,7 @@ a.donation_button{
 }
 .counter .counter_minus, .counter .counter_plus{
   border: solid 1px var(--color);
+  color: var(--bg);
   border-radius: 100%;
   padding: var(--padding_small);
   width: 25px;
@@ -3285,9 +3318,9 @@ a.donation_button{
   border-radius: var(--radius_small);
   margin-top: var(--padding);
 }
-#slot_machine_lines{
+#slot_results{
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	top:0px;
 	left:0px;
 	right:0px;
@@ -3297,17 +3330,18 @@ a.donation_button{
   overflow: hidden;
 	display:inline-block;
   vertical-align: top;
-	height: 310px;
+	height: 312px;
   max-width: 110px;
 	border: var(--padding_small) solid;
   border-color: var(--dark_color) var(--light_color) var(--dark_color) var(--dark_color);
+  background: var(--slot_canvas_color);
 }
 .slot_machine .box:last-child{
 	border-right: var(--padding_small) solid var(--dark_color);
 }
-.slot_machine .slot_canvas{
+.slot_machine .slot_reel{
   position: relative;
-	background: var(--slot_canvas_color);
+  z-index: 1;	
 }
 .slot_machine_board{
   width: 100%;
@@ -3338,6 +3372,33 @@ a.donation_button{
   vertical-align: top;
   padding: 0px var(--padding_small);
 }
+.slots_bets{
+  margin: var(--padding) 0px;
+}
+.slots_bets .dropdown .dropdown-toggle{
+  font-size: 12px;
+  line-height: 12px;
+  width: 100%;
+  background-color: var(--light_color);
+  border: solid 1px var(--light_color); 
+  color: var(--bg);
+}
+.slots_bets .dropdown .dropdown-menu {
+  min-width: auto;
+  max-height: 100px;
+}
+.slots_bets_label{
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: var(--padding_small);
+  width: 45px;
+}
+.slots_bets_dropdown{
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 50px);
+}
+
 @media (max-width: 767px) {	
   .game_box{
     padding: var(--padding) 40px var(--padding) var(--padding);
@@ -3346,10 +3407,10 @@ a.donation_button{
     padding: 0px 40px 0px 0px;
   }
   .slot_machine .box{
-    height: 220px;
+    height: 222px;
   }
-  .slot_machine.slot_machine_3 .box {
-    height: 310px;
+  .slot_machine_board{
+    max-width: 100%;
   }
   .dashboard_right_button{
     width: auto;
@@ -3365,12 +3426,9 @@ a.donation_button{
   }
 }
 @media (max-width: 600px) {	
-  .slot_machine .box{
-    height: 190px;
+  .slot_machine.slot_machine_5 .box {
+    height: 192px;
   }
-  .slot_machine.slot_machine_3 .box {
-    height: 310px;
-  }  
 }
 @media (max-width: 480px) {
   .slot_machine{
@@ -3380,12 +3438,10 @@ a.donation_button{
   .slot_machine .box {
     border: 3px solid;
     border-color: var(--dark_color) var(--color) var(--dark_color) var(--dark_color);
+    height: 218px;
   }
-  .slot_machine .box {
-    height: 155px;
-  }
-  .slot_machine.slot_machine_3 .box {
-    height: 215px;
+  .slot_machine.slot_machine_5 .box {
+    height: 128px;
   }
   .cookies_msg{
     padding: var(--padding);
@@ -3398,12 +3454,6 @@ a.donation_button{
     margin-top: var(--padding_small);
   }
 }
-@media (max-width: 400px) {
-  .slot_machine .box{
-    height: 125px;
-  }
-}
-@media (max-width: 360px) {}
 
 /* CRAPS */
 .craps_subtitle{
@@ -4467,7 +4517,7 @@ a.donation_button{
     padding: var(--padding);
   }
   
-  input, textarea, #payment_form .dropdown .dropdown-toggle, #withdraw_form .dropdown .dropdown-toggle{
+  input, textarea, #payment_form .dropdown .dropdown-toggle, #withdraw_form .dropdown .dropdown-toggle, .slots_bets_dropdown .dropdown .dropdown-toggle{
     font-size: 12px;
     line-height: 6px;
     height: 20px;
@@ -4486,6 +4536,9 @@ a.donation_button{
   }
   #game_bets_clear svg{
     font-size: 18px;
+  }
+  #slots_board .round{
+    margin: var(--padding_big) 0px;
   }
 
   /* DASHBOARD */  
@@ -4941,9 +4994,6 @@ a.donation_button{
   }
 
   /* GAMES */
-  .slot_machine.slot_machine_3 .box {
-    height: 221px;
-  }  
   .dice_container{
     margin-bottom: var(--padding);
   }

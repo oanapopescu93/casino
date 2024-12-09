@@ -276,7 +276,7 @@ export const handleChangeTheme = (choice) => {
       document.documentElement.style.setProperty('--color', 'pink')
       document.documentElement.style.setProperty('--transparent_color', 'rgba(255, 105, 180, 0.2)')
       document.documentElement.style.setProperty('--dark_color', '#7A1A7D') // Dark purple
-      document.documentElement.style.setProperty('--light_color', '#ce2bd4') // Dark purple
+      document.documentElement.style.setProperty('--light_color', '#d856dc') // Light purple
       document.documentElement.style.setProperty('--slot_canvas_color', '#ffccd5')
       break
     case 'black':

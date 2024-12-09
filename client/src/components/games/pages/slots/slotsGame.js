@@ -1,33 +1,13 @@
 import React, { useEffect } from 'react'
 import { translate } from '../../../../translations/translate'
-import { randomIntFromInterval } from '../../../../utils/utils'
-import $ from 'jquery'
+import { randomIntFromInterval, sortList } from '../../../../utils/utils'
+import { draw_dot } from '../../../../utils/games'
 
 function slots_game(props){
     let self = this
-    const {slotsData, reel, lines, images} = props	
-
-	let suffleArray = []
-	let offset = []
-	let imageSize = [100, 100]
-	let imageSizeCanvas = [290, 290, 5, 5, 80, 80]
-	let spinTime = randomIntFromInterval(2000, 4000) // how long all slots spin before starting countdown
-	let spinTimeReel = spinTime/5 // how long each slot spins at minimum
-	let slotSpeed = [] // how many pixels per second slots roll
-	let speed = 10
-	let border = 5	
-	let imagesPos = []
-    let shuffledImages = []
+    const {settings, slotsData, images, slotReels, bet, slotResults} = props
+    const {theme} = settings
 	
-	let slotsCanvas = []
-	let slotsCtx = []
-    let ctx
-
-	self.state = 0
-	let now = new Date()
-	let lastUpdate = new Date()
-
-	let theme = props.settings.theme
 	let lineColor = ""
     switch(theme){
 		case "purple":
@@ -45,20 +25,33 @@ function slots_game(props){
 			break
 	}
 
-	this.ready = ()=>{
-        slotsCanvas = []
-        suffleArray = slotsData.array
-        offset = self.get_offset(reel)
-        for(let i in reel){
-            shuffledImages = self.create_suffle(i, images)
-            slotsCanvas.push(reel[i])
-            self.createCanvas(slotsCanvas[slotsCanvas.length-1])
-			self.draw_reel(slotsCanvas[slotsCanvas.length-1], shuffledImages)
-            // reel[i].css('transform', 'translate(0px, 0px)')
-        }
-		self.fit()
-		self.create_slot_machine_lines()
+    let suffleArray = []
+    let offset = []
+    let slotsCtx = []
+    let ctx
 
+    let imageSize = [100, 100]
+	let imageSizeCanvas = [290, 290, 5, 5, 80, 80]	
+	let border = 5
+    let arrayPos = []
+	let imagesPos = props.imagesPos ? props.imagesPos : []
+
+    let running = true
+    let state = 0
+    let stopped = []
+    let slotSpeed = [] // how many pixels per second slots roll
+    let speed = 10
+    let spinTime = randomIntFromInterval(2000, 5000) // how long all slots spin before starting countdown
+	let spinTimeReel = spinTime / slotReels.length
+    let now = new Date()
+	let lastUpdate = new Date()
+
+	this.ready = ()=>{
+        suffleArray = slotsData.array
+        offset = self.getOffset()
+        self.fit()
+        self.createSlotResults()
+        self.createSlotReels() 
     }
     this.fit = ()=>{
 		imageSize = [100, 100]
@@ -68,7 +61,7 @@ function slots_game(props){
 		if (window.innerWidth < 480){
 			border = 3
 		}
-		switch(lines){
+		switch(slotReels.length){
 			case 3:
 				if (window.innerWidth <= 768 || window.innerHeight <= 400) {
 					imageSize = [70, 70]
@@ -104,82 +97,340 @@ function slots_game(props){
 				break
 		}
 	}
-    this.get_reel = ()=>{
-        let reel = []
-		$('.slot_canvas').each(()=>{
-            reel.push($(this))
+    this.getOffset = ()=>{
+        return slotReels.map(() => 0)
+    }    
+    this.createSlotResults = ()=>{
+        let width = slotReels.length * (imageSize[0] + 2 * border) 
+        let height = 3 * imageSize[1] + 2 * border 
+        slotResults.width = width
+        slotResults.height = height
+    }
+    this.createSlotReels = ()=>{
+        for(let i in slotReels){
+			slotReels[i].style.transform = `translate(0px, 0px)`
+            self.createCanvas(slotReels[i])
+            self.drawReel(i, slotReels[i])
+        }
+        props.getImagePos(arrayPos)
+    }
+    this.createCanvas = (canvas)=>{
+		ctx = canvas.getContext("2d")
+		slotsCtx.push(ctx)
+		canvas.width = imageSize[0]
+		canvas.height = 2 * images.length * imageSize[1]
+    }
+    this.drawReel = (index, canvas)=>{
+		slotsCtx[index].clearRect(0, 0, canvas.width, canvas.height)
+        slotsCtx[index].fillStyle = lineColor
+
+        let array = []        
+        arrayPos[index] = []
+        const length = images.length
+        const shuffledImages = self.suffleImages(index, images)
+
+        shuffledImages.forEach((img, i) => {
+            const t = parseInt(i, 10)
+
+            // Draw divider lines
+            slotsCtx[index].fillRect(0, t * canvas.width, canvas.width, 2)
+            slotsCtx[index].fillRect(0, (t + length) * canvas.width, canvas.width, 2)
+
+            // Extract image properties
+            const sx = img.getAttribute("coord_x")
+            const sy = img.getAttribute("coord_y")
+            const swidth = imageSizeCanvas[0]
+            const sheight = imageSizeCanvas[1]
+            const x = imageSizeCanvas[2]
+            const y = imageSizeCanvas[3] + i * imageSize[1]
+            const width = imageSizeCanvas[4]
+            const height = imageSizeCanvas[5]
+
+            // Draw the images
+            slotsCtx[index].drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
+            slotsCtx[index].drawImage(img, sx, sy, swidth, sheight, x, (t + length) * canvas.width, width, height)
+
+            // Add position data to the array
+            const pos1 = t * canvas.width
+            const pos2 = (t + length) * canvas.width
+
+            array.push({ i: t, img, pos: pos1 })
+            array.push({ i: t + length, img, pos: pos2 })            
         })
-		return reel
-	}
-    this.get_offset = (reel)=>{
-        return reel.map(() => 0)
-	}
-	this.create_slot_machine_lines = ()=>{
-		if(reel){
-			let canvas_lines = $('#slot_machine_lines')[0]
-			let width = reel.length * (imageSize[0] + 2 * border) 
-			let height = 3 * imageSize[1] + 2 * border 
-			canvas_lines.width = width
-			canvas_lines.height = height
-		}	
-	}
-    this.create_suffle = (i, images)=>{
+
+        array = sortList(array, "i")
+        arrayPos[index] = array    
+    }
+    this.suffleImages = (index, images)=>{
 		let myImages = []
-		for(let j in suffleArray[i]){
-			let t = suffleArray[i][j]
+		for(let i in suffleArray[index]){
+			let t = suffleArray[index][i]
 			myImages.push(images[t])
 		}
 		return myImages
 	}
-	this.createCanvas = (canvas)=>{
-        ctx = canvas.getContext("2d")
-        slotsCtx.push(ctx)
-		canvas.width = imageSize[0]
-		canvas.height = 2 * lines * imageSize[1]
+
+    this.spinReels = ()=>{
+        self.spin()
     }
-    this.draw_reel = (canvas, assets)=>{
-		ctx.clearRect(0, 0, canvas.width, canvas.height)
-		ctx.fillStyle = lineColor
-		let array = []
+	this.spin = ()=>{
+		self.reset()
         
-        let length = assets.length
-        for(let i = 0 ; i < length ; i++){
-            let img = assets[i]
+        window.requestAnimFrame = (()=>{
+			return  window.requestAnimationFrame	||
+			window.webkitRequestAnimationFrame		||
+			window.mozRequestAnimationFrame			||
+			((callback) => window.setTimeout(callback, 1000 / 60))
+	    })()
 
-            ctx.fillRect(0, i * canvas.width, canvas.width, 2)
-			ctx.fillRect(0, (i + length)  * canvas.width, canvas.width, 2)
+	  	function spinSlot(){
+			self.update()
+			if(running){
+				window.requestAnimationFrame(spinSlot)
+			} else {				
+				self.stop()
+			}
+		}
+		
+		spinSlot()
+	}
+	this.reset = ()=>{
+		running = true
+		state = 0
+		stopped = []
+		slotSpeed = []
+        offset = self.getOffset()
+        
+        slotReels.forEach(() => {
+			stopped.push(false)
+			slotSpeed.push(speed)
+		})
+		
+        //clear slot results
+		let ctx_lines = slotResults.getContext("2d")
+		ctx_lines.clearRect(0, 0, slotResults.width, slotResults.height)
+	}
+    this.update = ()=>{
+		now = new Date()
 
-            let sx = img.getAttribute( "coord_x" )
-            let sy = img.getAttribute( "coord_y" )
-            let swidth = imageSizeCanvas[0]
-            let sheight = imageSizeCanvas[1]
-            let x = imageSizeCanvas[2]
-            let y = imageSizeCanvas[3] + i * imageSize[1]
-            let width = imageSizeCanvas[4]
-            let height = imageSizeCanvas[5]
-            ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
-            ctx.drawImage(img, sx, sy, swidth, sheight, x, (i + length) * canvas.width, width, height)
+        function check_slot(index) {
+			if (now - lastUpdate > spinTimeReel) {
+				return true
+			}
+			if (offset[index] % imageSize[1] === 0) {
+				return true
+			}
+			return false
+		}
+		
+		switch (state) {
+			case 0: // all slots spinning
+				if (now - lastUpdate > spinTime) {
+					state = 1
+					lastUpdate = now
+				}
+				break
+			case 6:                
+				running = false
+				break
+			default: // stop slots one after the other                
+				stopped[state-1] = check_slot(state-1)
+				if (stopped[state-1]) {
+					slotSpeed[state-1] = 0
+					state++
+					lastUpdate = now
+				}
+		}
+		
+		for (let i in slotReels) {
+			self.rotate(i, slotSpeed[i])
+		}
 
-            let elem = {i, img, pos:i * canvas.width}
-            array.push(elem)
-            elem = {i:i + length, img, pos:(i + length) * canvas.width}
-            array.push(elem)
-        }
+        for (let i in slotReels) {
+			if (slotSpeed[i] === 0 && offset[i] % imageSize[1] !== 0) {
+				self.running = true
+				self.rotate(i, 10)
+			}
+		}
+	}	
+	this.rotate = (i, speed)=>{
+		offset[i] = offset[i] - speed
+		let max_height = -(slotReels[i].height - images.length * imageSize[1])
+		
+		if (offset[i] < max_height) {
+			offset[i] = 0
+		}
+		
+		if (slotSpeed === 0 && offset[i] % imageSize[1] !== 0) { // Ensure the offset aligns with the image size
+			offset[i] = Math.round(offset[i] / imageSize[1]) * imageSize[1]
+		}	
 
-    }
+		slotReels[i].style.transform = `translate(0px, ${offset[i]}px)`
+	}
 
-    this.spinSlots = ()=>{
-        console.log('spinSlots')
-    }
+	this.stop = ()=>{
+        let positions = self.get_results_pos()
+		let result = self.win_lose(positions)
+		self.drawResultsArray(result)
+	}
+
+    this.get_results_pos = ()=>{
+		let array = []
+        for(let i in offset){			
+			for(let j in imagesPos[i]){
+				if(imagesPos[i][j].pos === -offset[i]){
+					let t = j-1
+					for(let k=0; k<3; k++){
+						t++
+						if(!imagesPos[i][t]){
+							t = 0
+						}
+						array.push(imagesPos[i][t])
+					}
+					break
+				}
+			}
+		}			
+		return formatArray(array)
+	}
+	function formatArray(inputArray) {
+		const result = []
+		const columns = 3		
+		for (let i = 0; i < columns; i++) {			
+			for (let j = i; j < inputArray.length; j += columns) {
+				result.push(inputArray[j])
+			}
+		}		
+		return splitArray(result, slotReels.length)
+	}
+	function splitArray(array, chunkSize){
+		const result = []
+		for (let i = 0; i < array.length; i += chunkSize){
+			result.push(array.slice(i, i + chunkSize))
+		}
+		return result
+	}
+
+	this.win_lose = (array)=>{
+		let win_results = []
+		let matrix = slotsData.matrix
+		for(let i in matrix){
+			let elementArray = getArrayFromMatrix(array, matrix[i].matrix)
+			if(checkWinner(elementArray)){
+				win_results.push({matrix: matrix[i]})
+			}
+		}
+		return win_results
+	}
+	function getArrayFromMatrix(array, matrix){
+		if(array && array.length > 0){
+			const elementArray = matrix.map(([i, j]) => array[i][j].img.id)
+    		return elementArray
+		}
+		return []
+	}
+	function checkWinner(array){
+		if(array.length === 0){ //something went wrong
+			return false
+		}
+	
+		let trump_cards = array.length === 3 ? [] : ["carrot"]	
+		
+		let array_small = array.filter(item => !trump_cards.includes(item)) //contains array minus the trump_card elements
+		const allIdentical = array_small.every(item => item === array_small[0]) //Check if array_small has all identical elements		
+		if(allIdentical){ //If array_small has all identical elements, return true
+			return true
+		}
+	
+		// If array_small has more than one unique element, return false
+		if(new Set(array_small).size > 1){
+			return false
+		}
+	
+		// Check specific cases with trump cards
+		for(let i = 0; i < array.length - 1; i++){
+			if(array[i] !== array[i + 1] && !trump_cards.includes(array[i]) && !trump_cards.includes(array[i + 1])){
+				return false
+			}
+		}	
+		
+		return true
+	}
+
+	this.drawResultsArray = (results)=>{
+		if(results && results.length > 0){
+			let pay = 0
+			for(let i in results){
+				let prize = results[i].matrix.prize
+				pay = pay + prize		
+			}
+			blinkLines(results).then(()=>{
+				self.pay(pay, true)
+			})
+		} else {
+			self.pay(bet, false)
+		}
+	}
+	function blinkLines(results){
+		return new Promise((resolve)=>{
+			if(slotResults){
+				ctx = slotResults.getContext("2d")
+				let blinkCount = 0
+				let blinkInterval = setInterval(() => {
+					ctx.clearRect(0, 0, slotResults.width, slotResults.height)
+					if (blinkCount % 2 === 0) {
+						for(let i in results){
+							let matrix = results[i].matrix.matrix
+							drawLines(matrix, ctx)
+						}
+					}
+
+					blinkCount++
+
+					if (blinkCount >= 6) {
+						clearInterval(blinkInterval)
+						resolve(true)
+					}
+				}, 500)			
+			}
+		})
+	}
+	function drawLines(matrix, ctx){
+		let border = 5
+		let width = slotReels.length * (imageSize[0] + 2 * border)
+		let height = 3 * imageSize[1] + 2 * border
+		let cube = [width/slotReels.length, height/3]
+
+		//draw lines
+		ctx.beginPath()	
+		for(let j in matrix){
+			let x = matrix[j][1] * cube[0] + cube[0]/2
+			let y = matrix[j][0] * cube[1] + cube[1]/2
+			ctx.strokeStyle = "red"
+			ctx.lineWidth = 5
+			ctx.lineTo(x, y)	
+			ctx.stroke()				
+		}				
+		ctx.closePath()
+
+		//draw dots
+		for(let j in matrix){
+			let x = matrix[j][1] * cube[0] + cube[0]/2
+			let y = matrix[j][0] * cube[1] + cube[1]/2
+			draw_dot(ctx, x, y, 8, 0, 2 * Math.PI, false, 'red', 1, 'red')
+		}
+	}
+	this.pay = (pay, win)=>{
+		props.handleResult(pay, win)
+	}
 }
 
 function SlotsGame(props){
-    const {settings, slotsData, lines, width, images, startGame, handleShowPrizes} = props
+    const {settings, lines, slotsData, images, slotReels, slotResults, width, startGame, handleShowPrizes} = props
     const {lang} = settings
-    
-    let reel = get_reel()
-    let options = {...props, reel}
-    let my_slots = new slots_game(options)
+
+    let options = {...props}
+    let my_slots = new slots_game(options)    
 
     function ready(){
 		if(my_slots){
@@ -187,42 +438,35 @@ function SlotsGame(props){
         }
 	}
 
-    useEffect(() => {
-		if(slotsData && images){
-			ready()
-		}
-    }, [images, width])
+	useEffect(() => {        
+        if(slotsData && slotsData.array && images && slotReels && slotResults){
+            ready()
+        } 
+	}, [slotsData, images, slotReels, slotResults, width])
 
-    useEffect(() => {
-		if(my_slots && startGame){
-			my_slots.spinSlots()
-		}
-    }, [startGame])
-
-    function get_reel(){
-        const canvases = document.querySelectorAll('.slot_canvas')
-        const reelArray = Array.from(canvases)
-        return reelArray
-    }
+    useEffect(() => {        
+        if(startGame && my_slots){
+            my_slots.spinReels()
+        } 
+	}, [startGame])
 
 	return <div id="slot_machine" className={"slot_machine " + "slot_machine_" + lines}>        
-        <canvas id="slot_machine_lines" />
+        <canvas id="slot_results" />
         {(() => {
 			switch(lines){
 				case 3:
 					return <>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_1' /></div>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_2' /></div>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_3' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_1' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_2' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_3' /></div>
 					</>
 				case 5:
-				default: 
 					return <>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_1' /></div>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_2' /></div>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_3' /></div>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_4' /></div>
-						<div className="box"><canvas className="slot_canvas" id='slot_canvas_5' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_1' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_2' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_3' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_4' /></div>
+						<div className="box"><canvas className="slot_reel" id='slot_reel_5' /></div>
 					</>
 				}
 		})()}

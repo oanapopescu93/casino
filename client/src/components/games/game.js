@@ -33,9 +33,14 @@ function Game(props){
     const [streak, setStreak] = useState(1)
     let room = useSelector(state => state.page.room)
 
-    function results(res){
-        if(res && res.bet && res.bet>0){ //send results to server only if he bet
+    function results(res, showPopup = true){
+        if(res && res.bet && res.bet > 0){ //send results to server only if he bet
             socket.emit('game_results_send', res)
+            dispatch(changeMoney(res.money))
+
+            if(!showPopup){
+                return
+            }
             let payload = {
                 open: true,
                 template: "game_results",
@@ -44,7 +49,6 @@ function Game(props){
                 size: "sm",
             }
             dispatch(changePopup(payload))
-            dispatch(changeMoney(res.money))
         }
     }
 
@@ -103,23 +107,23 @@ function Game(props){
                     if(room){
                         switch (title) {
                             case "roulette":
-                                return <Roulette {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Roulette {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "blackjack":
-                                return <Blackjack {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Blackjack {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "slots":
-                                return <Slots {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Slots {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "craps":
-                                return <Craps {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Craps {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "poker":
-                                return <Poker {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Poker {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "race":
-                                return <Race {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Race {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "keno":
-                                return <Keno {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <Keno {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                             case "baccarat":
-                                return <Baccarat {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />         
+                                return <Baccarat {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />         
                             case "whack_a_rabbit":
-                                return <WhackARabbit {...props} streak={streak} results={(e)=>results(e)} handleHandleExit={()=>handleExit()} />
+                                return <WhackARabbit {...props} streak={streak} results={(e, showPopup)=>results(e, showPopup)} handleHandleExit={()=>handleExit()} />
                         }
                     }
                     return <GameLoading {...props} />

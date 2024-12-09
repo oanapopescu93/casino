@@ -36,6 +36,8 @@ import chatbotIcon_pink from '../../img/chatbot/chatbot_pink.png'
 import chatbotIcon_green from '../../img/chatbot/chatbot_green.png'
 import chatbotIcon_yellow from '../../img/chatbot/chatbot_yellow.png'
 import chatbotIcon_orange from '../../img/chatbot/chatbot_orange.png'
+import AreYouSure from "./areYouSure"
+import { changeAreYouSureSlotsMaxBet } from "../../reducers/areYouSure"
 
 function Popup(props){
     const {socket, home, settings} = props
@@ -161,7 +163,14 @@ function Popup(props){
     function streakClainPrize(data){
         setSending(true)
         socket.emit('streakClainPrize_send', data)
-    }    
+    }
+    
+    function areYouSure(choice){
+        closeModal()
+        if(choice){
+            dispatch(changeAreYouSureSlotsMaxBet(choice))
+        }
+    }
 
     return <>
         {template !== "welcome" ? <Modal id="myModal" className={"mymodal " + style} show={open} onHide={closeModal} size={size} centered> 
@@ -223,6 +232,8 @@ function Popup(props){
                             return <ApplyJob settings={settings} home={home} user={user} data={data} applyJobSending={applyJobSending} handleApplyJob={(e)=>handleApplyJob(e)} />
                         case "gambling_warning":
                             return <WarningGambling settings={settings} />
+                        case "are_you_sure":
+                            return <AreYouSure settings={settings} data={data} areYouSure={(e)=>areYouSure(e)} />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>

@@ -11,6 +11,7 @@ import orderReducer from './order'
 import withdrawReducer from './withdraw'
 import paymentDetailsReducer from './paymentDetails'
 import paymentsReducer from './payments'
+import areYouSureReducer from './areYouSure'
 
 const allReducers = combineReducers({	
 	settings: settingsReducer,
@@ -24,6 +25,7 @@ const allReducers = combineReducers({
 	withdraw: withdrawReducer,
 	paymentDetails: paymentDetailsReducer,
 	payments: paymentsReducer,
+	areYouSure: areYouSureReducer,
 })
 
 export default allReducers

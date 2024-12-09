@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { translate } from '../../../../translations/translate'
 import { getRoom, get_slots_images } from '../../../../utils/games'
 import { getWindowDimensions } from '../../../../utils/utils'
@@ -16,18 +16,40 @@ function Slots(props){
 	const {page, user, settings, socket, handleHandleExit} = props
     const {lang, theme} = settings
 
+    let areYouSureSlotsMaxBet = useSelector(state => state.areYouSure.areYouSureSlotsMaxBet)
+
 	const [width, setWidth] = useState(getWindowDimensions().width)    	
 	const [lines, setLines] = useState(0)
 	const [slotsData, setSlotsData] = useState(null)
-    const [bets, setBets]= useState(0)
-    const [images, setImages]= useState(null)
+    const [bets, setBets]= useState(1)   
     const [startGame, setStartGame]= useState(false)
+
+    const [images, setImages]= useState(null)
+    const [slotReels, setSlotReels] = useState([])
+    const [slotResults, setSlotResults] = useState(null)
+    const [imagesPos, setImagesPos] = useState([])
 
     let items = get_slots_images()
     let money = user.money ? decryptData(user.money) : 0
     let room = getRoom(page.game)
 
-	let dispatch = useDispatch()	
+	let dispatch = useDispatch()
+
+    useEffect(() => {
+        setSlotReels(get_slot_reels())
+        setSlotResults(get_slot_results())
+    }, [lines])
+
+    function get_slot_reels(){
+        const canvases = document.querySelectorAll('.slot_reel')
+        const reelArray = Array.from(canvases)
+        return reelArray
+    }
+
+    function get_slot_results(){
+        const canvas = document.getElementById('slot_results')
+        return canvas
+    }
 
 	function handleResize(){
         setWidth(getWindowDimensions().width)
@@ -74,33 +96,60 @@ function Slots(props){
     }, [socket])
 
     function choice(type){	
-        if(type === "start" && slotsData){
-            if(bets > 0){
-				setStartGame(true)
-            } else {
-                let payload = {
-                    open: true,
-                    template: "error",
-                    title: translate({lang: lang, info: "error"}),
-                    data: translate({lang: lang, info: "no_bets"}),
-					size: "sm",
-                }
-                dispatch(changePopup(payload))
+        if(!startGame){
+            switch(type){
+                case "start":
+                    if(bets > money){
+                        handleErrors("error", "not_enough_money")
+                    } else if(bets > 0){
+                        setStartGame(true)
+                    } else {
+                        handleErrors("error", "no_bets")
+                    }
+                    break
+                case "max":
+                    let payload = {
+                        open: true,
+                        template: "are_you_sure",
+                        title: "are_you_sure",
+                        data: translate({lang: lang, info: "are_you_sure_bets"}),
+                        size: "sm",
+                    }
+                    dispatch(changePopup(payload))
             }
-        } else {
-            let payload = {
-                open: true,
-                template: "error",
-                title: translate({lang: lang, info: "error"}),
-                data: translate({lang: lang, info: "error"}),
-                size: "sm",
-            }
-            dispatch(changePopup(payload))
         }
     }
 
+    useEffect(() => {
+        if(areYouSureSlotsMaxBet){
+            updateBets(money)
+        }
+    }, [areYouSureSlotsMaxBet])
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter' && !startGame) {
+                if(bets > money){
+                    handleErrors("error", "not_enough_money")
+                } else if(bets > 0){
+					setStartGame(true)
+				} else {
+                    handleErrors("error", "no_bets")
+				}
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [bets])
+
 	function updateBets(e){
-        setBets(e)
+        if(e > money){
+            handleErrors("error", "not_enough_money")            
+        } else {
+            setBets(e)
+        }
     }
 
 	function handleShowPrizes(){
@@ -137,17 +186,51 @@ function Slots(props){
 		})
 	}
 
+    function getImagePos(e){
+		setImagesPos(e)
+	}
+
+    function handleResult(sum, win){
+        setStartGame(false)
+        let status = win ? "win" : "lose"
+        let money_result = win ? money + sum : money - sum
+        let slots_payload = {
+            uuid: user.uuid,
+            game: page.game,
+            money: money_result,
+            status: status,
+            bet: sum
+        }		
+        props.results(slots_payload, win)
+    }
+
+    function handleErrors(title="error", text=""){
+        let payload = {
+            open: true,
+            template: "error",
+            title: translate({lang: lang, info: title}),
+            data: translate({lang: lang, info: text}),
+            size: "sm",
+        }
+        dispatch(changePopup(payload))
+    }
+
 	return <div id="slots" className="game_box">
         <Header template={"game"} details={page} lang={lang} theme={theme}/>
-        <p>{translate({lang: lang, info: "under_construction"})}</p>
         <SlotsGame 
             {...props}
             slotsData={slotsData}
             width={width}
-            lines={lines}
-            images={images}
+            lines={lines}            
             startGame={startGame}
+            images={images}
+            slotReels={slotReels} 
+            slotResults={slotResults} 
+            imagesPos={imagesPos}
+            bet={bets}
             handleShowPrizes={()=>handleShowPrizes()}
+            getImagePos={(e)=>getImagePos(e)}
+            handleResult={(sum, win)=>handleResult(sum, win)}
         />		
         <div className="slot_machine_board">
             <GameBoard 
