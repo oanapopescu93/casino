@@ -1,24 +1,19 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { translate } from '../../../../translations/translate'
+import React, { useRef } from 'react'
+import Header from '../../../partials/header'
+import Carousel from '../../../carousel/carousel'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
-import Carousel from '../../../carousel/carousel'
-import Header from '../../../partials/header'
+import { translate } from '../../../../translations/translate'
 
 function RaceTables(props){
-    const {home, page, settings, getData} = props
+    const {
+        settings, page, rabbitArray,
+        getData, handleHandleExit
+    } = props
     const {lang, theme} = settings
-    
-    let race_bets = useSelector(state => state.games.race.bets) 
 
-    let race_array = []
-	if(home.race_rabbits && home.race_rabbits.length>0){
-		race_array = home.race_rabbits.filter((x)=>{
-			return x.participating
-		})
-	}
+    const carouselRef = useRef(null)
 
     const race_carousel_options = {
         infinite: true,
@@ -33,25 +28,19 @@ function RaceTables(props){
         swipeThreshold: 20,
         responsive: [
             {
-                breakpoint: 1800,
-                settings: {
-                    slidesToShow: 4,
-                }
-            },
-            {
                 breakpoint: 1400,
                 settings: {
                     slidesToShow: 3,
                 }
-            },            
+            },
             {
                 breakpoint: 960,
                 settings: {
                     slidesToShow: 2,
                 }
-            },
+            }, 
             {
-                breakpoint: 780,
+                breakpoint: 768,
                 settings: {
                     slidesToShow: 1,
                 }
@@ -59,15 +48,23 @@ function RaceTables(props){
         ]
     }
 
+    function handleGetData(){
+        if(carouselRef && carouselRef.current){
+            let raceInfo = carouselRef.current.getRabbits()
+            getData(raceInfo)
+        }
+    }
+
     return <>
         <Header template={"game"} details={page} lang={lang} theme={theme}/>
         <div className="carousel_race_container">
             <Carousel 
+                ref={carouselRef}
                 {...props}
                 id="carousel_race"
                 template="race" 
                 options={race_carousel_options}
-                itemList={race_array}
+                itemList={rabbitArray}
             />
         </div>
         <div className="button_action_group race_buttons_container">
@@ -75,7 +72,7 @@ function RaceTables(props){
                     <Button 
                         type="button"
                         className="mybutton round button_transparent shadow_convex"
-                        onClick={() => getData(race_bets)}
+                        onClick={()=>handleGetData()}
                     ><FontAwesomeIcon icon={faPlay} /></Button>
                     <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
                 </div>
@@ -83,11 +80,11 @@ function RaceTables(props){
                 <Button 
                     type="button" 
                     className="mybutton round button_transparent shadow_convex"
-                    onClick={()=>props.handleHandleExit()} 
+                    onClick={()=>handleHandleExit()} 
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
                 <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
             </div>
-        </div>
+        </div>       
     </>
 }
 

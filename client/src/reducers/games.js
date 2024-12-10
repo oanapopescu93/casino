@@ -28,7 +28,7 @@ const gamesSlice = createSlice({
             state.craps.bets = payload
         },
         changeRaceBets: (state, { payload }) => {
-            let bet = parseInt(payload.bet)		
+            let bet = payload.bet ? parseInt(payload.bet): 0	
             let place = parseInt(payload.place)		
             const item = state.race.bets.find((x) => x.id === payload.id)
 			if (item) {	

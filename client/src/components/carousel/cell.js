@@ -2,8 +2,7 @@ import React, {useState, useRef} from 'react'
 import { translate } from '../../translations/translate'
 import Counter from '../partials/counter'
 import Stars from '../rating/stars'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeRaceBets } from '../../reducers/games'
+import { useDispatch } from 'react-redux'
 import { Button, Row, Col } from 'react-bootstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
@@ -18,15 +17,21 @@ import profilePic from '../../img/profile/predators.jpg'
 import { convertCurrency } from '../../utils/utils'
 
 function Cell(props) {
-    const {index, selected, data, template, account_type, money, settings, exchange_rates, finances, handlePic} = props
+    const {
+        index, selected, data, template, account_type, money, settings, exchange_rates, finances, handlePic, user,
+        getRabbitsInfo
+    } = props
     const {lang, currency, theme} = settings
-    const [qty, setQty] = useState(1)
+
     let place = translate({lang: lang, info: 'place'})
+
+    const [qty, setQty] = useState(1)
     const [titleDropdown, setTitleDropdown] = useState(place)
-    let dispatch = useDispatch()
-    let user = useSelector(state => state.auth.user)
+    const [isDragging, setIsDragging] = useState(false)    
+    
+    let dispatch = useDispatch()    
     let max_bet = user.money ? decryptData(user.money) : 0
-    const [isDragging, setIsDragging] = useState(false)
+    
     const dragStart = useRef({ x: 0, y: 0 })
     const dragThreshold = 5 // pixels
 
@@ -34,12 +39,12 @@ function Cell(props) {
         setQty(x)
     }
 
-    function updateRaceBet(x){
-        dispatch(changeRaceBets({id: data.id, bet: x}))
+    function updateRaceBet(x){        
+        getRabbitsInfo({id: data.id, bet: x, place: 1})
     }
 
-    function handleDropdown(x){
-        dispatch(changeRaceBets({id: data.id, place: x}))
+    function handleDropdown(x){        
+        getRabbitsInfo({id: data.id, place: x})
         switch(x) {
             case '3':
                 setTitleDropdown(translate({lang, info: "place_03"}))

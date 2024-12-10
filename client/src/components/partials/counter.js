@@ -24,8 +24,11 @@ function Counter(props){
   }
 
   function handleChange(e){
-    setNumber(e.target.value)
-    update(e.target.value)
+    let numberValue = Number(e.target.value)
+    if(numberValue <= max){
+      setNumber(numberValue)
+      update(numberValue)
+    }    
   }
 
   return <div className="counter">

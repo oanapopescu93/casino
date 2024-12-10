@@ -3663,6 +3663,7 @@ a.donation_button{
 	color:var(--bg);
 	border-radius:50px;
 	width:100%;
+  max-width: 200px;
 	margin-top:-10px;
 }
 .rabbit_box_nr{
@@ -4397,7 +4398,7 @@ a.donation_button{
 @media (max-width: 1400px){
 	.shop_shader{
 		height:85px;
-	}
+	}  
 }
 @media (max-width: 1200px){
   .dashboard_right_list{
@@ -4421,6 +4422,13 @@ a.donation_button{
 	.shop_shader{
 		height:60px;
 	}
+  .rabbit_box_pic .box_pic{
+    width:130px;
+    height:130px;
+  }
+  .star{
+    width: 20px !important;
+  }
 }
 @media (max-width: 992px){
   /* DASHBOARD */
@@ -4470,6 +4478,18 @@ a.donation_button{
   .poker_pot_container{
     position: static;
     margin-bottom: var(--padding);
+  }
+
+  /* RACE */
+  .rabbit_box_pic .box_pic{
+    width:150px;
+    height:150px;
+  }
+  .rabbit_box_pic img {
+    width: 160px !important;
+  }
+  .star {
+    width: 25px !important;
   }
 
   /* ORDER */
@@ -4564,6 +4584,18 @@ a.donation_button{
   }
   .keno_prize_container {
     margin-top: var(--padding_small);
+  }
+
+  /* RACE */
+  .rabbit_box_pic .box_pic{
+    width:200px;
+    height:200px;
+  }
+  .rabbit_box_pic img {
+    width: 210px !important;
+  }
+  .star {
+    width: 25px !important;
   }
 
   /* MARKET */
@@ -4717,7 +4749,7 @@ a.donation_button{
   }
   .baccarat_table .table_box button{
     max-width: 100px;
-  }
+  }  
 }
 @media (max-width:600px) {
   /* CRAPS */
