@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
+import React, {forwardRef, useImperativeHandle, useState} from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'

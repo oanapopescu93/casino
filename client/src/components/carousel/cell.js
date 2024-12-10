@@ -2,7 +2,6 @@ import React, {useState, useRef} from 'react'
 import { translate } from '../../translations/translate'
 import Counter from '../partials/counter'
 import Stars from '../rating/stars'
-import { useDispatch } from 'react-redux'
 import { Button, Row, Col } from 'react-bootstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
@@ -27,9 +26,8 @@ function Cell(props) {
 
     const [qty, setQty] = useState(1)
     const [titleDropdown, setTitleDropdown] = useState(place)
-    const [isDragging, setIsDragging] = useState(false)    
+    const [isDragging, setIsDragging] = useState(false) 
     
-    let dispatch = useDispatch()    
     let max_bet = user.money ? decryptData(user.money) : 0
     
     const dragStart = useRef({ x: 0, y: 0 })
