@@ -736,26 +736,17 @@ function race_game(props){
                     // Check if all rabbits have finished running (we can't sit the rabbit midair)
                     sitRabbit = self.checkRabbits('finish')
     
-                    if (sitRabbit) {
-                        stop = true
-                        self.drawBackground()
-                        finish_line.draw()
-    
-                        // Stop all rabbits
-                        laneList.forEach(lane => lane.rabbit.stop(nr))
+                    self.drawBackground()
+					finish_line.draw()
+					laneList.forEach(lane => lane.rabbit.stop(nr))
 
-						setTimeout(()=>{
-							self.win_lose()
-					   }, 1000)                        
-                    } else {
-                        nr++
-                        stop = false
-                        self.drawBackground()
-                        finish_line.draw()
-    
-                        // Stop rabbits without finishing
-                        laneList.forEach(lane => lane.rabbit.stop(nr))
-                    }
+					if (sitRabbit) {
+						stop = true
+						setTimeout(self.win_lose, 1000)
+					} else {
+						nr++
+						stop = false
+					}
                 } else {
                     nr++
 					stop = false
