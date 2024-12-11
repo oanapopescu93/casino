@@ -129,18 +129,15 @@ function poker(data, user_join){
 
     function createPlayers(){
         let players = []
-        for(let i=0; i<how_many_players;i++){
-            let player = {uuid: "player_" + i, user: "player " + i, type: "bot", money: 100, fold: false, bet: 0}
-            if(user_join[i]){
-                player.uuid = user_join[i].uuid
-                player.user = user_join[i].user
-                player.type = "human"
-                player.money = user_join[i].money
-                player.fold = false
-                player.bet = 0
-            }
-            players.push(player) 
-        }
+        for(let i=0; i < how_many_players; i++){
+            let player = null
+            if(i === 0){
+                player = {id: i, uuid: data.uuid, user: "player", type: "human", money: data.money, fold: false, bet: 0}
+            } else {
+                player = {id: i, user: "bot " + i, type: "bot", money: 100, fold: false, bet: 0}
+            }          
+            players.push(player)
+        }        
         return players
     }
     function dealHands(who){
@@ -160,7 +157,7 @@ function poker(data, user_join){
                         players[j].hand.push(card)
                     }
                 }
-                players.sort((a, b) => b.Weight - a.Weight) //sort hand after the value of the card
+                players.sort((a, b) => b.Weight - a.Weight) //sort hand after the value of the card                
                 return players
             case "dealer":
                 let dealer = {id: "dealer", hand: []}	
@@ -176,7 +173,7 @@ function poker(data, user_join){
             return []
         }
         let players = [...poker_players] 
-        let hidden_players = []
+        let hidden_players = []        
         for(let i in players){
             if(data.uuid === players[i].uuid){
                 if(players[i].hand){
@@ -258,7 +255,7 @@ function poker(data, user_join){
     function handleFold(){
         let players = [...poker_players]
         let index = players.findIndex((x) => x.uuid === data.uuid)
-        players[index].fold = true
+        players[index].fold = true 
         return players 
     }
 

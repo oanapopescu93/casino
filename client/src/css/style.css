@@ -1900,6 +1900,7 @@ footer{
 .gameboard .counter .counter_minus, .gameboard .counter .counter_plus {
   border: solid 1px var(--light_color);
   background-color: var(--light_color);
+  color: var(--bg);
 }
 .gameboard .counter .counter_minus:hover, .gameboard .counter .counter_plus:hover {
   border: solid 1px var(--bg);

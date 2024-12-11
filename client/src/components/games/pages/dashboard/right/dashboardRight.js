@@ -56,10 +56,11 @@ function DashboardRight(props){
 
     useEffect(() => {
 		const handleGetOrdersWithdrawsRead = (data)=>{
+            console.log('handleGetOrdersWithdrawsRead--> ', data, uuid)
             if(data.error){
                 console.log('error--> ', data.error)
                 return
-            }
+            }            
             setOrderList(data.orders_found)
             setWithdrawList(data.withdraws_found)
 		}

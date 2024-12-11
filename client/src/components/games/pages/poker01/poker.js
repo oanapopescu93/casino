@@ -4,6 +4,8 @@ import PokerDashboard from './pokerDashboard'
 function Poker(props){ 
     const {page} = props
     let table_type = page.game.table_type //texas holdem or 5 card draw
+    
+    let [bet, setBet] = useState(1)
     let [template, seTemplate] = useState(null)
 
     useEffect(() => {       
@@ -24,8 +26,12 @@ function Poker(props){
         }
     }
 
+    function updateBets(e){
+        setBet(e) 
+    }
+
     return <>
-        {template ? <PokerDashboard {...props} template={template} /> : null}
+        {template ? <PokerDashboard {...props} template={template} bet={bet} updateBets={(e)=>updateBets(e)} /> : null}
     </>
 }
 

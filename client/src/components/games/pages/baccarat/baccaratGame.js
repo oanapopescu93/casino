@@ -383,7 +383,7 @@ function BaccaratGame(props){
     }, [images, width])
 
 	useEffect(() => {
-		if(my_baccarat){
+		if(my_baccarat && document.getElementById("baccarat_canvas")){
 			my_baccarat.action()
 		}
     }, [gameData])

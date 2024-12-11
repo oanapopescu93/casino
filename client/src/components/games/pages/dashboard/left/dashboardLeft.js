@@ -11,7 +11,6 @@ import { faUser, faUpload, faCrown, faKey, faCartShopping, faMoneyBillTransfer, 
 
 function Picture(props){
     const {picId, money, handleChoice} = props
-    console.log(picId)
 
 	return <div className="profile_pic_container" onClick={()=>handleChoice('change_pic')}>
         {money > 1000 ? <div className="profile_pic_crown">
