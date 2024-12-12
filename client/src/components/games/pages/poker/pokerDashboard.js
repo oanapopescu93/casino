@@ -17,6 +17,7 @@ function PokerDashboard(props){
     let money = user.money ? decryptData(user.money) : 0
     let items = get_cards()
     let replaceCards = null
+    let smallBlind = 1
 
     const [startGame, setStartGame] = useState(false)
     const [showdown, setShowDown] = useState(false)
@@ -76,7 +77,8 @@ function PokerDashboard(props){
             action: e.action,
             stage: e.stage,
             money,
-            bet: bets
+            bet: bets,
+            smallBlind
         }        
         switch(e.action){
             case "start":
@@ -141,7 +143,7 @@ function PokerDashboard(props){
 
     return <div id="poker" className="game_container poker_container">
         <div className="game_box">
-            <Header template={"game"} details={page} lang={lang} theme={theme}/>            
+            <Header template={"game"} details={page} lang={lang} theme={theme}/>  
             <PokerGame 
                 {...props} 
                 pot={pot}
@@ -152,6 +154,7 @@ function PokerDashboard(props){
                 width={width}
                 images={images}
                 gameData={gameData}
+                smallBlind={smallBlind}
             />
             <PokerTables 
                 {...props} 

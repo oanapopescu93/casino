@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { translate } from '../../../../translations/translate'
 import { getMousePos } from '../../../../utils/games'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCarrot } from '@fortawesome/free-solid-svg-icons'
 
 function Card(config){
 	let self = this
@@ -46,8 +48,8 @@ function Card(config){
                 //user
                 let cards_number = self.hand.length
                 let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
-                self.draw_card(self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, self.hand)
-                self.draw_card_text(title, self.text_x-hand_length/2, self.text_y, 90, 12)
+                self.draw_card(self.x - hand_length/2, self.y, self.card.width, self.card.height, self.card_img, self.hand)
+                self.draw_card_text(title, self.text_x - hand_length/2, self.text_y, 90, 12)
             } else {
                 //bot                
                 self.draw_card(self.x, self.y, self.card.width, self.card.height, self.card_img, self.hand)
@@ -56,9 +58,9 @@ function Card(config){
         } else {
             //dealer
             if(self.template !== "poker_5_card_draw"){ //in texas hold'em we have community cards, in 5 card draw we don't
-                // let cards_number = data.dealer.hand.length
-                // let hand_length = (cards_number-1) * self.card.width + (cards_number-2) * self.space
-                // self.draw_card(ctx, self.x-hand_length/2, self.y, self.card.width, self.card.height, self.card_img, data.dealer.hand, "dealer")
+                let cards_number = self.hand.length
+                let hand_length = (cards_number - 1) * self.card.width + (cards_number - 2) * self.space
+                self.draw_card(self.x - hand_length/2, self.y, self.card.width, self.card.height, self.card_img, self.hand)
             }
         }
 			
@@ -440,7 +442,7 @@ export const poker_game = function(props){
 }
 
 function PokerGame(props){
-    const {settings, gameData, width, images} = props
+    const {settings, gameData, smallBlind, width, images} = props
     const {lang} = settings
 
     let options = {...props}
@@ -466,8 +468,20 @@ function PokerGame(props){
     }, [gameData])
     
     return <>
-        <p>{translate({lang: lang, info: "under_construction"})}</p>
-        <canvas id="poker_canvas" />
+        <p>{translate({lang: lang, info: "under_construction"})}</p>        
+        <div className="poker_canvas_container">
+            {gameData && gameData.action === "preflop_betting" ? <div className="small_blind_container">
+                <div className="small_blind">
+                    {translate({lang: lang, info: "small_blind"})}: {smallBlind} <FontAwesomeIcon icon={faCarrot} />
+                </div>
+            </div> : null}
+            {gameData && gameData.pot > 0 ? <div className="poker_pot_container">
+                <div className="poker_pot">
+                    {translate({lang: lang, info: "total_pot"})}: {gameData.pot} <FontAwesomeIcon icon={faCarrot} />
+                </div>
+            </div> : null}
+            <canvas id="poker_canvas" />
+        </div>
     </>
 }
 

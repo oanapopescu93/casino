@@ -132,9 +132,9 @@ function poker(data, user_join){
         for(let i=0; i < how_many_players; i++){
             let player = null
             if(i === 0){
-                player = {id: i, uuid: data.uuid, user: "player", type: "human", money: data.money, fold: false, bet: 0}
+                player = {id: i, uuid: data.uuid, user: "player", type: "human", money: data.money, fold: false, bet: 0, smallBlind: 0}
             } else {
-                player = {id: i, user: "bot " + i, type: "bot", money: 100, fold: false, bet: 0}
+                player = {id: i, user: "bot " + i, type: "bot", money: 100, fold: false, bet: 0, smallBlind: 0}
             }          
             players.push(player)
         }        
@@ -155,12 +155,13 @@ function poker(data, user_join){
                             }	
                         }	
                         players[j].hand.push(card)
+                        players[j].smallBlind = data.smallBlind > 0 ? data.smallBlind : 1
                     }
                 }
                 players.sort((a, b) => b.Weight - a.Weight) //sort hand after the value of the card                
                 return players
             case "dealer":
-                let dealer = {id: "dealer", hand: []}	
+                let dealer = {id: -1, user: "dealer", hand: []}	
                 for(let i = 0; i < 3; i++){ //the dealer will show 3 cards at the start of the game
                     let card = poker_deck.pop()
                     dealer.hand.push(card) 

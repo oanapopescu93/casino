@@ -1832,14 +1832,19 @@ footer{
   width: 100%;
   transform: translate(0px, -50%);
 }
-.poker_pot_container{ 
+.poker_canvas_container{
+  position: relative;
+  z-index: 1;
+}
+.poker_pot_container, .small_blind_container{ 
   position: absolute;
   z-index: 1;
-  top: 32%;
+  top: 50%;
   left: 0px;
   right: 0px;
+  transform: translate(0px, -50%);
 }
-.poker_pot{
+.poker_pot, .small_blind{
   background-color: var(--transparent_5);
   border: solid 1px var(--color);
   border-radius: var(--radius);
