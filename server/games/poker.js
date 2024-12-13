@@ -6,7 +6,7 @@ var poker_pot = 0
 let how_many_players = 6
 let how_many_cards = 5
 
-function poker(data, user_join){
+function poker(data){
     switch(data.game){
         case "poker_texas_holdem":
             how_many_cards = 2
@@ -61,15 +61,15 @@ function poker(data, user_join){
         case "call": 
         case "raise":
             let result = handleCallRaise(data.bet)
-            if(result && result.error){
-                return {action: payload.action, error: result.error}
+            if(result && result.error){                
+                return {action: payload.action, ...result}
             } 
             poker_players = result
             poker_hidden_players = createHiddenPlayers()
             poker_pot = calculatePot()
             if(data.stage === "turn" || data.stage === "river"){
-                poker_dealer = addCardsDealer() 
-            }
+                poker_dealer = addCardsDealer()
+            }            
             payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
             return payload
         case "showdown":
@@ -264,19 +264,19 @@ function poker(data, user_join){
         let players = [...poker_players]
         let index = players.findIndex((x) => x.uuid === data.uuid)
         if(players[index]){
-            const maxBet = getBet()
-            let amountToCall = 0
+            const maxBet = getMaxBet()            
+            let amountToCallRaise = 0
             if (maxBet === 0) {
-                amountToCall = 1 //Set amountToCall to the minimum allowed bet or another default value
+                amountToCallRaise = 1 //Set amountToCall to the minimum allowed bet or another default value
             } else {
-                amountToCall = maxBet - players[index].bet
+                amountToCallRaise = maxBet - players[index].bet
             }
 
-            if(data.action === "raise" && amount <= amountToCall) {
-                return {error: 'invalid_raise'} //Invalid raise amount. Must raise more than the amount to call.
+            if(data.action === "raise" && amount <= amountToCallRaise) {
+                return {error: 'invalid_raise', amountToCallRaise} //Invalid raise amount. Must raise more than the maximum bet to proceed.
             }
-            if(data.action === "call" && players[index].money < amountToCall) {
-                return {error: 'not_enough_money'} //Insufficient money to call.
+            if(data.action === "call" && players[index].money < amountToCallRaise) {
+                return {error: 'not_enough_money_call', amountToCallRaise} //Insufficient money to call.
             }
             
             // Update the player's bet and pot
@@ -284,14 +284,14 @@ function poker(data, user_join){
                 players[index].bet += amount
                 poker_pot += amount
             } else if(data.action === "call"){
-                players[index].bet += amountToCall
-                poker_pot += amountToCall
+                players[index].bet += amountToCallRaise
+                poker_pot += amountToCallRaise
             }
 
             return players
         }
     }
-    function getBet() {
+    function getMaxBet() {
         let bet = 0
         for (let i in poker_players) {
             if (poker_players[i].bet > bet){
@@ -334,11 +334,7 @@ function poker(data, user_join){
     }
 
     function checkShowdown(){
-        let showdown = false
-        if(check_how_many_players_active() <= 1){
-            showdown = true
-        }
-        return showdown
+        return check_how_many_players_active() <= 1 ? true : false
     }
 
     function calculatePot(){

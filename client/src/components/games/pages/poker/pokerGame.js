@@ -190,7 +190,7 @@ function Card(config){
 
 export const poker_game = function(props){
     let self = this
-    const {settings, template, gameData, images} = props
+    const {settings, template, gameData, images, handleShowdown} = props
     const {theme} = settings
 
     let canvas
@@ -433,11 +433,14 @@ export const poker_game = function(props){
     this.action = ()=>{
         console.log('action--> ', gameData)
         self.draw()
-        self.check_win_lose()      
+        if(gameData && gameData.action === "showdown"){
+            self.check_win_lose()
+        }
+         
     }
 
     this.check_win_lose = ()=>{
-          
+        handleShowdown()
     }
 }
 

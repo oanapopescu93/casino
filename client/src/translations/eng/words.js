@@ -370,8 +370,9 @@ var word_bank = {
     cancel: "Cancel",
     cancel_explanation : "You don't want to exchange cards.",
     bet_explanation : "Place your bet.",
-    invalid_raise: "Invalid raise",
+    invalid_raise: "Must raise more than the maximum bet to proceed",
     not_enough_money: "Not enough money",
+    not_enough_money_call: "Insufficient money to match the current highest bet",
     small_blind: "Small blind",
 
     // baccarat

@@ -7,6 +7,7 @@ import { get_cards, getRoom } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
 import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
 import { checkBets } from '../../../../utils/checkBets'
+import { translate } from '../../../../translations/translate'
 
 function PokerDashboard(props){
     const { page, settings, user, template, socket } = props
@@ -82,11 +83,11 @@ function PokerDashboard(props){
         }        
         switch(e.action){
             case "start":
-            case "call":
-            case "raise":
+            case "call":            
                 socket.emit('poker_send', poker_payload_server)
                 break
             case "bet":
+            case "raise":
                 if(checkBets({bets, money, lang}, handleErrors)){                    
                     socket.emit('poker_send', poker_payload_server)
                 }
@@ -106,14 +107,18 @@ function PokerDashboard(props){
     useEffect(() => {
         const handlePokerRead = (data)=>{
             if (data && data.action){
-                setGameData(data)
-                setAction(data.action)
-
                 if(data.error){
-                    handleErrors("error", data.error, lang)
+                    let error_message = translate({lang: lang, info: data.error})
+                    console.log(data)
+                    if(data.amountToCallRaise > 0){
+                        error_message = error_message + " (" + translate({lang: lang, info: "amount"}) + ": " + data.amountToCallRaise + ")"
+                    }
+                    handleErrors("error", error_message, lang)
                     return
                 }
 
+                setGameData(data)
+                setAction(data.action)
                 if(data.pot){
                     setPot(data.pot)
                 }
@@ -141,6 +146,33 @@ function PokerDashboard(props){
         }
     }, [socket])
 
+    function handleShowdown(){
+        leave()
+        //resetGame()       
+    }
+
+    function resetGame(){
+        setStartGame(false)
+        setShowDown(false)
+        setAction(null)
+        setBets(0)
+        setPot(0)
+        setGameData(null)
+    }
+
+    useEffect(() => {
+        return () => leave()
+    }, [])
+
+    function leave(){
+        console.log('leave', startGame, gameData, bets, smallBlind)
+        if(!gameData){ 
+            //the user leaves
+            return
+        }
+        
+    }
+
     return <div id="poker" className="game_container poker_container">
         <div className="game_box">
             <Header template={"game"} details={page} lang={lang} theme={theme}/>  
@@ -155,6 +187,7 @@ function PokerDashboard(props){
                 images={images}
                 gameData={gameData}
                 smallBlind={smallBlind}
+                handleShowdown={(e)=>handleShowdown(e)}
             />
             <PokerTables 
                 {...props} 
@@ -167,6 +200,7 @@ function PokerDashboard(props){
             />
             <PokerButtons 
                 {...props}
+                startGame={startGame}
                 choice={(e)=>choice(e)} 
             />            
         </div>
