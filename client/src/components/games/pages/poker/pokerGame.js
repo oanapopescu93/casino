@@ -134,11 +134,13 @@ function Card(config){
             }
             
             if(self.id !== -1){
-                //player
-                if(self.uuid){                    
+                //players
+                if(self.uuid){
+                    //player                
                     self.ctx.drawImage(self.images[index].src, 0, 0, size.width, size.height, x + i * (self.space + w), y, w, h)
                     self.updateHand(i, x + i * (self.space + w), y, w, h)
                 } else {
+                    //bots
                     self.ctx.drawImage(self.images[index].src, 0, 0, size.width, size.height, x + i * self.space, y, w, h)
                     self.updateHand(i, x + i * self.space, y, w, h)
                 }
@@ -190,7 +192,7 @@ function Card(config){
 
 export const poker_game = function(props){
     let self = this
-    const {settings, template, gameData, images, handleShowdown} = props
+    const {settings, user, template, gameData, images, handleShowdown} = props
     const {theme} = settings
 
     let canvas
@@ -431,7 +433,7 @@ export const poker_game = function(props){
     }
 
     this.action = ()=>{
-        console.log('action--> ', gameData)
+        //console.log('action--> ', gameData)
         self.draw()
         if(gameData && gameData.action === "showdown"){
             self.check_win_lose()
@@ -440,12 +442,65 @@ export const poker_game = function(props){
     }
 
     this.check_win_lose = ()=>{
+        let winners = self.determineWinners()
+        let player = gameData.players.filter((x)=>{
+            return x.uuid === user.uuid
+        })
+
+        console.log('check_win_lose--> ', winners, player)
         handleShowdown()
+    }
+
+    this.determineWinners = () => {
+        const {players, dealer, dealerHandStrength} = gameData
+
+        // Add the dealer to the players array with a special ID and handStrength
+        const allPlayers = [...players, {
+            id: dealer.id,
+            user: dealer.user,
+            handStrength: dealerHandStrength,
+            isDealer: true, // Flag to identify the dealer
+            fold: false // Dealer cannot fold
+        }]
+
+        // Filter out folded players
+        const activePlayers = allPlayers.filter(player => !player.fold)
+
+            // Sort players by hand strength (descending order)
+        activePlayers.sort((a, b) => b.handStrength.strength - a.handStrength.strength)
+
+        let winners = [activePlayers[0]] // Initialize with the first player
+
+        for (let i = 1; i < activePlayers.length; i++) {
+            if (activePlayers[i].handStrength.strength === winners[0].handStrength.strength) {
+                // Compare kickers
+                let isTie = true
+                for (let j = 0; j < winners[0].handStrength.info.Value.length; j++) {
+                    const winnerKicker = winners[0].handStrength.info.Value.charCodeAt(j)
+                    const currentKicker = activePlayers[i].handStrength.info.Value.charCodeAt(j)
+                    if (currentKicker > winnerKicker) {
+                        winners = [activePlayers[i]] // New winner
+                        isTie = false
+                        break
+                    } else if (currentKicker < winnerKicker) {
+                        isTie = false
+                        break
+                    }
+                }
+                if (isTie) {
+                    winners.push(activePlayers[i]) // Add tied player to the winners array
+                }
+            } else {
+                break // No tie, exit loop
+            }
+        }
+
+        return winners
     }
 }
 
 function PokerGame(props){
-    const {settings, gameData, smallBlind, width, images} = props
+    const {settings, startGame, showdown, gameData, bets, smallBlind, action, width, images, leave} = props
     const {lang} = settings
 
     let options = {...props}
@@ -468,6 +523,11 @@ function PokerGame(props){
 		if(my_poker && gameData && document.getElementById("poker_canvas")){
 			my_poker.action()
 		}
+        return () => {
+            if(startGame){
+                leave({startGame, showdown, gameData, bets, smallBlind, action}) 
+            }
+        }
     }, [gameData])
     
     return <>

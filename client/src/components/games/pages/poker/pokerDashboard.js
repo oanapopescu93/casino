@@ -146,9 +146,9 @@ function PokerDashboard(props){
         }
     }, [socket])
 
-    function handleShowdown(){
-        leave()
-        //resetGame()       
+    function handleShowdown(e){
+        console.log('handleShowdown ', e)
+        resetGame()       
     }
 
     function resetGame(){
@@ -160,17 +160,17 @@ function PokerDashboard(props){
         setGameData(null)
     }
 
-    useEffect(() => {
-        return () => leave()
-    }, [])
+    function leave(e){
+        let bet = e.bets > 0 ? e.bets : e.smallBlind
+		let poker_payload = {
+			uuid: user.uuid,
+			game,
+			status: 'lose',
+			bet,
+			money: money - bet
+		}
 
-    function leave(){
-        console.log('leave', startGame, gameData, bets, smallBlind)
-        if(!gameData){ 
-            //the user leaves
-            return
-        }
-        
+        console.log('leave', e, poker_payload)        
     }
 
     return <div id="poker" className="game_container poker_container">
@@ -188,6 +188,7 @@ function PokerDashboard(props){
                 gameData={gameData}
                 smallBlind={smallBlind}
                 handleShowdown={(e)=>handleShowdown(e)}
+                leave={(e)=>leave(e)}
             />
             <PokerTables 
                 {...props} 

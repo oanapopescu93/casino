@@ -15,6 +15,8 @@ function poker(data){
             how_many_cards = 5
     }
 
+    let showdown = false
+
     switch (data.action) {
         case 'start':
             resetGameState() 
@@ -30,7 +32,11 @@ function poker(data){
             // calculate pot
             poker_pot = calculatePot()
             
-            payload = {action: "preflop_betting", players: poker_hidden_players, pot: poker_pot}
+            payload = {
+                action: "preflop_betting", 
+                players: poker_hidden_players, 
+                pot: poker_pot
+            }
             return payload
         case "bet":  
         case "check":
@@ -38,7 +44,17 @@ function poker(data){
             poker_hidden_players = createHiddenPlayers()
             poker_dealer = dealHands("dealer") 
             poker_pot = calculatePot()
-            payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
+            showdown = checkShowdown()
+            payload = {
+                action: "postflop_betting", 
+                players: poker_hidden_players, 
+                dealer: poker_dealer, 
+                pot: poker_pot, 
+                showdown
+            }
+            if(showdown){
+                payload.dealerHandStrength = evaluateHand(poker_dealer.hand)
+            }
             if(data.stage === "draw"){
                 payload.action = data.stage  
             }
@@ -47,7 +63,17 @@ function poker(data){
             poker_players = replaceCards(data.replaceCards) 
             poker_hidden_players = createHiddenPlayers()
             poker_pot = calculatePot()
-            payload = {action: "postflop_betting", players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
+            showdown = checkShowdown()
+            payload = {
+                action: "postflop_betting", 
+                players: poker_hidden_players, 
+                dealer: poker_dealer, 
+                pot: poker_pot, 
+                showdown
+            }
+            if(showdown){
+                payload.dealerHandStrength = evaluateHand(poker_dealer.hand)
+            }
             return payload
         case "fold":
             poker_players = handleFold()
@@ -69,12 +95,29 @@ function poker(data){
             poker_pot = calculatePot()
             if(data.stage === "turn" || data.stage === "river"){
                 poker_dealer = addCardsDealer()
-            }            
-            payload = {action: data.stage, players: poker_hidden_players, dealer: poker_dealer, pot: poker_pot, showdown: checkShowdown()}
+            }
+            showdown = checkShowdown()
+            payload = {
+                action: data.stage, 
+                players: poker_hidden_players, 
+                dealer: poker_dealer, 
+                pot: poker_pot, 
+                showdown
+            }
+            if(showdown){
+                payload.dealerHandStrength = evaluateHand(poker_dealer.hand)
+            }
             return payload
         case "showdown":
             poker_players = evaluateHands(poker_players)
-            payload = {action: data.stage, players: poker_players, dealer: poker_dealer, pot: poker_pot, showdown: true} 
+            payload = {
+                action: data.stage, 
+                players: poker_players, 
+                dealer: poker_dealer, 
+                dealerHandStrength: evaluateHand(poker_dealer.hand),
+                pot: poker_pot, 
+                showdown: true
+            } 
             return payload
     }
     
