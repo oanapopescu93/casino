@@ -360,7 +360,7 @@ var word_bank = {
     call: "跟注",
     call_explanation: "跟上当前最高的赌注。",
     raise: "加注",
-    raise_explanation: "增加当前的赌注。",
+    raise_explanation: "提高当前最高赌注，迫使其他人跟注或弃牌。",
     showdown: "摊牌",
     showdown_explanation: "展示牌来确定胜者。",
     draw: "换牌",
@@ -370,6 +370,8 @@ var word_bank = {
     bet_explanation: "下注初始金额。",
     invalid_raise: "无效的加注",
     not_enough_money: "余额不足",
+    not_enough_money_call: "资金不足，无法匹配当前最高赌注",
+    small_blind: "小盲注",
 
     // baccarat
     player: "玩家",

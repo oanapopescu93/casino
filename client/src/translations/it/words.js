@@ -360,7 +360,7 @@ var word_bank = {
     call: "Chiama",
     call_explanation: "Pareggia la scommessa più alta attuale.",
     raise: "Rilancia",
-    raise_explanation: "Aumenta l'importo della scommessa attuale.",
+    raise_explanation: " Aumenta la puntata più alta attuale, costringendo gli altri a coprire o a ritirarsi.",
     showdown: "Showdown",
     showdown_explanation: "Mostra le carte per determinare il vincitore.",
     draw: "Cambia",
@@ -370,6 +370,8 @@ var word_bank = {
     bet_explanation: "Piazza un importo di scommessa iniziale.",
     invalid_raise: "Rilancio non valido",
     not_enough_money: "Non abbastanza denaro",
+    not_enough_money_call: "Denaro insufficiente per coprire la puntata più alta attuale",
+    small_blind: "Piccolo buio",
 
     // baccarat
     player: "Giocatore",

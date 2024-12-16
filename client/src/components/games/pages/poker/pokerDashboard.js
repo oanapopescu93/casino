@@ -19,6 +19,7 @@ function PokerDashboard(props){
     let items = get_cards()
     let replaceCards = null
     let smallBlind = 1
+    let gameFlow = {}
 
     const [startGame, setStartGame] = useState(false)
     const [showdown, setShowDown] = useState(false)
@@ -70,17 +71,20 @@ function PokerDashboard(props){
     function choice(e){
         if(!e){
             return
-        }        
+        }
+
+        const {action, stage} = e      
         let poker_payload_server = {
             game: template,
             uuid: user.uuid,
             room,
-            action: e.action,
-            stage: e.stage,
+            action: action,
+            stage: stage,
             money,
             bet: bets,
             smallBlind
-        }        
+        }
+
         switch(e.action){
             case "start":
             case "call":            
@@ -92,7 +96,7 @@ function PokerDashboard(props){
                     socket.emit('poker_send', poker_payload_server)
                 }
                 break
-            case "draw":
+            case "draw":                
                 poker_payload_server.replaceCards = replaceCards
                 socket.emit('poker_send', poker_payload_server)
                 break
@@ -109,7 +113,6 @@ function PokerDashboard(props){
             if (data && data.action){
                 if(data.error){
                     let error_message = translate({lang: lang, info: data.error})
-                    console.log(data)
                     if(data.amountToCallRaise > 0){
                         error_message = error_message + " (" + translate({lang: lang, info: "amount"}) + ": " + data.amountToCallRaise + ")"
                     }
@@ -122,18 +125,22 @@ function PokerDashboard(props){
                 if(data.pot){
                     setPot(data.pot)
                 }
+                gameFlow.gameData = data
                 switch(data.action){
                     case "preflop_betting":
                         setStartGame(true)
+                        gameFlow.startGame = true
                         break
                     case "fold":
                         setStartGame(false)
                         setPot(0)
+                        gameFlow.startGame = false
                         break
                     case "showdown":
                         setStartGame(false)
                         setShowDown(true)
                         setPot(0)
+                        gameFlow.startGame = false
                         break
                     default:
                         break
@@ -147,8 +154,20 @@ function PokerDashboard(props){
     }, [socket])
 
     function handleShowdown(e){
-        console.log('handleShowdown ', e)
-        resetGame()       
+        const {pot, bet, status} = e
+        let poker_payload = {
+			uuid: user.uuid,
+			game,
+			status,
+			bet
+		}        
+        if(status === "win"){
+            poker_payload.money = money + pot
+        } else {
+            poker_payload.money = money - bet
+        }
+        resetGame()
+        //props.results(poker_payload)
     }
 
     function resetGame(){
@@ -160,17 +179,35 @@ function PokerDashboard(props){
         setGameData(null)
     }
 
-    function leave(e){
-        let bet = e.bets > 0 ? e.bets : e.smallBlind
-		let poker_payload = {
-			uuid: user.uuid,
-			game,
-			status: 'lose',
-			bet,
-			money: money - bet
-		}
+    function leave(){
+        if(gameFlow && gameFlow.startGame){
+            let player = gameFlow.gameData.players.filter((x)=>{
+                return x.uuid === user.uuid
+            })
 
-        console.log('leave', e, poker_payload)        
+            let status = 'lose'
+            let bet = player[0]?.bet
+            let poker_payload = {
+                uuid: user.uuid,
+                game,
+                status,
+                bet: bet && bet > 0 ? bet : smallBlind,
+                money: bet && bet > 0 ? money - bet: money - smallBlind
+            }
+
+            resetGame()
+            //props.results(poker_payload)
+        }
+    }
+
+    useEffect(() => {
+		return () => {
+			leave()
+		}
+	}, [])
+
+    function getCardList(e){
+        replaceCards = e        
     }
 
     return <div id="poker" className="game_container poker_container">
@@ -188,7 +225,7 @@ function PokerDashboard(props){
                 gameData={gameData}
                 smallBlind={smallBlind}
                 handleShowdown={(e)=>handleShowdown(e)}
-                leave={(e)=>leave(e)}
+                getCardList={(e)=>getCardList(e)}
             />
             <PokerTables 
                 {...props} 

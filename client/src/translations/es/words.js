@@ -360,7 +360,7 @@ var word_bank = {
     call: "Igualar",
     call_explanation: "Igualar la apuesta más alta actual.",
     raise: "Subir",
-    raise_explanation: "Aumentar la apuesta actual.",
+    raise_explanation: "Aumenta la apuesta más alta actual, obligando a otros a igualar o retirarse.",
     showdown: "Showdown",
     showdown_explanation: "Mostrar las manos para determinar al ganador.",
     draw: "Cambiar",
@@ -370,6 +370,8 @@ var word_bank = {
     bet_explanation: "Realizar una apuesta inicial.",
     invalid_raise: "Subida inválida",
     not_enough_money: "No hay suficiente dinero",
+    not_enough_money_call: "Dinero insuficiente para igualar la apuesta más alta actual",
+    small_blind: "Ciega pequeña",
 
     // baccarat
     player: "Jugador",

@@ -360,7 +360,7 @@ var word_bank = {
     call: "Suivre",
     call_explanation: "Suivre la mise la plus élevée actuelle.",
     raise: "Relancer",
-    raise_explanation: "Augmenter la mise actuelle.",
+    raise_explanation: "Augmentez la mise la plus élevée actuelle, obligeant les autres à suivre ou à se coucher",
     showdown: "Confrontation",
     showdown_explanation: "Révéler les mains pour déterminer le gagnant.",
     draw: "Échanger",
@@ -370,6 +370,8 @@ var word_bank = {
     bet_explanation: "Placer un montant de mise initial.",
     invalid_raise: "Relance invalide",
     not_enough_money: "Pas assez d'argent",
+    not_enough_money_call: "Argent insuffisant pour égaler la mise la plus élevée actuelle",
+    small_blind: "Petite blind",
 
     // baccarat
     player: "Joueur",

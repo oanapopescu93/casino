@@ -353,14 +353,14 @@ var word_bank = {
 
     // poker
     total_pot: "Pot total",
-    check: "Check",
+    check: "Pas",
     check_explanation: "Nu paria, rămâi în rundă.",
     fold: "Renunță",
     fold_explanation: "Renunță la mâna ta acum.",
-    call: "Call",
+    call: "Egalare",
     call_explanation: "Egalează cea mai mare miză curentă.",
     raise: "Plusare",
-    raise_explanation: "Crește miza curentă.",
+    raise_explanation: "Crește miza curentă, forțându-i pe ceilalți să îl egaleze sau să renunțe.",
     showdown: "Confruntare",
     showdown_explanation: "Arată mâinile pentru a determina câștigătorul.",
     draw: "Schimbă",
@@ -370,6 +370,8 @@ var word_bank = {
     bet_explanation: "Plasează o sumă de pariu inițială.",
     invalid_raise: "Plusare invalidă",
     not_enough_money: "Fonduri insuficiente",
+    not_enough_money_call: "Fonduri insuficiente pentru a egala pariul cel mai mare actual",
+    small_blind: "Blind mic",
 
     // baccarat
     player: "Jucător",

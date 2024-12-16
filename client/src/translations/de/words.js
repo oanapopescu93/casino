@@ -353,14 +353,14 @@ var word_bank = {
 
     // poker
     total_pot: "Gesamtpot",
-    check: "Check",
+    check: "Schieben",
     check_explanation: "Kein Einsatz, in der Runde bleiben.",
     fold: "Aussteigen",
     fold_explanation: "Gib deine Hand jetzt auf.",
-    call: "Call",
+    call: "Mitgehen",
     call_explanation: "Den aktuellen Höchsteinsatz mitgehen.",
     raise: "Erhöhen",
-    raise_explanation: "Erhöhe den aktuellen Einsatz.",
+    raise_explanation: "Erhöhe den aktuellen Höchsteinsatz, wodurch andere gezwungen werden, ihn zu setzen oder auszusteigen.",
     showdown: "Showdown",
     showdown_explanation: "Hände zeigen, um den Gewinner zu bestimmen.",
     draw: "Tauschen",
@@ -370,6 +370,8 @@ var word_bank = {
     bet_explanation: "Platziere den anfänglichen Wetteinsatz.",
     invalid_raise: "Ungültige Erhöhung",
     not_enough_money: "Nicht genug Geld",
+    not_enough_money_call: "Nicht genügend Geld, um den aktuellen Höchsteinsatz zu zahlen",
+    small_blind: "Kleiner Blind",
     
     // baccarat
     player: "Spieler",

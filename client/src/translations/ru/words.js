@@ -360,7 +360,7 @@ var word_bank = {
     call: "Колл",
     call_explanation: "Поддержать текущую максимальную ставку.",
     raise: "Рейз",
-    raise_explanation: "Увеличить текущую ставку.",
+    raise_explanation: "Увеличьте текущую максимальную ставку, заставляя других уравнять или сбросить карты.",
     showdown: "Шоудаун",
     showdown_explanation: "Показать карты, чтобы определить победителя.",
     draw: "Обменять карты",
@@ -370,6 +370,8 @@ var word_bank = {
     bet_explanation: "Сделать начальную ставку.",
     invalid_raise: "Неверный рейз",
     not_enough_money: "Недостаточно средств",
+    not_enough_money_call: "Недостаточно денег, чтобы уравнять текущую максимальную ставку",
+    small_blind: "Mалая блайнд",
 
     // baccarat
     player: "Игрок",

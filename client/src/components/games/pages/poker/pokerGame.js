@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { translate } from '../../../../translations/translate'
-import { getMousePos } from '../../../../utils/games'
+import { draw_rect, getMousePos, isInside } from '../../../../utils/games'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCarrot } from '@fortawesome/free-solid-svg-icons'
+import $ from "jquery"
 
 function Card(config){
 	let self = this
@@ -132,13 +133,26 @@ function Card(config){
                 default:
                     break		
             }
+
+            let isSelected = false
+            if(self.template !== "poker_5_card_draw" && self.selectedCards.length > 0){
+                isSelected = self.selectedCards.includes(i)
+            }
             
             if(self.id !== -1){
                 //players
                 if(self.uuid){
-                    //player                
-                    self.ctx.drawImage(self.images[index].src, 0, 0, size.width, size.height, x + i * (self.space + w), y, w, h)
+                    //player
+                    let cardY = y
+                    if(isSelected){
+                        cardY = cardY + self.space
+                    }           
+                    self.ctx.drawImage(self.images[index].src, 0, 0, size.width, size.height, x + i * (self.space + w), cardY, w, h)
                     self.updateHand(i, x + i * (self.space + w), y, w, h)
+
+                    if(isSelected){                        
+                        draw_rect(self.ctx, x + i * (self.space + w), cardY, w, h, "transparent", 3, "red")
+                    } 
                 } else {
                     //bots
                     self.ctx.drawImage(self.images[index].src, 0, 0, size.width, size.height, x + i * self.space, y, w, h)
@@ -192,7 +206,7 @@ function Card(config){
 
 export const poker_game = function(props){
     let self = this
-    const {settings, user, template, gameData, images, handleShowdown} = props
+    const {settings, user, template, gameData, images, smallBlind, handleShowdown, getCardList} = props
     const {theme} = settings
 
     let canvas
@@ -248,9 +262,9 @@ export const poker_game = function(props){
         self.createCanvas()
         self.drawBackground()
         if(gameData){
-            self.handleClick()
             self.createCards()
             self.drawCards()
+            self.handleClick()
         }
     }
 
@@ -327,24 +341,6 @@ export const poker_game = function(props){
         ctx.beginPath()
         ctx.ellipse(canvas.width/2, canvas.height/2, canvas.width/2-4*card_base.space, canvas.height/2-3*card_base.space, 0, 0, 2 * Math.PI)
         ctx.fill()
-    }
-    this.handleClick = ()=>{
-        if(template === "poker_5_card_draw"){
-            const pokerCanvas = document.getElementById('poker_canvas');
-            if (pokerCanvas) {
-                pokerCanvas.removeEventListener('click', handleCanvasClick)
-
-                const handleCanvasClick = (event) => {
-                    const mousePos = getMousePos(pokerCanvas, event)
-                    this.canvasClick(mousePos)
-                }
-
-                pokerCanvas.addEventListener('click', handleCanvasClick)
-            }
-        }		
-    }
-    this.canvasClick = (mouse)=>{
-        console.log('canvasClick ', mouse)
     }
 
     this.createCards = ()=>{
@@ -432,8 +428,56 @@ export const poker_game = function(props){
         }
     }
 
+    this.handleClick = () => {        
+        if(template === "poker_5_card_draw" && $('#poker_canvas') && gameData && gameData.action === "draw"){
+            $('#poker_canvas').off('click').on('click', (event)=>{
+                let mousePos = getMousePos(canvas, event)
+                self.canvasClick(mousePos)
+            })
+            $('#poker_canvas').off('mousemove').on('mousemove', (event)=>{
+                let mousePos = getMousePos(canvas, event)
+                self.canvasHover(mousePos)
+            })
+        }
+    }
+
+    this.canvasClick = (mouse)=>{
+        for(let i in card_list){
+			let hand = card_list[i].hand
+            if(card_list[i].uuid === user.uuid){
+                for(let j in hand){
+                    if(isInside(mouse, hand[j])){
+                        card_list[i].updateSelected(j)
+                        self.handleSelectedCard(i)
+                    }
+                }
+            }
+        }
+    }
+    this.canvasHover = (mouse)=>{
+        let isHovering = false
+        for (let i in card_list) {
+            let hand = card_list[i].hand
+            if (card_list[i].uuid === user.uuid) {
+                for (let j in hand) {
+                    if (isInside(mouse, hand[j])) {
+                        isHovering = true
+                        break
+                    }
+                }
+            }
+            if (isHovering) break
+        }
+        canvas.style.cursor = isHovering ? 'pointer' : 'default'
+    }
+
+    this.handleSelectedCard = (index)=>{
+        self.drawBackground()
+        self.drawCards()
+        getCardList(card_list[index].selectedCards) 
+    }
+
     this.action = ()=>{
-        //console.log('action--> ', gameData)
         self.draw()
         if(gameData && gameData.action === "showdown"){
             self.check_win_lose()
@@ -447,8 +491,18 @@ export const poker_game = function(props){
             return x.uuid === user.uuid
         })
 
-        console.log('check_win_lose--> ', winners, player)
-        handleShowdown()
+        let bet = smallBlind
+        let pot = gameData.pot
+        let status = 'lose'
+
+        if(player && player[0]){
+            bet = player[0].bet > 0 ? player[0].bet : smallBlind
+            const isPlayerInArray = winners.some(item => item.uuid === player[0].uuid)
+            if(isPlayerInArray){
+                status = "win"
+            }
+        }        
+        handleShowdown({pot, bet, status})
     }
 
     this.determineWinners = () => {
@@ -500,7 +554,7 @@ export const poker_game = function(props){
 }
 
 function PokerGame(props){
-    const {settings, startGame, showdown, gameData, bets, smallBlind, action, width, images, leave} = props
+    const {settings, gameData, smallBlind, width, images} = props
     const {lang} = settings
 
     let options = {...props}
@@ -523,29 +577,21 @@ function PokerGame(props){
 		if(my_poker && gameData && document.getElementById("poker_canvas")){
 			my_poker.action()
 		}
-        return () => {
-            if(startGame){
-                leave({startGame, showdown, gameData, bets, smallBlind, action}) 
-            }
-        }
     }, [gameData])
     
-    return <>
-        <p>{translate({lang: lang, info: "under_construction"})}</p>        
-        <div className="poker_canvas_container">
-            {gameData && gameData.action === "preflop_betting" ? <div className="small_blind_container">
-                <div className="small_blind">
-                    {translate({lang: lang, info: "small_blind"})}: {smallBlind} <FontAwesomeIcon icon={faCarrot} />
-                </div>
-            </div> : null}
-            {gameData && gameData.pot > 0 ? <div className="poker_pot_container">
-                <div className="poker_pot">
-                    {translate({lang: lang, info: "total_pot"})}: {gameData.pot} <FontAwesomeIcon icon={faCarrot} />
-                </div>
-            </div> : null}
-            <canvas id="poker_canvas" />
-        </div>
-    </>
+    return <div className="poker_canvas_container">
+        {gameData && gameData.action === "preflop_betting" ? <div className="small_blind_container">
+            <div className="small_blind">
+                {translate({lang: lang, info: "small_blind"})}: {smallBlind} <FontAwesomeIcon icon={faCarrot} />
+            </div>
+        </div> : null}
+        {gameData && gameData.pot > 0 ? <div className="poker_pot_container">
+            <div className="poker_pot">
+                {translate({lang: lang, info: "total_pot"})}: {gameData.pot} <FontAwesomeIcon icon={faCarrot} />
+            </div>
+        </div> : null}
+        <canvas id="poker_canvas" />
+    </div>
 }
 
 export default PokerGame

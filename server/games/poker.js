@@ -59,9 +59,9 @@ function poker(data){
                 payload.action = data.stage  
             }
             return payload
-        case "draw":
-            poker_players = replaceCards(data.replaceCards) 
+        case "draw":            
             poker_hidden_players = createHiddenPlayers()
+            poker_hidden_players = replaceCards(data.replaceCards, poker_hidden_players)
             poker_pot = calculatePot()
             showdown = checkShowdown()
             payload = {
@@ -361,18 +361,17 @@ function poker(data){
         return how_many
     }
 
-    function replaceCards(cards_to_replace){
-        let players = [...poker_players] 
-        let index = poker_players.findIndex((x) => x.uuid === data.uuid)
-        if(players[index] && cards_to_replace && cards_to_replace.length>0){
+    function replaceCards(cards_to_replace, players){        
+        let index = players.findIndex((x) => x.uuid === data.uuid)
+        if(players[index] && cards_to_replace && cards_to_replace.length > 0){            
             for(let i in cards_to_replace){
-                let x = cards_to_replace[i]
-                if(players[index].hand[x]){
+                let t = parseInt(cards_to_replace[i])
+                if(players[index].hand[t]){                    
                     const newCard = poker_deck.pop()
-                    players[index].hand[x] = newCard
+                    players[index].hand[t] = newCard
                 }
             }
-        }
+        }        
         return players
     }
 
