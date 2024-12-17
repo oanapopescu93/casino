@@ -124,13 +124,14 @@ function Baccarat(props){
 
     return <div id="baccarat" className='game_container'>
         <div className='game_box'>
-            <Header template={"game"} details={page} lang={lang} theme={theme}/>            
+            <Header template={"game"} details={page} lang={lang} theme={theme}/>               
             {start ? <BaccaratGame 
                 {...props} 
                 gameData={gameData}
                 choice={choice}
                 images={images}
                 width={width}
+                gameResults={gameResults}
                 endGame={(e)=>endGame(e)}
             /> : <BaccaratTable 
                 {...props} 

@@ -134,7 +134,7 @@ function Card(config){
 
 function baccarat_game(props){
     let self = this	
-	const {settings, gameData, choice, images, page, user} = props
+	const {settings, gameData, choice, images, page, user, endGame} = props
 	const {lang, theme} = settings
 
     let canvas
@@ -356,7 +356,9 @@ function baccarat_game(props){
 			baccarat_payload.status = 'win'
 		}
 		
-		props.endGame(baccarat_payload)
+		setTimeout(()=>{
+            endGame(baccarat_payload)
+       	}, 3000)
 	}
 }
 
