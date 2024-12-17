@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import RouletteTable from '../roulette/rouletteTable'
 import CrapsTable from '../craps/crapsTable'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
+import RouletteTable from '../roulette/rouletteTable'
 
 function GameBets(props){
     const {page, update, getData, closeTable} = props

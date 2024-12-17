@@ -167,7 +167,7 @@ function PokerDashboard(props){
             poker_payload.money = money - bet
         }
         resetGame()
-        //props.results(poker_payload)
+        props.results(poker_payload)
     }
 
     function resetGame(){
@@ -196,7 +196,7 @@ function PokerDashboard(props){
             }
 
             resetGame()
-            //props.results(poker_payload)
+            props.results(poker_payload)
         }
     }
 
