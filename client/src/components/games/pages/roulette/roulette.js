@@ -50,7 +50,7 @@ function Roulette(props){
             setStartGame(true)
             let roulette_payload_server = {
                 uuid: user.uuid,
-                room: getRoom(page.game),
+                room,
                 bet: bets,
             }
             socket.emit('roulette_send', roulette_payload_server)

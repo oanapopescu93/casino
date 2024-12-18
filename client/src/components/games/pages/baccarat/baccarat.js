@@ -7,7 +7,10 @@ import BaccaratButtons from './baccaratButtons'
 import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
 import { checkBets } from '../../../../utils/checkBets'
 import { decryptData } from '../../../../utils/crypto'
+import { changePopup } from '../../../../reducers/popup'
+import { useDispatch } from 'react-redux'
 
+let baccaratGameFlow = null
 function Baccarat(props){
     const {page, user, settings, socket} = props
 	const {lang, theme} = settings
@@ -23,9 +26,18 @@ function Baccarat(props){
     const [images, setImages] = useState(null)
     const [width, setWidth] = useState(getWindowDimensions().width)
     
+    let dispatch = useDispatch()
     const handleErrors = useHandleErrors()
     let items = get_cards()
-    let money = user.money ? decryptData(user.money) : 0
+    
+    let money = 0
+    if(baccaratGameFlow && baccaratGameFlow.money){
+        money = baccaratGameFlow.money
+    } else if(user.money){
+        money = decryptData(user.money)
+    }
+    let money_original = user.money ? decryptData(user.money) : 0
+    let accumulatedBets = baccaratGameFlow && baccaratGameFlow.bet ? baccaratGameFlow.bet : 0
 
     function handleResize() {
         setWidth(getWindowDimensions().width)
@@ -76,12 +88,14 @@ function Baccarat(props){
 	}
 
     function resetGame(){
+        setStart(false)
         setPlayerBet(0)
         setBankerBet(0)
         setTieBet(0)
-        setChoice(null)
-        setStart(false)
+        setChoice(null)        
+        setGameData(null)
         setGameResults(null)
+        setImages(null)
 	}
 
     useEffect(() => {
@@ -89,6 +103,7 @@ function Baccarat(props){
             if(data){
                 setStart(true)
                 setGameData(data)
+                getImagesBaccarat()
             }
         }
 		socket.on('baccarat_read', handleBaccaratRead)
@@ -97,12 +112,33 @@ function Baccarat(props){
         }
     }, [socket])
 
-    function endGame(payload){
-        setGameResults(payload)
-        props.results(payload)
+    function showGameResults(res){
+        setGameResults(res)
+
+        money = res.status === "win" ? money + res.bet : money - res.bet
+        accumulatedBets = accumulatedBets + res.bet
+        baccaratGameFlow = {...res, money, bet: accumulatedBets}        
+
+        const payload = {
+            open: true,
+            template: "game_results",
+            title: "results",
+            data: res,
+            size: "sm",
+        }
+        dispatch(changePopup(payload))
+	}
+
+    function endGame(){
+        let baccarat_payload = {...baccaratGameFlow, status: money_original < baccaratGameFlow.money ? "win" : "lose"}
+        props.results(baccarat_payload, false)
 	}
 
     useEffect(() => {
+        getImagesBaccarat()
+    }, [])
+
+    function getImagesBaccarat(){
         let promises = []
         for(let i in items){				
             promises.push(preaload_images(items[i]))
@@ -110,7 +146,7 @@ function Baccarat(props){
         Promise.all(promises).then((result)=>{
             setImages(result)
         })
-    }, [])
+    }
 
     function preaload_images(item){
 		return new Promise((resolve)=>{
@@ -122,6 +158,12 @@ function Baccarat(props){
 		})
 	}
 
+    useEffect(() => {
+		return () => {
+            endGame()
+		}
+    }, [])
+
     return <div id="baccarat" className='game_container'>
         <div className='game_box'>
             <Header template={"game"} details={page} lang={lang} theme={theme}/>               
@@ -132,7 +174,7 @@ function Baccarat(props){
                 images={images}
                 width={width}
                 gameResults={gameResults}
-                endGame={(e)=>endGame(e)}
+                showGameResults={(e)=>showGameResults(e)}
             /> : <BaccaratTable 
                 {...props} 
                 playerBet={playerBet}

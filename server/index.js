@@ -450,14 +450,12 @@ io.on('connection', (socket)=>{
 		}
 	})
   socket.on('baccarat_send', (data)=>{
-		if(data.uuid){
-			let payload = baccarat(data, how_lucky)
+		let payload = baccarat(data, how_lucky)
 			try{
         io.emit('baccarat_read', payload)
 			} catch(e){
 				console.log('[error]','baccarat_read--> ', e)
 			}
-		}
 	})
 
   socket.on('game_results_send', (data)=>{

@@ -134,12 +134,11 @@ function Card(config){
 
 function baccarat_game(props){
     let self = this	
-	const {settings, gameData, choice, images, page, user, endGame} = props
+	const {settings, gameData, choice, images, page, user, showGameResults} = props
 	const {lang, theme} = settings
 
     let canvas
-    let ctx
-	let baccarat_data = gameData ? gameData : null
+    let ctx	
 	
 	let card_list = []
 	let card_base = {}
@@ -298,12 +297,12 @@ function baccarat_game(props){
 		}))
 	}
 
-	this.draw_cards = ()=>{
-		if(baccarat_data){
+	this.draw_cards = ()=>{		
+		if(gameData){
 			for(let i in card_list){
 				let type = card_list[i].type
 				card_list[i].draw_title(ctx)
-				card_list[i].show_cards(ctx, baccarat_data, type)
+				card_list[i].show_cards(ctx, gameData, type)
 			}
 		} else {
 			for(let i in card_list){
@@ -318,7 +317,10 @@ function baccarat_game(props){
     }
 
 	this.check_win_lose = ()=>{
-		const {banker, player} = baccarat_data
+		if(!gameData){
+			return
+		}
+		const {banker, player} = gameData
 		if((player.win && banker.win) || (player.value_hand === banker.value_hand)){ 
 			self.result("tie") // we have a tie
 			return
@@ -357,8 +359,8 @@ function baccarat_game(props){
 		}
 		
 		setTimeout(()=>{
-            endGame(baccarat_payload)
-       	}, 3000)
+            showGameResults(baccarat_payload)
+       	}, 1500)
 	}
 }
 
@@ -379,10 +381,10 @@ function BaccaratGame(props){
 	}
 
     useEffect(() => {
-		if(images){
+		if(images && gameData){
 			ready()
 		}
-    }, [images, width])
+    }, [images, gameData, width])
 
 	useEffect(() => {
 		if(my_baccarat && document.getElementById("baccarat_canvas")){
@@ -392,13 +394,15 @@ function BaccaratGame(props){
 
     return <div className="baccarat_canvas_container">		
 		<div className="baccarat_subtitles">
-			<div>
-				<p>{translate({lang: lang, info: "bet_type"})}: </p>
-				<p>{translate({lang: lang, info: choice.type})}</p>
-			</div>
-			<div>
-				<p>{translate({lang: lang, info: "bet"})}: {choice.bet} <FontAwesomeIcon icon={faCarrot} /></p>
-			</div>			
+			{choice && choice.type ? <>
+				<div>
+					<p>{translate({lang: lang, info: "bet_type"})}: </p>
+					<p>{translate({lang: lang, info: choice.type})}</p>
+				</div>
+				<div>
+					<p>{translate({lang: lang, info: "bet"})}: {choice.bet} <FontAwesomeIcon icon={faCarrot} /></p>
+				</div>	
+			</> : null}
 		</div>
 		<canvas id="baccarat_canvas" />
 	</div>

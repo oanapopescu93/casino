@@ -34,7 +34,6 @@ function roulette_game(props){
     let radiantLine01 = []
 	let radiantLine02 = []
 	let radiantLine03 = []
-	let text_offset = 0   
 
     this.ready = ()=>{
         self.createCanvas()
@@ -76,7 +75,6 @@ function roulette_game(props){
 			font_bold_10 = 'bold 8px sans-serif'
 			font_bold_12 = 'bold 10px sans-serif'
 			font_bold_14 = 'bold 12px sans-serif'
-			text_offset = 15	
 		} else {
 			//big
 			canvas.width = 480
@@ -98,7 +96,6 @@ function roulette_game(props){
 			radiantLine01 = [-60, 20]
 			radiantLine02 = [-60, -160]
 			radiantLine03 = [-160, -200]
-			text_offset = 25
 		}
 		spin_clear = [0, 0, canvas.width, canvas.height]
 	}	
