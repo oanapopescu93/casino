@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { get_cards, getRoom } from '../../../../utils/games'
-import Header from '../../../partials/header'
 import BaccaratGame from './baccaratGame'
+import Header from '../../../partials/header'
 import BaccaratTable from './baccaratTable'
+import { useSelector } from 'react-redux'
+import { get_cards, getRoom } from '../../../../utils/games'
 import BaccaratButtons from './baccaratButtons'
 import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
 import { checkBets } from '../../../../utils/checkBets'
 import { decryptData } from '../../../../utils/crypto'
-import { changePopup } from '../../../../reducers/popup'
-import { useDispatch } from 'react-redux'
 
-let baccaratGameFlow = null
 function Baccarat(props){
     const {page, user, settings, socket} = props
 	const {lang, theme} = settings
     const {game} = page
+    
+    const handleErrors = useHandleErrors()
+    let items = get_cards()
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
 
     const [start, setStart] = useState(false)
     const [playerBet, setPlayerBet] = useState(0)
@@ -25,31 +28,6 @@ function Baccarat(props){
     const [gameResults, setGameResults] = useState(null)
     const [images, setImages] = useState(null)
     const [width, setWidth] = useState(getWindowDimensions().width)
-    
-    let dispatch = useDispatch()
-    const handleErrors = useHandleErrors()
-    let items = get_cards()
-    
-    let money = 0
-    if(baccaratGameFlow && baccaratGameFlow.money){
-        money = baccaratGameFlow.money
-    } else if(user.money){
-        money = decryptData(user.money)
-    }
-    let money_original = user.money ? decryptData(user.money) : 0
-    let accumulatedBets = baccaratGameFlow && baccaratGameFlow.bet ? baccaratGameFlow.bet : 0
-
-    function handleResize() {
-        setWidth(getWindowDimensions().width)
-    }
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            window.addEventListener("resize", handleResize)
-            handleResize()
-            return () => window.removeEventListener("resize", handleResize)
-        }
-    }, [])
 
     function updateBets(type, bet){
         switch (type) {
@@ -88,22 +66,19 @@ function Baccarat(props){
 	}
 
     function resetGame(){
-        setStart(false)
         setPlayerBet(0)
         setBankerBet(0)
         setTieBet(0)
-        setChoice(null)        
-        setGameData(null)
+        setChoice(null)
+        setStart(false)
         setGameResults(null)
-        setImages(null)
 	}
 
     useEffect(() => {
-		const handleBaccaratRead = (data)=>{
+		const handleBaccaratRead = function(data){
             if(data){
                 setStart(true)
                 setGameData(data)
-                getImagesBaccarat()
             }
         }
 		socket.on('baccarat_read', handleBaccaratRead)
@@ -112,26 +87,9 @@ function Baccarat(props){
         }
     }, [socket])
 
-    function showGameResults(res){
-        setGameResults(res)
-
-        money = res.status === "win" ? money + res.bet : money - res.bet
-        accumulatedBets = accumulatedBets + res.bet
-        baccaratGameFlow = {...res, money, bet: accumulatedBets}        
-
-        const payload = {
-            open: true,
-            template: "game_results",
-            title: "results",
-            data: res,
-            size: "sm",
-        }
-        dispatch(changePopup(payload))
-	}
-
-    function endGame(){
-        let baccarat_payload = {...baccaratGameFlow, status: money_original < baccaratGameFlow.money ? "win" : "lose"}
-        props.results(baccarat_payload, false)
+    function endGame(payload){
+        setGameResults(payload)
+        props.results(payload)
 	}
 
     useEffect(() => {
@@ -158,15 +116,21 @@ function Baccarat(props){
 		})
 	}
 
+    function handleResize() {
+        setWidth(getWindowDimensions().width)
+    }
+
     useEffect(() => {
-		return () => {
-            endGame()
-		}
+        if (typeof window !== "undefined") {
+            window.addEventListener("resize", handleResize)
+            handleResize()
+            return () => window.removeEventListener("resize", handleResize)
+        }
     }, [])
 
     return <div id="baccarat" className='game_container'>
         <div className='game_box'>
-            <Header template={"game"} details={page} lang={lang} theme={theme}/>               
+            <Header template={"game"} details={page} lang={lang} theme={theme}/>            
             {start ? <BaccaratGame 
                 {...props} 
                 gameData={gameData}
@@ -174,7 +138,8 @@ function Baccarat(props){
                 images={images}
                 width={width}
                 gameResults={gameResults}
-                showGameResults={(e)=>showGameResults(e)}
+                money={money}
+                endGame={(e)=>endGame(e)}
             /> : <BaccaratTable 
                 {...props} 
                 playerBet={playerBet}

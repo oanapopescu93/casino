@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { draw_rect, getMousePos, isInside } from '../../../../utils/games'
 import $ from 'jquery'
-import { decryptData } from '../../../../utils/crypto'
 import { useHandleErrors } from '../../../../utils/utils'
 import { checkBets } from '../../../../utils/checkBets'
 
 function roulette_bets(props){    
-    const { settings, images, tokenImages, page, user, getData } = props
+    const { settings, images, tokenImages, page, getData, money } = props
     const { lang } = settings
 
     let self = this
@@ -23,7 +22,6 @@ function roulette_bets(props){
 	let bet_square = 40
     let show_squares = false //this is to test click event
     let bet_value = 1
-    let money = user.money ? decryptData(user.money) : 0 
 
     const handleErrors = useHandleErrors()
 

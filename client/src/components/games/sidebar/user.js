@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changePage, changeGame, changeGamePage } from '../../../reducers/page'
 import { changePopup } from '../../../reducers/popup'
 import { translate } from '../../../translations/translate'
@@ -15,6 +15,9 @@ function User(props){
     let dispatch = useDispatch()
     const [buttonUser, setButtonUser] = useState('active')
     const [buttonMarket, setButtonMarket] = useState('')
+
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
 
     function handleChange(choice){
         switch(choice){
@@ -82,7 +85,7 @@ function User(props){
             </div>
             <div className="user_subtitle_right">
                 <span id="user_money">
-                    <span>{user.money ? decryptData(user.money) : 0}</span> <FontAwesomeIcon icon={faCarrot} />
+                    <span>{money}</span> <FontAwesomeIcon icon={faCarrot} />
                 </span>
                 {!isEmpty(streak) ? <span id="user_streak">
                     <span>{streak}</span>

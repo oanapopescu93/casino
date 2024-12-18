@@ -12,6 +12,7 @@ import { decryptData } from '../../../../utils/crypto'
 import SlotsGame from './slotsGame'
 import GameBoard from '../other/gameBoard'
 import { checkBets } from '../../../../utils/checkBets'
+import { resetAreYouSure } from '../../../../reducers/areYouSure'
 
 function Slots(props){
 	const {page, user, settings, socket, handleHandleExit} = props
@@ -32,7 +33,8 @@ function Slots(props){
     const [imagesPos, setImagesPos] = useState([])
 
     let items = get_slots_images()
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
     let room = getRoom(page.game)
 
 	let dispatch = useDispatch()
@@ -123,6 +125,12 @@ function Slots(props){
             updateBets(money)
         }
     }, [areYouSureSlotsMaxBet])
+
+    useEffect(() => {
+		return () => {
+			dispatch(resetAreYouSure())
+		}
+	}, [])
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -217,6 +225,7 @@ function Slots(props){
                 template="slots_board" 
                 bet={bets} 
                 startGame={startGame}
+                money={money}
                 choice={(e)=>choice(e)}
                 updateBets={(e)=>updateBets(e)} 
             />

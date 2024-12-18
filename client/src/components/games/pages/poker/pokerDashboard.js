@@ -8,6 +8,7 @@ import { decryptData } from '../../../../utils/crypto'
 import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
 import { checkBets } from '../../../../utils/checkBets'
 import { translate } from '../../../../translations/translate'
+import { useSelector } from 'react-redux'
 
 function PokerDashboard(props){
     const { page, settings, user, template, socket } = props
@@ -15,7 +16,8 @@ function PokerDashboard(props){
 
     let game = page.game
     let room = getRoom(game)
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
     let items = get_cards()
     let replaceCards = null
     let smallBlind = 1

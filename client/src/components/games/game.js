@@ -15,7 +15,7 @@ import WhackARabbit from './pages/whackARabbit/whackARabbit'
 import Panel from './sidebar/panel'
 
 import { changePopup } from '../../reducers/popup'
-import { changeMoney } from '../../reducers/auth'
+import { updateMoney } from '../../reducers/auth'
 import { changePage, changeGame, changeGamePage, changeRoom } from '../../reducers/page'
 import { getCookie, isEmpty, setCookie } from '../../utils/utils'
 import { getRoom } from '../../utils/games'
@@ -35,11 +35,15 @@ function Game(props){
 
     const results = useCallback((res, showPopup = true) => {
         if (res && res.bet > 0) {
+            //send results to server
             socket.emit("game_results_send", res)
-            dispatch(changeMoney(res.money))
+
+            //update money
+            dispatch(updateMoney(res.money))
 
             if (!showPopup) return
 
+            //show popup
             const payload = {
                 open: true,
                 template: "game_results",

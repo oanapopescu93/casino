@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
 import { translate } from '../../../../translations/translate'
+import { useSelector } from 'react-redux'
+import { decryptData } from '../../../../utils/crypto'
 
 function RaceTables(props){
     const {
@@ -48,6 +50,9 @@ function RaceTables(props){
         ]
     }
 
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
+
     function handleGetData(){
         if(carouselRef && carouselRef.current){
             let raceInfo = carouselRef.current.getRabbits()
@@ -65,6 +70,7 @@ function RaceTables(props){
                 template="race" 
                 options={race_carousel_options}
                 itemList={rabbitArray}
+                money={money}
             />
         </div>
         <div className="button_action_group race_buttons_container">

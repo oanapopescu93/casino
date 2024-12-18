@@ -18,6 +18,7 @@ import obstacle_yellow from '../../../../img/icons/obstacle_yellow.png'
 import obstacle_pink from '../../../../img/icons/obstacle_pink.png'
 import obstacle_green from '../../../../img/icons/obstacle_green.png'
 import obstacle_orange from '../../../../img/icons/obstacle_orange.png'
+import { useSelector } from 'react-redux'
 
 function Race(props){
     const {settings, user, home} = props
@@ -31,7 +32,8 @@ function Race(props){
     const [images, setImages] = useState(null)
     const [raceInfo, setRaceInfo] = useState([])
 
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
     let moneyPerWin = 10
 
     const handleErrors = useHandleErrors()

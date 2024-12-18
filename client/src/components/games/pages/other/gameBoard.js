@@ -4,13 +4,12 @@ import Counter from '../../../partials/counter'
 import { Button, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPlus, faPause, faAnglesUp, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { decryptData } from '../../../../utils/crypto'
 import { translate } from '../../../../translations/translate'
 
 function GameBoard(props){
-    const {template, user, settings, startGame, bet, choice, updateBets} = props
+    const {template, settings, startGame, bet, choice, updateBets, money} = props
     const {lang} = settings
-    let max_bet = user.money ? decryptData(user.money) : 0
+    let max_bet = money
 
     let bet_array = [
         {id: "10", text: "1"},

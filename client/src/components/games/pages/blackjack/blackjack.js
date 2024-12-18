@@ -6,7 +6,7 @@ import BlackjackGame from './blackjackGame'
 import { translate } from '../../../../translations/translate'
 import { get_cards, getRoom } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
 import { checkBets } from '../../../../utils/checkBets'
@@ -27,7 +27,8 @@ function Blackjack(props){
     let dispatch = useDispatch()
     let items = get_cards()
     
-	let money = user.money ? decryptData(user.money) : 0
+	let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
 	let howManyPlayers = 5
 
     function handleResize() {
@@ -162,6 +163,7 @@ function Blackjack(props){
                 gameData={gameData}
                 images={images}                
                 width={width}
+                money={money}
                 howManyPlayers={howManyPlayers}
                 handleBets={()=>handleBets()}
             />

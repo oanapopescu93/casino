@@ -5,6 +5,7 @@ import CrapsGame from './crapsGame'
 import { decryptData } from '../../../../utils/crypto'
 import { checkBets } from '../../../../utils/checkBets'
 import { useHandleErrors } from '../../../../utils/utils'
+import { useSelector } from 'react-redux'
 
 function Craps(props){
     const { page, user, settings, socket } = props
@@ -20,7 +21,8 @@ function Craps(props){
     const handleErrors = useHandleErrors()
 
     let items = get_craps_bets()
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
 	let game = page.game
     let room = getRoom(game)
 

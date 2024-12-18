@@ -8,19 +8,18 @@ import vegetables_green from '../../../../../img/icons/vegetables/vegetables_gre
 import vegetables_orange from '../../../../../img/icons/vegetables/vegetables_orange.png'
 import Counter from '../../../../partials/counter'
 import { Button } from 'react-bootstrap'
-import { decryptData } from '../../../../../utils/crypto'
 import { convertCurrency } from '../../../../../utils/utils'
 
 function Cart(props){
     const {
-        cart, home, user, settings, exchange_rates,
+        cart, home, settings, exchange_rates, money,
         cartRemoveAllProduct, cartRemoveProduct, updateQtyProduct, handleCheckout
     } = props
     const {lang, currency, theme} = settings
     
     let market = home.market ? home.market : []
     let total = totalPriceSum().toFixed(2)
-    let max = user.money ? decryptData(user.money) : 0  
+    let max = money 
 
     function totalPriceSum(){
         let total = 0

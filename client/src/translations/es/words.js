@@ -440,7 +440,9 @@ var word_bank = {
     warning_gambling_03: "Ocultar el tiempo dedicado al juego o esconder facturas y deudas impagas.",
     warning_gambling_04: "Pasar mucho tiempo apostando, pensando en apostar o planeando hacerlo.",
     warning_gambling_05: "Sentirse inquieto o irritable cuando no se está apostando.",
-    warning_gambling_06: "Presumir de las ganancias, exagerar los éxitos y/o minimizar las pérdidas.",    
+    warning_gambling_06: "Presumir de las ganancias, exagerar los éxitos y/o minimizar las pérdidas.",  
+    are_you_sure: "¿Estás seguro?",
+    are_you_sure_bets: "¿Estás seguro de que quieres apostar esta cantidad?",  
 }
 
 export const wordsEs = (info)=>{

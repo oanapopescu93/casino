@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import KenoAnimation from './kenoAnimation'
 import KenoGame from './KenoGame'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changePopup } from '../../../../reducers/popup'
 import { translate } from '../../../../translations/translate'
 import { decryptData } from '../../../../utils/crypto'
@@ -13,7 +13,8 @@ function Keno(props){
     const {lang} = settings
 
     let game = page.game
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
     let dispatch = useDispatch()
     const handleErrors = useHandleErrors()
 

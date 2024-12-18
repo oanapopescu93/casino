@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { draw_rect } from '../../../../utils/games'
-import { decryptData } from '../../../../utils/crypto'
 
 function Card(config){
 	let self = this
@@ -181,8 +180,9 @@ function Card(config){
 }
 
 function blackjack_game(props){
-    let self = this	
-    let images = props.images ? props.images : []
+	const {images, money} = props
+
+    let self = this		
 	let canvas
 	let ctx	
 	let card_list = []
@@ -493,7 +493,6 @@ function blackjack_game(props){
             if(props.page && props.page.game){
                 game = props.page.game
             }
-            let money = props.user.money ? decryptData(props.user.money) : 0		
 
             let blackjack_payload = {
                 uuid: props.user.uuid,

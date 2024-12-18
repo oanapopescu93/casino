@@ -7,14 +7,14 @@ const initialState = {
         profile_pic: getCookie("casino_profile_pic") !== "" ? getCookie("casino_profile_pic") : null,
         account_type: getCookie("casino_account_type") !== "" ? getCookie("casino_account_type") : null,
         device: getCookie("casino_device") !== "" ? getCookie("casino_device") : null,
-        email: getCookie("casino_email") !== "" ? getCookie("casino_email") : null,
-        money: getCookie("casino_money") !== "" ? getCookie("casino_money") : null,
+        email: getCookie("casino_email") !== "" ? getCookie("casino_email") : null,        
         user: getCookie("casino_user") !== "" ? getCookie("casino_user") : null,
         uuid: getCookie("casino_uuid") !== "" ? getCookie("casino_uuid") : null,
         logs: getCookie("casino_logs") !== "" ? getCookie("casino_logs") : null,
         logsTotal: getCookie("casino_logsTotal") !== "" ? getCookie("casino_logsTotal") : null,
     },
     isMinor: getCookie("casino_isminor") !== "" ? getCookie("casino_isminor") : null,
+    money: getCookie("casino_money") !== "" ? getCookie("casino_money") : null,
 }
 
 const pageSlice = createSlice({
@@ -37,10 +37,6 @@ const pageSlice = createSlice({
             if(payload.email){
                 state.user.email = encryptData(payload.email)
                 setCookie("casino_email", encryptData(payload.email))
-            }
-            if(payload.money){
-                state.user.money = encryptData(payload.money)
-                setCookie("casino_money", encryptData(payload.money))
             }
             if(payload.user){
                 state.user.user = encryptData(payload.user)
@@ -75,9 +71,9 @@ const pageSlice = createSlice({
                 setCookie("casino_user", encryptData(payload))
             }
         },
-        changeMoney: (state, { payload }) => {
+        updateMoney: (state, { payload }) => {
             if(payload){
-                state.user.money = encryptData(payload)
+                state.money = encryptData(payload)
                 setCookie("casino_money", encryptData(payload))
             }
         },
@@ -90,7 +86,7 @@ export const {
     changeIsMinor,
     changePic,
     changeUsername,
-    changeMoney,
+    updateMoney,
 } = pageSlice.actions
 
 export default pageSlice.reducer

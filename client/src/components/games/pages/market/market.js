@@ -6,12 +6,13 @@ import shop_pink from '../../../../img/other/shop/shop_pink.png'
 import shop_green from '../../../../img/other/shop/shop_green.png'
 import shop_orange from '../../../../img/other/shop/shop_orange.png'
 import Carousel from '../../../carousel/carousel'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { cartAdd } from '../../../../reducers/cart'
 import { Button } from 'react-bootstrap'
 import { changePage, changeGame, changeGamePage } from '../../../../reducers/page'
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faCartShopping, faUser, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import { decryptData } from '../../../../utils/crypto'
 
 function Market(props){
     const {home, settings} = props
@@ -57,6 +58,8 @@ function Market(props){
         ]
     }
     let dispatch = useDispatch()
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
     
     function marketChoice(x){
         dispatch(cartAdd(x))
@@ -111,6 +114,7 @@ function Market(props){
                     template="market" 
                     options={market_carousel_options}
                     itemList={market} 
+                    money={money}
                     getItem={(e)=>marketChoice(e)}
                 />
             </Col>

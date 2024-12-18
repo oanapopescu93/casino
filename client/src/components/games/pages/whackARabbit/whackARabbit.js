@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react'
-import { useDispatch} from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import $ from 'jquery'
 import { get_whack_a_rabbit_img, isInside } from '../../../../utils/games'
 import { decryptData } from '../../../../utils/crypto'
@@ -42,11 +42,13 @@ function Target(config){
 }
 
 function whack_game(props){
+    const {money} = props
+    
     let self = this
     this.images = []
 
     this.secs = 10
-    let duration = 100000000000
+    let duration = 1000
     let lastSpawn = Date.now()  
     let spawnRate = Math.round(Math.random() * (3000 - 1000) + 1000)
 
@@ -144,7 +146,7 @@ function whack_game(props){
     this.getTimer = (secs)=>{
         self.secs = secs
     }
-    this.start = ()=>{		
+    this.start = ()=>{        
         self.createCanvas()
         self.drawHammer()
         self.handleClick()
@@ -162,12 +164,12 @@ function whack_game(props){
             ((callback) => window.setTimeout(callback, 1000 / 60))    
        
         function runWhackARabbit() {
-            if (ctx) {
+            if (!ctx) {
                 window.cancelAnimationFrame(runWhackARabbit)
                 return
             }
             
-            let stop = false    
+            let stop = false
             
             if (spinNr > spinTime || self.secs === 0) {
                 stop = true
@@ -307,8 +309,7 @@ function whack_game(props){
             let game = null
             if(props.page && props.page.game){
                 game = props.page.game
-            }
-            let money = props.user.money ? decryptData(props.user.money) : 0 
+            }            
 
             let whack_payload = {
                 uuid: props.user.uuid,
@@ -338,7 +339,10 @@ function WhackARabbit(props){
     let whack_a_rabbit_container_ref = useRef(null)
     let items = get_whack_a_rabbit_img(props.settings.theme)
 
-    let options = {...props, dispatch, whack_a_rabbit_container_ref, items}
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
+
+    let options = {...props, dispatch, whack_a_rabbit_container_ref, items, money}
     let my_whack = new whack_game(options)
     let limit = 20
     const [time, setTime] = useState(limit)

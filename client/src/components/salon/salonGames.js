@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changeGame, changeGamePage } from '../../reducers/page'
 import { checkWinterMonths } from '../../utils/special_occasions'
 import { translate } from '../../translations/translate'
@@ -10,6 +10,7 @@ import Carousel from '../carousel/carousel'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import ChatBotButton from '../partials/chatBotButton'
+import { decryptData } from '../../utils/crypto'
 
 function SalonGames(props){
     const {home, settings, width, height} = props
@@ -56,6 +57,9 @@ function SalonGames(props){
             }
         ]
     }
+
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
 
     useEffect(() => {
         create_casino_games()
@@ -171,6 +175,7 @@ function SalonGames(props){
                                     type={t}
                                     options={salon_carousel_options} 
                                     itemList={casinoGames[t]} 
+                                    money={money}
                                     getItem={(e)=>gameChoice(e)}
                                 />
                             </div>

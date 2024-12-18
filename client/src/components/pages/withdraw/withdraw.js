@@ -18,7 +18,8 @@ import { faCarrot, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 function Withdraw(props){    
     const {user, home, settings} = props
     const {lang, theme} = settings
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
     let dispatch = useDispatch()
 
     let processWithdraw = useSelector(state => state.payments.processWithdraw)

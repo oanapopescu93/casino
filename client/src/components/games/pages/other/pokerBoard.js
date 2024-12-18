@@ -2,15 +2,14 @@ import React, {useState} from 'react'
 import { translate } from '../../../../translations/translate'
 import { Button, Row, Col } from 'react-bootstrap'
 import Counter from '../../../partials/counter'
-import { decryptData } from '../../../../utils/crypto'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faCheck, faChevronUp, faXmark, faEye } from '@fortawesome/free-solid-svg-icons'
 
 function PokerBoard(props){
-    const {settings, user, action, bet, template, choice, updateBets} = props
+    const {settings, action, bet, template, choice, updateBets, money} = props
     const {lang} = settings
 
-    let max_bet = user.money ? decryptData(user.money) : 0
+    let max_bet = money
     const [num, setNum]= useState(bet)
 
     function handleClick(e){   

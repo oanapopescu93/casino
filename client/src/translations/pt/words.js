@@ -439,7 +439,9 @@ var word_bank = {
     warning_gambling_03: "Esconder o tempo gasto jogando ou esconder contas e dívidas não pagas.",
     warning_gambling_04: "Passar muito tempo jogando, pensando ou planejando apostar.",
     warning_gambling_05: "Ficar inquieto ou irritado quando não está jogando.",
-    warning_gambling_06: "Gabar-se de ganhos, exagerar vitórias e/ou minimizar perdas.",    
+    warning_gambling_06: "Gabar-se de ganhos, exagerar vitórias e/ou minimizar perdas.",
+    are_you_sure: "Você tem certeza?",
+    are_you_sure_bets: "Você tem certeza de que quer apostar essa quantia?",
 }
 
 export const wordsPt = (info)=>{

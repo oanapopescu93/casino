@@ -443,6 +443,8 @@ var word_bank = {
     warning_gambling_04: "Spending a lot of time gambling, thinking about or planning to gamble.",
     warning_gambling_05: "Restless or irritable when not gambling.",
     warning_gambling_06: "Bragging about winning, exagerating wins and/or minimizing losses.",
+    are_you_sure: "Are you sure",
+    are_you_sure_bets: "Are you ssure you want to bet this amount?",
 }
 
 export const wordsEng = (info)=>{

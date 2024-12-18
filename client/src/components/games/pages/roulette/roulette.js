@@ -6,6 +6,7 @@ import { get_roulette_bets, getRoom } from '../../../../utils/games'
 import { checkBets } from '../../../../utils/checkBets'
 import { getWindowDimensions, useHandleErrors } from '../../../../utils/utils'
 import carrot_img from '../../../../img/icons/carrot_icon.png'
+import { useSelector } from 'react-redux'
 
 let rouletteBetsInfo = null
 function Roulette(props){
@@ -25,7 +26,8 @@ function Roulette(props){
 
     const handleErrors = useHandleErrors()
 
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
 	let game = page.game
     let room = getRoom(game)
     let items = get_roulette_bets()

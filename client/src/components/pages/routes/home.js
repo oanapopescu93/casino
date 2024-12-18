@@ -20,7 +20,7 @@ import ButtonDonation from '../donation/buttonDonation'
 
 import { getCarrotsFromProducts, isEmpty, postData } from '../../../utils/utils'
 import { translate } from '../../../translations/translate'
-import { changeMoney } from '../../../reducers/auth'
+import { updateMoney } from '../../../reducers/auth'
 
 function Home(props) {
     const {home, page, user, settings, exchange_rates, socket} = props
@@ -193,7 +193,7 @@ function Home(props) {
             dispatch(orderAdd(details)) // add payment to order list
 
             // // update redux money
-            dispatch(changeMoney(details.money))
+            dispatch(updateMoney(details.money))
         }
 		socket.on('order_read', handleOrderRead)
 		return () => {

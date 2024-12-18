@@ -5,7 +5,6 @@ import Stars from '../rating/stars'
 import { Button, Row, Col } from 'react-bootstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
-import { decryptData } from '../../utils/crypto'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBasketShopping, faCarrot } from '@fortawesome/free-solid-svg-icons'
 import vegetables_yellow from '../../img/icons/vegetables/vegetables_yellow.png'
@@ -17,7 +16,7 @@ import { convertCurrency } from '../../utils/utils'
 
 function Cell(props) {
     const {
-        index, selected, data, template, account_type, money, settings, exchange_rates, finances, handlePic, user,
+        index, selected, data, template, account_type, money, settings, exchange_rates, finances, handlePic,
         getRabbitsInfo
     } = props
     const {lang, currency, theme} = settings
@@ -28,7 +27,7 @@ function Cell(props) {
     const [titleDropdown, setTitleDropdown] = useState(place)
     const [isDragging, setIsDragging] = useState(false) 
     
-    let max_bet = user.money ? decryptData(user.money) : 0
+    let max_bet = money
     
     const dragStart = useRef({ x: 0, y: 0 })
     const dragThreshold = 5 // pixels
@@ -136,7 +135,7 @@ function Cell(props) {
                                 <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
                                 <p>{translate({lang: lang, info: "value"})}: {data.value} <FontAwesomeIcon icon={faCarrot} /></p>
                                 <p>{translate({lang: lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
-                                <Counter update={(e)=>updateQtyMarket(e)} />
+                                <Counter min={0} max={100} update={(e)=>updateQtyMarket(e)} />
                             </div>
                             <div className="cell_button">
                                 <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>

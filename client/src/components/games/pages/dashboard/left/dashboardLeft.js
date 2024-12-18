@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { decryptData } from '../../../../../utils/crypto'
 import { translate } from '../../../../../translations/translate'
 import profilePic from '../../../../../img/profile/predators.jpg'
@@ -43,7 +43,8 @@ function DashboardLeft(props){
     let dispatch = useDispatch()
 
     let name = user.user ? decryptData(user.user) : "-"
-    let money = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
     let profiles = home.profiles
     let picId = user.profile_pic ? decryptData(user.profile_pic) : 1
     let animal = profiles.filter((x)=>{

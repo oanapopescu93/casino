@@ -440,7 +440,9 @@ var word_bank = {
     warning_gambling_03: "Cacher le temps passé à jouer ou dissimuler des factures et des dettes impayées.",
     warning_gambling_04: "Passer beaucoup de temps à jouer, à penser au jeu ou à planifier de jouer.",
     warning_gambling_05: "Être agité ou irritable lorsqu'on ne joue pas.",
-    warning_gambling_06: "Se vanter de ses gains, exagérer les victoires et/ou minimiser les pertes.",    
+    warning_gambling_06: "Se vanter de ses gains, exagérer les victoires et/ou minimiser les pertes.",
+    are_you_sure: "Êtes-vous sûr",
+    are_you_sure_bets: "Êtes-vous sûr de vouloir miser ce montant ?",
 }
 
 export const wordsFr = (info)=>{

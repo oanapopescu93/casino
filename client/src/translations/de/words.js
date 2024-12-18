@@ -441,6 +441,8 @@ var word_bank = {
     warning_gambling_04: "Viel Zeit mit Glücksspiel verbringen, darüber nachdenken oder planen, zu spielen.",
     warning_gambling_05: "Unruhig oder gereizt sein, wenn man nicht spielt.",
     warning_gambling_06: "Mit Gewinnen prahlen, Gewinne übertreiben und/oder Verluste verharmlosen.",
+    are_you_sure: "Bist du sicher",
+    are_you_sure_bets: "Bist du sicher, dass du diesen Betrag setzen möchtest?",
 }
 
 export const wordsDe = (info)=>{

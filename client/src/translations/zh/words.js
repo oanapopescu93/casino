@@ -440,7 +440,9 @@ var word_bank = {
     warning_gambling_03: "隐藏用于赌博的时间或隐瞒账单和未偿债务。",
     warning_gambling_04: "花大量时间赌博、思考赌博或计划赌博。",
     warning_gambling_05: "不赌博时感到焦躁不安或易怒。",
-    warning_gambling_06: "夸耀赢利，夸大胜利和/或淡化损失。",    
+    warning_gambling_06: "夸耀赢利，夸大胜利和/或淡化损失。",
+    are_you_sure: "你确定吗？",
+    are_you_sure_bets: "你确定要下注这个金额吗？",   
 }
 
 export const wordsZh = (info)=>{

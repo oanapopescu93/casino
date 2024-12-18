@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import { useDispatch} from 'react-redux'
 import { translate } from '../../../../translations/translate'
-import { decryptData } from '../../../../utils/crypto'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCarrot } from '@fortawesome/free-solid-svg-icons'
 
@@ -134,7 +133,7 @@ function Card(config){
 
 function baccarat_game(props){
     let self = this	
-	const {settings, gameData, choice, images, page, user, showGameResults} = props
+	const {settings, gameData, choice, images, page, user, money, endGame} = props
 	const {lang, theme} = settings
 
     let canvas
@@ -309,9 +308,9 @@ function baccarat_game(props){
 				card_list[i].draw_title(ctx)
 			}
 		}
-	}	
+	}
 
-	this.action = ()=>{		
+	this.action = ()=>{	
 		self.draw_cards()
 		self.check_win_lose()
     }
@@ -343,8 +342,6 @@ function baccarat_game(props){
 	}
 
 	this.result = (x)=>{
-		let money = user.money ? decryptData(user.money) : 0
-
 		let baccarat_payload = {
 			uuid: user.uuid,
 			game: page.game,
@@ -359,8 +356,8 @@ function baccarat_game(props){
 		}
 		
 		setTimeout(()=>{
-            showGameResults(baccarat_payload)
-       	}, 1500)
+            endGame(baccarat_payload)
+       	}, 1000)
 	}
 }
 

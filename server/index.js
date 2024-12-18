@@ -459,6 +459,7 @@ io.on('connection', (socket)=>{
 	})
 
   socket.on('game_results_send', (data)=>{
+    console.log('game_results_send ', data)
     if(data.uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db10"

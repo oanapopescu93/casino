@@ -10,14 +10,16 @@ import vegetables_orange from '../../../img/icons/vegetables/vegetables_orange.p
 import Counter from '../../partials/counter'
 import { decryptData } from '../../../utils/crypto'
 import { convertCurrency } from '../../../utils/utils'
+import { useSelector } from 'react-redux'
 
 function List(props){
     const {
-        list, user, settings, exchange_rates, 
+        list, settings, exchange_rates, 
         updateQtyProduct, removeProduct
     } = props
     const {lang, currency, theme} = settings
-    let max = user.money ? decryptData(user.money) : 0
+    let moneyEncrypted = useSelector(state => state.auth.money)
+    let money = moneyEncrypted ? decryptData(moneyEncrypted) : 0
 
     function chooseImage(){
         switch (theme) {
@@ -56,7 +58,7 @@ function List(props){
                             </Row>
                             <Row>
                                 <Col xs={12}>
-                                    <Counter num={item.qty} max={max} update={(e)=>updateQtyProduct({...item, qty: e})}></Counter>
+                                    <Counter num={item.qty} max={money} update={(e)=>updateQtyProduct({...item, qty: e})}></Counter>
                                 </Col>
                             </Row>
                         </Col>

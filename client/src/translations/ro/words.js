@@ -440,7 +440,9 @@ var word_bank = {
     warning_gambling_03: "Ascunderea timpului petrecut la jocuri de noroc sau a facturilor și datoriilor neplătite.",
     warning_gambling_04: "Petrecerea mult timp jucând, gândindu-se la jocuri de noroc sau planificând să joace.",
     warning_gambling_05: "A fi neliniștit sau iritabil atunci când nu joci.",
-    warning_gambling_06: "Lăudarea câștigurilor, exagerarea acestora și/sau minimizarea pierderilor.",      
+    warning_gambling_06: "Lăudarea câștigurilor, exagerarea acestora și/sau minimizarea pierderilor.",
+    are_you_sure: "Ești sigur?",
+    are_you_sure_bets: "Ești sigur că vrei să pariezi această sumă?",  
 }
 
 export const wordsRo = (info)=>{
