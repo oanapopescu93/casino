@@ -420,6 +420,7 @@ var word_bank = {
     email_send_validation_title: "Verificați adresa de e-mail",
     email_send_validation_text: "Am trimis un e-mail de verificare în căsuța dumneavoastră. Vă rugăm să verificați e-mailul și să faceți clic pe linkul de verificare pentru a activa contul. Dacă nu vedeți e-mailul, verificați folderul de spam sau mesaje nedorite. Mulțumim!",
     email_send_validation_button: "Retrimiteți e-mailul de verificare",
+    token_is_not_verified: "Acest utilizator nu a fost încă verificat. Trebuie să retrimiteți e-mailul de verificare. După aceea, vă rugăm să verificați e-mailul și să faceți clic pe linkul de verificare pentru a activa contul. Dacă nu vedeți e-mailul, verificați folderul de spam sau junk. Vă mulțumim!",
 
     // Apply Job
     apply: "Aplică pentru job",

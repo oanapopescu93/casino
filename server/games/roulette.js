@@ -16,7 +16,7 @@ function roulette(data, how_lucky){
     
     let spin_time = Math.floor(Math.random() * (800 - 300)) + 300
     let ball_speed = 0.06
-    let k = Math.floor(Math.random() * (monkey.length-1 - 0)) + 0    
+    let k = Math.floor(Math.random() * (monkey.length-1 - 0)) + 0
 
     return {arc: 0.05, spin_time: spin_time, ball_speed: ball_speed, monkey: monkey[k]}
 

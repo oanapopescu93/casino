@@ -2,7 +2,7 @@ var constants = require('../var/home')
 function slots(data){
     let array_big = []
     let items = 7
-    let matrix = []    
+    let matrix = []
 
     for(let i=0; i < 19; i++){
         matrix.push(slot_matrix(i, [data.lines, 3]))
@@ -45,7 +45,7 @@ function slots(data){
 
     function slot_matrix(x, size){
         let matrix = []
-        let t = 0        
+        let t = 0
         let length01 = size[0]
         let length02 = size[1]
 
@@ -61,7 +61,7 @@ function slots(data){
             case 4:				
                 for(let i=0; i < length01; i++){
                     if(i === 2){
-                        t  = Math.round((length02-1) / 2)
+                        t = Math.round((length02-1) / 2)
                     } else {
                         if(x===3){
                             if(i===3 || i===4){
@@ -99,11 +99,11 @@ function slots(data){
                     t = 0
                     if(x === 7){
                         if(i%2 !== 0){
-                            t  = Math.round((length02-1) / 2)
+                            t = Math.round((length02-1) / 2)
                         }
                     } else{
                         if(i%2 === 0){
-                            t  = Math.round((length02-1) / 2)
+                            t = Math.round((length02-1) / 2)
                         }
                     }
                     matrix.push([t, i])
@@ -119,7 +119,7 @@ function slots(data){
                         }
                     } else{
                         if(i%2 === 0){
-                            t  = 0
+                            t = 0
                         }
                     }
                     matrix.push([t, i])

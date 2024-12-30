@@ -419,6 +419,7 @@ var word_bank = {
     email_send_validation_title: "Verifique o seu endereço de e-mail",
     email_send_validation_text: "Enviamos um e-mail de verificação para a sua caixa de entrada. Por favor, verifique seu e-mail e clique no link de verificação para ativar sua conta. Se não vir o e-mail, verifique a pasta de spam ou lixo eletrônico. Obrigado!",
     email_send_validation_button: "Reenviar e-mail de verificação",
+    token_is_not_verified: "Este usuário ainda não foi verificado. Você deve reenviar o e-mail de verificação. Depois disso, verifique seu e-mail e clique no link de verificação para ativar sua conta. Se não encontrar o e-mail, verifique sua pasta de spam ou lixo eletrônico. Obrigado!",
 
     // Apply Job
     apply: "Candidatar-se à vaga",

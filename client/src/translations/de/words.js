@@ -420,6 +420,7 @@ var word_bank = {
     email_send_validation_title: "Bestätigen Sie Ihre E-Mail-Adresse",
     email_send_validation_text: "Wir haben eine Bestätigungs-E-Mail an Ihren Posteingang gesendet. Bitte überprüfen Sie Ihre E-Mails und klicken Sie auf den Bestätigungslink, um Ihr Konto zu aktivieren. Wenn Sie die E-Mail nicht sehen, überprüfen Sie bitte Ihren Spam- oder Junk-Ordner. Vielen Dank!",
     email_send_validation_button: "Bestätigungs-E-Mail erneut senden",
+    token_is_not_verified: "Dieser Benutzer wurde noch nicht verifiziert. Sie müssen die Verifizierungs-E-Mail erneut senden. Überprüfen Sie danach bitte Ihre E-Mails und klicken Sie auf den Verifizierungslink, um Ihr Konto zu aktivieren. Falls Sie die E-Mail nicht sehen, überprüfen Sie bitte Ihren Spam- oder Junk-Ordner. Vielen Dank!",
 
     // Apply Job
     apply: "Bewerben für den Job",

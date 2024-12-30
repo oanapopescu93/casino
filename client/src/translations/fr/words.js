@@ -420,6 +420,7 @@ var word_bank = {
     email_send_validation_title: "Vérifiez votre adresse e-mail",
     email_send_validation_text: "Nous avons envoyé un e-mail de vérification à votre boîte de réception. Veuillez vérifier votre e-mail et cliquer sur le lien de vérification pour activer votre compte. Si vous ne voyez pas l'e-mail, vérifiez votre dossier spam ou courrier indésirable. Merci !",
     email_send_validation_button: "Renvoyer l'e-mail de vérification",
+    token_is_not_verified: "Cet utilisateur n'a pas encore été vérifié. Vous devez renvoyer l'e-mail de vérification. Ensuite, veuillez vérifier votre e-mail et cliquer sur le lien de vérification pour activer votre compte. Si vous ne voyez pas l'e-mail, vérifiez votre dossier de spam ou de courrier indésirable. Merci !",
 
     // Apply Job
     apply: "Postuler pour le poste",

@@ -3,12 +3,16 @@ import { translate } from '../../translations/translate'
 import { Button } from 'react-bootstrap'
 import Spinner from '../partials/spinner'
 
-function VerificationSendSuccess(props) {
-    const { settings, data, resendVerificationResult, sending, handleResendVerification } = props
+function VerificationSend(props) {
+    const { template, settings, data, resendVerificationResult, sending, handleResendVerification } = props
     const { lang } = settings
     
-    return <div className="perificationSendSuccess">
-        <p>{translate({lang: lang, info: "email_send_validation_text"})}</p>
+    return <div className="verificationSend">
+        {template === "verificationSendSuccess" ? <p>
+            {translate({lang: lang, info: "email_send_validation_text"})}
+        </p> : <p>
+            {translate({lang: lang, info: "token_is_not_verified"})}
+        </p>}        
 
         <Button type="button" onClick={()=>handleResendVerification(data.email)} className="mybutton button_fullcolor shadow_convex">
             <span>{translate({lang: lang, info: "email_send_validation_button"})}</span>           
@@ -20,4 +24,4 @@ function VerificationSendSuccess(props) {
         </div> : null}
     </div>
 }
-export default VerificationSendSuccess
+export default VerificationSend

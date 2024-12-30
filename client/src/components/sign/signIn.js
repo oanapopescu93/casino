@@ -18,7 +18,7 @@ function SignIn(props) {
             case "pass":
                 setPass(e.target.value)
                 break
-            default:              
+            default:
         }
     }
 
@@ -60,7 +60,7 @@ function SignIn(props) {
                 <Col sm={8} className="input_container">
                     <input placeholder={translate({lang: lang, info: "password"})} className="input_light" type={visible ? "text" : "password"} value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
                     <div className="input_eye" onClick={()=>handleVisible()}>
-                        {visible ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}                        
+                        {visible ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
                     </div>
                 </Col>
             </Row>

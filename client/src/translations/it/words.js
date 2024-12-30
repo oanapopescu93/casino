@@ -420,6 +420,7 @@ var word_bank = {
     email_send_validation_title: "Verifica il tuo indirizzo e-mail",
     email_send_validation_text: "Abbiamo inviato un'email di verifica alla tua casella di posta. Controlla la tua email e fai clic sul link di verifica per attivare il tuo account. Se non vedi l'email, controlla la cartella spam o posta indesiderata. Grazie!",
     email_send_validation_button: "Rinvia email di verifica",
+    token_is_not_verified: "Questo utente non è ancora stato verificato. Devi reinviare l'e-mail di verifica. Dopo di ciò, controlla la tua e-mail e fai clic sul link di verifica per attivare il tuo account. Se non vedi l'e-mail, controlla la cartella spam o posta indesiderata. Grazie!",
 
     // Apply Job
     apply: "Candidati per il lavoro",

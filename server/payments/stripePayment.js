@@ -9,23 +9,23 @@ const MINIMUM_AMOUNT_USD = 1000
 stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
     const { name, email, country, city, phone, cardNumber, month, year, cvv, amount, products, description } = req.body
 
-    if(!cardNumber || !month || !year || !cvv){        
+    if(!cardNumber || !month || !year || !cvv){
         return res.json({ type: "stripe", result: "error", payload: 'error_charge' })
     }    
 
     if (amount) {
-        if (amount * 100 < MINIMUM_AMOUNT_USD) {            
+        if (amount * 100 < MINIMUM_AMOUNT_USD) {
             return res.json({ type: "stripe", result: "error", payload: 'amount_too_low' })
         }
 
         //create items
         const lineItems = products.map((product) => {
             return {
-                name: product.name_eng,                
+                name: product.name_eng,
                 quantity: product.qty,
                 price: Math.round(product.price * 100), // price in cents
-            };
-        });
+            }
+        })
         
         const metadata = {};
         lineItems.forEach((item, index) => {
@@ -41,7 +41,7 @@ stripePayment.post("/api/stripe", jsonParser, (req, res, next) => {
                 exp_year: parseInt(year),
                 cvc: cvv,
             },
-        }        
+        }
         let paymentMethod = null
         let paymentIntent = {
             amount: amount * 100,
@@ -152,9 +152,9 @@ function attachPaymentMethod(paymentMethod_id, customer_id){
         })
     })
 }
-function paymentIntents(data){    
+function paymentIntents(data){
     return new Promise((resolve, reject)=>{
-        stripe.paymentIntents.create(data).then((res)=>{            
+        stripe.paymentIntents.create(data).then((res)=>{
             resolve(res)
         }).catch(err => {
             console.error('error-paymentIntents--> ' + err)

@@ -10,7 +10,7 @@ import Header from '../partials/header'
 import Language from '../settings/language'
 import SignIn from './signIn'
 import SignUp from './signUp'
-import { changeUser } from '../../reducers/auth'
+import { changeUser, updateMoney } from '../../reducers/auth'
 import { isEmpty, setCookie } from '../../utils/utils'
 import Loader from '../partials/loader'
 import { validateInput } from '../../utils/validate'
@@ -39,7 +39,7 @@ function Sign(props) {
     const [loaded, setLoaded] = useState(true)
     const [date, setDate] = useState('')
 
-    function handleClick(choice){        
+    function handleClick(choice){
         setVisible(choice)
         setSignError(errors_default)
         if(choice === "signIn"){
@@ -51,7 +51,7 @@ function Sign(props) {
 		}
     }
 
-    function signSubmit(data){        
+    function signSubmit(data){
         if(!validateForm(data.payload)){
             setLoaded(false)
             socket.emit(data.emit, data.payload)
@@ -68,7 +68,6 @@ function Sign(props) {
         if (isEmpty(pass)) {
             errors.pass.fill = false
         }
-
         if(!validateInput(email, "email")){
             errors.email.validate = false
         } 
@@ -80,12 +79,9 @@ function Sign(props) {
             if (isEmpty(user)) {
                 errors.user.fill = false
             }            
-    
-                      
             if(!validateInput(phone, "phone")){
                 errors.phone.validate = false
-            }
-    
+            }    
             if(!checkboxOne){
                 errors.checkboxOne.fill = false
             }
@@ -129,18 +125,23 @@ function Sign(props) {
             setLoaded(true)
             
             if(data){
-                if(!data.success){                    
-                    handleErrors("error", data.details ? data.details : "error")
+                if(!data.success){
+                    if(!data.exists){ // no user was found
+                        handleErrors("error", data.details ? data.details : "error")
+                        return
+                    }
+                    // the user was registered but the account was not verified
+                    handleErrors("verificationSendError", data.obj ? data.obj : "error", "lg")
                     return
-                }                
+                }
                 if(data.is_verified){
-                    console.log(data)                         
                     dispatch(changeUser(data.obj))
+                    dispatch(updateMoney(data.obj.money))
                     setCookie("casino_uuid", data.obj.uuid)
                     if(data.obj.logsTotal === 0){
                         handleWelcome() //first time sign up - you get a popup gift
                     }
-                } else {                    
+                } else {
                     handleErrors("error", "signup_error_email_verification")
                 }
             } else {
@@ -150,7 +151,7 @@ function Sign(props) {
         const handleSignUpRead = (data) => {
             setLoaded(false)
         
-            if (!data) {                
+            if (!data) {
                 setLoaded(true)
                 handleErrors("error", "signup_error")
                 return
@@ -170,7 +171,7 @@ function Sign(props) {
             } else {
                 handleErrors("error", details ? details : "signup_error")
             }
-        }       
+        }
 		socket.on('signin_read', handleSignInRead)
         socket.on('signup_read', handleSignUpRead)
 		return () => {
@@ -190,14 +191,14 @@ function Sign(props) {
         dispatch(changePopup(payload))
     }
 
-    function handleErrors(template="error", error){        
+    function handleErrors(template="error", error, size="sm"){
         let payload = {
             open: true,
-            template: template,
+            template,
             title: "error",
-            data: translate({lang: lang, info: error}),
-            size: "sm",
-        }        
+            data: translate({lang, info: error}),
+            size,
+        }
         dispatch(changePopup(payload))
     }
     
@@ -225,7 +226,7 @@ function Sign(props) {
                 case "Salon":
                 default:
                     return <>
-                        {loaded ? <>                            
+                        {loaded ? <>
                             <div className="sign_container">
                                 <div className="sign_container_box">
                                     <div className="deco">
@@ -289,7 +290,7 @@ function Sign(props) {
 
                                             {!signError.pass.fill ? <p className="text_red">
                                                 {translate({ lang: lang, info: signError.pass.fill_message })}
-                                            </p> : null}                                            
+                                            </p> : null}
 
                                             {!signError.checkboxOne.fill ? <p className="text_red">
                                                 {translate({ lang: lang, info: signError.checkboxOne.fill_message })}

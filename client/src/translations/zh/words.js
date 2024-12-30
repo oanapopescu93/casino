@@ -420,6 +420,7 @@ var word_bank = {
     email_send_validation_title: "验证您的电子邮件地址",
     email_send_validation_text: "我们已将验证邮件发送到您的收件箱。请检查您的电子邮件并点击验证链接以激活您的帐户。如果您没有看到邮件，请检查您的垃圾邮件或垃圾文件夹。谢谢！",
     email_send_validation_button: "重新发送验证邮件",
+    token_is_not_verified: "该用户尚未验证。您需要重新发送验证邮件。然后，请检查您的电子邮件并点击验证链接以激活您的账户。如果未收到邮件，请检查垃圾邮件或垃圾文件夹。谢谢！",
 
     // Apply Job
     apply: "申请工作",

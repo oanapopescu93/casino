@@ -187,11 +187,11 @@ function sendEmail(reason, e){
                     html
                 }
 
-                break             
+                break
         }
         
-        if (mailOptions) {      
-            transport.sendMail(mailOptions, (error, info)=>{                
+        if (mailOptions) {
+            transport.sendMail(mailOptions, (error, info)=>{
                 if (error) {
                     console.log('error1--> ', error, mailOptions)
                     let error_message = "email_no_send"
@@ -205,7 +205,7 @@ function sendEmail(reason, e){
                     resolve({success_mail: true, send: success_message})
                 }
             })
-        } else {            
+        } else {
             console.log('error2--> ', mailOptions)
             resolve({success_mail: false, send: "email_no_send"})
         }
@@ -292,9 +292,9 @@ function sendVerificationEmail(email, lang="ENG", token) {
                     error_message = "email_not_exist_is_inactive"
                 } else if (error.responseCode === 554) {
                     error_message = "email_blocked_has_restrictions"
-                }                
+                }
                 resolve({ success_mail: false, details: error_message })
-            } else {                
+            } else {
                 resolve({ success_mail: true, details: "email_send_validation" })
             }
         })

@@ -76,7 +76,7 @@ module.exports = Object.freeze({
         {id: "turnip", name_eng: "turnip", name_ro: "nap", name_fr: "navet", name_de: "steckrübe", name_es: "nabo", name_it: "rape", name_pt: "nabo", name_ru: "репа", name_zh: "芜菁", price: 10, value: 10},
         {id: "potato", name_eng: "potato", name_ro: "cartof", name_fr: "pomme de terre", name_de: "kartoffel", name_es: "patata", name_it: "patata", name_pt: "batata", name_ru: "картофель", name_zh: "土豆", price: 20, value: 20},
         {id: "cabbage", name_eng: "cabbage", name_ro: "varza", name_fr: "chou", name_de: "kohl", name_es: "col", name_it: "cavolo", name_pt: "repolho", name_ru: "капуста", name_zh: "卷心菜", price: 30, value: 30},
-    ],    
+    ],
     PROFILES: [
         {id: 1, name_eng: "weasel", name_ro: "nevăstuică", name_fr: "belette", name_de: "wiesel", name_es: "comadreja", name_it: "donnola", name_pt: "doninha", name_ru: "ласка", name_zh: "鼬", free: true},
         {id: 2, name_eng: "fox", name_ro: "vulpe", name_fr: "renard", name_de: "fuchs", name_es: "zorro", name_it: "volpe", name_pt: "raposa", name_ru: "лиса", name_zh: "狐狸", free: false},
@@ -86,7 +86,7 @@ module.exports = Object.freeze({
         {id: 6, name_eng: "marten", name_ro: "jder", name_fr: "martre", name_de: "marder", name_es: "marta", name_it: "martora", name_pt: "marta", name_ru: "кунгуря", name_zh: "貂", free: true},
         {id: 7, name_eng: "mink", name_ro: "nurcă", name_fr: "vison", name_de: "marder", name_es: "nutria", name_it: "visone", name_pt: "visão", name_ru: "нyрка", name_zh: "水貂", free: true},
         {id: 8, name_eng: "bear", name_ro: "urs", name_fr: "ours", name_de: "bär", name_es: "oso", name_it: "orso", name_pt: "urso", name_ru: "медведь", name_zh: "熊", free: false},
-    ],    
+    ],
     DONATIONS: [
         {type: "crypto", title: "Bitcoin", text: "bc1q250h9jjr7wj9302z0vpzath3c560k3krkg0fxk", link: "bitcoin:bc1q250h9jjr7wj9302z0vpzath3c560k3krkg0fxk"},
         {type: "crypto", title: "Ethereum", text: "-"},
@@ -96,7 +96,7 @@ module.exports = Object.freeze({
         {type: "paypal", title: "PaypalMe", link: "https://paypal.me/oanapopescu93?country.x=RO&locale.x=en_US"},
         {type: "paypal", title: "Paypal Donate", link: "https://www.paypal.com/donate/?hosted_button_id=FBUHUHZCKWZRA"},
         {type: "bank", title: "IBAN", text: "RO93BTRLRONCRT0316896401"}
-    ],    
+    ],
     RACE_RABBITS: [
         {id: 1, participating: false, breed: "American Fuzzy Lop", img: "/img/rabbit_list/american_fuzzy_lop.png"},
         {id: 2, participating: false, breed: "American", img: "/img/rabbit_list/american.png"},

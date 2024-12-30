@@ -38,7 +38,7 @@ function poker(data){
                 pot: poker_pot
             }
             return payload
-        case "bet":  
+        case "bet":
         case "check":
             poker_players = preflop_betting(data.action)
             poker_hidden_players = createHiddenPlayers()
@@ -56,10 +56,10 @@ function poker(data){
                 payload.dealerHandStrength = evaluateHand(poker_dealer.hand)
             }
             if(data.stage === "draw"){
-                payload.action = data.stage  
+                payload.action = data.stage
             }
             return payload
-        case "draw":            
+        case "draw":
             poker_hidden_players = createHiddenPlayers()
             poker_hidden_players = replaceCards(data.replaceCards, poker_hidden_players)
             poker_pot = calculatePot()
@@ -87,7 +87,7 @@ function poker(data){
         case "call": 
         case "raise":
             let result = handleCallRaise(data.bet)
-            if(result && result.error){                
+            if(result && result.error){
                 return {action: payload.action, ...result}
             } 
             poker_players = result
@@ -122,7 +122,7 @@ function poker(data){
     }
     
     function resetGameState(){
-        poker_players = []  
+        poker_players = []
         poker_dealer = null
         poker_deck = []
         poker_hidden_players = []
@@ -178,9 +178,9 @@ function poker(data){
                 player = {id: i, uuid: data.uuid, user: "player", type: "human", money: data.money, fold: false, bet: 0, smallBlind: 0}
             } else {
                 player = {id: i, user: "bot " + i, type: "bot", money: 100, fold: false, bet: 0, smallBlind: 0}
-            }          
+            }
             players.push(player)
-        }        
+        }
         return players
     }
     function dealHands(who){
@@ -201,7 +201,7 @@ function poker(data){
                         players[j].smallBlind = data.smallBlind > 0 ? data.smallBlind : 1
                     }
                 }
-                players.sort((a, b) => b.Weight - a.Weight) //sort hand after the value of the card                
+                players.sort((a, b) => b.Weight - a.Weight) //sort hand after the value of the card
                 return players
             case "dealer":
                 let dealer = {id: -1, user: "dealer", hand: []}	
@@ -217,7 +217,7 @@ function poker(data){
             return []
         }
         let players = [...poker_players] 
-        let hidden_players = []        
+        let hidden_players = []
         for(let i in players){
             if(data.uuid === players[i].uuid){
                 if(players[i].hand){
@@ -307,7 +307,7 @@ function poker(data){
         let players = [...poker_players]
         let index = players.findIndex((x) => x.uuid === data.uuid)
         if(players[index]){
-            const maxBet = getMaxBet()            
+            const maxBet = getMaxBet()
             let amountToCallRaise = 0
             if (maxBet === 0) {
                 amountToCallRaise = 1 //Set amountToCall to the minimum allowed bet or another default value
@@ -361,17 +361,17 @@ function poker(data){
         return how_many
     }
 
-    function replaceCards(cards_to_replace, players){        
+    function replaceCards(cards_to_replace, players){
         let index = players.findIndex((x) => x.uuid === data.uuid)
-        if(players[index] && cards_to_replace && cards_to_replace.length > 0){            
+        if(players[index] && cards_to_replace && cards_to_replace.length > 0){
             for(let i in cards_to_replace){
                 let t = parseInt(cards_to_replace[i])
-                if(players[index].hand[t]){                    
+                if(players[index].hand[t]){
                     const newCard = poker_deck.pop()
                     players[index].hand[t] = newCard
                 }
             }
-        }        
+        }
         return players
     }
 

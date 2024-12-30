@@ -26,7 +26,7 @@ import OrderDetails from "./orderDetails"
 import ChatBot from "./chatbot"
 import ApplyJob from "./applyJob"
 import { postData } from "../../utils/utils"
-import VerificationSendSuccess from "./verificationSendSuccess"
+import VerificationSend from "./verificationSend"
 import WarningGambling from "./warningGambling"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -64,7 +64,7 @@ function Popup(props){
     if(template === "paymentSuccess" || template === "verificationSendSuccess"){
         style = "success"
     }
-    if(template === "gambling_warning"){
+    if(template === "gambling_warning" || template === "verificationSendError"){
         style = "error"
     }
 
@@ -157,7 +157,7 @@ function Popup(props){
 
     function handleResendVerification(email){
         setSending(true)
-        socket.emit('signup_verification_send', {lang: lang, email})
+        socket.emit('signup_verification_send', {lang, email})
     }
 
     function streakClainPrize(data){
@@ -199,11 +199,25 @@ function Popup(props){
                         case "settings":
                             return <Settings settings={settings} home={home} />
                         case "change_pic":
-                            return <ChangeProfilePic settings={settings} profiles={data} home={home} user={user} choosePic={(e)=>dashboardChanges(e)} />
+                            return <ChangeProfilePic 
+                                settings={settings} 
+                                profiles={data} 
+                                home={home} 
+                                user={user} 
+                                choosePic={(e)=>dashboardChanges(e)} 
+                            />
                         case "change_username":
-                            return <ChangeUsername settings={settings} user={user} changeUsername={(e)=>dashboardChanges(e)} />
+                            return <ChangeUsername 
+                                settings={settings} 
+                                user={user} 
+                                changeUsername={(e)=>dashboardChanges(e)} 
+                            />
                         case "change_password":
-                            return <ChangePassword settings={settings} user={user} changePassword={(e)=>dashboardChanges(e)} />
+                            return <ChangePassword 
+                                settings={settings} 
+                                user={user} 
+                                changePassword={(e)=>dashboardChanges(e)} 
+                            />
                         case "slots_prizes":
                             return <SlotsPrizeTable settings={settings} slotsPrizes={data}/>
                         case "keno_prizes":
@@ -211,25 +225,40 @@ function Popup(props){
                         case "game_results":
                             return <GameResults settings={settings} results={data} />
                         case "streak":
-                            return <Streak settings={settings} data={data} user={user} sending={sending} streakClainPrize={(e)=>streakClainPrize(e)} />
+                            return <Streak 
+                                settings={settings} 
+                                data={data} 
+                                user={user} 
+                                sending={sending} 
+                                streakClainPrize={(e)=>streakClainPrize(e)} 
+                            />
                         case "whack_a_rabbit":
                             return <WhackARabbit settings={settings} handleClick={()=>handleWhackARabbit()} />
                         case "paymentSuccess":
                             return <PaymentSuccess settings={settings} data={data} />
                         case "verificationSendSuccess":
-                            return <VerificationSendSuccess 
-                            settings={settings} 
-                            data={data} 
-                            resendVerificationResult={resendVerificationResult} 
-                            sending={sending}
-                            handleResendVerification={(e)=>handleResendVerification(e)}
-                        />
+                        case "verificationSendError":
+                            return <VerificationSend 
+                                template={template}
+                                settings={settings}
+                                data={data}
+                                resendVerificationResult={resendVerificationResult}
+                                sending={sending} 
+                                handleResendVerification={(e)=>handleResendVerification(e)}
+                            />
                         case "orderDetails":
                             return <OrderDetails settings={settings} data={data} />
                         case "chatbot":
                             return <ChatBot settings={settings} user={user} />
                         case "apply_job":
-                            return <ApplyJob settings={settings} home={home} user={user} data={data} applyJobSending={applyJobSending} handleApplyJob={(e)=>handleApplyJob(e)} />
+                            return <ApplyJob 
+                                settings={settings} 
+                                home={home} 
+                                user={user} 
+                                data={data} 
+                                applyJobSending={applyJobSending} 
+                                handleApplyJob={(e)=>handleApplyJob(e)} 
+                            />
                         case "gambling_warning":
                             return <WarningGambling settings={settings} />
                         case "are_you_sure":
@@ -240,7 +269,7 @@ function Popup(props){
                     }
                 })()}
             </Modal.Body>
-            {(template === "game_results" && data.status === "win") || (template === "streak" && data > 0) ? <div className="firework"></div> : null}
+            {(template === "game_results" && data.status === "win") || (template === "streak" && data > 0) ? <div className="firework" /> : null}
         </Modal> : <Modal id="myModal_gift" className={"mymodal " + template} show={open} onHide={closeModal} size={size} centered> 
             <Modal.Body>
                 <Welcome settings={settings} />

@@ -7,7 +7,7 @@ const initialState = {
         profile_pic: getCookie("casino_profile_pic") !== "" ? getCookie("casino_profile_pic") : null,
         account_type: getCookie("casino_account_type") !== "" ? getCookie("casino_account_type") : null,
         device: getCookie("casino_device") !== "" ? getCookie("casino_device") : null,
-        email: getCookie("casino_email") !== "" ? getCookie("casino_email") : null,        
+        email: getCookie("casino_email") !== "" ? getCookie("casino_email") : null,
         user: getCookie("casino_user") !== "" ? getCookie("casino_user") : null,
         uuid: getCookie("casino_uuid") !== "" ? getCookie("casino_uuid") : null,
         logs: getCookie("casino_logs") !== "" ? getCookie("casino_logs") : null,

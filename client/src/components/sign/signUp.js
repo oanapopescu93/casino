@@ -31,7 +31,7 @@ function SignUp(props) {
             case "pass":
                 setPass(e.target.value)
                 break
-            default:              
+            default:
           }
     }
 
@@ -104,12 +104,12 @@ function SignUp(props) {
                 <Col sm={8} className="input_container">
                     <input placeholder={translate({lang: lang, info: "password"})} className="input_light" type={visible ? "text" : "password"} value={pass} onChange={(e)=>{handleChange('pass', e)}}/>
                     <div className="input_eye" onClick={()=>handleVisible()}>
-                        {visible ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}                        
+                        {visible ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
                     </div>
                 </Col>
             </Row>
             {(() => {
-                if(isMinor  === "false" || isMinor === false) {
+                if(isMinor === "false" || isMinor === false) {
                     return <Row>
                         <Col>
                             <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor">

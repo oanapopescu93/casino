@@ -4360,10 +4360,10 @@ a.donation_button{
 }
 
 /* Verify email popup */
-.perificationSendSuccess button{
+.verificationSend button{
   margin-top: var(--padding);
 }
-.perificationSendSuccess .resendVerificationResult{
+.verificationSend .resendVerificationResult{
   margin-top: var(--padding);
 }
 

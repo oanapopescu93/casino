@@ -45,7 +45,6 @@ const { baccarat } = require("./games/baccarat")
 var coupons = require('./var/home').COUPONS
 
 const account_type = 1
-const profile_pic = 0
 const user_money = 100
 const how_lucky = 7
 
@@ -58,17 +57,31 @@ var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
 // database_config.sql = "SELECT * FROM casino_user;"
-// database(database_config).then((result)=>{
-//   console.log('result ', result.length)
+// database(database_config).then((result)=>{  
 //   if(result){
 //     let user_found = result.filter((x)=>{
-//       return x.email === "oana.popescu@idriveglobal.com"
+//       return x.email === "oanapopescu93@gmail.com"
+//       // return x.email === "oana.popescu@idriveglobal.com"
 //     })
+//     console.log(user_found)  
 //     if(user_found[0]){
 //       console.log('user_found ', user_found[0], decrypt(JSON.parse(user_found[0].pass)))
 //     }
 //   }  
 // })
+
+// database_config.sql = `
+//   DELETE FROM casino_user 
+//   WHERE email = "oanapopescu93@gmail.com";
+// `;
+
+// database(database_config).then((result) => {  
+//   if (result) {
+//     console.log(`User with email "oanapopescu93@gmail.com" has been deleted.`);
+//   } else {
+//     console.log("No matching user found or deletion failed.");
+//   }
+// });
 
 io.on('connection', (socket)=>{
   socket.on('signin_send', (data) => {
@@ -83,7 +96,7 @@ io.on('connection', (socket)=>{
         login_array = result[1]
         let user_found = users_array.filter((x)=>{
           return x.email === email && decrypt(JSON.parse(x.pass)) === pass
-        })                
+        })
         if(user_found && user_found.length>0){
           //the user exists
 
@@ -115,15 +128,17 @@ io.on('connection', (socket)=>{
             logsTotal: login_found && login_found.length ? parseInt(login_found.length) : 0 ,
           }
 
+
+
           if(user_found[0].is_verified === 1){
-            // is verified --> we sign him in            
+            // is verified --> we sign him in
             try{
               io.to(socket.id).emit('signin_read', {success: true, exists: true, is_verified: true, obj: obj})
             } catch(e){
               console.log('[error]','signin_read :', e)
             }
   
-            get_extra_data().then((res)=>{  
+            get_extra_data().then((res)=>{
               let extra_data = {}
               if(res && res.data){
                 extra_data = {
@@ -139,14 +154,14 @@ io.on('connection', (socket)=>{
               database_config.sql = "UPDATE casino_user SET uuid='" + uuid + "' WHERE id=" + user_found[0].id + "; "
               database_config.sql += "INSERT INTO login_user (user_id, login_date, device, ip_address, city, country) VALUES (?, ?, ?, ?, ?, ?)"
               database_config.name = "db02"
-              let payload =  [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
+              let payload = [user_found[0].id, timestamp, device, extra_data.ip_address, extra_data.city, extra_data.country]
               database(database_config, payload).then(()=>{})
             })
           } else {
             //is NOT verified --> we send him a message to go to his mail
             
             try{
-              io.to(socket.id).emit('signin_read', {success: false, exists: true, is_verified: false, obj: obj, details: 'is_not_verrivied'})
+              io.to(socket.id).emit('signin_read', {success: false, exists: true, is_verified: false, obj, details: 'token_is_not_verified'})
             } catch(e){
               console.log('[error]','signin_read :', e)
             }
@@ -175,13 +190,13 @@ io.on('connection', (socket)=>{
     database_config.name = "db03"
 
 		database(database_config, [email]).then((result)=>{
-      if(result && result.length == 0){        
+      if(result && result.length == 0){
         //no user was found --> new user --> he must sign up
         users_array = result
         let verificationToken = crypto.randomBytes(20).toString('hex') // Generate a unique verification token
 
-        sendVerificationEmail(email, lang, verificationToken).then((res)=>{          
-          if(res && res.success_mail){            
+        sendVerificationEmail(email, lang, verificationToken).then((res)=>{
+          if(res && res.success_mail){
             try{
               io.to(socket.id).emit('signup_read', {
                 ...res,
@@ -204,7 +219,7 @@ io.on('connection', (socket)=>{
                   ip_address: res.data.ip? res.data.ip : "",
                 }
               }
-              let timestamp = new Date().getTime() + ""   
+              let timestamp = new Date().getTime() + ""
               let pass_encrypt = JSON.stringify(encrypt(pass))
     
               //insert new user in users and login tables
@@ -226,10 +241,10 @@ io.on('connection', (socket)=>{
             } catch(e){
               console.log('[error]','signup_read :', e)
             }
-          }          
-        })        
+          }
+        })
       } else {
-        // user tries to signup with an existing email --> we send him to login      
+        // user tries to signup with an existing email --> we send him to login
         try{
           io.to(socket.id).emit('signup_read', {
             exists: true, 
@@ -240,7 +255,7 @@ io.on('connection', (socket)=>{
           })
         } catch(e){
           console.log('[error]','signup_read :', e)
-        }       
+        }
       }
     }) 
   })
@@ -296,13 +311,19 @@ io.on('connection', (socket)=>{
     const { email, lang } = data
     let verificationToken = crypto.randomBytes(20).toString('hex') // Generate a unique verification token
 
-    sendVerificationEmail(email, lang, verificationToken).then((res)=>{          
-      try{
-        io.to(socket.id).emit('signup_verification_read', res)
-      } catch(e){
-        console.log('[error]','signup_verification_read :', e)
-      }
-    }) 
+    //update user with the new token
+
+    database_config.sql = 'UPDATE casino_user SET verification_token = "' + verificationToken + '" WHERE email = "' + email + '"'
+    database_config.name = "db0003"
+    database(database_config).then(()=>{
+      sendVerificationEmail(email, lang, verificationToken).then((res)=>{
+        try{
+          io.to(socket.id).emit('signup_verification_read', res)
+        } catch(e){
+          console.log('[error]','signup_verification_read :', e)
+        }
+      }) 
+    })
   })
 
   // GAMES
@@ -332,7 +353,7 @@ io.on('connection', (socket)=>{
 
   socket.on('streakClainPrize_send', (data)=>{
 		if(data.uuid){
-      try{        
+      try{
         io.to(socket.id).emit('streakClainPrize_read', {prize: data.prize})
         // updateMoney(user_found, payload)
       } catch(e){
@@ -355,7 +376,7 @@ io.on('connection', (socket)=>{
     return {streak, prize}
   }
   function updateMoney(user_found, x){
-    if(user_found[0]){  
+    if(user_found[0]){
       database_config.name = "db07"
       let money = user_found.money + x.prize
       let table_name = 'streak_prize'
@@ -479,7 +500,7 @@ io.on('connection', (socket)=>{
                 database_config.sql = "UPDATE casino_user SET money='" + data.money + "' WHERE id=" + user_found[0].id + '; '
                 database_config.sql += "INSERT INTO history_user (user_id, game_name, game_id, game_type, date, status, sum) VALUES (?, ?, ?, ?, ?, ?, ?)"
                 database_config.name = "db11"
-                let payload =  [user_found[0].id, table_name, table_id, table_type, timestamp, status, data.bet]
+                let payload = [user_found[0].id, table_name, table_id, table_type, timestamp, status, data.bet]
                 database(database_config, payload).then(()=>{})
               }
             } catch(e){
@@ -540,7 +561,7 @@ io.on('connection', (socket)=>{
             if(user_found[0] && user_found[0]){
               let id = user_found[0].id
               let money = user_found[0].money + carrots_update
-              let orderDate;
+              let orderDate
               if (typeof order_date === 'number') {
                   orderDate = order_date + ""
               } else {
@@ -569,7 +590,7 @@ io.on('connection', (socket)=>{
               database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
               database_config.sql = `INSERT INTO order_table (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
               database_config.name = "db016"
-              database(database_config, payload).then(()=>{                
+              database(database_config, payload).then(()=>{
                 try{
                   let payload = {...details, money}
                   io.to(socket.id).emit('order_read', payload)
@@ -591,7 +612,7 @@ io.on('connection', (socket)=>{
   })
 
   socket.on('getOrdersWithdraws_send', (data)=>{
-    const { uuid } = data    
+    const { uuid } = data
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db17"
@@ -599,7 +620,7 @@ io.on('connection', (socket)=>{
         if(result){
           users_array = result
           if(users_array && users_array.length > 0){
-            let user_found = users_array.filter((x) => x.uuid === uuid)             
+            let user_found = users_array.filter((x) => x.uuid === uuid)
             if(user_found[0] && user_found[0]){
               let id = user_found[0].id
 
@@ -612,12 +633,12 @@ io.on('connection', (socket)=>{
 
                 if(result && result[0] && result[1]){
                   let orders_found = result[0].filter((x)=>{return x.user_id === id})
-                  let withdraws_found = result[1].filter((x)=>{return x.user_id === id})                
+                  let withdraws_found = result[1].filter((x)=>{return x.user_id === id})
                   orders_found = orders_found.map(({ user_id, ...order }) => order) // Remove user_id from each order in orders_found
                   withdraws_found = withdraws_found.map(({ user_id, ...withdraw }) => withdraw) // Remove user_id from each order in orders_found                
                 }
 
-                io.to(socket.id).emit('getOrdersWithdraws_read', {orders_found, withdraws_found})                
+                io.to(socket.id).emit('getOrdersWithdraws_read', {orders_found, withdraws_found})
               })
             } else {
               io.to(socket.id).emit('getOrdersWithdraws_read', {error: 'no_user'})
@@ -642,7 +663,7 @@ io.on('connection', (socket)=>{
         if(result1){
           users_array = result1
           if(users_array && users_array.length > 0){
-            let user_found = users_array.filter((x) => x.uuid === uuid)           
+            let user_found = users_array.filter((x) => x.uuid === uuid)
             if(user_found[0] && user_found[0]){
               database_config.sql = "SELECT * FROM newsletters;"
               database_config.name = "db20"
@@ -655,11 +676,11 @@ io.on('connection', (socket)=>{
                     }catch(e){
                       console.log('[error]','newsletter_read--> ', e)
                     }
-                  } else {                    
+                  } else {
                     database_config.sql = "INSERT INTO newsletters (user_id, email) VALUES (?, ?)"
                     database_config.name = "db21"
-                    let payload =  [user_found[0].id, email]
-                    database(database_config, payload).then(()=>{                  
+                    let payload = [user_found[0].id, email]
+                    database(database_config, payload).then(()=>{
                       try{				
                         io.to(socket.id).emit('newsletter_read', {success: false, send: "subscribed"})
                       }catch(e){
@@ -703,7 +724,6 @@ io.on('connection', (socket)=>{
   // CHATROOM
   socket.on('join_room', (data)=>{
     let room = data.room
-    //console.log('join_room ', room)
     socket.join(data.room)
 
     let timestamp = new Date().getTime()
@@ -728,7 +748,6 @@ io.on('connection', (socket)=>{
   })
   socket.on('leave_room', (data)=>{
     let room = data.room
-    //console.log('leave_room ', room)
     socket.leave(room)
     let timestamp = new Date().getTime()
     let message = {text: 'leave', timestamp: timestamp, user: data.user}
@@ -745,7 +764,6 @@ io.on('connection', (socket)=>{
   })
   socket.on('message_send', (data)=>{
     let room = data.room
-    //console.log('message_send ', room)
     let timestamp = new Date().getTime()
     let message = {text: data.text, timestamp: timestamp, user: data.user}
 		try{
@@ -758,7 +776,7 @@ io.on('connection', (socket)=>{
   socket.on('heartbeat', (data)=>{
 		console.log('heartbeat', data)
 	})
-  socket.on('disconnect', ()=>{  
+  socket.on('disconnect', ()=>{
     console.log('Got disconnect!')
   })
 })

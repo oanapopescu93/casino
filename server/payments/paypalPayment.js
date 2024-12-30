@@ -96,7 +96,7 @@ paypalPayment.post('/api/paypal/success', jsonParser, (req, res) => {
     return res.json({ type: "paypal", result: "error", payload: 'error_charge' })
   }
 
-  if(amountPaypal && amountPaypal > 0){  
+  if(amountPaypal && amountPaypal > 0){
     const execute_payment_json = {
       payer_id: payerId,
       transactions: [{

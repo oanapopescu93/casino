@@ -422,6 +422,7 @@ var word_bank = {
     email_send_validation_title: "Verify your email address",
     email_send_validation_text: "We've sent a verification email to your inbox. Please check your email and click the verification link to activate your account. If you don't see the email, check your spam or junk folder. Thank you!",
     email_send_validation_button: "Resend verification email",
+    token_is_not_verified: "This user hasn't been verified yet. You must resend verification email. After that, please check your email and click the verification link to activate your account. If you don't see the email, check your spam or junk folder. Thank you!",    
 
     // Apply Job
     apply: "Apply",
