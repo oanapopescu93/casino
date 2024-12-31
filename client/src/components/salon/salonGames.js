@@ -133,13 +133,15 @@ function SalonGames(props){
 
     return <Row>
         <Col sm={2} className="d-none d-sm-block">
-            <ins
-                className="adsbygoogle"
-                style={{ display: "block", height: "60px" }}
-                data-ad-client="ca-pub-8737922729231817"
-                data-ad-slot="6086373080"
-                data-ad-format="auto"
-            ></ins>
+            <div className="adsbygoogle_container">
+                <ins
+                    className="adsbygoogle"
+                    style={{ display: "block", height: "60px" }}
+                    data-ad-client="ca-pub-8737922729231817"
+                    data-ad-slot="6086373080"
+                    data-ad-format="auto"
+                />
+            </div>
         </Col>
         <Col sm={8} className="salon_games">
             {width < 960 ? <div className="salon_games_dropdown">
@@ -180,13 +182,15 @@ function SalonGames(props){
             </div>
         </Col>
         <Col sm={2} className="d-none d-sm-block">
-            <ins
-                className="adsbygoogle"
-                style={{ display: "block", height: "60px" }}
-                data-ad-client="ca-pub-8737922729231817"
-                data-ad-slot="6086373080"
-                data-ad-format="auto"
-            ></ins>
+            <div className="adsbygoogle_container">
+                <ins
+                    className="adsbygoogle"
+                    style={{ display: "block", height: "60px" }}
+                    data-ad-client="ca-pub-8737922729231817"
+                    data-ad-slot="6086373080"
+                    data-ad-format="auto"
+                />
+            </div>
         </Col>
     </Row>
 }
