@@ -93,8 +93,7 @@ router.post("/api/withdraw", jsonParser, (req, res, next) => {
                 console.log('[error]','withdraw--> ', e)
                 res.send({send: "withdraw_failed"})
               }
-            }) 
-            
+            })            
           }
         }
       }

@@ -659,13 +659,13 @@ textarea {
   color: var(--color);
   width: 100%;
   border-radius: var(--radius);
-  max-height: 200px;
+  max-height: 150px;
   overflow-x: hidden;
 	overflow-y: auto;
   padding: var(--padding_small);
 }
-.dropdown .dropdown-menu{
-  max-height: 150px;
+.salon_games_dropdown .dropdown .dropdown-menu{
+  max-height: 170px;
 }
 .dropdown-item{
   color: var(--color);
@@ -678,6 +678,10 @@ textarea {
 }
 .settings_theme .dropdown-item:focus, .settings_theme .dropdown-item:active, .settings_theme .dropdown-item:hover{
   background-color: transparent;
+}
+.salon_games{
+  position: relative;
+  z-index: 1;
 }
 .salon_games_dropdown .dropdown{
   border-radius: var(--radius_big);
@@ -4249,8 +4253,8 @@ a.donation_button{
 .chatbot_button_container_small{
   position: absolute;
   z-index: 9999;
-  top: 10px;
-  right: 10px
+  top: -60px;
+  right: 10px;
 }
 .chatbot_textarea_container{
   border: solid 1px var(--bg);
@@ -5178,4 +5182,8 @@ a.donation_button{
   cursor: grabbing;
   cursor: -webkit-grabbing;
   cursor: -moz-grabbing;
+}
+
+.adsbygoogle{
+  max-height: calc(35vh)!important;
 }

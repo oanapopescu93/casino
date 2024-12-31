@@ -5,7 +5,6 @@ import SalonSidebarLeft from './salonSidebarLeft'
 import Game from '../games/game'
 import Language from '../settings/language'
 import Panel from '../games/sidebar/panel'
-import ChatBotButton from '../partials/chatBotButton'
 import { getWindowDimensions } from '../../utils/utils'
 
 function Salon(props) {    
@@ -30,9 +29,6 @@ function Salon(props) {
     return <>
         {page.game ? <Game {...props} /> : <>
             <Language title={lang} />
-            {height < 500 ? <div className="chatbot_button_container_small">
-                <ChatBotButton lang={lang} theme={theme} />
-            </div> : null}
             <div className="content_wrap">
                 <div className="salon_content_box">                    
                     <Header template="salon" details={page} lang={lang} theme={theme}/>

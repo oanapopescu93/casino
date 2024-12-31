@@ -13,7 +13,7 @@ import ChatBotButton from '../partials/chatBotButton'
 import { decryptData } from '../../utils/crypto'
 
 function SalonGames(props){
-    const {home, settings, width, height} = props
+    const {home, settings, width} = props
     const {products} = home
     const {lang, theme} = settings
     
@@ -131,78 +131,64 @@ function SalonGames(props){
         dispatch(changeGamePage(null))
     }
 
-    return <div className="salon_games">
-        <Row>
-        <Col sm={2} />
-            <Col sm={8}>
-                {width < 960 ? <div className="salon_games_dropdown">
-                    <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "shadow_convex snow" : "shadow_convex"} onSelect={handleSelect}>
-                        {casinoGamesTitle.map((t, i)=>{
-                            return <Dropdown.Item key={i} eventKey={translate({lang: lang, info: t})}>{translate({lang: lang, info: t})}</Dropdown.Item>
-                        })}
-                    </DropdownButton>
-                </div> : null}
-            </Col>
-            <Col sm={2} />
-        </Row>
-        <Row>
-            <Col sm={2}>
-                <ins
-                    className="adsbygoogle"
-                    style={{ display: "block", height: "60px" }}
-                    data-ad-client="ca-pub-8737922729231817"
-                    data-ad-slot="6086373080"
-                    data-ad-format="auto"
-                ></ins>
-            </Col>
-            <Col sm={8}>
-                {casinoGamesTitle.map((t, i)=>{
-                    let box = ""
-                    if(i === index){ box = "open" }
-                    return <div key={i}>
-                        {width >= 960 ? <div className={showWinter ? "casino_games_title_container snow" : "casino_games_title_container"}>
-                            <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
-                                <h4>{translate({lang: lang, info: t})}</h4>
-                                <div className="casino_games_title_arrow"><FontAwesomeIcon icon={index !== i ? faChevronDown : faChevronUp} /></div>
-                            </div>
-                        </div> : null}
-                        <div box={t} className={"casino_games_table_container "+box}>
-                            <div className="casino_games_table">
-                                <Carousel 
-                                    {...props}
-                                    id={"carousel_salon_"+t}
-                                    template="salon" 
-                                    type={t}
-                                    options={salon_carousel_options} 
-                                    itemList={casinoGames[t]} 
-                                    money={money}
-                                    getItem={(e)=>gameChoice(e)}
-                                />
-                            </div>
+    return <Row>
+        <Col sm={2} className="d-none d-sm-block">
+            <ins
+                className="adsbygoogle"
+                style={{ display: "block", height: "60px" }}
+                data-ad-client="ca-pub-8737922729231817"
+                data-ad-slot="6086373080"
+                data-ad-format="auto"
+            ></ins>
+        </Col>
+        <Col sm={8} className="salon_games">
+            {width < 960 ? <div className="salon_games_dropdown">
+                <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "shadow_convex snow" : "shadow_convex"} onSelect={handleSelect}>
+                    {casinoGamesTitle.map((t, i)=>{
+                        return <Dropdown.Item key={i} eventKey={translate({lang: lang, info: t})}>{translate({lang: lang, info: t})}</Dropdown.Item>
+                    })}
+                </DropdownButton>
+            </div> : null}
+            {casinoGamesTitle.map((t, i)=>{
+                let box = ""
+                if(i === index){ box = "open" }
+                return <div key={i}>
+                    {width >= 960 ? <div className={showWinter ? "casino_games_title_container snow" : "casino_games_title_container"}>
+                        <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
+                            <h4>{translate({lang: lang, info: t})}</h4>
+                            <div className="casino_games_title_arrow"><FontAwesomeIcon icon={index !== i ? faChevronDown : faChevronUp} /></div>
+                        </div>
+                    </div> : null}
+                    <div box={t} className={"casino_games_table_container "+box}>
+                        <div className="casino_games_table">
+                            <Carousel 
+                                {...props}
+                                id={"carousel_salon_"+t}
+                                template="salon" 
+                                type={t}
+                                options={salon_carousel_options} 
+                                itemList={casinoGames[t]} 
+                                money={money}
+                                getItem={(e)=>gameChoice(e)}
+                            />
                         </div>
                     </div>
-                })}
-            </Col>
-            <Col sm={2}>
-                <ins
-                    className="adsbygoogle"
-                    style={{ display: "block", height: "60px" }}
-                    data-ad-client="ca-pub-8737922729231817"
-                    data-ad-slot="6086373080"
-                    data-ad-format="auto"
-                ></ins>
-            </Col>
-        </Row>
-        {height >= 500 ? <Row>
-            <Col sm={2} />
-            <Col sm={8}>
-                <div className="chatbot_button_container_big">
-                    <ChatBotButton lang={lang} theme={theme} />
                 </div>
-            </Col>
-            <Col sm={2} />
-        </Row> : null}
-    </div>
+            })}
+            <div className="chatbot_button_container_small">
+                <ChatBotButton lang={lang} theme={theme} />
+            </div>
+        </Col>
+        <Col sm={2} className="d-none d-sm-block">
+            <ins
+                className="adsbygoogle"
+                style={{ display: "block", height: "60px" }}
+                data-ad-client="ca-pub-8737922729231817"
+                data-ad-slot="6086373080"
+                data-ad-format="auto"
+            ></ins>
+        </Col>
+    </Row>
 }
 
 export default SalonGames
