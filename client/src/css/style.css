@@ -5187,4 +5187,5 @@ a.donation_button{
 .adsbygoogle_container{
   max-height: calc(35vh)!important;
   overflow: auto;
+  display: none; /* this will change */
 }
