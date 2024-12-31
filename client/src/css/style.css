@@ -1435,7 +1435,7 @@ footer{
 	right:-365px;
 	width:400px;
 	position:fixed;	
-	z-index:1;		
+	z-index:2;		
   -webkit-transition:0.7s;
   -moz-transition:0.7s;
   -o-transition: 0.7s;
@@ -2752,7 +2752,7 @@ a.donation_button{
   display: inline-block;
   vertical-align: middle;
   width: 50%;
-  min-width: 120px;
+  min-width: 150px;
 }
 .dashboard_user_info{
   margin-top: var(--padding);
@@ -4412,7 +4412,7 @@ a.donation_button{
 }
 @media (max-width: 1200px){
   .dashboard_right_list{
-    padding: 0px 50px;
+    padding: 0px 50px 0px 0px;
   }
   .dashboard_right_market{
     border-radius: var(--radius);
