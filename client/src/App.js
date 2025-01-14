@@ -18,13 +18,13 @@ function App(){
 			if(oldConsole == null) return
 			window['console']['log'] = oldConsole
 			window['console']['warn'] = oldConsole
-			window['console']['error'] = oldConsole
+			// window['console']['error'] = oldConsole
 		}	
 		function disable(){
 			oldConsole = console.log
 			window['console']['log'] = ()=>{}
 			window['console']['warn'] = ()=>{}
-			window['console']['error'] = ()=>{}
+			// window['console']['error'] = ()=>{}
 		}	
 		return {enable, disable}
 	}()

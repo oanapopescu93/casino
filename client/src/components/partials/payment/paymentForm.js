@@ -30,21 +30,12 @@ function PaymentForm(props){
                         />
                         <FontAwesomeIcon icon={faGooglePay} />
                     </label>
-                    {/* <label>
-                        <input 
-                            type="radio" 
-                            name="paymentChoice" 
-                            checked={paymentDetails.option === "apple"} 
-                            onChange={() => handleChangeCheck("apple")}
-                        />
-                        <FontAwesomeIcon icon={faApplePay} />
-                    </label> */}
                     <label>
                         <input 
                             type="radio" 
                             name="paymentChoice" 
-                            checked={paymentDetails.option === "card"} 
-                            onChange={() => handleChangeCheck("card")}
+                            checked={paymentDetails.option === "stripe"} 
+                            onChange={() => handleChangeCheck("stripe")}
                         />                        
                         <FontAwesomeIcon icon={faStripe} />
                     </label>
@@ -57,15 +48,6 @@ function PaymentForm(props){
                         />
                         {translate({ lang: lang, info: "pay_paypal" })}                        
                     </label>
-                    {/* <label>
-                        <input 
-                            type="radio" 
-                            name="paymentChoice" 
-                            checked={paymentDetails.option === "crypto"} 
-                            onChange={() => handleChangeCheck("crypto")}
-                        />
-                        {translate({ lang: lang, info: "pay_crypto" })}
-                    </label>                    */}
                 </div>
             </Col>
         </Row>        
@@ -75,7 +57,7 @@ function PaymentForm(props){
                     return <Google {...props} />
                 case "apple":
                     return <Apple {...props} />
-                case "card":
+                case "stripe":
                     return <Stripe {...props} />
                 case "paypal":
                     return <Paypal {...props} />
@@ -87,7 +69,7 @@ function PaymentForm(props){
         })()}
         <Row>
             <Col sm={12} className="button_action_group button_action_group_checkout">
-                {minimum_amount < amount && paymentDetails.option === "card" ? <Button 
+                {minimum_amount < amount && paymentDetails.option === "stripe" ? <Button 
                     type="button"  
                     className="mybutton button_fullcolor shadow_convex"
                     onClick={()=>handleContinue()}

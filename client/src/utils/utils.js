@@ -11,7 +11,7 @@ export const isEmpty = (element)=>{
 }
 
 export const formatDate = (date, format = 'd.m.Y H:i')=>{	//d.m.Y H:i, d-m-Y H:i, m/d/Y H:i, d-m-Y h:i A, m/d/Y h:i A
-  let d = new Date(date)
+  let d = new Date(parseInt(date))
   const pad = (num) => (num < 10 ? '0' : '') + num // Helper function to pad numbers with leading zeros
 
   const yyyy = d.getFullYear()

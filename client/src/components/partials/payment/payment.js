@@ -205,7 +205,7 @@ function Payment(props){
         let errors = null
         let problem = false
 
-        if(paymentDetails.option === "card"){
+        if(paymentDetails.option === "stripe"){
             errors = checkCardForm()
             setPaymentError(errors)
             problem = Object.values(errors).some(error => !error.fill || !error.validate) // Check if there is any problem (fill or validate errors for at least one element in error array)
@@ -218,14 +218,9 @@ function Payment(props){
         let problem = false        
 
         switch(paymentDetails.option){
-            case "card":                
+            case "stripe":                
             case "paypal":
                 if(minimum_amount > totalPromo){
-                    problem = true
-                }
-                break
-            case "crypto":                
-                if(!fiatEquivalent || fiatEquivalent.estimated_amount === -1){
                     problem = true
                 }
                 break
@@ -298,7 +293,7 @@ function Payment(props){
         let url = ""
 
         switch(paymentDetails.option){
-            case "card":
+            case "stripe":
                 url = "/api/stripe"
                 break
             case "paypal":
@@ -327,15 +322,12 @@ function Payment(props){
                 setPaymentSending(false)     
                 if(data && data.result && data.result === "success"){
                     switch(paymentDetails.option){
-                        case "card":
+                        case "stripe":
                             handlePaymentStripe(data)
                             break
                         case "paypal":
                             handlePaymentPaypal(data)
                             break
-                        case "crypto": 
-                            handlePaymentCrypto(data)
-                            break 
                         default:
                             showError()
                             break
@@ -384,14 +376,6 @@ function Payment(props){
             showError(data)
         }
     }
-
-    function handlePaymentCrypto(data){
-        if(data.payload && data.payload.invoice_url){
-            window.open(data.payload.invoice_url,'_blank')
-        } else {
-            showError(data)
-        }  
-    } 
     
     function handleSendPaymentGoogle(e){
         let paymentMethodData = e.paymentMethodData

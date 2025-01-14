@@ -70,22 +70,9 @@ var database_config = constants.DATABASE[0]
 //   }  
 // })
 
-// database_config.sql = `
-//   DELETE FROM casino_user 
-//   WHERE email = "oanapopescu93@gmail.com";
-// `;
-
-// database(database_config).then((result) => {  
-//   if (result) {
-//     console.log(`User with email "oanapopescu93@gmail.com" has been deleted.`);
-//   } else {
-//     console.log("No matching user found or deletion failed.");
-//   }
-// });
-
 io.on('connection', (socket)=>{
   socket.on('signin_send', (data) => {
-    const { email, pass, lang } = data
+    const { email, pass } = data
 
     database_config.sql = "SELECT * FROM casino_user; "
     database_config.sql += "SELECT * FROM login_user;"
@@ -127,8 +114,6 @@ io.on('connection', (socket)=>{
             logs: logs && logs.length ? parseInt(logs.length) : 0,
             logsTotal: login_found && login_found.length ? parseInt(login_found.length) : 0 ,
           }
-
-
 
           if(user_found[0].is_verified === 1){
             // is verified --> we sign him in
@@ -211,7 +196,6 @@ io.on('connection', (socket)=>{
 
             get_extra_data().then((res)=>{
               let uuid = crypto.randomBytes(20).toString('hex') 
-              let extra_data = {city: "", country: "", ip_address: ""} 
               if(res && res.data){
                 extra_data = {
                   city: res.data.city ? res.data.city : "",
@@ -480,7 +464,6 @@ io.on('connection', (socket)=>{
 	})
 
   socket.on('game_results_send', (data)=>{
-    console.log('game_results_send ', data)
     if(data.uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db10"
@@ -549,7 +532,8 @@ io.on('connection', (socket)=>{
     }
   })
   socket.on('order_send', (details)=>{
-    const { uuid, carrots_update, order_date, payment_id, amount, method, description, currency } = details
+    const { uuid, carrots_update, order_date, payment_id, amount, method, description, currency, exchange_rates, currencyExchange } = details
+    console.log(details)
     if(uuid){
       database_config.sql = "SELECT * FROM casino_user;"
       database_config.name = "db15"
@@ -572,6 +556,8 @@ io.on('connection', (socket)=>{
                 return obj[key] !== undefined ? obj[key] : defaultValue
               }
 
+              let exchange_rate = exchange_rates[currencyExchange]
+
               const payload = [
                   id,
                   payment_id,
@@ -584,16 +570,18 @@ io.on('connection', (socket)=>{
                   getOrDefault(details, 'email'),
                   getOrDefault(details, 'phone'),
                   description,
-                  currency
+                  currency,
+                  currencyExchange,
+                  exchange_rate
               ]
 
               database_config.sql = "UPDATE casino_user SET money='" + money + "' WHERE id=" + id + '; '
-              database_config.sql = `INSERT INTO order_table (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+              database_config.sql = `INSERT INTO order_table (user_id, payment_id, customer_id, order_date, amount, method, country, city, email, phone, description, currency, currency_exchange, exchange_rate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
               database_config.name = "db016"
+              console.log('order_table ', details, payload)
               database(database_config, payload).then(()=>{
                 try{
-                  let payload = {...details, money}
-                  io.to(socket.id).emit('order_read', payload)
+                  io.to(socket.id).emit('order_read', {...details, money})
                 }catch(e){
                   console.log('[error]','order_read--> ', e)
                 }
@@ -618,7 +606,7 @@ io.on('connection', (socket)=>{
       database_config.name = "db17"
       database(database_config).then((result)=>{
         if(result){
-          users_array = result
+          users_array = result          
           if(users_array && users_array.length > 0){
             let user_found = users_array.filter((x) => x.uuid === uuid)
             if(user_found[0] && user_found[0]){
@@ -627,17 +615,10 @@ io.on('connection', (socket)=>{
               database_config.sql = "SELECT * FROM order_table;"
               database_config.sql += "SELECT * FROM withdraw_table;"
               database_config.name = "db018"
+
               database(database_config).then((result)=>{
-                let orders_found = []
-                let withdraws_found = []
-
-                if(result && result[0] && result[1]){
-                  let orders_found = result[0].filter((x)=>{return x.user_id === id})
-                  let withdraws_found = result[1].filter((x)=>{return x.user_id === id})
-                  orders_found = orders_found.map(({ user_id, ...order }) => order) // Remove user_id from each order in orders_found
-                  withdraws_found = withdraws_found.map(({ user_id, ...withdraw }) => withdraw) // Remove user_id from each order in orders_found                
-                }
-
+                let orders_found = result && result[0] && result[0].length > 0 ? result[0].filter((x)=>{return x.user_id === id}) : []
+                let withdraws_found = result && result[1] && result[1].length > 0 ? result[1].filter((x)=>{return x.user_id === id}) : []
                 io.to(socket.id).emit('getOrdersWithdraws_read', {orders_found, withdraws_found})
               })
             } else {

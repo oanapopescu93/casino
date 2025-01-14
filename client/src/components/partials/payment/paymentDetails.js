@@ -46,7 +46,7 @@ function PaymentDetails(props){
                                         </div>
                                     </Col>
                                 </Row>
-                            case "card":
+                            case "stripe":
                             default:
                                 return <Row>
                                     <Col sm={6} className="payment_details_box">
