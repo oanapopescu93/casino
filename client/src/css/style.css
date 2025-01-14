@@ -230,13 +230,15 @@ textarea:focus, input:focus{
 .sign_container_box{
   background-color: var(--transparent_5);
   padding: var(--padding);
+  position: relative;
+  z-index: 1;
 }
 .sign_box{
   color: var(--color);
   padding: var(--padding);
   border-radius: var(--radius);
   text-align: center;
-  height: 200px;
+  height: 250px;
   position: relative;
   z-index: 1;
 }
@@ -250,6 +252,9 @@ textarea:focus, input:focus{
   left: 0%;
   width: 100%;
   transform: translate(0px, -50%);
+}
+.sign_up_info{
+  margin-bottom: var(--padding);
 }
 .sign_container input{
   margin-bottom: var(--padding_small);
@@ -285,7 +290,7 @@ textarea:focus, input:focus{
   width: 100%;
   max-width: 150px;
   font-size: 14px;
-  line-height: 14px;
+  line-height: 26px;
 }
 .sign_container form{
   margin-top: var(--padding);
@@ -318,9 +323,8 @@ textarea:focus, input:focus{
   margin-top: var(--padding);
   height: 40px;
 }
-.sign_extra_info span{
+.sign_extra_info:hover p{
   text-decoration: underline;
-  cursor: pointer;
 }
 .sign_footer{
   position: absolute;
@@ -4793,12 +4797,6 @@ a.donation_button{
   }
 
   /* SIGN */
-  .sign_container_box{
-    height: 420px;
-  }
-  .sign_box{
-    height: 220px;
-  }
   #splash_screen #logo_splash{
     width: 30px;
   }
@@ -4813,6 +4811,9 @@ a.donation_button{
   }
 
   /* SALON */
+  .salon_games_dropdown .dropdown .dropdown-menu{
+    max-height: 140px;
+  }
   .panel_container{
     right:-265px;
     width: 300px;

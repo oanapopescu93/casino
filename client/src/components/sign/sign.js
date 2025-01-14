@@ -53,6 +53,14 @@ function Sign(props) {
 
     function signSubmit(data){
         if(!validateForm(data.payload)){
+            let rememberMe = data.payload.rememberMe
+            if (rememberMe) {
+                localStorage.setItem('email', data.payload.email)
+                localStorage.setItem('pass', data.payload.pass)
+            } else {
+                localStorage.removeItem('email')
+                localStorage.removeItem('pass')
+            }
             setLoaded(false)
             socket.emit(data.emit, data.payload)
         }
