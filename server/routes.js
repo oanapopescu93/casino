@@ -58,32 +58,43 @@ router.post("/api/payment", jsonParser, (req, res, next) => {
 })
 
 router.post("/api/withdraw", jsonParser, (req, res, next) => {
-  const { uuid, amount, method, currency, name, phone, email, country, city, iban, status } = req.body
+  const { uuid, amount, currency, name, phone, email, country, city, iban } = req.body
   if(uuid){
     database_config.sql = "SELECT * FROM casino_user;"
     database_config.name = "db0001"
     database(database_config).then((result)=>{
       if(result){
         users_array = result
-        if(users_array && users_array.length>0){
+        if(users_array && users_array.length > 0){
           let user_found = users_array.filter((x) => x.uuid === uuid)
-          if(user_found[0] && user_found[0]){
+          if(user_found[0]){
             let id = user_found[0].id
             let timestamp = new Date().getTime() 
-            let payload_withdraw_user = [id, timestamp, amount, method, currency, name, phone, email, country, city, iban, status]
-            database_config.sql = "INSERT INTO withdraw_user (user_id, withdraw_date, amount, method, currency, name, phone, email, country, city, iban, status) VALUES (?, ?, ?, ?, ?, ?)"
+            let payload = [
+              id,               
+              amount, 
+              currency, 
+              name, 
+              phone, 
+              email, 
+              country, 
+              city, 
+              iban,
+              timestamp, 
+            ]
+            database_config.sql = "INSERT INTO withdraw_table (user_id, amount, currency, name, phone, email, country, city, iban, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
-            // database(database_config, payload_withdraw_user).then(()=>{ //TODO:
-            //   let payload_email = {...req.body, id}
-            //   sendEmail('withdraw', payload_email).then((data)=>{
-            //     try{
-            //       res.send(data)
-            //     }catch(e){
-            //       console.log('[error]','withdraw--> ', e)
-            //       res.send({send: "withdraw_failed"})
-            //     }
-            //   }) 
-            // })
+            database(database_config, payload).then(()=>{ //TODO:
+              let payload_email = {...req.body, id}
+              // sendEmail('withdraw', payload_email).then((data)=>{
+              //   try{
+              //     res.send(data)
+              //   }catch(e){
+              //     console.log('[error]','withdraw--> ', e)
+              //     res.send({send: "withdraw_failed"})
+              //   }
+              // }) 
+            })
 
             let payload_email = {...req.body, id}
             sendEmail('withdraw', payload_email).then((data)=>{

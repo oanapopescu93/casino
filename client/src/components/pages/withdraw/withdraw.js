@@ -167,7 +167,7 @@ function Withdraw(props){
         return problem
     }
 
-    function handleSubmit() { 
+    function handleSubmit() {        
         if(!validateForm()){
             dispatch(sendWithdrawRequest({...formState, uuid: user.uuid}))
         }
