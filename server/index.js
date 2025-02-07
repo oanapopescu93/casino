@@ -23,10 +23,10 @@ var stripePayment = require("./payments/stripePayment")
 app.use(stripePayment)
 var paypalPayment = require("./payments/paypalPayment")
 app.use(paypalPayment) 
-var cryptoPayment = require("./payments/cryptoPayment")
-app.use(cryptoPayment)
 var googlePayment = require("./payments/googlePayment")
 app.use(googlePayment)
+var withdrawPayment = require("./payments/withdrawPayment")
+app.use(withdrawPayment)
 
 const { encrypt, decrypt } = require('./utils/crypto')
 const { get_device, get_extra_data, check_streak } = require("./utils/other")
@@ -61,11 +61,9 @@ var database_config = constants.DATABASE[0]
 //   if(result){
 //     let user_found = result.filter((x)=>{
 //       return x.email === "oanapopescu93@gmail.com"
-//       // return x.email === "oana.popescu@idriveglobal.com"
-//     })
-//     console.log(user_found)  
+//     })    
 //     if(user_found[0]){
-//       console.log('user_found ', user_found[0], decrypt(JSON.parse(user_found[0].pass)))
+//       console.log('user_found ',  user_found[0], decrypt(JSON.parse(user_found[0].pass)))
 //     }
 //   }  
 // })
@@ -107,6 +105,7 @@ io.on('connection', (socket)=>{
             uuid, 
             user: user_found[0].user, 
             email: user_found[0].email, 
+            phone: user_found[0].phone, 
             account_type: user_found[0].account_type, 
             money: user_found[0].money, 
             device,
@@ -188,7 +187,7 @@ io.on('connection', (socket)=>{
                 exists: false, 
                 validate: false, 
                 email,
-                type: 'a'
+                phone
               })
             } catch(e){
               console.log('[error]','signup_read :', e)
@@ -220,7 +219,6 @@ io.on('connection', (socket)=>{
                 exists: false, 
                 validate: false, 
                 email,
-                type: 'b'
               })
             } catch(e){
               console.log('[error]','signup_read :', e)
@@ -235,7 +233,6 @@ io.on('connection', (socket)=>{
             validate: true, 
             details: "email_in_use", 
             email,
-            type: 'c'
           })
         } catch(e){
           console.log('[error]','signup_read :', e)

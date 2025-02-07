@@ -8,6 +8,7 @@ const initialState = {
         account_type: getCookie("casino_account_type") !== "" ? getCookie("casino_account_type") : null,
         device: getCookie("casino_device") !== "" ? getCookie("casino_device") : null,
         email: getCookie("casino_email") !== "" ? getCookie("casino_email") : null,
+        phone: getCookie("casino_phone") !== "" ? getCookie("casino_phone") : null,
         user: getCookie("casino_user") !== "" ? getCookie("casino_user") : null,
         uuid: getCookie("casino_uuid") !== "" ? getCookie("casino_uuid") : null,
         logs: getCookie("casino_logs") !== "" ? getCookie("casino_logs") : null,
@@ -37,6 +38,10 @@ const pageSlice = createSlice({
             if(payload.email){
                 state.user.email = encryptData(payload.email)
                 setCookie("casino_email", encryptData(payload.email))
+            }
+            if(payload.phone){
+                state.user.phone = encryptData(payload.phone)
+                setCookie("casino_phone", encryptData(payload.phone))
             }
             if(payload.user){
                 state.user.user = encryptData(payload.user)

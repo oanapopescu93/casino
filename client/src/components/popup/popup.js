@@ -50,6 +50,7 @@ function Popup(props){
     let size = useSelector(state => state.popup.size)
     let sticky = useSelector(state => state.popup.sticky)
     let icon = useSelector(state => state.popup.icon)
+    let html = useSelector(state => state.popup.html)
     let user = useSelector(state => state.auth.user)
 
     let dispatch = useDispatch()    
@@ -265,7 +266,7 @@ function Popup(props){
                             return <AreYouSure settings={settings} data={data} areYouSure={(e)=>areYouSure(e)} />
                         case "error":
                         default:
-                            return <>{typeof data === "string" ? <Default settings={settings} text={data} /> : null}</>
+                            return <>{typeof data === "string" ? <Default settings={settings} text={data} html={html}/> : null}</>
                     }
                 })()}
             </Modal.Body>

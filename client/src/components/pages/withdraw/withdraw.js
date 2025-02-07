@@ -23,21 +23,7 @@ function Withdraw(props){
     let dispatch = useDispatch()
 
     let processWithdraw = useSelector(state => state.payments.processWithdraw)
-    let messageWithdraw = useSelector(state => state.payments.messageWithdraw)    
-    if(messageWithdraw){        
-        let payload = {
-            open: true,
-            template: "success",
-            title: translate({lang: lang, info: "withdraw"}),
-            data: translate({lang: lang, info: messageWithdraw.send}),
-            size: "sm",
-        }
-        if(messageWithdraw.send === "withdraw_failed" || messageWithdraw.send === "email_no_send"){
-            payload.template = "error"
-            payload.title = translate({lang: lang, info: "error"})
-        }
-        dispatch(changePopup(payload))
-    }
+    let messageWithdraw = useSelector(state => state.payments.messageWithdraw)     
 
     const allowedCurrencies = ['USD', 'EUR', 'GBP', 'CHF', 'RON']
     const { finances } = home
@@ -52,14 +38,15 @@ function Withdraw(props){
         country: { fill: true, fill_message: "fill_field", validate: true },
         city: { fill: true, fill_message: "fill_field", validate: true },
         iban: { fill: true, fill_message: "fill_field", validate: true, validate_message: "validate_message_iban" },
+        captcha: {fill: true, validate: true, validate_message: "validate_message_captcha"}
     }
     const [withdrawError, setWithdrawError] = useState(errors_default)
     const [formState, setFormState] = useState({ 
         amount: min_amount, 
         currency: 'USD', 
-        name: '', 
-        phone: '', 
-        email: '', 
+        name: "", 
+        phone: user.phone ? decryptData(user.phone) : "", 
+        email: user.email ? decryptData(user.email) : "", 
         country: '',
         city: '',
         iban: '',
@@ -70,12 +57,32 @@ function Withdraw(props){
     const [filteredCountry, setFilteredCountry] = useState("")
     const [filteredCities, setFilteredCities] = useState([])
     const [filteredCity, setFilteredCity] = useState("")
+    const [captchaToken, setCaptchaToken] = useState(null)
+
+    const test_withdraw = true //only for tests
 
     useEffect(() => {
         const countryNames = Object.keys(countriesData)
         setCountries(countryNames)
         setFilteredCountries(countryNames)
     }, [])
+
+    useEffect(() => {        
+        if(messageWithdraw){        
+            let payload = {
+                open: true,
+                template: "success",
+                title: translate({lang, info: "withdraw"}),
+                data: translate({lang, info: messageWithdraw.payload}),
+                size: "sm",
+            }
+            if(messageWithdraw.result === "error"){
+                payload.template = "error"
+                payload.title = translate({lang, info: "error"})
+            }
+            dispatch(changePopup(payload))
+        }
+    }, [messageWithdraw])
 
     function handleBack(){
         dispatch(changePage('Salon'))
@@ -161,6 +168,10 @@ function Withdraw(props){
             errors.iban.validate = false
         }
 
+        if (!captchaToken && !test_withdraw) {
+            errors.captcha.validate = false
+        }
+
         setWithdrawError(errors)
         let problem = Object.values(errors).some(error => !error.fill || !error.validate)
 
@@ -171,17 +182,21 @@ function Withdraw(props){
         if(!validateForm()){
             dispatch(sendWithdrawRequest({...formState, uuid: user.uuid}))
         }
-    }    
+    }
+
+    function onCaptchaChange(token) {
+        setCaptchaToken(token)
+    }
 
     return <div className="content_wrap">
-        <Header template="terms_cond" title={translate({lang: lang, info: "withdraw"})} lang={lang} theme={theme}/>
+        <Header template="terms_cond" title={translate({lang, info: "withdraw"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {processWithdraw ?  <div className="page_content_loader">
-                <Loader text={translate({lang: lang, info: "processing"})} lang={lang} theme={theme}/>
+                <Loader text={translate({lang, info: "processing"})} lang={lang} theme={theme}/>
             </div> : <Row>
                 <Col lg={2} />
                 <Col lg={8}>
-                    {min_amount_withdraw < money ? <WithdrawFormStripe
+                    {test_withdraw || min_amount_withdraw < money ? <WithdrawFormStripe
                         {...props} 
                         money={money}
                         allowedCurrencies={allowedCurrencies}
@@ -191,27 +206,29 @@ function Withdraw(props){
                         filteredCountry={filteredCountry}
                         filteredCities={filteredCities}
                         filteredCity={filteredCity}
+                        captchaToken={captchaToken}
                         handleInputChange={(e)=>handleInputChange(e)}
                         changeCurrency={(e)=>changeCurrency(e)}
-                        updateAmount={(e)=>updateAmount(e)}
-                        handleSubmit={(e)=>handleSubmit(e)}
+                        updateAmount={(e)=>updateAmount(e)}                        
                         handleCountryChange={(e)=>handleCountryChange(e)}
                         handleFilterCountries={(e)=>handleFilterCountries(e)}
                         handleCityChange={(e)=>handleCityChange(e)}
                         handleFilterCities={(e)=>handleFilterCities(e)}
+                        handleSubmit={(e)=>handleSubmit(e)}
+                        onCaptchaChange={(e)=>onCaptchaChange(e)}
                         handleBack={()=>handleBack()}
                     /> : <>
                         <Row>
                             <Col sm={12}>
                                 <div className="alert alert-danger">
                                     <p className="text_red">
-                                        {translate({lang: lang, info: "not_enough_money_withdrawal"})}
+                                        {translate({lang, info: "not_enough_money_withdrawal"})}
                                     </p>
                                 </div>
                                 <br></br>
-                                <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>
-                                <p><b>{translate({lang: lang, info: "min_amount_withdraw"})}: </b>{min_amount_withdraw} <FontAwesomeIcon icon={faCarrot} /></p>
-                                <p><b>{translate({lang: lang, info: "convert_carrots_rate"})}: </b>{convert_carrots_rate} = 1 USD</p>
+                                <p><b>{translate({lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>
+                                <p><b>{translate({lang, info: "min_amount_withdraw"})}: </b>{min_amount_withdraw} <FontAwesomeIcon icon={faCarrot} /></p>
+                                <p><b>{translate({lang, info: "convert_carrots_rate"})}: </b>{convert_carrots_rate} = 1 USD</p>
                             </Col>
                         </Row>                        
                         <div className="button_action_group">

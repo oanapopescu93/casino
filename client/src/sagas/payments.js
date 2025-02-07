@@ -38,7 +38,7 @@ function* fetchSendPaymentRequest({ payload }){
 }
 
 function* fetchSendWithdrawRequest({ payload }){
-    try{       
+    try{
         const output = yield call(request, '/api/withdraw', payload)
         yield put(sendWithdrawRequestSuccess(output))
     } catch(error){

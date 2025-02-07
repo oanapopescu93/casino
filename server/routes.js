@@ -57,68 +57,14 @@ router.post("/api/payment", jsonParser, (req, res, next) => {
   res.send(JSON.stringify(payload))
 })
 
-router.post("/api/withdraw", jsonParser, (req, res, next) => {
-  const { uuid, amount, currency, name, phone, email, country, city, iban } = req.body
-  if(uuid){
-    database_config.sql = "SELECT * FROM casino_user;"
-    database_config.name = "db0001"
-    database(database_config).then((result)=>{
-      if(result){
-        users_array = result
-        if(users_array && users_array.length > 0){
-          let user_found = users_array.filter((x) => x.uuid === uuid)
-          if(user_found[0]){
-            let id = user_found[0].id
-            let timestamp = new Date().getTime() 
-            let payload = [
-              id,               
-              amount, 
-              currency, 
-              name, 
-              phone, 
-              email, 
-              country, 
-              city, 
-              iban,
-              timestamp, 
-            ]
-            database_config.sql = "INSERT INTO withdraw_table (user_id, amount, currency, name, phone, email, country, city, iban, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-
-            database(database_config, payload).then(()=>{ //TODO:
-              let payload_email = {...req.body, id}
-              // sendEmail('withdraw', payload_email).then((data)=>{
-              //   try{
-              //     res.send(data)
-              //   }catch(e){
-              //     console.log('[error]','withdraw--> ', e)
-              //     res.send({send: "withdraw_failed"})
-              //   }
-              // }) 
-            })
-
-            let payload_email = {...req.body, id}
-            sendEmail('withdraw', payload_email).then((data)=>{
-              try{
-                res.send(data)
-              }catch(e){
-                console.log('[error]','withdraw--> ', e)
-                res.send({send: "withdraw_failed"})
-              }
-            })            
-          }
-        }
-      }
-    }) 
-  }
-})
-
-// 2: "no_token",
-// 3: "error_during_verification",
-// 4: "invalid_expired_token",
-// 5: "email_verify_success"
-// 6: "email_already_verified"
-
 router.post("/api/verify-email", jsonParser, (req, res, next) => {
+  
+  // 2: "no_token",
+  // 3: "error_during_verification",
+  // 4: "invalid_expired_token",
+  // 5: "email_verify_success"
+  // 6: "email_already_verified"
+
   const { token } = req.body
   if(token){
     try{

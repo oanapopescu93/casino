@@ -3280,9 +3280,6 @@ a.donation_button{
 #withdraw_form .button_action_group button{
   margin: var(--padding_small);
 }
-.withdraw_form_iban{
-  padding-top: 30px;
-}
 .instructions_container{
   text-align: right;
 }
@@ -3290,6 +3287,15 @@ a.donation_button{
   font-size: 20px;
   line-height: 20px;
   cursor: pointer;
+}
+#withdraw_form .captcha_container{
+  text-align: right;
+}
+#withdraw_form .captcha_box{
+  display: inline-block;
+}
+#withdraw_form .captcha_container .alert{
+  margin-top: var(--padding);
 }
 
 /* SLOTS */
@@ -4899,11 +4905,6 @@ a.donation_button{
   .chatbot_textarea{
     font-size: 12px;
     line-height: 14px;
-  }
-
-  /* WITHDRAW */
-  .withdraw_form_iban{
-    padding-top: 0px;
   }
 }
 @media (max-width:480px) {
