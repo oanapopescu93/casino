@@ -11,7 +11,7 @@ function GdprRo(props){
         <Col lg={2} />
         <Col lg={8}>
             <h3>1. Introducere</h3>
-            <p><b>Prețuim confidențialitatea dvs. și ne angajăm să vă protejăm datele personale. Această pagină explică modul în care colectăm, utilizăm și protejăm informațiile dvs. personale, în conformitate cu Regulamentul General privind Protecția Datelor (GDPR) al UE.</b></p>
+            <p>Prețuim confidențialitatea dvs. și ne angajăm să vă protejăm datele personale. Această pagină explică modul în care colectăm, utilizăm și protejăm informațiile dvs. personale, în conformitate cu Regulamentul General privind Protecția Datelor (GDPR) al UE.</p>
 
             <h3>2. Ce date colectăm</h3>
             <p>Colectăm următoarele tipuri de date personale:</p>

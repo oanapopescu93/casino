@@ -11,7 +11,7 @@ function GdprDe(props){
         <Col lg={2} />
         <Col lg={8}>
             <h3>1. Einführung</h3>
-            <p><b>Wir schätzen Ihre Privatsphäre und verpflichten uns, Ihre persönlichen Daten zu schützen. Diese Seite beschreibt, wie wir Ihre persönlichen Informationen gemäß der EU-Verordnung zum Datenschutz (GDPR) erheben, verwenden und schützen.</b></p>
+            <p>Wir schätzen Ihre Privatsphäre und verpflichten uns, Ihre persönlichen Daten zu schützen. Diese Seite beschreibt, wie wir Ihre persönlichen Informationen gemäß der EU-Verordnung zum Datenschutz (GDPR) erheben, verwenden und schützen.</p>
 
             <h3>2. Welche Daten wir erheben</h3>
             <p>Wir erheben die folgenden Arten von persönlichen Daten:</p>

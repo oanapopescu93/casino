@@ -38,6 +38,7 @@ import chatbotIcon_yellow from '../../img/chatbot/chatbot_yellow.png'
 import chatbotIcon_orange from '../../img/chatbot/chatbot_orange.png'
 import AreYouSure from "./areYouSure"
 import { changeAreYouSureSlotsMaxBet } from "../../reducers/areYouSure"
+import SignProblem from "./signProblem"
 
 function Popup(props){
     const {socket, home, settings} = props
@@ -59,6 +60,7 @@ function Popup(props){
     const [sending, setSending] = useState(false)
     const [applyJobSending, setApplyJobSending] = useState(null)
     const [resendVerificationResult, setResendVerificationResult] = useState('')
+    const [signProblemsResult, setSignProblemsResult] = useState('')
 
     let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
     let style = template
@@ -84,6 +86,8 @@ function Popup(props){
             dispatch(changePopup(false))
         }
         setForgotPasswordResult('')
+        setResendVerificationResult('')
+        setSignProblemsResult('')
 	}
 
     function isMinorClick(e){
@@ -92,11 +96,12 @@ function Popup(props){
     }
 
     function forgotPasswordClick(email){
+        setForgotPasswordResult('')
         if(validateInput(email, "email")){
             setSending(true)
-            socket.emit('forgotPassword_send', {lang: lang, email})
+            socket.emit('forgotPassword_send', {lang, email})
         } else {
-            setForgotPasswordResult(translate({lang: lang, info: "error"}))
+            setForgotPasswordResult(translate({lang, info: "error"}))
         }
     }
 
@@ -143,6 +148,13 @@ function Popup(props){
                 closeModal()
            }, 2000)
         })
+        socket.on('sign_problem_read', (res)=>{
+            setSending(false)
+            setSignProblemsResult(res)
+            setTimeout(()=>{
+                closeModal()
+           }, 2000)
+        })
     }, [socket])
 
     function handleApplyJob(payload){
@@ -170,6 +182,16 @@ function Popup(props){
         closeModal()
         if(choice){
             dispatch(changeAreYouSureSlotsMaxBet(choice))
+        }
+    }
+
+    function handleSignProblem(email){
+        setSignProblemsResult('')
+        if(validateInput(email, "email")){
+            setSending(true)
+            socket.emit('sign_problem_send', {lang, email})
+        } else {
+            setSignProblemsResult(translate({lang, info: "validate_message_email"}))
         }
     }
 
@@ -264,6 +286,13 @@ function Popup(props){
                             return <WarningGambling settings={settings} />
                         case "are_you_sure":
                             return <AreYouSure settings={settings} data={data} areYouSure={(e)=>areYouSure(e)} />
+                        case "sign_problem":
+                            return <SignProblem 
+                                settings={settings} 
+                                signProblemsResult={signProblemsResult} 
+                                sending={sending}
+                                handleSignProblem={(e)=>handleSignProblem(e)} 
+                            />
                         case "error":
                         default:
                             return <>{typeof data === "string" ? <Default settings={settings} text={data} html={html}/> : null}</>

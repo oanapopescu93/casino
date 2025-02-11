@@ -54,6 +54,8 @@ var word_bank = {
     sign_in_email_error: "O e-mail está incorreto",
     sign_in_pass_error: "A senha está incorreta",
     signin_forgot_password: "Esqueci a senha",
+    sign_problem: "Problemas ao fazer login ou se registrar?",
+    signProblem_message: "Se você estiver tendo problemas para fazer login ou se registrar, entre em contato conosco usando o e-mail que você forneceu durante o registro para que possamos investigar o problema e ajudá-lo o mais rápido possível.",
     subtitle: "Ouse pegar o coelho",
     country: "País",
     city: "Cidade",

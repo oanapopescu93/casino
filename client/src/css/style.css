@@ -336,6 +336,19 @@ textarea:focus, input:focus{
   text-align: center;
   padding: var(--padding);
 }
+.sign_problem{
+  padding: var(--padding);
+  cursor: pointer;
+}
+.sign_problem:hover h6{
+  text-decoration: underline;
+}
+.signProblem_box{
+  margin-bottom: var(--padding);
+}
+.signProblem_box *{
+  text-decoration: none!important;
+}
 
 /* checkbox and radio buttons */
 .checkbox_radio_container input[type="radio"], .checkbox_radio_container input[type="checkbox"] {
@@ -775,6 +788,10 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.mymodal .modal-header .modal-title{
+  font-size: 20px;
+  line-height: 28px;
 }
 .modal-content input{
   border: solid 1px var(--bg);
@@ -2420,7 +2437,7 @@ a.donation_button{
   overflow: hidden;
 }
 #contact_map .contactMap{
-  height: 250px;
+  height: 300px;
 }
 #contact_map .leaflet-popup-content-wrapper, #contact_map .leaflet-popup-tip,
 #contact_map .leaflet-touch .leaflet-bar a, 

@@ -11,7 +11,7 @@ function GdprEng(props){
         <Col lg={2} />
         <Col lg={8}>
             <h3>1. Introduction</h3>
-            <p><b>We value your privacy and are committed to protecting your personal data. This page outlines how we collect, use, and protect your personal information in accordance with the EU General Data Protection Regulation (GDPR).</b></p>
+            <p>We value your privacy and are committed to protecting your personal data. This page outlines how we collect, use, and protect your personal information in accordance with the EU General Data Protection Regulation (GDPR).</p>
 
             <h3>2. What Data We Collect</h3>
             <p>We collect the following types of personal data:</p>

@@ -66,24 +66,26 @@ function NoMatch(props) {
                 <div className="page_not_found_box">
                     <h1 className="title">404</h1>
                     <table>
-                        <tr>
-                            <td className="page_not_found_img">
-                                <img className="page_not_found_img" alt="rabbit_stand_left" src={chooseImage('left')} />
-                            </td>
-                            <td className="page_not_found_text">                                
-                                <p>{translate({lang: lang, info: "page_not_found_text"})}</p>
-                                <div className="button_action_group">                    
-                                    <Button 
-                                        type="button"
-                                        className="mybutton round button_transparent shadow_convex"
-                                        onClick={()=>handleHandleExit()}
-                                    ><FontAwesomeIcon icon={faHouse} /></Button>
-                                </div>
-                            </td>
-                            <td className="page_not_found_img">
-                                <img className="page_not_found_img" alt="rabbit_stand_left" src={chooseImage('right')} />
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td className="page_not_found_img">
+                                    <img className="page_not_found_img" alt="rabbit_stand_left" src={chooseImage('left')} />
+                                </td>
+                                <td className="page_not_found_text">                                
+                                    <p>{translate({lang: lang, info: "page_not_found_text"})}</p>
+                                    <div className="button_action_group">                    
+                                        <Button 
+                                            type="button"
+                                            className="mybutton round button_transparent shadow_convex"
+                                            onClick={()=>handleHandleExit()}
+                                        ><FontAwesomeIcon icon={faHouse} /></Button>
+                                    </div>
+                                </td>
+                                <td className="page_not_found_img">
+                                    <img className="page_not_found_img" alt="rabbit_stand_left" src={chooseImage('right')} />
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>                    
                 </div>                
             </div>

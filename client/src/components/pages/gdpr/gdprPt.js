@@ -11,7 +11,7 @@ function GdprPt(props){
         <Col lg={2} />
         <Col lg={8}>
             <h3>1. Introdução</h3>
-            <p><b>Valorizamos a sua privacidade e estamos comprometidos em proteger os seus dados pessoais. Esta página explica como coletamos, usamos e protegemos as suas informações pessoais de acordo com o Regulamento Geral de Proteção de Dados (RGPD) da UE.</b></p>
+            <p>Valorizamos a sua privacidade e estamos comprometidos em proteger os seus dados pessoais. Esta página explica como coletamos, usamos e protegemos as suas informações pessoais de acordo com o Regulamento Geral de Proteção de Dados (RGPD) da UE.</p>
 
             <h3>2. Que dados coletamos</h3>
             <p>Coletamos os seguintes tipos de dados pessoais:</p>

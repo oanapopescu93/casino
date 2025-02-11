@@ -11,7 +11,7 @@ function GdprFr(props){
         <Col lg={2} />
         <Col lg={8}>
             <h3>1. Introduction</h3>
-            <p><b>Nous attachons une grande importance à votre vie privée et nous nous engageons à protéger vos données personnelles. Cette page explique comment nous collectons, utilisons et protégeons vos informations personnelles conformément au Règlement Général sur la Protection des Données (RGPD) de l'UE.</b></p>
+            <p>Nous attachons une grande importance à votre vie privée et nous nous engageons à protéger vos données personnelles. Cette page explique comment nous collectons, utilisons et protégeons vos informations personnelles conformément au Règlement Général sur la Protection des Données (RGPD) de l'UE.</p>
 
             <h3>2. Quelles données nous collectons</h3>
             <p>Nous collectons les types de données personnelles suivants :</p>

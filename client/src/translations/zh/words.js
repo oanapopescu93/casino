@@ -55,6 +55,8 @@ var word_bank = {
     sign_in_email_error: "电子邮件不正确",
     sign_in_pass_error: "密码不正确",
     signin_forgot_password: "我忘记密码",
+    sign_problem: "登录或注册遇到问题？",
+    signProblem_message: "如果您在登录或注册时遇到问题，请使用您注册时提供的电子邮件与我们联系，我们会尽快调查问题并为您提供帮助。",
     subtitle: "敢于追逐兔子",
     country: "国家",
     city: "城市",

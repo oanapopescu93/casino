@@ -55,6 +55,8 @@ var word_bank = {
     sign_in_email_error: "L'email est incorrect",
     sign_in_pass_error: "Le mot de passe est incorrect",
     signin_forgot_password: "J'ai oublié mon mot de passe",
+    sign_problem: "Des problèmes pour vous connecter ou vous inscrire ?",
+    signProblem_message: "Si vous rencontrez des problèmes pour vous connecter ou vous inscrire, veuillez nous contacter en utilisant l'adresse e-mail que vous avez fournie lors de l'inscription afin que nous puissions examiner le problème et vous aider dans les plus brefs délais.",
     subtitle: "Osez attraper le lapin",
     country: "Pays",
     city: "Ville",

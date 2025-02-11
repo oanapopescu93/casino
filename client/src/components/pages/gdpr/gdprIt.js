@@ -11,7 +11,7 @@ function GdprIt(props){
         <Col lg={2} />
         <Col lg={8}>
             <h3>1. Introduzione</h3>
-            <p><b>Attribuiamo grande valore alla tua privacy e ci impegniamo a proteggere i tuoi dati personali. Questa pagina spiega come raccogliamo, utilizziamo e proteggiamo le tue informazioni personali in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR) dell'UE.</b></p>
+            <p>Attribuiamo grande valore alla tua privacy e ci impegniamo a proteggere i tuoi dati personali. Questa pagina spiega come raccogliamo, utilizziamo e proteggiamo le tue informazioni personali in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR) dell'UE.</p>
 
             <h3>2. Quali dati raccogliamo</h3>
             <p>Raccogliamo i seguenti tipi di dati personali:</p>

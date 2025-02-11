@@ -55,6 +55,8 @@ var word_bank = {
     sign_in_email_error: "El correo electrónico es incorrecto",
     sign_in_pass_error: "La contraseña es incorrecta",
     signin_forgot_password: "Olvidé mi contraseña",
+    sign_problem: "¿Problemas para iniciar sesión o registrarte?",
+    signProblem_message: "Si tienes problemas para iniciar sesión o registrarte, contáctanos utilizando el correo electrónico que proporcionaste durante el registro para que podamos investigar el problema y ayudarte lo antes posible.",
     subtitle: "Atrévete a atrapar al conejo",
     country: "País",
     city: "Ciudad",

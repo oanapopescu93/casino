@@ -17,7 +17,13 @@ function ForgotPassword(props) {
             <p>{text}</p>
         </div> : null}
         <div className="forgotPassword_buttons">
-            <input className="input_light" type="text" value={email} onChange={(e)=>{handleChange(e)}}/>
+            <input 
+                className="input_light" 
+                type="text" 
+                value={email} 
+                placeholder={translate({lang: lang, info: "email"})} 
+                onChange={(e)=>{handleChange(e)}}
+            />
             <Button type="button" id="forgotPassword_btn_ok" className="mybutton button_fullcolor_dark" onClick={()=>props.forgotPasswordClick(email)}>
                 {translate({lang: lang, info: "send"})}
             </Button>

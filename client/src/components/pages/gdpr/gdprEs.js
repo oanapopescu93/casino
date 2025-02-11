@@ -11,7 +11,7 @@ function GdprEs(props){
         <Col lg={2} />
         <Col lg={8}>
             <h3>1. Introducción</h3>
-            <p><b>Valoramos su privacidad y estamos comprometidos con la protección de sus datos personales. Esta página describe cómo recopilamos, usamos y protegemos su información personal de acuerdo con el Reglamento General de Protección de Datos (GDPR) de la UE.</b></p>
+            <p>Valoramos su privacidad y estamos comprometidos con la protección de sus datos personales. Esta página describe cómo recopilamos, usamos y protegemos su información personal de acuerdo con el Reglamento General de Protección de Datos (GDPR) de la UE.</p>
 
             <h3>2. Qué datos recopilamos</h3>
             <p>Recopilamos los siguientes tipos de datos personales:</p>

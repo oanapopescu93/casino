@@ -55,6 +55,8 @@ var word_bank = {
     sign_in_email_error: "E-Mail ist falsch",
     sign_in_pass_error: "Passwort ist falsch",
     signin_forgot_password: "Ich habe mein Passwort vergessen",
+    sign_problem: "Probleme beim Einloggen oder Anmelden?",
+    signProblem_message: "Wenn Sie Probleme beim Einloggen oder Anmelden haben, kontaktieren Sie uns bitte mit der E-Mail, die Sie bei der Registrierung angegeben haben, damit wir das Problem untersuchen und Ihnen so schnell wie möglich helfen können.",
     subtitle: "Traue dich, den Hasen zu fangen",
     country: "Land",
     city: "Stadt",

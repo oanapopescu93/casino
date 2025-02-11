@@ -306,6 +306,15 @@ io.on('connection', (socket)=>{
       }) 
     })
   })
+  socket.on('sign_problem_send', (data) => {
+    sendEmail('sign_problem', data).then((res)=>{
+      try{        
+        io.to(socket.id).emit('sign_problem_read', res)
+      }catch(e){
+        console.log('[error]','sign_problem_read--> ', e)
+      }
+    })
+  })
 
   // GAMES
   socket.on('game_send', (data)=>{

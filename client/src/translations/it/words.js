@@ -55,6 +55,8 @@ var word_bank = {
     sign_in_email_error: "Email non corretta",
     sign_in_pass_error: "Password non corretta",
     signin_forgot_password: "Ho dimenticato la password",
+    sign_problem: "Problemi ad accedere o registrarti?",
+    signProblem_message: "Se hai problemi ad accedere o registrarti, contattaci utilizzando l'email che hai fornito durante la registrazione, così possiamo indagare sul problema e aiutarti il prima possibile.",
     subtitle: "Osate catturare il coniglio",
     country: "Paese",
     city: "Città",

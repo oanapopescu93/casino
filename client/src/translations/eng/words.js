@@ -55,6 +55,8 @@ var word_bank = {
     sign_in_email_error: "Email is incorrect",
     sign_in_pass_error: "Password is incorrect",
     signin_forgot_password: "I forgot password",
+    sign_problem: "Problems loging or signing in?",
+    signProblem_message: "If you're having trouble logging in or signing up, please contact us using the email you provided during registration so we can investigate the issue and assist you as quickly as possible.",
     subtitle: "Dare catch the rabbit",
     country: "Country",
     city: "City",

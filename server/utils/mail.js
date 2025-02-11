@@ -43,6 +43,20 @@ function sendEmail(reason, e){
         let success_message = "email_send"
         let mailOptions = null
         switch (reason) {
+            case "sign_problem":
+                subject = "Problem login or sign in"
+                html += "<p><b>Email: </b> " + email + "</p>"
+
+                success_message = "email_send"
+
+                mailOptions = {
+                    from: email,
+                    to: constants.AUTH_FROM,
+                    subject,
+                    html
+                }
+
+                break
             case "forgot_password":
                 switch (lang) {
                     case "DE":

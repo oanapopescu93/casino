@@ -216,6 +216,15 @@ function Sign(props) {
         setDate(my_date)
     }
     
+    function handleSignProblem(){
+        let payload = {
+            open: true,
+            template: "sign_problem",
+            title: translate({lang: lang, info: "sign_problem"}),
+            size: 'sm',
+        }
+        dispatch(changePopup(payload))
+    }
 
     useEffect(() => {
         handleDate()
@@ -306,6 +315,9 @@ function Sign(props) {
                                         </div> : null}
                                     </>
                                 })()}
+                                <div className="sign_problem" onClick={()=>handleSignProblem()}>
+                                    <h6>{translate({lang: lang, info: "sign_problem"})}</h6>
+                                </div>
                             </div>
                             <div className="sign_footer">
                                 <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: lang, info: "all_rights_reserved"})}.</h6>
