@@ -40,7 +40,7 @@ function MapChild(props){
             </BaseLayer>
         </LayersControl>
         <Marker ref={leafletRef} {...markerOptions}>
-            <Popup {...popupOptions}><p>{translate({lang: lang, info: country + ', ' + city})}</p></Popup>
+            <Popup {...popupOptions}><p>{translate({lang, info: country + ', ' + city})}</p></Popup>
         </Marker>
     </>
 }

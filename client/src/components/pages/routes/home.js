@@ -104,8 +104,8 @@ function Home(props) {
                     let payload = {
                         open: true,
                         template: "paymentCancel",
-                        title: translate({lang: lang, info: "payment_cancel"}),
-                        data: translate({lang: lang, info: "payment_cancel_text"}),
+                        title: translate({lang, info: "payment_cancel"}),
+                        data: translate({lang, info: "payment_cancel_text"}),
                         size: 'sm',
                     }
                     dispatch(changePopup(payload))
@@ -124,7 +124,7 @@ function Home(props) {
             let payload = {
                 open: true,
                 template: "paymentSuccess",
-                title: translate({lang: lang, info: "payment_success"}),
+                title: translate({lang, info: "payment_success"}),
                 data: details,
                 size: 'md',
             } 
@@ -151,8 +151,8 @@ function Home(props) {
         let payload = {
             open: true,
             template: "error",
-            title: translate({lang: lang, info: "error"}),
-            data: translate({lang: lang, info: typeof data.payload === "string" ? data.payload : "error_charge"}),
+            title: translate({lang, info: "error"}),
+            data: translate({lang, info: typeof data.payload === "string" ? data.payload : "error_charge"}),
             size: 'sm',
         }
         dispatch(changePopup(payload))

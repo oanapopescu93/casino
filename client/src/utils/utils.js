@@ -313,8 +313,8 @@ export const useHandleErrors = () => {
       let payload = {
           open: true,
           template: "error",
-          title: translate({ lang: lang, info: title }),
-          data: translate({ lang: lang, info: text }),
+          title: translate({ lang, info: title }),
+          data: translate({ lang, info: text }),
           size: "sm",
       }
       dispatch(changePopup(payload))

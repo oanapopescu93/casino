@@ -9,7 +9,7 @@ function Checkout(props){
     const {lang, theme} = settings
 
     return <div className="content_wrap">
-        <Header template="checkout" title={translate({lang: lang, info: "checkout"})} lang={lang} theme={theme}/>
+        <Header template="checkout" title={translate({lang, info: "checkout"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <Row>
                 <Col lg={2} />

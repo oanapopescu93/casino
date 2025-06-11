@@ -33,7 +33,7 @@ function Donation(props){
     }
 
     return <div className="content_wrap">
-        <Header template="donation" title={translate({lang: lang, info: "donation"})} lang={lang} theme={theme}/>
+        <Header template="donation" title={translate({lang, info: "donation"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {(() => {
                 if(list && list.length>0){
@@ -48,7 +48,7 @@ function Donation(props){
                                                 active = "active"
                                             }
                                             return <li key={i} className={active} onClick={()=>{handleClick(item, i)}}>
-                                                <span>{translate({lang: lang, info: item})}</span>
+                                                <span>{translate({lang, info: item})}</span>
                                             </li>
                                         })}
                                     </ul>
@@ -63,22 +63,22 @@ function Donation(props){
                                             case "bank":
                                                 return <BankDonation lang={lang} list={list}/>
                                             default:
-                                                return <p>{translate({lang: lang, info: "error"})}</p>
+                                                return <p>{translate({lang, info: "error"})}</p>
                                         }
                                     })()}
                                 </div>
-                                <p>{translate({lang: lang, info: "donation_footer_text"})}</p>
+                                <p>{translate({lang, info: "donation_footer_text"})}</p>
                             </div>
                         </div>
                         <div className="donation_ukraine">
                             <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine">
-                                {translate({lang: lang, info: "donation_ukraine"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine} />
+                                {translate({lang, info: "donation_ukraine"})} <img id="ukraine_icon" alt="ukraine_icon" src={ukraine} />
                             </a>
                         </div>
                     </div>
                 } else {
                     return <div className="donation_container">
-                        <p>{translate({lang: lang, info: "no_data"})}</p>
+                        <p>{translate({lang, info: "no_data"})}</p>
                     </div>
                 }
             })()} 
@@ -89,7 +89,7 @@ function Donation(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>handleBack()}
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "back"})}</span>
         </div>
     </div>
 }

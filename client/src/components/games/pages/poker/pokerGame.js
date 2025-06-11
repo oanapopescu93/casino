@@ -582,12 +582,12 @@ function PokerGame(props){
     return <div className="poker_canvas_container">
         {gameData && gameData.action === "preflop_betting" ? <div className="small_blind_container">
             <div className="small_blind">
-                {translate({lang: lang, info: "small_blind"})}: {smallBlind} <FontAwesomeIcon icon={faCarrot} />
+                {translate({lang, info: "small_blind"})}: {smallBlind} <FontAwesomeIcon icon={faCarrot} />
             </div>
         </div> : null}
         {gameData && gameData.pot > 0 ? <div className="poker_pot_container">
             <div className="poker_pot">
-                {translate({lang: lang, info: "total_pot"})}: {gameData.pot} <FontAwesomeIcon icon={faCarrot} />
+                {translate({lang, info: "total_pot"})}: {gameData.pot} <FontAwesomeIcon icon={faCarrot} />
             </div>
         </div> : null}
         <canvas id="poker_canvas" />

@@ -72,7 +72,7 @@ function NoMatch(props) {
                                     <img className="page_not_found_img" alt="rabbit_stand_left" src={chooseImage('left')} />
                                 </td>
                                 <td className="page_not_found_text">                                
-                                    <p>{translate({lang: lang, info: "page_not_found_text"})}</p>
+                                    <p>{translate({lang, info: "page_not_found_text"})}</p>
                                     <div className="button_action_group">                    
                                         <Button 
                                             type="button"

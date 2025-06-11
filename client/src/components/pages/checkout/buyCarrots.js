@@ -11,7 +11,7 @@ function BuyCarrots(props){
         <Counter max={maxAmount} update={(e)=>updateQty(e)} />
         <div className="payment_details_total_price">
             <h3>
-                <b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(totalPromo, currency, exchange_rates)} {currency}
+                <b>{translate({lang, info: "total_price"})}</b>: {convertCurrency(totalPromo, currency, exchange_rates)} {currency}
             </h3>
         </div>
     </>

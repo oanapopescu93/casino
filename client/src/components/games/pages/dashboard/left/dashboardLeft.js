@@ -105,24 +105,24 @@ function DashboardLeft(props){
                 </div>
                 <div className="dashboard_user_info">
                     <p>
-                        <b>{translate({lang: lang, info: "animal"})}: </b>
+                        <b>{translate({lang, info: "animal"})}: </b>
                         {animal && animal[0] ? <span>{animal[0]["name_" + lang.toLowerCase()] || animal[0].name_eng.toLowerCase()}</span> : <span>-</span>}
                     </p>
-                    <p><b>{translate({lang: lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>
-                    <p><b>{translate({lang: lang, info: "currency"})}: </b><span>{currency}</span></p>
-                    <p><b>{translate({lang: lang, info: "language"})}: </b><span>{lang}</span></p>
+                    <p><b>{translate({lang, info: "carrots"})}: </b>{money} <FontAwesomeIcon icon={faCarrot} /></p>
+                    <p><b>{translate({lang, info: "currency"})}: </b><span>{currency}</span></p>
+                    <p><b>{translate({lang, info: "language"})}: </b><span>{lang}</span></p>
                 </div>
             </Col>
             <Col sm={12} md={6} lg={12}>
                 <div className="dashboard_left_buttons">
                     <Button type="button" onClick={()=>handleChoice("change_password")} className="mybutton button_fullcolor shadow_convex">
-                        <FontAwesomeIcon icon={faKey} /> {translate({lang: lang, info: "change_password"})}
+                        <FontAwesomeIcon icon={faKey} /> {translate({lang, info: "change_password"})}
                     </Button>
                     <Button type="button" onClick={()=>handleChoice("buy_carrots")} className="mybutton button_fullcolor shadow_convex">
-                        <FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "buy_carrots"})}
+                        <FontAwesomeIcon icon={faCartShopping} /> {translate({lang, info: "buy_carrots"})}
                     </Button>
                     <Button type="button" onClick={()=>handleWithdrawal()} className="mybutton button_fullcolor shadow_convex">
-                        <FontAwesomeIcon icon={faMoneyBillTransfer} /> {translate({lang: lang, info: "withdrawal"})}
+                        <FontAwesomeIcon icon={faMoneyBillTransfer} /> {translate({lang, info: "withdrawal"})}
                     </Button>
                 </div> 
             </Col>

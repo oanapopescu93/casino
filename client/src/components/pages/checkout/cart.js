@@ -41,7 +41,7 @@ function Cart(props){
                         </Col>
                         <Col xs={6} sm={12} md={8} className="cart_info">
                             <h4>{item["name_" + lang.toLowerCase()] || item.name_eng.toLowerCase()}</h4>                            
-                            <p><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price} {currency}</p>
+                            <p><b>{translate({lang, info: "total_price"})}</b>: {cart_item_total_price} {currency}</p>
                         </Col>
                     </Row>
                 </div>

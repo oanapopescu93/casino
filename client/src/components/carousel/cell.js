@@ -21,7 +21,7 @@ function Cell(props) {
     } = props
     const {lang, currency, theme} = settings
 
-    let place = translate({lang: lang, info: 'place'})
+    let place = translate({lang, info: 'place'})
 
     const [qty, setQty] = useState(1)
     const [titleDropdown, setTitleDropdown] = useState(place)
@@ -115,12 +115,12 @@ function Cell(props) {
                     return <div className="cell_salon_container">
                         <div className="cell_salon shadow_concav">
                             <div className="cell_info">
-                                <h4>{translate({lang: lang, info: data.table_name})} {data.table_id}</h4>
-                                {data.table_type ? <p className="truncate">{translate({lang: lang, info: data.table_type})}</p> : null}
+                                <h4>{translate({lang, info: data.table_name})} {data.table_id}</h4>
+                                {data.table_type ? <p className="truncate">{translate({lang, info: data.table_type})}</p> : null}
                             </div>
                             <div className="cell_button">
                                 <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>getItem(data)}>
-                                    {translate({lang: lang, info: "play"})}
+                                    {translate({lang, info: "play"})}
                                 </Button>
                             </div>
                         </div>
@@ -133,8 +133,8 @@ function Cell(props) {
                                     <img alt="vegetable" className={'vegetable '+data.id} src={chooseImage()} />
                                 </div>
                                 <h4>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</h4>
-                                <p>{translate({lang: lang, info: "value"})}: {data.value} <FontAwesomeIcon icon={faCarrot} /></p>
-                                <p>{translate({lang: lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
+                                <p>{translate({lang, info: "value"})}: {data.value} <FontAwesomeIcon icon={faCarrot} /></p>
+                                <p>{translate({lang, info: "price"})}: {convertCurrency(data.price, currency, exchange_rates)} {currency}</p>
                                 <Counter min={0} max={100} update={(e)=>updateQtyMarket(e)} />
                             </div>
                             <div className="cell_button">
@@ -159,19 +159,19 @@ function Cell(props) {
                                 </Col>
                                 <Col sm={6}>
                                     <div className="rabbit_box_info">
-                                        <p><span>{translate({lang: lang, info: "breed"})}: </span>{data.breed}</p>
-                                        <p><span>{translate({lang: lang, info: "health"})}: </span>{data.health}</p>
+                                        <p><span>{translate({lang, info: "breed"})}: </span>{data.breed}</p>
+                                        <p><span>{translate({lang, info: "health"})}: </span>{data.health}</p>
                                         <Stars score={data.health} max={data.health_max} theme={theme}/>
                                     </div>
                                     <div className="rabbit_box_bet">
-                                        <p>{translate({lang: lang, info: "bet"})}:</p>
+                                        <p>{translate({lang, info: "bet"})}:</p>
                                         <Counter min={0} num={0} max={max_bet} update={(e)=>updateRaceBet(e)} />
                                     </div>
                                     <div className="rabbit_box_place">
                                         <DropdownButton title={titleDropdown} id="language_button" onSelect={(e)=>handleDropdown(e, index)}>
-                                            <Dropdown.Item eventKey={1}>{translate({lang: lang, info: 'place_01'})}</Dropdown.Item>
-                                            <Dropdown.Item eventKey={2}>{translate({lang: lang, info: 'place_02'})}</Dropdown.Item>
-                                            <Dropdown.Item eventKey={3}>{translate({lang: lang, info: 'place_03'})}</Dropdown.Item>
+                                            <Dropdown.Item eventKey={1}>{translate({lang, info: 'place_01'})}</Dropdown.Item>
+                                            <Dropdown.Item eventKey={2}>{translate({lang, info: 'place_02'})}</Dropdown.Item>
+                                            <Dropdown.Item eventKey={3}>{translate({lang, info: 'place_03'})}</Dropdown.Item>
                                         </DropdownButton>
                                     </div>
                                 </Col>
@@ -201,7 +201,7 @@ function Cell(props) {
                     <p>{data["name_" + lang.toLowerCase()] || data.name_eng.toLowerCase()}</p>
                 </div>
                 default:
-                    return <div key={index}>{translate({lang: lang, info: "error"})}</div>
+                    return <div key={index}>{translate({lang, info: "error"})}</div>
             }
         })()}
     </>

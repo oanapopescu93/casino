@@ -51,9 +51,9 @@ function List(props){
                                 <Col xs={6} sm={8} className="cart_info">
                                     <h4>{item["name_" + lang.toLowerCase()] || item.name_eng.toLowerCase()}</h4>                                    
                                     <p>
-                                        <b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(item.price, currency, exchange_rates)} {currency}
+                                        <b>{translate({lang, info: "price"})}</b>: {convertCurrency(item.price, currency, exchange_rates)} {currency}
                                     </p>
-                                    <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>
+                                    <p><b>{translate({lang, info: "qty"})}</b>: {item.qty}</p>
                                 </Col>
                             </Row>
                             <Row>
@@ -63,7 +63,7 @@ function List(props){
                             </Row>
                         </Col>
                         <Col xs={4} className="cart_action">
-                            <h4><b>{translate({lang: lang, info: "total_price"})}</b>: {cart_item_total_price} {currency}</h4>
+                            <h4><b>{translate({lang, info: "total_price"})}</b>: {cart_item_total_price} {currency}</h4>
                             <Button 
                                 type="button"  
                                 className="mybutton round button_transparent shadow_convex remove"

@@ -66,7 +66,7 @@ function ApplyJob(props) {
     return (
         <div className="applyJob">
             <div className="applyJob_box">
-                <label htmlFor="email">{translate({ lang: lang, info: "email" })} *</label>
+                <label htmlFor="email">{translate({ lang, info: "email" })} *</label>
                 <input
                     name="email"
                     className="input_light"
@@ -77,19 +77,19 @@ function ApplyJob(props) {
                 {!applyJobError.email.fill ? (
                     <div className="alert alert-danger">
                         <p className="text_red">
-                            {translate({ lang: lang, info: applyJobError.email.fill_message })}
+                            {translate({ lang, info: applyJobError.email.fill_message })}
                         </p>
                     </div>
                 ) : !applyJobError.email.validate ? (
                     <div className="alert alert-danger">
                         <p className="text_red">
-                            {translate({ lang: lang, info: applyJobError.email.validate_message })}
+                            {translate({ lang, info: applyJobError.email.validate_message })}
                         </p>
                     </div>
                 ) : null}
             </div>
             <div className="applyJob_box">
-                <label htmlFor="cv">{translate({ lang: lang, info: "CV" })} *</label>
+                <label htmlFor="cv">{translate({ lang, info: "CV" })} *</label>
                 <input
                     type="file"
                     name="cv"
@@ -100,19 +100,19 @@ function ApplyJob(props) {
                 {!applyJobError.cv.fill && (
                     <div className="alert alert-danger">
                         <p className="text_red">
-                            {translate({ lang: lang, info: applyJobError.cv.fill_message })}
+                            {translate({ lang, info: applyJobError.cv.fill_message })}
                         </p>
                     </div>
                 )}
             </div>
             {applyJobSending ? <div className="applyJob_box">
                 {applyJobSending !== "sending" ? <div className="applyJob_box">
-                    <p>{translate({ lang: lang, info: applyJobSending })}</p>
+                    <p>{translate({ lang, info: applyJobSending })}</p>
                 </div> : <Spinner size="small" color="black"/>}
             </div> : null}
             <div className="applyJob_buttons">
                 <Button type="button" id="applyJob_btn_ok" className="mybutton button_fullcolor_dark" onClick={handleSubmit}>
-                    {translate({ lang: lang, info: "apply" })}
+                    {translate({ lang, info: "apply" })}
                 </Button>
             </div>
         </div>

@@ -11,19 +11,19 @@ function Settings(props) {
 
     return <div className="settings">
         <div className="settings_language">
-            <h4>{translate({lang: lang, info: "language"})}</h4>
+            <h4>{translate({lang, info: "language"})}</h4>
             <Language title={lang} />
         </div>
         <div className="settings_date">
-            <h4>{translate({lang: lang, info: "date_calendar"})}</h4>
+            <h4>{translate({lang, info: "date_calendar"})}</h4>
             <Date title={date} />
         </div>
         <div className="settings_currency">
-            <h4>{translate({lang: lang, info: "currency"})}</h4>
+            <h4>{translate({lang, info: "currency"})}</h4>
             <Currency title={currency} {...props} />
         </div>
         <div className="settings_theme">
-            <h4>{translate({lang: lang, info: "theme"})}</h4>
+            <h4>{translate({lang, info: "theme"})}</h4>
             <Theme title={theme} {...props} />
         </div>
     </div>

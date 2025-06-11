@@ -75,32 +75,32 @@ function DashboardRight(props){
             <div className="dashboard_right_list">
                 <div className={`dashboard_right_button ${choice === "cart" ? "active" : ""}`} onClick={()=>handleClick("cart")}>
                     <FontAwesomeIcon icon={faCartShopping} />
-                    <span>{translate({lang: lang, info: "cart"})}</span>                    
+                    <span>{translate({lang, info: "cart"})}</span>                    
                 </div>
                 <div className={`dashboard_right_button ${choice === "orders" ? "active" : ""}`} onClick={()=>handleClick("orders")}>
                     <FontAwesomeIcon icon={faListUl} />
-                    <span>{translate({lang: lang, info: "orders"})}</span>                    
+                    <span>{translate({lang, info: "orders"})}</span>                    
                 </div>
                 <div className={`dashboard_right_button ${choice === "withdraw" ? "active" : ""}`} onClick={()=>handleClick("withdraw")}>
                     <FontAwesomeIcon icon={faMoneyBillTransfer} />
-                    <span>{translate({lang: lang, info: "withdraw"})}</span>                    
+                    <span>{translate({lang, info: "withdraw"})}</span>                    
                 </div>
             </div>
             <div className="dashboard_right_market" onClick={()=>handleClick("market")} >
                 <FontAwesomeIcon icon={faStore} />
-                <span>{translate({lang: lang, info: "market"})}</span>                
+                <span>{translate({lang, info: "market"})}</span>                
             </div>
         </div> : <div className="dashboard_right_buttons">
             <div className="dashboard_right_list">
-                <DropdownButton title={translate({lang: lang, info: title})} className="shadow_convex" onSelect={handleSelectChange}>
-                    <Dropdown.Item eventKey={"cart"}><span>{translate({lang: lang, info: "cart"})}</span></Dropdown.Item>
-                    <Dropdown.Item eventKey={"orders"}><span>{translate({lang: lang, info: "orders"})}</span></Dropdown.Item>
-                    <Dropdown.Item eventKey={"withdraw"}><span>{translate({lang: lang, info: "withdraw"})}</span></Dropdown.Item>
+                <DropdownButton title={translate({lang, info: title})} className="shadow_convex" onSelect={handleSelectChange}>
+                    <Dropdown.Item eventKey={"cart"}><span>{translate({lang, info: "cart"})}</span></Dropdown.Item>
+                    <Dropdown.Item eventKey={"orders"}><span>{translate({lang, info: "orders"})}</span></Dropdown.Item>
+                    <Dropdown.Item eventKey={"withdraw"}><span>{translate({lang, info: "withdraw"})}</span></Dropdown.Item>
                 </DropdownButton>
             </div>
             <div className="dashboard_right_market" onClick={()=>handleClick("market")} >
                 <FontAwesomeIcon icon={faStore} />
-                <span>{translate({lang: lang, info: "market"})}</span>                
+                <span>{translate({lang, info: "market"})}</span>                
             </div>            
         </div>}        
         {(() => {

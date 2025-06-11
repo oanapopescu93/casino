@@ -43,9 +43,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'bet', stage: payload1})}
                                         >
                                             <FontAwesomeIcon icon={faPlus} />
-                                            <span>{translate({lang: lang, info: "bet"})}</span>
+                                            <span>{translate({lang, info: "bet"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "bet_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "bet_explanation"})}</span>
                                     </div>
                                 </Col>
                                 <Col xs={4}>
@@ -56,9 +56,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'check', stage: payload1})}
                                         >
                                             <FontAwesomeIcon icon={faCheck} />
-                                            <span>{translate({lang: lang, info: "check"})}</span>
+                                            <span>{translate({lang, info: "check"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "check_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "check_explanation"})}</span>
                                     </div>
                                 </Col>
                                 <Col xs={4}>
@@ -69,9 +69,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'fold', stage: payload1})}
                                         >
                                             <FontAwesomeIcon icon={faXmark} />
-                                            <span>{translate({lang: lang, info: "fold"})}</span>
+                                            <span>{translate({lang, info: "fold"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "fold_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "fold_explanation"})}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -90,9 +90,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: action, stage: 'confirm_draw'})}
                                         >
                                             <FontAwesomeIcon icon={faPlus} />
-                                            <span>{translate({lang: lang, info: "draw"})}</span>
+                                            <span>{translate({lang, info: "draw"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "draw_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "draw_explanation"})}</span>
                                     </div>
                                 </Col>
                                 <Col xs={6}>
@@ -103,9 +103,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: action, stage: 'cancel_draw'})}
                                         >
                                             <FontAwesomeIcon icon={faXmark} />
-                                            <span>{translate({lang: lang, info: "cancel"})}</span>
+                                            <span>{translate({lang, info: "cancel"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "cancel_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "cancel_explanation"})}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -132,9 +132,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'call', stage: payload2})}
                                         >
                                             <FontAwesomeIcon icon={faPlus} />
-                                            <span>{translate({lang: lang, info: "call"})}</span>
+                                            <span>{translate({lang, info: "call"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "call_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "call_explanation"})}</span>
                                     </div>
                                 </Col>
                                 <Col xs={4}>
@@ -145,9 +145,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'raise', stage: payload2})}
                                         >
                                             <FontAwesomeIcon icon={faChevronUp} />
-                                            <span>{translate({lang: lang, info: "raise"})}</span>
+                                            <span>{translate({lang, info: "raise"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "raise_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "raise_explanation"})}</span>
                                     </div>
                                 </Col>
                                 <Col xs={4}>
@@ -158,9 +158,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'fold', stage: payload2})}
                                         >
                                             <FontAwesomeIcon icon={faXmark} />
-                                            <span>{translate({lang: lang, info: "fold"})}</span>
+                                            <span>{translate({lang, info: "fold"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "fold_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "fold_explanation"})}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -179,9 +179,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'showdown', stage: "showdown"})}
                                         >
                                             <FontAwesomeIcon icon={faEye} />
-                                            <span>{translate({lang: lang, info: "showdown"})}</span>
+                                            <span>{translate({lang, info: "showdown"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "showdown_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "showdown_explanation"})}</span>
                                     </div>
                                 </Col>
                                 <Col xs={6}>
@@ -192,9 +192,9 @@ function PokerBoard(props){
                                             onClick={()=>handleClick({action: 'fold', stage: "showdown"})}
                                         >
                                             <FontAwesomeIcon icon={faXmark} />
-                                            <span>{translate({lang: lang, info: "fold"})}</span>
+                                            <span>{translate({lang, info: "fold"})}</span>
                                         </Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "fold_explanation"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "fold_explanation"})}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -202,7 +202,7 @@ function PokerBoard(props){
                         <Col sm={2}/>
                     </>
                 default:
-                    return <p>{translate({lang: lang, info: "error"})}</p>
+                    return <p>{translate({lang, info: "error"})}</p>
             }
         })()}
     </Row>

@@ -52,7 +52,7 @@ function SalonSidebarLeft(props){
             >
                 <p>
                     <FontAwesomeIcon icon={faFaceSmile} />
-                    <span className="salon_button_text">{translate({lang: lang, info: "games"})}</span>
+                    <span className="salon_button_text">{translate({lang, info: "games"})}</span>
                 </p>										
             </div>
             <div 
@@ -62,7 +62,7 @@ function SalonSidebarLeft(props){
             >
                 <p>
                     <FontAwesomeIcon icon={faFlagCheckered} />
-                    <span className="salon_button_text">{translate({lang: lang, info: "race"})}</span>
+                    <span className="salon_button_text">{translate({lang, info: "race"})}</span>
                 </p>
             </div>
             <div 
@@ -72,7 +72,7 @@ function SalonSidebarLeft(props){
             >
                 <p>
                     <FontAwesomeIcon icon={faTicket} />
-                    <span className="salon_button_text">{translate({lang: lang, info: "keno"})}</span>
+                    <span className="salon_button_text">{translate({lang, info: "keno"})}</span>
                 </p>	
             </div>
         </div>

@@ -114,7 +114,7 @@ function SalonGames(props){
         } 
         setCasinoGames(casino_games)
         setCasinoGamesTitle(casino_games_title)
-        setTitleDropdown(translate({lang: lang, info: casino_games_title[0]}))
+        setTitleDropdown(translate({lang, info: casino_games_title[0]}))
     }
 
     function handleSelect(x){
@@ -147,7 +147,7 @@ function SalonGames(props){
             {width < 960 ? <div className="salon_games_dropdown">
                 <DropdownButton title={titleDropdown} id="dropdown-menu-align-right" className={showWinter ? "shadow_convex snow" : "shadow_convex"} onSelect={handleSelect}>
                     {casinoGamesTitle.map((t, i)=>{
-                        return <Dropdown.Item key={i} eventKey={translate({lang: lang, info: t})}>{translate({lang: lang, info: t})}</Dropdown.Item>
+                        return <Dropdown.Item key={i} eventKey={translate({lang, info: t})}>{translate({lang, info: t})}</Dropdown.Item>
                     })}
                 </DropdownButton>
             </div> : null}
@@ -157,7 +157,7 @@ function SalonGames(props){
                 return <div key={i}>
                     {width >= 960 ? <div className={showWinter ? "casino_games_title_container snow" : "casino_games_title_container"}>
                         <div className="capitalize casino_games_title shadow_convex" onClick={()=>handleSelect(t)}>
-                            <h4>{translate({lang: lang, info: t})}</h4>
+                            <h4>{translate({lang, info: t})}</h4>
                             <div className="casino_games_title_arrow"><FontAwesomeIcon icon={index !== i ? faChevronDown : faChevronUp} /></div>
                         </div>
                     </div> : null}

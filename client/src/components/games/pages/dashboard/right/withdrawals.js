@@ -15,7 +15,7 @@ function Withdrawals(props){
         let payload = {
             open: true,
             template: "withdrawDetails",
-            title: translate({lang: lang, info: "withdraw"}) + ' #' + withdraw.id,
+            title: translate({lang, info: "withdraw"}) + ' #' + withdraw.id,
             data: {...withdraw, currencySettings: currency, exchange_rates},
             size: 'lg',
         }
@@ -26,16 +26,16 @@ function Withdrawals(props){
         {withdrawList ? <>
             {withdrawList.length > 0 ? <>
                 <div className="withdraw_header">
-                    <h3>{translate({lang: lang, info: "withdrawals"})}</h3>
+                    <h3>{translate({lang, info: "withdrawals"})}</h3>
                 </div>
                 <div className="withdraw_list">
                     <table>
                         <thead>
                             <tr>
-                                <th className="order_item_row order_item_no">{translate({lang: lang, info: "id"})}</th>
-                                <th className="order_item_row order_item_method">{translate({lang: lang, info: "method"})}</th>
-                                <th className="order_item_row order_item_description">{translate({lang: lang, info: "order_description"})}</th>
-                                <th className="order_item_row order_item_amount">{translate({lang: lang, info: "price"})}</th>
+                                <th className="order_item_row order_item_no">{translate({lang, info: "id"})}</th>
+                                <th className="order_item_row order_item_method">{translate({lang, info: "method"})}</th>
+                                <th className="order_item_row order_item_description">{translate({lang, info: "order_description"})}</th>
+                                <th className="order_item_row order_item_amount">{translate({lang, info: "price"})}</th>
                                 <th className="order_item_row order_item_buttons"><FontAwesomeIcon icon={faCircleInfo} /></th>
                             </tr>
                         </thead>
@@ -58,8 +58,8 @@ function Withdrawals(props){
                         </tbody>
                     </table>
                 </div>
-            </> : <p>{translate({lang: lang, info: "no_withdrawal"})}</p>}
-        </> : <p>{translate({lang: lang, info: "loading"})}</p>}
+            </> : <p>{translate({lang, info: "no_withdrawal"})}</p>}
+        </> : <p>{translate({lang, info: "loading"})}</p>}
     </div>
 }
 export default Withdrawals

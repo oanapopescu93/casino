@@ -72,13 +72,13 @@ function ChangeProfilePic(props) {
                     finances={finances}
                 />
             </> : <>
-                {translate({lang: lang, info: "error"})}
+                {translate({lang, info: "error"})}
             </>}
-            {error ? <p className="profile_grey">{translate({lang: lang, info: "profile_grey"})}</p> : null}
+            {error ? <p className="profile_grey">{translate({lang, info: "profile_grey"})}</p> : null}
         </div>
         <div className="changeProfilePic_buttons">
             <Button type="button" id="changeProfilePic_btn" className="mybutton button_fullcolor_dark" onClick={()=>handleClick({value: choice, uuid: user.uuid, type: "pic"})}>
-                {translate({lang: lang, info: "choose"})}
+                {translate({lang, info: "choose"})}
             </Button>
         </div>
     </div>

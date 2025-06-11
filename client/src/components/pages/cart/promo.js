@@ -30,14 +30,14 @@ function Promo(props){
 	}, [socket])
 
     return <div id="cart_promo" className="cart_box shadow_concav">
-        <h4>{translate({lang: lang, info: "promo_code"})}</h4>
+        <h4>{translate({lang, info: "promo_code"})}</h4>
         <form className="form-inline">
             <input className="input_light shadow_concav" type="text" placeholder="COUPON" onChange={(e)=>{updateInputValue(e)}}/>
             <Button 
                 type="button"  
                 className="mybutton button_transparent shadow_convex remove"
                 onClick={()=>{handleClick()}}
-            ><span>{translate({lang: lang, info: "apply_coupon"})}</span></Button>
+            ><span>{translate({lang, info: "apply_coupon"})}</span></Button>
             {(() => {
                 if(!isEmpty(coupon)){
                     if(Object.keys(coupon).length>0){
@@ -61,7 +61,7 @@ function Promo(props){
                             })()}
                         </p>
                     } else {
-                        return <p className="alert alert-danger"><span>{translate({lang: lang, info: "coupon_not_valid"})}</span></p>
+                        return <p className="alert alert-danger"><span>{translate({lang, info: "coupon_not_valid"})}</span></p>
                     }
                 } else {
                     return 

@@ -29,27 +29,27 @@ function Panel(props){
     return <div id="cart_panel">
         <div className="cart_total_price 2">
             {promo && Object.keys(promo).length>0 ? <>
-                <p><b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</p>
-                <p><b>{translate({lang: lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
-                <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total_promo, currency, exchange_rates)} {currency}</h3>
-            </> : <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>}
+                <p><b>{translate({lang, info: "price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</p>
+                <p><b>{translate({lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
+                <h3><b>{translate({lang, info: "total_price"})}</b>: {convertCurrency(total_promo, currency, exchange_rates)} {currency}</h3>
+            </> : <h3><b>{translate({lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>}
         </div>
         <div className="button_action_group">
             <Button 
                 type="button"  
                 className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>handleCheckout()}
-            ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang: lang, info: "checkout"})}</span></Button>            
+            ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang, info: "checkout"})}</span></Button>            
             <Button 
                 type="button"  
                 className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>handleContinueShopping()}
-            ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang: lang, info: "continue_shopping"})}</span></Button>
+            ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang, info: "continue_shopping"})}</span></Button>
             <Button 
                 type="button"  
                 className="mybutton button_fullcolor shadow_convex"
                 onClick={()=>removeAll()}
-            ><FontAwesomeIcon icon={faTrashCan}/>&nbsp;<span>{translate({lang: lang, info: "remove_all"})}</span></Button>
+            ><FontAwesomeIcon icon={faTrashCan}/>&nbsp;<span>{translate({lang, info: "remove_all"})}</span></Button>
         </div>
     </div>
 }

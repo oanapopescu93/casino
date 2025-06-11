@@ -27,7 +27,7 @@ function Paypal(props) {
             {minimum_amount > price ? <Col sm={12}>
                 <div className="alert alert-danger">
                     <p className="text_red">
-                        {translate({lang: lang, info: "amount_too_small_transaction"})}
+                        {translate({lang, info: "amount_too_small_transaction"})}
                     </p>
                 </div>
             </Col> : <Col sm={12} className="paypal_button_container">
@@ -35,7 +35,7 @@ function Paypal(props) {
                     type="button"  
                     className="mybutton button_fullcolor shadow_convex"
                     onClick={()=>handleSendPayment()}
-                ><FontAwesomeIcon icon={faPaypal} /> {translate({lang: lang, info: "pay"})}</Button>
+                ><FontAwesomeIcon icon={faPaypal} /> {translate({lang, info: "pay"})}</Button>
             </Col>}
     </Row>
 }

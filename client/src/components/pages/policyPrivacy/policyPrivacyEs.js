@@ -69,7 +69,7 @@ function PolicyPrivacyEs(props){
             <h3>Contáctanos</h3>
             <p>Si tienes alguna pregunta, inquietud o solicitud con respecto a esta Política de Privacidad o al manejo de tu información personal, contáctanos.</p>
         
-            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
+            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang, info: "contact"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

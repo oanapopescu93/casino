@@ -30,9 +30,9 @@ function VerifyEmail(props) {
         <div className="content_wrap">
             <div className="page_content">
                 <div className="email_verification_box">
-                    <h1>{translate({lang: lang, info: "email_verification"})}</h1>                    
+                    <h1>{translate({lang, info: "email_verification"})}</h1>                    
                     {verifyEmail === 1 ? <Spinner size="small" color={chooseColor(theme)}/> : <>
-                        <p>{translate({lang: lang, info: verifyEmailTexts[verifyEmail]})}</p>
+                        <p>{translate({lang, info: verifyEmailTexts[verifyEmail]})}</p>
                         <Button type="button" className="mybutton round button_transparent shadow_convex" onClick={()=>handleHomePage()}>
                             <FontAwesomeIcon icon={faHouse} />
                         </Button>                    

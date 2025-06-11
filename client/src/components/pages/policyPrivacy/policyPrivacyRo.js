@@ -69,7 +69,7 @@ function PolicyPrivacyRo(props){
             <h3>Contactați-ne</h3>
             <p>Dacă aveți întrebări, preocupări sau solicitări referitoare la această Politică de Confidențialitate sau la prelucrarea informațiilor personale, vă rugăm să ne contactați.</p>
         
-            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
+            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang, info: "contact"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

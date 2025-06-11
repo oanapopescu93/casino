@@ -58,7 +58,7 @@ function Cart(props){
     }
 
     return <div className="content_wrap">
-        <Header template="cart" title={translate({lang: lang, info: "cart"})} lang={lang} theme={theme} /> 
+        <Header template="cart" title={translate({lang, info: "cart"})} lang={lang} theme={theme} /> 
         <div className="page_content">
             {list && list.length>0 ? <Row>
                 <Col sm={8}>
@@ -87,7 +87,7 @@ function Cart(props){
             </Row> : 
             <Row>
                 <Col sm={12}>
-                    <p style={{paddingBottom: "10px"}}>{translate({lang: lang, info: "no_cart"})}</p>
+                    <p style={{paddingBottom: "10px"}}>{translate({lang, info: "no_cart"})}</p>
                 </Col>
                 <Col sm={12} className="button_action_group">
                     <Button type="button" onClick={()=>handleContinueShopping()} className="mybutton round button_transparent shadow_convex">

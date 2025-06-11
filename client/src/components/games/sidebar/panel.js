@@ -79,7 +79,7 @@ function Panel(props){
             >
                 <p>
                     <FontAwesomeIcon icon={faUserCircle} />
-                    <span className="panel_button_text">{translate({lang: lang, info: "info"})}</span>
+                    <span className="panel_button_text">{translate({lang, info: "info"})}</span>
                 </p>
             </div>
             {page.game && !page.game_page ? <div 
@@ -89,7 +89,7 @@ function Panel(props){
             >
                 <p>
                     <FontAwesomeIcon icon={faComments} />
-                    <span className="panel_button_text">{translate({lang: lang, info: "Chat"})}</span>
+                    <span className="panel_button_text">{translate({lang, info: "Chat"})}</span>
                 </p>
             </div> : null}
         </div>

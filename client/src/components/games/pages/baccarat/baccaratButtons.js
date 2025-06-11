@@ -16,7 +16,7 @@ function BaccaratButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>startGame()}
                 ><FontAwesomeIcon icon={faPlay} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "start"})}</span>
             </div>
             <div className="tooltip">
                 <Button 
@@ -24,7 +24,7 @@ function BaccaratButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>resetGame()}
                 ><FontAwesomeIcon icon={faTrashCan} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "reset"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "reset"})}</span>
             </div>
             <div className="tooltip">
                 <Button 
@@ -32,7 +32,7 @@ function BaccaratButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>handleHandleExit()}
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "back"})}</span>
             </div>
         </div> : <div className="button_action_group baccarat_game_buttons_container">
             <div className="tooltip">
@@ -41,7 +41,7 @@ function BaccaratButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>resetGame()}
                 ><FontAwesomeIcon icon={faPlay} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "start"})}</span>
             </div>
             <div className="tooltip">
                 <Button 
@@ -49,7 +49,7 @@ function BaccaratButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>handleHandleExit()}
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "back"})}</span>
             </div>
         </div>}
     </>

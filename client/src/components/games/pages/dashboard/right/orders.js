@@ -15,7 +15,7 @@ function Orders(props){
         let payload = {
             open: true,
             template: "orderDetails",
-            title: translate({lang: lang, info: "order"}) + ' #' + order.id,
+            title: translate({lang, info: "order"}) + ' #' + order.id,
             data: {...order, currencySettings: currency, exchange_rates},
             size: 'lg',
         }
@@ -26,16 +26,16 @@ function Orders(props){
         {orderList ? <>
             {orderList.length>0 ? <>
                 <div className="order_header">
-                    <h3>{translate({lang: lang, info: "orders"})}</h3>
+                    <h3>{translate({lang, info: "orders"})}</h3>
                 </div>
                 <div className="order_list">
                     <table>
                         <thead>
                             <tr>
-                                <th className="order_item_row order_item_no">{translate({lang: lang, info: "id"})}</th>
-                                <th className="order_item_row order_item_method">{translate({lang: lang, info: "method"})}</th>
-                                <th className="order_item_row order_item_description">{translate({lang: lang, info: "order_description"})}</th>
-                                <th className="order_item_row order_item_amount">{translate({lang: lang, info: "price"})}</th>
+                                <th className="order_item_row order_item_no">{translate({lang, info: "id"})}</th>
+                                <th className="order_item_row order_item_method">{translate({lang, info: "method"})}</th>
+                                <th className="order_item_row order_item_description">{translate({lang, info: "order_description"})}</th>
+                                <th className="order_item_row order_item_amount">{translate({lang, info: "price"})}</th>
                                 <th className="order_item_row order_item_buttons"><FontAwesomeIcon icon={faCircleInfo} /></th>
                             </tr>
                         </thead>
@@ -58,8 +58,8 @@ function Orders(props){
                         </tbody>
                     </table>
                 </div>
-            </> : <p>{translate({lang: lang, info: "no_order"})}</p>}
-        </> : <p>{translate({lang: lang, info: "loading"})}</p>}
+            </> : <p>{translate({lang, info: "no_order"})}</p>}
+        </> : <p>{translate({lang, info: "loading"})}</p>}
     </div>
 }
 export default Orders

@@ -139,32 +139,32 @@ function Footer(props){
                             <Row>
                                 <Col sm="4">
                                     <div className="footer_list">
-                                        <h4>{translate({lang: lang, info: "company"})}</h4>
+                                        <h4>{translate({lang, info: "company"})}</h4>
                                         <ul>
-                                            <li onClick={()=>{handleClick('About')}}>{translate({lang: lang, info: "about"})}</li>
-                                            <li onClick={()=>{handleClick('Career')}}>{translate({lang: lang, info: "career"})}</li>
-                                            <li onClick={()=>{handleClick('Contact')}}>{translate({lang: lang, info: "contact"})}</li>
+                                            <li onClick={()=>{handleClick('About')}}>{translate({lang, info: "about"})}</li>
+                                            <li onClick={()=>{handleClick('Career')}}>{translate({lang, info: "career"})}</li>
+                                            <li onClick={()=>{handleClick('Contact')}}>{translate({lang, info: "contact"})}</li>
                                         </ul>
                                     </div>
                                 </Col>
                                 <Col sm="4">
                                     <div className="footer_list">
-                                        <h4>{translate({lang: lang, info: "resources"})}</h4>
+                                        <h4>{translate({lang, info: "resources"})}</h4>
                                         <ul>
-                                            <li onClick={()=>{handleClick('terms_cond')}}>{translate({lang: lang, info: "terms_cond"})}</li>
-                                            <li onClick={()=>{handleClick('policy_privacy')}}>{translate({lang: lang, info: "policy_privacy"})}</li>                                            
-                                            <li onClick={()=>{handleClick('gdpr')}}>{translate({lang: lang, info: "GDPR"})}</li>
+                                            <li onClick={()=>{handleClick('terms_cond')}}>{translate({lang, info: "terms_cond"})}</li>
+                                            <li onClick={()=>{handleClick('policy_privacy')}}>{translate({lang, info: "policy_privacy"})}</li>                                            
+                                            <li onClick={()=>{handleClick('gdpr')}}>{translate({lang, info: "GDPR"})}</li>
                                         </ul>
                                     </div>
                                 </Col>
                                 <Col sm="4">
                                     <div className="footer_list">
-                                        <h4>{translate({lang: lang, info: "links"})}</h4>
+                                        <h4>{translate({lang, info: "links"})}</h4>
                                         <ul>                                            
-                                            <li onClick={()=>{handleClick('dashboard')}}>{translate({lang: lang, info: "dashboard"})}</li>
-                                            <li onClick={()=>{handleClick('market')}}>{translate({lang: lang, info: "market"})}</li>
-                                            <li onClick={()=>{handleClick('how_to_play')}}>{translate({lang: lang, info: "how_to_play"})}</li>
-                                            <li onClick={()=>{handleClick('Questions')}}>{translate({lang: lang, info: "questions"})}</li>
+                                            <li onClick={()=>{handleClick('dashboard')}}>{translate({lang, info: "dashboard"})}</li>
+                                            <li onClick={()=>{handleClick('market')}}>{translate({lang, info: "market"})}</li>
+                                            <li onClick={()=>{handleClick('how_to_play')}}>{translate({lang, info: "how_to_play"})}</li>
+                                            <li onClick={()=>{handleClick('Questions')}}>{translate({lang, info: "questions"})}</li>
                                         </ul>
                                     </div>
                                 </Col>
@@ -172,7 +172,7 @@ function Footer(props){
                         </Col>
                         <Col md="4">                            
                             <div className="newsletter_container">
-                                <h4>{translate({lang: lang, info: "newsletter"})}</h4>
+                                <h4>{translate({lang, info: "newsletter"})}</h4>
                                 {(() => {
                                     if(!sendResults){
                                         if(sendingResults){
@@ -186,11 +186,11 @@ function Footer(props){
 
                                             {!newsletterError.email.fill ? <div className="alert alert-danger">
                                                 <p className="text_red">
-                                                    {translate({ lang: lang, info: newsletterError.email.fill_message })}
+                                                    {translate({ lang, info: newsletterError.email.fill_message })}
                                                 </p>
                                             </div> : !newsletterError.email.validate ? <div className="alert alert-danger">
                                                 <p className="text_red">
-                                                    {translate({ lang: lang, info: newsletterError.email.validate_message })}
+                                                    {translate({ lang, info: newsletterError.email.validate_message })}
                                                 </p>
                                             </div> : null}
                                         </div>
@@ -198,10 +198,10 @@ function Footer(props){
                                     return <div className="newsletter_box">
                                         {sendResults === "subscribed" || sendResults === "unsubscribed" ? <div className="alert alert-success">
                                             <p className="text_green">
-                                                {translate({lang: lang, info: sendResults})}
+                                                {translate({lang, info: sendResults})}
                                             </p>
                                         </div> : <div className="alert alert-danger">
-                                            <p className="text_red">{translate({lang: lang, info: sendResults})}</p>
+                                            <p className="text_red">{translate({lang, info: sendResults})}</p>
                                         </div>}
                                     </div>
                                 })()}
@@ -212,7 +212,7 @@ function Footer(props){
                     <Row>
                         <Col sm={12}>
                             <footer>
-                                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: lang, info: "all_rights_reserved"})}.</h6>
+                                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang, info: "all_rights_reserved"})}.</h6>
                             </footer>
                         </Col>
                     </Row>

@@ -14,30 +14,30 @@ function WarningGambling(props){
         <div className="warningGambling">
             <div className="warningGambling_box">                
                 <img src={warning_gambling_01}  alt="warning_gambling_01" />
-                <p>{translate({lang: lang, info: "warning_gambling_01"})}</p>
+                <p>{translate({lang, info: "warning_gambling_01"})}</p>
             </div>
             <div className="warningGambling_box">                
                 <img src={warning_gambling_02}  alt="warning_gambling_02" />
-                <p>{translate({lang: lang, info: "warning_gambling_02"})}</p>
+                <p>{translate({lang, info: "warning_gambling_02"})}</p>
             </div>
             <div className="warningGambling_box">                
                 <img src={warning_gambling_03}  alt="warning_gambling_03" />
-                <p>{translate({lang: lang, info: "warning_gambling_03"})}</p>
+                <p>{translate({lang, info: "warning_gambling_03"})}</p>
             </div>
             <div className="warningGambling_box">                
                 <img src={warning_gambling_04}  alt="warning_gambling_04" />
-                <p>{translate({lang: lang, info: "warning_gambling_04"})}</p>
+                <p>{translate({lang, info: "warning_gambling_04"})}</p>
             </div>
             <div className="warningGambling_box">                
                 <img src={warning_gambling_05}  alt="warning_gambling_05" />
-                <p>{translate({lang: lang, info: "warning_gambling_05"})}</p>
+                <p>{translate({lang, info: "warning_gambling_05"})}</p>
             </div>
             <div className="warningGambling_box">                
                 <img src={warning_gambling_06}  alt="warning_gambling_06" />
-                <p>{translate({lang: lang, info: "warning_gambling_06"})}</p>
+                <p>{translate({lang, info: "warning_gambling_06"})}</p>
             </div>
         </div>
-        <h4><b>{translate({lang: lang, info: "responsible_gamble_request"})}</b></h4>
+        <h4><b>{translate({lang, info: "responsible_gamble_request"})}</b></h4>
     </div>
 }
 export default WarningGambling

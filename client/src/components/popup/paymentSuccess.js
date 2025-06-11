@@ -10,10 +10,10 @@ function PaymentSuccess(props) {
     let date_format = useSelector(state => state.settings.date)
     let date = formatDate(order_date, date_format)
     return <div className="paymentSuccess">
-        <p>{translate({lang: lang, info: 'payment_success_text'})}</p>
-        <h3>{translate({lang: lang, info: 'amount'})}: {convertCurrency(amount, currencyExchange, exchange_rates)} {currencyExchange}</h3>
+        <p>{translate({lang, info: 'payment_success_text'})}</p>
+        <h3>{translate({lang, info: 'amount'})}: {convertCurrency(amount, currencyExchange, exchange_rates)} {currencyExchange}</h3>
         <h6>
-            <span>{translate({lang: lang, info: 'payment'})}:</span>
+            <span>{translate({lang, info: 'payment'})}:</span>
             <span>{payment_id}</span>
             <span>({date})</span>
         </h6>

@@ -55,9 +55,9 @@ function GameBoard(props){
                                         onClick={()=>handleClick('hit')}
                                     >
                                         <FontAwesomeIcon icon={faPlus} />
-                                        <span>{translate({lang: lang, info: "hit"})}</span>
+                                        <span>{translate({lang, info: "hit"})}</span>
                                     </Button>
-                                    <span className="tooltiptext">{translate({lang: lang, info: "hit_explanation"})}</span>
+                                    <span className="tooltiptext">{translate({lang, info: "hit_explanation"})}</span>
                                 </div>
                             </Col>
                             <Col xs={3}>
@@ -68,9 +68,9 @@ function GameBoard(props){
                                         onClick={()=>handleClick('stand')}
                                     >
                                         <FontAwesomeIcon icon={faPause} />
-                                        <span>{translate({lang: lang, info: "stand"})}</span>
+                                        <span>{translate({lang, info: "stand"})}</span>
                                     </Button>
-                                    <span className="tooltiptext">{translate({lang: lang, info: "stand_explanation"})}</span>
+                                    <span className="tooltiptext">{translate({lang, info: "stand_explanation"})}</span>
                                 </div>
                             </Col>
                             <Col xs={3}>
@@ -81,9 +81,9 @@ function GameBoard(props){
                                         onClick={()=>handleClick('double_down')}
                                     >
                                         <FontAwesomeIcon icon={faAnglesUp} />
-                                        <span>{translate({lang: lang, info: "double_down"})}</span>
+                                        <span>{translate({lang, info: "double_down"})}</span>
                                     </Button>
-                                    <span className="tooltiptext">{translate({lang: lang, info: "double_down_explanation"})}</span>
+                                    <span className="tooltiptext">{translate({lang, info: "double_down_explanation"})}</span>
                                 </div>
                             </Col>
                             <Col xs={3}>
@@ -94,9 +94,9 @@ function GameBoard(props){
                                         onClick={()=>handleClick('surrender')}
                                     >
                                         <FontAwesomeIcon icon={faXmark} />
-                                        <span>{translate({lang: lang, info: "surrender"})}</span>
+                                        <span>{translate({lang, info: "surrender"})}</span>
                                     </Button>
-                                    <span className="tooltiptext">{translate({lang: lang, info: "surrender_explanation"})}</span>
+                                    <span className="tooltiptext">{translate({lang, info: "surrender_explanation"})}</span>
                                 </div>
                             </Col>
                         </> : <>
@@ -112,7 +112,7 @@ function GameBoard(props){
                                             className="mybutton button_fullcolor shadow_convex"
                                             onClick={()=>handleClick('start')}
                                         ><FontAwesomeIcon icon={faPlay} /></Button>
-                                        <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                                        <span className="tooltiptext">{translate({lang, info: "start"})}</span>
                                     </div>
                                 </div>
                             </Col>
@@ -128,7 +128,7 @@ function GameBoard(props){
                                 <Col sm={6}>
                                     <div className="slots_bets">
                                         <div className="slots_bets_label">
-                                            <p>{translate({lang: lang, info: "bet"})}:</p>
+                                            <p>{translate({lang, info: "bet"})}:</p>
                                         </div>
                                         <div className="slots_bets_dropdown">
                                             <DropdownButton title={titleBetsDropdown} id="slots_bets_button" className="shadow_convex"onSelect={handleSelectBet}>
@@ -150,7 +150,7 @@ function GameBoard(props){
                                     className="mybutton round button_fullcolor shadow_convex"
                                     onClick={()=>handleClick('start')}
                                 ><FontAwesomeIcon icon={faPlay} /></Button>
-                                <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                                <span className="tooltiptext">{translate({lang, info: "start"})}</span>
                             </div>
                         </Col>
                     </Row>

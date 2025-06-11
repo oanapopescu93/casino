@@ -25,7 +25,7 @@ function AboutZh(props){
             <p>我们始终欢迎玩家的反馈和建议，以改善整体游戏体验。你的意见对我们非常宝贵，因为我们致力于扩展和增强我们的产品。</p>
             <p>加入我们在 {casino_name}，成为我们不断壮大的热情玩家社区的一员。虽然我们不是一家商业赌场，但我们是一个基于对游戏热爱的平台，致力于创造一些真正特别的东西。所以，拿上你的虚拟筹码，掷骰子，转动转盘，享受纯粹的游戏乐趣。</p>
             <p>感谢你成为我们 {casino_name} 旅程的一部分。我们期待在游戏世界中与你分享许多难忘的时刻。</p>
-            <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: lang, info: "how_to_play"})}</p>
+            <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang, info: "how_to_play"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

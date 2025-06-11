@@ -88,7 +88,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerDe/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
                 case "ES":
                     switch (game) {
@@ -107,7 +107,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerEs/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
                 case "FR":
                     switch (game) {
@@ -126,7 +126,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerFr/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
                 case "IT":
                     switch (game) {
@@ -145,7 +145,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerIt/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
                 case "PT":
                     switch (game) {
@@ -164,7 +164,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerPt/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
                 case "RO":
                     switch (game) {
@@ -183,7 +183,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerRo/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
                 case "RU":
                     switch (game) {
@@ -202,7 +202,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerRu/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
                 case "ENG":
                 default:
@@ -222,7 +222,7 @@ function HowToPlayGames(props){
                         case "poker":
                             return  <PokerEng/>
                         default:
-                            return <p>{translate({lang: lang, info: "error"})}</p>
+                            return <p>{translate({lang, info: "error"})}</p>
                     }
             }
         })()}

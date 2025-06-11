@@ -21,22 +21,22 @@ function ForgotPassword(props) {
                 className="input_light" 
                 type="text" 
                 value={email} 
-                placeholder={translate({lang: lang, info: "email"})} 
+                placeholder={translate({lang, info: "email"})} 
                 onChange={(e)=>{handleChange(e)}}
             />
             <Button type="button" id="forgotPassword_btn_ok" className="mybutton button_fullcolor_dark" onClick={()=>props.forgotPasswordClick(email)}>
-                {translate({lang: lang, info: "send"})}
+                {translate({lang, info: "send"})}
             </Button>
             {sending ? <Spinner size="small" color="black"/> : null}
             {(() => {                
                 if(forgotPasswordResult === "email_no_send"){
                     return <div className="alert alert-danger">
-                        <p className="text_red">{translate({lang: lang, info: forgotPasswordResult})}</p>
+                        <p className="text_red">{translate({lang, info: forgotPasswordResult})}</p>
                     </div>
                 }
                 if(forgotPasswordResult === "email_send"){
                     return <div className="alert alert-success">
-                        <span>{translate({lang: lang, info: forgotPasswordResult})}</span>
+                        <span>{translate({lang, info: forgotPasswordResult})}</span>
                     </div>
                 }
             })()}

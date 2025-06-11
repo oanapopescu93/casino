@@ -16,18 +16,18 @@ function Board(props){
                     </div>
                 } else if(point){
                     return <div key={i} className="craps_board_text">
-                        <span className="text text01">{translate({lang: lang, info: "dices"})}:</span>
+                        <span className="text text01">{translate({lang, info: "dices"})}:</span>
                         <span className="text text02">{dices[0]}, {dices[1]}</span>
-                        <span className="text text03">{translate({lang: lang, info: "sum"})}:</span>
+                        <span className="text text03">{translate({lang, info: "sum"})}:</span>
                         <span className="text text04">{sum}</span>
-                        <span className="text text05">{translate({lang: lang, info: "point"})}:</span>
+                        <span className="text text05">{translate({lang, info: "point"})}:</span>
                         <span className="text text06">{point}</span>
                     </div>
                 } else {
                     return <div key={i} className="craps_board_text">
-                        <span className="text text01">{translate({lang: lang, info: "dices"})}:</span>
+                        <span className="text text01">{translate({lang, info: "dices"})}:</span>
                         <span className="text text02">{dices[0]}, {dices[1]}</span>
-                        <span className="text text03">{translate({lang: lang, info: "sum"})}:</span>
+                        <span className="text text03">{translate({lang, info: "sum"})}:</span>
                         <span className="text text04">{sum}</span>
                     </div>	
                 }

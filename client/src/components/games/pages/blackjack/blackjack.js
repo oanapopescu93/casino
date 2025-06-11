@@ -109,7 +109,7 @@ function Blackjack(props){
 						open: true,
 						template: "error",
 						title: "error",
-						data: translate({lang: lang, info: data.action}),
+						data: translate({lang, info: data.action}),
 						size: "sm",
 					}
 					dispatch(changePopup(payload))

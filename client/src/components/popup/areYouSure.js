@@ -8,16 +8,16 @@ function AreYouSure(props) {
 
     return (
         <div className="areYouSure">
-            {translate({ lang: lang, info: data })}
+            {translate({ lang, info: data })}
             <div className="areYouSure_buttons">
                 <div className="areYouSure_button">
                     <Button type="button" onClick={()=>areYouSure(true)} className="mybutton button_fullcolor shadow_convex">
-                        {translate({lang: lang, info: "yes"})}
+                        {translate({lang, info: "yes"})}
                     </Button>
                 </div>
                 <div className="areYouSure_button">
                     <Button type="button" onClick={()=>areYouSure(false)} className="mybutton button_fullcolor shadow_convex">
-                        {translate({lang: lang, info: "no"})}
+                        {translate({lang, info: "no"})}
                     </Button>
                 </div>
             </div>

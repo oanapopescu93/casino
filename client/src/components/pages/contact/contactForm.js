@@ -84,7 +84,7 @@ function ContactForm(props){
         <Form className="contact_form">
             <Row>
                 <Col sm={12} className="label_container">
-                    <div className="label">{translate({lang: lang, info: "email"})}</div>
+                    <div className="label">{translate({lang, info: "email"})}</div>
                 </Col>
                 <Col sm={12}>
                     <input className="input_light shadow_concav" type="text" value={email} onChange={(e)=>{handleChange('email', e)}}/>
@@ -92,7 +92,7 @@ function ContactForm(props){
             </Row>
             <Row>
                 <Col sm={12} className="label_container">
-                    <div className="label">{translate({lang: lang, info: "subject"})}</div>
+                    <div className="label">{translate({lang, info: "subject"})}</div>
                 </Col>
                 <Col sm={12}>
                     <input className="input_light shadow_concav" type="text" value={subject} onChange={(e)=>{handleChange('subject', e)}}/>
@@ -100,13 +100,13 @@ function ContactForm(props){
             </Row>
             <Row>
                 <Col sm={12} className="label_container">
-                    <div className="label">{translate({lang: lang, info: "about"})}</div>
+                    <div className="label">{translate({lang, info: "about"})}</div>
                 </Col>
                 <Col sm={12} className="label_container">
-                    <DropdownButton title={translate({lang: lang, info: about})} id="question_button" className="shadow_concav" onSelect={(e)=>handleDropdown(e)}>
+                    <DropdownButton title={translate({lang, info: about})} id="question_button" className="shadow_concav" onSelect={(e)=>handleDropdown(e)}>
                         {questions.map((item, i) => (
                             <Dropdown.Item key={i} eventKey={item}>
-                                {translate({ lang: lang, info: item })}
+                                {translate({ lang, info: item })}
                             </Dropdown.Item>
                         ))}
                     </DropdownButton>
@@ -114,7 +114,7 @@ function ContactForm(props){
             </Row>
             <Row>
                 <Col sm={12} className="label_container">
-                    <div className="label">{translate({lang: lang, info: "message"})}</div>
+                    <div className="label">{translate({lang, info: "message"})}</div>
                 </Col>
                 <Col sm={12}>
                     <textarea className="input_light shadow_concav" type="text" value={message} onChange={(e)=>{handleChange('message', e)}}/>
@@ -123,31 +123,31 @@ function ContactForm(props){
             {(() => {
                 if(errorEmail || errorSubject || errorAbout || errorMessage){
                     return <div className="alert alert-danger">
-                        {errorEmail ? <p className="text_red">{translate({lang: lang, info: "incorrect_email"})}</p> : null}
-                        {errorSubject ? <p className="text_red">{translate({lang: lang, info: "empty_input_subject"})}</p> : null}
-                        {errorAbout ? <p className="text_red">{translate({lang: lang, info: "empty_input_about"})}</p> : null}
-                        {errorMessage ? <p className="text_red">{translate({lang: lang, info: "empty_input_message"})}</p> : null}
+                        {errorEmail ? <p className="text_red">{translate({lang, info: "incorrect_email"})}</p> : null}
+                        {errorSubject ? <p className="text_red">{translate({lang, info: "empty_input_subject"})}</p> : null}
+                        {errorAbout ? <p className="text_red">{translate({lang, info: "empty_input_about"})}</p> : null}
+                        {errorMessage ? <p className="text_red">{translate({lang, info: "empty_input_message"})}</p> : null}
                     </div>
                 }
             })()}
-            {emailSending ? <p style={{marginBottom : "5px", textAlign: "center"}}>{translate({lang: lang, info: "sending"})}</p> : null}
+            {emailSending ? <p style={{marginBottom : "5px", textAlign: "center"}}>{translate({lang, info: "sending"})}</p> : null}
             {(() => {                
                 if(sendResults === "email_send"){
                     return <div className="alert alert-success">
                         <p className="text_green">
-                            {translate({lang: lang, info: sendResults})}
+                            {translate({lang, info: sendResults})}
                         </p>
                     </div>
                 } else if(sendResults === "email_no_send"){
                     return <div className="alert alert-danger">
-                        <p className="text_red">{translate({lang: lang, info: sendResults})}</p>
+                        <p className="text_red">{translate({lang, info: sendResults})}</p>
                     </div>
                 }
             })()}
             <Row>
                 <Col>
                     <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor shadow_convex">
-                        {translate({lang: lang, info: "send"})}
+                        {translate({lang, info: "send"})}
                     </Button>
                 </Col>
             </Row>

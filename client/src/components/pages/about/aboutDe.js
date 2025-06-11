@@ -25,7 +25,7 @@ function AboutDe(props){
             <p>Wir sind immer offen für Feedback und Vorschläge unserer Spieler, um das Gesamterlebnis beim Spielen zu verbessern. Ihr Beitrag ist von unschätzbarem Wert, während wir daran arbeiten, unsere Angebote zu erweitern und zu verbessern.</p>
             <p>Treten Sie uns bei {casino_name} bei und werden Sie Teil unserer wachsenden Gemeinschaft leidenschaftlicher Spieler. Auch wenn wir kein kommerzielles Casino sind, sind wir eine Plattform, die auf Liebe zum Spielen und dem Wunsch aufbaut, etwas wirklich Besonderes zu schaffen. Also schnappen Sie sich Ihre virtuellen Chips, werfen Sie die Würfel und drehen Sie die Walzen für ein Spielerlebnis, das sich ganz um die reine Freude am Spielen dreht.</p>
             <p>Vielen Dank, dass Sie Teil unserer Reise mit {casino_name} sind. Wir freuen uns darauf, viele unvergessliche Momente in der Welt des Spielens gemeinsam zu erleben.</p>
-            <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: lang, info: "how_to_play"})}</p>
+            <p id="about_how_to_play" onClick={()=>handleHowToPlay()}><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang, info: "how_to_play"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

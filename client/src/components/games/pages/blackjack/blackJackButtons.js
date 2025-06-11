@@ -17,7 +17,7 @@ function BlackjackButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>handleBack()}
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "back"})}</span>
             </div>
         </div> : <div className="button_action_group blackjack_buttons_container">
             <div className="tooltip">
@@ -26,7 +26,7 @@ function BlackjackButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>handleReset()}
                 ><FontAwesomeIcon icon={faPlay} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "start"})}</span>
             </div>
             <div className="tooltip">
                 <Button 
@@ -34,7 +34,7 @@ function BlackjackButtons(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>handleBack()}
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "back"})}</span>
             </div>
         </div>}
     </>

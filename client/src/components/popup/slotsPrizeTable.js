@@ -25,7 +25,7 @@ function SlotsPrizeTable(props){
                             ))}
                         </tbody></table> : null}
                     </div>
-                    <div className="slots_rules_right">{translate({lang: lang, info: "prize"})}: {prize}</div>
+                    <div className="slots_rules_right">{translate({lang, info: "prize"})}: {prize}</div>
                 </div>
             })}
         </div> : null}

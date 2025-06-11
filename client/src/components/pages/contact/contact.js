@@ -67,7 +67,7 @@ function Contact(props){
     }, [lang])
 
     return <div className="content_wrap">
-        <Header template="contact" title={translate({lang: lang, info: "contact"})} lang={lang} theme={theme}/>
+        <Header template="contact" title={translate({lang, info: "contact"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <Row>
                 <Col lg={2} />
@@ -120,7 +120,7 @@ function Contact(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>handleBack()}
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "back"})}</span>
         </div>
     </div>
 }

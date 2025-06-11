@@ -11,10 +11,10 @@ function GameResults(props) {
     let status = results.status
     let bet = results.bet
     return <div className="gameResults">
-        <p>{translate({lang: lang, info: 'game'})}: <span>{table_name}</span></p>
-        {table_type ? <p>{translate({lang: lang, info: 'game_type'})}: <span>{table_name}</span></p> : null}
-        {status === "win" ? <p>{translate({lang: lang, info: 'you_win'})}: <span>{bet}</span> <FontAwesomeIcon icon={faCarrot} /></p> : 
-        <p>{translate({lang: lang, info: 'you_lose'})}: <span>{bet}</span> <FontAwesomeIcon icon={faCarrot} /></p>}
+        <p>{translate({lang, info: 'game'})}: <span>{table_name}</span></p>
+        {table_type ? <p>{translate({lang, info: 'game_type'})}: <span>{table_name}</span></p> : null}
+        {status === "win" ? <p>{translate({lang, info: 'you_win'})}: <span>{bet}</span> <FontAwesomeIcon icon={faCarrot} /></p> : 
+        <p>{translate({lang, info: 'you_lose'})}: <span>{bet}</span> <FontAwesomeIcon icon={faCarrot} /></p>}
     </div>
 }
 

@@ -78,7 +78,7 @@ function Header(props){
                         return <div id="header_salon" className={"header " + style}>
                             <img id="logo_icon" alt="logo_icon" src={chooseLogo()} />
                             <h1>{title}</h1>
-                            <h3>{translate({lang: lang, info: "salon_subtitle"})}</h3> 
+                            <h3>{translate({lang, info: "salon_subtitle"})}</h3> 
                             <SpecialEvent template={template} showEaster={showEaster} showHalloween={showHalloween} />
                         </div> 
                     case "game":
@@ -107,7 +107,7 @@ function Header(props){
                             if(details.game_page){
                                 //ex: dashboard, market
                                 return <div id={"panel_user_"+details.game_page} className="header">
-                                    <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
+                                    <h1 className="title">{translate({lang, info: details.game_page})}</h1>
                                 </div>
                             } else {
                                 //game                                
@@ -127,20 +127,20 @@ function Header(props){
                         if(details.game_page){
                             //ex: dashboard, market
                             return <div id={"panel_user_"+details.game_page} className={"header " + style}>
-                                <h1 className="title">{translate({lang: lang, info: details.game_page})}</h1>
+                                <h1 className="title">{translate({lang, info: details.game_page})}</h1>
                                 <SpecialEvent template={details.game_page} showEaster={showEaster} showHalloween={showHalloween} />
                             </div>
                         } else {
                             //just a normal page
                             return <div className="header">
-                                <h1 className="title">{translate({lang: lang, info: details})}</h1>
+                                <h1 className="title">{translate({lang, info: details})}</h1>
                             </div>
                         }                        
                     case "sign":
                         return <div id="header_sign" className="header">
                             <img id="logo_icon" alt="logo_icon" src={chooseLogo()} />
                             <h1>{title}</h1>
-                            <h3>{translate({lang: lang, info: "subtitle"})}</h3>
+                            <h3>{translate({lang, info: "subtitle"})}</h3>
                         </div>
                     default:
                         return <div className={"header " + style}>

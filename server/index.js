@@ -63,7 +63,25 @@ var database_config = constants.DATABASE[0]
 //       return x.email === "oanapopescu93@gmail.com"
 //     })    
 //     if(user_found[0]){
-//       console.log('user_found ',  user_found[0], decrypt(JSON.parse(user_found[0].pass)))
+//       console.log('user_found1 ',  user_found[0], decrypt(JSON.parse(user_found[0].pass)))
+//       let new_money = 1000
+      
+//       database_config.sql = "UPDATE casino_user SET money='" + new_money + "' WHERE id=" + user_found[0].id + '; '
+
+//       database(database_config).then((result)=>{
+//         database_config.sql = "SELECT * FROM casino_user;"
+//         database(database_config).then((result)=>{
+//           if(result){
+//             let user_found = result.filter((x)=>{
+//               return x.email === "oanapopescu93@gmail.com"
+//             })    
+//             if(user_found[0]){
+//               console.log('user_found2 ',  user_found[0])
+//             }
+//           }
+//         })
+//       })
+
 //     }
 //   }  
 // })

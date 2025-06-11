@@ -29,12 +29,12 @@ function Theme(props) {
   }
 
   return <div className="theme">
-    <DropdownButton title={translate({lang: lang, info: myTitle.text})} id="theme_button"  className="shadow_convex" onSelect={handleSelect}>
+    <DropdownButton title={translate({lang, info: myTitle.text})} id="theme_button"  className="shadow_convex" onSelect={handleSelect}>
       {theme_array.map((item, i)=>{
           return <Dropdown.Item key={i} eventKey={item.color}>
             <div className={"theme_box " + item.color}>
               <div className="theme_text">                
-                <span>{translate({lang: lang, info: item.text})}</span>
+                <span>{translate({lang, info: item.text})}</span>
                 {item.color === title ? <>&nbsp;<FontAwesomeIcon icon={faCircleCheck} /></> : null}
               </div>
             </div>

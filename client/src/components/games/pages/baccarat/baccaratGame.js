@@ -252,7 +252,7 @@ function baccarat_game(props){
 		//player
 		card_list.push(new Card({
 			type: 'player',
-			name: translate({lang: lang, info: 'player'}),
+			name: translate({lang, info: 'player'}),
 			x: space + 2 * (card_base.width + card_base.x), 
 			y: card_base.y, 
 			width: card_base.width, 
@@ -275,7 +275,7 @@ function baccarat_game(props){
 		//banker
 		card_list.push(new Card({
 			type: 'banker',
-			name: translate({lang: lang, info: 'banker'}),
+			name: translate({lang, info: 'banker'}),
 			x: space + 4 * (card_base.width + card_base.x), 
 			y: card_base.y, 
 			width: card_base.width, 
@@ -393,11 +393,11 @@ function BaccaratGame(props){
 		<div className="baccarat_subtitles">
 			{choice && choice.type ? <>
 				<div>
-					<p>{translate({lang: lang, info: "bet_type"})}: </p>
-					<p>{translate({lang: lang, info: choice.type})}</p>
+					<p>{translate({lang, info: "bet_type"})}: </p>
+					<p>{translate({lang, info: choice.type})}</p>
 				</div>
 				<div>
-					<p>{translate({lang: lang, info: "bet"})}: {choice.bet} <FontAwesomeIcon icon={faCarrot} /></p>
+					<p>{translate({lang, info: "bet"})}: {choice.bet} <FontAwesomeIcon icon={faCarrot} /></p>
 				</div>	
 			</> : null}
 		</div>

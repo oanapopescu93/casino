@@ -69,7 +69,7 @@ function PolicyPrivacyDe(props){
             <h3>Kontaktieren Sie uns</h3>
             <p>Wenn Sie Fragen, Bedenken oder Anfragen zu dieser Datenschutzrichtlinie oder zum Umgang mit Ihren personenbezogenen Daten haben, kontaktieren Sie uns bitte.</p>
         
-            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
+            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang, info: "contact"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

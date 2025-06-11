@@ -67,7 +67,7 @@ function TermsConditionsRu(props){
 
             <p>Используя наш Сервис, вы подтверждаете, что ознакомились, поняли и согласны соблюдать эти Правила и Условия.</p>
         
-            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
+            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang, info: "contact"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

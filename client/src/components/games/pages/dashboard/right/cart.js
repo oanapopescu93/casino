@@ -48,7 +48,7 @@ function Cart(props){
     return <div className="cart box">								
         {cart && cart.length>0 ? <>
             <div className="cart_header">
-                <h3>{translate({lang: lang, info: "cart"})}</h3>
+                <h3>{translate({lang, info: "cart"})}</h3>
             </div>
             <div className="cart_list">
                 {cart.map((item, i)=>{
@@ -63,11 +63,11 @@ function Cart(props){
                         </div>
                         <div className="cart_info">
                             <h4>{product[0]["name_" + lang.toLowerCase()] || product[0].name_eng.toLowerCase()}</h4>
-                            <p><b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(product[0].price, currency, exchange_rates)} {currency}</p>
-                            <p><b>{translate({lang: lang, info: "qty"})}</b>: {item.qty}</p>
+                            <p><b>{translate({lang, info: "price"})}</b>: {convertCurrency(product[0].price, currency, exchange_rates)} {currency}</p>
+                            <p><b>{translate({lang, info: "qty"})}</b>: {item.qty}</p>
                         </div>
                         <div className="cart_buttons">
-                            <h4><b>{translate({lang: lang, info: "price"})}</b>: {cart_item_total_price} {currency}</h4> 
+                            <h4><b>{translate({lang, info: "price"})}</b>: {cart_item_total_price} {currency}</h4> 
                             <Button 
                                 type="button"  
                                 className="mybutton round button_transparent shadow_convex remove"
@@ -82,24 +82,24 @@ function Cart(props){
             </div>
             <div className="cart_footer">
                 <div className="cart_total_price 1">
-                    <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>
+                    <h3><b>{translate({lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>
                 </div>
                 <div className="cart_button">
                     <Button 
                         type="button"  
                         className="mybutton button_transparent shadow_convex"
                         onClick={()=>cartRemoveAllProduct()}
-                    ><FontAwesomeIcon icon={faTrashCan}/>&nbsp;<span>{translate({lang: lang, info: "remove_all"})}</span></Button>
+                    ><FontAwesomeIcon icon={faTrashCan}/>&nbsp;<span>{translate({lang, info: "remove_all"})}</span></Button>
                 </div>
                 <div className="cart_button">
                     <Button 
                         type="button"  
                         className="mybutton button_fullcolor shadow_convex"
                         onClick={()=>handleCheckout()}
-                    ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang: lang, info: "checkout"})}</span></Button>
+                    ><FontAwesomeIcon icon={faCartShopping}/>&nbsp;<span>{translate({lang, info: "checkout"})}</span></Button>
                 </div>
             </div>
-        </> : <p>{translate({lang: lang, info: "no_cart"})}</p>}
+        </> : <p>{translate({lang, info: "no_cart"})}</p>}
     </div>
 }
 export default Cart

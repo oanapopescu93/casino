@@ -106,7 +106,7 @@ function Sign(props) {
             open: true,
             template: "forgotPassword",
             title: "forgot_password_title",
-            data: translate({lang: lang, info: "forgot_password_text"}),
+            data: translate({lang, info: "forgot_password_text"}),
             size: 'sm',
         }
         dispatch(changePopup(payload))
@@ -171,7 +171,7 @@ function Sign(props) {
                 let payload = {
                     open: true,
                     template: "verificationSendSuccess",
-                    title: translate({lang: lang, info: "email_send_validation_title"}),
+                    title: translate({lang, info: "email_send_validation_title"}),
                     data,
                     size: "md",
                 }
@@ -220,7 +220,7 @@ function Sign(props) {
         let payload = {
             open: true,
             template: "sign_problem",
-            title: translate({lang: lang, info: "sign_problem"}),
+            title: translate({lang, info: "sign_problem"}),
             size: 'sm',
         }
         dispatch(changePopup(payload))
@@ -248,30 +248,30 @@ function Sign(props) {
                                 <div className="sign_container_box">
                                     <div className="deco">
                                         {isMinor === "true" ? <div className="sign_box isMinor_sign">
-                                            <p>{translate({lang: lang, info: "isMinor_sign"})}</p>
+                                            <p>{translate({lang, info: "isMinor_sign"})}</p>
                                         </div> : <>
                                             <Header template="sign" lang={lang} theme={theme} />
                                             <div className="sign_box">
                                                 <ul>
-                                                    <li id="signin_tab" className={signIn} onClick={()=>{handleClick('signIn')}}><span>{translate({lang: lang, info: "sign_in"})}</span></li>
-                                                    <li id="signup_tab" className={signUp} onClick={()=>{handleClick('signUp')}}><span>{translate({lang: lang, info: "sign_up"})}</span></li>
+                                                    <li id="signin_tab" className={signIn} onClick={()=>{handleClick('signIn')}}><span>{translate({lang, info: "sign_in"})}</span></li>
+                                                    <li id="signup_tab" className={signUp} onClick={()=>{handleClick('signUp')}}><span>{translate({lang, info: "sign_up"})}</span></li>
                                                 </ul>
                                                 {visible === "signIn" ? <SignIn signSubmit={(e)=>{signSubmit(e)}} lang={lang} socket={socket} /> : 
                                                 <SignUp signSubmit={(e)=>{signSubmit(e)}} lang={lang} socket={socket} />}
                                             </div>
                                             <div className="sign_extra_info">
-                                                {visible === "signIn" ? <p onClick={()=>handleForgotPassword()}>{translate({lang: lang, info: "signin_forgot_password"})}</p> : <>
+                                                {visible === "signIn" ? <p onClick={()=>handleForgotPassword()}>{translate({lang, info: "signin_forgot_password"})}</p> : <>
                                                 <div className="checkbox_radio_container">
                                                     <label>
                                                         <input className="input_light" type="checkbox" name="checkbox1" checked={checkboxOne} onChange={()=>{handleChangeCheck("checkbox1")}}/>
                                                         <h6>
-                                                            {translate({lang: lang, info: "i_agree_to"})}&nbsp;
+                                                            {translate({lang, info: "i_agree_to"})}&nbsp;
                                                             <span onClick={()=>handleLink("terms_cond")}>
-                                                                {translate({lang: lang, info: "terms_cond"})}
+                                                                {translate({lang, info: "terms_cond"})}
                                                             </span>
-                                                            &nbsp;{translate({lang: lang, info: "and"})}&nbsp;
+                                                            &nbsp;{translate({lang, info: "and"})}&nbsp;
                                                             <span onClick={()=>handleLink("policy_privacy")}>
-                                                                {translate({lang: lang, info: "policy_privacy"})}
+                                                                {translate({lang, info: "policy_privacy"})}
                                                             </span>
                                                         </h6>
                                                     </label>
@@ -286,41 +286,41 @@ function Sign(props) {
                                     return <>
                                         {problem ? <div className="alert alert-danger">
                                             {!signError.email.fill ? <p className="text_red">
-                                                {translate({ lang: lang, info: signError.email.fill_message })}
+                                                {translate({ lang, info: signError.email.fill_message })}
                                             </p> : <>
                                                 {!signError.email.validate ? <p className="text_red">
-                                                    {translate({ lang: lang, info: signError.email.validate_message })}
+                                                    {translate({ lang, info: signError.email.validate_message })}
                                                 </p> : null}
                                             </>}
 
                                             {!signError.phone.fill ? <p className="text_red">
-                                                {translate({ lang: lang, info: signError.phone.fill_message })}
+                                                {translate({ lang, info: signError.phone.fill_message })}
                                             </p> : <>
                                                 {!signError.phone.validate ? <p className="text_red">
-                                                    {translate({ lang: lang, info: signError.phone.validate_message })}
+                                                    {translate({ lang, info: signError.phone.validate_message })}
                                                 </p> : null}
                                             </>}
 
                                             {!signError.user.fill ? <p className="text_red">
-                                                {translate({ lang: lang, info: signError.user.fill_message })}
+                                                {translate({ lang, info: signError.user.fill_message })}
                                             </p> : null}
 
                                             {!signError.pass.fill ? <p className="text_red">
-                                                {translate({ lang: lang, info: signError.pass.fill_message })}
+                                                {translate({ lang, info: signError.pass.fill_message })}
                                             </p> : null}
 
                                             {!signError.checkboxOne.fill ? <p className="text_red">
-                                                {translate({ lang: lang, info: signError.checkboxOne.fill_message })}
+                                                {translate({ lang, info: signError.checkboxOne.fill_message })}
                                             </p> : null}
                                         </div> : null}
                                     </>
                                 })()}
                                 <div className="sign_problem" onClick={()=>handleSignProblem()}>
-                                    <h6>{translate({lang: lang, info: "sign_problem"})}</h6>
+                                    <h6>{translate({lang, info: "sign_problem"})}</h6>
                                 </div>
                             </div>
                             <div className="sign_footer">
-                                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang: lang, info: "all_rights_reserved"})}.</h6>
+                                <h6>Copyright © <span id="copyright_year">{date}</span> Oana Popescu. {translate({lang, info: "all_rights_reserved"})}.</h6>
                             </div>
                         </> : <Loader lang={lang} theme={theme}/>}
                     </>

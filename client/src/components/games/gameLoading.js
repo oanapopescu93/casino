@@ -168,7 +168,7 @@ function GameLoading(props){
                         <p>Loading...</p>
                     </>
                 default:
-                    return <p>{translate({lang: lang, info: "error"})}</p>
+                    return <p>{translate({lang, info: "error"})}</p>
             }
             })()}
         </div>

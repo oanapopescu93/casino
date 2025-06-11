@@ -112,7 +112,7 @@ function Slots(props){
                         open: true,
                         template: "are_you_sure",
                         title: "are_you_sure",
-                        data: translate({lang: lang, info: "are_you_sure_bets"}),
+                        data: translate({lang, info: "are_you_sure_bets"}),
                         size: "sm",
                     }
                     dispatch(changePopup(payload))
@@ -231,7 +231,7 @@ function Slots(props){
             />
         </div>
         {width < 600 ? <div id="slots_prizes" className="mobile shadow_convex" onClick={()=>handleShowPrizes()}>
-            {translate({lang: lang, info: "prizes"})}
+            {translate({lang, info: "prizes"})}
         </div> : null}
         <div className="button_action_group slots_buttons_container">
             <div className="tooltip">
@@ -240,7 +240,7 @@ function Slots(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>handleHandleExit()}
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "back"})}</span>
             </div>
         </div>
 	</div>

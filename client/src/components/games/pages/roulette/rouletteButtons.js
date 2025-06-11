@@ -15,7 +15,7 @@ function RouletteButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>gameStart()}
             ><FontAwesomeIcon icon={faPlay} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "start"})}</span>
         </div>
         <div className="tooltip">
             <Button 
@@ -23,7 +23,7 @@ function RouletteButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>openTable()}
             ><FontAwesomeIcon icon={faCarrot} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "settings"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "settings"})}</span>
         </div>
         <div className="tooltip">
             <Button 
@@ -31,7 +31,7 @@ function RouletteButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>handleHandleExit()} 					
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>	
-            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "back"})}</span>
         </div>	
     </div> 
 }

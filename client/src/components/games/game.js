@@ -141,7 +141,7 @@ function Game(props){
                     case "market":
                         return <Market {...props} streak={streak} handleHandleExit={()=>handleExit()} />
                     default:
-                        return <p>{translate({lang: lang, info: "error"})}</p>
+                        return <p>{translate({lang, info: "error"})}</p>
                 }
             })()}
         </>}

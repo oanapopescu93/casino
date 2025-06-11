@@ -68,7 +68,7 @@ function TermsConditionsZh(props){
         
             <p>使用我们的服务即表示您确认您已阅读、理解并同意受这些条款和条件的约束。</p>
 
-            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
+            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang, info: "contact"})}</p>
         </Col>        
         <Col lg={2} />
     </Row>

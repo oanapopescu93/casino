@@ -62,7 +62,7 @@ function Popup(props){
     const [resendVerificationResult, setResendVerificationResult] = useState('')
     const [signProblemsResult, setSignProblemsResult] = useState('')
 
-    let title = popup_title ? translate({lang: lang, info: popup_title}) : ""
+    let title = popup_title ? translate({lang, info: popup_title}) : ""
     let style = template
     if(template === "paymentSuccess" || template === "verificationSendSuccess"){
         style = "success"

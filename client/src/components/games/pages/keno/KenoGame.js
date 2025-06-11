@@ -85,7 +85,7 @@ function KenoBoard(props){
                     </div>
                 ))}
             </>}            
-        </div> : <p>{translate({lang: lang, info: "loading..."})}</p>}
+        </div> : <p>{translate({lang, info: "loading..."})}</p>}
     </>
 }
 
@@ -113,7 +113,7 @@ function KenoButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>gameStart()}
             ><FontAwesomeIcon icon={faPlay} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "start"})}</span>
         </div>
         {kenoSpotsResult && kenoSpotsResult.length > 0 ? null : <div className="tooltip">
             <Button 
@@ -121,7 +121,7 @@ function KenoButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>openTable()}
             ><FontAwesomeIcon icon={faGear} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "settings"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "settings"})}</span>
         </div>}
         {kenoSpotsResult && kenoSpotsResult.length > 0 ? null : <div className="tooltip">
             <Button 
@@ -129,7 +129,7 @@ function KenoButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>resetKenoSpots()}
             ><FontAwesomeIcon icon={faTrashCan} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "reset"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "reset"})}</span>
         </div>}
         <div className="tooltip">
             <Button 
@@ -137,7 +137,7 @@ function KenoButtons(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>{handleBack()}}
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "back"})}</span>
         </div>
     </div>
 }
@@ -160,7 +160,7 @@ function KenoQuickPick(props){
                 type="button"  
                 className="mybutton button_transparent shadow_convex"
                 onClick={()=>{handleQuickPick(randomSelections)}}
-            ><span>{translate({lang: lang, info: "quick_pick"})}</span></Button>
+            ><span>{translate({lang, info: "quick_pick"})}</span></Button>
         </div>
     </div>
 }
@@ -171,7 +171,7 @@ function KenoBets(props){
 
     return <div className="keno_bets_container">            
         <div className="keno_bets keno_bets_prive_per_game">
-            <p>{translate({lang: lang, info: "price_per_game"})}</p>
+            <p>{translate({lang, info: "price_per_game"})}</p>
             <DropdownButton title={pricePerGame} id="keno_price_per_game" className="shadow_convex" onSelect={(e)=>updateKenoBets("price_per_game", e)}>
                 <Dropdown.Item eventKey={1}>1</Dropdown.Item>
                 <Dropdown.Item eventKey={2}>2</Dropdown.Item>
@@ -181,7 +181,7 @@ function KenoBets(props){
             </DropdownButton>
         </div>
         <div className="keno_bets keno_bets_no_games">
-            <p>{translate({lang: lang, info: "no_of_games"})}</p>
+            <p>{translate({lang, info: "no_of_games"})}</p>
             <DropdownButton title={noOfGames} id="keno_no_of_games" className="shadow_convex"onSelect={(e)=>updateKenoBets("no_of_games", e)}>
                 <Dropdown.Item eventKey={1}>1</Dropdown.Item>
                 <Dropdown.Item eventKey={2}>2</Dropdown.Item>
@@ -202,7 +202,7 @@ function KenoSettings(props){
         <div className="game_bets shadow_concav">
             <div className="close" onClick={()=>closeTable()}>x</div>
             <div className="game_bets_box">
-                <p>{translate({lang: lang, info: "keno_instructions"})}</p>					
+                <p>{translate({lang, info: "keno_instructions"})}</p>					
                 <KenoQuickPick {...props} />
                 <KenoBets {...props} /> 
                 <div className="button_action_group">
@@ -245,7 +245,7 @@ function KenoGame(props){
                                         type="button"
                                         className="mybutton button_transparent shadow_convex"
                                         onClick={()=>handleShowPrizes()}                   
-                                    >{translate({lang: lang, info: "keno_prizes"})}</Button>	
+                                    >{translate({lang, info: "keno_prizes"})}</Button>	
                                 </div>
                             </Col>
                         </Row>  

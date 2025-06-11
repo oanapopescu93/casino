@@ -93,7 +93,7 @@ function User(props){
                         <FontAwesomeIcon icon={faCalendarDays} />
                         <span className="my_tooltiptext">
                             <p><b>Streak</b></p>
-                            <p>{translate({lang: lang, info: "your_streak"})}</p>
+                            <p>{translate({lang, info: "your_streak"})}</p>
                         </span>
                     </div>
                 </span> : null}
@@ -101,30 +101,30 @@ function User(props){
          </div>
         <div id="user_tags">
             <div className={"user_list_button " + buttonUser} onClick={()=>{handleChange('dashboard')}}>
-                <span><FontAwesomeIcon icon={faUser} />{translate({lang: lang, info: "user"})}</span>
+                <span><FontAwesomeIcon icon={faUser} />{translate({lang, info: "user"})}</span>
             </div>
             <div className={"user_list_button " + buttonMarket} onClick={()=>{handleChange('market')}}>
-                <span><FontAwesomeIcon icon={faStore} />{translate({lang: lang, info: "market"})}</span>
+                <span><FontAwesomeIcon icon={faStore} />{translate({lang, info: "market"})}</span>
             </div>
         </div>
         <ul id="user_list">
             {page.game || page.game_page ? <li onClick={()=>{handleChange('salon')}}>
-                <span><FontAwesomeIcon icon={faHouse} />{translate({lang: lang, info: "salon"})}</span>
+                <span><FontAwesomeIcon icon={faHouse} />{translate({lang, info: "salon"})}</span>
             </li> : null}
             <li onClick={()=>{handleChange('cart')}}>
-                <span><FontAwesomeIcon icon={faCartShopping} />{translate({lang: lang, info: "cart"})}</span>
+                <span><FontAwesomeIcon icon={faCartShopping} />{translate({lang, info: "cart"})}</span>
             </li>
             <li onClick={()=>{handleChange('settings')}}>
-                <span><FontAwesomeIcon icon={faGear} />{translate({lang: lang, info: "settings"})}</span>
+                <span><FontAwesomeIcon icon={faGear} />{translate({lang, info: "settings"})}</span>
             </li>
             <li onClick={()=>{handleChange('how_to_play')}}>
-                <span><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang: lang, info: "how_to_play"})}</span>
+                <span><FontAwesomeIcon icon={faCircleQuestion} />{translate({lang, info: "how_to_play"})}</span>
             </li>
             <li onClick={()=>{handleChange('Contact')}}>
-                <span><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</span>
+                <span><FontAwesomeIcon icon={faPaperPlane} />{translate({lang, info: "contact"})}</span>
             </li>
             <li onClick={()=>{handleChange('logout')}}>
-                <span><FontAwesomeIcon icon={faPowerOff} />{translate({lang: lang, info: "logout"})}</span>
+                <span><FontAwesomeIcon icon={faPowerOff} />{translate({lang, info: "logout"})}</span>
             </li>
         </ul>
     </>

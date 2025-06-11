@@ -14,14 +14,14 @@ function Streak(props){
 
     return <div id="streak" className="streak">
         {prize > 0 ? <>
-            <h3>{translate({lang: lang, info: "prize"})}: <span>{prize}</span> <FontAwesomeIcon icon={faCarrot} /></h3>
+            <h3>{translate({lang, info: "prize"})}: <span>{prize}</span> <FontAwesomeIcon icon={faCarrot} /></h3>
             <Button type="button" id="streak_clain_prize" className="mybutton button_fullcolor_dark" onClick={()=>streakClainPrize({prize, uuid: user.uuid})}>
-                {translate({lang: lang, info: "send"})}
+                {translate({lang, info: "send"})}
             </Button>
             {sending ? <div className="streakResult"><Spinner size="small" color="black"/></div> : null}
         </> : <>
             <div className="streak_text">
-                {translate({lang: lang, info: "streak_prize_text"})}
+                {translate({lang, info: "streak_prize_text"})}
             </div> 
             <div className="progress_bubble_container">
                 {streakPeriod.map((item, i)=>{

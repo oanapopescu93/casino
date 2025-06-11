@@ -8,7 +8,7 @@ import $ from "jquery"
 function ChatBot(props) {
     const {user, settings} = props
     const {lang} = settings
-    let name = user.user ? decryptData(user.user) : translate({lang: lang, info: "anonymous"})
+    let name = user.user ? decryptData(user.user) : translate({lang, info: "anonymous"})
     let error_chatbot = "error_chatbot"
     let knowledgeBank = knowledgeBankTranslations()
 
@@ -32,11 +32,11 @@ function ChatBot(props) {
     function addInitialMessages(){
         post("...", "Bot", "bot", true)
         setTimeout(() => {
-            post(translate({lang: lang, info: "greetings01"}) + " " + name, "Bot", "bot", false)
+            post(translate({lang, info: "greetings01"}) + " " + name, "Bot", "bot", false)
             setTimeout(() => {
                 post("...", "Bot", "bot", true)
                 setTimeout(() => {
-                    post(translate({lang: lang, info: "greetings02"}), "Bot", "bot", false)
+                    post(translate({lang, info: "greetings02"}), "Bot", "bot", false)
                 }, 500)
             }, 500)
         }, 500)
@@ -102,7 +102,7 @@ function ChatBot(props) {
 
             post(best_response, "Bot", "bot", false)
         } else {            
-            post(translate({info: error_chatbot, lang: lang}), "Bot", "bot", false) //no relevant response has been found --> we give a standard response
+            post(translate({info: error_chatbot, lang}), "Bot", "bot", false) //no relevant response has been found --> we give a standard response
         }
 
         setIsSending(false)
@@ -199,7 +199,7 @@ function ChatBot(props) {
             </Col>
             <Col xs={4} sm={4} md={4} lg={2}>
                 <Button disabled={isSending} type="button" className="mybutton button_fullcolor_dark shadow_convex" onClick={()=>handleSend()}>
-                    {translate({lang: lang, info: "send"})}
+                    {translate({lang, info: "send"})}
                 </Button>
             </Col>
         </Row>

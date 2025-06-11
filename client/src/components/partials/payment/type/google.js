@@ -16,10 +16,10 @@ function Google(props) {
         {minimum_amount >= price ? <Col sm={12}>
             <div className="alert alert-danger">
                 <p className="text_red">
-                    {translate({lang: lang, info: "amount_too_small_transaction"})}
+                    {translate({lang, info: "amount_too_small_transaction"})}
                 </p>
                 <p className="text_red">
-                    <span>{translate({lang: lang, info: "min_amount"})}</span>: <span>{minimum_amount} {currency}</span>
+                    <span>{translate({lang, info: "min_amount"})}</span>: <span>{minimum_amount} {currency}</span>
                 </p>
             </div>
         </Col> : <Col sm={12} className="google_pay_button_container">

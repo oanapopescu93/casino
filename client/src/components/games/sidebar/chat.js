@@ -30,11 +30,11 @@ function ChatMessages(props){
             switch (text) {
                 case "join":
                     return <div key={i} className='message message_join'>
-                        <p>{user} {translate({lang: lang, info: "joined_the_chat"})}</p>
+                        <p>{user} {translate({lang, info: "joined_the_chat"})}</p>
                     </div>
                 case "leave":
                     return <div key={i} className='message message_leave'>
-                        <p>{user} {translate({lang: lang, info: "left_the_chat"})}</p>
+                        <p>{user} {translate({lang, info: "left_the_chat"})}</p>
                     </div>
                 default:
                     return <div key={i} className="message message_box">
@@ -106,7 +106,7 @@ function Chat(props){
             </div>
             <input className="input_light" type="text" value={input} onChange={(e)=>{handleChange(e)}}/>
             <Button type="button" onClick={(e)=>handleSubmit(e)} className="mybutton button_fullcolor shadow_convex">
-                {translate({lang: lang, info: "send"})}
+                {translate({lang, info: "send"})}
             </Button>
         </Form>
         <ChatList list={chatRoomUsers} />

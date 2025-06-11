@@ -7,10 +7,10 @@ function ContactAddress(props){
     const {country, city, phone, phone_text, email} = address
 
     return <ul className="contact_address">
-        <li><p>{translate({lang: lang, info: 'country'})}: {country}</p></li>
-        <li><p>{translate({lang: lang, info: 'city'})}: {city}</p></li>
-        <li><p>{translate({lang: lang, info: 'phone'})}: <a href={'tel:' + phone}>{phone_text}</a></p></li>
-        <li><p>{translate({lang: lang, info: 'email'})}: <a href={'mailto:' + email}>{email}</a></p></li>
+        <li><p>{translate({lang, info: 'country'})}: {country}</p></li>
+        <li><p>{translate({lang, info: 'city'})}: {city}</p></li>
+        <li><p>{translate({lang, info: 'phone'})}: <a href={'tel:' + phone}>{phone_text}</a></p></li>
+        <li><p>{translate({lang, info: 'email'})}: <a href={'mailto:' + email}>{email}</a></p></li>
     </ul>
 }
 export default ContactAddress

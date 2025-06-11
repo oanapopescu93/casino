@@ -58,7 +58,7 @@ function OtherPages(props) {
                 case "gdpr":
                     return <Gdpr {...props} />
                 default:
-                    return <p>{translate({lang: lang, info: "error"})}</p>
+                    return <p>{translate({lang, info: "error"})}</p>
             }
         })()}
     </>

@@ -25,8 +25,8 @@ function CryptoDonation(props){
 
     return <>
         {cryptoDonation && cryptoDonation.length > 0 ? <>
-            <h2>{translate({lang: lang, info: "crypto_donation_title"})}</h2>
-            <p>{translate({lang: lang, info: "crypto_donation_text"})}</p>
+            <h2>{translate({lang, info: "crypto_donation_title"})}</h2>
+            <p>{translate({lang, info: "crypto_donation_text"})}</p>
             <ul>
                 {cryptoDonation
                     .filter(item => item.text !== "")
@@ -52,7 +52,7 @@ function CryptoDonation(props){
                 }
             </ul>
             <a className="mybutton button_transparent donation_button shadow_convex" href="https://nowpayments.io/donation?api_key=Z1KG9J0-GNHMNQE-PT6HD64-ET6GTWK" target="_blank" rel="noreferrer noopener">
-                {translate({lang: lang, info: "donate_with_nowpayments"})}
+                {translate({lang, info: "donate_with_nowpayments"})}
             </a>
         </> : null}
     </>

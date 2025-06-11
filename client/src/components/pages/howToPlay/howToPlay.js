@@ -50,7 +50,7 @@ function HowToPlay(props){
     }
 
     return <div className="content_wrap">
-        <Header template="how_to_play" title={translate({lang: lang, info: "how_to_play"})} lang={lang} theme={theme}/>
+        <Header template="how_to_play" title={translate({lang, info: "how_to_play"})} lang={lang} theme={theme}/>
         <div className="page_content">
             {!game ? <>
                 <HowToPlayTitles settings={settings} handleChoice={(e)=>handleChoice(e)} />

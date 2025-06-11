@@ -471,7 +471,7 @@ function SlotsGame(props){
 				}
 		})()}
 		{width >= 600 ? <div id="slots_prizes" className="desktop" onClick={()=>handleShowPrizes()}>
-			{translate({lang: lang, info: "prizes"})}
+			{translate({lang, info: "prizes"})}
 		</div> : null}	
 	</div>
 }

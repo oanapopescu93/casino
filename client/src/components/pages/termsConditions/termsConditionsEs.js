@@ -68,7 +68,7 @@ function TermsConditionsEs(props){
 
             <p>Al utilizar nuestro Servicio, usted reconoce que ha leído, comprendido y aceptado quedar vinculado por estos Términos y Condiciones.</p>
         
-            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang: lang, info: "contact"})}</p>
+            <p id="about_contact" onClick={()=>handleContact()}><FontAwesomeIcon icon={faPaperPlane} />{translate({lang, info: "contact"})}</p>
         </Col>
         <Col lg={2} />
     </Row>

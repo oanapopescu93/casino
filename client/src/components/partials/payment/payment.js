@@ -441,8 +441,8 @@ function Payment(props){
         let payload = {
             open: true,
             template: "error",
-            title: translate({lang: lang, info: "error"}),
-            data: translate({lang: lang, info: data.payload && typeof data.payload === "string" ? data.payload : "error_charge"}),
+            title: translate({lang, info: "error"}),
+            data: translate({lang, info: data.payload && typeof data.payload === "string" ? data.payload : "error_charge"}),
             size: 'sm',
         }
         dispatch(changePopup(payload))

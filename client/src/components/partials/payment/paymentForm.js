@@ -46,7 +46,7 @@ function PaymentForm(props){
                             checked={paymentDetails.option === "paypal"} 
                             onChange={() => handleChangeCheck("paypal")}
                         />
-                        {translate({ lang: lang, info: "pay_paypal" })}                        
+                        {translate({ lang, info: "pay_paypal" })}                        
                     </label>
                 </div>
             </Col>
@@ -64,7 +64,7 @@ function PaymentForm(props){
                 case "crypto":
                     return <Crypto {...props} />                
                 default:
-                    <p>{translate({lang: lang, info: "error"})}</p>
+                    <p>{translate({lang, info: "error"})}</p>
             }            
         })()}
         <Row>
@@ -73,7 +73,7 @@ function PaymentForm(props){
                     type="button"  
                     className="mybutton button_fullcolor shadow_convex"
                     onClick={()=>handleContinue()}
-                ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang: lang, info: "continue"})}</Button> : null}                
+                ><FontAwesomeIcon icon={faCartShopping} /> {translate({lang, info: "continue"})}</Button> : null}                
                 {(() => {
                     let choice = null
                     let icon = null
@@ -92,7 +92,7 @@ function PaymentForm(props){
                         type="button"  
                         className="mybutton button_fullcolor shadow_convex"
                         onClick={()=>handleBack(choice)}
-                    ><FontAwesomeIcon icon={icon} /> {translate({lang: lang, info: choice})}</Button> : null}</>
+                    ><FontAwesomeIcon icon={icon} /> {translate({lang, info: choice})}</Button> : null}</>
                 })()}
             </Col>
         </Row>

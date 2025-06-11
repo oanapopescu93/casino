@@ -80,7 +80,7 @@ function RaceTables(props){
                         className="mybutton round button_transparent shadow_convex"
                         onClick={()=>handleGetData()}
                     ><FontAwesomeIcon icon={faPlay} /></Button>
-                    <span className="tooltiptext">{translate({lang: lang, info: "start"})}</span>
+                    <span className="tooltiptext">{translate({lang, info: "start"})}</span>
                 </div>
             <div className="tooltip">
                 <Button 
@@ -88,7 +88,7 @@ function RaceTables(props){
                     className="mybutton round button_transparent shadow_convex"
                     onClick={()=>handleHandleExit()} 
                 ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-                <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+                <span className="tooltiptext">{translate({lang, info: "back"})}</span>
             </div>
         </div>       
     </>

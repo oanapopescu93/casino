@@ -88,7 +88,7 @@ function Keno(props){
             open: true,
             template: "error",
             title: "error",
-            data: translate({lang: lang, info: text}),
+            data: translate({lang, info: text}),
             size: 'sm',
         }
         dispatch(changePopup(payload))

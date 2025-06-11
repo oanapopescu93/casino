@@ -15,7 +15,7 @@ function PaymentCart(props){
                 case "checkout":
                     return <Row>
                         <Col sm={12}>
-                            <h3 className="cart_header">{translate({lang: lang, info: "cart"})}</h3>
+                            <h3 className="cart_header">{translate({lang, info: "cart"})}</h3>
                         </Col>
                         <Col sm={12}>
                             <Cart {...props} cart={cart} />
@@ -23,10 +23,10 @@ function PaymentCart(props){
                         <Col sm={12}>
                             {totalPromo > 0 ? <div className="cart_total_price">
                                 {promo && Object.keys(promo).length>0 ? <>
-                                    <p><b>{translate({lang: lang, info: "price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</p>
-                                    <p><b>{translate({lang: lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
-                                    <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(totalPromo, currency, exchange_rates)} {currency}</h3>
-                                </> : <h3><b>{translate({lang: lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>}
+                                    <p><b>{translate({lang, info: "price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</p>
+                                    <p><b>{translate({lang, info: "promo_discount"})}: </b><span>-{promo.discount}%</span></p>
+                                    <h3><b>{translate({lang, info: "total_price"})}</b>: {convertCurrency(totalPromo, currency, exchange_rates)} {currency}</h3>
+                                </> : <h3><b>{translate({lang, info: "total_price"})}</b>: {convertCurrency(total, currency, exchange_rates)} {currency}</h3>}
                             </div> : null}                            
                         </Col>
                     </Row>

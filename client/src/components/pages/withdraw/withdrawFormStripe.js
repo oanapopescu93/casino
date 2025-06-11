@@ -6,7 +6,7 @@ import { translate } from '../../../translations/translate'
 import Counter from '../../partials/counter'
 import { useDispatch } from 'react-redux'
 import { changePopup } from '../../../reducers/popup'
-import ReCAPTCHA from "react-google-recaptcha"
+// import ReCAPTCHA from "react-google-recaptcha"
 
 function WithdrawFormStripe(props) {    
     const { 
@@ -219,10 +219,10 @@ function WithdrawFormStripe(props) {
 
                 <div className="captcha_container">
                     <div className="captcha_box">
-                        <ReCAPTCHA
+                        {/* <ReCAPTCHA
                             sitekey={key}
                             onChange={onCaptchaChange}
-                        />
+                        /> */}
                         {!withdrawError.captcha.fill ? (
                             <div className="alert alert-danger">
                                 <p className="text_red">

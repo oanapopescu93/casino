@@ -22,8 +22,8 @@ function BankDonation(props){
 
     return <>
         {bankDonation ? <>
-            <h2>{translate({lang: lang, info: "bank_donation_title"})}</h2>
-            <p>{translate({lang: lang, info: "bank_donation_text"})}</p>
+            <h2>{translate({lang, info: "bank_donation_title"})}</h2>
+            <p>{translate({lang, info: "bank_donation_text"})}</p>
             <div className="iban" onClick={()=>copyToClipboard(bankDonation)}>
                 <strong className="iban_label">{bankDonation.title}:</strong>&nbsp;
                 <span className="iban_text selectable">{bankDonation.text}</span>&nbsp;

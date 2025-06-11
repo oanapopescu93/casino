@@ -29,17 +29,17 @@ function Crypto(props) {
             {!loadingCryptoData && cryptoDataFound && fiatEquivalent ? <Row>
                 <Col sm={12}>
                     {fiatEquivalent.estimated_amount > -1 ? <>
-                        <p>{translate({lang: lang, info: "your_amount_in_fiat_equivalent"})}:&nbsp;</p>
+                        <p>{translate({lang, info: "your_amount_in_fiat_equivalent"})}:&nbsp;</p>
                         <p>{fiatEquivalent.estimated_amount} {fiatEquivalent.currency_to}</p>
                         <p>
-                            <span>{translate({lang: lang, info: "min_amount"})}:&nbsp;</span>                          
+                            <span>{translate({lang, info: "min_amount"})}:&nbsp;</span>                          
                             <span>{cryptoDataFound.min_amount} {cryptoDataFound.currency_from}</span>&nbsp;
                             <span>({convertCurrency(cryptoDataFound.fiat_equivalent, currency, exchange_rates)} {currency})</span>
                         </p>
                     </> : <div className="alert alert-danger">
-                        <p className="text_red">{translate({lang: lang, info: "amount_too_small_transaction"})}</p>
+                        <p className="text_red">{translate({lang, info: "amount_too_small_transaction"})}</p>
                         <p>
-                            <span>{translate({lang: lang, info: "min_amount"})}:&nbsp;</span>                          
+                            <span>{translate({lang, info: "min_amount"})}:&nbsp;</span>                          
                             <span>{cryptoDataFound.min_amount} {cryptoDataFound.currency_from}</span>&nbsp;
                             <span>({convertCurrency(cryptoDataFound.fiat_equivalent, currency, exchange_rates)} {currency})</span>
                         </p>

@@ -62,9 +62,9 @@ function Questions(props){
     }
 
     return <div className="content_wrap">
-        <Header template="questions" title={translate({lang: lang, info: "questions"})} lang={lang} theme={theme}/>
+        <Header template="questions" title={translate({lang, info: "questions"})} lang={lang} theme={theme}/>
         <div className="page_content">
-            {list ? <QuestionList lang={lang} list={list} /> : <p>{translate({lang: lang, info: "error"})}</p>}
+            {list ? <QuestionList lang={lang} list={list} /> : <p>{translate({lang, info: "error"})}</p>}
         </div>
         <div className="tooltip">
             <Button 
@@ -72,7 +72,7 @@ function Questions(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>handleBack()}
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "back"})}</span>
         </div>
     </div>
 }

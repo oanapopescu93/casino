@@ -114,9 +114,9 @@ function PokerDashboard(props){
         const handlePokerRead = (data)=>{
             if (data && data.action){
                 if(data.error){
-                    let error_message = translate({lang: lang, info: data.error})
+                    let error_message = translate({lang, info: data.error})
                     if(data.amountToCallRaise > 0){
-                        error_message = error_message + " (" + translate({lang: lang, info: "amount"}) + ": " + data.amountToCallRaise + ")"
+                        error_message = error_message + " (" + translate({lang, info: "amount"}) + ": " + data.amountToCallRaise + ")"
                     }
                     handleErrors("error", error_message, lang)
                     return

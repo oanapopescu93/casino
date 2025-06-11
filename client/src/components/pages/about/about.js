@@ -34,7 +34,7 @@ function About(props){
     }
 
     return <div className="content_wrap">
-        <Header template="about" title={translate({lang: lang, info: "about"})} lang={lang} theme={theme}/>
+        <Header template="about" title={translate({lang, info: "about"})} lang={lang} theme={theme}/>
         <div className="page_content">
             <div className="box_scroll">
                 {(() => {
@@ -68,7 +68,7 @@ function About(props){
                 className="mybutton round button_transparent shadow_convex"
                 onClick={()=>handleBack()}
             ><FontAwesomeIcon icon={faArrowRotateLeft} /></Button>
-            <span className="tooltiptext">{translate({lang: lang, info: "back"})}</span>
+            <span className="tooltiptext">{translate({lang, info: "back"})}</span>
         </div>
     </div>
 }
